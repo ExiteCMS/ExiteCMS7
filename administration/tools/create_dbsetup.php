@@ -44,6 +44,7 @@ $config .= "// Date generated  : `".date("d/m/Y H:i")."`".$crlf;
 $config .= "//----------------------------------------------------------".$crlf;
 $config .= $crlf."define('PLI_VERSION', '".$settings['version']."');".$crlf;
 $config .= "define('PLI_REVISION', '".$settings['revision']."');".$crlf;
+$config .= $crlf."if (\$step == 1) {".$crlf;
 $config .= $crlf."$"."fail = ".'"0"'.";".$crlf;
 $config .= "$"."failed = array();".$crlf;
 dbquery('SET SQL_QUOTE_SHOW_CREATE=1');
@@ -76,6 +77,7 @@ foreach($table_list as $table){
 	$config .= '	$'.'failed[] = "'.$basetable.' : ".mysql_error();'.$crlf;
 	$config .= '}'.$crlf;
 }
+$config .= $crlf."}".$crlf;
 $config .= "//----------------------------------------------------------".$crlf;
 $config .= "?>";
 

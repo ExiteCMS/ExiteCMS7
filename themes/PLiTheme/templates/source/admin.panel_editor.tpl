@@ -58,7 +58,7 @@
 			</td>
 		</tr>
 		{/if}
-		{if $panel_id == 0}
+		{if true || $panel_id == 0}
 		<tr>
 			<td class='tbl'>
 				{$locale.456}

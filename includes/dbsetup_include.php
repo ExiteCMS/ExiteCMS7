@@ -1,11 +1,13 @@
 <?php
 //----------------------------------------------------------
 // PLi-Fusion file : dbsetup_include.php
-// Date generated  : `17/09/2007 12:05`
+// Date generated  : `18/09/2007 22:46`
 //----------------------------------------------------------
 
 define('PLI_VERSION', '7.00');
 define('PLI_REVISION', '800');
+
+if ($step == 1) {
 
 $fail = "0";
 $failed = array();
@@ -592,7 +594,8 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."panels (
   `panel_id` smallint(5) unsigned NOT NULL auto_increment,
   `panel_name` varchar(100) NOT NULL default '',
   `panel_filename` varchar(100) NOT NULL default '',
-  `panel_content` text NOT NULL,
+  `panel_code` text NOT NULL,
+  `panel_template` text NOT NULL,
   `panel_side` tinyint(1) unsigned NOT NULL default '1',
   `panel_order` smallint(5) unsigned NOT NULL default '0',
   `panel_type` varchar(20) NOT NULL default '',
@@ -601,6 +604,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."panels (
   `panel_status` tinyint(1) unsigned NOT NULL default '0',
   `panel_usermod` tinyint(1) unsigned NOT NULL default '0',
   `panel_state` tinyint(1) unsigned NOT NULL default '0',
+  `panel_datestamp` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`panel_id`)
 ) ENGINE=MYISAM;");
 if (!$result) {
@@ -1132,6 +1136,8 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_users (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "wiki_users : ".mysql_error();
+}
+
 }
 //----------------------------------------------------------
 ?>
