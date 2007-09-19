@@ -1,0 +1,79 @@
+{***************************************************************************}
+{*                                                                         *}
+{* PLi-Fusion CMS template: user_info_panel.tpl                            *}
+{*                                                                         *}
+{***************************************************************************}
+{*                                                                         *}
+{* Author: WanWizard <wanwizard@gmail.com>                                 *}
+{*                                                                         *}
+{* Revision History:                                                       *}
+{* 2007-07-02 - WW - Initial version                                       *}
+{*                                                                         *}
+{***************************************************************************}
+{*                                                                         *}
+{* This template generates the PLi-Fusion infusion panel: user_info_panel  *}
+{*                                                                         *}
+{***************************************************************************}
+{if $smarty.const.iMEMBER|default:false}
+	{include file="_openside_x.tpl" name=$_name title=$user_name state=$_state style=$_style}
+	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}edit_profile.php' class='side'>{$locale.080}</a><br />
+	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}pm.php' class='side'>{$locale.081}</a><br />
+	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}members.php' class='side'>{$locale.082}</a><br />
+	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}setuser.php?logout=yes' class='side'>{$locale.084}</a>
+	{if $smarty.const.iADMIN|default:false && ($smarty.const.iUSER_RIGHTS != "" || $smarty.const.iUSER_RIGHTS != "C")}
+		{if $adminpage1|default:0 != 0 || $adminpage2|default:0 != 0 || $adminpage3|default:0 != 0 || $adminpage4|default:0 != 0}
+			<div class='side-label'>{$locale.083}</div>
+		{/if}
+		{if $adminpage1|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=1' class='side'>{$locale.ac01}</a><br />{/if}
+		{if $adminpage2|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=2' class='side'>{$locale.ac02}</a><br />{/if}
+		{if $adminpage3|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=3' class='side'>{$locale.ac03}</a><br />{/if}
+		{if $adminpage4|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=4' class='side'>{$locale.ac04}</a><br />{/if}
+	{/if}
+	{if $new_pm_msg != 0}
+		<hr />
+		<div style='text-align:center'>
+			<b><a href='{$smarty.const.BASEDIR}pm.php?action=show_new' class='side'>{$new_pm_msg|string_format:$locale.085}{if $new_pm_msg == 1}{$locale.086}{else}{$locale.087}{/if}</a></b>
+		</div>
+	{/if}
+	{if $new_post_msg != 0}
+		<hr />
+		<div style='text-align:center'>
+			<a href='{$smarty.const.MODULES}forum_threads_list_panel/new_posts.php' class='side'><b>{$new_post_msg|string_format:$locale.090}{if $new_post_msg == 1}{$locale.088}{else}{$locale.089}{/if}</b></a>
+			<br /><br />
+			<a href='{$smarty.const.MODULES}forum_threads_list_panel/new_posts.php?markasread={$user_id}'><img src='{$smarty.const.THEME}forum/markread.gif' alt=''  /></a>
+		</div>
+	{/if}
+{else}
+	{include file="_openside.tpl" name=$_name title=$locale.060 state=$_state style=$_style}
+	<div style='text-align:center'>
+		{$loginerror|default:""}
+		<form name='loginform' method='post' action='{$smarty.const.FUSION_SELF}'>
+			{$locale.061}<br /><input type='text' name='user_name' class='textbox' style='width:100px' /><br />
+			{$locale.062}<br /><input type='password' name='user_pass' class='textbox' style='width:100px' /><br />
+			<br /><input type='checkbox' name='remember_me' value='y' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked{/if}/>
+			<input type='submit' name='login' value='{$locale.064}' class='button' /><br />
+			<input type='hidden' name='javascript_check' value='n' />
+		</form>
+	</div>
+	{literal}
+<script type='text/javascript'>
+/* <![CDATA[ */
+	if (document.loginform.javascript_check.value == 'n')
+	{
+		document.loginform.javascript_check.value = 'y';
+	}
+	/* ]]> */
+</script>
+	{/literal}
+	<br />
+	{if $settings.enable_registration}{$locale.065}<br /><br />{/if}
+	{$locale.066}
+{/if}
+{if $smarty.const.iMEMBER|default:false}
+	{include file="_closeside_x.tpl"}
+{else}
+	{include file="_closeside.tpl"}
+{/if}
+{***************************************************************************}
+{* End of template                                                         *}
+{***************************************************************************}
