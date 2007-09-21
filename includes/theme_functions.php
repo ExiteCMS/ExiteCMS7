@@ -1,17 +1,18 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright ? 2002 - 2006 Nick Jones   |
+| Some portions copyright 2002 - 2006 Nick Jones     |
 | http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('IN_FUSION')) die();
+if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
 
 // Smarty template engine definitions and initialisation
 require_once PATH_INCLUDES."Smarty-2.6.18/Smarty.class.php";
@@ -38,8 +39,8 @@ $template->cache_dir = PATH_THEME.'cache';
 $plugins_dir = array();
 // first check if there's one defined in the current theme
 if (is_dir(PATH_THEME."template/plugins")) $plugins_dir[] = PATH_THEME."template/plugins";
-// next, check the PLi-Fusion plugins
-$plugins_dir[] = 'pli-plugins';
+// next, check the CMS custom plugins
+$plugins_dir[] = 'custom-plugins';
 // and finaly, use the default Smarty plugins
 $plugins_dir[] = 'smarty-plugins';
 $template->plugins_dir = $plugins_dir;

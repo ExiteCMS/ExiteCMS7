@@ -1,12 +1,13 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright ? 2002 - 2006 Nick Jones   |
+| Some portions copyright 2002 - 2006 Nick Jones     |
 | http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -87,7 +88,7 @@ define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/");
 
 define("FUSION_SELF", isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "" ? basename($_SERVER['REDIRECT_URL']) : basename($_SERVER['PHP_SELF']));
-define('IN_FUSION', true);			
+define('ExiteCMS_INIT', true);			
 
 // error tracking
 $error = "";
@@ -142,7 +143,7 @@ switch($step) {
 	case "0":
 		// if the config file already exists, bail out
 		if (file_exists(PATH_ROOT."config.php") && filesize(PATH_ROOT."config.php")) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run PLi-Fusion setup: A valid configuration exists.</b><br />Please consult the documentation on how to rerun the setup.</div>");
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: A valid configuration exists.</b><br />Please consult the documentation on how to rerun the setup.</div>");
 		}
 		
 		// create a list of available locales
@@ -206,11 +207,11 @@ switch($step) {
 				smtp_password, bad_words_enabled, bad_words, bad_word_replace, guestposts, numofshouts, flood_interval, counter, max_users, 
 				max_users_datestamp, version, revision, remote_stats, maintenance, maintenance_message, donate_forum_id, forum_flags, 
 				newsletter_email, pm_inbox, pm_savebox, pm_sentbox) 
-			VALUES ('PLi-Fusion CMS Powered Website', 'http://www.yourdomain.com/', 'images/banner.gif', 'webmaster@yourdomain.com', '$username', 
-				'<center>Welcome to www.yourdomain.com</center>', '', '', '<center>Copyright &copy; 2007 PLi-Fusion</center>', 'news.php', 0, 1, 4, 
+			VALUES ('ExiteCMS Powered Website', 'http://www.yourdomain.com/', 'images/banner.gif', 'webmaster@yourdomain.com', '$username', 
+				'<center>Welcome to www.yourdomain.com</center>', '', '', '<center>ExiteCMS &copy;2007 Exite BV</center>', 'news.php', 0, 1, 4, 
 				'$localeset', 'PLiTheme', '%d/%m/%Y %H:%M', '%B %d %Y %H:%M:%S', '%d-%m-%Y %H:%M', '%B %d %Y %H:%M:%S', '0', 5, 0, 150000, 
 				'.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3', 0, 1, 1, 0, 1, 'image', 100, 100, 400, 300, 1800, 1600, 150000, 'gd2', 
-				4, 12, 1, '', '', '', 0, '', '[censored]', 0, 10, 15, 0, 0, ".time().", ".PLI_VERSION.", ".PLI_REVISION.", 0, 0, '', 0, 1, 'noreply@yourdomain.com', '20', '20', '20')");
+				4, 12, 1, '', '', '', 0, '', '[censored]', 0, 10, 15, 0, 0, ".time().", ".CMS_VERSION.", ".CMS_REVISION.", 0, 0, '', 0, 1, 'noreply@yourdomain.com', '20', '20', '20')");
 
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A', 'articles.gif', '".$locale['462']."', 'articles.php', 1)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".$locale['461']."', 'article_cats.php', 1)");

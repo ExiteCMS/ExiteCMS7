@@ -39,11 +39,11 @@ $crlf = "\n";
 
 $config .= "<?php".$crlf;
 $config .= "//----------------------------------------------------------".$crlf;
-$config .= "// PLi-Fusion file : dbsetup_include.php".$crlf;
+$config .= "// ExiteCMS file : dbsetup_include.php".$crlf;
 $config .= "// Date generated  : `".date("d/m/Y H:i")."`".$crlf;
 $config .= "//----------------------------------------------------------".$crlf;
-$config .= $crlf."define('PLI_VERSION', '".$settings['version']."');".$crlf;
-$config .= "define('PLI_REVISION', '".$settings['revision']."');".$crlf;
+$config .= $crlf."define('CMS_VERSION', '".$settings['version']."');".$crlf;
+$config .= "define('CMS_REVISION', '".$settings['revision']."');".$crlf;
 $config .= $crlf."if (\$step == 1) {".$crlf;
 $config .= $crlf."$"."fail = ".'"0"'.";".$crlf;
 $config .= "$"."failed = array();".$crlf;

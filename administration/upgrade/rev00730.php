@@ -1,24 +1,29 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| code to make the changes to upgrade to this rev.nr.|
+| Some portions copyright 2002 - 2006 Nick Jones     |
+| http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
+| Released under the terms & conditions of v2 of the |
+| GNU General Public License. For details refer to   |
+| the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
 
 // upgrade for revision
 $_revision = 730;
 
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('IN_FUSION')) die();
+if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => 1184152074, 'description' => "Required updates for PLi-Fusion v7.00 rev.730");
+$revisions[] = array('revision' => $_revision, 'date' => 1184152074, 'description' => "Required updates for ExiteCMS v7.00 rev.730");
 
 // array to store the commands of this update
 $commands = array();
@@ -36,6 +41,6 @@ $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users CHAN
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##settings SET news_headline = 0");
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##admin SET admin_title = 'Modules & Plugins' WHERE admin_link = 'infusions.php' AND admin_page = '3'");
 
-// update the PLi-Fusion version number
+// update the ExiteCMS version number
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##settings SET version = '7.00'");
 ?>

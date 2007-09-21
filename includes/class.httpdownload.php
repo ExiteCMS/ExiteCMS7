@@ -1,5 +1,5 @@
 <?php
-if (!defined("IN_FUSION")) { exit; }
+if (!defined("ExiteCMS_INIT")) { exit; }
 
 /*------------------
 | Download Handler |

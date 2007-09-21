@@ -47,6 +47,35 @@
 		</td>
 	</tr>
 </table>
+{if $smarty.const.iMEMBER && $user_can_post && $thread.thread_author != 0 && ($smarty.const.iMOD || $smarty.const.iSUPERADMIN)}
+<table cellpadding='0' cellspacing='0' width='100%' style='margin-top:5px;'>
+	<tr>
+		<td align='right' class='tbl'>
+			<form name='modopts' method='post' action='options.php?forum_id={$forum_id}&amp;thread_id={$thread_id}'>
+				{$locale.520}
+				<select name='step' class='textbox'>
+					<option value='none'>&nbsp;</option>
+					<option value='renew'>{$locale.527}</option>
+					<option value='delete'>{$locale.521}</option>
+					{if !$thread.thread_locked}
+					<option value='lock'>{$locale.522}</option>
+					{else}
+					<option value='unlock'>{$locale.523}</option>
+					{/if}
+					{if !$thread.thread_sticky}
+					<option value='sticky'>{$locale.524}</option>
+					{else}
+					<option value='nonsticky'>{$locale.525}</option>
+					{/if}
+					<option value='move'>{$locale.526}</option>
+					<option value='merge'>{$locale.529}</option>
+				</select>
+				<input type='submit' name='go' value='{$locale.528}' class='button' />
+			</form>
+		</td>
+	</tr>
+</table>
+{/if}
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
 <div align='center' style='margin-top:5px;margin-bottom:5px;'>
 	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
@@ -122,12 +151,12 @@
 		<td align='center'>
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $unread_posts}
-				<a href='viewforum.php?action=markallread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/markread.gif' alt='{$locale.573}' height='14' style='border:0px;' /></a>&nbsp;
+				<a href='viewforum.php?action=markallread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/markread.gif' alt='{$locale.573}' /></a>&nbsp;
 			{/if}
 		{/if}
 		</td>
-	{if $smarty.const.iMEMBER && $user_can_post && $thread.thread_author != 0 && ($smarty.const.iMOD || $smarty.const.iSUPERADMIN)}
-		<td colspan='2' align='right' class='tbl'>
+		<td align='right' class='tbl'>
+		{if $smarty.const.iMEMBER && $user_can_post && $thread.thread_author != 0 && ($smarty.const.iMOD || $smarty.const.iSUPERADMIN)}
 			<form name='modopts' method='post' action='options.php?forum_id={$forum_id}&amp;thread_id={$thread_id}'>
 				{$locale.520}
 				<br />
@@ -150,9 +179,9 @@
 				</select>
 				<input type='submit' name='go' value='{$locale.528}' class='button' />
 			</form>
+		{/if}
 		</td>
 	</tr>
-	{/if}
 </table>
 {include file="_closetable.tpl"}
 {if $smarty.const.iMEMBER && $user_can_post && !$thread.thread_locked}

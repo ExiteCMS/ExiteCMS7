@@ -2,7 +2,7 @@
 /**
  * Smarty plugin
  * @package Smarty
- * @subpackage pli-plugins
+ * @subpackage exitecms-plugins
  */
 
 /**
@@ -10,7 +10,7 @@
  */
 require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
 /**
- * Smarty PLi-Fusion date_format modifier plugin
+ * Smarty ExiteCMS date_format modifier plugin
  *
  * Type:     modifier<br>
  * Name:     date_format<br>
@@ -18,7 +18,7 @@ require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
  *           modifier takes the users timezone settings into account<br>
  * Input:<br>
  *         - string: input date string
- *         - format: PLi-fusion standard format name
+ *         - format: ExitecMS standard format name
  *                   or a strftime format for output
  *         - default_date: default date if $string is empty
  * @author   WanWizard <wanwizard at gmail dot com>

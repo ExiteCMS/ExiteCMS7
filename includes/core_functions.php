@@ -1,12 +1,13 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright ? 2002 - 2006 Nick Jones   |
+| Some portions copyright 2002 - 2006 Nick Jones     |
 | http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -36,7 +37,13 @@ if (ini_get('register_globals') != 1) {
 	if ((isset($_POST) == true) && (is_array($_POST) == true)) extract($_POST, EXTR_OVERWRITE);
 	if ((isset($_GET) == true) && (is_array($_GET) == true)) extract($_GET, EXTR_OVERWRITE);
 } else {
-	trigger_error("'register_globals is on'. This is a security risk, and should be deactivated!", E_USER_WARNING);
+	// if not, unset all globals created by register_globals!
+	$rg = array_keys($_REQUEST);
+	foreach($rg as $var) {
+		if ($_REQUEST[$var] === $$var) {
+//			unset($$var);
+		}
+	}
 }
 
 // prevent any possible XSS attacks via $_GET.
@@ -74,8 +81,8 @@ define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
 define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
 
-// mark that PLi-Fusion is properly initialized
-define("IN_FUSION", TRUE);
+// mark that ExiteCMS is properly initialized
+define("ExiteCMS_INIT", TRUE);
 
 // load the config file
 if (file_exists(PATH_ROOT."config.php")) {
@@ -183,24 +190,6 @@ $thumbtypes = array(
 	".jpeg",
 	".png",
 );
-
-/*---------------------------------------------------+
-| DEVELOPMENT DEBUGGING - LOG ALL GET AND POST VARS  |
-+----------------------------------------------------*/
-$skip_modules = array();
-$skip_modules[] = "bartext.php";
-if (!in_array(FUSION_SELF, $skip_modules)) {
-	foreach ($_GET as $_name => $_value) {
-		$result = dbquery("INSERT INTO ".$db_prefix."0_varlog (module, type, name, value) VALUES ('".FUSION_SELF."', 'G', '".$_name."', '".mysql_escape_string($_value)."')");
-	}
-	foreach ($_POST as $_name => $_value) {
-		if (is_array($_value)) {
-			$result = dbquery("INSERT INTO ".$db_prefix."0_varlog (module, type, name, value) VALUES ('".FUSION_SELF."', 'P', '".$_name."', 'array!')");
-		} else {
-			$result = dbquery("INSERT INTO ".$db_prefix."0_varlog (module, type, name, value) VALUES ('".FUSION_SELF."', 'P', '".$_name."', '".mysql_escape_string($_value)."')");
-		}
-	}
-}
 
 // debug function, handy to print a standard debug text
 function _debug($text, $abort=false) {
@@ -679,6 +668,42 @@ function attach_exists($file, $attachpath = PATH_ATTACHMENTS) {
 		$i++;
 	}
 	return $file;
+}
+
+function checkCMSversion($min=false, $max=false) {
+	global $locale;
+
+	$error	 = "";
+	
+	if ($min) {
+		if (str_replace(".", "", $settings['version']) < str_replace(".", "", $min)) {
+			$error .= sprintf($locale['mod001'], $min);
+		}
+	}
+	if ($max) {
+		if (str_replace(".", "", $settings['version']) > str_replace(".", "", $max)) {
+			$error .= sprintf($locale['mod002'], $max);
+		}
+	}
+	return $error;
+}
+
+function checkCMSrevision($min=false, $max=false) {
+	global $locale;
+
+	$error	 = "";
+	
+	if ($min) {
+		if ($settings['revision'] < $min) {
+			$error .= sprintf($locale['mod003'], $min);
+		}
+	}
+	if ($max) {
+		if ($settings['revision'] > $max) {
+			$error .= sprintf($locale['mod005'], $max);
+		}
+	}
+	return $error;
 }
 
 function auth_BasicAuthentication() {

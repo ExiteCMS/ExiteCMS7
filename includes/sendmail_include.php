@@ -9,7 +9,7 @@
 | GNU General Public License. For details refer to
 | the included gpl.txt file or visit http://gnu.org
 +----------------------------------------------------*/
-if (!defined("IN_FUSION")) { header("Location:../index.php"); exit; }
+if (!defined("ExiteCMS_INIT")) { header("Location:../index.php"); exit; }
 
 function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type="plain",$cc="",$bcc="") {
 

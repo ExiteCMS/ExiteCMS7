@@ -1,17 +1,18 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright ? 2002 - 2006 Nick Jones   |
+| Some portions copyright 2002 - 2006 Nick Jones     |
 | http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (!defined('IN_FUSION')) require_once dirname(__FILE__)."/../includes/core_functions.php";
+if (!defined('ExiteCMS_INIT')) require_once dirname(__FILE__)."/../includes/core_functions.php";
 
 // make sure we have a valid revision level from the settings
 if (!isset($settings['revision']) || !isNum($settings['revision'])) $settings['revision'] = 0;
@@ -125,7 +126,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 		$variables['message'] = $locale['401'];
 		$variables['bold'] = true;
 	}
-	// check for newer revisions on the PLi-Fusion website
+	// check for newer revisions on the ExiteCMS website
 	$variables['new_upgrades'] = false;
 	
 	$template_panels[] = array('type' => 'body', 'name' => 'admin.upgrade', 'template' => 'admin.upgrade.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/upgrade.php");

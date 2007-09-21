@@ -1,17 +1,18 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright ? 2002 - 2006 Nick Jones   |
+| Some portions copyright 2002 - 2006 Nick Jones     |
 | http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("db_functions.php", $_SERVER['PHP_SELF']) || !defined('IN_FUSION')) die();
+if (eregi("db_functions.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
 
 // Establish mySQL database connection
 $_db_link = dbconnect($db_host, $db_user, $db_pass, $db_name);

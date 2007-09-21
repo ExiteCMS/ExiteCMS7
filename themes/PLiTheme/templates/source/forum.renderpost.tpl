@@ -39,17 +39,17 @@
 		<td class='tbl_top_right' style='text-align:right'>
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $posts[pid].user_can_edit}
-				<a href='post.php?action=edit&amp;forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;post_id={$posts[pid].post_id}'><img src='{$smarty.const.THEME}forum/edit.gif' alt='{$locale.568}' style='border:0px;' /></a>
+				{buttonlink name=$locale.568 link="post.php?action=edit&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;post_id="|cat:$posts[pid].post_id}
 			{/if}
 			{if $smarty.const.SHOW_REPLY_BUTTON && !$thread.thread_locked}
 				{if $smarty.const.REPLY_AS_QUOTE}
-					<a href='post.php?action=quote&amp;forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;reply_id={$posts[pid].post_id}'><img src='{$smarty.const.THEME}forum/reply.gif' alt='{$locale.569}' style='border:0px;' /></a>
+					{buttonlink name=$locale.575 link="post.php?action=quote&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 				{else}
-					<a href='post.php?action=postreply&amp;forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;reply_id={$posts[pid].post_id}'><img src='{$smarty.const.THEME}forum/reply.gif' alt='{$locale.569}' style='border:0px;' /></a>
+					{buttonlink name=$locale.575 link="post.php?action=postreply&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 				{/if}
 			{/if}
 			{if $smarty.const.SHOW_QUOTE_BUTTON && !$thread.thread_locked}
-				<a href='post.php?action=quote&amp;forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;reply_id={$posts[pid].post_id}'><img src='{$smarty.const.THEME}forum/quote.gif' alt='{$locale.569}' style='border:0px;' /></a>
+				{buttonlink name=$locale.569 link="post.php?action=quote&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 			{/if}
 			{if $posts[pid].show_ip}
 				<img src='{$smarty.const.THEME}forum/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}' style='border:0px;' />
@@ -204,23 +204,23 @@
 	<tr valign='bottom'>
 		<td class='tbl_left_bottom'>
 		{if $smarty.const.iMEMBER && $posts[pid].user_id > 0 && $userdata.user_id != $posts[pid].user_id}
-			<a href='{$smarty.const.BASEDIR}pm.php?action=post&amp;user_id={$posts[pid].user_id}&amp;msg_id=0'><img src='{$smarty.const.THEME}forum/pm.gif' alt='{$locale.571}' style='border:0px;margin-right:2px;' /></a>
+			{buttonlink name=$locale.571 title=$locale.571a link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;user_id="|cat:$posts[pid].user_id|cat:"&amp;msg_id=0"}
 		{/if}
 		{if $posts[pid].user_msn|default:"" != ""}
-			<a href='mailto:{$posts[pid].user_msn}'><img src='{$smarty.const.THEME}forum/msn.gif' alt='{$posts[pid].user_msn}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.576 link="mailto:"|cat:$posts[pid].user_msn}
 		{/if}
 		{if $posts[pid].user_icq|default:"" != ""}
-			<a href='http://web.icq.com/wwp?Uin={$posts[pid].user_icq}' target='_blank'><img src='{$smarty.const.THEME}forum/icq.gif' alt='{$posts[pid].user_icq}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.578 link="http://web.icq.com/wwp?Uin="|cat:$posts[pid].user_icq new="yes"}
 		{/if}
 		{if $posts[pid].user_web|default:"" != ""}
-			<a href='{$posts[pid].user_web}' target='_blank'><img src='{$smarty.const.THEME}forum/web.gif' alt='{$posts[pid].user_web}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.577 link=$posts[pid].user_web new="yes"}
 		{/if}
 		{if false && $posts[pid].user_aim|default:"" != ""}
-			<a href='aim:goim?screenname={$posts[pid].user_aim|replace:' ':'+'}' target='_blank'><img src='{$smarty.const.THEME}forum/aim.gif' alt='{$posts[pid].user_aim}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.579 link="aim:goim?screenname="|cat:$posts[pid].user_aim|replace:" ":"+"}
 		{/if}
 		{* used the YAHOO field to store the Skype ID *}
 		{if false && $posts[pid].user_yahoo|default:"" != ""}
-			<a href='skype:{$posts[pid].user_yahoo}?call' target='_blank'><img src='{$smarty.const.THEME}forum/skype.gif' alt='{$posts[pid].user_yahoo}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.580 link="skype:"|cat:$posts[pid].user_yahoo|cat:"?call" new="yes"}
 		{/if}
 		</td>
 		<td colspan='2' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-top:none;'>

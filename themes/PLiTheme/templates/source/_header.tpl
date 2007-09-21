@@ -117,7 +117,11 @@ createCookie('height', myHeight, 0);
 var fontGrootte = 0.7;
 var pliCookie = readCookie('pliFontSize');
 
-if (pliCookie != null) {fontGrootte = Number(pliCookie);}
+if (pliCookie != null) {
+	var fontSize = Number(pliCookie);
+	// fix fontsize calculation change problem
+	if (fontSize < 2.5) fontGrootte = fontSize;
+}
 fontReset(fontGrootte);
 
 function fontGroter(aantal) {
@@ -126,6 +130,7 @@ function fontGroter(aantal) {
 	} else {
 		fontGrootte = aantal;
 	}
+	if (fontGrootte > 2.5) fontGrootte = 0.7;
 	fontGrootte = Math.round(fontGrootte*100)/100;
 	document.body.style.fontSize = fontGrootte + 'em';
 	createCookie('pliFontSize',fontGrootte,365);

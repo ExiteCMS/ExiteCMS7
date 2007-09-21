@@ -1,5 +1,5 @@
 <?php
-if (!defined("IN_FUSION")) { header("Location:../index.php"); exit; }
+if (!defined("ExiteCMS_INIT")) { header("Location:../index.php"); exit; }
 ////////////////////////////////////////////////////
 // SMTP - PHP SMTP class
 //

@@ -101,8 +101,8 @@
 </table>
 <br />
 <center>
-	<a href='panel_editor.php{$aidlink}'><img src='{$smarty.const.THEME}forum/addnewpanel.gif' title='{$locale.438}' alt='{$locale.438}' /></a>
-	<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=refresh'><img src='{$smarty.const.THEME}forum/refreshpanelorder.gif' title='{$locale.439}' alt='{$locale.439}' /></a>
+	{buttonlink name=$locale.438 link="panel_editor.php"|cat:$aidlink}
+	{buttonlink name=$locale.439 link="panel_editor.php"|cat:$aidlink|cat:"&amp;step=refresh"}
 </center>
 <br />
 {include file="_closetable.tpl"}

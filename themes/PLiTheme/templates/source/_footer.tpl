@@ -22,11 +22,11 @@
 			<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 				<tr>
 					<td>
-						v.{$settings.version} <a href='http://www.pli-images.org/pli-fusion' target='_blank'><img src='{$smarty.const.IMAGES}cms-logo-small.png' alt='' /></a> rev.{$settings.revision}<br />
+						v.{$settings.version} <a href='http://exitecms.exite.eu' target='_blank'><img src='{$smarty.const.IMAGES}cms-logo-small.png' alt='' /></a> rev.{$settings.revision}<br />
 						{$settings.counter} {if $settings.counter == 1}{$locale.140}{else}{$locale.141}{/if}
 					</td>
 				</tr>
-				{if $settings.siteurl != "http://www.pli-images.org/" && $settings.siteurl != "http://dev.pli-images.org/"}
+				{if $settings.siteurl != "http://www.pli-images.org/"}
 				<tr>
 					<td>
 						<br />

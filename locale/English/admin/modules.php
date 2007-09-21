@@ -28,8 +28,9 @@ $locale['423'] = "Go";
 $locale['424'] = "There are no modules and plugins available for installation";
 $locale['425'] = "There are no modules and plugins available that match your filter";
 // Installer Module errors
-$locale['mod001'] = "This module requires a newer version of the PLi-Fusion CMS. At least version %s is required.<br />";
-$locale['mod002'] = "This module is written for an older version of the PLi-Fusion CMS. Up until version %s is supported.<br />";
-$locale['mod003'] = "This module requires %s as minumum, and %s as maximum revision level.<br />";
+$locale['mod001'] = "This module requires at least version %s of ExiteCMS.<br />";
+$locale['mod002'] = "This module is written for version %s of ExiteCMS. Please ask the author for an upgrade.<br />";
+$locale['mod003'] = "This module requires a minumum ExiteCMS revision level of %s.<br />";
 $locale['mod004'] = "This module can not be installed. Required information is missing from the modules installer.<br />";
+$locale['mod005'] = "This module does not function beyond ExiteCMS revision level %s.<br />";
 ?>

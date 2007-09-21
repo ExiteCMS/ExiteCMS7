@@ -1,5 +1,5 @@
 <?php
-$locale['title'] = "PLi-Fusion Setup";
+$locale['title'] = "ExiteCMS Setup";
 $locale['charset'] = "iso-8859-1";
 $locale['400'] = "Select your default locale";
 $locale['401'] = "Unable to establish database connection.<br><br>
@@ -25,7 +25,7 @@ $locale['430'] = "Unable to write to config<br>\nPlease check write permissions 
 $locale['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>
 Please restart setup and try again.<br><br>
 If you are unable to resolve this problem please visit our<br>
-local support site at <a href='http://www.pli-images.org/pli-fusion' target='blank'>http://www.pli-images.org/pli-fusion</a>";
+local support site at <a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 $locale['432'] = "The config has been written successfully.<br><br>\n";
 $locale['433'] = "The database tables have been created.<br><br>
 Please complete the following form and click 'Next Step'.";
@@ -116,7 +116,7 @@ $locale['547'] = "Mods";
 $locale['548'] = "Movies";
 $locale['549'] = "Network";
 $locale['550'] = "News";
-$locale['551'] = "PLi-Fusion";
+$locale['551'] = "ExiteCMS";
 $locale['552'] = "Security";
 $locale['553'] = "Software";
 $locale['554'] = "Themes";
@@ -128,9 +128,9 @@ $locale['562'] = "But then again, it might just be a completely random event and
 $locale['563'] = "Your best bet for finding what you seek is to start at our home page (<a href=\"/\">click here to jump to the home page</a>), check out our menu, or use the search menu option.";
 $locale['564'] = "If that doesn't work, and you think it's a document that should be here, please send a PM to the webmaster and let us know about it (registered users only).";
 // Final message
-$locale['580'] = "Setup is complete, PLi-Fusion is now ready for use.<br>
-<a href='index.php'>Click here</a> to go to your PLi-Fusion powered site.<br>
+$locale['580'] = "Setup is complete, ExiteCMS is now ready for use.<br>
+<a href='index.php'>Click here</a> to go to your ExiteCMS powered site.<br>
 <b>Note:</b> you should delete setup.php from your server<br>
 and chmod your config.php back to 644 for security purposes.<br><br>
-Thank you for using PLi-Fusion.";
+Thank you for choosing ExiteCMS.";
 ?>

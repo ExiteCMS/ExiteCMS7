@@ -1,9 +1,13 @@
 <?php
 /*---------------------------------------------------+
-| PLi-Fusion Content Management System               |
+| ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 WanWizard (wanwizard@gmail.com)     |
-| http://www.pli-images.org/pli-fusion               |
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
++----------------------------------------------------+
+| Released under the terms & conditions of v2 of the |
+| GNU General Public License. For details refer to   |
+| the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
@@ -49,7 +53,7 @@ switch (strtolower($type)) {
 //		$channel['language'] = "";
 //		$channel['pubDate'] = "";
 //		$channel['lastBuildDate'] = "";
-		$channel['generator'] = "PLi-Fusion RSS Feed Generator v1.0";
+		$channel['generator'] = "ExiteCMS RSS Feed Generator v1.0";
 		$channel['webMaster'] = $settings['siteemail'];
 		$channels[] = $channel;
 		$channel_count = count($channels);

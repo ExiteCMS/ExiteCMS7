@@ -35,7 +35,7 @@
       itself can therefore not be transparent.
 
 */
-if (!defined("IN_FUSION")) { header("Location: ../index.php"); exit; } 
+if (!defined("ExiteCMS_INIT")) { header("Location: ../index.php"); exit; } 
 
 function font2image($font2image) {
 

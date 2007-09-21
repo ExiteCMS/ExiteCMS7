@@ -77,8 +77,15 @@ $locale['567'] = "User Avatar";
 $locale['568'] = "Edit";
 $locale['569'] = "Quote";
 $locale['570'] = "IP Address";
-$locale['571'] = "Send Private Message";
+$locale['571'] = "pm";
+$locale['571a'] = "Send Private Message";
 $locale['572'] = "Sticky Post";
 $locale['573'] = "Mark all theads as read";
 $locale['574'] = "Go to the last post";
+$locale['575'] = "Reply";
+$locale['576'] = "msn";
+$locale['577'] = "web";
+$locale['578'] = "icq";
+$locale['579'] = "aim";
+$locale['580'] = "skype";
 ?>

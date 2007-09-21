@@ -27,25 +27,8 @@ $mod_description = "Side panel to generate the site's main menu";
 $mod_version = "1.0.0";
 $mod_developer = "WanWizard";
 $mod_email = "wanwizard@gmail.com";
-$mod_weburl = "http://www.pli-images.org/pli-fusion/";
+$mod_weburl = "http://exitecms.exite.eu/";
 $mod_type = "P";
-
-/*---------------------------------------------------+
-| Version and revision control                       |
-+----------------------------------------------------*/
-
-// check for a minumum version of the PLi-Fusion engine
-if (str_replace(".", "", $settings['version']) < 700) {
-	$mod_errors .= sprintf($locale['mod001'], '7.00');
-}
-// check for a maximum version of the PLi-Fusion engine
-if (str_replace(".", "", $settings['version']) > 700) {
-	$mod_errors .= sprintf($locale['mod002'], '7.00');
-}
-// check for a specific revision number range that is supported
-if ($settings['revision'] < 0 || $settings['revision'] > 999999) {
-	$mod_errors .= sprintf($locale['mod003'], 0, 999999);
-}
 
 /*---------------------------------------------------+
 | Module administration panel installation details   |
@@ -53,6 +36,23 @@ if ($settings['revision'] < 0 || $settings['revision'] > 999999) {
 
 $mod_folder = "main_menu_panel";
 // no administration module for this plugin
+
+/*---------------------------------------------------+
+| Version and revision control                       |
++----------------------------------------------------*/
+
+// check for a minumum version of the ExiteCMS engine
+if (str_replace(".", "", $settings['version']) < 700) {
+	$mod_errors .= sprintf($locale['mod001'], '7.00');
+}
+// check for a maximum version of the ExiteCMS engine
+if (str_replace(".", "", $settings['version']) > 700) {
+	$mod_errors .= sprintf($locale['mod002'], '7.00');
+}
+// check for a specific revision number range that is supported
+if ($settings['revision'] < 0 || $settings['revision'] > 999999) {
+	$mod_errors .= sprintf($locale['mod003'], 0, 999999);
+}
 
 /*---------------------------------------------------+
 | Menu entries for this module                       |
