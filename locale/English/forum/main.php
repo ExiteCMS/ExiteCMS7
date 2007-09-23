@@ -46,7 +46,7 @@ $locale['512'] = "Quick Reply";
 $locale['513'] = " Disable Smileys in this post";
 $locale['514'] = "Post Reply";
 $locale['515'] = "Stop tracking this thread";
-$locale['516'] = "Track this thread";
+$locale['516'] = "Track this thread by email";
 $locale['517'] = "Toggle smileys";
 $locale['518'] = "pixels";
 // Moderator Options

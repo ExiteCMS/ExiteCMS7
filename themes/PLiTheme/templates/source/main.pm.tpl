@@ -57,14 +57,14 @@
 		<table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 			<tr>
 				<td width='140' align='left' class='tbl1'>
-					<a href='{$smarty.const.FUSION_SELF}?action=post&amp;msg_id=0'><img src='{$smarty.const.THEME}forum/newmessage.gif' align='absbottom' alt='' /></a>
+					{buttonlink name=$locale.401 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;msg_id=0"}
 				</td>
 				<td class='tbl1' align='right'>
-					<a href='#' onClick="javascript:setChecked('pm_form','check_mark[]',1);return false;"><img src='{$smarty.const.THEME}forum/checkall.gif' align='absbottom' alt='' /></a>
-					<a href='#' onClick="javascript:setChecked('pm_form','check_mark[]',0);return false;"><img src='{$smarty.const.THEME}forum/uncheckall.gif' align='absbottom' alt='' /></a>
+					<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onClick="javascript:setChecked('pm_form','check_mark[]',1);return false;">
+					<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onClick="javascript:setChecked('pm_form','check_mark[]',0);return false;">
 					&nbsp; {$locale.409}
 					{if $folder != "archive"}
-						<input type='submit' name='multi_archive' value='{$locale.412}' class='button'>
+						<input type='submit' name='multi_archive' value='{$locale.404}' class='button'>
 					{/if}
 					{if $folder == "archive"}
 						<input type='submit' name='multi_restore' value='{$locale.413}' class='button'>
@@ -197,7 +197,7 @@
 				<a href='#' onClick="javascript:setChecked('pm_form','check_mark[]',0);return false;">{$locale.411}</a> |
 				{$locale.409}
 				{if $folder != "archive"}
-					<input type='submit' name='multi_archive' value='{$locale.412}' class='button'>
+					<input type='submit' name='multi_archive' value='{$locale.404}' class='button'>
 				{/if}
 				{if $folder == "archive"}
 					<input type='submit' name='multi_restore' value='{$locale.413}' class='button'>
@@ -216,7 +216,7 @@
 	<table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 		<tr>
 			<td width='140' align='left' class='tbl1'>
-				<a href='{$smarty.const.FUSION_SELF}?action=post&amp;msg_id=0'><img src='{$smarty.const.THEME}forum/newmessage.gif' alt='' /></a>
+				{buttonlink name=$locale.401 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;msg_id=0"}
 			</td>
 			<td class='tbl1' align='right'>
 			</td>

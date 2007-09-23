@@ -74,9 +74,9 @@
 			{$modules[id].developer}
 		</td>
 		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
-			<a href='mailto:{$modules[id].email}'><img src='{$smarty.const.THEME}forum/email.gif' alt='{$locale.409}' title='{$locale.409}' /></a>
+			{buttonlink name=$locale.409 link="mailto:"|cat:$modules[id].email}
 			&nbsp;
-			<a href='mailto:{$modules[id].url}'><img src='{$smarty.const.THEME}forum/website.gif' alt='{$locale.410}' title='{$locale.410}' /></a>
+			{buttonlink name=$locale.410 link=$modules[id].url}
 		</td>
 		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
 			{if $modules[id].status == 1}<font color='#FF0000'>{/if}	{* not compatible *}

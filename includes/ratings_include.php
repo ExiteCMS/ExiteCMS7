@@ -20,21 +20,21 @@ include PATH_LOCALE.LOCALESET."ratings.php";
 // function to display the ratings panel
 function showratings($rating_type,$rating_item_id,$rating_link) {
 
-	global $locale, $userdata,
+	global $db_prefix, $locale, $userdata,
 		$template_panels, $template_variables;
 
 	$variables = array();
 	
 	if (iMEMBER) {
-		$d_rating = dbarray(dbquery("SELECT rating_vote,rating_datestamp FROM ".DB_PREFIX."ratings WHERE rating_item_id='".$rating_item_id."' AND rating_type='".$rating_type."' AND rating_user='".$userdata['user_id']."'"));
+		$d_rating = dbarray(dbquery("SELECT rating_vote,rating_datestamp FROM ".$db_prefix."ratings WHERE rating_item_id='".$rating_item_id."' AND rating_type='".$rating_type."' AND rating_user='".$userdata['user_id']."'"));
 		$rating_exists = isset($d_rating['rating_vote']);
 		if (isset($_POST['post_rating'])) {
 			if (isNum($_POST['rating']) && $_POST['rating'] > 0 && $_POST['rating'] < 6 && !$rating_exists) {
-				$result = dbquery("INSERT INTO ".DB_PREFIX."ratings (rating_item_id, rating_type, rating_user, rating_vote, rating_datestamp, rating_ip) VALUES ('$rating_item_id', '$rating_type', '".$userdata['user_id']."', '".$_POST['rating']."', '".time()."', '".USER_IP."')");
+				$result = dbquery("INSERT INTO ".$db_prefix."ratings (rating_item_id, rating_type, rating_user, rating_vote, rating_datestamp, rating_ip) VALUES ('$rating_item_id', '$rating_type', '".$userdata['user_id']."', '".$_POST['rating']."', '".time()."', '".USER_IP."')");
 			}
 			redirect($rating_link);
 		} elseif (isset($_POST['remove_rating'])) {
-			$result = dbquery("DELETE FROM ".DB_PREFIX."ratings WHERE rating_item_id='$rating_item_id' AND rating_type='$rating_type' AND rating_user='".$userdata['user_id']."'");
+			$result = dbquery("DELETE FROM ".$db_prefix."ratings WHERE rating_item_id='$rating_item_id' AND rating_type='$rating_type' AND rating_user='".$userdata['user_id']."'");
 			redirect($rating_link);
 		}
 	} else {

@@ -20,14 +20,14 @@ include PATH_LOCALE.LOCALESET."comments.php";
 // function to display the comments panel
 function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 
-	global $settings,$locale,$userdata,$aidlink,
+	global $db_prefix, $settings,$locale,$userdata,$aidlink,
 		$template_panels, $template_variables;
 
 	$variables = array();
 	
 	if ((iMEMBER || $settings['guestposts'] == "1") && isset($_POST['post_comment'])) {
 		$flood = false;
-		if (dbrows(dbquery("SELECT $ccol FROM ".DB_PREFIX."$cdb WHERE $ccol='$comment_id'"))==0) {
+		if (dbrows(dbquery("SELECT $ccol FROM ".$db_prefix."$cdb WHERE $ccol='$comment_id'"))==0) {
 			fallback(BASEDIR."index.php");
 		}
 		if (iMEMBER) {
@@ -40,7 +40,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		$comment_message = trim(stripinput(censorwords($_POST['comment_message'])));
 		$comment_smileys = isset($_POST['disable_smileys']) ? "0" : "1";
 		if ($comment_name != "" && $comment_message != "") {
-			$result = dbquery("SELECT MAX(comment_datestamp) AS last_comment FROM ".DB_PREFIX."comments WHERE comment_ip='".USER_IP."'");
+			$result = dbquery("SELECT MAX(comment_datestamp) AS last_comment FROM ".$db_prefix."comments WHERE comment_ip='".USER_IP."'");
 			if (!iSUPERADMIN || dbrows($result) > 0) {
 				$data = dbarray($result);
 				if ((time() - $data['last_comment']) < $settings['flood_interval']) {
@@ -51,14 +51,14 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 					}
 				}
 			}
-			if (!$flood) $result = dbquery("INSERT INTO ".DB_PREFIX."comments (comment_item_id, comment_type, comment_name, comment_message, comment_smileys, comment_datestamp, comment_ip) VALUES ('$comment_id', '$comment_type', '$comment_name', '$comment_message', '$comment_smileys', '".time()."', '".USER_IP."')");
+			if (!$flood) $result = dbquery("INSERT INTO ".$db_prefix."comments (comment_item_id, comment_type, comment_name, comment_message, comment_smileys, comment_datestamp, comment_ip) VALUES ('$comment_id', '$comment_type', '$comment_name', '$comment_message', '$comment_smileys', '".time()."', '".USER_IP."')");
 		}
 		redirect($clink);
 	}
 
 	$result = dbquery(
-		"SELECT tcm.*,user_name FROM ".DB_PREFIX."comments tcm
-		LEFT JOIN ".DB_PREFIX."users tcu ON tcm.comment_name=tcu.user_id
+		"SELECT tcm.*,user_name FROM ".$db_prefix."comments tcm
+		LEFT JOIN ".$db_prefix."users tcu ON tcm.comment_name=tcu.user_id
 		WHERE comment_item_id='$comment_id' AND comment_type='$comment_type'
 		ORDER BY comment_datestamp ASC"
 	);

@@ -24,24 +24,16 @@
 		{if $smarty.const.iMEMBER}
 			{if $settings.thread_notify}
 				{if $has_thread_notify}
-					<a href='post.php?action=track_off&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}'>
-						<img src='{$smarty.const.THEME}forum/tracking-off.gif' alt='{$locale.515}' title='{$locale.515}' style='border:0px;margin-right:3px' />
-					</a>
+					{buttonlink name=$locale.515 link="post.php?action=track_off&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{else}
-					<a href='post.php?action=track_on&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}'>
-						<img src='{$smarty.const.THEME}forum/tracking-on.gif' alt='{$locale.516}' title='{$locale.516}' style='border:0px;margin-right:3px' />
-					</a>
+					{buttonlink name=$locale.516 link="post.php?action=track_on&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{/if}
 			{/if}
 			{if $user_can_post }
 				{if !$thread.thread_locked}
-				<a href='post.php?action=reply&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}'>
-					<img src='{$smarty.const.THEME}forum/postreply.gif' alt='{$locale.565}' style='border:0px;margin-right:2px' />
-				</a>
+					{buttonlink name=$locale.565 link="post.php?action=reply&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{/if}
-				<a href='post.php?action=newthread&amp;forum_id={$forum_id}'>
-					<img src='{$smarty.const.THEME}forum/newthread.gif' alt='{$locale.566}' style='border:0px;margin-right:3px' />
-				</a>
+				{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			{/if}
 		{/if}
 		</td>
@@ -107,24 +99,16 @@
 		{if $smarty.const.iMEMBER}
 			{if $settings.thread_notify}
 				{if $has_thread_notify}
-					<a href='post.php?action=track_off&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}'>
-						<img src='{$smarty.const.THEME}forum/tracking-off.gif' alt='{$locale.515}' title='{$locale.515}' style='border:0px;margin-right:3px' />
-					</a>
+					{buttonlink name=$locale.515 link="post.php?action=track_off&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{else}
-					<a href='post.php?action=track_on&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}'>
-						<img src='{$smarty.const.THEME}forum/tracking-on.gif' alt='{$locale.516}' title='{$locale.516}' style='border:0px;margin-right:3px' />
-					</a>
+					{buttonlink name=$locale.516 link="post.php?action=track_on&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{/if}
 			{/if}
 			{if $user_can_post }
 				{if !$thread.thread_locked}
-				<a href='post.php?action=reply&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}'>
-					<img src='{$smarty.const.THEME}forum/postreply.gif' alt='{$locale.565}' style='border:0px;margin-right:2px' />
-				</a>
+					{buttonlink name=$locale.565 link="post.php?action=reply&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{/if}
-				<a href='post.php?action=newthread&amp;forum_id={$forum_id}'>
-					<img src='{$smarty.const.THEME}forum/newthread.gif' alt='{$locale.566}' style='border:0px;margin-right:3px' />
-				</a>
+				{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			{/if}
 		{/if}
 		</td>
@@ -151,7 +135,7 @@
 		<td align='center'>
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $unread_posts}
-				<a href='viewforum.php?action=markallread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/markread.gif' alt='{$locale.573}' /></a>&nbsp;
+				{buttonlink name=$locale.573 link="viewforum.php?action=markallread&amp;forum_id="|cat:$forum_id}&nbsp;
 			{/if}
 		{/if}
 		</td>

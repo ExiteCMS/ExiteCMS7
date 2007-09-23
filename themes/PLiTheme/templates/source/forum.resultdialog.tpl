@@ -27,12 +27,12 @@
 		<br /><br />
 	{/if}
 	{if $thread_id|default:0 != 0}
-		<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$thread_id}'>{$locale.447}</a> |
+		{buttonlink name=$locale.447 link="viewthread.php?forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}&nbsp;
 	{/if}
-	<a href='viewforum.php?forum_id={$forum_id}'>{$locale.448}</a>	|
-	<a href='index.php'>{$locale.449}</a>
+	{buttonlink name=$locale.448 link="viewforum.php?forum_id="|cat:$forum_id}&nbsp;
+	{buttonlink name=$locale.449 link="index.php"}
 	{if $backlink}
-		| <a href='javascript: history.go(-1);'>{$locale.457}</a>
+		{buttonlink name=$locale.457 link="javascript: history.go(-1);" script="yes"}
 	{/if}
 	<br /><br />
 </div>

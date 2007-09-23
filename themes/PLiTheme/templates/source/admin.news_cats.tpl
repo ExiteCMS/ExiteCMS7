@@ -91,7 +91,7 @@
 {/section}
 <center>
 	<br />
-	<a href='{$smarty.const.ADMIN}images.php{$aidlink}&amp;ifolder=news_cats'><img src='{$smarty.const.THEME}forum/uploadnewimage.gif' alt='{$locale.439}' title='{$locale.439}' /></a>
+	{buttonlink name=$locale.439 link=$smarty.const.ADMIN|cat:"images.php"|cat:$aidlink|cat:"&amp;ifolder=news_cats"}
 	<br /><br />
 </center>
 {include file="_closetable.tpl"}

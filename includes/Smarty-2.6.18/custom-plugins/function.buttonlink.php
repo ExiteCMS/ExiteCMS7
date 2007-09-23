@@ -16,8 +16,10 @@
  *         - link: URL to link to
  *         - title: optional title text
  *         - new: if "yes", URL opens in new window
+ *         - script: if "yes", URL is javascript code
  *
- * Examples: {buttonlink name="Google!" link="http://www.google.com"}
+ * Examples: {buttonlink name="Google!" link="http://www.google.com" new="yes"}
+ * Examples: {buttonlink name="Go Back" link="javascript: history.go(-1);" script="yes"}
  * Output:   <input type='button' value='Google!' onClick='window.location="http://www.google.com";' />
  * @author WanWizard <wanwizard at gmail dot com>
  * @param array parameters
@@ -48,8 +50,13 @@ function smarty_function_buttonlink($params, &$smarty)
 	} else {
 		$new = strtolower($params['new']) == "yes";
 	}
+    if (!isset($params['script'])) {
+        $script = false;
+	} else {
+		$script = strtolower($params['script']) == "yes";
+	}
 	
-	return "<input type='button' class='button' value='$name' ".($title?"title='$title' ":"")."onClick='".($new?"window.open(\"$link\");'":"window.location=\"$link\";'")." />";
+	return "<input type='button' class='button' value='$name' ".($title?"title='$title' ":"")."onClick='".($script ? $link : ($new ? "window.open(\"$link\");'" : "window.location=\"$link\";'"))." />";
 }
 
 /* vim: set expandtab: */

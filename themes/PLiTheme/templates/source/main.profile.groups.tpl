@@ -19,7 +19,7 @@
 	<tr>
 		<td align='center' colspan='{if $smarty.const.iUSER >= 102}4{else}2{/if}' class='tbl1'>
 			{if $smarty.const.iUSER >= 102}
-				<div style='display:inline;float:right;'><a href='{$smarty.const.BASEDIR}pm.php?action=post&amp;group_id={$data.group_id}'><img src='{$smarty.const.THEME}forum/pm.gif' alt='' /></a></div>
+				<div style='display:inline;float:right;'>{buttonlink name=$locale.u053 link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;group_id="|cat:$data.group_id}</div>
 			{/if}
 			<b>{$data.group_name}</b> ({$data.member_count})
 		</td>

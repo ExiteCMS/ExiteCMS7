@@ -25,10 +25,10 @@
 		</td>
 		{if $smarty.const.iMEMBER && $user_can_post}
 			<td align='right'>
-			{if $unread_posts}
-				<a href='viewforum.php?action=markallread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/markread.gif' alt='{$locale.573}' height='14' style='border:0px;' /></a>&nbsp;
-			{/if}
-				<a href='post.php?action=newthread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/newthread.gif' alt='{$locale.566}' style='border:0px;' /></a>
+				{if $unread_posts}
+					{buttonlink name=$locale.573 link="viewforum.php?action=markallread&amp;forum_id="|cat:$forum_id}
+				{/if}
+				{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			</td>
 		{/if}
 	</tr>
@@ -190,9 +190,9 @@
 		{if $smarty.const.iMEMBER && $user_can_post}
 			<td align='right'>
 			{if $unread_posts}
-				<a href='viewforum.php?action=markallread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/markread.gif' alt='{$locale.573}' height='14' style='border:0px;' /></a>&nbsp;
+				{buttonlink name=$locale.573 link="viewforum.php?action=markallread&amp;forum_id="|cat:$forum_id}
 			{/if}
-				<a href='post.php?action=newthread&amp;forum_id={$forum_id}'><img src='{$smarty.const.THEME}forum/newthread.gif' alt='{$locale.566}' style='border:0px;' /></a>
+			{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			</td>
 		{/if}
 	</tr>

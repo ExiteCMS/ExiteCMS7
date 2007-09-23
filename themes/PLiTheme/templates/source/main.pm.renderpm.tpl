@@ -41,19 +41,17 @@
 		</td>
 		<td class='tbl_top_mid' style='text-align:right'>
 			{if !$is_preview}
-			<b>
-			<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=forward&amp;msg_id={$messages[id].pmindex_id}'><img src='{$smarty.const.THEME}forum/forward.gif' alt='' /></a>&nbsp;
-			{if $folder == "inbox" && $messages[id].pmindex_folder == 0}
-{*				<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=reply&amp;user_id={$messages[id].from_user_id}&amp;msg_id={$messages[id].pmindex_id}'><img src='{$smarty.const.THEME}forum/reply.gif' alt='' /></a>&nbsp; *}
-				<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=quote&amp;user_id={$messages[id].from_user_id}&amp;msg_id={$messages[id].pmindex_id}'><img src='{$smarty.const.THEME}forum/quote.gif' alt='' /></a>&nbsp;
-			{/if}
-			{if $folder == "archive" && $messages[id].pmindex_folder == 2}
-				<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=restore&amp;msg_id={$messages[id].pmindex_id}'><img src='{$smarty.const.THEME}forum/restore.gif' alt='' /></a>&nbsp;
-			{else}
-				<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=archive&amp;msg_id={$messages[id].pmindex_id}'><img src='{$smarty.const.THEME}forum/archive.gif' alt='' /></a>&nbsp;
-			{/if}
-			<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=delete&amp;msg_id={$messages[id].pmindex_id}'><img src='{$smarty.const.THEME}forum/delete.gif' alt='' /></a>
-			</b>
+				{buttonlink name=$locale.423 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=forward&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+				{if $folder == "inbox" && $messages[id].pmindex_folder == 0}
+					{* {buttonlink name=$locale.433 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=reply&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp; *}
+					{buttonlink name=$locale.444 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=quote&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+				{/if}
+				{if $folder == "archive" && $messages[id].pmindex_folder == 2}
+					{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=restore&amp;msg_id="|cat:$messages[id].pmindex_id}
+				{else}
+					{buttonlink name=$locale.412 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+				{/if}
+				{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=delete&amp;msg_id="|cat:$messages[id].pmindex_id}
 			{/if}
 		</td>
 		<td align='center' width='10' class='tbl_top_right'>		
@@ -252,22 +250,26 @@
 	</tr>
 	<tr valign='bottom'>
 		<td class='tbl_left_bottom'>
-		<a href='{$smarty.const.BASEDIR}pm.php?action=post&amp;user_id={if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}{$messages[id].pmindex_from_id}{else}{$messages[id].pmindex_to_id}{/if}&amp;msg_id=0'><img src='{$smarty.const.THEME}forum/pm.gif' alt='{$locale.517}' style='border:0px;margin-right:2px;' /></a>
+		{if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}
+			{buttonlink name=$locale.560 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;user_id="|cat:$messages[id].pmindex_from_id|cat:"&amp;msg_id=0"}
+		{else}
+			{buttonlink name=$locale.560 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;user_id="|cat:$messages[id].pmindex_to_id|cat:"&amp;msg_id=0"}
+		{/if}
 		{if $messages[id].user_msn|default:"" != ""}
-			<a href='mailto:{$messages[id].user_msn}'><img src='{$smarty.const.THEME}forum/msn.gif' alt='{$messages[id].user_msn}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.561 link="mailto:"|cat:$messages[id].user_msn}
 		{/if}
 		{if $messages[id].user_icq|default:"" != ""}
-			<a href='http://web.icq.com/wwp?Uin={$messages[id].user_icq}' target='_blank'><img src='{$smarty.const.THEME}forum/icq.gif' alt='{$messages[id].user_icq}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.562 link="http://web.icq.com/wwp?Uin="|cat:$messages[id].user_icq new="yes"}
 		{/if}
 		{if $messages[id].user_web|default:"" != ""}
-			<a href='{$messages[id].user_web}' target='_blank'><img src='{$smarty.const.THEME}forum/web.gif' alt='{$messages[id].user_web}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.563 link=$messages[id].user_web new="yes"}
 		{/if}
 		{if false && $messages[id].user_aim|default:"" != ""}
-			<a href='aim:goim?screenname={$messages[id].user_aim|replace:' ':'+'}' target='_blank'><img src='{$smarty.const.THEME}forum/aim.gif' alt='{$messages[id].user_aim}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.564 link="aim:goim?screenname="|cat:$messages[id].user_aim|replace:' ':'+'}
 		{/if}
 		{* used the YAHOO field to store the Skype ID *}
 		{if false && $messages[id].user_yahoo|default:"" != ""}
-			<a href='skype:{$messages[id].user_yahoo}?call' target='_blank'><img src='{$smarty.const.THEME}forum/skype.gif' alt='{$messages[id].user_yahoo}' style='border:0px;margin-right:2px' /></a>
+			{buttonlink name=$locale.565 link="skype:"|cat:$messages[id].user_yahoo|cat:"?call"}
 		{/if}
 		</td>
 		<td colspan='3' class='{if $messages[id].pmindex_read_datestamp == 0}unread{else}tbl_right{/if}' style='border-top:none;'>

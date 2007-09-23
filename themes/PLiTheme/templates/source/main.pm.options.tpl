@@ -35,7 +35,7 @@
 	<tr>
 		<td align='left' class='tbl1'>
 			<br />
-			<a href='{$smarty.const.FUSION_SELF}?action=post&amp;msg_id=0'><img src='{$smarty.const.THEME}forum/newmessage.gif' alt='' /></a>
+			{buttonlink name=$locale.401 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;msg_id=0"}
 		</td>
 	</tr>
 </table>

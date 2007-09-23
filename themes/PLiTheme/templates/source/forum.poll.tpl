@@ -26,9 +26,7 @@
 						{if !$poll_preview|default:false}
 							{if ($userdata.user_id|default:"" == $poll_options.post_author && $total_votes == 0) || $smarty.const.iMOD || $smarty.const.iSUPERADMIN}
 							<td align='right' width='1%' class='tbl2'>
-								<a href='post.php?action=edit&forum_id={$forum_id}&thread_id={$thread_id}&post_id={$poll_options.post_id}'>
-									<img src='{$smarty.const.THEME}forum/edit.gif' alt='{$locale.568}' style='border:0px;'>
-								</a>
+								{buttonlink name=$locale.568 link="post.php?action=edit&forum_id="|cat:$forum_id|cat"&thread_id="|cat:$thread_id|cat:"&post_id="|cat:$poll_options.post_id}
 							</td>
 							{/if}
 						{/if}

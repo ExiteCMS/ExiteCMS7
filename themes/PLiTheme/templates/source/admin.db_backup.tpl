@@ -91,8 +91,8 @@
 					</select>
 					<br />{$locale.435}&nbsp;
 					<div style='display:inline;'>
-						<a href="javascript:void(0)" onclick="javascript:tableSelectAll()"><img src='{$smarty.const.THEME}forum/all.gif' alt='{$locale.436}' title='{$locale.436}' /></a>&nbsp;
-						<a href="javascript:void(0)" onclick="javascript:tableSelectNone()"><img src='{$smarty.const.THEME}forum/all.gif' alt='{$locale.437}' title='{$locale.437}' /></a>
+					<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onClick="javascript:tableSelectAll()"/>
+					<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onClick="javascript:tableSelectNone()"/>
 					</div>
 				</td>
 				<td valign='top' class='tbl'>
@@ -105,8 +105,8 @@
 					</select>
 					<br />{$locale.435}&nbsp;
 					<div style='display:inline;'>
-						<a href="javascript:void(0)" onclick="javascript:populateSelectAll()"><img src='{$smarty.const.THEME}forum/all.gif' alt='{$locale.436}' title='{$locale.436}' /></a>&nbsp;
-						<a href="javascript:void(0)" onclick="javascript:populateSelectNone()"><img src='{$smarty.const.THEME}forum/all.gif' alt='{$locale.437}' title='{$locale.437}' /></a>
+						<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onClick="javascript:populateSelectAll()"/>
+						<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onClick="javascript:populateSelectNone()"/>
 					</div>
 				</td>
 			</tr>
@@ -273,9 +273,9 @@
 							</select>
 							<br />{$locale.435}&nbsp;
 							<div style='display:inline;text-align:center;vertical-align:middle;'>
-								<a href="javascript:void(0)" onclick="javascript:backupSelectCore()"><img src='{$smarty.const.THEME}forum/core.gif' alt='{$locale.458}' title='{$locale.458}' /></a>&nbsp;
-								<a href="javascript:void(0)" onclick="javascript:backupSelectAll()"><img src='{$smarty.const.THEME}forum/all.gif' alt='{$locale.436}' title='{$locale.436}' /></a>&nbsp;
-								<a href="javascript:void(0)" onclick="javascript:backupSelectNone()"><img src='{$smarty.const.THEME}forum/none.gif' alt='{$locale.437}' title='{$locale.437}' /></a>
+								<input type='button' class='button' name='{$locale.458}' value='{$locale.458}' onClick="javascript:backupSelectCore()"/>
+								<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onClick="javascript:backupSelectAll()"/>
+								<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onClick="javascript:backupSelectNone()"/>
 							</div>
 						</td>
 					</tr>

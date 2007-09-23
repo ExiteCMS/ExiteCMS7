@@ -14,7 +14,7 @@
 {* Template for the main module 'downloads'                                *}
 {*                                                                         *}
 {***************************************************************************}
-{if $subcats}{assign var="_title" value=$locale.417}{else}{assign var="_title" value=$locale.400}{/if}
+{if $subcats}{assign var="_title" value=$locale.417}{else}{assign var="_title" value=$locale.418}{/if}
 {assign var="columns" value="2"} 													{* number of columns *}
 {math equation="(100 - x) / x" x=$columns format="%u" assign="colwidth"}
 {section name=cat loop=$download_cats}
@@ -69,44 +69,53 @@
 {section name=item loop=$downloads}
 {if $smarty.section.item.first}
 	{include file="_opentable.tpl" name=$_name title=$locale.415|cat:" "|cat:$parent.download_cat_name state=$_state style=$_style}
-{/if}
 <table width='100%' cellpadding='0' cellspacing='1' class='tbl-border'>
+{/if}
 	<tr>
-		<td colspan='3' class='forum-caption'>
+		<td colspan='4' class='forum-caption'>
 			<b>{$downloads[item].download_title}</b>
 		</td>
 	</tr>
 	{if $downloads[item].download_description|default:"" != ""}
 	<tr>
-		<td colspan='3' class='tbl1'>
+		<td colspan='4' class='tbl1'>
 			{$downloads[item].download_description}
 		</td>
 	</tr>
 	{/if}
 	<tr>
-		<td width='30%' class='tbl2'>
+		<td class='tbl2' style='white-space:nowrap;'>
 			<b>{$locale.411}</b> {$downloads[item].download_license}
 		</td>
-		<td width='30%' class='tbl1'>
+		<td class='tbl1' style='white-space:nowrap;'>
 			<b>{$locale.412}</b> {$downloads[item].download_os}
 		</td>
-		<td width='40%' class='tbl2'>
+		<td class='tbl2' style='white-space:nowrap;'>
 			<b>{$locale.413}</b> {$downloads[item].download_version}
+		</td>
+		<td class='tbl1' rowspan='2' style='text-align:center;white-space:nowrap;'>
+			{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?cat_id="|cat:$downloads[item].download_cat|cat:"&amp;download_id="|cat:$downloads[item].download_id}
 		</td>
 	</tr>
 	<tr>
-		<td width='30%' class='tbl2'>
+		<td class='tbl2' style='white-space:nowrap;'>
 			<b>{$locale.414}</b> {$downloads[item].download_datestamp|date_format:'%A, %B %e, %Y'}
 		</td>
-		<td width='30%' class='tbl1'>
+		<td class='tbl1' style='white-space:nowrap;'>
 			<b>{$locale.415}</b> {$downloads[item].download_count}
 		</td>
-		<td width='40%' class='tbl2'>
-			<a href='{$smarty.const.FUSION_SELF}?cat_id={$downloads[item].download_cat}&amp;download_id={$downloads[item].download_id}' target='_blank'>{$locale.416}</a> ({$downloads[item].download_filesize})
+		<td class='tbl2' style='white-space:nowrap;'>
+			<b>{$locale.419}</b> {$downloads[item].download_filesize}
 		</td>
 	</tr>
-</table>
-{if !$smarty.section.item.last}<br />{/if}
+{if !$smarty.section.item.last}
+	<tr>
+		<td colspan='4' class='tbl1'>
+		</td>
+	</tr>
+{else}
+	</table>
+{/if}
 {sectionelse}
 	{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 	<center>

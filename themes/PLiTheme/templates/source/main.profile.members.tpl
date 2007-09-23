@@ -87,13 +87,13 @@
 	<tr>
 		<td align='center' class='tbl1'>
 			{if $smarty.const.iUSER >= 102 || $data.user_hide_email != "1"}
-				[{mailto address=$data.user_email|default:"" text=$locale.u051|strip encode='javascript_charcode'}]
+				{buttonlink name=$locale.u051 link="mailto:"|cat:$data.user_email|strip encode='javascript_charcode'}&nbsp;
 			{/if}
 			{if $data.user_web|default:"" != ""}
-				[<a href='{$data.user_web}' title='{$data.user_web}' target='_blank'>{$locale.u052}</a>]
+				{buttonlink name=$locale.u052 link=$data.user_web new="yes"}&nbsp;
 			{/if}
 			{if $data.show_pm_button}
-				[<a href='{$smarty.const.BASEDIR}pm.php?action=post&amp;user_id={$data.user_id}&amp;msg_id=0' title='{$locale.u060}'>{$locale.u053}</a>]
+				{buttonlink name=$locale.u053 link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;user_id="|cat:$data.user_id|cat:"&amp;msg_id=0"}
 			{/if}
 		</td>
 		<td width='1%' class='tbl1' style='white-space:nowrap'>

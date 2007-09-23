@@ -43,8 +43,8 @@
 			{$locale.441}
 		{/if}
 		<br /><br >
-		<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;del={$view}'><img src='{$smarty.const.THEME}forum/delete.gif' alt='{$locale.442}' title='{$locale.442}' /></a>&nbsp;
-		<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}'><img src='{$smarty.const.THEME}forum/cancel.gif' alt='{$locale.402}' title='{$locale.402}' /></a>
+		{buttonlink name=$locale.462 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder|cat:"&amp;del="|cat:$view}&nbsp;
+		{buttonlink name=$locale.465 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder}
 		<br /><br />
 	</center>
 	{include file="_closetable.tpl"}
@@ -64,14 +64,14 @@
 				{$image}
 			</td>
 			<td align='center' width='50' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;view={$image}'><img src='{$smarty.const.THEME}images/image_view.gif' alt='{$locale.461}' title='{$locale.461}' /></a>&nbsp;
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;del={$image}'><img src='{$smarty.const.THEME}images/image_delete.gif' alt='{$locale.462}' title='{$locale.462}' /></a>
+				{buttonlink name=$locale.461 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder|cat:"&amp;view="|cat:$image}&nbsp;
+				{buttonlink name=$locale.462 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder|cat:"&amp;del="|cat:$image}
 			</td>
 		</tr>
 		{if $smarty.foreach.image_list.last && $settings.tinymce_enabled}
 			<tr>
 				<td align='center' colspan='2' class='{cycle values='tbl1,tbl2'}'>
-					<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;action=update'>{$locale.464}</a>
+					{buttonlink name=$locale.464 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder|cat:"&amp;action=update"}
 				</td>
 			</tr>
 		{/if}

@@ -12,7 +12,7 @@ $locale['408'] = "Received";
 $locale['409'] = "With the checked items do:";
 $locale['410'] = "Check all";
 $locale['411'] = "Uncheck all";
-$locale['412'] = "Archive";
+$locale['412'] = "Restore";
 $locale['413'] = "Un-Archive";
 $locale['414'] = "Mark Read";
 $locale['415'] = "Mark Unread";
@@ -126,6 +126,14 @@ $locale['540'] = "Location:";
 $locale['541'] = "Joined:";
 $locale['542'] = "Read by";
 $locale['543'] = "on";
+
+// buttons
+$locale['560'] = "pm";
+$locale['561'] = "msn";
+$locale['562'] = "icq";
+$locale['563'] = "web";
+$locale['564'] = "aim";
+$locale['565'] = "skype";
 
 // Options
 $locale['620'] = "Options";
