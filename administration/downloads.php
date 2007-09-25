@@ -206,7 +206,7 @@ if (dbrows($result) != 0) {
 	$variables['download_version'] = $download_version;
 	$variables['download_filesize'] = $download_filesize;
 	$variables['barmsg'] = $barmsg;
-	$variables['bartitle'] = $bartitle;
+	$variables['bar_title'] = $bar_title;
 
 } else {
 	$title = $locale['500'];

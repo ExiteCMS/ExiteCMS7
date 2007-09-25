@@ -33,20 +33,20 @@
 				<input type='text' name='url_to' value='{$url_to}' class='textbox' style='width:500px;' />
 			</td>
 		</tr>
-		<tr>
-			<td width='175' class='tbl'>
-				{$locale.422}:
-			</td>
-			<td class='tbl'>
-				<input type='checkbox' name='url_redirect' value='1'{if $url_redirect} checked{/if} />
-			</td>
-		</tr>
-		<tr>
+{*		<tr>
 			<td width='175' class='tbl'>
 				{$locale.426}:
 			</td>
 			<td class='tbl'>
 				<input type='checkbox' name='url_regex' value='1'{if $url_regex} checked{/if} />&nbsp; <span class='small2'>{$locale.490}</span>
+			</td>
+		</tr>
+*}		<tr>
+			<td width='175' class='tbl'>
+				{$locale.422}:
+			</td>
+			<td class='tbl'>
+				<input type='checkbox' name='url_redirect' value='1'{if $url_redirect} checked{/if} />
 			</td>
 		</tr>
 		<tr>

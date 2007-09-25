@@ -11,7 +11,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (!checkrights("I") || !defined("iAUTH") || $aid != iAUTH || !defined('IN_FUSION')) fallback(BASEDIR."index.php");
+if (!checkrights("I") || !defined("iAUTH") || $aid != iAUTH || !defined('ExiteCMS_INIT')) fallback(BASEDIR."index.php");
 
 /*---------------------------------------------------+
 | Locale definition for this installation module     |

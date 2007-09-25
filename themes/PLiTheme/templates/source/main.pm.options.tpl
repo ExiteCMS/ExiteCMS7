@@ -74,12 +74,15 @@
 				</select>
 			</td>
 		</tr>
+
+{* FUTURE EXTENSION: AUTO ARCHIVE HASN'T BEEN ACTIVATED YET
+
 		<tr>
 			<td align='right' class='tbl1' width='70%'>
 				{$locale.635}
 			</td>
 			<td class='tbl1' width='30%'>
-				<select name='pm_auto_archive' class='textbox'>
+				<select disabled readonly name='pm_auto_archive' class='textbox'>
 					{if $global_options.pmconfig_auto_archive == '0'}<option value='0' {if $user_options.pmconfig_auto_archive == "0"} selected{/if}>{$locale.636}</option>{/if}
 					{if $global_options.pmconfig_auto_archive == '0' || $global_options.pmconfig_auto_archive >= '30'}<option value='30' {if $user_options.pmconfig_auto_archive == "30"} selected{/if}>&nbsp; 30 {$locale.637}</option>{/if}
 					{if $global_options.pmconfig_auto_archive == '0' || $global_options.pmconfig_auto_archive >= '60'}<option value='60' {if $user_options.pmconfig_auto_archive == "60"} selected{/if}>&nbsp; 60 {$locale.637}</option>{/if}
@@ -96,6 +99,7 @@
 				</select>
 			</td>
 		</tr>
+*}
 		<tr>
 			<td align='right' class='tbl1' width='70%'>
 				{$locale.638}

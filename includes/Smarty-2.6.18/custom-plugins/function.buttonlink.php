@@ -56,7 +56,7 @@ function smarty_function_buttonlink($params, &$smarty)
 		$script = strtolower($params['script']) == "yes";
 	}
 	
-	return "<input type='button' class='button' value='$name' ".($title?"title='$title' ":"")."onClick='".($script ? $link : ($new ? "window.open(\"$link\");'" : "window.location=\"$link\";'"))." />";
+	return "<input type='button' class='button' value='$name' ".($title?"title='$title' ":"")."onClick='".($script ? ($link."'") : ($new ? "window.open(\"$link\");'" : "window.location=\"$link\";'"))." />";
 }
 
 /* vim: set expandtab: */

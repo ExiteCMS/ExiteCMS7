@@ -14,7 +14,7 @@ hr					{ border:none; color:#ccc; background-color:#ccc; height:1px; }
 
 form				{ margin:0px; }
 
-.button				{ font:0.9em Arial,Sans-Serif; Sans-Serif; font-weight: bold; color:#606060; background-color:#e0e0e0; border-top:1px #fff solid; border-left:1px #fff solid; border-bottom:1px #666 solid; border-right:1px #666 solid; cursor:pointer; padding: 1px 2px; background:url(/themes/PLiTheme/images/buttonbg.jpg) repeat-x left top; }
+.button				{ font:0.9em Arial,Sans-Serif; Sans-Serif; font-weight: bold; color:#606060; background-color:#e0e0e0; border-top:1px #ddd solid; border-left:1px #ddd solid; border-bottom:1px #666 solid; border-right:1px #666 solid; cursor:pointer; margin-top:2px; padding: 1px 2px; background:url(/themes/PLiTheme/images/buttonbg.jpg) repeat-x left top; }
 .textbox			{ font:1em Verdana, Arial,Sans-Serif; color:#000; background-color:#eee; border:1px #666 solid; }
 
 /* --- Website template ------------------------------------ */

@@ -64,8 +64,8 @@
 				{$image}
 			</td>
 			<td align='center' width='50' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
-				{buttonlink name=$locale.461 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder|cat:"&amp;view="|cat:$image}&nbsp;
-				{buttonlink name=$locale.462 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;ifolder="|cat:$ifolder|cat:"&amp;del="|cat:$image}
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;view={$image}'><img src='{$smarty.const.THEME}images/image_view.gif' alt='{$locale.461}' title='{$locale.461}'></a>&nbsp;
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;del={$image}'><img src='{$smarty.const.THEME}images/image_delete.gif' alt='{$locale.462}' title='{$locale.462}'></a>
 			</td>
 		</tr>
 		{if $smarty.foreach.image_list.last && $settings.tinymce_enabled}

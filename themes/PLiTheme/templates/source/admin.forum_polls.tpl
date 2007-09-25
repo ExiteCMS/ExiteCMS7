@@ -69,7 +69,7 @@
 					{$locale.FPM_026}
 				</td>
 				<td class='tbl1'>
-					<a href='javascript:void(0)' onClick="fp_show('creation')">{$locale.FPM_027}</a>
+					{buttonlink name=$locale.FPM_027 link="fp_show(\"creation\")" script="yes"}
 				</td>
 			</tr>
 			<tr style='display: none;' id='creation' class='tbl-border'>
@@ -110,7 +110,7 @@
 				<td width='1%' style='white-space: nowrap;' class='tbl1'>
 				</td>
 				<td class='tbl1'>
-					<a href='javascript:void(0)' onClick="fp_show('voting')">{$locale.FPM_028}</a>
+					{buttonlink name=$locale.FPM_028 link="fp_show(\"voting\")" script="yes"}
 				</td>
 			</tr>
 			<tr style='display: none' id='voting'>

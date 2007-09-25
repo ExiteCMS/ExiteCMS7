@@ -29,5 +29,5 @@ $locale['486'] = "Redirect URL does not exist";
 $locale['487'] = "Redirect URL has been deleted";
 $locale['488'] = "Are you sure you want to delete this redirect URL?";
 $locale['489'] = "Requested url_id is missing. Maybe it was deleted by someone else?";
-$locale['490'] = "If checked, 'Request URL' is used to match, 'Redirect URL' to convert the URL";
+$locale['490'] = "If checked, the first field is used to match, the second to convert the URL";
 ?>
