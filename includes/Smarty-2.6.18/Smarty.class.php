@@ -1119,7 +1119,7 @@ class Smarty
     function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         static $_cache_info = array();
-        
+
         $_smarty_old_error_level = $this->debugging ? error_reporting() : error_reporting(isset($this->error_reporting)
                ? $this->error_reporting : error_reporting() & ~E_NOTICE);
 
@@ -1751,6 +1751,13 @@ class Smarty
         if(isset($auto_source)) {
             // make source name safe for filename
             $_filename = urlencode(basename($auto_source));
+
+			// WANWIZARD: if the filename contains illegal characters, use the MD5-hash
+			if (preg_match("%[\\\/:;*?\"\[\]\%]%", $_filename)) {
+				$_filename = md5($_filename);
+			}
+			// WANWIZARD: end-of-mod
+
             $_crc32 = sprintf('%08X', crc32($auto_source));
             // prepend %% to avoid name conflicts with
             // with $params['auto_id'] names

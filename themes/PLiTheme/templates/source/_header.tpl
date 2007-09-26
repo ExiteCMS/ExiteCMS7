@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* PLi-Fusion CMS template: header.tpl                                     *}
+{* ExiteCMS template: header.tpl                                           *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -11,7 +11,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* This template generates the PLi-Fusion website header.                  *}
+{* This template generates the ExiteCMS website header.                    *}
 {* If this header requires custom variables, assign them in the header     *}
 {* preprocessing section of your theme.php                                 *}
 {*                                                                         *}

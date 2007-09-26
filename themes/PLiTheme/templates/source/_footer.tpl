@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* PLi-Fusion CMS template: footer.tpl                                     *}
+{* ExiteCMS - template: footer.tpl                                         *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -11,7 +11,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* This template generates the PLi-Fusion website footer.                  *}
+{* This template generates the ExiteCMS website footer.                    *}
 {* If this footer requires custom variables, assign them in the footer     *}
 {* preprocessing section of your theme.php                                 *}
 {*                                                                         *}

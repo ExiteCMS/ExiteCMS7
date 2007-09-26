@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* PLi-Fusion CMS template: navigation_panel.tpl                           *}
+{* ExiteCMS template: navigation_panel.tpl                                 *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -11,7 +11,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* This template generates the PLi-Fusion infusion panel: navigation_panel *}
+{* This template generates the ExiteCMS fullscreen menu panel              *}
 {*                                                                         *}
 {***************************************************************************}
 {section name=link loop=$linkinfo}

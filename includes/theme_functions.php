@@ -54,6 +54,9 @@ $template->security = false;
 // Register the panel template resource
 $template->register_resource('panel', array('resource_panel_source', 'resource_panel_timestamp', 'resource_panel_secure', 'resource_panel_trusted'));
 
+// Register the string template resource
+$template->register_resource('string', array('resource_string_source', 'resource_string_timestamp', 'resource_string_secure', 'resource_string_trusted'));
+
 // Array to store panels
 $template_panels = array();
 
@@ -378,6 +381,32 @@ function resource_panel_secure($tpl_name, &$smarty) {
 }
 
 function resource_panel_trusted($tpl_name, &$smarty) {
+
+    // not used for templates
+}
+
+/*-----------------------------------------------------+
+| resource_string - Smarty string resource callbacks   |
++-----------------------------------------------------*/
+function resource_string_source($tpl_name, &$tpl_source, &$smarty) {
+
+	$tpl_source = $tpl_name;
+	return true;
+}
+
+function resource_string_timestamp($tpl_name, &$tpl_timestamp, &$smarty) {
+
+	$tpl_timestamp = time();
+	return true;
+}
+
+function resource_string_secure($tpl_name, &$smarty) {
+
+    // assume all templates are secure
+	return true;
+}
+
+function resource_string_trusted($tpl_name, &$smarty) {
 
     // not used for templates
 }

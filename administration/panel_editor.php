@@ -133,15 +133,14 @@ if (isset($_POST['save'])) {
 		if ($panel_filename == "none") {
 			$panel_type = "dynamic";
 			eval($panel_code);
-			$variables['message'] = "PREVIEW OF DYNAMIC PANELS IS NOT SUPPORTED YET!";
 			if ($panel_side == 1) {
-				$template_panels[] = array('type' => 'left', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => '_message_side_panel.simple.tpl');
+				$template_panels[] = array('type' => 'left', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			} elseif ($panel_side == 2) {
-				$template_panels[] = array('type' => 'upper', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => '_message_table_panel.simple.tpl');
+				$template_panels[] = array('type' => 'upper', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			} elseif ($panel_side == 3) {
-				$template_panels[] = array('type' => 'lower', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => '_message_table_panel.simple.tpl');
+				$template_panels[] = array('type' => 'lower', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			} elseif ($panel_side == 4) {
-				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => '_message_side_panel.simple.tpl');
+				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			}
 		} else {
 			$panel_type = "file";
@@ -156,8 +155,10 @@ if (isset($_POST['save'])) {
 				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
 			}
 		}
-		$template_variables['admin.panel_editor.preview'] = $variables;
-		$variables = array();
+		if (isset($variables) && is_array($variables)) {
+			$template_variables['admin.panel_editor.preview'] = $variables;
+			$variables = array();
+		}
 	}
 
 	if (isset($step) && $step == "edit") {
