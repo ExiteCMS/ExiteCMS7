@@ -311,6 +311,12 @@ if (!isset($type)) {
 	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Missing file type.</b></div>");
 }
 
+// check if authentication is valid. If not, reset it
+if (isset($_SERVER['PHP_AUTH_USER'])) {
+	$result = auth_validate_BasicAuthentication();
+	if ($result != 0) unset($_SERVER['PHP_AUTH_USER']);
+}
+
 // process the requested file type
 switch (strtolower($type)) {
 	case "a":	// attachments
@@ -325,26 +331,18 @@ switch (strtolower($type)) {
 		if (!is_array($post)) {
 			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file ID.</b></div>");
 		}
-		// if logged in, check if the user has access to this file. if not, redirect back to the homepage
+		$forum = dbarray(dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_id = '".$post['forum_id']."'"));
+		if (!is_array($forum)) {
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file ID.</b></div>");
+		}
+		// if logged in, check if the user has access to this file. if not, print an error and give up
 		if (iMEMBER && !getfilegroup($forum['forum_access'], $userdata['user_level'])) {
 			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>You don't have access to the requested file ID.</b></div>");
 		}
 		// if not logged in, and authorisation required, check if userid and password is given and valid
 		if (!iMEMBER && $forum['forum_access'] != 0) {
-			// Not public, userid is required. Check if the URL specifies a username and password
-			// in the URL. check it against the user database
-			if (isset($_GET['user']) && isset($_GET['pass'])) {
-				$user_pass = md5($_GET['pass']);
-				$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_GET['user']));
-				$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='$user_pass'");
-				if (dbrows($result) != 0) {
-					$userdata = dbarray($result);
-				} else {
-					die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Authentication failed.<br />You don't have access to the requested file ID.</b></div>");
-				}
-			} else {
-				die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Authentication required.<br />You don't have access to the requested file ID.</b></div>");
-			}
+			// Not public, authentication is required
+			auth_BasicAuthentication();
 		}
 		// everything ok, update the attachment download counter
 		$result = dbquery("UPDATE ".$db_prefix."forum_attachments SET attach_count=attach_count+1 WHERE attach_id='$file_id'");
@@ -362,20 +360,8 @@ switch (strtolower($type)) {
 		}
 		// if not logged in, check if userid and password is given and valid (authorisation is required!)
 		if (!iMEMBER) {
-			// Not public, userid is required. Check if the URL specifies a username and password
-			// in the URL. check it against the user database
-			if (isset($_GET['user']) && isset($_GET['pass'])) {
-				$user_pass = md5($_GET['pass']);
-				$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_GET['user']));
-				$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='$user_pass'");
-				if (dbrows($result) != 0) {
-					$userdata = dbarray($result);
-				} else {
-					die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Authentication failed.<br />You don't have access to the requested file ID.</b></div>");
-				}
-			} else {
-				die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Authentication required.<br />You don't have access to the requested file ID.</b></div>");
-			}
+			// Not public, authentication is required
+			auth_BasicAuthentication();
 		}
 		// check if this attachment belongs to a post addressed to this user
 		$result = dbquery("SELECT * FROM ".$db_prefix."pm_index WHERE pm_id = '".$attachment['pm_id']."' AND pmindex_user_id = '".$userdata['user_id']."'");
