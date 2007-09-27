@@ -15,7 +15,7 @@
 {*                                                                         *}
 {***************************************************************************}
 	<tr>
-		<td class='tbl1' colspan='3' height='5'>
+		<td class='tbl1' colspan='4' height='5'>
 			<a name='post_{$posts[pid].post_id}' id='post_{$posts[pid].post_id}'></a>
 		</td>
 	</tr>
@@ -36,7 +36,7 @@
 			 [Re: <a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;pid={$posts[pid].post_reply_id}#post_{$posts[pid].post_reply_id}'>{$posts[pid].post_reply_username}</a>]
 	 		{/if}
 		</td>
-		<td class='tbl_top_right' style='text-align:right;'>
+		<td class='tbl_top_mid' style='text-align:right;'>
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $posts[pid].user_can_edit}
 				{buttonlink name=$locale.568 link="post.php?action=edit&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;post_id="|cat:$posts[pid].post_id}
@@ -51,6 +51,9 @@
 			{if $smarty.const.SHOW_QUOTE_BUTTON && !$thread.thread_locked}
 				{buttonlink name=$locale.569 link="post.php?action=quote&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 			{/if}
+		{/if}
+		</td>
+		<td width='1%' class='tbl_top_right'>
 			{if $posts[pid].show_ip}
 				{if $user_can_blacklist}
 					<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;ip={$posts[pid].post_ip}'>
@@ -60,7 +63,6 @@
 					<img src='{$smarty.const.THEME}forum/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}' style='border:0px;' />
 				{/if}
 			{/if}
-		{/if}
 		</td>
 	</tr>
 	<tr>
@@ -122,7 +124,7 @@
 			{/if}
 			<span class='alt'>{$locale.504}</span> {$posts[pid].user_joined|date_format:"%d.%m.%y"}
 		</td>
-		<td valign='top' colspan='2' height='{$height}' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-bottom:none;'>
+		<td valign='top' colspan='3' height='{$height}' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-bottom:none;'>
 		{$posts[pid].post_message|default:"&nbsp;"}
 		{section name=id loop=$posts[pid].attachments}
 			{if $smarty.section.id.first}
@@ -145,7 +147,7 @@
 								<tr>
 									<td>
 										{if $smarty.const.DOWNLOAD_IMAGES}
-											<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' alt='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}
+											<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' title='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}
 										{else}
 											<a href='{$posts[pid].attachments[id].link}' alt='{$posts[pid].attachments[id].attach_comment}' target='_blank'>{$posts[pid].attachments[id].attach_realname}
 										{/if}
@@ -160,7 +162,7 @@
 							</table>
 						{else}
 							{if $smarty.const.DOWNLOAD_IMAGES}
-								<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' alt='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}</a> ({$posts[pid].attachments[id].imagesize.x} x {$posts[pid].attachments[id].imagesize.y} {$locale.518})
+								<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' title='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}</a> ({$posts[pid].attachments[id].imagesize.x} x {$posts[pid].attachments[id].imagesize.y} {$locale.518})
 							{else}
 								<a href='{$posts[pid].attachments[id].link}' alt='{$posts[pid].attachments[id].attach_comment}' target='_blank'>{$posts[pid].attachments[id].attach_realname}</a> ({$posts[pid].attachments[id].imagesize.x} x {$posts[pid].attachments[id].imagesize.y} {$locale.518})
 							{/if}
@@ -170,7 +172,7 @@
 					{if $posts[pid].attachments[id].attach_id == 0}
 						{$posts[pid].attachments[id].attach_realname} ( {$posts[pid].attachments[id].size} )
 					{else}
-						<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' alt='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}</a> ( {$posts[pid].attachments[id].size} )
+						<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' title='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}</a> ( {$posts[pid].attachments[id].size} )
 					{/if}
 
 				{/if}
@@ -229,7 +231,7 @@
 			{buttonlink name=$locale.580 link="skype:"|cat:$posts[pid].user_yahoo|cat:"?call" new="yes"}
 		{/if}
 		</td>
-		<td colspan='2' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-top:none;'>
+		<td colspan='3' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-top:none;'>
 		{if $posts[pid].post_showsig && $posts[pid].user_sig|default:"" != ""}
 			<hr />
 			{$posts[pid].user_sig}

@@ -267,13 +267,37 @@ function phpentities($text) {
 }
 
 // Trim a line of text to a preferred length
-function trimlink($text, $length) {
+function trimlink($text, $length, $filler="...") {
 	$dec = array("\"", "'", "\\", '\"', "\'", "<", ">");
 	$enc = array("&quot;", "&#39;", "&#92;", "&quot;", "&#39;", "&lt;", "&gt;");
 	$text = str_replace($enc, $dec, $text);
-	if (strlen($text) > $length) $text = substr($text, 0, ($length-3))."...";
+	if (strlen($text) > $length) $text = substr($text, 0, ($length-3)).$filler;
 	$text = str_replace($dec, $enc, $text);
 	return $text;
+}
+
+// Trim a URI to a preferred length by cutting out the middle (preserve the hostname if possible)
+function shortenlink($text, $length, $filler="...") {
+
+	$dec = array("\"", "'", "\\", '\"', "\'", "<", ">");
+	$enc = array("&quot;", "&#39;", "&#92;", "&quot;", "&#39;", "&lt;", "&gt;");
+	$returner = str_replace($enc, $dec, $text);
+	if (strlen($returner) > $length) {
+		$url = preg_match("=[^/]/[^/]=",$returner,$treffer,PREG_OFFSET_CAPTURE);
+		$cutpos = $treffer[0][1]+2;
+		$part[0] = substr($returner,0,$cutpos);
+		$part[1] = substr($returner,$cutpos);
+		$strlen1 = $cutpos;
+		if ($strlen1 > $length) {
+			$returner = substr($returner,0,$length-3).$filler;
+		} else {
+			$strlen2 = strlen($part[1]);
+			$cutpos = $strlen2-($length-3-$strlen1);
+			$returner = $part[0].$filler.substr($part[1],$cutpos);
+		}
+	}
+	$returner = str_replace($dec, $enc, $returner);
+	return $returner;
 }
 
 // Validate numeric input
@@ -489,7 +513,7 @@ function parseubb($text) {
 	$text = preg_replace('#\[url\]([\r\n]*)([^\s\'\";\+]*?)([\r\n]*)\[/url\]#si', '<a href=\'http://\2\' target=\'_blank\'>\2</a>', $text);
 	$text = preg_replace('#\[url=([\r\n]*)(http://|ftp://|https://|ftps://)([^\'\";]*?)\](.*?)([\r\n]*)\[/url\]#si', '<a href=\'\2\3\' target=\'_blank\'>\4</a>', $text);
 	$text = preg_replace('#\[url=([\r\n]*)([^\s\'\";\+]*?)\](.*?)([\r\n]*)\[/url\]#si', '<a href=\'http://\2\' target=\'_blank\'>\3</a>', $text);
-	
+
 	$text = preg_replace('#\[mail\]([\r\n]*)([^\s\'\";:\+]*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\2</a>', $text);
 	$text = preg_replace('#\[mail=([\r\n]*)([^\s\'\";:\+]*?)\](.*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\2</a>', $text);
 	

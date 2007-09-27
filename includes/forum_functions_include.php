@@ -296,9 +296,48 @@ function parsemessage($rawmsg, $smileys=true) {
 	// any text left?
 	if (strlen($rawmsg)) $message .= $rawmsg;
 
-	// find URL's in the text, and convert them to a [url] BBcode
-	$message = preg_replace("#(^|\s)(www|WWW)\.([^\s<>\/]+)\/([^\s\r\n<>\)\,\:\;\[]+)#sm", "\\1[url=http://\\2.\\3/\\4]http://\\2.\\3[/url]", $message);
-	$message = preg_replace("#(^|[^\"=\]]{1})(http|HTTP|ftp)(s|S)?://([^\s<>\/]+)\/([^\s\r\n<>\)\,\:\;\[]+)#sm", "\\1[url=\\2\\3://\\4/\\5]\\2\\3://\\4[/url]", $message);
+	// Split off the [url] blocks to exclude them from url parsing
+	$rawmsg = $message;
+	$message = "";
+	$urlblocks = array();
+
+	// find the code [url] occurence
+	$i = strpos($rawmsg, "[url");
+
+	// loop through the message until all are found and processed
+	while ($i !== false) {
+		// strip the bit before the [url] BBcode, and add a placeholder
+		$message .= substr($rawmsg, 0, $i+4)."{@@**@@}";
+		// strip the processed bit
+		$rawmsg = substr($rawmsg, $i+4);
+		// find the end of the [url] block
+		$j = strpos($rawmsg, "[/url]");
+		// if not found, add the remaining bit, a forced [/url], and stop processing
+		if ($j === false) {
+			$message = str_replace("{@@**@@}", $rawmsg, $message);
+			break;
+		}
+		// store this url block
+		$urlblocks[] = substr($rawmsg, 0, $j);
+		// strip the processed bit
+		$rawmsg = substr($rawmsg, $j);
+		// check if there are more code segments
+		$i = strpos($rawmsg, "[url");
+	}
+
+	// any text left?
+	if (strlen($rawmsg)) $message .= $rawmsg;
+
+	// find remaining URL's in the text, and convert them to a href as well
+	$pattern = '#(^|[^\"=]{1})(https?://|ftp://|mailto:|news:)([^(,\s<>\[\]\)]+)([,\s\n<>\)]|$)#sme';
+	$message = preg_replace($pattern,"'$1<a href=\'$2$3\' target=\'_blank\'>'.shortenlink('$2$3',75).'</a>$4'",$message);
+
+	// re-insert the saved url blocks
+	foreach($urlblocks as $urlblock) {
+		// find the first placeholder
+		$i = strpos($message, "{@@**@@}");
+		$message = substr($message, 0, $i).$urlblock.substr($message, $i+8);
+	}
 
 	// parse the message, and convert all BBcode found
 	if ($smileys) $message = parsesmileys($message);
