@@ -117,6 +117,9 @@ if (iMEMBER && (in_array($userdata['user_id'], $forum_mods) || ($fdata['forum_mo
 	define("iMOD", false); 
 }
 
+// check if this user is allowed to blacklist
+$variables['user_can_blacklist'] = checkrights("B");
+
 // get information about the current thread
 $result = dbquery(
 	"SELECT * FROM ".$db_prefix."threads 

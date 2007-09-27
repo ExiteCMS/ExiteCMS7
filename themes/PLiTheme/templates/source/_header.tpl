@@ -196,7 +196,7 @@ function fontReset(aantal) {
 		<td class='sub-cap-main'>
 			<a href='.' onclick='fontGroter(-0.1); return false' title='Decrease font-size'><img src='{$smarty.const.THEME}images/minus.gif' alt='' border='0' /></a><a href='.' onclick='fontReset(0.7); return false' title='Restore default font-sizes'><img src='{$smarty.const.THEME}images/reset.gif' hspace='2' alt='' border='0' /></a><a href='.' onclick='fontGroter(0.1); return false' title='Increase font-size'><img src='{$smarty.const.THEME}images/plus.gif' alt='' border='0' /></a>
 			{section name=index loop=$headermenu}
-				{if !$smarty.section.index.first} &middot;{/if} <a href='{$headermenu[index].link_url}' {if $headermenu[index].link_window == 1}target='_blank' {/if}alt=''><span class='small'>{$headermenu[index].link_name}</span></a>
+				{if !$smarty.section.index.first} &middot;{/if} <a href='{$headermenu[index].link_url}' {if $headermenu[index].link_window == 1}target='_blank' {/if}><span class='small'>{$headermenu[index].link_name}</span></a>
 			{/section}
 		</td>
 		<td align='right' class='sub-cap-main'>

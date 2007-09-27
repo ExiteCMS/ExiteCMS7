@@ -135,7 +135,6 @@ if (isset($group_id)) {
 			if ($cc_flag == "") $cc_flag = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		}
 		$data['cc_flag'] = $cc_flag;
-		$data['user_level'] = getuserlevel($data['user_level']);
 		$members[] = $data;
 	}
 	// define the body panel variables

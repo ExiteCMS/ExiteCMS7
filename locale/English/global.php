@@ -129,6 +129,7 @@ $locale['108'] = "Polls Archive";
 $locale['109'] = "Select a Poll to view from the list:";
 $locale['110'] = "View";
 $locale['111'] = "View Poll";
+$locale['112'] = "(Poll)";
 // Shoutbox
 $locale['120'] = "Shoutbox";
 $locale['121'] = "Name:";

@@ -72,7 +72,7 @@ class Smarty
      *
      * @var string
      */
-    var $template_dir    =  'templates';
+    var $template_dir    =  array('templates');
 
     /**
      * The directory where compiled templates are located.

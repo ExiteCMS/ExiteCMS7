@@ -15,7 +15,7 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
-define('NC_OVERVIEW_LIMIT', 10);
+define('NC_OVERVIEW_LIMIT', 5);
 
 // load this module's locales
 include PATH_LOCALE.LOCALESET."news_cats.php";

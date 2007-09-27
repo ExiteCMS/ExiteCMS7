@@ -497,7 +497,7 @@ function parseubb($text) {
 	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
 	
 	$text = preg_replace('#\[flash width=([0-9]*?) height=([0-9]*?)\]([^\s\'\";:\+]*?)(\.swf)\[/flash\]#si', '<object classid=\'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\' codebase=\'http://active.macromedia.com/flash6/cabs/swflash.cab#version=6,0,0,0\' id=\'\3\4\' width=\'\1\' height=\'\2\'><param name=movie value=\'\3\4\'><param name=\'quality\' value=\'high\'><param name=\'bgcolor\' value=\'#ffffff\'><embed src=\'\3\4\' quality=\'high\' bgcolor=\'#ffffff\' width=\'\1\' height=\'\2\' type=\'application/x-shockwave-flash\' pluginspage=\'http://www.macromedia.com/go/getflashplayer\'></embed></object>', $text);
-	$text = preg_replace("#\[img\]((http|ftp|https|ftps)://)(.*?)(\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG))\[/img\]#sie","'<img src=\'\\1'.str_replace(array('.php','?','&','='),'','\\3').'\\4\' style=\'border:0px\' />'",$text);
+	$text = preg_replace("#\[img\]((http|ftp|https|ftps)://)(.*?)(\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG))\[/img\]#sie","'<img src=\'\\1'.str_replace(array('.php','?','&','='),'','\\3').'\\4\' style=\'border:0px\' alt=\'\' />'",$text);
 
 	$text = preg_replace('#\[quote=([\r\n]*)(.*?)\]#si', '<b>\2 '.$locale['199'].':</b><br />[quote]', $text);
 
@@ -710,9 +710,11 @@ function auth_BasicAuthentication() {
 	
 	global $settings;
 	
+	// ask the user for authentication
 	header('WWW-Authenticate: Basic realm="'.$settings['sitename'].'"');
 	header('HTTP/1.0 401 Unauthorized');
-	echo "Pressed cancel. Need to replace this with something useful";
+	// if the user cancels, redirect to the homepage
+	echo "<script type='text/javascript'>document.location.href='".BASEDIR."index.php'</script>\n";
 	exit;
 }
 
@@ -734,7 +736,6 @@ function auth_validate_BasicAuthentication() {
 			$data['user_status'] = 0;
 		}
 		if ($data['user_status'] == 0) {	
-			// HV - set the 'remember me' status value into a cookie
 			if (isset($_POST['remember_me'])) {
 				setcookie("remember_me", "yes", time() + 31536000, "/", "", "0");
 				$cookie_exp = time() + 3600*24*30;
@@ -742,7 +743,6 @@ function auth_validate_BasicAuthentication() {
 				setcookie("remember_me", "yes", time() - 7200, "/", "", "0");
 				$cookie_exp = time() + 60*30;
 			}
-			// HV - end of code change
 			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 			setcookie("userinfo", $cookie_value, $cookie_exp, "/", "", "0");
 			return 0;

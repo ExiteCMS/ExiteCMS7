@@ -77,6 +77,7 @@ $locale['567'] = "User Avatar";
 $locale['568'] = "Edit";
 $locale['569'] = "Quote";
 $locale['570'] = "IP Address";
+$locale['570a'] = ". Click to blacklist this ".$locale['570'];
 $locale['571'] = "pm";
 $locale['571a'] = "Send Private Message";
 $locale['572'] = "Sticky Post";

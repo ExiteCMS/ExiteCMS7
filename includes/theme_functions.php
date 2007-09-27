@@ -26,6 +26,9 @@ $template->debugging = false;
 // on-the-fly compilation needed?
 $template->compile_check = true;
 
+// set the compile ID for this website
+$template->compile_id = $_SERVER['SERVER_NAME'];
+
 // caching required?
 $template->caching = 0;
 
@@ -43,7 +46,17 @@ if (is_dir(PATH_THEME."template/plugins")) $plugins_dir[] = PATH_THEME."template
 $plugins_dir[] = 'custom-plugins';
 // and finaly, use the default Smarty plugins
 $plugins_dir[] = 'smarty-plugins';
+
 $template->plugins_dir = $plugins_dir;
+
+// templates, where to find them?
+$template_dir = array();
+// first check if there's one defined in the current theme
+if (is_dir(PATH_THEME."templates/source")) $template_dir[] = PATH_THEME."templates/source";
+// next, check the CMS template directory
+$template_dir[] = PATH_INCLUDES.'templates';
+
+$template->template_dir = $template_dir;
 
 // PHP in Templates? Don't think so!
 $template->php_handling = SMARTY_PHP_REMOVE;
@@ -157,20 +170,21 @@ function load_templates($_type='', $_name='') {
 				$template->assign("_loadstats", $_loadstats);
 			}
 
-			// if this is a module template...
+			//if this is a module template...
 			$tpl_parts = explode(".", $panel['template']);
 			if ($tpl_parts[0] == "modules") {
-				// check if there is a customized version for the current theme
-				if (!file_exists($template->template_dir."/".$panel['template'])) {
-					// if not, add the module template to smarty's source list, so the default template can be found
-					$template->template_dir = array(PATH_MODULES.$tpl_parts[1].'/templates', $template->template_dir);
-				}
+				// store the current template directories, we need to restore them later
+				$td = $template->template_dir;
+				$template->template_dir = array_merge(array(PATH_MODULES.$tpl_parts[1].'/templates'), $template->template_dir);
+			} else {
+				// we shouldn't get here
 			}
+		
 			// if a template is defined, load the template, 
 			if (isset($panel['template'])) $template->display($panel['template']);
-
-			// restore the template directory if needed
-			$template->template_dir = PATH_THEME.'templates/source';
+			
+			// restore the template direcory if needed
+			if (isset($td) && is_array($td)) $template->template_dir = $td;
 		}
 	}
 }

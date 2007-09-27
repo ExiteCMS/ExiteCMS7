@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* PLi-Fusion CMS template: _message_table_panel.simple.tpl                *}
+{* ExiteCMS template: _message_table_panel.simple.tpl                      *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
