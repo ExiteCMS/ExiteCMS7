@@ -108,6 +108,7 @@ hr.side-hr			{ border:1px #ccc solid; border-bottom:1px #eee solid; }
 .codeblock 			{ font-family: courier, monospace; margin:5px 20px 5px 20px; overflow-x:auto; white-space: nowrap}
 .code 				{ margin:0px; padding:0 0 0 5px; border:1px #bbb solid; background-color:#fff; overflow-x:hidden}
 .codenr 			{ margin:0px; padding:0px 3px 0px 3px; border:1px #bbb solid; background-color:#ddd; float:left; }
+.thumbnail			{ color:#ddd;background-color:#333;text-align:center }
 
 /* --- Pollbox --------------------------------------------- */
 

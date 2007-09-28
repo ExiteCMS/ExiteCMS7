@@ -247,7 +247,7 @@ if ($rows != 0) {
 	
 		// check what options to show for this post
 		$data['user_can_edit'] = iMEMBER && $data['post_author'] != 0 && (iMOD || iSUPERADMIN || (!$tdata['thread_locked'] && $userdata['user_id'] == $data['post_author']));
-		$data['show_ip'] = (iMOD || iSUPERADMIN && ($data['post_ip'] != "0.0.0.0" && file_exists(PATH_THEME."forum/ip.gif")));
+		$data['show_ip'] = (iMOD || iSUPERADMIN && ($data['post_ip'] != "0.0.0.0" && file_exists(PATH_THEME."images/ip.gif")));
 	
 		// country flag
 		if ($settings['forum_flags']) {
@@ -323,8 +323,8 @@ if ($rows != 0) {
 						$adata['is_found'] = true;
 						$adata['size'] = parsebytesize(filesize($file),0);
 						if (in_array($adata['attach_ext'], $imagetypes)) {
-							// check if it really is an image
-							$imageinfo = @getimagesize($attachrealfile);
+							// check if it really is an image\
+							$imageinfo = @getimagesize($file);
 							if (is_array($imageinfo)) {
 								$adata['is_image'] = true;
 								$adata['imagesize'] = array('x' => $imageinfo[0], 'y' => $imageinfo[1]);

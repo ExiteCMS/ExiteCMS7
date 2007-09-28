@@ -25,7 +25,7 @@
 		</td>
 		<td class='tbl_top_mid'>
 			{if $posts[pid].post_sticky}
-				<img src='{$smarty.const.THEME}forum/stickythread.gif' alt='{$locale.572}' style='vertical-align:top;' />&nbsp;&nbsp;
+				<img src='{$smarty.const.THEME}images/stickythread.gif' alt='{$locale.572}' style='vertical-align:top;' />&nbsp;&nbsp;
 			{/if}
 			{if $posts[pid].thread_id != 0 && $posts[pid].post_id != 0}
 				<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;pid={$posts[pid].post_id}#post_{$posts[pid].post_id}'>{$posts[pid].post_subject}</a>
@@ -36,7 +36,11 @@
 			 [Re: <a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$posts[pid].thread_id}&amp;pid={$posts[pid].post_reply_id}#post_{$posts[pid].post_reply_id}'>{$posts[pid].post_reply_username}</a>]
 	 		{/if}
 		</td>
+		{if $posts[pid].show_ip}
 		<td class='tbl_top_mid' style='text-align:right;'>
+		{else}
+		<td colspan='2' class='tbl_top_right' style='text-align:right;'>
+		{/if}
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $posts[pid].user_can_edit}
 				{buttonlink name=$locale.568 link="post.php?action=edit&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;post_id="|cat:$posts[pid].post_id}
@@ -53,17 +57,17 @@
 			{/if}
 		{/if}
 		</td>
-		<td width='1%' class='tbl_top_right'>
-			{if $posts[pid].show_ip}
-				{if $user_can_blacklist}
-					<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;ip={$posts[pid].post_ip}'>
-						<img src='{$smarty.const.THEME}forum/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}{$locale.570a}' style='border:0px;' />
-					</a>
-				{else}
-					<img src='{$smarty.const.THEME}forum/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}' style='border:0px;' />
-				{/if}
+		{if $posts[pid].show_ip}
+		<td width='1%' class='tbl_top_right' valign='middle'>
+			{if $user_can_blacklist}
+				<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;ip={$posts[pid].post_ip}'>
+					<img src='{$smarty.const.THEME}images/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}{$locale.570a}' style='border:0px;' />
+				</a>
+			{else}
+				<img src='{$smarty.const.THEME}images/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}' style='border:0px;' />
 			{/if}
 		</td>
+		{/if}
 	</tr>
 	<tr>
 		<td valign='top' width='140' class='tbl_left'>
@@ -125,7 +129,7 @@
 			<span class='alt'>{$locale.504}</span> {$posts[pid].user_joined|date_format:"%d.%m.%y"}
 		</td>
 		<td valign='top' colspan='3' height='{$height}' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-bottom:none;'>
-		{$posts[pid].post_message|default:"&nbsp;"}
+		{$posts[pid].post_message|default:" "|escape:"entities"}
 		{section name=id loop=$posts[pid].attachments}
 			{if $smarty.section.id.first}
 				<br /><br />
@@ -143,19 +147,20 @@
 						<img src='{$posts[pid].attachments[id].link}' title='{$posts[pid].attachments[id].attach_realname}' alt='{$posts[pid].attachments[id].attach_comment}' />
 					{else}
 						{if $posts[pid].attachments[id].has_thumbnail}
-							<table cellpadding='0'cellspacing='0' bgcolor='#000000'>
+							<table cellpadding='0'cellspacing='0' class='thumbnail'>
 								<tr>
 									<td>
 										{if $smarty.const.DOWNLOAD_IMAGES}
 											<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' title='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}
 										{else}
-											<a href='{$posts[pid].attachments[id].link}' alt='{$posts[pid].attachments[id].attach_comment}' target='_blank'>{$posts[pid].attachments[id].attach_realname}
+											<a href='{$posts[pid].attachments[id].link}' title='{$posts[pid].attachments[id].attach_comment}' target='_blank'>
+											<img src='{$posts[pid].attachments[id].thumbnail}' style='border:1px solid black;' alt='{$posts[pid].attachments[id].attach_realname}' title='{$posts[pid].attachments[id].attach_realname}' />
 										{/if}
-										<img src='{$posts[pid].attachments[id].thumbnail}' style='border:1px solid black;' alt='{$posts[pid].attachments[id].attach_realname}' title='{$posts[pid].attachments[id].attach_realname}' /></a>
+										</a>
 									</td>
 								</tr>
 								<tr>
-									<td style='color:#ffffff;font-size:10px;text-align:center'>
+									<td>
 										{$posts[pid].attachments[id].imagesize.x}x{$posts[pid].attachments[id].imagesize.y} {$posts[pid].attachments[id].size}
 									</td>
 								</tr>

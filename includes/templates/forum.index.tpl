@@ -54,11 +54,11 @@
 						</td>
 						<td align='center' class='tbl2'>
 						{if $forums[id].unread_posts == 0}
-					    	<img src='{$smarty.const.THEME}forum/folder.gif' alt='{$locale.561}' />
+					    	<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' />
 						{elseif $forums[id].unread_posts <= $smarty.const.FOLDER_HOT}
-					    	<img src='{$smarty.const.THEME}forum/foldernew.gif' alt='{$locale.560}' />
+					    	<img src='{$smarty.const.THEME}images/foldernew.gif' alt='{$locale.560}' />
 						{else}
-					    	<img src='{$smarty.const.THEME}forum/folderhot.gif' alt='{$locale.561}' />
+					    	<img src='{$smarty.const.THEME}images/folderhot.gif' alt='{$locale.561}' />
 						{/if}
 						</td>
 						<td class='tbl1'>
@@ -126,9 +126,9 @@
 	<tr>
 		<td class='forum'>
 			<br />
-			<img src='{$smarty.const.THEME}forum/foldernew.gif' alt='{$locale.560}' style='vertical-align:middle;' /> - {$locale.409}
+			<img src='{$smarty.const.THEME}images/foldernew.gif' alt='{$locale.560}' style='vertical-align:middle;' /> - {$locale.409}
 			<br />
-			<img src='{$smarty.const.THEME}forum/folder.gif' alt='{$locale.561}' style='vertical-align:middle;' /> - {$locale.410}
+			<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' style='vertical-align:middle;' /> - {$locale.410}
 		</td>
 		<td align='right' valign='bottom' class='forum'>
 			<form name='searchform' method='post' action='{$smarty.const.BASEDIR}search.php?stype=f'>

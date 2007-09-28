@@ -83,25 +83,25 @@
 				<tr>
 					<td align='center' width='20' class='tbl2'>
 						{if $threads[id].thread_locked && $threads[id].unread_posts == 0}
-							<img src='{$smarty.const.THEME}forum/folderlock.gif' title='{$locale.564}' alt='{$locale.564}' />
+							<img src='{$smarty.const.THEME}images/folderlock.gif' title='{$locale.564}' alt='{$locale.564}' />
 						{elseif $threads[id].thread_locked && $threads[id].unread_posts > 0}
-							<img src='{$smarty.const.THEME}forum/folderlocknew.gif' title='{$locale.564}' alt='{$locale.564}' />
+							<img src='{$smarty.const.THEME}images/folderlocknew.gif' title='{$locale.564}' alt='{$locale.564}' />
 						{elseif $threads[id].unread_posts == 0}
-							<img src='{$smarty.const.THEME}forum/folder.gif' title='{$locale.561}' alt='{$locale.561}' />
+							<img src='{$smarty.const.THEME}images/folder.gif' title='{$locale.561}' alt='{$locale.561}' />
 						{elseif $threads[id].unread_posts <= $smarty.const.FOLDER_HOT}
-							<img src='{$smarty.const.THEME}forum/foldernew.gif' title='{$locale.560}' alt='{$locale.560}' />
+							<img src='{$smarty.const.THEME}images/foldernew.gif' title='{$locale.560}' alt='{$locale.560}' />
 						{else}
-							<img src='{$smarty.const.THEME}forum/folderhot.gif' title='{$locale.562}' alt='{$locale.562}' />
+							<img src='{$smarty.const.THEME}images/folderhot.gif' title='{$locale.562}' alt='{$locale.562}' />
 						{/if}
 					</td>
 					<td align='center' width='20' class='tbl1'>
 						<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;pid={$threads[id].last_post}#post_{$threads[id].last_post}'>
-							<img src='{$smarty.const.THEME}forum/last_post.jpg' title='{$locale.574}' alt='{$locale.574}' />
+							<img src='{$smarty.const.THEME}images/last_post.jpg' title='{$locale.574}' alt='{$locale.574}' />
 						</a>
 					</td>
 					<td class='tbl1'>
 						{if $threads[id].thread_sticky}
-							<img src='{$smarty.const.THEME}forum/stickythread.gif' title='{$locale.563}' alt='{$locale.563}' style='vertical-align:middle;' />
+							<img src='{$smarty.const.THEME}images/stickythread.gif' title='{$locale.563}' alt='{$locale.563}' style='vertical-align:middle;' />
 						{/if}
 						<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}'>{$threads[id].thread_subject}</a>
 						{if $threads[id].thread_pages > 2}
@@ -200,14 +200,14 @@
 <table cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
 		<td class='tbl1'>
-			<img src='{$smarty.const.THEME}forum/foldernew.gif' alt='{$locale.560}' style='vertical-align:middle;' /> - {$locale.456}
-			(<img src='{$smarty.const.THEME}forum/folderhot.gif' alt='{$locale.562}' style='vertical-align:middle;' /> - {$smarty.const.FOLDER_HOT} {$locale.457} )
+			<img src='{$smarty.const.THEME}images/foldernew.gif' alt='{$locale.560}' style='vertical-align:middle;' /> - {$locale.456}
+			(<img src='{$smarty.const.THEME}images/folderhot.gif' alt='{$locale.562}' style='vertical-align:middle;' /> - {$smarty.const.FOLDER_HOT} {$locale.457} )
 			<br />
-			<img src='{$smarty.const.THEME}forum/folder.gif' alt='{$locale.561}' style='vertical-align:middle;' /> - {$locale.458}
+			<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' style='vertical-align:middle;' /> - {$locale.458}
 			<br />
-			<img src='{$smarty.const.THEME}forum/folderlock.gif' alt='{$locale.564}' style='vertical-align:middle;' /> - {$locale.459}
+			<img src='{$smarty.const.THEME}images/folderlock.gif' alt='{$locale.564}' style='vertical-align:middle;' /> - {$locale.459}
 			<br />
-			<img src='{$smarty.const.THEME}forum/stickythread.gif' alt='{$locale.563}' style='vertical-align:middle;' /> - {$locale.460}
+			<img src='{$smarty.const.THEME}images/stickythread.gif' alt='{$locale.563}' style='vertical-align:middle;' /> - {$locale.460}
 		</td>
 	</tr>
 </table>
