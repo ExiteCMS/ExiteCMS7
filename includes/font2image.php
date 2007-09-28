@@ -28,6 +28,7 @@
     $f2i_array['cache_images'] = false;                // Cache the image after generation? Boolean, default = false.
     $f2i_array['cache_folder'] = "";                   // Directory to store the cached images in.
                                                        // If not defined or not valid, cache_images will be set to false.
+    $f2i_array['cache_prefix'] = false;                // If defined, this will be prepended to the filename of the cached file    
     $f2i_array['cache_hash'] = false;                  // Boolean. If false, the text will be used as filename, otherwise a hash is calculated    
 
     Notes:
@@ -91,6 +92,7 @@ function font2image($font2image) {
 	if (!isset($font2image['cache_images'])) $font2image['cache_images'] = false;
 	if (!isset($font2image['cache_folder'])) $font2image['cache_images'] = false;
 	if ($font2image['cache_folder'] !="" && !is_dir($font2image['cache_folder'])) fatal_error('Cache folder does not exist.');
+	if (!isset($font2image['cache_prefix']) || $font2image['cache_prefix'] == false) $font2image['cache_prefix'] = "";
 	if (!isset($font2image['cache_hash'])) $font2image['cache_hash'] = false;
 
 	if (!isset($font2image['font_spacing'])) $font2image['font_spacing'] = false;
@@ -128,7 +130,7 @@ function font2image($font2image) {
 		} else {
 			$hash = str_replace(' ', '_', $font2image['font_text']);
 		}
-		$cache_filename = $font2image['cache_folder'] . '/' . $hash . '.png' ;
+		$cache_filename = $font2image['cache_folder'] . '/' . $font2image['cache_prefix'] . $hash . '.png' ;
 		if($font2image['cache_images'] && is_readable($cache_filename)) {
 			// convert the file to a resource
 			$imagefile = @getimagesize($cache_filename);

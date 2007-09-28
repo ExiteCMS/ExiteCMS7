@@ -24,7 +24,8 @@ $font2png['font_kerning'] = 0;
 $font2png['outline_width'] = 0;
 $font2png['shadow_width'] = 0;
 $font2png['cache_images'] = (isset($_GET['cache']) && $_GET['cache'] == "yes") ? true : false;
-$font2png['cache_folder'] = PATH_THEME."cache";
+$font2png['cache_folder'] = PATH_ROOT."files/cache/";
+$font2png['cache_prefix'] = $_SERVER['SERVER_NAME'].".".$settings['theme'].".";
 $font2png['cache_hash'] = false;
 
 $image = font2image($font2png);

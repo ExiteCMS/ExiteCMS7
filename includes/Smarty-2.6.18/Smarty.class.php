@@ -72,7 +72,7 @@ class Smarty
      *
      * @var string
      */
-    var $template_dir    =  array('templates');
+    var $template_dir    =  'templates';
 
     /**
      * The directory where compiled templates are located.
@@ -1119,7 +1119,7 @@ class Smarty
     function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         static $_cache_info = array();
-
+        
         $_smarty_old_error_level = $this->debugging ? error_reporting() : error_reporting(isset($this->error_reporting)
                ? $this->error_reporting : error_reporting() & ~E_NOTICE);
 
@@ -1751,20 +1751,14 @@ class Smarty
         if(isset($auto_source)) {
             // make source name safe for filename
             $_filename = urlencode(basename($auto_source));
-
-			// WANWIZARD: if the filename contains illegal characters, use the MD5-hash
-			if (preg_match("%[\\\/:;*?\"\[\]\%]%", $_filename)) {
-				$_filename = md5($_filename);
-			}
-			// WANWIZARD: end-of-mod
-
             $_crc32 = sprintf('%08X', crc32($auto_source));
             // prepend %% to avoid name conflicts with
             // with $params['auto_id'] names
             $_crc32 = substr($_crc32, 0, 2) . $_compile_dir_sep .
                       substr($_crc32, 0, 3) . $_compile_dir_sep . $_crc32;
-            $_return .= $_filename . '.%%' . $_crc32 . '%%';
+            $_return .= '%%' . $_crc32 . '%%' . $_filename;
         }
+
         return $_return;
     }
 

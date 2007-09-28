@@ -166,7 +166,7 @@ $locale['193'] = "Logging in as ";
 $locale['194'] = "This account is currently suspended.";
 $locale['195'] = "This account has not been activated.";
 $locale['196'] = "Invalid username or password.";
-$locale['197'] = "OBSOLETE! REPLACED BY 183/184!";
+$locale['197'] = "Page last updated";
 $locale['198'] = "<font color='red'><b>Warning:</b></font> setup.php detected, please delete it immediately";
 $locale['199'] = "wrote";
 ?>

@@ -14,36 +14,119 @@
 +----------------------------------------------------*/
 if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
 
-// Smarty template engine definitions and initialisation
+// load the Smarty template engine
 require_once PATH_INCLUDES."Smarty-2.6.18/Smarty.class.php";
 
-// initialize the class
-$template = & new Smarty();
+// extend Smarty with the ExiteCMS custom bits
+class ExiteCMS_Smarty extends Smarty {
 
-// debugging needed?
-$template->debugging = false;
+    /**#@+
+     * ExiteCMS Smarty Configuration Section
+     */
 
-// on-the-fly compilation needed?
-$template->compile_check = true;
+    /**
+     * Array with names of directories where templates can be located.
+     *
+     * @var string
+     */
+	var $template_dir = array('templates');
 
-// set the compile ID for this website
-$template->compile_id = $_SERVER['SERVER_NAME'];
+    /**#@-*/
+    /**
+     * The class constructor.
+     */
+	function ExiteCMS_Smarty() {
+		global $settings;
+		
+		$this->Smarty();
 
-// caching required?
-$template->caching = 0;
+		// debugging needed?
+		$this->debugging = false;
+		
+		// on-the-fly compilation needed?
+		$this->compile_check = true;
+		
+		// set the compile ID for this website/theme (themes can have different templates!)
+		$this->compile_id = $_SERVER['SERVER_NAME'].".".$settings['theme'];
+		
+		// caching required?
+		$this->caching = 0;
+		
+		// path definitions
+		$this->config_dir = PATH_THEME.'templates/configs';
+		$this->compile_dir = PATH_ROOT.'files/tplcache';
+		$this->cache_dir = PATH_ROOT.'files/cache';
+	
+		// PHP in Templates? Don't think so!
+		$this->php_handling = SMARTY_PHP_REMOVE;
+		
+		// Template security settings: allow PHP functions
+		$this->security = false;
+	}
 
-// path definitions
-$template->template_dir = PATH_THEME.'templates/source';
-$template->compile_dir = PATH_THEME.'templates/templates';
-$template->config_dir = PATH_THEME.'templates/configs';
-$template->cache_dir = PATH_THEME.'cache';
+    /**
+     * get a concrete filename for automagically created content
+     *
+     * @param string $auto_base
+     * @param string $auto_source
+     * @param string $auto_id
+     * @return string
+     * @staticvar string|null
+     * @staticvar string|null
+     */
+    function _get_auto_filename($auto_base, $auto_source = null, $auto_id = null)
+    {
+        $_compile_dir_sep =  $this->use_sub_dirs ? DIRECTORY_SEPARATOR : '^';
+        $_return = $auto_base . DIRECTORY_SEPARATOR;
+
+        if(isset($auto_id)) {
+            // make auto_id safe for directory names
+            $auto_id = str_replace('%7C',$_compile_dir_sep,(urlencode($auto_id)));
+        }
+
+        if(isset($auto_source)) {
+            // make source name safe for filename
+            $auto_source = urlencode(basename($auto_source));
+			if (preg_match("%[\\\/:;*?\"\[\]\%]%", $auto_source)) {
+				$auto_source = md5($auto_source);
+			}
+            $_crc32 = sprintf('%08X', crc32($auto_source));
+            // prepend %% to avoid name conflicts with
+            // with $params['auto_id'] names
+            $_crc32 = substr($_crc32, 0, 2) . $_compile_dir_sep .
+                      substr($_crc32, 0, 3) . $_compile_dir_sep . $_crc32;
+        }
+        return $_return.(isset($auto_source)?($auto_source."."):"").(isset($auto_id)?($auto_id."."):"").(isset($_crc32)?$_crc32:"");
+    }
+
+    /**
+     * Returns the last modified timestamp of a template, or false if not found.
+     *
+     * @param string $tpl_file
+     * @return mixed
+     */
+    function template_timestamp($tpl_file)
+    {
+        $_params = array('resource_name' => $tpl_file, 'quiet'=>true, 'get_source'=>false);
+        if ($this->_fetch_resource_info($_params)) {
+			return $_params['resource_timestamp'];
+		} else {
+			return false;
+		}
+    }
+}
+
+// Smarty template engine definitions and initialisation
+
+// initialize the template engine
+$template = & new ExiteCMS_Smarty();
 
 // plugin's, where to find them?
 $plugins_dir = array();
 // first check if there's one defined in the current theme
 if (is_dir(PATH_THEME."template/plugins")) $plugins_dir[] = PATH_THEME."template/plugins";
-// next, check the CMS custom plugins
-$plugins_dir[] = 'custom-plugins';
+// next, check the ExiteCMS custom plugins
+$plugins_dir[] = PATH_INCLUDES.'template-plugins';
 // and finaly, use the default Smarty plugins
 $plugins_dir[] = 'smarty-plugins';
 
@@ -52,17 +135,11 @@ $template->plugins_dir = $plugins_dir;
 // templates, where to find them?
 $template_dir = array();
 // first check if there's one defined in the current theme
-if (is_dir(PATH_THEME."templates/source")) $template_dir[] = PATH_THEME."templates/source";
+if (is_dir(PATH_THEME."templates/templates")) $template_dir[] = PATH_THEME."templates/templates";
 // next, check the CMS template directory
 $template_dir[] = PATH_INCLUDES.'templates';
 
 $template->template_dir = $template_dir;
-
-// PHP in Templates? Don't think so!
-$template->php_handling = SMARTY_PHP_REMOVE;
-
-// Template security settings: allow PHP functions
-$template->security = false;
 
 // Register the panel template resource
 $template->register_resource('panel', array('resource_panel_source', 'resource_panel_timestamp', 'resource_panel_secure', 'resource_panel_trusted'));
@@ -82,7 +159,7 @@ $template_variables = array();
 function load_templates($_type='', $_name='') {
 	global $settings, $userdata, $db_prefix, $aidlink,
 			$template, $template_panels, $template_variables, 
-			$_loadstats, $_headparms, $_bodyparms;
+			$_loadstats, $_headparms, $_bodyparms, $_last_updated;
 
 	// reset all assigned template variables
 	$template->clear_all_assign();
@@ -180,8 +257,15 @@ function load_templates($_type='', $_name='') {
 				// we shouldn't get here
 			}
 		
-			// if a template is defined, load the template, 
-			if (isset($panel['template'])) $template->display($panel['template']);
+			// if a template is defined, get the last modified date, and load the template
+			if (isset($panel['template'])) {
+				// get the timestamp of the template, and update the last update timestamp if newer
+				$ts = $template->template_timestamp($panel['template']);
+				$_last_updated = isset($_last_updated) ? ($ts > $_last_updated ? $ts : $_last_updated ) : $ts;
+				$template->assign("_last_updated", $_last_updated);
+				// and load the template
+				$template->display($panel['template']);
+			}
 			
 			// restore the template direcory if needed
 			if (isset($td) && is_array($td)) $template->template_dir = $td;
