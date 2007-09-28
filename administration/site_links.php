@@ -93,7 +93,7 @@ function buildmenutree($parent, $depth, $panel) {
 		$data['menu_first'] = $current == 1 ? 1 : 0;
 		$data['menu_last'] = $current == $total ? 1 : 0;
 		$data['menu_depth'] = $depth;
-		$data['external'] = (strstr($data['link_url'], "http://") || strstr($data['link_url'], "https://")  ? 1 : 0);
+		$data['external'] = $data['link_window'] == 1;
 		$data['link_visibility_name'] = getgroupname($data['link_visibility'], '-1');
 		$current++;
 		$links[] = $data;
@@ -173,6 +173,10 @@ if ($action == "refresh") {
 		$link_aid = isset($_POST['link_aid']) ? $_POST['link_aid'] : "0";
 		$panel_filename = isset($_POST['panel_filename']) ? $_POST['panel_filename'] : "";
 		$link_parent = isset($_POST['link_parent']) ? $_POST['link_parent'] : "0";
+		// if a protocol is specified in the URL, force it to open in a new window
+		if (strstr($link_url, "://")) {
+			$link_window = 1;
+		}
 		if ($action == "edit") {
 			$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_id='$link_id'"));
 			// if the panel name has changed, move all submenu of which this link is the parent too...

@@ -146,7 +146,8 @@
 				{else}
 					<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> 
 					{if $panels[id].links[id2].external}
-						<a href='{$panels[id].links[id2].link_url}'>$panels[id].links[id2].link_name}</a>
+						<a href='{$panels[id].links[id2].link_url}'>{$panels[id].links[id2].link_name}</a>
+						<img src='{$smarty.const.THEME}images/external_link.jpg' alt='' />
 					{else}
 						<a href='{$smarty.const.BASEDIR}{$panels[id].links[id2].link_url}'>{$panels[id].links[id2].link_name}</a>
 					{/if}
@@ -174,8 +175,12 @@
 			{/if}
 			</td>
 			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=edit&amp;link_id={$panels[id].links[id2].link_id}&amp;panel={$panels[id].panel}'>{$locale.434}</a> |
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;link_id={$panels[id].links[id2].link_id}&amp;panel={$panels[id].panel}' onclick='return confirm("{$locale.449}");'>{$locale.435}</a>
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=edit&amp;link_id={$panels[id].links[id2].link_id}&amp;panel={$panels[id].panel}'>
+					<img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.434}' title='{$locale.434}' style='border:0px;'>
+				</a>
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;link_id={$panels[id].links[id2].link_id}&amp;panel={$panels[id].panel}' onclick='return confirm("{$locale.449}");'>
+					<img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.435}' title='{$locale.435}' style='border:0px;'>
+				</a>
 			</td>
 		</tr>
 		{sectionelse}
