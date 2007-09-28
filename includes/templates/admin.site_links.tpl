@@ -68,7 +68,6 @@
 				<input type='checkbox' name='link_window' value='1'{if $link_window} checked{/if}> {$locale.428}
 			</td>
 		</tr>
-		{if $action != "edit"}
 		<tr>
 			<td class='tbl' valign='top'>
 				{$locale.423}
@@ -77,7 +76,6 @@
 				<input type='text' name='link_order'  value='{$link_order}' maxlength='2' class='textbox' style='width:50px;' />
 			</td>
 		</tr>
-		{/if}
 		<tr>
 			<td class='tbl' valign='top'>
 				{$locale.422}

@@ -170,6 +170,7 @@ if ($action == "refresh") {
 		$link_visibility = isNum($_POST['link_visibility']) ? $_POST['link_visibility'] : "0";
 		$link_position = isset($_POST['link_position']) ? $_POST['link_position'] : "0";
 		$link_window = isset($_POST['link_window']) ? $_POST['link_window'] : "0";
+		$link_order = isset($_POST['link_order']) ? $_POST['link_order'] : "0";
 		$link_aid = isset($_POST['link_aid']) ? $_POST['link_aid'] : "0";
 		$panel_filename = isset($_POST['panel_filename']) ? $_POST['panel_filename'] : "";
 		$link_parent = isset($_POST['link_parent']) ? $_POST['link_parent'] : "0";
@@ -193,8 +194,10 @@ if ($action == "refresh") {
 			if ($data['link_parent'] != $link_parent) {
 				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'"),0)+1;
 			} else {
-				// reuse the old one
-				$link_order = $data['link_order'];
+				// link changed?
+				if ($link_order != $data['link_order']) {
+					$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'");
+				}
 			}
 			// and update the link itself as well...
 			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_name='$link_name', link_url='$link_url', panel_name='$panel_filename', link_visibility='$link_visibility', link_position='$link_position', link_parent='$link_parent', link_window='$link_window', link_aid='$link_aid', link_order='$link_order' WHERE link_id='$link_id'");
