@@ -19,6 +19,7 @@ $locale['415'] = "User Group Rights Updated";
 $locale['416'] = "Edit Group Membership";
 $locale['417'] = "No";
 $locale['418'] = "Yes";
+$locale['419'] = "This group is either a built-in group, or belongs to a module. These groups can not be deleted";
 // Edit/Delete Options
 $locale['420'] = "User Groups";
 $locale['421'] = "Edit";

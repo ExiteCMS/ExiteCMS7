@@ -83,8 +83,8 @@
 					{$locale.u006}
 				</td>
 				<td class='tbl'>
-					<input type='radio' name='user_hide_email' value='1' {if $this_userdata.user_hide_email == "1"}checked{/if} />{$locale.u007}
-					<input type='radio' name='user_hide_email' value='0' {if $this_userdata.user_hide_email == "0"}checked{/if} />{$locale.u008}
+					<input type='radio' name='user_hide_email' value='1' {if $this_userdata.user_hide_email == "1"}checked="checked"{/if} />{$locale.u007}
+					<input type='radio' name='user_hide_email' value='0' {if $this_userdata.user_hide_email == "0"}checked="checked"{/if} />{$locale.u008}
 				</td>
 			</tr>
 			<tr>
@@ -92,9 +92,9 @@
 					{$locale.u026}
 				</td>
 				<td class='tbl'>
-					<input type='radio' name='user_newsletters' value='1' {if $this_userdata.user_newsletters == "1"}checked{/if} />{$locale.u037}
-					<input type='radio' name='user_newsletters' value='2' {if $this_userdata.user_newsletters == "2"}checked{/if} />{$locale.u038}
-					<input type='radio' name='user_newsletters' value='0' {if $this_userdata.user_newsletters == "0"}checked{/if} />{$locale.u039}
+					<input type='radio' name='user_newsletters' value='1' {if $this_userdata.user_newsletters == "1"}checked="checked"{/if} />{$locale.u037}
+					<input type='radio' name='user_newsletters' value='2' {if $this_userdata.user_newsletters == "2"}checked="checked"{/if} />{$locale.u038}
+					<input type='radio' name='user_newsletters' value='0' {if $this_userdata.user_newsletters == "0"}checked="checked"{/if} />{$locale.u039}
 				</td>
 			</tr>
 			<tr>
@@ -102,8 +102,8 @@
 					{$locale.u024}
 				</td>
 				<td class='tbl'>
-					<input type='radio' name='user_forum_fullscreen' value='1' {if $this_userdata.user_forum_fullscreen == "1"}checked{/if} />{$locale.u007}
-					<input type='radio' name='user_forum_fullscreen' value='0' {if $this_userdata.user_forum_fullscreen == "0"}checked{/if} />{$locale.u008}
+					<input type='radio' name='user_forum_fullscreen' value='1' {if $this_userdata.user_forum_fullscreen == "1"}checked="checked"{/if} />{$locale.u007}
+					<input type='radio' name='user_forum_fullscreen' value='0' {if $this_userdata.user_forum_fullscreen == "0"}checked="checked"{/if} />{$locale.u008}
 				</td>
 			</tr>
 			<tr>
@@ -122,23 +122,23 @@
 					{foreach from=$locale.datesequence item=field}
 					{if $field == "D"}
 					<select name='user_day' class='textbox'>
-						<option> </option>
+						<option>&nbsp;</option>
 						{section name=d start=1 loop=32}
-							<option{if $smarty.section.d.index == $user_day} selected{/if}>{$smarty.section.d.index}</option>
+							<option{if $smarty.section.d.index == $user_day} selected="selected"{/if}>{$smarty.section.d.index}</option>
 						{/section}
 					</select>
 					{elseif $field == "M"}
 					<select name='user_month' class='textbox'>
-						<option> </option>
+						<option>&nbsp;</option>
 						{section name=m start=1 loop=13}
-							<option{if $smarty.section.m.index == $user_month} selected{/if}>{$smarty.section.m.index}</option>
+							<option{if $smarty.section.m.index == $user_month} selected="selected"{/if}>{$smarty.section.m.index}</option>
 						{/section}
 					</select>
 					{elseif $field == "Y"}
 					<select name='user_year' class='textbox'>
-						<option> </option>
+						<option>&nbsp;</option>
 						{section name=y start=1900 loop=$smarty.now|date_format:"%Y"}
-							<option{if $smarty.section.y.index == $user_year} selected{/if}>{$smarty.section.y.index}</option>
+							<option{if $smarty.section.y.index == $user_year} selected="selected"{/if}>{$smarty.section.y.index}</option>
 						{/section}
 					</select>
 					{/if}
@@ -188,6 +188,18 @@
 			</tr>
 			<tr>
 				<td class='tbl'>
+					{$locale.u028}
+				</td>
+				<td class='tbl'>
+					<select name='user_locale' class='textbox' style='width:200px;'>
+						{section name=locales loop=$locales}
+							<option value='{$locales[locales].locale_id}'{if $locales[locales].selected} selected="selected"{/if}>{$locales[locales].locale_name}</option>
+						{/section}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class='tbl'>
 					{$locale.u015}
 				</td>
 				<td class='tbl'>
@@ -205,7 +217,7 @@
 				<td class='tbl'>
 					<select name='user_offset' class='textbox'>
 					{section name=offset loop=$settings.timezones}
-						<option{if $this_userdata.user_offset == $settings.timezones[offset]} selected{/if}>{$settings.timezones[offset]}</option>
+						<option{if $this_userdata.user_offset == $settings.timezones[offset]} selected="selected"{/if}>{$settings.timezones[offset]}</option>
 					{/section}
 					</select>
 					&nbsp;
@@ -233,15 +245,15 @@
 					{$locale.u020}
 				</td>
 				<td class='tbl'>
-					<textarea name='user_sig' rows='5' class='textbox' style='width:295px'>{$this_userdata.user_sig}</textarea><br>
-					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('user_sig', '[b]', '[/b]');">
-					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('user_sig', '[i]', '[/i]');">
-					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('user_sig', '[u]', '[/u]');">
-					<input type='button' value='url' class='button' style='width:30px;' onClick="addText('user_sig', '[url]', '[/url]');">
-					<input type='button' value='mail' class='button' style='width:35px;' onClick="addText('user_sig', '[mail]', '[/mail]');">
-					<input type='button' value='img' class='button' style='width:30px;' onClick="addText('user_sig', '[img]', '[/img]');">
-					<input type='button' value='center' class='button' style='width:45px;' onClick="addText('user_sig', '[center]', '[/center]');">
-					<input type='button' value='small' class='button' style='width:40px;' onClick="addText('user_sig', '[small]', '[/small]');">
+					<textarea name='user_sig' rows='5' cols='80' class='textbox' style='width:295px'>{$this_userdata.user_sig}</textarea><br />
+					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('user_sig', '[b]', '[/b]');" />
+					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('user_sig', '[i]', '[/i]');" />
+					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('user_sig', '[u]', '[/u]');" />
+					<input type='button' value='url' class='button' style='width:30px;' onclick="addText('user_sig', '[url]', '[/url]');" />
+					<input type='button' value='mail' class='button' style='width:35px;' onclick="addText('user_sig', '[mail]', '[/mail]');" />
+					<input type='button' value='img' class='button' style='width:30px;' onclick="addText('user_sig', '[img]', '[/img]');" />
+					<input type='button' value='center' class='button' style='width:45px;' onclick="addText('user_sig', '[center]', '[/center]');" />
+					<input type='button' value='small' class='button' style='width:40px;' onclick="addText('user_sig', '[small]', '[/small]');" />
 				</td>
 			</tr>
 			<tr>
@@ -263,7 +275,7 @@
 		</table>
 	</form>
 {/if}
-{literal}<script language='JavaScript'>
+{literal}<script type='text/javascript'>
 //
 // calculate the offset between browser and server time
 //

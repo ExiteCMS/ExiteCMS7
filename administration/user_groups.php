@@ -67,6 +67,9 @@ if (isset($status)) {
 	} elseif ($status == "dely") {
 		$title = $locale['408'];
 		$variables['message'] = $locale['411'];
+	} elseif ($status == "dels") {
+		$title = $locale['408'];
+		$variables['message'] = $locale['419'];
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
@@ -199,6 +202,13 @@ if (isset($_POST['update_admin'])) {
 
 } elseif (isset($_POST['delete'])) {
 
+	$result = dbquery("SELECT group_ident FROM ".$db_prefix."user_groups WHERE group_id = '$group_id'");
+	if ($result) {
+		$data = dbarray($result);
+		if ($data['group_ident'] != "") {
+			redirect(FUSION_SELF.$aidlink."&status=dels");
+		}
+	}
 	if (dbcount("(*)", "users", "user_groups REGEXP('^\\\.{$group_id}$|\\\.{$group_id}\\\.|\\\.{$group_id}$')") != 0) {
 		redirect(FUSION_SELF.$aidlink."&status=deln");
 	} else {

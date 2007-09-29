@@ -83,7 +83,7 @@ if (isset($_POST['moveuser'])) {
 								$errormessage = sprintf($locale['920'], $user_from['user_name'], $user_to['user_name']);
 								$action = "list";
 							}
-						} 
+						}
 					} else {
 						$errormessage = $locale['921'];	// ad not found in the database
 					}
@@ -105,7 +105,19 @@ if (isset($_POST['moveuser'])) {
 if (isset($_POST['save'])) {
 	switch($action) {
 		case "add":
-			if (isNum($_POST['new_sponsor'])) $result = dbquery("UPDATE ".$db_prefix."users SET user_sponsor = '1' WHERE user_id = '".$_POST['new_sponsor']."'");
+			if (isNum($_POST['new_sponsor'])) {
+				$result = dbquery("UPDATE ".$db_prefix."users SET user_sponsor = '1' WHERE user_id = '".$_POST['new_sponsor']."'");
+				// add the new sponsor to the sponsors usergroup
+				$result = dbquery("SELECT group_id FROM ".$db_prefix."user_groups WHERE group_ident = 'wE01'");
+				if ($result) {
+					$data = dbarray($result);
+					$result = dbquery("SELECT user_groups FROM ".$db_prefix."users WHERE user_id = '".$_POST['new_sponsor']."'");
+					if ($result) {
+						$data2 = dbarray($result);
+						$result = dbquery("UPDATE ".$db_prefix."users SET user_groups = '".$data2['user_groups'].".".$data['group_id']."' WHERE user_id = '".$_POST['new_sponsor']."'");
+					}
+				}
+			}
 			$action = "list";
 			break;
 		case "addad":
@@ -239,6 +251,19 @@ if ($action == "delclientconf") {
 			}
 			$result = dbquery("DELETE FROM ".$db_prefix."adverts WHERE adverts_userid = '$id'");
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_sponsor = '0' WHERE user_id = '$id'");
+
+			// remove the sponsor to the sponsors usergroup
+			$result = dbquery("SELECT group_id FROM ".$db_prefix."user_groups WHERE group_ident = 'wE01'");
+			if ($result) {
+				$group_id = dbarray($result);
+				$group_id = '.'.$group_id['group_id'];
+				$result = dbquery("SELECT user_groups FROM ".$db_prefix."users WHERE user_id = '$id'");
+				if ($result) {
+					$data2 = dbarray($result);
+					$result = dbquery("UPDATE ".$db_prefix."users SET user_groups = '".str_replace($group_id, '', $data2['user_groups'])."' WHERE user_id = '$id'");
+				}
+			}
+
 			$errortitle = $locale['476'];
 			$errormessage = $locale['910'];
 		}

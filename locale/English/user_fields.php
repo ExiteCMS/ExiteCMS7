@@ -26,6 +26,7 @@ $locale['u024'] = "Hide side-panels when reading:";
 $locale['u025'] = "Country:";
 $locale['u026'] = "Newsletters format:";
 $locale['u027'] = "Browser Time";
+$locale['u028'] = "Language";
 // profile panel info
 $locale['u030'] = "Panel state:";
 $locale['u031'] = "Panel name:";

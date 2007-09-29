@@ -76,7 +76,11 @@ if (isset($_POST['savesettings'])) {
 $settings2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
 $variables['settings2'] = $settings2;
 
-$variables['locale_files'] = makefilelist(PATH_LOCALE, ".|..", true, "folders");
+$variables['locales'] = array();
+$result = dbquery("SELECT locale_name FROM ".$db_prefix."locale WHERE locale_active = '1' ORDER BY locale_name");
+while ($data = dbarray($result)) {
+	$variables['locales'][] = $data['locale_name'];
+}
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.settings_languages', 'template' => 'admin.settings_languages.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/settings.php");

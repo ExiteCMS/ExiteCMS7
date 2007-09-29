@@ -1,5 +1,5 @@
 <?php 
-require_once dirname(__FILE__)."/../../maincore.php";
+require_once dirname(__FILE__)."/../../includes/core_functions.php";
 
 // webmaster or CGI tool only!
 if ((!iMEMBER || $userdata['user_id'] != 1) && isset($_SERVER['SERVER_SOFTWARE'])) fallback(BASEDIR."index.php");

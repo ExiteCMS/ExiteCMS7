@@ -37,7 +37,14 @@ if (isset($user_id)) {
 if (isset($_POST['update_profile'])) {
 	$error = ""; $set_avatar = "";
 	$variables['update_profile'] = true;
-	
+
+	$result = dbquery("SELECT locale_code, locale_name FROM ".$db_prefix."locale WHERE locale_id = '".$_POST['user_locale']."'");
+	if ($data = dbarray($result)) {
+		if ($data['locale_name'] != $settings['locale']) {
+			die('setting locale cookie: '.$data['locale_code']);
+			setcookie("locale", $data['locale_code'], time() + 31536000, "/", "", "0");
+		}
+	}
 	$username = trim(eregi_replace(" +", " ", $_POST['user_name']));
 	if ($username == "" || $_POST['user_email'] == "" || $_POST['user_fullname'] == "" ) {
 		$error .= $locale['480']."<br>\n";
@@ -205,6 +212,13 @@ if (iMEMBER) {
 }
 
 $variables['this_userdata'] = $this_userdata;
+
+$variables['locales'] = array();
+$result = dbquery("SELECT locale_id, locale_name FROM ".$db_prefix."locale WHERE locale_active = '1' ORDER BY locale_name");
+while ($data = dbarray($result)) {
+	$data['selected'] = $data['locale_name'] == $settings['locale'];
+	$variables['locales'][] = $data;
+}
 
 // define the search body panel variables
 $template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."members-profile.php", PATH_LOCALE.LOCALESET."user_fields.php"));
