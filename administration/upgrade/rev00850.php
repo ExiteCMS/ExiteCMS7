@@ -29,16 +29,35 @@ $commands = array();
 
 // rename panel_content to panel_code and add a new panel_template field
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##panels CHANGE panel_content panel_code TEXT NOT NULL");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##panels ADD panel_code TEXT NOT NULL AFTER panel_code");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##panels ADD panel_template TEXT NOT NULL AFTER panel_code");
 
 // add a timestamp to the panels table, to track updates to dynamic panels, and give it a default value
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##panels ADD panel_datestamp INT(10) UNSIGNED NOT NULL");
-$commands[] = array('type' => 'db', 'value' => "UPDATE TABLE ##PREFIX##panels SET panel_datestamp = '".time()."'");
+$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##panels SET panel_datestamp = '".time()."'");
 
 // add the language settings admin module to the admin table and give all webmasters access
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO TABLE ##PREFIX##panels (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_lang.gif', 'Language Setiings', 'settings_language.php', '3')");
-$commands[] = array('type' => 'db', 'value' => "UPDATE TABLE ##PREFIX##users SET user_rights = CONCAT(user_rights, '.S7') WHERE user_level = 103");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO TABLE ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_lang.gif', 'Language Setiings', 'settings_language.php', '3')");
+$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##users SET user_rights = CONCAT(user_rights, ".S7") WHERE user_level = 103");
 
 // add module identification to user_groups, so they can be removed when uninstalling a module
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##user_groups ADD group_ident CHAR(4) NOT NULL AFTER group_id");
+
+// check if we have a usergroup called sponsors, if so, add the group_ident. If not, add the user_group
+$commands[] = array('type' => 'function', 'value' => "sponsor_group");
+
+/*---------------------------------------------------+
+| functions required for part of the upgrade process |
++----------------------------------------------------*/
+
+function sponsor_group() {
+	global $db_prefix;
+
+	$result = dbquery("SELECT * FROM ".$db_prefix."user_groups WHERE group_name = 'Sponsors'");
+	if ($result) {
+		$data = dbarray($result);
+		$result = dbquery("UPDATE ".$db_prefix."user_groups SET group_ident = 'wE01' WHERE group_id = '".$data['group_id']."'");
+	} else {
+		$result = dbquery("INSERT INTO ".$db_prefix."user_groups (group_ident, group_name, group_description, group_visible) VALUES ('wE01', 'Sponsors', 'Website Sponsors', '0'");
+	}
+}
 ?>
