@@ -5,9 +5,6 @@
 | Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright 2002 - 2006 Nick Jones     |
-| http://www.php-fusion.co.uk/                       |
-+----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -23,7 +20,7 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(12,0,0,08,30,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision);
+$revisions[] = array('revision' => $_revision, 'date' => mktime(22,19,0,8,27,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision."<br /><font color='red'>Dropped support for the Shoutbox (now an optional module), added forum thumbnail threshold settings.</font>");
 
 // array to store the commands of this update
 $commands = array();

@@ -5,9 +5,6 @@
 | Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright 2002 - 2006 Nick Jones     |
-| http://www.php-fusion.co.uk/                       |
-+----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -23,7 +20,7 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(12,0,0,07,24,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision);
+$revisions[] = array('revision' => $_revision, 'date' => mktime(12,25,0,7,28,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision."<br /><font color='red'>Now banners can be activated on a per-forum basis, and support for 'broken' timezones (like +10.5) has been added. GeoIP information can now be added manually (to correct mistakes, or add non-public IP's)</font>");
 
 // array to store the commands of this update
 $commands = array();

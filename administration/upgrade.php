@@ -19,17 +19,24 @@ if (!isset($settings['revision']) || !isNum($settings['revision'])) $settings['r
 
 // check for available upgrades
 $upgrades = array();
+$upgraded = array();
 $temp = makefilelist(PATH_ADMIN."upgrade", ".|..");
 foreach ($temp as $tempfile) {
 	// make sure it's a valid rev file format
 	if (strlen($tempfile) != 12 || substr($tempfile,0,3) != "rev" || substr($tempfile,-4) != ".php") continue;
 	$thisrev = substr($tempfile,3,5);
-	if (!isNum($thisrev) || $thisrev <= $settings['revision']) continue;
-	$upgrades[] = $tempfile;
+	if (!isNum($thisrev) || $thisrev <= $settings['revision']) {
+		$upgraded[] = $tempfile;
+	} else {
+		$upgrades[] = $tempfile;
+	}
 }
 
 // set a constant to define the upgrades available
 define('UPGRADES', count($upgrades));
+
+// set a constant to define the upgrades already installed
+define('UPGRADED', count($upgraded));
 
 // if it was called from the admin panel, continue interactively
 if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
@@ -46,6 +53,16 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 	// temp storage for template variables
 	$variables = array();
 
+	// get some information from the upgrades already installed
+	if (UPGRADED) {
+		$revisions = array();
+		// load and check the revision files
+		foreach ($upgraded as $revfile) {
+			require_once PATH_ADMIN."upgrade/".$revfile;
+		}
+		$variables['revisions_installed'] = $revisions;
+	}
+	
 	// check if there are upgrades available
 	if (UPGRADES) {
 		if (isset($_POST['stage']) && $_POST['stage'] == 2) {
@@ -128,7 +145,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 	}
 	// check for newer revisions on the ExiteCMS website
 	$variables['new_upgrades'] = false;
-	
+
 	$template_panels[] = array('type' => 'body', 'name' => 'admin.upgrade', 'template' => 'admin.upgrade.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/upgrade.php");
 	$template_variables['admin.upgrade'] = $variables;
 

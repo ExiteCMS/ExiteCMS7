@@ -5,9 +5,6 @@
 | Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright 2002 - 2006 Nick Jones     |
-| http://www.php-fusion.co.uk/                       |
-+----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -23,7 +20,7 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => 1184152074, 'description' => "Required updates for ExiteCMS v7.00 rev.730");
+$revisions[] = array('revision' => $_revision, 'date' => mktime(16,34,0,6,29,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision."<br /><font color='red'>This revision adds more granular homepage new selections, and better support for timezones.</font>");
 
 // array to store the commands of this update
 $commands = array();

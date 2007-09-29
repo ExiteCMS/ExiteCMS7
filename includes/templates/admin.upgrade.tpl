@@ -81,11 +81,11 @@
 		</tr>
 		{section name=rev loop=$revisions}
 		<tr>
-			<td align='center' width='1%' class='tbl1' style='white-space:nowrap;'>
+			<td align='center' valign='top' width='1%' class='tbl1' style='white-space:nowrap;'>
 				{$revisions[rev].revision}
 			</td>
-			<td align='center' width='1%' class='tbl1' style='white-space:nowrap;'>
-				{$revisions[rev].date|date_format:"longdate"}
+			<td align='center' valign='top' width='1%' class='tbl1' style='white-space:nowrap;'>
+				{$revisions[rev].date|date_format:"forumdate"}
 			</td>
 			<td align='left' class='tbl1'>
 				{$revisions[rev].description}
@@ -114,6 +114,42 @@
 </center>
 {/if}
 {include file="_closetable.tpl"}
+{if $smarty.const.UPGRADED}
+{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
+	<br />
+	<center>
+	<b>{$locale.407}</b>
+	</center>
+	<br />
+	<table align='center' cellpadding='0' cellspacing='1' width='650' class='tbl-border'>
+		<tr>
+			<td align='center' width='1%' class='tbl2' style='white-space:nowrap;'>
+				<b>{$locale.410} </b>
+			</td>
+			<td align='center' width='1%' class='tbl2' style='white-space:nowrap;'>
+				<b>{$locale.411}</b>
+			</td>
+			<td align='left' class='tbl2'>
+				<b>{$locale.412}</b>
+			</td>
+		</tr>
+		{section name=rev loop=$revisions_installed}
+		<tr>
+			<td align='center' valign='top' width='1%' class='tbl1' style='white-space:nowrap;'>
+				{$revisions_installed[rev].revision}
+			</td>
+			<td align='center' valign='top' width='1%' class='tbl1' style='white-space:nowrap;'>
+				{$revisions_installed[rev].date|date_format:"forumdate"}
+			</td>
+			<td align='left' class='tbl1'>
+				{$revisions_installed[rev].description}
+			</td>
+		</tr>
+		{/section}
+	</table>
+	<br />
+{include file="_closetable.tpl"}
+{/if}
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}

@@ -6,9 +6,10 @@ $locale['403'] = "The following upgrades are waiting to be installed:";
 $locale['404'] = "The following upgrades have failed:";
 $locale['405'] = "ExiteCMS has been succesfully upgraded to revision %s.";
 $locale['406'] = "Please look carefully at the error messages, and correct them.";
+$locale['407'] = "The following upgrades have been installed:";
 // upgrades
 $locale['410'] = "Revision";
-$locale['411'] = "Date";
+$locale['411'] = "Release Date";
 $locale['412'] = "Description";
 $locale['413'] = "Upgrade Now";
 $locale['414'] = "Error messages";
