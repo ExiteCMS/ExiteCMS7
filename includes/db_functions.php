@@ -12,7 +12,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("db_functions.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("db_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // Establish mySQL database connection
 $_db_link = dbconnect($db_host, $db_user, $db_pass, $db_name);

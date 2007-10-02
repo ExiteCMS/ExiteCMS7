@@ -10,7 +10,7 @@
 | GNU General Public License. For details refer to
 | the included gpl.txt file or visit http://gnu.org
 +----------------------------------------------------*/
-if (!defined("ExiteCMS_INIT")) { header("Location: ../index.php"); exit; }
+if (!defined("INIT_CMS_OK")) { header("Location: ../index.php"); exit; }
 
 $image_files = array();
 

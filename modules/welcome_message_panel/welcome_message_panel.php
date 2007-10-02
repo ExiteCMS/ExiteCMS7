@@ -9,7 +9,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("welcome_message_panel.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("welcome_message_panel.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // array's to store the variables for this panel
 $variables = array();

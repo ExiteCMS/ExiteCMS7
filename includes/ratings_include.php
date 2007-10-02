@@ -12,7 +12,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("ratings_include.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("ratings_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // load the locale for this include
 include PATH_LOCALE.LOCALESET."ratings.php";

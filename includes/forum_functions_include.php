@@ -12,7 +12,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("forum_functions_include.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("forum_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // add a poll vote to the database
 function fpm_vote() {

@@ -83,7 +83,6 @@ define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
 
 // mark that CMS Engine is properly initialized
 define("INIT_CMS_OK", TRUE);
-define("ExiteCMS_INIT", TRUE);
 
 // load the config file
 if (file_exists(PATH_ROOT."config.php")) {

@@ -1,5 +1,5 @@
 <?php
-if (!defined("ExiteCMS_INIT")) { header("Location:../index.php"); exit; }
+if (!defined("INIT_CMS_OK")) { header("Location:../index.php"); exit; }
 ////////////////////////////////////////////////////
 // PHPMailer - PHP email class
 //

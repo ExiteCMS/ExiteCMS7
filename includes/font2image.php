@@ -3,7 +3,7 @@
     Dynamic Heading Generator
     Original code by Stewart Rosenberger, http://www.stewartspeak.com/headings/
 
-    Converted by WanWizard to work in a PHP-Fusion environment
+    Converted by WanWizard to work in am ExiteCMS environment
 
     usage: $image_resource = font2image($f2i_array);
 
@@ -36,7 +36,7 @@
       itself can therefore not be transparent.
 
 */
-if (!defined("ExiteCMS_INIT")) { header("Location: ../index.php"); exit; } 
+if (!defined("INIT_CMS_OK")) { header("Location: ../index.php"); exit; } 
 
 function font2image($font2image) {
 

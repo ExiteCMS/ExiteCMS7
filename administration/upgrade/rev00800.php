@@ -13,7 +13,7 @@
 // upgrade for revision
 $_revision = 800;
 
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();

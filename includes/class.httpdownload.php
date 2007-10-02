@@ -1,5 +1,5 @@
 <?php
-if (!defined("ExiteCMS_INIT")) { exit; }
+if (!defined("INIT_CMS_OK")) { exit; }
 
 /*------------------
 | Download Handler |

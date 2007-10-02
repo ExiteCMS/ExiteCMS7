@@ -88,7 +88,7 @@ define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/");
 
 define("FUSION_SELF", isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "" ? basename($_SERVER['REDIRECT_URL']) : basename($_SERVER['PHP_SELF']));
-define('ExiteCMS_INIT', true);			
+define('CMS_INIT_OK', true);			
 
 // error tracking
 $error = "";

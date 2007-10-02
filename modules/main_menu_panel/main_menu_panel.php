@@ -9,7 +9,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("main_menu_panel.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("main_menu_panel.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // load the menu include
 require_once PATH_INCLUDES."menu_include.php";

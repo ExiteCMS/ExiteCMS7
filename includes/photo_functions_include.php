@@ -12,7 +12,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("photo_functions_include.php", $_SERVER['PHP_SELF']) || !defined('ExiteCMS_INIT')) die();
+if (eregi("photo_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
 	
