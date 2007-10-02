@@ -34,6 +34,7 @@ $locale['451'] = "Category ID";
 $locale['452'] = "Category Name";
 $locale['453'] = "Category Description";
 $locale['454'] = "Category Date";
+$locale['455'] = "Download Root";
 // Delete Download
 $locale['460'] = "Delete Download?";
 // Add/Edit Download Titles
@@ -50,6 +51,7 @@ $locale['486'] = "Version:";
 $locale['487'] = "Filesize:";
 $locale['488'] = "Save Download";
 $locale['489'] = "Update Publication Date";
+$locale['490'] = "Attention! All downloads in '".$locale['455']."' are publicly accessable!";
 // Current Downloads
 $locale['500'] = "Current Downloads";
 $locale['501'] = "Download Item [Click to Test]";

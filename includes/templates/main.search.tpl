@@ -24,11 +24,11 @@
 		<input type='submit' name='search' value='{$locale.408}' class='button' />
 		<br /><br />
 	{/if}
-	<input type='radio' name='stype' value='{$links[idx].value}'{if $links[idx].value == $stype} checked{/if}> {$links[idx].link_name}
+	<input type='radio' name='stype' value='{$links[idx].value}'{if $links[idx].value == $stype} checked="checked"{/if} /> {$links[idx].link_name}
 	{if $links[idx].value == $stype}{assign var='searched' value=$links[idx].link_name}{/if}
 	{if $smarty.section.idx.last}
 		{if $smarty.const.iMEMBER}
-		<input type='radio' name='stype' value='m'{if 'm' == $stype} checked{/if}> {$locale.407}
+		<input type='radio' name='stype' value='m'{if 'm' == $stype} checked="checked"{/if} /> {$locale.407}
 		{assign var='searched' value=$locale.407}
 		{/if}
 	</form>

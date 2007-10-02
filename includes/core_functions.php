@@ -81,13 +81,15 @@ define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
 define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
 
-// mark that ExiteCMS is properly initialized
+// mark that CMS Engine is properly initialized
+define("INIT_CMS_OK", TRUE);
 define("ExiteCMS_INIT", TRUE);
 
 // load the config file
 if (file_exists(PATH_ROOT."config.php")) {
 	@include_once PATH_ROOT."config.php";
 }
+
 // if config.php is absent or empty, bail out with an error
 if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the documentation on how to perform the setup');
 

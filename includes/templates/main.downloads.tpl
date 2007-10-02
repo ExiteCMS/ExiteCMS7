@@ -15,13 +15,20 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $subcats}{assign var="_title" value=$locale.417}{else}{assign var="_title" value=$locale.418}{/if}
-{assign var="columns" value="2"} 													{* number of columns *}
-{math equation="(100 - x) / x" x=$columns format="%u" assign="colwidth"}
+{assign var="have_cats" value=false}
+{assign var="columns" value="2"} 																{* number of columns *}
+{math equation="(100-x)/x" x=$columns format="%u" assign="colwidth"}							{* width per column  *}
 {section name=cat loop=$download_cats}
-{cycle name=column values="1,2" assign="column" print=no} 							{* keep track of the current column *}
+{cycle name=column values="1,2" assign="column" print=no} 										{* keep track of the current column *}
 {if $smarty.section.cat.first}
-{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
-<table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
+	{assign var="have_cats" value=true}
+	{math equation="x - (x%y)" x=$download_cats|@count y=$columns format="%u" assign="fullrows"}
+	{math equation="x - y" x=$download_cats|@count y=$fullrows format="%u" assign="remainder"}
+	{if $remainder > 0}
+		{math equation="(100 - z + y) / (z - y)" y=$fullrows z=$download_cats|@count format="%u" assign="lastwidth"}	{* width last rows columns *}
+	{/if}
+	{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
+	<table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 {/if}
 	{if $column == 1}<tr>{/if}
 		<td width='1%' class='tbl1' style='vertical-align:top'>
@@ -31,9 +38,13 @@
 				</a>
 			{/if}
 		</td>
+		{if $smarty.section.cat.iteration > $fullrows}
+		<td width='{$lastwidth}%' colspan='{math equation="1+(x-y)*2" x=$columns y=$remainder}' class='tbl1' style='vertical-align:top'>
+		{else}
 		<td width='{$colwidth}%' class='tbl1' style='vertical-align:top'>
+		{/if}
 			<div class='forum-caption'>
-				<img src='{$smarty.const.THEME}images/bullet.gif' alt=''>
+				<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
 				<a href='{$smarty.const.FUSION_SELF}?cat_id={$download_cats[cat].download_cat_id}'>{$download_cats[cat].download_cat_name}</a>
 				<br />
 				<span class='small2'>&nbsp; <b>{$locale.414}</b> {$download_cats[cat].download_datestamp|date_format:'%B %e, %Y'}
@@ -46,11 +57,7 @@
 	{if $column == $columns}</tr>{/if}
 {if $smarty.section.cat.last}
 	{if $column != $columns}
-	{section name=dummy start=$column loop=$columns}
-		<td width='{math equation='x+1' x=$colwidth}%' colspan='2' class='tbl1' style='vertical-align:top'>
-		</td>
-	{/section}
-	</tr>
+		</tr>
 	{/if}
 </table>
 {include file="_closetable.tpl"}
@@ -72,8 +79,11 @@
 <table width='100%' cellpadding='0' cellspacing='1' class='tbl-border'>
 {/if}
 	<tr>
-		<td colspan='4' class='forum-caption'>
+		<td colspan='3' class='forum-caption'>
 			<b>{$downloads[item].download_title}</b>
+		</td>
+		<td align='right' class='forum-caption'>
+			<a href='{$smarty.const.FUSION_SELF}?cat_id={$downloads[item].download_cat}&amp;download_id={$downloads[item].download_id}'><span class='small2'>{$locale.420}</span></a>
 		</td>
 	</tr>
 	{if $downloads[item].download_description|default:"" != ""}
@@ -115,16 +125,19 @@
 	</tr>
 {else}
 	</table>
+	{include file="_closetable.tpl"}
 {/if}
 {sectionelse}
-	{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
-	<center>
-		<br />
-		<b>{$locale.431}</b>
-		<br /><br />
-	</center>
+	{if !$have_cats}
+		{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
+		<center>
+			<br />
+			<b>{$locale.431}</b>
+			<br /><br />
+		</center>
+		{include file="_closetable.tpl"}
+	{/if}
 {/section}
-{include file="_closetable.tpl"}
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}

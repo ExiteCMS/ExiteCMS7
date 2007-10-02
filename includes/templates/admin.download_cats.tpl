@@ -42,7 +42,7 @@
 			</td>
 			<td class='tbl'>
 				<select name='cat_sub' class='textbox'>
-					<option value='0'{if $cat_sub == 0} selected{/if}>{$locale.444}</option>
+					<option value='0'{if $cat_sub == 0} selected{/if}>{$locale.455}</option>
 				{section name=cat loop=$cats}
 					{if $is_edit && $cats[cat].download_cat_id == $cat_id}
 					{else}
@@ -144,7 +144,7 @@
 		<span class='small2'>{$cats[dc].download_cat_description|truncate:50:"..."}</span>
 		</td>
 		<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
-			{$cats[dc].parent_cat_name|default:$locale.444}
+			{$cats[dc].parent_cat_name|default:$locale.455}
 		</td>
 		<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
 			{$cats[dc].group_name}

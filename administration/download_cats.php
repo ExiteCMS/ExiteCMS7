@@ -114,12 +114,18 @@ if (isset($step) && $step == "edit") {
 	if ($cat_sorting[0] == "download_title") { $cat_sort_by = "2"; }
 	if ($cat_sorting[0] == "download_datestamp") { $cat_sort_by = "3"; }
 	$cat_sort_order = $cat_sorting[1];
-	$cat_cat_sorting = explode(" ", $data['download_cat_cat_sorting']);
-	if ($cat_cat_sorting[0] == "download_cat_id") { $cat_cat_sort_by = "1"; }
-	if ($cat_cat_sorting[0] == "download_cat_name") { $cat_cat_sort_by = "2"; }
-	if ($cat_cat_sorting[0] == "download_cat_description") { $cat_cat_sort_by = "3"; }
-	if ($cat_cat_sorting[0] == "download_datestamp") { $cat_cat_sort_by = "4"; }
-	$cat_cat_sort_order = $cat_cat_sorting[1];
+	if (empty($data['download_cat_cat_sorting'])) {
+		$cat_cat_sort_by = "download_cat_id";
+		$cat_cat_sort_order = "DESC";
+	} else {
+		$cat_cat_sorting = explode(" ", $data['download_cat_cat_sorting']);
+		if ($cat_cat_sorting[0] == "download_cat_id") { $cat_cat_sort_by = "1"; }
+		elseif ($cat_cat_sorting[0] == "download_cat_name") { $cat_cat_sort_by = "2"; }
+		elseif ($cat_cat_sorting[0] == "download_cat_description") { $cat_cat_sort_by = "3"; }
+		elseif ($cat_cat_sorting[0] == "download_datestamp") { $cat_cat_sort_by = "4"; }
+		else { $cat_cat_sort_by = "1"; }
+		$cat_cat_sort_order = $cat_cat_sorting[1];
+	}
 	$cat_access = $data['download_cat_access'];
 	$cat_image = $data['download_cat_image'];
 	$cat_sub = $data['download_parent'];

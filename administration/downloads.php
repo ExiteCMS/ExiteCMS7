@@ -86,7 +86,7 @@ function recurse_dc($parent_id, $nestlevel) {
 }
 
 // initialise some variables we need later
-if (!isset($download_cat_id)) $download_cat_id = "";
+if (!isset($download_cat_id)) $download_cat_id = "-1";
 if (!isset($step)) $step = "";
 $barmsg = "";
 $bartitle = "";
@@ -167,9 +167,22 @@ if (dbrows($result) != 0) {
 		$variables['cats'][] = $data2;
 	}
 
-	// get the first download category
-	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 AND download_parent = 0 ORDER BY download_cat_id DESC LIMIT 1");
+	// build the download tree
 	$variables['tree'] = array();
+	$variables['tree'][] = array('node' => 'P', 'nestlevel' => -1, 'name' => $locale['455'], 'id' => 0);
+	// Download root first
+	$result = dbquery("SELECT * FROM ".$db_prefix."downloads WHERE download_cat = '0' ORDER BY download_id DESC");
+	if ($rows = dbrows($result)) {
+		$row = 1;
+		while ($data = dbarray($result)) {
+			$variables['tree'][] = array('node' => 'D', 'first' => ($row == 1), 'last' => ($row == $rows), 'cat_id' => 0, 'url' => $data['download_url'], 'name' => $data['download_title'], 'id' => $data['download_id']);
+		}
+	} else {
+		// no downloads in this category
+		$variables['tree'][] = array('node' => 'E', 'name' => $locale['505'], 'id' => 0);
+	}
+	// Then recurse through the download categories
+	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 AND download_parent = 0 ORDER BY download_cat_id DESC LIMIT 1");
 	if (dbrows($result) != 0) {
 		$data = dbarray($result);
 		recurse_dc($data['download_cat_id'], 0);
@@ -188,9 +201,13 @@ if (dbrows($result) != 0) {
 
 	// get all downloads from the database
 	$variables['barfiles'] = array();
-	$result = dbquery("SELECT * FROM ".$db_prefix."downloads ORDER BY download_id");
+	$result = dbquery("SELECT * FROM ".$db_prefix."downloads ORDER BY download_id DESC");
 	while($data = dbarray($result)) {
-		$data['download_cat_name'] = $variables['download_cats'][$data['download_cat']];
+		if ($data['download_cat']) {
+			$data['download_cat_name'] = $variables['download_cats'][$data['download_cat']];
+		} else {
+			$data['download_cat_name'] = $locale['455'];
+		}
 		$variables['barfiles'][] = $data;
 	}
 

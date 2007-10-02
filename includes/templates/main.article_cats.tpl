@@ -34,10 +34,11 @@
 						{if $article_cats[cat].more}
 							<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.FUSION_SELF}?cat_id={$article_cats[cat].article_cat_id}'>{$locale.405}</a>
 						{/if}
+					</td>
 				</tr>
 				<tr>
 					<td align='left' class='infobar'>
-						<b>{$article_cats[cat].article_cat_description}
+						<b>{$article_cats[cat].article_cat_description}</b>
 					</td>
 				</tr>
 			</table>

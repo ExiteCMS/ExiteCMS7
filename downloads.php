@@ -42,7 +42,7 @@ function countdownloads($cat_id) {
 // temp storage for template variables
 $variables = array();
 
-define('DOWNLOAD_LIMIT', 15);
+define('DOWNLOAD_LIMIT', 10);
 $variables['download__limit'] = DOWNLOAD_LIMIT;
 
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
@@ -78,6 +78,11 @@ if (!isset($cat_id)) {
 	// get all root categories
 	$variables['subcats'] = false;
 	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='0' AND ".groupaccess('download_cat_access')." ORDER BY download_cat_name");
+	if ($result) {
+		// any downloads in the 'root' are public, and ordered by download_id DESC, by default!
+		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');	
+		$cat_id = 0;
+	}
 } else {
 	// get the selected category, and all sub-categories of the requested download category
 	$variables['subcats'] = true;

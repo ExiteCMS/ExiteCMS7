@@ -15,12 +15,12 @@
 {* generates a panel with all advertising of one single client.            *}
 {*                                                                         *}
 {***************************************************************************}
-{literal}<script language='javascript'>
-<!---
+{literal}<script type='text/javascript'>
+<!--
 function confdel(url) {
 	if (confirm('{/literal}{$locale.905}{literal}')) location.href = url;
 }
-// --->
+// -->
 </script>{/literal}
 {include file="_opentable.tpl" name=$_name title=$locale.404|cat:" : <b>"|cat:$data.user_name|cat:"</b>" state=$_state style=$_style}
 <table align='center' cellpadding='0' cellspacing='1' width='90%' class='tbl-border'>
@@ -95,7 +95,7 @@ function confdel(url) {
 {/section}
 </table>
 <div align='center'>
-	<form name='subfunctions' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;id={$data.user_id}'>
+	<form name='sf_{$data.user_name}' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;id={$data.user_id}'>
 		<br />
 		<input type='submit' name='addad' value='{$locale.400}' class='button' />&nbsp;
 		<input type='submit' name='delclient' value='{$locale.476}' class='button' />

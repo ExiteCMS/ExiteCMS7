@@ -39,22 +39,23 @@
 					{$locale.481}
 				</td>
 				<td class='tbl'>
-					<textarea name='download_description' rows='5' class='textbox' style='width:400px;'>{$download_description}</textarea>
+					<textarea name='download_description' rows='5' cols='80' class='textbox' style='width:400px;'>{$download_description}</textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class='tbl'></td><td class='tbl'>
-					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('download_description', '<b>', '</b>');">
-					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('download_description', '<i>', '</i>');">
-					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('download_description', '<u>', '</u>');">
-					<input type='button' value='ul' class='button' style='width:25px;' onClick="addText('download_description', '<ul>', '</ul>');">
-					<input type='button' value='li' class='button' style='width:25px;' onClick="addText('download_description', '<li>', '</li>');">
-					<input type='button' value='link' class='button' style='width:35px' onClick="addText('download_description', '<a href=\'', '\' target=\'_blank\'>Link</a>');">
-					<input type='button' value='img' class='button' style='width:35px' onClick="addText('download_description', '<img src=\'', '\' style=\'margin:5px\' align=\'left\'>');">
-					<input type='button' value='center' class='button' style='width:45px' onClick="addText('download_description', '<center>', '</center>');">
-					<input type='button' value='small' class='button' style='width:40px' onClick="addText('download_description', '<span class=\'small\'>', '</span>');">
-					<input type='button' value='small2' class='button' style='width:45px' onClick="addText('download_description', '<span class=\'small2\'>', '</span>');">
-					<input type='button' value='alt' class='button' style='width:25px' onClick="addText('download_description', '<span class=\'alt\'>', '</span>');"><br>
+					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('download_description', '<b>', '</b>');" />
+					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('download_description', '<i>', '</i>');" />
+					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('download_description', '<u>', '</u>');" />
+					<input type='button' value='ul' class='button' style='width:25px;' onclick="addText('download_description', '<ul>', '</ul>');" />
+					<input type='button' value='li' class='button' style='width:25px;' onclick="addText('download_description', '<li>', '</li>');" />
+					<input type='button' value='link' class='button' style='width:35px' onclick="addText('download_description', '<a href=\'', '\' target=\'_blank\'>Link</a>');" />
+					<input type='button' value='img' class='button' style='width:35px' onclick="addText('download_description', '<img src=\'', '\' style=\'margin:5px\' align=\'left\'>');" />
+					<input type='button' value='center' class='button' style='width:45px' onclick="addText('download_description', '<center>', '</center>');" />
+					<input type='button' value='small' class='button' style='width:40px' onclick="addText('download_description', '<span class=\'small\'>', '</span>');" />
+					<input type='button' value='small2' class='button' style='width:45px' onclick="addText('download_description', '<span class=\'small2\'>', '</span>');" />
+					<input type='button' value='alt' class='button' style='width:25px' onclick="addText('download_description', '<span class=\'alt\'>', '</span>');" />
+					<br />
 				</td>
 			</tr>
 			<tr>
@@ -71,10 +72,13 @@
 				</td>
 				<td class='tbl'>
 					<select name='download_cat' class='textbox'>
+						<option value='0'{if $cats[id].selected} selected="selected"{/if}>{$locale.455}</option>
 					{section name=id loop=$cats}
-						<option value='{$cats[id].download_cat_id}'{if $cats[id].selected} selected{/if}>{$cats[id].download_cat_name}</option>
+						<option value='{$cats[id].download_cat_id}'{if $cats[id].selected} selected="selected"{/if}>{$cats[id].download_cat_name}</option>
 					{/section}
 					</select>
+					<br />
+					<span class='small2'>{$locale.490}</span>
 				</td>
 			</tr>
 			<tr>
@@ -112,10 +116,10 @@
 			<tr>
 				<td align='center' colspan='2' class='tbl'>
 					{if $step == "edit"}
-						<input type='checkbox' name='update_datestamp' value='1'> {$locale.489}
+						<input type='checkbox' name='update_datestamp' value='1' /> {$locale.489}
 						<br /><br />
 					{/if}
-					<input type='submit' name='save_download' value='{$locale.488}' class='button'>
+					<input type='submit' name='save_download' value='{$locale.488}' class='button' />
 				</td>
 			</tr>
 		</table>
@@ -146,13 +150,13 @@
 		{/if}
 		<tr>
 			<td class='tbl2'>
-				{section name=nl loop=$tree[id].nestlevel}
+				{section name=nl loop=`$tree[id].nestlevel+1`}
 				<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />&nbsp;
 				{/section}
 				{$tree[id].name}
 			</td>
 			<td class='tbl2' align='right'>
-				<img onclick="javascript:flipBox('{$tree[id].id}')" src='{$smarty.const.THEME}images/panel_{if $open}off{else}on{/if}.gif' name='b_{$tree[id].id}'>
+				<img onclick="javascript:flipBox('{$tree[id].id}')" src='{$smarty.const.THEME}images/panel_{if $open}off{else}on{/if}.gif' name='b_{$tree[id].id}' alt='' />
 			</td>
 		</tr>
 		{assign var='in_box' value=false}
@@ -169,7 +173,7 @@
 							</td>
 							<td align='right' width='100' class='tbl'>
 								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=edit&amp;download_cat_id={$tree[id].cat_id}&amp;download_id={$tree[id].id}'><img src='{$smarty.const.THEME}/images/page_edit.gif' alt='{$locale.503}' title='{$locale.503}' /></a>&nbsp;
-								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;download_cat_id={$tree[id].cat_id}&amp;download_id={$tree[id].id}' onClick='return DeleteItem()'><img src='{$smarty.const.THEME}/images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>
+								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;download_cat_id={$tree[id].cat_id}&amp;download_id={$tree[id].id}' onclick='return DeleteItem()'><img src='{$smarty.const.THEME}/images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>
 							</td>
 						</tr>
 		{if $tree[id].last}
@@ -218,7 +222,7 @@
 	{if $barmsg|default:"" != ""}
 		<center><b>{$barmsg}</b></center><br />
 	{/if}
-	<form name='barform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&step=bar'>
+	<form name='barform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=bar'>
 		<table align='center' cellpadding='0' cellspacing='0' width='400'>
 			<tr>
 				<td class='tbl'>
@@ -232,9 +236,9 @@
 				<td class='tbl'>
 					{$locale.521} {$smarty.section.bar.index}:<br />
 					<select name='download_bar[{$smarty.section.bar.index}]' class='textbox' style='width:400px;'>
-						<option value='0'></option>
+						<option value='0'>&nbsp;</option>
 					{section name=id loop=$barfiles}
-						<option value='{$barfiles[id].download_id}'{if $barfiles[id].download_bar == $smarty.section.bar.index} selected{/if}>{$barfiles[id].download_cat_name} » {$barfiles[id].download_title}</option>
+						<option value='{$barfiles[id].download_id}'{if $barfiles[id].download_bar == $smarty.section.bar.index} selected="selected"{/if}>{$barfiles[id].download_cat_name} » {$barfiles[id].download_title}</option>
 					{/section}
 					</select>
 				</td>

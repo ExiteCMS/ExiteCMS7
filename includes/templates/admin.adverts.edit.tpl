@@ -18,8 +18,8 @@
 {if $errormessage|default:"" != ""}
 	{include file="_message_table_panel.tpl" name=$_name title=$errortitle state=$_state style=$_style message=$errormessage bold=true}
 {/if}
-{literal}<script language='javascript'>
-<!---
+{literal}<script type='text/javascript'>
+// <!--
 function hidefields(ref) {
 
 	var element;
@@ -66,7 +66,7 @@ function hidefields(ref) {
 	}
 	return true;
 }
-// --->
+// -->
 </script>{/literal}
 {include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
 <form name='advertisement' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action={$action}{if $action == "edit"}&amp;adverts_id={$adverts_id}{/if}&amp;id={$ad_client_id}' enctype='multipart/form-data'>
@@ -74,7 +74,7 @@ function hidefields(ref) {
 		<tr>
 			<td width='175' class='tbl'>{$locale.411}:</td>
 			<td class='tbl'>
-				<select class='textbox' name='adverts_contract' onChange='hidefields(this)'>
+				<select class='textbox' name='adverts_contract' onchange='hidefields(this)'>
 					{html_options options=$contract_types selected=$adverts_contract}
 				</select>
 			</td>
@@ -84,17 +84,17 @@ function hidefields(ref) {
 			<td class='tbl'>
 				<select name='contract_start[mday]' class='textbox'>
 					{section name=sd start=1 loop=32}
-						<option{if $contract_start.mday|default:0 == $smarty.section.sd.index} selected{/if}>{$smarty.section.sd.index}</option>
+						<option{if $contract_start.mday|default:0 == $smarty.section.sd.index} selected="selected"{/if}>{$smarty.section.sd.index}</option>
 					{/section}
 				</select>
 				<select name='contract_start[mon]' class='textbox'>
 					{section name=sd start=1 loop=13}
-						<option{if $contract_start.mon|default:0 == $smarty.section.sd.index} selected{/if}>{$smarty.section.sd.index}</option>
+						<option{if $contract_start.mon|default:0 == $smarty.section.sd.index} selected="selected"{/if}>{$smarty.section.sd.index}</option>
 					{/section}
 				</select>
 				<select name='contract_start[year]' class='textbox'>
 					{section name=sd start=$ys loop=$ye}
-						<option{if $contract_start.year|default:0 == $smarty.section.sd.index} selected{/if}>{$smarty.section.sd.index}</option>
+						<option{if $contract_start.year|default:0 == $smarty.section.sd.index} selected="selected"{/if}>{$smarty.section.sd.index}</option>
 					{/section}
 				</select>
 			</td>
@@ -104,17 +104,17 @@ function hidefields(ref) {
 			<td class='tbl'>
 				<select name='contract_end[mday]' class='textbox'>
 					{section name=sd start=1 loop=32}
-						<option{if $contract_end.mday|default:0 == $smarty.section.sd.index} selected{/if}>{$smarty.section.sd.index}</option>
+						<option{if $contract_end.mday|default:0 == $smarty.section.sd.index} selected="selected"{/if}>{$smarty.section.sd.index}</option>
 					{/section}
 				</select>
 				<select name='contract_end[mon]' class='textbox'>
 					{section name=sd start=1 loop=13}
-						<option{if $contract_end.mon|default:0 == $smarty.section.sd.index} selected{/if}>{$smarty.section.sd.index}</option>
+						<option{if $contract_end.mon|default:0 == $smarty.section.sd.index} selected="selected"{/if}>{$smarty.section.sd.index}</option>
 					{/section}
 				</select>
 				<select name='contract_end[year]' class='textbox'>
 					{section name=sd start=$ys loop=$ye}
-						<option{if $contract_end.year|default:0 == $smarty.section.sd.index} selected{/if}>{$smarty.section.sd.index}</option>
+						<option{if $contract_end.year|default:0 == $smarty.section.sd.index} selected="selected"{/if}>{$smarty.section.sd.index}</option>
 					{/section}
 				</select>
 			</td>
@@ -127,7 +127,7 @@ function hidefields(ref) {
 			<td width='175' class='tbl'>{$locale.415}:</td>
 			<td class='tbl'>
 				<select class='textbox' name='change' size='1'>
-					<option value='+' selected>{$locale.420}</option>
+					<option value='+' selected="selected">{$locale.420}</option>
 					<option value='-'>{$locale.421}</option>
 				</select>&nbsp;
 				<input type='text' class='textbox' name='adverts_purchased' value='0' size='12' maxlength='11' />
@@ -138,7 +138,7 @@ function hidefields(ref) {
 			<td class='tbl'>
 				<select class='textbox' name='adverts_location'>
 					{section name=adloc loop=$locations}
-						<option value='{$locations[adloc].index}'{if $adverts_location == $locations[adloc].index} selected{/if}>{$locations[adloc].location}&nbsp;&nbsp;({$locations[adloc].dimension})</option>
+						<option value='{$locations[adloc].index}'{if $adverts_location == $locations[adloc].index} selected="selected"{/if}>{$locations[adloc].location}&nbsp;&nbsp;({$locations[adloc].dimension})</option>
 					{/section}
 				</select>
 			</td>
@@ -146,11 +146,15 @@ function hidefields(ref) {
 		<tr>
 			<td width='175' class='tbl'>{$locale.417}:</td>
 			<td class='tbl'>
-				<select class='textbox' name='adverts_image'>
-					{section name=img loop=$ad_images}
-						<option value='{$ad_images[img].ad_image}'{if $adverts_image == $ad_images[img].ad_image} selected{/if}>{$ad_images[img].img}&nbsp;&nbsp;({$ad_images[img].x}x{$ad_images[img].y})</option>
-					{/section}
-				</select>
+				{if $ad_images|@count}
+					<select class='textbox' name='adverts_image'>
+						{section name=img loop=$ad_images}
+							<option value='{$ad_images[img].ad_image}'{if $adverts_image == $ad_images[img].ad_image} selected="selected"{/if}>{$ad_images[img].img}&nbsp;&nbsp;({$ad_images[img].x}x{$ad_images[img].y})</option>
+						{/section}
+					</select>
+				{else}
+					<b>{$locale.449}</b>
+				{/if}
 			</td>
 		</tr>
 		<tr>
@@ -158,7 +162,7 @@ function hidefields(ref) {
 			<td class='tbl'>
 				<select name='adverts_priority' class='textbox'>
 					{section name=sd start=1 loop=6}
-						<option value='{$smarty.section.sd.index}'{if $smarty.section.sd.index == $adverts_priority} selected{/if}> {$smarty.section.sd.index} </option>
+						<option value='{$smarty.section.sd.index}'{if $smarty.section.sd.index == $adverts_priority} selected="selected"{/if}> {$smarty.section.sd.index} </option>
 					{/section}
 				</select>
 			</td>
@@ -173,8 +177,8 @@ function hidefields(ref) {
 			<td width='175' class='tbl'>{$locale.419}:</td>
 			<td class='tbl'>
 				<select class='textbox' name='adverts_status'>
-					<option value='0'{if $adverts_status == 0} selected{/if}>{$locale.422}</option>
-					<option value='1'{if $adverts_status == 1} selected{/if}>{$locale.423}</option>
+					<option value='0'{if $adverts_status == 0} selected="selected"{/if}>{$locale.422}</option>
+					<option value='1'{if $adverts_status == 1} selected="selected"{/if}>{$locale.423}</option>
 				</select>
 			</td>
 		</tr>
@@ -182,7 +186,7 @@ function hidefields(ref) {
 			<td align='center' colspan='2' class='tbl'>
 				<input type='hidden' name='ad_client' value='{$ad_client}' />
 				<input type='hidden' name='adverts_expired' value='{$adverts_expired}' />
-				<input type='hidden' name='adverts_sold' value='{$adverts_sold}' >
+				<input type='hidden' name='adverts_sold' value='{$adverts_sold}' />
 				<input type='hidden' name='adverts_userid' value='{$adverts_userid}' />
 				<br />
 				<input type='submit' name='cancel' value='{$locale.441}' class='button' />&nbsp;
@@ -212,7 +216,7 @@ function hidefields(ref) {
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
-				<input type='submit' name='upload' value='{$locale.449}' class='button'>
+				<input type='submit' name='upload' value='{$locale.449}' class='button' />
 			</td>
 		</tr>
 	</table>

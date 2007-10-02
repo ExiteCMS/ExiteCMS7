@@ -12,6 +12,7 @@ $locale['416'] = "Download";
 $locale['417'] = "Sub Download Categories";
 $locale['418'] = "Download Categories";
 $locale['419'] = "Size:";
+$locale['420'] = "(link)";
 // Downloads Notices
 $locale['430'] = "No Download Categories defined";
 $locale['431'] = "No Downloads have been added to this Category";

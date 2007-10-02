@@ -40,8 +40,13 @@ if (isset($name) && !empty($name)) {
 if (isset($lookup)) {
 	// make sure we're only displaying one type of profile
 	unset($group_id);
-	// find a member by the ID in the database
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$lookup' LIMIT 1");
+	if (isNum($lookup)) {
+		// find a member by the ID in the database
+		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$lookup' LIMIT 1");
+	} else {
+		// find a member by username in the database
+		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='".stripinput($lookup)."' LIMIT 1");
+	}
 	if (dbrows($result)) { $data = dbarray($result); }
 	$lookup = $data['user_id'];
 	// if not found, return to the homepage

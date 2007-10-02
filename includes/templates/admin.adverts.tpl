@@ -23,8 +23,8 @@
 		<td align='center' class='tbl1'>
 		<form name='subfunctions' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 			<br />
-			<input type='submit' name='add' value='{$locale.447}' class='button'>&nbsp;
-			<input type='submit' name='images' value='{$locale.448}' class='button'>
+			<input type='submit' name='add' value='{$locale.447}' class='button' />&nbsp;
+			<input type='submit' name='images' value='{$locale.448}' class='button' />
 			<br /><br />
 		</form>
 		</td>

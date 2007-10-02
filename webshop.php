@@ -22,8 +22,8 @@ require_once PATH_INCLUDES."geoip_include.php";
 $variables = array();
 
 // shop iframe dimensions
-define('IFRAME_H', 1400);
-define('IFRAME_W', 805);
+define('IFRAME_H', 1500);
+define('IFRAME_W', 790);
 
 // Shops, the first shop in the list is the default shop
 $shoplist = array();

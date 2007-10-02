@@ -171,7 +171,8 @@ load_templates('footer', '');
 +----------------------------------------------------*/
 
 /*---------------------------------------------------+
-| Cleanup                                            |
+| Theme closedown and cleanup.                       |
+| This also outputs the </body> and </html> tags     |
 +----------------------------------------------------*/
 theme_cleanup();
 ?>

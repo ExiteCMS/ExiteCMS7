@@ -477,7 +477,11 @@ switch ($action) {
 		closedir($temp);
 		// convert dates
 		$contract_start = getdate($adverts_contract_start);
-		if ($adverts_contract_end > 0) $contract_end = getdate($adverts_contract_end);
+		if ($adverts_contract_end > 0) {
+			$contract_end = getdate($adverts_contract_end);
+		} else {
+			$contract_end = 0;
+		}
 		// paint the form
 		$variables['action'] = $action;
 		$variables['adverts_id'] = $adverts_id;

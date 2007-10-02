@@ -24,7 +24,7 @@ if ($db_host != $user_db_host && $db_name != $user_db_name) {
 // MySQL global variables
 $_db_last_function = "";
 $_db_debug = false;
-$_db_log = false;
+$_db_log = false; //$_SERVER['SERVER_NAME'] != "www.pli-images.org";
 $_db_logs = array();
 
 // Check if this is a query on user tables
@@ -58,15 +58,12 @@ function dbquery($query, $display=true) {
 	// update the query for relocated user tables
 	ModUserTables($query);
 
-	$_loadtime = explode(" ", microtime());
-	$_loadtime = $_loadtime[1] + $_loadtime[0];
-	$_loadstats['querytime'] -= $_loadtime;
+	$_s_loadtime = explode(" ", microtime());
+	$_s_loadtime = $_s_loadtime[1] + $_s_loadtime[0];
+	$_loadstats['querytime'] -= $_s_loadtime;
 
 	if ($_db_debug) {
 		echo "<pre><br />Query: ".$query."<br /></pre>";
-	}
-	if ($_db_log) {
-		$_db_logs[] = $query;
 	}
 	$query_words = explode(" ", $query);
 	$_db_last_function = strtoupper(trim($query_words[0]));
@@ -96,9 +93,14 @@ function dbquery($query, $display=true) {
 			echo "</pre>";
 		}
 	}
-	$_loadtime = explode(" ", microtime());
-	$_loadtime = $_loadtime[1] + $_loadtime[0];
-	$_loadstats['querytime'] += $_loadtime;
+	$_e_loadtime = explode(" ", microtime());
+	$_e_loadtime = $_e_loadtime[1] + $_e_loadtime[0];
+	$_loadstats['querytime'] += $_e_loadtime;
+
+	if ($_db_log) {
+		$_db_logs[] = array($query, ($_e_loadtime - $_s_loadtime)*1000);
+	}
+
 	return $result;
 }
 

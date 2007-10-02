@@ -277,7 +277,7 @@ function load_templates($_type='', $_name='') {
 | load_panels - load the template array with panels    |
 +-----------------------------------------------------*/
 function load_panels($column) {
-	global $db_prefix, $locale, $settings, $userdata, $template_panels;
+	global $db_prefix, $locale, $settings, $userdata, $template, $template_panels;
 	
 	// parameter validation and processing
 	$column = strtolower(trim($column));
@@ -416,14 +416,16 @@ function theme_cleanup() {
 	// close the database connection
 	mysql_close();
 	
-	// and flush any output remaining
-	ob_end_flush();
-	
-	// check if we have had query debugging active
+	// check if we have had query debugging active. If so, display the result just before the footer panel(s)
 	if (is_array($_db_logs) && count($_db_logs)) {
 		$template->assign('queries', $_db_logs);
 		$template->display('_query_debug.tpl');
 	}
+
+	echo "</body>\n</html>\n";
+	
+	// and flush any output remaining
+	ob_end_flush();
 }
 
 /*-----------------------------------------------------+
