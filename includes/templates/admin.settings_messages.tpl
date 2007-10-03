@@ -69,8 +69,8 @@
 			</td>
 			<td class='tbl' width='50%'>
 				<select name='pm_hide_rcpts' class='textbox'>
-					<option value='1' {if $pm_hide_rcpts == "1"} selected{/if}>{$locale.509}</option>
-					<option value='0' {if $pm_hide_rcpts == "0"} selected{/if}>{$locale.508}</option>
+					<option value='1' {if $pm_hide_rcpts == "1"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='0' {if $pm_hide_rcpts == "0"} selected="selected"{/if}>{$locale.508}</option>
 				</select>
 			</td>
 		</tr>
@@ -80,8 +80,8 @@
 			</td>
 			<td class='tbl' width='50%'>
 				<select name='pm_read_notify' class='textbox'>
-					<option value='0' {if $pm_read_notify == "0"} selected{/if}>{$locale.509}</option>
-					<option value='1' {if $pm_read_notify == "1"} selected{/if}>{$locale.508}</option>
+					<option value='0' {if $pm_read_notify == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1' {if $pm_read_notify == "1"} selected="selected"{/if}>{$locale.508}</option>
 				</select>
 			</td>
 		</tr>
@@ -91,19 +91,19 @@
 			</td>
 			<td class='tbl' width='50%'>
 				<select name='pm_auto_archive' class='textbox'>
-					<option value='0' {if $pm_auto_archive == "0"} selected{/if}>{$locale.714}</option>
-					<option value='30' {if $pm_auto_archive == "30"} selected{/if}>&nbsp; 30 {$locale.713}</option>
-					<option value='60' {if $pm_auto_archive == "60"} selected{/if}>&nbsp; 60 {$locale.713}</option>
-					<option value='90' {if $pm_auto_archive == "90"} selected{/if}>&nbsp; 90 {$locale.713}</option>
-					<option value='120' {if $pm_auto_archive == "120"} selected{/if}>120 {$locale.713}</option>
-					<option value='150' {if $pm_auto_archive == "150"} selected{/if}>150 {$locale.713}</option>
-					<option value='180' {if $pm_auto_archive == "180"} selected{/if}>180 {$locale.713}</option>
-					<option value='210' {if $pm_auto_archive == "210"} selected{/if}>210 {$locale.713}</option>
-					<option value='240' {if $pm_auto_archive == "240"} selected{/if}>240 {$locale.713}</option>
-					<option value='270' {if $pm_auto_archive == "270"} selected{/if}>270 {$locale.713}</option>
-					<option value='300' {if $pm_auto_archive == "300"} selected{/if}>300 {$locale.713}</option>
-					<option value='330' {if $pm_auto_archive == "330"} selected{/if}>330 {$locale.713}</option>
-					<option value='360' {if $pm_auto_archive == "360"} selected{/if}>360 {$locale.713}</option>
+					<option value='0' {if $pm_auto_archive == "0"} selected="selected"{/if}>{$locale.714}</option>
+					<option value='30' {if $pm_auto_archive == "30"} selected="selected"{/if}>&nbsp; 30 {$locale.713}</option>
+					<option value='60' {if $pm_auto_archive == "60"} selected="selected"{/if}>&nbsp; 60 {$locale.713}</option>
+					<option value='90' {if $pm_auto_archive == "90"} selected="selected"{/if}>&nbsp; 90 {$locale.713}</option>
+					<option value='120' {if $pm_auto_archive == "120"} selected="selected"{/if}>120 {$locale.713}</option>
+					<option value='150' {if $pm_auto_archive == "150"} selected="selected"{/if}>150 {$locale.713}</option>
+					<option value='180' {if $pm_auto_archive == "180"} selected="selected"{/if}>180 {$locale.713}</option>
+					<option value='210' {if $pm_auto_archive == "210"} selected="selected"{/if}>210 {$locale.713}</option>
+					<option value='240' {if $pm_auto_archive == "240"} selected="selected"{/if}>240 {$locale.713}</option>
+					<option value='270' {if $pm_auto_archive == "270"} selected="selected"{/if}>270 {$locale.713}</option>
+					<option value='300' {if $pm_auto_archive == "300"} selected="selected"{/if}>300 {$locale.713}</option>
+					<option value='330' {if $pm_auto_archive == "330"} selected="selected"{/if}>330 {$locale.713}</option>
+					<option value='360' {if $pm_auto_archive == "360"} selected="selected"{/if}>360 {$locale.713}</option>
 				</select>
 			</td>
 		</tr>
@@ -113,8 +113,8 @@
 			</td>
 			<td class='tbl' width='50%'>
 				<select name='pm_view' class='textbox'>
-					<option value='0' {if $pm_view == "0"} selected{/if}>{$locale.718}</option>
-					<option value='1' {if $pm_view == "1"} selected{/if}>{$locale.719}</option>
+					<option value='0' {if $pm_view == "0"} selected="selected"{/if}>{$locale.718}</option>
+					<option value='1' {if $pm_view == "1"} selected="selected"{/if}>{$locale.719}</option>
 				</select>
 			</td>
 		</tr>
@@ -125,7 +125,7 @@
 			<td class='tbl' width='50%'>
 				<select name='pm_send2group' class='textbox'>
 				{section name=id loop=$usergroups}
-					<option value='{$usergroups[id].0}'{if $usergroups[id].0 == $pm_send2group} selected{/if}>{$usergroups[id].1}</option>
+					<option value='{$usergroups[id].0}'{if $usergroups[id].0 == $pm_send2group} selected="selected"{/if}>{$usergroups[id].1}</option>
 				{/section}
 				</select>
 			</td>
@@ -146,8 +146,8 @@
 			</td>
 			<td class='tbl' width='50%'>
 				<select name='pm_email_notify' class='textbox'>
-					<option value='0' {if $pm_email_notify == "0"} selected{/if}>{$locale.509}</option>
-					<option value='1' {if $pm_email_notify == "1"} selected{/if}>{$locale.508}</option>
+					<option value='0' {if $pm_email_notify == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1' {if $pm_email_notify == "1"} selected="selected"{/if}>{$locale.508}</option>
 				</select>
 			</td>
 		</tr>
@@ -157,8 +157,8 @@
 			</td>
 			<td class='tbl' width='50%'>
 				<select name='pm_save_sent' class='textbox'>
-					<option value='0' {if $pm_save_sent == "0"} selected{/if}>{$locale.509}</option>
-					<option value='1' {if $pm_save_sent == "1"} selected{/if}>{$locale.508}</option>
+					<option value='0' {if $pm_save_sent == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1' {if $pm_save_sent == "1"} selected="selected"{/if}>{$locale.508}</option>
 				</select>
 			</td>
 		</tr>

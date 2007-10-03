@@ -22,31 +22,44 @@ function addUser(toGroup, fromGroup) {
 }
 function save_fp_settings() {
 	var strValuesCG = new Array();
+	var c = 0;
 	var boxLength = document.getElementById('grouplist2').length;
 	if (boxLength != 0) {
+		c = 0;
 		for (i = 0; i < boxLength; i++) {
-			strValuesCG[i] = document.getElementById('grouplist2').options[i].value;
+			if (document.getElementById('grouplist2').options[i].value > -1) {
+				strValuesCG[c++] = document.getElementById('grouplist2').options[i].value;
+			}
 		}
 	}
 	var strValuesCU = new Array();
 	var boxLength = document.getElementById('userlist2').length;
 	if (boxLength != 0) {
+		c = 0;
 		for (i = 0; i < boxLength; i++) {
-			strValuesCU[i] = document.getElementById('userlist2').options[i].value;
+			if (document.getElementById('userlist2').options[i].value > -1) {
+				strValuesCU[c++] = document.getElementById('userlist2').options[i].value;
+			}
 		}
 	}
 	var strValuesVG = new Array();
 	var boxLength = document.getElementById('grouplist4').length;
 	if (boxLength != 0) {
+		c = 0;
 		for (i = 0; i < boxLength; i++) {
-			strValuesVG[i] = document.getElementById('grouplist4').options[i].value;
+			if (document.getElementById('grouplist4').options[i].value > -1) {
+				strValuesVG[c++] = document.getElementById('grouplist4').options[i].value;
+			}
 		}
 	}
 	var strValuesVU = new Array();
 	var boxLength = document.getElementById('userlist4').length;
 	if (boxLength != 0) {
+		c = 0;
 		for (i = 0; i < boxLength; i++) {
-			strValuesVU[i] = document.getElementById('userlist4').options[i].value;
+			if (document.getElementById('userlist4').options[i].value > -1) {
+				strValuesVU[c++] = document.getElementById('userlist4').options[i].value;
+			}
 		}
 	}
 	document.forms['fp_settings_form'].create_groups.value = strValuesCG;

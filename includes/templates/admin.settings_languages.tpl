@@ -25,7 +25,7 @@
 			<td width='50%' class='tbl'>
 				<select name='localeset' class='textbox'>
 					{foreach from=$locales item=file}
-					<option value='{$file}'{if $settings2.locale == $file} selected{/if}>{$file}</option>
+					<option value='{$file}'{if $settings2.locale == $file} selected="selected"{/if}>{$file}</option>
 					{/foreach}
 				</select>
 			</td>

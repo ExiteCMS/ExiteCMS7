@@ -294,7 +294,7 @@ if ($action == 'upgrade' && isset($id)) {
 	}
 
 	$variables['mod_errors'] = array();
-	$variables['is_error'] = count($mod_errors);
+	$variables['is_error'] = 0;
 
 	// if an upgrade function exists, call it
 	if (function_exists('module_upgrade')) {
@@ -312,7 +312,7 @@ $moduleindex = array();
 // scan through the list..
 while ($folder = readdir($temp)) {
 	// skipping current and parent folder entries...
-	if (!in_array($folder, array("..","."))) {
+	if (!in_array($folder, array("..",".")) && $folder{0} != ".") {
 		// if it's a directory, and a module_installer can be found in the directory...
 		if (is_dir(PATH_MODULES.$folder) && file_exists(PATH_MODULES.$folder."/module_installer.php")) {
 			// array to store the information about this module

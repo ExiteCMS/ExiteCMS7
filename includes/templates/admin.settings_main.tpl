@@ -73,7 +73,7 @@
 				<span class='small2'>{$locale.408}</span>
 			</td>
 			<td width='50%' class='tbl'>
-				<textarea name='intro' rows='6' class='textbox' style='width:230px;'>{$settings2.siteintro}</textarea>
+				<textarea name='intro' rows='6' cols='80' class='textbox' style='width:230px;'>{$settings2.siteintro}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -81,7 +81,7 @@
 				{$locale.409}
 			</td>
 			<td width='50%' class='tbl'>
-				<textarea name='description' rows='6' class='textbox' style='width:230px;'>{$settings2.description}</textarea>
+				<textarea name='description' rows='6' cols='80' class='textbox' style='width:230px;'>{$settings2.description}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -91,7 +91,7 @@
 				<span class='small2'>{$locale.411}</span>
 			</td>
 			<td width='50%' class='tbl'>
-				<textarea name='keywords' rows='6' class='textbox' style='width:230px;'>{$settings2.keywords}</textarea>
+				<textarea name='keywords' rows='6' cols='80' class='textbox' style='width:230px;'>{$settings2.keywords}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +99,7 @@
 				{$locale.412}
 			</td>
 			<td width='50%' class='tbl'>
-				<textarea name='footer' rows='6' class='textbox' style='width:230px;'>{$settings2.footer}</textarea>
+				<textarea name='footer' rows='6' cols='80' class='textbox' style='width:230px;'>{$settings2.footer}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -116,9 +116,9 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='news_columns' class='textbox'>
-					<option value='1'{if $settings2.news_columns == 1} selected{/if}>{$locale.417}</option>
-					<option value='2'{if $settings2.news_columns == 2} selected{/if}>{$locale.418}</option>
-					<option value='3'{if $settings2.news_columns == 3} selected{/if}>{$locale.420}</option>
+					<option value='1'{if $settings2.news_columns == 1} selected="selected"{/if}>{$locale.417}</option>
+					<option value='2'{if $settings2.news_columns == 2} selected="selected"{/if}>{$locale.418}</option>
+					<option value='3'{if $settings2.news_columns == 3} selected="selected"{/if}>{$locale.420}</option>
 				</select>
 			</td>
 		</tr>
@@ -128,9 +128,9 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='news_headline' id='news_headline' class='textbox' onchange='return validateNewsItems();'>
-					<option value='0'{if $settings2.news_headline == 0} selected{/if}> 0 </option>
+					<option value='0'{if $settings2.news_headline == 0} selected="selected"{/if}> 0 </option>
 					{section name=cnt start=1 loop=5}
-					<option value='{$smarty.section.cnt.index}'{if $settings2.news_headline == $smarty.section.cnt.index} selected{/if}> {$smarty.section.cnt.index} </option>
+					<option value='{$smarty.section.cnt.index}'{if $settings2.news_headline == $smarty.section.cnt.index} selected="selected"{/if}> {$smarty.section.cnt.index} </option>
 					{/section}
 				</select>
 			</td>
@@ -141,16 +141,16 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='news_items' id='news_items' class='textbox' onchange='return validateNewsItems();'>
-					<option value='1'{if $settings2.news_items == 1} selected{/if}> 1 </option>
-					<option value='2'{if $settings2.news_items == 2} selected{/if}> 2 </option>
-					<option value='3'{if $settings2.news_items == 3} selected{/if}> 3 </option>
-					<option value='4'{if $settings2.news_items == 4} selected{/if}> 4 </option>
-					<option value='5'{if $settings2.news_items == 5} selected{/if}> 5 </option>
-					<option value='6'{if $settings2.news_items == 6} selected{/if}> 6 </option>
-					<option value='7'{if $settings2.news_items == 7} selected{/if}> 7 </option>
-					<option value='8'{if $settings2.news_items == 8} selected{/if}> 8 </option>
-					<option value='9'{if $settings2.news_items == 9} selected{/if}> 9 </option>
-					<option value='0'{if $settings2.news_items == 0} selected{/if}>{$locale.423}</option>
+					<option value='1'{if $settings2.news_items == 1} selected="selected"{/if}> 1 </option>
+					<option value='2'{if $settings2.news_items == 2} selected="selected"{/if}> 2 </option>
+					<option value='3'{if $settings2.news_items == 3} selected="selected"{/if}> 3 </option>
+					<option value='4'{if $settings2.news_items == 4} selected="selected"{/if}> 4 </option>
+					<option value='5'{if $settings2.news_items == 5} selected="selected"{/if}> 5 </option>
+					<option value='6'{if $settings2.news_items == 6} selected="selected"{/if}> 6 </option>
+					<option value='7'{if $settings2.news_items == 7} selected="selected"{/if}> 7 </option>
+					<option value='8'{if $settings2.news_items == 8} selected="selected"{/if}> 8 </option>
+					<option value='9'{if $settings2.news_items == 9} selected="selected"{/if}> 9 </option>
+					<option value='0'{if $settings2.news_items == 0} selected="selected"{/if}>{$locale.423}</option>
 				</select>
 			</td>
 		</tr>
@@ -161,7 +161,7 @@
 			<td width='50%' class='tbl'>
 				<select name='theme' class='textbox'>
 					{foreach from=$theme_files item=file}
-					<option value='{$file}'{if $settings2.theme == $file} selected{/if}>{$file}</option>
+					<option value='{$file}'{if $settings2.theme == $file} selected="selected"{/if}>{$file}</option>
 					{/foreach}
 				</select>
 			</td>

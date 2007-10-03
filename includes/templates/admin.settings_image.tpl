@@ -65,8 +65,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='thumb_compression' class='textbox'>
-					<option value='gd1'{if $settings2.thumb_compression == "gd1"} selected{/if}>{$locale.607}</option>
-					<option value='gd2'{if $settings2.thumb_compression == "gd2"} selected{/if}>{$locale.608}</option>
+					<option value='gd1'{if $settings2.thumb_compression == "gd1"} selected="selected"{/if}>{$locale.607}</option>
+					<option value='gd2'{if $settings2.thumb_compression == "gd2"} selected="selected"{/if}>{$locale.608}</option>
 				</select>
 			</td>
 		</tr>

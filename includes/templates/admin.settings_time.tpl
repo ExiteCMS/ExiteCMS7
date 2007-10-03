@@ -99,7 +99,7 @@
 			<td class='tbl'>
 			<select name='timeoffset' class='textbox' style='width:75px;'>
 				{foreach from=$settings.timezones item=timezone}
-				<option{if $settings2.timeoffset == $timezone} selected{/if}>{$timezone}</option>
+				<option{if $settings2.timeoffset == $timezone} selected="selected"{/if}>{$timezone}</option>
 				{/foreach}
 			</select>
 			&nbsp;<span class='alt'>{$serverzone}</span>

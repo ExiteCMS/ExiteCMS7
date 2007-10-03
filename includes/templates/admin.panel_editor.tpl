@@ -33,7 +33,7 @@
 			<td class='tbl'>
 				<select name='panel_filename' class='textbox' style='width:200px;'>
 				{foreach from=$panel_list item=panel_file}
-					<option{if $panel_filename == $panel_file} selected{/if}>{$panel_file}</option>				
+					<option{if $panel_filename == $panel_file} selected="selected"{/if}>{$panel_file}</option>				
 				{/foreach}
 				</select>
 				{if $panel_id == 0}&nbsp;&nbsp;<span class='small2'>{$locale.454}</span>{/if}
@@ -58,17 +58,17 @@
 			</td>
 		</tr>
 		{/if}
-		{if true || $panel_id == 0}
+		{if $smarty.const.PANEL_SIDE_MOVE || $panel_id == '0'}
 		<tr>
 			<td class='tbl'>
 				{$locale.456}
 			</td>
 			<td class='tbl'>
 				<select name='panel_side' class='textbox' style='width:150px;' onchange="showopts(this.options[this.selectedIndex].value);">
-					<option value='1'{if $panel_side == "1"} selected{/if}>{$locale.466}</option>
-					<option value='2'{if $panel_side == "2"} selected{/if}>{$locale.467}</option>
-					<option value='3'{if $panel_side == "3"} selected{/if}>{$locale.469}</option>
-					<option value='4'{if $panel_side == "4"} selected{/if}>{$locale.468}</option>
+					<option value='1'{if $panel_side == "1"} selected="selected"{/if}>{$locale.466}</option>
+					<option value='2'{if $panel_side == "2"} selected="selected"{/if}>{$locale.467}</option>
+					<option value='3'{if $panel_side == "3"} selected="selected"{/if}>{$locale.469}</option>
+					<option value='4'{if $panel_side == "4"} selected="selected"{/if}>{$locale.468}</option>
 				</select>
 			</td>
 		</tr>
@@ -79,8 +79,8 @@
 			</td>
 			<td class='tbl'>
 				<select name='panel_usermod' class='textbox' style='width:150px;'>
-					<option value='0'{if $panel_usermod == "0"} selected{/if}>{$locale.447}</option>
-					<option value='1'{if $panel_usermod == "1"} selected{/if}>{$locale.448}</option>
+					<option value='0'{if $panel_usermod == "0"} selected="selected"{/if}>{$locale.447}</option>
+					<option value='1'{if $panel_usermod == "1"} selected="selected"{/if}>{$locale.448}</option>
 				</select>
 			</td>
 		</tr>
@@ -90,8 +90,8 @@
 			</td>
 			<td class='tbl'>
 				<select name='panel_state' class='textbox' style='width:150px;'>
-					<option value='0'{if $panel_state == "0"} selected{/if}>{$locale.463}</option>
-					<option value='1'{if $panel_state == "1"} selected{/if}>{$locale.464}</option>
+					<option value='0'{if $panel_state == "0"} selected="selected"{/if}>{$locale.463}</option>
+					<option value='1'{if $panel_state == "1"} selected="selected"{/if}>{$locale.464}</option>
 				</select>
 			</td>
 		</tr>
@@ -102,7 +102,7 @@
 			<td class='tbl'>
 				<select name='panel_access' class='textbox' style='width:150px;'>
 				{section name=id loop=$user_groups}
-					<option value='{$user_groups[id].id}'{if $user_groups[id].selected} selected{/if}>{$user_groups[id].name}</option>
+					<option value='{$user_groups[id].id}'{if $user_groups[id].selected} selected="selected"{/if}>{$user_groups[id].name}</option>
 				{/section}
 				</select>
 			</td>
@@ -118,6 +118,8 @@
 					{if $panel_type == "dynamic"}
 						<input type='hidden' name='panel_filename' value='none'>
 					{/if}
+				{/if}
+				{if !$smarty.const.PANEL_SIDE_MOVE}
 					<input type='hidden' name='panel_side' value='{$panel_side}'>
 				{/if}
 				<input type='submit' name='preview' value='{$locale.458}' class='button' />

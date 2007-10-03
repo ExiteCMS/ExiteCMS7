@@ -21,6 +21,9 @@ include PATH_LOCALE.LOCALESET."admin/panels.php";
 // temp storage for template variables
 $variables = array();
 
+// allow panels to move columns? (side to center and back?)
+define('PANEL_SIDE_MOVE', true);
+
 // check for the proper admin access rights
 if (!checkrights("P") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
@@ -71,7 +74,7 @@ if (isset($_POST['save'])) {
 		}
 		if ($panel_type == "dynamic" && $panel_template == "") $error .= $locale['472']."<br>";
 		if ($error == "") {
-			$result = dbquery("UPDATE ".$db_prefix."panels SET panel_name='$panel_name', panel_filename='$panel_filename', panel_code='$panel_code', panel_template='$panel_template', panel_access='$panel_access', panel_display='$panel_display', panel_usermod = '$panel_usermod', panel_state = '$panel_state', panel_datestamp = '".time()."' WHERE panel_id='$panel_id'");
+			$result = dbquery("UPDATE ".$db_prefix."panels SET panel_name='$panel_name', panel_filename='$panel_filename', panel_code='$panel_code', panel_template='$panel_template', panel_access='$panel_access', panel_display='$panel_display', panel_side='$panel_side', panel_usermod = '$panel_usermod', panel_state = '$panel_state', panel_datestamp = '".time()."' WHERE panel_id='$panel_id'");
 		}
 		// define the message panel variables
 		if ($error != "") {
@@ -191,7 +194,7 @@ if (isset($panel_id)) {
 	if (!isset($_POST['preview'])) {
 		$panel_name = "";
 		$panel_filename = "";
-		$panel_code = "// define the variables for the panel\n\n\$variables['text'] = 'Hello World!';\n";
+		$panel_code = "// define the variables for the panel\n\$variables = array();\n\n\$variables['text'] = 'Hello World!';\n";
 		$panel_template = "{* Smarty template *}\n\n{include file=\"_opentable.tpl\" name=\$_name title=\$_title state=\$_state style=\$_style}\n{\$text}\n{include file=\"_closetable.tpl\"}";
 		$panel_type = "";
 		$panel_access = "";

@@ -173,7 +173,11 @@ if (iMEMBER) {
 			}
 			$data['cc_flag'] = $cc_flag;
 			$data['cc_name'] = $cc_name;
-			$data['user_level'] = getuserlevel($data['user_level']);
+			$data['user_level_name'] = getuserlevel($data['user_level']);
+			// check what this user is allowed to do with this member record
+			$data['can_edit'] = ($data['user_level'] != 103 || iSUPERADMIN);
+			$data['can_delete'] = ($data['user_id'] != $userdata['user_id'] && ($data['user_level'] != 103 || dbcount("(*)", "users", "user_level = '103'") > 1));
+			$data['can_ban'] = ($data['user_level'] != 103);
 			$variables['members'][] = $data;
 		}
 	} else {

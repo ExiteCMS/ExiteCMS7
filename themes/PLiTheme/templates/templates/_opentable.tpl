@@ -21,7 +21,7 @@
 <table width='100%' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td class='cap-left'><img src='{$smarty.const.THEME}images/blank.gif' width='5' height='21' alt='' /></td>
-		<td width='100%' class='cap-main'>{$title|default:"&nbsp;"}</td>
+		<td width='100%' class='cap-main'>{$title|escape|default:"&nbsp;"}</td>
 		<td class='cap-right'><img src='{$smarty.const.THEME}images/blank.gif' width='5' height='21' alt='' /></td>
 	</tr>
 </table>

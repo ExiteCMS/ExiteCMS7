@@ -53,12 +53,12 @@
 							<option value='{$users[id].user_id}'>{$users[id].user_name}</option>
 			{if $smarty.section.id.last}
 						</select>
-						<input type='submit' name='edit_rights' value='{$locale.410}' class='button'>
+						<input type='submit' name='edit_rights' value='{$locale.410}' class='button' />
 						<br />
-						<input type='checkbox' name='all_rights' value='1'> {$locale.411}
+						<input type='checkbox' name='all_rights' value='1' /> {$locale.411}
 						{if $userdata.user_id == "1"}
 							<br />
-							<input type='checkbox' name='make_super' value='1'> {$locale.412}
+							<input type='checkbox' name='make_super' value='1' /> {$locale.412}
 						{/if}
 					</form>
 				</td>
@@ -83,6 +83,7 @@
 				<td width='{math equation='100/x' x=$columns format='%u'}%' class='tbl1'>
 					&nbsp;
 				</td>
+				{if $smarty.section.x.last}</tr>{/if}
 				{cycle name=x assign='column' values='1,2' print=false} {* make sure values equals number of columns *}
 			{/section}
 			{if $column != $columns}
@@ -90,7 +91,7 @@
 			{/if}
 					<tr>
 						<td align='center' colspan='{$columns}' class='tbl2'>
-							<b>{$page}</b>
+							<b>{$page|escape:"html"}</b>
 						</td>
 					</tr>
 		{/if}		
@@ -99,7 +100,7 @@
 					<tr>
 		{/if}
 						<td width='{math equation='100/x' x=$columns format='%u'}%' class='tbl1'>
-		        			<input type='checkbox' name='rights[]' value='{$modules[id].admin_rights}'{if $modules[id].assigned} checked{/if}> {$modules[id].admin_title}
+		        			<input type='checkbox' name='rights[]' value='{$modules[id].admin_rights}'{if $modules[id].assigned} checked="checked"{/if} /> {$modules[id].admin_title|escape:"html"}
 						</td>
 		{if $column == $columns}
 					</tr>
@@ -113,10 +114,10 @@
 					{/section}
 					<tr>
 						<td align='center' colspan='{$columns}' class='tbl1'>
-							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',1);" value='{$locale.425}'>
-							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',0);" value='{$locale.426}'>
+							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',1);" value='{$locale.425}' />
+							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',0);" value='{$locale.426}' />
 							<br /><br />
-							<input type='submit' name='update_admin' value='{$locale.424}' class='button'>
+							<input type='submit' name='update_admin' value='{$locale.424}' class='button' />
 						</td>
 					</tr>
 				</table>
@@ -127,6 +128,7 @@
 {/if}
 {literal}
 <script type='text/javascript'>
+//<![CDATA[
 	function setChecked(frmName,chkName,val) {
 	dml=document.forms[frmName]; len=dml.elements.length;
 	for(i=0;i<len;i++) {
@@ -135,6 +137,7 @@
 		}
 	}
 }
+//]]>
 </script>
 {/literal}
 {***************************************************************************}

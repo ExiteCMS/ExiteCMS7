@@ -35,7 +35,7 @@
 	{$locale.402}
 	<br /><br />
 	<form action='{$smarty.const.FUSION_SELF}{$aidlink}' name='frm_info' method='post'>
-		<input class='button' type='submit' name='btn_cancel' style='width:100px;' value='{$locale.403}'>
+		<input class='button' type='submit' name='btn_cancel' style='width:100px;' value='{$locale.403}' />
 	</form>
 	</center>
 	{include file="_closetable.tpl"}
@@ -77,36 +77,36 @@
 			<tr>
 				<td colspan='2' class='tbl'>
 					{$locale.415}
-					<input class='textbox' type='text' name='restore_tblpre' value='{$info_tblpref}' style='width:150px'>
+					<input class='textbox' type='text' name='restore_tblpre' value='{$info_tblpref}' style='width:150px' />
 				</td>
 			</tr>
 			<tr>
 				<td valign='top' class='tbl'>
 					{$locale.433}
 					<br />
-					<select style='width:180px;' class='textbox' id='list_tbl' name='list_tbl[]' size='{$maxrows}' multiple>
+					<select style='width:180px;' class='textbox' id='list_tbl' name='list_tbl[]' size='{$maxrows}' multiple="multiple">
 					{foreach from=$info_tables item=table}
-						<option value='{$table}' selected>{$table}</option>
+						<option value='{$table}' selected="selected">{$table}</option>
 					{/foreach}
 					</select>
 					<br />{$locale.435}&nbsp;
 					<div style='display:inline;'>
-					<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onClick="javascript:tableSelectAll()"/>
-					<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onClick="javascript:tableSelectNone()"/>
+					<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onclick="javascript:tableSelectAll()" />
+					<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onclick="javascript:tableSelectNone()" />
 					</div>
 				</td>
 				<td valign='top' class='tbl'>
 					{$locale.434}
-					<br  />
-					<select style='width:180px;' class='textbox' id='list_ins' name='list_ins[]' size='{$maxrows}' multiple>
+					<br />
+					<select style='width:180px;' class='textbox' id='list_ins' name='list_ins[]' size='{$maxrows}' multiple="multiple">
 					{section name=id loop=$info_inserts}
-						<option value='{$info_inserts[id].id}'{if $info_inserts[id].selected} selected{/if}>{$info_inserts[id].name}</option>
+						<option value='{$info_inserts[id].id}'{if $info_inserts[id].selected} selected="selected"{/if}>{$info_inserts[id].name}</option>
 					{/section}
 					</select>
 					<br />{$locale.435}&nbsp;
 					<div style='display:inline;'>
-						<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onClick="javascript:populateSelectAll()"/>
-						<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onClick="javascript:populateSelectNone()"/>
+						<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onclick="javascript:populateSelectAll()" />
+						<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onclick="javascript:populateSelectNone()" />
 					</div>
 				</td>
 			</tr>
@@ -128,7 +128,7 @@
 			<tr>
 				<td align='center' colspan='2' class='tbl'>
 					<br />
-					<input type='hidden' name='file' value='{$file}'>
+					<input type='hidden' name='file' value='{$file}' />
 					<input class='button' type='submit' name='btn_do_restore' style='width:100px;' value='{$locale.438}' />
 					<input class='button' type='submit' name='btn_cancel' style='width:100px;' value='{$locale.439}' />
 				</td>
@@ -211,7 +211,7 @@
 						</td>
 						<td class='tbl'>
 							<select name='backup_type' class='textbox' style='width:150px;'>
-								<option value='.gz' selected>.sql.gz {$locale.456}</option>
+								<option value='.gz' selected="selected">.sql.gz {$locale.456}</option>
 								<option value='.sql'>.sql</option>
 							</select>
 						</td>
@@ -223,7 +223,7 @@
 						<td class='tbl'>
 							<select name='backup_keep' class='textbox' style='width:50px;'>
 								<option value='1'>{$locale.420}</option>
-								<option value='0' selected>{$locale.421}</option>
+								<option value='0' selected="selected">{$locale.421}</option>
 							</select>
 						</td>
 					</tr>
@@ -233,7 +233,7 @@
 						</td>
 						<td class='tbl'>
 							<select name='backup_download' class='textbox' style='width:50px;'>
-								<option value='1' selected>{$locale.420}</option>
+								<option value='1' selected="selected">{$locale.420}</option>
 								<option value='0'>{$locale.421}</option>
 							</select>
 						</td>
@@ -266,16 +266,16 @@
 					</tr>
 					<tr>
 						<td class='tbl'>
-							<select style='margin:5px 0px' class='textbox' id='tablelist' name='db_tables[]' size='17' multiple>
+							<select style='margin:5px 0px' class='textbox' id='tablelist' name='db_tables[]' size='17' multiple="multiple">
 							{section name=id loop=$table_list}
-								<option value='{$table_list[id].id}'{if $table_list[id].selected} selected{/if}>{$table_list[id].name}</option>
+								<option value='{$table_list[id].id}'{if $table_list[id].selected} selected="selected"{/if}>{$table_list[id].name}</option>
 							{/section}
 							</select>
 							<br />{$locale.435}&nbsp;
 							<div style='display:inline;text-align:center;vertical-align:middle;'>
-								<input type='button' class='button' name='{$locale.458}' value='{$locale.458}' onClick="javascript:backupSelectCore()"/>
-								<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onClick="javascript:backupSelectAll()"/>
-								<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onClick="javascript:backupSelectNone()"/>
+								<input type='button' class='button' name='{$locale.458}' value='{$locale.458}' onclick="javascript:backupSelectCore()" />
+								<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onclick="javascript:backupSelectAll()" />
+								<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onclick="javascript:backupSelectNone()" />
 							</div>
 						</td>
 					</tr>
@@ -285,7 +285,7 @@
 			<tr>
 				<td align='center' colspan='2' class='tbl'>
 					<hr />
-					<input class='button' type='submit' name='btn_create_backup' style='width:100px;' value='{$locale.459}'>
+					<input class='button' type='submit' name='btn_create_backup' style='width:100px;' value='{$locale.459}' />
 				</td>
 			</tr>
 		</table>
@@ -302,9 +302,9 @@
 				<option value='{$file}'>{$file}</option>
 	{if $smarty.foreach.files.last}
 			</select>
-			<br / ><br />
+			<br /><br />
 			<input class='button' type='submit' name='local_restore' style='width:100px;' value='{$locale.438}' />
-			<input class='button' type='submit' name='local_delete' style='width:100px;' value='{$locale.440}' onClick='return DeleteBackup();' />
+			<input class='button' type='submit' name='local_delete' style='width:100px;' value='{$locale.440}' onclick='return DeleteBackup();' />
 		</center>
 	</form>
 	<br />
@@ -316,7 +316,7 @@
 		<center>
 			{$locale.431}
 			<input type='file' name='upload_backup_file' class='textbox' style='width:200px;' />
-			<br / ><br />
+			<br /><br />
 			<input class='button' type='submit' name='restore' style='width:100px;' value='{$locale.438}' />
 		</center>
 	</form>

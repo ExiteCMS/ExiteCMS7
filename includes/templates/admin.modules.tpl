@@ -29,13 +29,13 @@
 <br />
 {$locale.403}: 
 <select class='textbox' name='filter'>
-	<option value='0'></option>
+	<option value='0'>&nbsp;</option>
 	<option value='3'{if $filter == 3} selected{/if}>{$locale.415}</option>
 	<option value='4'{if $filter == 4} selected{/if}>{$locale.414}</option>
 	<option value='2'{if $filter == 2} selected{/if}>{$locale.416}</option>
 	<option value='1'{if $filter == 1} selected{/if}>{$locale.418}</option>
 </select>
-<input type='submit' name='go' value='{$locale.423}' class='button'>
+<input type='submit' name='go' value='{$locale.423}' class='button' />
 </form>
 </center>
 <br />
@@ -46,7 +46,10 @@
 	<tr>
 		<td colspan='5' class='tbl1'>
 			<b>{if $modules[id].type == "P"}{$locale.404}{else}{$locale.405}{/if} {$modules[id].title}</b>
-			{if $modules[id].description|default:"" != ""}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <span class='alt'>{$modules[id].description}</span>{/if}
+			{if $modules[id].description|default:"" != ""}
+				<br />
+				<span class='alt'>{$modules[id].description}</span>
+			{/if}
 		</td>
 	</tr>
 	<tr>

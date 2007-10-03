@@ -21,11 +21,11 @@
 		<center>
 		<select name='group_id' class='textbox'>
 	{/if}
-			<option value='{$groups[id].group_id}'{if $groups[id].selected} selected{/if}>{$groups[id].group_name}</option>
+			<option value='{$groups[id].group_id}'{if $groups[id].selected} selected="selected"{/if}>{$groups[id].group_name}</option>
 	{if $smarty.section.id.last}
 		</select>
-			<input type='submit' name='edit' value='{$locale.421}' class='button'>
-			<input type='submit' name='delete' value='{$locale.422}' onclick='return DeleteGroup();' class='button'>
+			<input type='submit' name='edit' value='{$locale.421}' class='button' />
+			<input type='submit' name='delete' value='{$locale.422}' onclick='return DeleteGroup();' class='button' />
 		</center>
 	</form>
 	{include file="_closetable.tpl"}
@@ -56,9 +56,9 @@
 				{$displaytypes[id].type}
 			</td>
 			<td class='tbl'>
-				<select id='dt{$smarty.foreach.dt.index}' name='displaytype[]' class='textbox' onchange='toggleforumfields("dt{$smarty.foreach.dt.index}")'>
-					<option value='0'{if !$displaytypes[id].visible} selected{/if}>{$locale.417}</option>
-					<option value='1'{if $displaytypes[id].visible} selected{/if}>{$locale.418}</option>
+				<select id='dt{$smarty.section.id.index}' name='displaytype[]' class='textbox' onchange='toggleforumfields("dt{$smarty.section.id.index}")'>
+					<option value='0'{if !$displaytypes[id].visible} selected="selected"{/if}>{$locale.417}</option>
+					<option value='1'{if $displaytypes[id].visible} selected="selected"{/if}>{$locale.418}</option>
 				</select>
 			</td>
 		</tr>
@@ -82,7 +82,7 @@
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
-				<input type='submit' name='save_group' value='{$locale.434}' class='button'>
+				<input type='submit' name='save_group' value='{$locale.434}' class='button' />
 			</td>
 		</tr>
 	</table>
@@ -153,7 +153,7 @@ function toggleforumfields(fieldid) {
 					<input type='hidden' name='group_users' />
 					<input type='hidden' name='group_id' value='{$group_id}' />
 					<input type='submit' name='add_all_users' value='{$locale.435}' class='button' />
-					<input type='submit' name='remove_all_users' value='{$locale.436}' class='button'>
+					<input type='submit' name='remove_all_users' value='{$locale.436}' class='button' />
 					<br /><br />
 					<input type='hidden' name='save_selected_users' />
 					<input type='button' name='update' value='{$locale.437}' class='button' onclick='saveGroup();' />
@@ -195,12 +195,13 @@ function toggleforumfields(fieldid) {
 			</tr>
 			<tr>
 				<td align='center' colspan='3' class='tbl'>
-					<input type='hidden' name='group_groups'>
-					<input type='hidden' name='group_id' value='{$group_id}'>
-					<input type='submit' name='add_all_groups' value='{$locale.426}' class='button'>
-					<input type='submit' name='remove_all_groups' value='{$locale.427}' class='button'><br><br>
-					<input type='hidden' name='save_selected_groups'>
-					<input type='button' name='update' value='{$locale.425}' class='button' onclick='saveGroups();'>
+					<input type='hidden' name='group_groups' />
+					<input type='hidden' name='group_id' value='{$group_id}' />
+					<input type='submit' name='add_all_groups' value='{$locale.426}' class='button' />
+					<input type='submit' name='remove_all_groups' value='{$locale.427}' class='button' />
+					<br /><br />
+					<input type='hidden' name='save_selected_groups' />
+					<input type='button' name='update' value='{$locale.425}' class='button' onclick='saveGroups();' />
 				</td>
 			</tr>
 		</table>
@@ -304,7 +305,7 @@ function saveGroups() {
 					<tr>
 		{/if}
 						<td width='{math equation='100/x' x=$columns format='%u'}%' class='tbl1'>
-		        			<input type='checkbox' name='rights[]' value='{$modules[id].admin_rights}'{if $modules[id].assigned} checked{/if}> {$modules[id].admin_title}
+		        			<input type='checkbox' name='rights[]' value='{$modules[id].admin_rights}'{if $modules[id].assigned} checked="checked"{/if} /> {$modules[id].admin_title}
 						</td>
 		{if $column == $columns}
 					</tr>
@@ -318,10 +319,10 @@ function saveGroups() {
 					{/section}
 					<tr>
 						<td align='center' colspan='{$columns}' class='tbl1'>
-							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',1);" value='{$locale.445}'>
-							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',0);" value='{$locale.446}'>
+							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',1);" value='{$locale.445}' />
+							<input type='button' class='button' onclick="setChecked('rightsform','rights[]',0);" value='{$locale.446}' />
 							<br /><br />
-							<input type='submit' name='update_admin' value='{$locale.449}' class='button'>
+							<input type='submit' name='update_admin' value='{$locale.449}' class='button' />
 						</td>
 					</tr>
 				</table>
@@ -332,6 +333,7 @@ function saveGroups() {
 {/if}
 {literal}
 <script type='text/javascript'>
+//<![CDATA[
 	function setChecked(frmName,chkName,val) {
 	dml=document.forms[frmName]; len=dml.elements.length;
 	for(i=0;i<len;i++) {
@@ -340,6 +342,7 @@ function saveGroups() {
 		}
 	}
 }
+//]]>
 </script>
 {/literal}
 {***************************************************************************}

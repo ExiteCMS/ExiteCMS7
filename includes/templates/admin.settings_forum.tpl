@@ -26,10 +26,10 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='numofthreads' class='textbox'>
-					<option{if $settings2.numofthreads == 5} selected{/if}>5</option>
-					<option{if $settings2.numofthreads == 10} selected{/if}>10</option>
-					<option{if $settings2.numofthreads == 15} selected{/if}>15</option>
-					<option{if $settings2.numofthreads == 20} selected{/if}>20</option>
+					<option{if $settings2.numofthreads == 5} selected="selected"{/if}>5</option>
+					<option{if $settings2.numofthreads == 10} selected="selected"{/if}>10</option>
+					<option{if $settings2.numofthreads == 15} selected="selected"{/if}>15</option>
+					<option{if $settings2.numofthreads == 20} selected="selected"{/if}>20</option>
 				</select>
 			</td>
 		</tr>
@@ -39,8 +39,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='attachments' class='textbox'>
-					<option value='1'{if $settings2.attachments == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.attachments == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.attachments == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.attachments == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -82,8 +82,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='thread_notify' class='textbox'>
-					<option value='1'{if $settings2.thread_notify == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.thread_notify == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.thread_notify == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.thread_notify == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -102,7 +102,7 @@
 					<option>60</option>
 					<option>90</option>
 					<option>120</option>
-					<option selected>180</option>
+					<option selected="selected">180</option>
 				</select>
 				{$locale.518} 
 			</td>

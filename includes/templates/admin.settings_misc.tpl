@@ -24,8 +24,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='tinymce_enabled' class='textbox'>
-					<option value='1'{if $settings2.tinymce_enabled == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.tinymce_enabled == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.tinymce_enabled == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.tinymce_enabled == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -61,8 +61,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='bad_words_enabled' class='textbox'>
-					<option value='1'{if $settings2.bad_words_enabled == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.bad_words_enabled == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.bad_words_enabled == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.bad_words_enabled == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -73,7 +73,7 @@
 				<span class='small2'>{$locale.652}<br />{$locale.653}</span>
 			</td>
 			<td width='50%' class='tbl'>
-				<textarea name='bad_words' rows='5' class='textbox' style='width:250px;'>{$settings2.bad_words}</textarea>
+				<textarea name='bad_words' rows='5' cols='80' class='textbox' style='width:250px;'>{$settings2.bad_words}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -90,8 +90,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='guestposts' class='textbox'>
-					<option value='1'{if $settings2.guestposts == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.guestposts == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.guestposts == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.guestposts == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -101,10 +101,10 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='numofshouts' class='textbox' style='width:50px;'>
-					<option{if $settings2.numofshouts == 5} selected{/if}>5</option>
-					<option{if $settings2.numofshouts == 10} selected{/if}>10</option>
-					<option{if $settings2.numofshouts == 15} selected{/if}>15</option>
-					<option{if $settings2.numofshouts == 20} selected{/if}>20</option>
+					<option{if $settings2.numofshouts == 5} selected="selected"{/if}>5</option>
+					<option{if $settings2.numofshouts == 10} selected="selected"{/if}>10</option>
+					<option{if $settings2.numofshouts == 15} selected="selected"{/if}>15</option>
+					<option{if $settings2.numofshouts == 20} selected="selected"{/if}>20</option>
 				</select>
 			</td>
 		</tr>
@@ -124,8 +124,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='remote_stats' class='textbox'>
-					<option value='1'{if $settings2.remote_stats == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.remote_stats == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.remote_stats == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.remote_stats == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -135,8 +135,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='forum_flags' class='textbox'>
-					<option value='1'{if $settings2.forum_flags == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.forum_flags == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.forum_flags == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.forum_flags == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -151,8 +151,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='maintenance' class='textbox' style='width:50px;'>
-					<option value='1'{if $settings2.maintenance == "1"} selected{/if}>{$locale.502}</option>
-					<option value='0'{if $settings2.maintenance == "0"} selected{/if}>{$locale.503}</option>
+					<option value='1'{if $settings2.maintenance == "1"} selected="selected"{/if}>{$locale.502}</option>
+					<option value='0'{if $settings2.maintenance == "0"} selected="selected"{/if}>{$locale.503}</option>
 				</select>
 			</td>
 		</tr>
@@ -169,7 +169,7 @@
 				{$locale.658}
 			</td>
 			<td width='50%' class='tbl'>
-				<textarea name='maintenance_message' rows='5' class='textbox' style='width:250px;'>{$settings2.maintenance_message}</textarea>
+				<textarea name='maintenance_message' rows='5' cols='80' class='textbox' style='width:250px;'>{$settings2.maintenance_message|escape:"html"}</textarea>
 			</td>
 		</tr>
 		<tr>

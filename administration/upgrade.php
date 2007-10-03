@@ -25,10 +25,12 @@ foreach ($temp as $tempfile) {
 	// make sure it's a valid rev file format
 	if (strlen($tempfile) != 12 || substr($tempfile,0,3) != "rev" || substr($tempfile,-4) != ".php") continue;
 	$thisrev = substr($tempfile,3,5);
-	if (!isNum($thisrev) || $thisrev <= $settings['revision']) {
-		$upgraded[] = $tempfile;
-	} else {
-		$upgrades[] = $tempfile;
+	if (isNum($thisrev)) {
+		if ($thisrev <= $settings['revision']) {
+			$upgraded[] = $tempfile;
+		} else {
+			$upgrades[] = $tempfile;
+		}
 	}
 }
 

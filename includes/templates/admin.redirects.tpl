@@ -114,7 +114,7 @@
 		</td>
 		<td align='center' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
 			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=edit&amp;url_id={$redirects[id].url_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.432}' title='{$locale.432}' /></a>&nbsp;
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;url_id={$redirects[id].url_id}' onClick='return DeleteItem()'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.433}' title='{$locale.433}' /></a>&nbsp;
+			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;url_id={$redirects[id].url_id}' onclick='return DeleteItem()'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.433}' title='{$locale.433}' /></a>&nbsp;
 		</td>
 	</tr>
 	{if $smarty.section.id.last}

@@ -24,8 +24,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='enable_registration' class='textbox'>
-					<option value='1'{if $settings2.enable_registration == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.enable_registration == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.enable_registration == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.enable_registration == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -35,8 +35,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='email_verification' class='textbox'>
-					<option value='1'{if $settings2.email_verification == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.email_verification == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.email_verification == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.email_verification == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -46,8 +46,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='admin_activation' class='textbox'>
-					<option value='1'{if $settings2.admin_activation == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.admin_activation == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.admin_activation == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.admin_activation == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -57,8 +57,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='display_validation' class='textbox'>
-					<option value='1'{if $settings2.display_validation == "1"} selected{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.display_validation == "0"} selected{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.display_validation == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.display_validation == "0"} selected="selected"{/if}>{$locale.509}</option>
 				</select>
 			</td>
 		</tr>
@@ -68,8 +68,8 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='validation_method' class='textbox'>
-					<option value='image'{if $settings2.validation_method == "image"} selected{/if}>{$locale.555}</option>
-					<option value='text'{if $settings2.validation_method == "text"} selected{/if}>{$locale.556}</option>
+					<option value='image'{if $settings2.validation_method == "image"} selected="selected"{/if}>{$locale.555}</option>
+					<option value='text'{if $settings2.validation_method == "text"} selected="selected"{/if}>{$locale.556}</option>
 				</select>
 			</td>
 		</tr>

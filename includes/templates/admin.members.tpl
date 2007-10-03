@@ -101,16 +101,15 @@
 				<td class='tbl'>
 					<input type='radio' name='hide_email' value='1' />
 					{$locale.u007}
-					<input type='radio' name='hide_email' value='0' checked />
+					<input type='radio' name='hide_email' value='0' checked="checked" />
 					{$locale.u008}
 				</td>
-			</tr>
 			</tr>
 			<tr>
 				<td align='center' colspan='2'>
 					<br />
 					<input type='submit' name='add_user' value='{$locale.475}' class='button' />
-			</td>
+				</td>
 			</tr>
 		</table>
 	</form>
@@ -218,12 +217,16 @@
 						</td>
 					{/if}
 					<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
-						{$members[id].user_level}
+						{$members[id].user_level_name}
 					</td>
 					<td width='1%' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
-						<a href='{$smarty.const.BASEDIR}edit_profile.php{$aidlink}&amp;{$aidlink}&amp;user_id={$members[id].user_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.415}' title='{$locale.415}' /></a>&nbsp;
-						<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;sortby={$sortby}&amp;rowstart={$rowstart}&amp;user_id={$members[id].user_id}' onClick='return DeleteMember();'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.418}' title='{$locale.418}' /></a>&nbsp;
-						{if $members[id].user_id > 1}
+						{if $members[id].can_edit}
+							<a href='{$smarty.const.BASEDIR}edit_profile.php{$aidlink}&amp;{$aidlink}&amp;user_id={$members[id].user_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.415|escape:"html"}' title='{$locale.415|escape:"html"}' /></a>&nbsp;
+						{/if}
+						{if $members[id].can_delete}
+							<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;sortby={$sortby}&amp;rowstart={$rowstart}&amp;user_id={$members[id].user_id}' onclick='return DeleteMember();'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.418}' title='{$locale.418}' /></a>&nbsp;
+						{/if}
+						{if $members[id].can_ban}
 							{if $members[id].user_status == 2}
 								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=activate&amp;sortby={$sortby}&amp;rowstart={$rowstart}&amp;user_id={$members[id].user_id}'><img src='{$smarty.const.THEME}images/user_go.gif' alt='{$locale.419}' title='{$locale.419}' /></a>
 							{elseif $members[id].user_status == 1}

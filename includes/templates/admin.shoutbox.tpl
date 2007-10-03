@@ -53,7 +53,7 @@
 			</select>
 			{$locale.431}
 			<br /><br />
-			<input type='submit' name='deleteshouts' value='{$locale.432}' class='button'>
+			<input type='submit' name='deleteshouts' value='{$locale.432}' class='button' />
 			<br /><hr />
 		</div>
 	</form>

@@ -22,7 +22,7 @@
 <table width='100%' cellpadding='0' cellspacing='0'>
 	<tr>
 		<td class='cap-left'><img src='{$smarty.const.THEME}images/blank.gif' width='5' height='21' alt='' /></td>
-		<td width='100%' class='cap-main'>{$title}</td>
+		<td width='100%' class='cap-main'>{$title|escape|default:"&nbsp;"}</td>
 		<td align='right' class='cap-main'><img src='{$smarty.const.THEME}images/panel_{if $_state == 1}on{else}off{/if}.gif' alt='{if $_state == 0}on{else}off{/if}' name='b_{$_name}' onclick="javascript:flipBox('{$_name}')" /></td>
 		<td class='cap-right'><img src='{$smarty.const.THEME}images/blank.gif' width='5' height='21' alt='' /></td>
 	</tr>

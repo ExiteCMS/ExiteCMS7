@@ -27,7 +27,7 @@
 		</tr>
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
-				<input type='submit' name='uploadimage' value='{$locale.420}' class='button' style='width:100px;'>
+				<input type='submit' name='uploadimage' value='{$locale.420}' class='button' style='width:100px;' />
 			</td>
 		</tr>
 	</table>
@@ -64,8 +64,8 @@
 				{$image}
 			</td>
 			<td align='center' width='50' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;view={$image}'><img src='{$smarty.const.THEME}images/image_view.gif' alt='{$locale.461}' title='{$locale.461}'></a>&nbsp;
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;del={$image}'><img src='{$smarty.const.THEME}images/image_delete.gif' alt='{$locale.462}' title='{$locale.462}'></a>
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;view={$image}'><img src='{$smarty.const.THEME}images/image_view.gif' alt='{$locale.461}' title='{$locale.461}' /></a>&nbsp;
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;ifolder={$ifolder}&amp;del={$image}'><img src='{$smarty.const.THEME}images/image_delete.gif' alt='{$locale.462}' title='{$locale.462}' /></a>
 			</td>
 		</tr>
 		{if $smarty.foreach.image_list.last && $settings.tinymce_enabled}
