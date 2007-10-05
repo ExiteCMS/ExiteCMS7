@@ -54,13 +54,13 @@
 		</td>
 		<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
 			{if $panels[id].panel_side == 1}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=mright&amp;panel_id={$panels[id].panel_id}&amp;order={$panels[id].panel_order}'><img src='{$smarty.const.THEME}images/right.gif' alt='{$locale.442}' title='{$locale.431}' style='border:0px;' /></a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mright&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order image="right.gif" alt="$locale.442 title=$locale.431}
 			{elseif $panels[id].panel_side == 2}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=mlower&amp;panel_id={$panels[id].panel_id}&amp;order={$panels[id].panel_order}'><img src='{$smarty.const.THEME}images/down.gif' alt='{$locale.444}' title='{$locale.446}' style='border:0px;' /></a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mlower&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order image="down.gif" alt="$locale.444 title=$locale.446}
 			{elseif $panels[id].panel_side == 3}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=mupper&amp;panel_id={$panels[id].panel_id}&amp;order={$panels[id].panel_order}'><img src='{$smarty.const.THEME}images/up.gif' alt='{$locale.443}' title='{$locale.445}' style='border:0px;' /></a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mupper&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order image="up.gif" alt="$locale.443 title=$locale.445}
 			{elseif $panels[id].panel_side == 4}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=mleft&amp;panel_id={$panels[id].panel_id}&amp;order={$panels[id].panel_order}'><img src='{$smarty.const.THEME}images/left.gif' alt='{$locale.441}' title='{$locale.430}' style='border:0px;' /></a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mleft&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order image="left.gif" alt="$locale.441 title=$locale.430}
 			{/if}
 		</td>
 		<td align='right' width='1%' class='tbl1' style='white-space:nowrap'>
@@ -68,14 +68,10 @@
 		</td>
 		<td width='1%' class='tbl1' style='white-space:nowrap'>
 			{if $panels[id].order_up != 0}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=mup&amp;panel_id={$panels[id].panel_id}&amp;panel_side={$panels[id].panel_side}&amp;order={$panels[id].order_up}'>
-					<img src='{$smarty.const.THEME}images/up.gif' alt='{$locale.443}' title='{$locale.432}' style='border:0px;' />
-				</a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mup&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:"&amp;order="|cat:$panels[id].order_up image="up.gif" alt="$locale.443 title=$locale.432}
 			{/if}
 			{if $panels[id].order_down != 0}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=mdown&amp;panel_id={$panels[id].panel_id}&amp;panel_side={$panels[id].panel_side}&amp;order={$panels[id].order_down}'>
-					<img src='{$smarty.const.THEME}images/down.gif' alt='{$locale.444}' title='{$locale.433}' style='border:0px;' />
-				</a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mdown&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:"&amp;order="|cat:$panels[id].order_down image="down.gif" alt="$locale.444 title=$locale.433}
 			{/if}
 		</td>
 		<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
@@ -88,12 +84,12 @@
 			{$panels[id].panel_access_name}
 		</td>
 		<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>
-			<a href='panel_editor.php{$aidlink}&amp;step=edit&amp;panel_id={$panels[id].panel_id}&amp;panel_side=1'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.434}' title='{$locale.434}' style='border:0px;' /></a> &nbsp;
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;panel_id={$panels[id].panel_id}&amp;panel_side={$panels[id].panel_side}' onclick='return DeleteItem()'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.437}' title='{$locale.437}' style='border:0px;' /></a> &nbsp;
+			{imagelink link="panel_editor.php"|cat:$aidlink|cat:"&amp;step=edit&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;panel_side=1" image="page_edit.gif" alt=$locale.434 title=$locale.434} &nbsp;
+			{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=delete&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;panel_side="|cat:$panels[id].panel_side onclick="return DeleteItem()" image="page_delete.gif" alt=$locale.437 title=$locale.437} &nbsp;
 			{if $panels[id].panel_status == 0}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=setstatus&amp;status=1&amp;panel_id={$panels[id].panel_id}'><img src='{$smarty.const.THEME}images/page_green.gif' alt='{$locale.435}' title='{$locale.435}' style='border:0px;' /></a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=setstatus&amp;status=1&amp;panel_id="|cat:$panels[id].panel_id image=page_green.gif alt=$locale.435 title=$locale.435}
 			{else}
-				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=setstatus&amp;status=0&amp;panel_id={$panels[id].panel_id}'><img src='{$smarty.const.THEME}images/page_red.gif' alt='{$locale.436}' title='{$locale.436}' style='border:0px;' /></a>
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=setstatus&amp;status=0&amp;panel_id="|cat:$panels[id].panel_id image=page_red.gif alt=$locale.436 title=$locale.436}
 			{/if}
 		</td>
 	</tr>	

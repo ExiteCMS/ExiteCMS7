@@ -136,7 +136,7 @@ if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($
 	if (!defined('LOCALESET')) {
 		foreach($temp as $lng) {
 			$thislng = explode(";", $lng);
-			$thislng = explode("-", $thislng);
+			$thislng = explode("-", $thislng[0]);
 			// check if we support this language
 			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$thislng[0]."' AND locale_active = '1'");
 			if ($data = dbarray($result)) {

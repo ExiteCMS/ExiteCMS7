@@ -58,7 +58,10 @@ if ($action == 'install' && isset($module)) {
 		if ($mod_admin_image == "" || !file_exists(PATH_ADMIN."images/".$mod_admin_image)) $mod_admin_image = "modules_panel.gif";
 
 		// add the admin panel of this module
-//		$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('".$mod_admin_rights."', '$mod_admin_image', '$mod_title', '".MODULES."$mod_folder/$mod_admin_panel', '".$mod_admin_page."')");
+		$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('".$mod_admin_rights."', '$mod_admin_image', '$mod_title', '".MODULES."$mod_folder/$mod_admin_panel', '".$mod_admin_page."')");
+		
+		// and give all superadmin's access to this new module
+		$result = dbquery("UPDATE ".$db_prefix."user SET user_rights = CONCAT(user_rights, '".".".$mod_admin_rights."') WHERE user_level = 103");
 	}
 
 	// if defined, install the menu links for this module
@@ -158,7 +161,18 @@ if ($action == 'uninstall' && isset($id)) {
 	// if an admin panel is defined, remove it
 	if ($mod_admin_panel != "") {
 		$result = dbquery("DELETE FROM ".$db_prefix."admin WHERE admin_rights='".$mod_admin_rights."' AND admin_link='".MODULES."$mod_folder/$mod_admin_panel' AND admin_page='".$mod_admin_page."'");
+		// get a list of all members with admin rights to this module, and remove it
+		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_rights LIKE '%.".$mod_admin_rights."%'");
+		while ($data = dbarray($result)) {
+			$mods = explode(".", $data['user_rights']);
+			$newmods = "";
+			foreach($mods as $mod) {
+				$newmods .= ($mod == "" || $mod == $mod_admin_rights) ? "" : (($newmods == "" ? "" : ".") . $mod);
+			}
+			$result2 = dbquery("UPDATE ".$db_prefix."users SET user_rights = '".$newmods."' WHERE user_id = '".$data['user_id']."'");
+		}
 	}
+
 	// if defined, remove the menu links for this module
 	if (isset($mod_site_links) && is_array($mod_site_links) && count($mod_site_links)) {
 		

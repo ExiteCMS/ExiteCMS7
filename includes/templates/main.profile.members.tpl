@@ -161,7 +161,7 @@
 		<td class='{cycle values="tbl1,tbl2"}'>
 			{$data.user_posts}
 			{if $data.show_viewposts_button}
-				&nbsp;&nbsp;&nbsp;[<a href='{$smarty.const.MODULES}forum_threads_list_panel/my_posts.php?id={$data.user_id}' title='{$locale.u061}'>{$locale.u055}</a>]
+				&nbsp;&nbsp;&nbsp;{buttonlink link=$smarty.const.MODULES|cat:"forum_threads_list_panel/my_posts.php?id="|cat:$data.user_id title=$locale.u061 name=$locale.u055}
 			{/if}
 		</td>
 	</tr>

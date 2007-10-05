@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
-// PLi-Fusion file : dbsetup_include.php
-// Date generated  : `18/09/2007 22:46`
+// ExiteCMS file : dbsetup_include.php
+// Date generated  : `05/10/2007 21:40`
 //----------------------------------------------------------
 
-define('PLI_VERSION', '7.00');
-define('PLI_REVISION', '800');
+define('CMS_VERSION', '7.00');
+define('CMS_REVISION', '858');
 
 if ($step == 1) {
 
@@ -248,6 +248,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."dls_statistics (
   `ds_file` varchar(255) NOT NULL default '',
   `ds_mirror` tinyint(1) unsigned NOT NULL default '0',
   `ds_processed` tinyint(1) unsigned NOT NULL default '0',
+  `ds_onmap` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ds_id`),
   KEY `countrycode` (`ds_cc`),
   KEY `mirror` (`ds_mirror`),
@@ -291,7 +292,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."download_cats (
   `download_cat_name` varchar(100) NOT NULL default '',
   `download_cat_description` text NOT NULL,
   `download_cat_sorting` varchar(50) NOT NULL default 'download_title ASC',
-  `download_cat_cat_sorting` varchar(50) NOT NULL default 'download_cat_id DESC',
+  `download_cat_cat_sorting` varchar(50) NOT NULL default '',
   `download_cat_access` tinyint(3) unsigned NOT NULL default '0',
   `download_cat_image` varchar(100) NOT NULL default '',
   `download_parent` tinyint(3) NOT NULL default '0',
@@ -496,6 +497,40 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forums (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forums : ".mysql_error();
+}
+
+//
+// Code to create table `locale`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."locale");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locale (
+  `locale_id` smallint(5) unsigned NOT NULL auto_increment,
+  `locale_code` varchar(8) NOT NULL default '',
+  `locale_name` varchar(50) NOT NULL default '',
+  `locale_active` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`locale_id`)
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "locale : ".mysql_error();
+}
+
+//
+// Code to create table `locales`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."locales");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locales (
+  `locale_id` smallint(5) unsigned NOT NULL auto_increment,
+  `locale_type` char(1) NOT NULL default '',
+  `locale_value1` varchar(50) NOT NULL default '',
+  `locale_value2` varchar(50) NOT NULL default '',
+  `locale_value3` varchar(50) NOT NULL default '',
+  `locale_value4` varchar(50) NOT NULL default '',
+  PRIMARY KEY  (`locale_id`)
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "locales : ".mysql_error();
 }
 
 //
@@ -925,7 +960,8 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads (
   `thread_lastuser` smallint(5) unsigned NOT NULL default '0',
   `thread_sticky` tinyint(1) unsigned NOT NULL default '0',
   `thread_locked` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`thread_id`)
+  PRIMARY KEY  (`thread_id`),
+  KEY `thread_lastpost` (`thread_lastpost`)
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
@@ -938,6 +974,7 @@ if (!$result) {
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."user_groups");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."user_groups (
   `group_id` tinyint(3) unsigned NOT NULL auto_increment,
+  `group_ident` varchar(4) NOT NULL default '',
   `group_name` varchar(100) NOT NULL default '',
   `group_description` varchar(200) NOT NULL default '',
   `group_forumname` varchar(100) NOT NULL default '',

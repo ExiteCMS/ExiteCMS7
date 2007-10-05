@@ -144,7 +144,10 @@
 			{if $posts[pid].attachments[id].is_found}
 				{if $posts[pid].attachments[id].is_image}
 					{if $posts[pid].attachments[id].imagesize.x <= $settings.forum_max_w && $posts[pid].attachments[id].imagesize.y <= $settings.forum_max_h}
-						<img src='{$posts[pid].attachments[id].link}' title='{$posts[pid].attachments[id].attach_realname}' alt='{$posts[pid].attachments[id].attach_comment}' />
+						<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' title='{$posts[pid].attachments[id].attach_comment}'>
+							<img src='{$posts[pid].attachments[id].link}' title='{$posts[pid].attachments[id].attach_realname}' alt='{$posts[pid].attachments[id].attach_comment}' />
+						</a>
+						<br />
 					{else}
 						{if $posts[pid].attachments[id].has_thumbnail}
 							<table cellpadding='0'cellspacing='0' class='thumbnail'>

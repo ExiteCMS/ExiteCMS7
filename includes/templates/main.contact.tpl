@@ -15,7 +15,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
-<table align='center' width='500px'>
+<table align='center' width='500'>
 	<tr>
 		<td>
 			<center>{$locale.401}</center>
@@ -46,7 +46,7 @@
 					<tr>
 						<td>
 							{$locale.405}<br />
-							<textarea name='message' rows='10' class='textbox' style='width: 320px'></textarea>
+							<textarea name='message' rows='10' cols='80' class='textbox' style='width: 320px'></textarea>
 							<br /><br />
 						</td>
 					</tr>
