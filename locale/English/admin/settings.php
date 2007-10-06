@@ -3,7 +3,7 @@ $locale['400'] = "Settings";
 // Site Settings
 $locale['401'] = "Main";
 $locale['402'] = "Site name:";
-$locale['403'] = "Site URL:";
+$locale['403'] = "Site root directory:";
 $locale['404'] = "Site banner:";
 $locale['405'] = "Site e-mail address:";
 $locale['406'] = "Your name or nickname:";
@@ -25,6 +25,7 @@ $locale['421'] = "News Headlines:";
 $locale['422'] = "News Items per page:";
 $locale['423'] = "All";
 $locale['424'] = "The number of news items per page can not be smaller than the number of headlines";
+$locale['425'] = "Required when the CMS is installed in a subdirectory of the website document root";
 // Time & Date Settings
 $locale['450'] = "Time and Date";
 $locale['451'] = "Short date format:";

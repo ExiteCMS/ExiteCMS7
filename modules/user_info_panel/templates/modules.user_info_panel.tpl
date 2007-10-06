@@ -50,7 +50,7 @@
 		<form name='loginform' method='post' action='{$smarty.const.FUSION_SELF}'>
 			{$locale.061}<br /><input type='text' name='user_name' class='textbox' style='width:100px' /><br />
 			{$locale.062}<br /><input type='password' name='user_pass' class='textbox' style='width:100px' /><br />
-			<br /><input type='checkbox' name='remember_me' value='y' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked{/if}/>
+			<br /><input type='checkbox' name='remember_me' value='y' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/>
 			<input type='submit' name='login' value='{$locale.064}' class='button' /><br />
 			<input type='hidden' name='javascript_check' value='n' />
 		</form>

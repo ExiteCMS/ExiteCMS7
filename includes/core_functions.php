@@ -103,9 +103,14 @@ $settings['timezones'] = array("-12","-11","-10","-9:30","-9","-8","-7","-6","-5
 	"+0:30","+1","+2","+3","+3:30","+4","+4:30","+5","+5:30","+6","+6:30","+7","+7:30","+8","+8:30","+8:45","+9","+9:30",
 	"+10","+10:30","+11","+11:30","+12","+12:45","+13","+14");
 
-// get the relative path from the SiteURL 
-// (basedir might be in a sub directory of the document root!)
-define ("BASEDIR", strstr(substr(strstr($settings['siteurl'], '://'),3), '/'));
+// backward compatibility: make sure siteurl contains a relative path!
+$settings['siteurl'] = strstr(str_replace("http://", "", str_replace("https://", "", $settings['siteurl'])), "/");
+
+// define the website basedir (relative path from the root)
+define ("BASEDIR", $settings['siteurl']);
+
+// and make the siteurl fully qualified using the current server host info
+$settings['siteurl'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on") ? "https://" : "http://").$_SERVER['HTTP_HOST'].$settings['siteurl'];
 
 // locale detection - step 1 - check if there's a locale cookie set
 if (isset($_COOKIE['locale'])) {

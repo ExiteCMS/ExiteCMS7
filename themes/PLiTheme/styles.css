@@ -128,16 +128,16 @@ body.mceContentBody 	{ background-color:#eee; }
 
 /* --- Download Panel --------------------------------------- */
 
-.bar					{ width:36px; margin-left:10px;margin-right:-1px; }
-#bar1					{ background-image:url(images/bar-1.png); background-position: 0% 100%; float:right; position:relative; }
-#bar2					{ background-image:url(images/bar-2.png); background-position: 0% 100%; float:right; position:relative; }
-#bar3					{ background-image:url(images/bar-3.png); background-position: 0% 100%; float:right; position:relative; }
-#bar4					{ background-image:url(images/bar-4.png); background-position: 0% 100%; float:right; position:relative; }
-#bar5					{ background-image:url(images/bar-5.png); background-position: 0% 100%; float:right; position:relative; }
-#bar6					{ background-image:url(images/bar-6.png); background-position: 0% 100%; float:right; position:relative; }
-#bar7					{ background-image:url(images/bar-7.png); background-position: 0% 100%; float:right; position:relative; }
-#bar8					{ background-image:url(images/bar-8.png); background-position: 0% 100%; float:right; position:relative; }
-#bar9					{ background-image:url(images/bar-9.png); background-position: 0% 100%; float:right; position:relative; }
+.bar					{ width:16px; margin-left:15px;margin-right:15px; }
+#bar1					{ background-image:url(images/bar-1.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar2					{ background-image:url(images/bar-2.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar3					{ background-image:url(images/bar-3.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar4					{ background-image:url(images/bar-4.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar5					{ background-image:url(images/bar-5.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar6					{ background-image:url(images/bar-6.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar7					{ background-image:url(images/bar-7.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar8					{ background-image:url(images/bar-8.gif); background-position: 0% 100%; float:right; position:relative; }
+#bar9					{ background-image:url(images/bar-9.gif); background-position: 0% 100%; float:right; position:relative; }
 
 #bullet					{ margin:0 0 1px 0; }
 #total-downloads		{ padding-top:4px; }

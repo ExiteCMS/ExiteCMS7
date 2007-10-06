@@ -29,6 +29,8 @@
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.403}
+				<br />
+				<span class='small2'>{$locale.425}</span>
 			</td>
 			<td width='50%' class='tbl'>
 				<input type='text' name='siteurl' value='{$settings2.siteurl}' maxlength='255' class='textbox' style='width:230px;' />

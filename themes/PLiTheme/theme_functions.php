@@ -82,7 +82,8 @@ function downloadbars() {
 		}
 		// if the user has access, add this download to the bar panel
 		if ($access) {
-			$data['download_title'] = strtoupper(substr($data['download_title'],0,6));
+			if (strlen($data['download_title']) > 6) $data['download_title'] = substr($data['download_title'],0,6);
+			$data['download_title'] = strtoupper(trim($data['download_title']));
 			$download[] = $data;
 			$total += $data['download_count'];
 		}
@@ -104,7 +105,7 @@ function downloadbars() {
 	$i=1;
 	foreach ($download as $key => $value) {
 		$download[$key]['value'] = floor($value['percentage'] * $multiplier);
-		$download[$key]['baseline'] = 95 - $download[$key]['value'];
+		$download[$key]['baseline'] = 65 - $download[$key]['value'];
 		$i++;
 	}
 	return $download;
@@ -118,7 +119,7 @@ function bartitle() {
 
 	$result = dbquery("SELECT download_cat_name FROM ".$db_prefix."download_cats WHERE download_cat_id = '0'");
 	if ($data = dbarray($result))
-		if ($data['download_cat_name'] != "") $bar_title = $data['download_cat_name'];
+		if ($data['download_cat_name'] != "") $bar_title = trim($data['download_cat_name']);
 	if (!isset($bar_title)) $bar_title = "Current Release Downloads";
 
 	return urlencode($bar_title);

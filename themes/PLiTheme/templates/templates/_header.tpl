@@ -181,13 +181,16 @@ function fontReset(aantal) {
 						</table>
 					</td>
 					<td width='318' style='background-image: url({$smarty.const.THEME}images/top-right.png); background-repeat:repeat-x;'>
-						{section name=index loop=$downloadbars}
-							<div class='bar' id='bar{$downloadbars[index].download_bar}' style='height:{$downloadbars[index].value}px; top:{$downloadbars[index].baseline}px'></div>
-						{/section}
 					</td>
-					<td width='10' style='background-image: url({$smarty.const.THEME}images/top-back.png); background-repeat:repeat-x;'></td>
+					<td width='10' style='background-image: url({$smarty.const.THEME}images/top-back.png); background-repeat:repeat-x;'>
+					</td>
 				</tr>
 			</table>
+			<div style='float;padding:1px;margin-top:-66px;margin-right:2px;'>
+				{section name=index loop=$downloadbars}
+					<div class='bar' id='bar{$downloadbars[index].download_bar}' style='height:{$downloadbars[index].value}px;top:{$downloadbars[index].baseline}px;'></div>
+				{/section}
+			</div>
 		</td>
 		<td class='border-right'><img src='{$smarty.const.THEME}images/blank.gif' width='5' height='1' alt='' style='display:block' /></td>
 	</tr>
