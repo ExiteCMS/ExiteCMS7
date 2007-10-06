@@ -65,7 +65,7 @@ $locale['477'] = "Photo Albums";
 $locale['478'] = "PHP Info";
 $locale['479'] = "Polls";
 $locale['480'] = "Shoutbox";
-$locale['481'] = "Site Links";
+$locale['481'] = "Menu System";
 $locale['482'] = "Submissions";
 $locale['483'] = "Upgrade";
 $locale['484'] = "User Groups";
@@ -95,7 +95,7 @@ $locale['507'] = "Web Links";
 $locale['508'] = "CMS Administration";
 $locale['509'] = "Search";
 // Stage 2 - Panels
-$locale['520'] = "Navigation";
+$locale['520'] = "Main Menu";
 $locale['521'] = "Online Users";
 $locale['522'] = "Forum Threads";
 $locale['523'] = "Latest Articles";

@@ -175,7 +175,7 @@ td { font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 								{$locale.425}
 							</td>
 							<td class='tbl1'>
-								<input type='text' value='fusion_' name='db_prefix' class='textbox' />
+								<input type='text' value='exitecms_' name='db_prefix' class='textbox' />
 							</td>
 						</tr>
 						<tr>

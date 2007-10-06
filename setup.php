@@ -12,9 +12,20 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
+
 /*---------------------------------------------------+
 | mySQL database functions
 +----------------------------------------------------*/
+function dbconnect($db_host, $db_user, $db_pass, $db_name) {
+	$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
+	$db_select = @mysql_select_db($db_name);
+	if (!$db_connect) {
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+	} elseif (!$db_select) {
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+	}
+}
+
 function dbquery($query) {
 	$result = @mysql_query($query);
 	if (!$result) {
@@ -25,13 +36,13 @@ function dbquery($query) {
 	}
 }
 
-function dbconnect($db_host, $db_user, $db_pass, $db_name) {
-	$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
-	$db_select = @mysql_select_db($db_name);
-	if (!$db_connect) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
-	} elseif (!$db_select) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+function dbarray($resource) {
+	$result = @mysql_fetch_assoc($resource);
+	if (!$result) {
+		echo mysql_error();
+		return false;
+	} else {
+		return $result;
 	}
 }
 
@@ -88,7 +99,7 @@ define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/");
 
 define("FUSION_SELF", isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "" ? basename($_SERVER['REDIRECT_URL']) : basename($_SERVER['PHP_SELF']));
-define('CMS_INIT_OK', true);			
+define('INIT_CMS_OK', true);			
 
 // error tracking
 $error = "";
@@ -103,6 +114,14 @@ $localeset = (isset($_GET['localeset']) ? $_GET['localeset'] : "English");
 $variables['localeset'] = $localeset;
 define("LOCALESET", $localeset.'/');
 
+// check if the cache directories are writeable
+if (!is_writable(PATH_ATTACHMENTS."cache")) {
+	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The cache directory is not writeable.</b><br />Please consult the documentation on how to define the proper file rights.</div>");
+}
+if (!is_writable(PATH_ATTACHMENTS."tplcache")) {
+	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The template cache directory is not writeable.</b><br />Please consult the documentation on how to define the proper file rights.</div>");
+}
+
 // first part in step1: create config.php. We need it later
 if ($step == "1") {
 	$db_host = stripinput($_POST['db_host']);
@@ -116,13 +135,14 @@ if ($step == "1") {
 "."$"."db_user="."\"".$_POST['db_user']."\"".";
 "."$"."db_pass="."\"".$_POST['db_pass']."\"".";
 "."$"."db_name="."\"".$_POST['db_name']."\"".";
-"."$"."db_prefix="."\"".$_POST['db_prefix']."\""."
+"."$"."db_prefix="."\"".$_POST['db_prefix']."\"".";
+
 // user database settings
 "."$"."user_db_host="."\"".$_POST['db_host']."\"".";
 "."$"."user_db_user="."\"".$_POST['db_user']."\"".";
 "."$"."user_db_pass="."\"".$_POST['db_pass']."\"".";
 "."$"."user_db_name="."\"".$_POST['db_name']."\"".";
-"."$"."user_db_prefix="."\"".$_POST['db_prefix']."\""."
+"."$"."user_db_prefix="."\"".$_POST['db_prefix']."\"".";
 ?>";
 	$temp = fopen(PATH_ROOT."config.php","w");
 	if (!fwrite($temp, $config)) {
@@ -145,7 +165,10 @@ switch($step) {
 		if (file_exists(PATH_ROOT."config.php") && filesize(PATH_ROOT."config.php")) {
 			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: A valid configuration exists.</b><br />Please consult the documentation on how to rerun the setup.</div>");
 		}
-		
+		// check if the config template exists and is writeable. If so, rename it
+		if (!file_exists(PATH_ROOT."config.def")) {
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The configuration template file is missing.</b><br />Please reinstall ExiteCMS.</div>");
+		}
 		// create a list of available locales
 		$locale_files = makefilelist("locale/", ".|..", true, "folders");
 		$variables['locale_files'] = $locale_files;
@@ -156,7 +179,12 @@ switch($step) {
 		if (!is_writable(PATH_IMAGES_AV)) $permissions .= PATH_IMAGES_AV . "<br />";
 		if (!is_writable(PATH_IMAGES_N)) $permissions .= PATH_IMAGES_N . "<br />";
 		if (!is_writable(PATH_ATTACHMENTS)) $permissions .= PATH_ATTACHMENTS . "<br />";
-		if (!is_writable("config.php")) $permissions .= "config.php" . "<br />";
+		if (!is_writable("config.def")) {
+			$permissions .= "Configuration Template" . "<br />";
+		} else {
+			@rename("config.def", "config.php");
+			if (!is_writable("config.php")) $permissions .= "Configuration Tile" . "<br />";
+		}
 		if ($permissions == "") {
 			$variables['write_check'] = true; 
 		} else { 
@@ -198,7 +226,9 @@ switch($step) {
 	 	if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $email)) {
 			$error .= $locale['453']."<br /><br />\n";
 		}
+		require_once PATH_INCLUDES."dbsetup_include.php";
 		if ($error == "") {
+
 			$result = dbquery("INSERT INTO ".$db_prefix."settings (sitename, siteurl, sitebanner, siteemail, siteusername, siteintro, 
 				description, keywords, footer, opening_page, news_headline, news_columns, news_items, locale, theme, shortdate, longdate, 
 				forumdate, subheaderdate, timeoffset, numofthreads, attachments, attachmax, attachtypes, thread_notify, enable_registration, 
@@ -237,7 +267,6 @@ switch($step) {
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S2', 'settings_time.gif', '".$locale['488']."', 'settings_time.php', 3)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S3', 'settings_forum.gif', '".$locale['489']."', 'settings_forum.php', 3)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S4', 'registration.gif', '".$locale['490']."', 'settings_registration.php', 3)");
-				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S5', 'photoalbums.gif', '".$locale['491']."', 'settings_photo.php', 3)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S6', 'settings_misc.gif', '".$locale['492']."', 'settings_misc.php', 3)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_pm.gif', '".$locale['493']."', 'settings_messages.php', 3)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S8', 'settings_lang.gif', '".$locale['459']."', 'settings_languages.php', 3)");
@@ -247,12 +276,12 @@ switch($step) {
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UR', 'submissions.gif', '".$locale['496']."', 'redirects.php', 1)");
 				$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('wE', 'adverts.gif', '".$locale['498']."', 'adverts.php', 1)");
 	
-				$result = dbquery("INSERT INTO ".$db_prefix."custom_pages (page_id, page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES (0, '404 Error Page', '', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['560']."<br /></div><br /><div align=\"center\">".$locale['561']."<br /></div><br /><div align=\"center\">".$locale['562']."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['563']."<br /></div><br /><div align=\"center\">".$locale['564']."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
+				$result = dbquery("INSERT INTO ".$db_prefix."custom_pages (page_id, page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES (0, '404 Error Page', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['560']."<br /></div><br /><div align=\"center\">".$locale['561']."<br /></div><br /><div align=\"center\">".$locale['562']."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['563']."<br /></div><br /><div align=\"center\">".$locale['564']."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
 
 				$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
 				$adminrights = "";
 				while ($data = dbarray($result)) {
-					$adminrights = ($adminrights == "" ? "" : ".") . $data['admin_rights'];
+					$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 				}
 						
 				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', md5('$password1'), '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
@@ -276,24 +305,23 @@ switch($step) {
 				$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['554']."', 'themes.gif')");
 				$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['555']."', 'windows.gif')");
 		
-				$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_content, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['520']."', 'navigation_panel', '', '1', '1', 'file', '0', '0', '1')");
-				$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_content, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['524']."', 'welcome_message_panel', '', '2', '1', 'file', '0', '0', '1')");
-				$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_content, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['526']."', 'user_info_panel', '', '3', 1, 'file', '0', '0', '1')");
+				$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['520']."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
+				$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['524']."', 'welcome_message_panel', '2', '1', 'file', '0', '0', '1')");
+				$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['526']."', 'user_info_panel', '4', 1, 'file', '0', '0', '1')");
 
-				$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('Main menu navigation panel', 'navigation_panel', '1.0.0')");
+				$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('Main menu panel', 'main_menu_panel', '1.0.0')");
 				$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('Advanced login panel', 'user_info_panel', '1.0.0')");
 				$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('Welcome message panel', 'welcome_message_panel', '1.0.0')");
 
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['500']."', 'index.php', '0', '1', '0', '1', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['501']."', 'articles.php', '0', '1', '0', '2', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['502']."', 'downloads.php', '0', '1', '0', '3', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['503']."', 'faq.php', '0', '1', '0', '4', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['504']."', 'forum/index.php', '0', '1', '0', '5', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'weblinks.php', '0', '1', '0', '6', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['494']."', 'news_cats.php', '0', '1', '0', '7', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['505']."', 'contact.php', '0', '1', '0', '8', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['509']."', 'search.php', '0', '1', '0', '9', 'navigation_panel')");
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['508']."', 'administration/index.php', '0', '1', '0', '10', 'navigation_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['500']."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['501']."', 'articles.php', '0', '1', '0', '2', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['502']."', 'downloads.php', '0', '1', '0', '3', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['503']."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['504']."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'weblinks.php', '0', '1', '0', '6', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['494']."', 'news_cats.php', '0', '1', '0', '7', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['505']."', 'contact.php', '0', '1', '0', '8', 'main_menu_panel')");
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['509']."', 'search.php', '0', '1', '0', '9', 'main_menu_panel')");
 
 				$result = dbquery("INSERT INTO ".$db_prefix."forum_poll_settings (forum_id, enable_polls, create_permissions, vote_permissions, guest_permissions, require_approval, lock_threads, option_max, option_show, option_increment, duration_min, duration_max, hide_poll) VALUES ('0', '1', 'G101', 'G101', '0', '0', '0', '10', '5', '5', '86400', '0', '1')");
 

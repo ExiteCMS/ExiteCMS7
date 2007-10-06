@@ -60,8 +60,13 @@ if ($action == 'install' && isset($module)) {
 		// add the admin panel of this module
 		$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('".$mod_admin_rights."', '$mod_admin_image', '$mod_title', '".MODULES."$mod_folder/$mod_admin_panel', '".$mod_admin_page."')");
 		
-		// and give all superadmin's access to this new module
-		$result = dbquery("UPDATE ".$db_prefix."user SET user_rights = CONCAT(user_rights, '".".".$mod_admin_rights."') WHERE user_level = 103");
+		// make sure superadmins have rights to all defined admin modules
+		$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
+		$adminrights = "";
+		while ($data = dbarray($result)) {
+			$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
+		}
+		$result = dbquery("UPDATE ".$db_prefix."user SET user_rights = '".$adminrights."' WHERE user_level = 103");
 	}
 
 	// if defined, install the menu links for this module
@@ -128,15 +133,12 @@ if ($action == 'install' && isset($module)) {
 	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('$mod_title', '$mod_folder', '$mod_version')");
 
 	// update the access rights of the site administrators to include this new module
-	$result = dbquery("SELECT DISTINCT admin_rights FROM ".$db_prefix."admin");
-	$new_rights = "";
+	$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
+	$adminrights = "";
 	while ($data = dbarray($result)) {
-		$new_rights = $new_rights . ($new_rights == "" ? "" : ".") . $data['admin_rights'];
+		$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 	}
-	$result = dbquery("SELECT user_id FROM ".$db_prefix."users WHERE user_level = 103");
-	while ($data = dbarray($result)) {
-		$result2 = dbquery("UPDATE ".$db_prefix."users SET user_rights = '".$new_rights."' WHERE user_id = '".$data['user_id']."'");
-	}
+	$result = dbquery("UPDATE ".$db_prefix."user SET user_rights = '".$adminrights."' WHERE user_level = 103");
 }
 
 if ($action == 'uninstall' && isset($id)) {

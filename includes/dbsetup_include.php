@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `05/10/2007 21:40`
+// Date generated  : `06/10/2007 16:14`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '858');
+define('CMS_REVISION', '877');
 
 if ($step == 1) {
 
@@ -215,51 +215,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."custom_pages (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "custom_pages : ".mysql_error();
-}
-
-//
-// Code to create table `dls_mapping`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."dls_mapping");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."dls_mapping (
-  `mapping_id` smallint(5) unsigned NOT NULL auto_increment,
-  `mapping_url` varchar(255) NOT NULL default '',
-  `download_id` smallint(5) NOT NULL default '0',
-  `ds_file_from` varchar(255) NOT NULL default '',
-  `ds_file_to` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`mapping_id`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "dls_mapping : ".mysql_error();
-}
-
-//
-// Code to create table `dls_statistics`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."dls_statistics");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."dls_statistics (
-  `ds_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `ds_success` tinyint(1) unsigned NOT NULL default '0',
-  `ds_ip` varchar(15) NOT NULL default '0.0.0.0',
-  `ds_cc` char(2) NOT NULL default '',
-  `ds_timestamp` int(10) unsigned NOT NULL default '0',
-  `ds_url` varchar(255) NOT NULL default '',
-  `ds_file` varchar(255) NOT NULL default '',
-  `ds_mirror` tinyint(1) unsigned NOT NULL default '0',
-  `ds_processed` tinyint(1) unsigned NOT NULL default '0',
-  `ds_onmap` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`ds_id`),
-  KEY `countrycode` (`ds_cc`),
-  KEY `mirror` (`ds_mirror`),
-  KEY `filename` (`ds_file`),
-  KEY `timestamp` (`ds_timestamp`),
-  KEY `processed` (`ds_processed`),
-  KEY `ds_url` (`ds_url`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "dls_statistics : ".mysql_error();
 }
 
 //
@@ -1046,133 +1001,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."vcode (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "vcode : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_acls`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_acls");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_acls (
-  `page_tag` varchar(75) NOT NULL default '',
-  `read_acl` text NOT NULL,
-  `write_acl` text NOT NULL,
-  `comment_acl` text NOT NULL,
-  PRIMARY KEY  (`page_tag`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_acls : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_comments`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_comments");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_comments (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `page_tag` varchar(75) NOT NULL default '',
-  `time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `comment` text NOT NULL,
-  `user` varchar(75) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-  KEY `idx_page_tag` (`page_tag`),
-  KEY `idx_time` (`time`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_comments : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_links`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_links");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_links (
-  `from_tag` varchar(75) NOT NULL default '',
-  `to_tag` varchar(75) NOT NULL default '',
-  UNIQUE KEY `from_tag` (`from_tag`,`to_tag`),
-  KEY `idx_from` (`from_tag`),
-  KEY `idx_to` (`to_tag`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_links : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_pages`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_pages");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_pages (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `tag` varchar(75) NOT NULL default '',
-  `time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `body` mediumtext NOT NULL,
-  `owner` varchar(75) NOT NULL default '',
-  `user` varchar(75) NOT NULL default '',
-  `latest` enum('Y','N') NOT NULL default 'N',
-  `note` varchar(100) NOT NULL default '',
-  `hits` int(11) NOT NULL default '0',
-  `handler` varchar(30) NOT NULL default 'page',
-  PRIMARY KEY  (`id`),
-  KEY `idx_tag` (`tag`),
-  KEY `idx_time` (`time`),
-  KEY `idx_latest` (`latest`),
-  FULLTEXT KEY `body` (`body`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_pages : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_referrer_blacklist`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_referrer_blacklist");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_referrer_blacklist (
-  `spammer` varchar(150) NOT NULL default '',
-  KEY `idx_spammer` (`spammer`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_referrer_blacklist : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_referrers`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_referrers");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_referrers (
-  `page_tag` varchar(75) NOT NULL default '',
-  `referrer` varchar(150) NOT NULL default '',
-  `time` datetime NOT NULL default '0000-00-00 00:00:00',
-  KEY `idx_page_tag` (`page_tag`),
-  KEY `idx_time` (`time`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_referrers : ".mysql_error();
-}
-
-//
-// Code to create table `wiki_users`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."wiki_users");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."wiki_users (
-  `name` varchar(75) NOT NULL default '',
-  `password` varchar(32) NOT NULL default '',
-  `email` varchar(50) NOT NULL default '',
-  `revisioncount` int(10) unsigned NOT NULL default '20',
-  `changescount` int(10) unsigned NOT NULL default '50',
-  `doubleclickedit` enum('Y','N') NOT NULL default 'Y',
-  `signuptime` datetime NOT NULL default '0000-00-00 00:00:00',
-  `show_comments` enum('Y','N') NOT NULL default 'N',
-  PRIMARY KEY  (`name`),
-  KEY `idx_signuptime` (`signuptime`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "wiki_users : ".mysql_error();
 }
 
 }

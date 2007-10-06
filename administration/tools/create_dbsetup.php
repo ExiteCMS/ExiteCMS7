@@ -20,6 +20,15 @@ $excluded_tables[] = $db_prefix."M2F_forums";
 $excluded_tables[] = $db_prefix."M2F_config";
 $excluded_tables[] = $db_prefix."M2F_status";
 $excluded_tables[] = $db_prefix."M2F_subscriptions";
+$excluded_tables[] = $db_prefix."dls_mapping";
+$excluded_tables[] = $db_prefix."dls_statistics";
+$excluded_tables[] = $db_prefix."wiki_acls";
+$excluded_tables[] = $db_prefix."wiki_comments";
+$excluded_tables[] = $db_prefix."wiki_links";
+$excluded_tables[] = $db_prefix."wiki_pages";
+$excluded_tables[] = $db_prefix."wiki_referrers";
+$excluded_tables[] = $db_prefix."wiki_referrer_blacklist";
+$excluded_tables[] = $db_prefix."wiki_users";
 
 // get the list of fusion tables from the database
 $table_list=array();
