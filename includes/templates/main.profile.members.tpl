@@ -87,7 +87,7 @@
 	</tr>
 	<tr>
 		<td align='center' class='tbl1'>
-			{if $smarty.const.iUSER >= 102 || $data.user_hide_email != "1"}
+			{if $smarty.const.iSUPERADMIN || $data.user_hide_email != "1"}
 				{buttonlink name=$locale.u051 link="mailto:"|cat:$data.user_email|strip encode='javascript_charcode'}&nbsp;
 			{/if}
 			{if $data.user_web|default:"" != ""}

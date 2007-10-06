@@ -39,7 +39,7 @@
 					<b>{$locale.406}</b>
 				</td>
 				{/if}
-				{if $userdata.user_level >= 102}
+				{if $smarty.const.iSUPERADMIN}
 					<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
 						<b>{$locale.409}</b>
 					</td>
@@ -61,7 +61,7 @@
 						{$members[id].cc_flag}{if $members[id].user_cc_code == ""}{$members[id].cc_name}{else}<a href='{$smarty.const.FUSION_SELF}?sortby={$sortby}&amp;country={$members[id].user_cc_code}'>{$members[id].cc_name}</a>{/if}
 					</td>
 				{/if}
-				{if $userdata.user_level >= 102}
+				{if $smarty.const.iSUPERADMIN}
 					<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
 						{$members[id].user_email}
 					</td>
