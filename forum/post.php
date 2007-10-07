@@ -248,7 +248,7 @@ switch ($action) {
 	case "edit":
 	case "quickreply":
 		if ($errorcode == 0) {
-			$result = dbquery("SELECT * FROM ".$db_prefix."posts WHERE post_id='".($post_id != 0 ? $post_id : $reply_id)."' AND thread_id='".$thread_id."' AND forum_id='".$forum_id."'");
+			$result = dbquery("SELECT p.*, u.user_name FROM ".$db_prefix."posts p, ".$db_prefix."users u WHERE p.post_id='".($post_id != 0 ? $post_id : $reply_id)."' AND p.thread_id='".$thread_id."' AND p.forum_id='".$forum_id."' AND p.post_author = u.user_id");
 			if (dbrows($result)) { $pdata = dbarray($result); } else { fallback("index.php"); }
 			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$pdata['post_author']."'");
 			if (dbrows($result)) { $puser = dbarray($result); } else { fallback("index.php"); }
@@ -958,7 +958,10 @@ if (isset($_POST["cancel"])) {
 			if (!isset($variables['button_save'])) $variables['button_save'] = $locale['401'];
 
 		case "postreply":
-			if (!isset($title)) $title = $locale['415']." #".$reply_id;
+			if (!isset($title)) {
+				$title = $locale['415']." #".$reply_id;
+				if (isset($pdata['user_name']) && $pdata['user_name']) $title .= " [Re: ".$pdata['user_name']."]";
+			}
 			if (!isset($variables['button_save'])) $variables['button_preview'] = $locale['402'];
 			if (!isset($variables['button_save'])) $variables['button_save'] = $locale['404'];
 
