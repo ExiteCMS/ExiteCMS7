@@ -69,6 +69,12 @@ $variables['downloadbars'] = downloadbars();
 // bar counter title
 $variables['bartitle'] = bartitle();
 
+// unread forum post indicator
+$variables['new_posts'] = (iMEMBER ? dbcount("(post_id)", "posts_unread", "user_id='".$userdata['user_id']."'") : 0);
+
+// unread PM indicator
+$variables['new_pm'] = (iMEMBER ? $variables['new_pm_msg'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id='".$userdata['user_id']."' AND pmindex_to_id='".$userdata['user_id']."' AND pmindex_read_datestamp = '0'") : 0);
+
 // Check if we have a favicon to show (first check global image
 // directory, then theme image directory (for a theme override)
 if (file_exists(PATH_ROOT."images/favicon.ico")) $variables['favicon'] = BASEDIR."images/favicon.ico";

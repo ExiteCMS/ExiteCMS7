@@ -220,7 +220,7 @@
 {literal}<script type='text/javascript'>
 //<![CDATA[
 	String.prototype.htmlEntities = function () {
-		return this.replace(/<\/g,'&lt;').replace(/>/g,'&gt;');
+		return this.replace('/<\/g','&lt;').replace('/>/g','&gt;');
 	};
 
 	function ValidateForm() {

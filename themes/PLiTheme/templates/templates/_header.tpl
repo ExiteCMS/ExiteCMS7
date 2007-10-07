@@ -198,6 +198,12 @@ function fontReset(aantal) {
 		<td class='sub-cap-left'><img src='{$smarty.const.THEME}images/blank.gif' width='5' height='21' alt='' style='display:block' /></td>
 		<td class='sub-cap-main'>
 			<a href='.' onclick='fontGroter(-0.1); return false' title='Decrease font-size'><img src='{$smarty.const.THEME}images/minus.gif' alt='' border='0' /></a><a href='.' onclick='fontReset(0.7); return false' title='Restore default font-sizes'><img src='{$smarty.const.THEME}images/reset.gif' hspace='2' alt='' border='0' /></a><a href='.' onclick='fontGroter(0.1); return false' title='Increase font-size'><img src='{$smarty.const.THEME}images/plus.gif' alt='' border='0' /></a>
+			{if $new_posts}
+				<a href='{$smarty.const.BASEDIR}modules/forum_threads_list_panel/new_posts.php'><img src='{$smarty.const.THEME}images/newposts.gif' height='9' alt='{$locale.028}' /></a>
+			{/if}
+			{if $new_pm}
+				<a href='{$smarty.const.BASEDIR}pm.php?action=show_new'><img src='{$smarty.const.THEME}images/newmsgs.gif' height='9' alt='' /></a>
+			{/if}
 			{section name=index loop=$headermenu}
 				{if !$smarty.section.index.first} &middot;{/if} <a href='{$headermenu[index].link_url}' {if $headermenu[index].link_window == 1}target='_blank' {/if}><span class='small'>{$headermenu[index].link_name}</span></a>
 			{/section}
