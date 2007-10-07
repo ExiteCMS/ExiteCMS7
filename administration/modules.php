@@ -66,7 +66,7 @@ if ($action == 'install' && isset($module)) {
 		while ($data = dbarray($result)) {
 			$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 		}
-		$result = dbquery("UPDATE ".$db_prefix."user SET user_rights = '".$adminrights."' WHERE user_level = 103");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_rights = '".$adminrights."' WHERE user_level = 103");
 	}
 
 	// if defined, install the menu links for this module
@@ -138,7 +138,7 @@ if ($action == 'install' && isset($module)) {
 	while ($data = dbarray($result)) {
 		$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 	}
-	$result = dbquery("UPDATE ".$db_prefix."user SET user_rights = '".$adminrights."' WHERE user_level = 103");
+	$result = dbquery("UPDATE ".$db_prefix."users SET user_rights = '".$adminrights."' WHERE user_level = 103");
 }
 
 if ($action == 'uninstall' && isset($id)) {
