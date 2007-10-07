@@ -48,7 +48,8 @@ theme_init();
 +----------------------------------------------------*/
 
 // theme width definitions
-define('THEME_WIDTH', "994");
+// define('THEME_WIDTH', "994");	// use this for a centered site that fits a 1024x768 screen
+define('THEME_WIDTH', "100%");	// use this for a full screen site
 define('SIDE_WIDTH', "170");
 
 // make sure this is defined, we need it later

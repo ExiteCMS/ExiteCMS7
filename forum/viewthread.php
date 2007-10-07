@@ -39,7 +39,7 @@ define('ITEMS_PER_PAGE', 20);
 
 // render_post defines
 define('SHOW_QUOTE_BUTTON', true);		// show the reply-using-a-quote button
-define('SHOW_REPLY_BUTTON', false);		// show the reply-using-a-blank-message button
+define('SHOW_REPLY_BUTTON', true);		// show the reply-using-a-blank-message button
 define('REPLY_AS_QUOTE', false);		// show the reply button with the quote functionality
 define('DOWNLOAD_IMAGES', false);		// download images or show them in the browser
 
