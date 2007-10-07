@@ -17,7 +17,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.450 state=$_state style=$_style}
 <table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
-		<td style='font-size:10px;height:20px;'>
+		<td class='smallalt'>
 			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> »
 			<a href='index.php'>{$locale.400}</a> » 
 			<a href='index.php#cat_{$forum_cat_id}'>{$forum_cat_name}</a> » 

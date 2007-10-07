@@ -65,14 +65,14 @@ if (isset($_POST['save_latest'])) {
 	$result = dbquery("UPDATE ".$db_prefix."news SET news_headline = '0'");
 	// save the new headlines
 	foreach($headlines as $key => $item) {
-		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_headline = '".$key."' WHERE news_id = '".$item."'");
+		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_headline = '".($settings['news_headline'] + 1 - $key)."' WHERE news_id = '".$item."'");
 	}
 	
 	// reset all lastest news items before setting new ones
 	$result = dbquery("UPDATE ".$db_prefix."news SET news_latest_news = '0'");
 	// save the new latest news items
 	foreach($newsitems as $key => $item) {
-		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_latest_news = '".(10-$key)."' WHERE news_id = '".$item."'");
+		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_latest_news = '".($settings['news_items'] + 1 - $key)."' WHERE news_id = '".$item."'");
 	}
 	
 	// update the news_latest settings flag
@@ -113,7 +113,7 @@ if ($variables['latest_news_selection']) {
 	// define the headlines array
 	$headlines = array();
 	for ($i = 1; $i <= $settings['news_headline']; $i++) {
-		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE news_headline='$i'");
+		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE news_headline='".($settings['news_headline'] + 1 - $i)."'");
 		if ($data = dbarray($result)) {
 			$news_id = $data['news_id'];
 		} else {
@@ -129,8 +129,8 @@ if ($variables['latest_news_selection']) {
 
 	// define the latest news items array
 	$newsitems = array();
-	for ($i = 1; $i <= 9; $i++) {
-		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE news_latest_news='".(10-$i)."'");
+	for ($i = 1; $i <= $settings['news_items']; $i++) {
+		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE news_latest_news='".($settings['news_items'] + 1 - $i)."'");
 		if ($data = dbarray($result)) {
 			$news_id = $data['news_id'];
 		} else {

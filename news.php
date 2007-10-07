@@ -73,17 +73,32 @@ if (isset($readmore)) {
 	// make sure rowstart is valid and initialised if needed
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 	// check how many news items we have
-	$rows = dbcount("(news_id)", "news", groupaccess('news_visibility')." AND news_latest_news > 0 AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")");
+	if ($settings['news_latest']) {
+		// only show items that have been marked as latest news
+		$rows = dbcount("(news_id)", "news", groupaccess('news_visibility')." AND (news_headline > 0 OR news_latest_news > 0) AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")");
+	} else {
+		// show all news items
+		$rows = dbcount("(news_id)", "news", groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")");
+	}
 	if ($rows != 0) {
-		// news items found, calculate the maximum number of rows we want to see
-		$result = dbquery(
-			"SELECT tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
-			LEFT JOIN ".$db_prefix."users tu ON tn.news_name=tu.user_id
-			LEFT JOIN ".$db_prefix."news_cats tc ON tn.news_cat=tc.news_cat_id
-			WHERE ".groupaccess('news_visibility').($settings['news_latest']?" AND (news_headline > 0 OR news_latest_news > 0)":"")." 
-				AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")
-			ORDER BY news_headline DESC, news_latest_news DESC, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
-		);		
+		// news items found, fetch them, taking rowstart into account
+		if ($settings['news_latest']) {
+			$result = dbquery(
+				"SELECT tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
+				LEFT JOIN ".$db_prefix."users tu ON tn.news_name=tu.user_id
+				LEFT JOIN ".$db_prefix."news_cats tc ON tn.news_cat=tc.news_cat_id
+				WHERE ".groupaccess('news_visibility')." AND (news_headline > 0 OR news_latest_news > 0) AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")
+				ORDER BY news_headline DESC, news_latest_news DESC, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
+			);		
+		} else {
+			$result = dbquery(
+				"SELECT tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
+				LEFT JOIN ".$db_prefix."users tu ON tn.news_name=tu.user_id
+				LEFT JOIN ".$db_prefix."news_cats tc ON tn.news_cat=tc.news_cat_id
+				WHERE ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")
+				ORDER BY news_headline DESC, news_latest_news DESC, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
+			);		
+		}
 		// retrieve all the rows and store them in the template variable, one array per column
 		$variables['news'] = array();
 		$variables['_maxcols'] = $settings['news_columns'];

@@ -18,9 +18,18 @@
 <table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
 		<td class='smallalt'>
-			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » <a href='index.php'>{$locale.400}</a> » <a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
+			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
+			<a href='index.php'>{$locale.400}</a> » 
+			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
+			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
+			<br /><hr />
 		</td>
-		<td class='tbl_title'>
+	</tr>
+</table>
+{if $smarty.const.iMEMBER && $user_can_post && $thread.thread_author != 0 && ($smarty.const.iMOD || $smarty.const.iSUPERADMIN)}
+<table cellpadding='0' cellspacing='0' width='100%'>
+	<tr>
+		<td align='left' class='tbl'>
 		{if $smarty.const.iMEMBER}
 			{if $settings.thread_notify}
 				{if $has_thread_notify}
@@ -37,11 +46,6 @@
 			{/if}
 		{/if}
 		</td>
-	</tr>
-</table>
-{if $smarty.const.iMEMBER && $user_can_post && $thread.thread_author != 0 && ($smarty.const.iMOD || $smarty.const.iSUPERADMIN)}
-<table cellpadding='0' cellspacing='0' width='100%' style='margin-top:5px;'>
-	<tr>
 		<td align='right' class='tbl'>
 			<form name='modopts1' method='post' action='options.php?forum_id={$forum_id}&amp;thread_id={$thread_id}'>
 				{$locale.520}
@@ -93,28 +97,23 @@
 	</tr>
 	<tr>
 		<td class='smallalt'>
-			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » <a href='index.php'>{$locale.400}</a> » <a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
+			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
+			<a href='index.php'>{$locale.400}</a> » 
+			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
+			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
 		</td>
 		<td class='tbl_title'>
 		{if $smarty.const.iMEMBER}
-			{if $settings.thread_notify}
-				{if $has_thread_notify}
-					{buttonlink name=$locale.515 link="post.php?action=track_off&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
-				{else}
-					{buttonlink name=$locale.516 link="post.php?action=track_on&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
-				{/if}
-			{/if}
 			{if $user_can_post }
 				{if !$thread.thread_locked}
 					{buttonlink name=$locale.565 link="post.php?action=reply&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{/if}
-				{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			{/if}
 		{/if}
 		</td>
 	</tr>
 </table>
-<table cellpadding='0' cellspacing='0' width='100%' style='margin-top:5px;'>
+<table cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
 		<td align='left' class='tbl'>
 			{$locale.540}
