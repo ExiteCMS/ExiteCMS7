@@ -16,18 +16,18 @@
 {***************************************************************************}
 {if $smarty.const.iMEMBER|default:false}
 	{include file="_openside_x.tpl" name=$_name title=$user_name state=$_state style=$_style}
-	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}edit_profile.php' class='side'>{$locale.080}</a><br />
-	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}pm.php' class='side'>{$locale.081}</a><br />
-	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}members.php' class='side'>{$locale.082}</a><br />
-	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}setuser.php?logout=yes' class='side'>{$locale.084}</a>
+	<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}edit_profile.php'>{$locale.080}</a></div>
+	<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}pm.php'>{$locale.081}</a></div>
+	<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}members.php'>{$locale.082}</a></div>
+	<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.BASEDIR}setuser.php?logout=yes'>{$locale.084}</a></div>
 	{if $smarty.const.iADMIN|default:false && ($smarty.const.iUSER_RIGHTS != "" || $smarty.const.iUSER_RIGHTS != "C")}
 		{if $adminpage1|default:0 != 0 || $adminpage2|default:0 != 0 || $adminpage3|default:0 != 0 || $adminpage4|default:0 != 0}
 			<div class='side-label'>{$locale.083}</div>
 		{/if}
-		{if $adminpage1|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=1' class='side'>{$locale.ac01}</a><br />{/if}
-		{if $adminpage2|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=2' class='side'>{$locale.ac02}</a><br />{/if}
-		{if $adminpage3|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=3' class='side'>{$locale.ac03}</a><br />{/if}
-		{if $adminpage4|default:0 != 0}<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=4' class='side'>{$locale.ac04}</a><br />{/if}
+		{if $adminpage1|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=1' class='side'>{$locale.ac01}</a></div>{/if}
+		{if $adminpage2|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=2' class='side'>{$locale.ac02}</a></div>{/if}
+		{if $adminpage3|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=3' class='side'>{$locale.ac03}</a></div>{/if}
+		{if $adminpage4|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=4' class='side'>{$locale.ac04}</a></div>{/if}
 	{/if}
 	{if $new_pm_msg != 0}
 		<hr />
