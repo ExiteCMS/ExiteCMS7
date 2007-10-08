@@ -47,8 +47,8 @@ switch (strtolower($type)) {
 			}
 		// create the channel record for this RSS feed
 		$channel = array();
-		$channel['title'] = stripinput(str_replace("&", "&amp;", $locale['400']." ".$data['forum_name']));
-		$channel['description'] = stripinput(str_replace("&", "&amp;", $data['forum_description']));
+		$channel['title'] = $locale['400']." ".$data['forum_name'];
+		$channel['description'] = "<![CDATA[".$data['forum_description']."]]>";
 		$channel['link'] = $settings['siteurl']."forum/viewforum.php?forum_id=".$data['forum_id'];
 //		$channel['language'] = "";
 //		$channel['pubDate'] = "";
@@ -67,9 +67,9 @@ switch (strtolower($type)) {
 		);
 		while ($data = dbarray($result)) {
 			$item = array();
-			$item['title'] = stripinput(str_replace("&", "&amp;", $data['post_subject']));
+			$item['title'] = "<![CDATA[ ".$data['post_subject']." ]]>";
 			$item['link'] = $settings['siteurl']."forum/viewthread.php?forum_id=".$data['forum_id']."&amp;thread_id=".$data['thread_id']."&amp;pid=".$data['post_id']."#post_".$data['post_id'];
-			$item['description'] = stripinput(str_replace("&", "&amp;", strlen($data['post_message']) > 500 ? (substr($data['post_message'],0,496)." ...") : $data['post_message']));
+			$item['description'] = "<![CDATA[ ".(strlen($data['post_message']) > 500 ? (substr($data['post_message'],0,496)." ...") : $data['post_message'])." ]]>";
 			$item['pubDate'] = strftime("%a, %d %b %G %T %z", $data['post_datestamp']);
 //			$item['guid'] = "";
 			$feed[] = $item;
