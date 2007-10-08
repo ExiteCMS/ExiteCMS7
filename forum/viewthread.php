@@ -198,7 +198,7 @@ $variables['unread_posts'] = $unread_posts;
 //if a specific post is requested, find out on which page it is, and set rowstart accordingly
 if (isset($pid) && isNum($pid)) {
 	$reply_count = dbcount("(post_id)", "posts", "thread_id='".$tdata['thread_id']."' AND post_id<='".$pid."'");
-	$rowstart = ($reply_count - ($reply_count % ITEMS_PER_PAGE));
+	$rowstart = ($reply_count - ($reply_count % ITEMS_PER_PAGE)) - 1;	// rowstart has offset 0
 }
 // initialise our rowstart pointer if still needed
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
