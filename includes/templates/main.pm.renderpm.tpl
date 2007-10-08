@@ -70,7 +70,7 @@
 				{section name=ug loop=$messages[id].sender.group_names}
 					{if $messages[id].sender.group_names[ug].type == "U"}
 						{if $messages[id].sender.group_names[ug].level > 101}
-							<span class='alt'>{$messages[id].sender.group_names[ug].name}</span>
+							<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
 							<br />
 						{/if}
 					{/if}
@@ -80,10 +80,10 @@
 				{section name=ug loop=$messages[id].sender.group_names}
 					{if $messages[id].sender.group_names[ug].type == "G"}
 						{if $messages[id].sender.group_names[ug].color|default:"" != ""}
-							<span class='alt'><font color='{$messages[id].sender.group_names[ug].color}'>{$messages[id].sender.group_names[ug].name}</font></span>
+							<span class='small'><font color='{$messages[id].sender.group_names[ug].color}'>{$messages[id].sender.group_names[ug].name}</font></span>
 							<br />
 						{else}
-							<span class='alt'>{$messages[id].sender.group_names[ug].name}</span>
+							<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
 							<br />
 						{/if}
 						{assign var='groups_shown' value=true}
@@ -94,7 +94,7 @@
 					{section name=ug loop=$messages[id].sender.group_names}
 						{if $messages[id].sender.group_names[ug].type == "U"}
 							{if $messages[id].sender.group_names[ug].level < 102}
-								<span class='alt'>{$messages[id].sender.group_names[ug].name}</span>
+								<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
 								<br />
 							{/if}
 						{/if}
@@ -110,10 +110,10 @@
 				{/if}
 				<br />
 				{if $messages[id].sender.user_location|default:"" != ""}
-					<span class='alt'>{$locale.540}</span> {$messages[id].sender.user_location}
+					<span class='small'>{$locale.540}</span> {$messages[id].sender.user_location}
 					<br />
 				{/if}
-				<span class='alt'>{$locale.541}</span> {$messages[id].sender.user_joined|date_format:"%d.%m.%y"}
+				<span class='small'>{$locale.541}</span> {$messages[id].sender.user_joined|date_format:"%d.%m.%y"}
 			{else}
 				{if $messages[id].recipient_count == 1}
 					{$messages[id].recipient.cc_flag}
@@ -123,7 +123,7 @@
 					{section name=ug loop=$messages[id].recipient.group_names}
 						{if $messages[id].recipient.group_names[ug].type == "U"}
 							{if $messages[id].recipient.group_names[ug].level > 101}
-								<span class='alt'>{$messages[id].recipient.group_names[ug].name}</span>
+								<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
 								<br />
 							{/if}
 						{/if}
@@ -133,10 +133,10 @@
 					{section name=ug loop=$messages[id].recipient.group_names}
 						{if $messages[id].recipient.group_names[ug].type == "G"}
 							{if $messages[id].recipient.group_names[ug].color|default:"" != ""}
-								<span class='alt'><font color='{$messages[id].recipient.group_names[ug].color}'>{$messages[id].recipient.group_names[ug].name}</font></span>
+								<span class='small'><font color='{$messages[id].recipient.group_names[ug].color}'>{$messages[id].recipient.group_names[ug].name}</font></span>
 								<br />
 							{else}
-								<span class='alt'>{$messages[id].recipient.group_names[ug].name}</span>
+								<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
 								<br />
 							{/if}
 							{assign var='groups_shown' value=true}
@@ -147,7 +147,7 @@
 						{section name=ug loop=$messages[id].recipient.group_names}
 							{if $messages[id].recipient.group_names[ug].type == "U"}
 								{if $messages[id].recipient.group_names[ug].level < 102}
-									<span class='alt'>{$messages[id].recipient.group_names[ug].name}</span>
+									<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
 									<br />
 								{/if}
 							{/if}
@@ -163,10 +163,10 @@
 					{/if}
 					<br />
 					{if $messages[id].recipient.user_location|default:"" != ""}
-						<span class='alt'>{$locale.540}</span> {$messages[id].recipient.user_location}
+						<span class='small'>{$locale.540}</span> {$messages[id].recipient.user_location}
 						<br />
 					{/if}
-					<span class='alt'>{$locale.541}</span> {$messages[id].recipient.user_joined|date_format:"%d.%m.%y"}
+					<span class='small'>{$locale.541}</span> {$messages[id].recipient.user_joined|date_format:"%d.%m.%y"}
 				{else}
 					{section name=rid loop=$messages[id].recipients}
 						{if !$smarty.section.rid.first}<br />{/if}

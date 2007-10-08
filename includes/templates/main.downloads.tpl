@@ -43,7 +43,7 @@
 		{else}
 		<td width='{$colwidth}%' class='tbl1' style='vertical-align:top'>
 		{/if}
-			<div class='forum-caption'>
+			<div class='main-label'>
 				<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
 				<a href='{$smarty.const.FUSION_SELF}?cat_id={$download_cats[cat].download_cat_id}'>{$download_cats[cat].download_cat_name}</a>
 				<br />
@@ -79,10 +79,10 @@
 <table width='100%' cellpadding='0' cellspacing='1' class='tbl-border'>
 {/if}
 	<tr>
-		<td colspan='3' class='forum-caption'>
+		<td colspan='3' class='main-label'>
 			<b>{$downloads[item].download_title}</b>
 		</td>
-		<td align='right' class='forum-caption'>
+		<td align='right' class='main-label'>
 			<a href='{$smarty.const.FUSION_SELF}?cat_id={$downloads[item].download_cat}&amp;download_id={$downloads[item].download_id}'><span class='small2'>{$locale.420}</span></a>
 		</td>
 	</tr>

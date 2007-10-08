@@ -34,6 +34,10 @@ if (isset($user_id)) {
 	$this_userdata = $userdata;
 }
 
+if (isset($status) && $status == 1) {
+	$variables['update_profile'] = true;
+}
+
 if (isset($_POST['update_profile'])) {
 	$error = ""; $set_avatar = "";
 	$variables['update_profile'] = true;
@@ -172,6 +176,7 @@ if (isset($_POST['update_profile'])) {
 		}
 		if ($user_newpassword != "") { $newpass = " user_password=md5('$user_newpassword'), "; } else { $newpass = " "; }
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig' WHERE user_id='".$this_userdata['user_id']."'");
+		if ($user_theme != $userdata['user_theme']) redirect(FUSION_SELF."?status=1");
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$this_userdata['user_id']."'");
 		if (dbrows($result) != 0) {
 			$this_userdata = dbarray($result);
@@ -200,7 +205,7 @@ if (iMEMBER) {
 	    $this_userdata['user_fullname'] = $this_userdata['user_name'];
 	}
 	// generate a list of available themes
-	$theme_files = makefilelist(PATH_THEMES, ".|..", true, "folders", $this_userdata['user_level'] >= 102);
+	$theme_files = makefilelist(PATH_THEMES, ".|..|.svn", true, "folders", $this_userdata['user_level'] >= 102);
 	array_unshift($theme_files, "Default");
  	$variables['theme_files'] = $theme_files;
  

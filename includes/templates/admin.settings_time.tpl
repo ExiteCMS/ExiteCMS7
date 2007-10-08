@@ -32,7 +32,7 @@
 			</select>
 			&nbsp;<input type='button' name='setshortdate' value='>>' onclick="shortdate.value=shortdatetext.options[shortdatetext.selectedIndex].value;shortdatetext.selectedIndex=0;" class='button' />
 			&nbsp;<input type='text' name='shortdate' value='{$settings2.shortdate}' maxlength='50' class='textbox' style='width:180px;' />
-			&nbsp;<span class='alt'>( {$smarty.now|date_format:$settings2.shortdate} )</span>
+			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.shortdate} )</span>
 			<br /><br />
 			</td>
 		</tr>
@@ -50,7 +50,7 @@
 			</select>
 			&nbsp;<input type='button' name='setlongdate' value='>>' onclick="longdate.value=longdatetext.options[longdatetext.selectedIndex].value;longdatetext.selectedIndex=0;" class='button' />
 			&nbsp;<input type='text' name='longdate' value='{$settings2.longdate}' maxlength='50' class='textbox' style='width:180px;' />
-			&nbsp;<span class='alt'>( {$smarty.now|date_format:$settings2.longdate} )</span>
+			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.longdate} )</span>
 			<br /><br />
 			</td>
 		</tr>
@@ -68,7 +68,7 @@
 			</select>
 			&nbsp;<input type='button' name='setforumdate' value='>>' onclick="forumdate.value=forumdatetext.options[forumdatetext.selectedIndex].value;forumdatetext.selectedIndex=0;" class='button' />
 			&nbsp;<input type='text' name='forumdate' value='{$settings2.forumdate}' maxlength='50' class='textbox' style='width:180px;' />
-			&nbsp;<span class='alt'>( {$smarty.now|date_format:$settings2.forumdate} )</span>
+			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.forumdate} )</span>
 			<br /><br />
 			</td>
 		</tr>
@@ -86,7 +86,7 @@
 			</select>
 			&nbsp;<input type='button' name='setsubheaderdate' value='>>' onclick="subheaderdate.value=subheaderdatetext.options[subheaderdatetext.selectedIndex].value;subheaderdatetext.selectedIndex=0;" class='button' />
 			&nbsp;<input type='text' name='subheaderdate' value='{$settings2.subheaderdate}' maxlength='50' class='textbox' style='width:180px;' />
-			&nbsp;<span class='alt'>( {$smarty.now|date_format:$settings2.subheaderdate} )</span>
+			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.subheaderdate} )</span>
 			<br /><br />
 			</td>
 		</tr>
@@ -102,7 +102,7 @@
 				<option{if $settings2.timeoffset == $timezone} selected="selected"{/if}>{$timezone}</option>
 				{/foreach}
 			</select>
-			&nbsp;<span class='alt'>{$serverzone}</span>
+			&nbsp;<span class='small'>{$serverzone}</span>
 			<br /><br />
 			</td>
 		</tr>

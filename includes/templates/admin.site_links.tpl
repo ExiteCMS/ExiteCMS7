@@ -103,7 +103,7 @@
 		</tr>
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
-				<p class='alt'>{$locale.446}</p>
+				<p class='small'>{$locale.446}</p>
 			</td>
 		</tr>
 		<tr>

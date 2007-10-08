@@ -48,7 +48,7 @@
 			<b>{if $modules[id].type == "P"}{$locale.404}{else}{$locale.405}{/if} {$modules[id].title}</b>
 			{if $modules[id].description|default:"" != ""}
 				<br />
-				<span class='alt'>{$modules[id].description}</span>
+				<span class='small'>{$modules[id].description}</span>
 			{/if}
 		</td>
 	</tr>

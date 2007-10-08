@@ -1,58 +1,172 @@
+/* ========================================================= */
+/* ExiteCMS standard CSS tags. Do NOT remove these!          */
+/* ========================================================= */
+
 /* --- General settings ------------------------------------ */
 
+						/* text anchors */
 a						{ color:#0C386F; text-decoration:none; }
-a img					{ border:none; }
 a:hover					{ color:#0C386F; text-decoration:underline; }
+
+						/* text anchors in side panels */
 a.side					{ color:#0C386F; text-decoration:none; }
 a:hover.side			{ color:#0C386F; text-decoration:underline; }
-a.white					{ color:#eee; text-decoration:none; }
-a:hover.white			{ color:#eee; text-decoration:underline; }
 
+						/* image anchors */
+a img					{ border:none; }
+
+						/* horizontal lines */
 hr						{ border:none; color:#ccc; background-color:#ccc; height:1px; }
 
 /* --- HTML form settings ---------------------------------- */
 
+						/* general form definition */
 form					{ margin:0px; }
 
+						/* buttons */
 .button					{ font:0.9em Arial,Sans-Serif; Sans-Serif; font-weight: bold; color:#606060; background-color:#e0e0e0; border-top:1px #ddd solid; border-left:1px #ddd solid; border-bottom:1px #666 solid; border-right:1px #666 solid; cursor:pointer; margin-top:2px; padding: 1px 2px; background:url(/themes/PLiTheme/images/buttonbg.jpg) repeat-x left top; }
+
+						/* text entry fields */
 .textbox				{ font:1em Verdana, Arial,Sans-Serif; color:#000; background-color:#eee; border:1px #666 solid; }
 
 /* --- Website template ------------------------------------ */
 
-body 					{ font:0.7em Verdana,Arial,Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#bbbbbc; }
+						/* page body (normal mode & maintenance mode */
+.body 					{ font:0.7em Verdana,Arial,Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#bbbbbc; }
+.body-maint				{ font:0.7em Verdana,Arial,Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#ffb900; }
 
+						/* column definitions (left, center, right) */
+.side-border-left		{ padding:5px 5px 0px 0px; }
 .main-bg				{ padding:5px 0px 5px 0px; }
-.main-body 				{ color:#000; background-color:#eee; padding:3px 4px 3px 4px; }
+.side-border-right		{ padding:5px 0px 0px 5px; }
 
-.alt					{ color:#666; }
+						/* panels in the center column */
+.main-body 				{ color:#444; background-color:#eee; padding:4px 0px 6px 0px; }
 
+						/* panels in the left & right columns (with and without padding, p.e. for images) */
+.side-body				{ color:#000; background-color:#eee; padding:4px 4px 6px 4px; }
+.side-body-nm			{ color:#000; background-color:#eee; }
+
+						/* tags for sub texts, captions, etc. */ 
 .small					{ font-weight:normal; color:#444; }
 .small2					{ font-weight:normal; color:#888; }
 .smallalt				{ color:#0C386F; }
 
+						/* title bars within a panel */
 .infobar 				{ color:#000; background-color:#ddd; padding:3px 4px 3px 4px; }
 
-.comment-name			{ font-weight:bold; color:#113355; }
-
 /* --- Header ---------------------------------------------- */
+
+						/* header definition and background image */
+.headerbanner			{ color:#333; background-color:#eee; padding:0px; }
+
+/* --- Panels ---------------------------------------------- */
+
+						/* center panel cell definitions */
+.main-panel				{ margin: 0px 0px 0px 0px; }
+
+						/* side panel cell definitions */
+.side-panel				{ padding:0px 0px 0px 0px; margin:0px 0px 10px 0px; border:1px #ddd solid; }
+
+						/* center panel title */
+.cap-main				{ font-weight:normal; color:#333; height:21px; padding:0px 2px 0px 2px; background-image:url(images/cap-main.gif); background-repeat:repeat-x; }
+
+						/* side panel title */
+.sub-cap-main			{ color:#333; height:21px; padding:0px 2px 0px 2px; background-image:url(images/sub-cap-main.gif); background-repeat:repeat-x; }
+
+						/* labels and separators in side panels */
+.side-label				{ color:#00244f; background-color:#e3e3e3; margin:2px 0px 2px 0px; padding:1px 0px 1px 8px; white-space:nowrap;overflow:hidden; }
+
+						/* labels and separators in body panels */
+.main-label				{ color:#333; background-color:#ccc; font-weight:bold; padding:4px 4px 4px 4px; margin:0px 0px 5px 0px; white-space:nowrap;overflow:hidden; }
+
+						/* links in side panels */
+.side-label-link		{ white-space:nowrap;overflow:hidden;}
+
+						/* positioning of side-panel open/close buttons */
+.side-label-button		{ position:relative; float:right; top:2px; right:2px; }
+
+						/* horizontal lines in side-panels */
+hr.side-hr				{ border:1px #ccc solid; border-bottom:1px #eee solid; }
+
+/* --- Footer ---------------------------------------------- */
+
+.footer					{ text-align:center; color: #555; line-height:125%; }
+.footer img 			{ border: 0px; vertical-align: -30%; }
+
+/* --- Panel content layouts-------------------------------- */
+
+						/* standard table borders */
+.tbl-border				{ background-color:#bbb; }
+
+						/* borderless tables */
+.tbl					{ padding:3px 4px 3px 4px; }
+
+						/* table cells - color 1 */
+.tbl1					{ color:#000; background-color:#eee; padding:4px; }
+
+						/* table cells - color 2 */
+.tbl2					{ color:#333333; background-color:#e3e3e3; padding:4px; }
+
+						/* user-info cell header */
+.tbl_top_left			{ color:#333333; font-weight: bold; background-color:#e3e3e3; padding:4px; border-left: 1px solid #bbbbbb; border-top: 1px solid #bbbbbb; }
+
+						/* user-info cell of a message */
+.tbl_left				{ color:#333333; background-color:#fbf9f9; padding:4px; border-left: 1px solid #bbbbbb; border-top: 1px solid #bbbbbb; }
+
+						/* button row at the bottom the user-info cell */
+.tbl_left_bottom		{ background-color:#fbf9f9; padding:4px; border-left: 1px solid #bbbbbb; border-bottom: 1px solid #bbbbbb; }
+
+						/* message subject  */
+.tbl_top_mid			{ font-weight: bold; color:#333333; background-color:#e3e3e3; padding:4px; border-top: 1px solid #bbbbbb; }
+
+						/* button row in the message header */
+.tbl_top_right			{ color:#333333; background-color:#e3e3e3; padding:4px; border-top: 1px solid #bbbbbb; border-right: 1px solid #bbbbbb; }
+
+						/* message body */
+.tbl_right		 		{ color:#333; background-color:#fff; padding:4px; border: 1px solid #bbbbbb; }
+
+						/* message body, unread message */
+.unread					{ color:#000000; background-color:#e0f5f9; padding:4px; border: 1px solid #bbbbbb; }
+
+						/* links in the message body */
+.tbl_right		 		{ background-color:#eeeeee; padding:4px; border: 1px solid #bbbbbb; }
+
+						/* quotes within the message body */
+.quote					{ color:#000; background-color:#fff; padding:2px; margin:5px 20px 5px 20px; border:1px #bbbbbb solid; }
+
+						/* code sections within the message body */
+.codeblock 				{ font-family: courier, monospace; margin:5px 20px 5px 20px; overflow-x:auto; white-space: nowrap}
+.code 					{ margin:0px; padding:0 0 0 5px; border:1px #bbb solid; background-color:#fff; overflow-x:hidden}
+.codenr 				{ margin:0px; padding:0px 3px 0px 3px; border:1px #bbb solid; background-color:#ddd; float:left; }
+
+						/* thumbnail caption in the message body */
+.thumbnail				{ color:#ddd;background-color:#333;text-align:center; }
+a.thumbnail				{ color: #ddd; }
+
+						/* horizontal pollbar definition */
+.poll 					{ height:12px; border:1px #333 solid; }
+
+
+/* --- TinyMCE overrides ----------------------------------- */
+
+body.mceContentBody 	{ background-color:#eee; }
+
+/* ========================================================= */
+/* Add your own custom CSS tags below this line!             */
+/* ========================================================= */
+
+/* --- Panel extra elements -------------------------------- */
 
 .border-tleft			{ width:5px; height:16px; background-image:url(images/border-tleft.gif); }
 .border-tright			{ width:5px; height:16px; background-image:url(images/border-tright.gif); }
 .border-tmain 			{ height:16px; background-image:url(images/border-tmain.gif); background-repeat:repeat-x; }
 
-.headerbanner			{ color:#333; background-color:#eee; padding:0px; }
-
-.header					{ color:#333; background-color:#eee; padding:5px; }
-
 .sub-cap-left			{ width:5px; height:21px; background-image:url(images/sub-cap-left.gif); }
 .sub-cap-right			{ width:5px; height:21px; background-image:url(images/sub-cap-right.gif); }
-.sub-cap-main			{ color:#333; height:21px; padding:0px 2px 0px 2px; background-image:url(images/sub-cap-main.gif); background-repeat:repeat-x; }
-
-/* --- Panels ---------------------------------------------- */
 
 .cap-left				{ width:5px; height:21px; background-image:url(images/cap-left.gif); }
 .cap-right				{ width:5px; height:21px; background-image:url(images/cap-right.gif); }
-.cap-main				{ font-weight:normal; color:#333; height:21px; padding:0px 2px 0px 2px; background-image:url(images/cap-main.gif); background-repeat:repeat-x; }
 
 .border-left			{ width:5px; background-image:url(images/border-left.gif); background-repeat:repeat-y; }
 .border-right			{ width:5px; background-image:url(images/border-right.gif); background-repeat:repeat-y; }
@@ -61,70 +175,12 @@ body 					{ font:0.7em Verdana,Arial,Sans-Serif; margin: 5px 5px 5px 5px; color:
 .border-bright			{ width:5px; height:16px; background-image:url(images/border-bright.gif); }
 .border-bmain			{ height:16px; background-image:url(images/border-bmain.gif); background-repeat:repeat-x; }
 
-.side-border-left		{ padding:5px 5px 0px 0px; }
-.side-border-right		{ padding:5px 0px 0px 5px; }
-.side-body				{ color:#000; background-color:#eee; padding:4px 4px 6px 4px; }
-.side-body-nm			{ color:#000; background-color:#eee; }
-.side-body-sub			{ background-color:#ddd; border-bottom:1px #ccc solid; border-top:1px #eee solid; }
-
-.side-caption 			{ font-weight:bold; color:#eee; background-color:#004a80; padding:0px 4px 3px 4px; }
-
-.side-small				{ font-weight:normal; color:#333; }
-
-.side-label				{ color:#00244f; background-color:#e3e3e3; margin:2px 0px 2px 0px; padding:1px 0px 1px 8px; white-space:nowrap;overflow:hidden; }
-.side-label-link		{ white-space:nowrap;overflow:hidden;}
-.side-label-button		{ position:relative; float:right; top:2px; right:2px; }
-
-hr.side-hr				{ border:1px #ccc solid; border-bottom:1px #eee solid; }
-
-/* --- Footer ---------------------------------------------- */
-
-.footer					{ font:55% Tahoma,Verdana,Arial,Sans-Serif; color:#333; background-color:#bbb; border:#aaa 1px solid; padding:10px; }
-
-.footer2				{ text-align:center; color: #555; }
-.footer2 img 			{ border: 0px; vertical-align: -30%; }
-.footer2 a:link 		{ color: #555; }
-.footer2 a:visited		{ color: #555; }
-
-/* --- Forum ----------------------------------------------- */
-
-.tbl-border				{ background-color:#bbb; }
-.tbl					{ padding:3px 4px 3px 4px; }
-.tbl1					{ color:#000; background-color:#eee; padding:4px; }
-.tbl_title				{ text-align: right; padding: 4px; }
-.tbl_space				{ background-color: #eeeeee; height: 8px; }
-.tbl_left				{ color:#333333; background-color:#fbf9f9; padding:4px; border-left: 1px solid #bbbbbb; border-top: 1px solid #bbbbbb; }
-.tbl_left_bottom		{ background-color:#fbf9f9; padding:4px; border-left: 1px solid #bbbbbb; border-bottom: 1px solid #bbbbbb; }
-.tbl_right		 		{ background-color:#eeeeee; padding:4px; border: 1px solid #bbbbbb; }
 .tbl_right a			{ text-decoration:underline; }
-.tbl2					{ color:#333333; background-color:#e3e3e3; padding:4px; }
-.tbl_top_left			{ color:#333333; font-weight: bold; background-color:#e3e3e3; padding:4px; border-left: 1px solid #bbbbbb; border-top: 1px solid #bbbbbb; }
-.tbl_top_mid			{ font-weight: bold; color:#333333; background-color:#e3e3e3; padding:4px; border-top: 1px solid #bbbbbb; }
-.tbl_top_right			{ color:#333333; background-color:#e3e3e3; padding:4px; border-top: 1px solid #bbbbbb; border-right: 1px solid #bbbbbb; }
-.tbl_top_right img 		{ margin-right: 2px; }
-.unread					{ color:#000000; background-color:#e0f5f9; padding:4px; border: 1px solid #bbbbbb; }
-.forum-caption 			{ font-weight:bold; color:#333; background-color:#ccc; padding:2px 4px 4px 4px; }
-.quote					{ color:#000; background-color:#fff; padding:2px; margin:5px 20px 5px 20px; border:1px #bbbbbb solid; }
-.codeblock 				{ font-family: courier, monospace; margin:5px 20px 5px 20px; overflow-x:auto; white-space: nowrap}
-.code 					{ margin:0px; padding:0 0 0 5px; border:1px #bbb solid; background-color:#fff; overflow-x:hidden}
-.codenr 				{ margin:0px; padding:0px 3px 0px 3px; border:1px #bbb solid; background-color:#ddd; float:left; }
-.thumbnail				{ color:#ddd;background-color:#333;text-align:center; }
-.thumbnail a:link 		{ color: #ddd; }
-.thumbnail a:visited	{ color: #ddd; }
 
-/* --- Pollbox --------------------------------------------- */
+/* --- Google Maps ----------------------------------------- */
 
-.poll 					{ height:12px; border:1px #333 solid; }
-
-/* --- TinyMCE overrides ------------------------------------ */
-
-body.mceContentBody 	{ background-color:#eee; }
-
-/* --- Shoutbox -------------------------------------------- */
-
-.shoutboxname 			{ font-weight:bold; color:#113355; }
-.shoutbox				{ color:#555; }
-.shoutboxdate			{ color:#333; text-align:right; }
+#tooltip 				{ width: 200px; z-index: 99999;	}
+.tooltip 				{ font-weight:bold;padding: 2px;border:1px #036 solid;border-width:1px 2px 2px 1px;border-color: #000 #666 #666 #000;background-color:#FF9;color: #000;}
 
 /* --- Download Panel --------------------------------------- */
 
@@ -144,21 +200,9 @@ body.mceContentBody 	{ background-color:#eee; }
 .boxheader 				{ width:45px; padding-top:0px; padding-right:1px; text-align:center; white-space: nowrap; }
 .boxtypes 				{ width:45px; padding-top:4px; padding-right:1px; text-align:center; white-space: nowrap; }
 
-/* --- VirtualWeb ------------------------------------------ */
-
-.tree-border			{ border-collapse: collapse; }
-.tree_header			{ color:#333333; background-color:#e3e3e3; padding:4px; border: solid 1px #bbb }
-.tree_lr				{ color:#000; background-color:#eee; padding:1px; border-left: solid 1px #bbb; border-right: solid 1px #bbb }
-.tree_lrb				{ color:#000; background-color:#eee; padding:1px; border: solid 1px #bbb; border-top: 0px }
-
 /* --- Donations -------------------------------------------- */
 
 .donate_title			{ font-weight:bold;color:#004a80; }
 .donate_box				{ width:24em; height:24em; margin:1px; padding:0.5em; border:1px solid #CCC; -moz-border-radius:10px; background:#9d9ab7; }
 
-/* --- Google Maps ------------------------------------------ */
-
-#tooltip 				{ width: 200px; z-index: 99999;	}
-.tooltip 				{ font-weight:bold;padding: 2px;border:1px #036 solid;border-width:1px 2px 2px 1px;border-color: #000 #666 #666 #000;background-color:#FF9;color: #000;}
-
-/* ---------------------------------------------------------- */
+/* ========================================================= */

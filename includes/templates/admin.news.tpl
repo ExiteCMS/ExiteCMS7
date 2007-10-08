@@ -90,7 +90,7 @@
 		</tr>
 		<tr>
 			<td align='center' class='tbl'>
-				<span class='alt'>{$locale.545}</span>
+				<span class='small'>{$locale.545}</span>
 			</td>
 		</tr>
 		<tr>
@@ -258,7 +258,7 @@
 								{section name=minutes start=0 loop=61}
 									<option {if $news_start.minutes === $smarty.section.minutes.index}selected{/if}>{$smarty.section.minutes.index}</option>
 								{/section}
-							</select> : 00 <span class='alt'>{$locale.416}</span>
+							</select> : 00 <span class='small'>{$locale.416}</span>
 						</td>
 					</tr>
 					<tr>
@@ -296,7 +296,7 @@
 								{section name=minutes start=0 loop=61}
 									<option {if $news_end.minutes === $smarty.section.minutes.index}selected{/if}>{$smarty.section.minutes.index}</option>
 								{/section}
-							</select> : 00 <span class='alt'>{$locale.416}</span>
+							</select> : 00 <span class='small'>{$locale.416}</span>
 						</td>
 					</tr>
 					{if $news_id}

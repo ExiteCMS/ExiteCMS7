@@ -83,12 +83,12 @@
 	{if $results[idx].data.download_description}
 		{$results[idx].data.download_description}<br />
 	{/if}
-	<span class='small'><font class='alt'>{$locale.451}</font> {$results[idx].data.download_license} |
-	<font class='alt'>{$locale.452}</font> {$results[idx].data.download_os} |
-	<font class='alt'>{$locale.453}</font> {$results[idx].data.download_version}
+	<span class='small'><font class='small'>{$locale.451}</font> {$results[idx].data.download_license} |
+	<font class='small'>{$locale.452}</font> {$results[idx].data.download_os} |
+	<font class='small'>{$locale.453}</font> {$results[idx].data.download_version}
 	<br />
-	<font class='alt'>{$locale.454}</font>{$results[idx].data.download_datestamp|date_format:"longdate"} |
-	<font class='alt'>{$locale.455}</font> {$results[idx].data.download_count}</span>
+	<font class='small'>{$locale.454}</font>{$results[idx].data.download_datestamp|date_format:"longdate"} |
+	<font class='small'>{$locale.455}</font> {$results[idx].data.download_count}</span>
 {elseif $stype == "f"}
 	{$results[idx].relevance|string_format:"%u"}% - <a href='/forum/viewthread.php?forum_id={$results[idx].data.forum_id}&amp;thread_id={$results[idx].data.thread_id}&amp;pid={$results[idx].data.post_id}#post_{$results[idx].data.post_id}'>{$results[idx].data.post_subject}</a>
 	<br />
@@ -122,8 +122,8 @@
 	{if $results[idx].data.weblink_description}
 		{$results[idx].data.weblink_description}<br />
 	{/if}
-	<span class='small'><font class='alt'>{$locale.451}</font> {$results[idx].data.weblink_datestamp|date_format:"longdate"} |
-	<span class='alt'>{$locale.456}</span> {$results[idx].data.weblink_count}</span>
+	<span class='small'><font class='small'>{$locale.451}</font> {$results[idx].data.weblink_datestamp|date_format:"longdate"} |
+	<span class='small'>{$locale.456}</span> {$results[idx].data.weblink_count}</span>
 {/if}
 {if !$smarty.section.idx.last}
 <br />{if $stype != "m"}<br />{/if}

@@ -63,13 +63,13 @@
 		<tr>
 			<td class='tbl2'>
 				{$locale.406}
-				<span class='comment-name'>
+				<b>
 					{if $shouts[id].user_name|default:"" != ""}
-						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$shouts[id].shout_name}' class='slink'>{$shouts[id].user_name}</a>
+						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$shouts[id].shout_name}'>{$shouts[id].user_name}</a>
 					{else}
 						{$shouts[id].shout_name}
 					{/if}
-				</span>
+				</b>
 				{$locale.041}{$shouts[id].shout_datestamp|date_format:"longdate"}
 			</td>
 		</tr>

@@ -29,7 +29,7 @@
 		<br />
 		{$locale.442}
 		<br /><br />
-		<span class='alt'>{$locale.423}</span>
+		<span class='small'>{$locale.423}</span>
 		<br />
 		{foreach from=$errors item=errmsg}
 		    {$errmsg}<br />

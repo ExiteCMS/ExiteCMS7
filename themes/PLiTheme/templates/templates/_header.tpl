@@ -27,11 +27,6 @@
 	<meta name='verify-v1' content='6uLZe0u5c6hJ3XE0LoGBQRuU7IdJ/B6BIa2Si7b1dkw=' />
 	{if $headparms|default:false != false}{$headparms}{/if}
 	<link rel='stylesheet' href='{$smarty.const.THEME}styles.css' type='text/css' />
-	{if $userdata.user_id == 1 || $settings.maintenance}
-	<style type='text/css'>
-		body {ldelim} background-color:{$settings.maintenance_color}; {rdelim}
-	</style>
-	{/if}
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
 	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions.js'></script>
 	{if $smarty.const.LOAD_TINYMCE}
@@ -90,7 +85,7 @@
 	{/if}
 </head>
 
-<body {if $bodyparms|default:false != false}{$bodyparms}{/if}>
+<body {if $bodyparms|default:false != false}{$bodyparms}{/if} {if $userdata.user_level == 103 || $settings.maintenance}class='body-maint'{else}class='body'{/if}>
 
 {literal}
 <script type='text/javascript'></script>

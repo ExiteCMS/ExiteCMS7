@@ -48,13 +48,13 @@
 	<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 		<tr>
 			<td class='tbl2'>
-				<span class='comment-name'>
+				<b>
 				{if $comments[id].user_name|default:"" != ""}
-					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$comments[id].comment_name}' class='slink'>{$comments[id].user_name}</a>
+					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$comments[id].comment_name}'>{$comments[id].user_name}</a>
 				{else}
 					{$comments[id].comment_name}
 				{/if}
-				</span}
+				</b>
 				<span class='small'>
 					{$locale.041}{$comments[id].comment_datestamp|date_format:"longdate"}
 				</span>

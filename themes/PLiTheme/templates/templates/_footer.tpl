@@ -16,9 +16,9 @@
 {* preprocessing section of your theme.php                                 *}
 {*                                                                         *}
 {***************************************************************************}
-<table align='center' cellpadding='0' cellspacing='0' width='100%'>
+<table align='center' cellpadding='0' cellspacing='0' width='{$smarty.const.THEME_WIDTH}'>
 	<tr>
-		<td class='footer2'>
+		<td class='footer'>
 			<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 				<tr>
 					<td>

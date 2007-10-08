@@ -516,7 +516,7 @@ function saveMods() {
 	{section name=id2 loop=$forums[id].subforums}
 	<tr>
 		<td class='tbl1'>
-			<span class='alt'>{$forums[id].subforums[id2].forum_name}</span>
+			<span class='small'>{$forums[id].subforums[id2].forum_name}</span>
 			<br />
 			<span class='small'>{$forums[id].subforums[id2].forum_description}</span>
 		</td>

@@ -194,11 +194,10 @@ $variables['rows'] = $rows;
 $unread_posts = iMEMBER ? dbcount("(*)", "posts_unread", "user_id = '".$userdata['user_id']."' AND forum_id = '".$forum_id."' AND thread_id = '".$thread_id."'") : 0;
 $variables['unread_posts'] = $unread_posts;
 
-
 //if a specific post is requested, find out on which page it is, and set rowstart accordingly
 if (isset($pid) && isNum($pid)) {
-	$reply_count = dbcount("(post_id)", "posts", "thread_id='".$tdata['thread_id']."' AND post_id<='".$pid."'");
-	$rowstart = ($reply_count - ($reply_count % ITEMS_PER_PAGE)) - 1;	// rowstart has offset 0
+	$reply_count = dbcount("(post_id)", "posts", "thread_id='".$tdata['thread_id']."' AND post_id<'".$pid."'");
+	$rowstart = ($reply_count - ($reply_count % ITEMS_PER_PAGE));
 }
 // initialise our rowstart pointer if still needed
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;

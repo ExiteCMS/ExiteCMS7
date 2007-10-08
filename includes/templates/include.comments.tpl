@@ -22,13 +22,13 @@
 {/if}
 	<tr>
 		<td class='tbl2'>
-			<span class='comment-name'>
+			<b>
 				{if $smarty.const.iMEMBER && $comments[item].user_name|default:false}
 					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$comments[item].comment_name}'>{$comments[item].user_name}</a>
 				{else}
 					{$comments[item].user_name}
 				{/if}
-			</span>
+			</b>
 			<span class='small'>{$locale.041}{$comments[item].comment_datestamp|date_format:"longdate"}</span>
 		</td>
 	</tr>

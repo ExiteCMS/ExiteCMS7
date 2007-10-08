@@ -46,7 +46,7 @@
 				{$locale.455}
 			</td>
 			<td class='tbl'>
-				<textarea name='panel_code' cols='95' rows='15' class='textbox'>{$panel_code}</textarea>
+				<textarea name='panel_code' cols='80' rows='15' class='textbox'>{$panel_code}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -54,7 +54,7 @@
 				{$locale.465}
 			</td>
 			<td class='tbl'>
-				<textarea name='panel_template' cols='95' rows='15' class='textbox'>{$panel_template}</textarea>
+				<textarea name='panel_template' cols='80' rows='15' class='textbox'>{$panel_template}</textarea>
 			</td>
 		</tr>
 		{/if}

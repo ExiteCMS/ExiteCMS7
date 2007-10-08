@@ -43,16 +43,16 @@
 				{section name=id loop=$forums}
 					{if $forums[id].new_cat == true}
 					<tr>
-						<td colspan='6' class='forum-caption'>
+						<td colspan='6' class='main-label'>
 							<a name='cat_{$forums[id].cat_id}'></a>{$forums[id].forum_cat_name}
 						</td>
 					</tr>
 					{/if}
 					<tr>
-						<td class='tbl1'>
+						<td width='1%' align='center' class='tbl1'>
 							<a href='{$smarty.const.BASEDIR}feeds.php?type=forum&amp;id={$forums[id].forum_id}'><img src='{$smarty.const.THEME}images/rss-icon.gif' alt='' /></a>
 						</td>
-						<td align='center' class='tbl2'>
+						<td width='1%' align='center' class='tbl2'>
 						{if $forums[id].unread_posts == 0}
 					    	<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' />
 						{elseif $forums[id].unread_posts <= $smarty.const.FOLDER_HOT}

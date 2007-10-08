@@ -120,7 +120,7 @@
 				{include file="main.pm.renderpm.tpl"}
 			<tr>
 				<td colspan='4' class='tbl1'>
-					<span class='alt'>
+					<span class='small'>
 					{section name=rc loop=$messages[id].readstatus}
 						{if $smarty.section.rc.first}
 							<br />{$locale.542}
@@ -141,7 +141,7 @@
 			{if $messages[id].pmindex_read_datestamp == 0}<b>{/if}
 			<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=view&amp;msg_id={$messages[id].pmindex_id}#view_{$messages[id].pmindex_id}'>{$messages[id].pm_subject}</a>
 			{if $messages[id].pmindex_read_datestamp == 0} - {$locale.449}</b>{/if}
-			<span class='alt'>
+			<span class='small'>
 			{section name=rc loop=$messages[id].readstatus}
 				{if $smarty.section.rc.first}
 					<br />{$locale.542}

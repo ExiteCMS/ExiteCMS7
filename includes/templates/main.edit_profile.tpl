@@ -205,7 +205,7 @@
 				<td class='tbl'>
 					<select name='user_theme' class='textbox' style='width:200px;'>
 						{foreach from=$theme_files item=theme}
-							<option>{$theme}</option>
+							<option{if $this_userdata.user_theme ==  $theme} selected="selected"{/if}>{$theme}</option>
 						{/foreach}
 					</select>
 				</td>

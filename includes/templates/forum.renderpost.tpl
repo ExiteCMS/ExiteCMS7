@@ -82,7 +82,7 @@
 			{section name=ug loop=$posts[pid].group_names}
 				{if $posts[pid].group_names[ug].type == "U"}
 					{if $posts[pid].group_names[ug].level > 101}
-						<span class='alt'>{$posts[pid].group_names[ug].name}</span>
+						<span class='small'>{$posts[pid].group_names[ug].name}</span>
 						<br />
 					{/if}
 				{/if}
@@ -92,10 +92,10 @@
 			{section name=ug loop=$posts[pid].group_names}
 				{if $posts[pid].group_names[ug].type == "G"}
 					{if $posts[pid].group_names[ug].color|default:"" != ""}
-						<span class='alt'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
+						<span class='small'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
 						<br />
 					{else}
-						<span class='alt'>{$posts[pid].group_names[ug].name}</span>
+						<span class='small'>{$posts[pid].group_names[ug].name}</span>
 						<br />
 					{/if}
 					{assign var='groups_shown' value=true}
@@ -106,7 +106,7 @@
 				{section name=ug loop=$posts[pid].group_names}
 					{if $posts[pid].group_names[ug].type == "U"}
 						{if $posts[pid].group_names[ug].level < 102}
-							<span class='alt'>{$posts[pid].group_names[ug].name}</span>
+							<span class='small'>{$posts[pid].group_names[ug].name}</span>
 							<br />
 						{/if}
 					{/if}
@@ -120,13 +120,13 @@
 			{else}
 				{assign var='height' value='70'}
 			{/if}
-			<span class='alt'>{$locale.502}</span> {$posts[pid].user_posts}
+			<span class='small'>{$locale.502}</span> {$posts[pid].user_posts}
 			<br />
 			{if $posts[pid].user_location|default:"" != ""}
-				<span class='alt'>{$locale.503}</span> {$posts[pid].user_location}
+				<span class='small'>{$locale.503}</span> {$posts[pid].user_location}
 				<br />
 			{/if}
-			<span class='alt'>{$locale.504}</span> {$posts[pid].user_joined|date_format:"%d.%m.%y"}
+			<span class='small'>{$locale.504}</span> {$posts[pid].user_joined|date_format:"%d.%m.%y"}
 		</td>
 		<td valign='top' colspan='3' height='{$height}' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-bottom:none;'>
 		{$posts[pid].post_message|default:" "|escape:"entities"}

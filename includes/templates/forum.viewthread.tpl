@@ -102,7 +102,7 @@
 			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
 			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
 		</td>
-		<td class='tbl_title'>
+		<td>
 		{if $smarty.const.iMEMBER}
 			{if $user_can_post }
 				{if !$thread.thread_locked}
@@ -115,7 +115,7 @@
 </table>
 <table cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td align='left' class='tbl'>
+		<td width='38%' align='left' class='tbl'>
 			{$locale.540}
 			<br />
 			<select name='jump_id' class='textbox' onchange="jumpForum(this.options[this.selectedIndex].value);">
@@ -131,14 +131,14 @@
 			{/section}
 			</select>
 		</td>
-		<td align='center'>
+		<td width='24%' align='center'>
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $unread_posts}
 				{buttonlink name=$locale.573 link="viewforum.php?action=markallread&amp;forum_id="|cat:$forum_id}&nbsp;
 			{/if}
 		{/if}
 		</td>
-		<td align='right' class='tbl'>
+		<td width='38%' align='right' class='tbl'>
 		{if $smarty.const.iMEMBER && $user_can_post && $thread.thread_author != 0 && ($smarty.const.iMOD || $smarty.const.iSUPERADMIN)}
 			<form name='modopts2' method='post' action='options.php?forum_id={$forum_id}&amp;thread_id={$thread_id}'>
 				{$locale.520}
