@@ -36,7 +36,7 @@ class ExiteCMS_Smarty extends Smarty {
      * The class constructor.
      */
 	function ExiteCMS_Smarty() {
-		global $settings;
+		global $settings, $userdata;
 		
 		$this->Smarty();
 
@@ -47,7 +47,11 @@ class ExiteCMS_Smarty extends Smarty {
 		$this->compile_check = true;
 		
 		// set the compile ID for this website/theme (themes can have different templates!)
-		$this->compile_id = $_SERVER['SERVER_NAME'].".".$settings['theme'];
+		if (isset($userdata['user_theme']) && $userdata['user_theme'] != "Default") {
+			$this->compile_id = $_SERVER['SERVER_NAME'].".".$userdata['user_theme'];
+		} else {
+			$this->compile_id = $_SERVER['SERVER_NAME'].".".$settings['theme'];
+		}
 		
 		// caching required?
 		$this->caching = 0;
