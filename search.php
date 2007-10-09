@@ -65,7 +65,7 @@ if (dbrows($result) != 0) {
 if ($stext != "" && strlen($stext) >= "3") {
 	$stext = mysql_escape_string($stext);
 	switch ($stype) {
-		case "a":
+		case "a":	// articles
 			$result = dbquery(
 				"SELECT ta.*,tac.*, tu.user_id,user_name, 
 				MATCH(article_subject, article_snippet, article_article) AGAINST ('$stext' IN BOOLEAN MODE) AS score 
@@ -77,18 +77,18 @@ if ($stext != "" && strlen($stext) >= "3") {
 			);
 			define('RESULTS_PER_PAGE', 15);
 			break;
-		case "d":
+		case "d":	// downloads
 			$result = dbquery(
 				"SELECT td.*,tdc.*, 
 				MATCH (download_title, download_description) AGAINST ('$stext' IN BOOLEAN MODE) AS score
 				FROM ".$db_prefix."downloads td
 				INNER JOIN ".$db_prefix."download_cats tdc ON td.download_cat=tdc.download_cat_id
 				WHERE ".groupaccess('download_cat_access')." AND MATCH (download_title, download_description) AGAINST ('$stext' IN BOOLEAN MODE)
-				ORDER BY score DESC, download_datestamp DESC"
+				ORDER BY score DESC, td.download_datestamp DESC"
 			);
 			define('RESULTS_PER_PAGE', 10);
 			break;
-		case "f":
+		case "f":	// forums
 			$result = dbquery(
 				"SELECT tp.*, tf.*, tu.user_id,user_name,
 				MATCH(post_subject, post_message) AGAINST ('$stext' IN BOOLEAN MODE) AS score
@@ -100,7 +100,7 @@ if ($stext != "" && strlen($stext) >= "3") {
 			);
 			define('RESULTS_PER_PAGE', 15);
 			break;
-		case "n":
+		case "n":	// news
 			$result = dbquery(
 				"SELECT tn.*, user_id, user_name,
 				MATCH(news_subject, news_news, news_extended) AGAINST ('$stext' IN BOOLEAN MODE) AS score
@@ -112,7 +112,7 @@ if ($stext != "" && strlen($stext) >= "3") {
 			);
 			define('RESULTS_PER_PAGE', 15);
 			break;
-		case "m":
+		case "m":	// members
 			$result = dbquery(
 				"SELECT *, 1 AS score
 				FROM ".$db_prefix."users 
@@ -121,7 +121,7 @@ if ($stext != "" && strlen($stext) >= "3") {
 			);
 			define('RESULTS_PER_PAGE', 30);
 			break;
-		case "w":
+		case "w":	// weblinks
 			break;
 			$result = dbquery(
 				"SELECT tw.*,twc.*,
