@@ -149,9 +149,13 @@ if (isset($_POST['update_profile'])) {
 		$newavatar = isset($_FILES['user_avatar']) ? $_FILES['user_avatar'] : array('name' => "");
 		if ($this_userdata['user_avatar'] == "" && !empty($newavatar['name']) && is_uploaded_file($newavatar['tmp_name'])) {
 			$avatarext = strrchr($newavatar['name'],".");
-			$avatarname = substr($newavatar['name'], 0, strrpos($newavatar['name'], "."));
-			if (preg_match("/^[-0-9A-Z_\[\]]+$/i", $avatarname) && preg_match("/(\.gif|\.GIF|\.jpg|\.JPG|\.png|\.PNG)$/", $avatarext) && $newavatar['size'] <= 30720) {
-				$avatarname = $avatarname."[".$this_userdata['user_id']."]".$avatarext;
+			while ($avatarname = md5(time())) {
+				if (!file_exists(PATH_IMAGES."avatars/".$avatarname.$avatarext)) {
+					break;
+				}
+			};
+			if (preg_match("/(\.gif|\.GIF|\.jpg|\.JPG|\.png|\.PNG)$/", $avatarext) && $newavatar['size'] <= 30720) {
+				$avatarname .= $avatarext;
 				$set_avatar = "user_avatar='$avatarname', ";
 				move_uploaded_file($newavatar['tmp_name'], PATH_IMAGES."avatars/".$avatarname);
 				chmod(PATH_IMAGES."avatars/".$avatarname,0644);
@@ -172,7 +176,10 @@ if (isset($_POST['update_profile'])) {
 		
 		if (isset($_POST['del_avatar'])) {
 			$set_avatar = "user_avatar='', ";
-			unlink(PATH_IMAGES."avatars/".$this_userdata['user_avatar']);
+			// check if it exists before removing it
+			if (file_exists(PATH_IMAGES."avatars/".$this_userdata['user_avatar'])) {
+				unlink(PATH_IMAGES."avatars/".$this_userdata['user_avatar']);
+			}
 		}
 		if ($user_newpassword != "") { $newpass = " user_password=md5('$user_newpassword'), "; } else { $newpass = " "; }
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig' WHERE user_id='".$this_userdata['user_id']."'");
