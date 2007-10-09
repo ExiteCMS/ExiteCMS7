@@ -103,7 +103,11 @@
 						{if $threads[id].thread_sticky}
 							<img src='{$smarty.const.THEME}images/stickythread.gif' title='{$locale.563}' alt='{$locale.563}' style='vertical-align:middle;' />
 						{/if}
-						<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}'>{$threads[id].thread_subject}</a>
+						{if $threads[id].unread_posts == 0}
+							<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}'>{$threads[id].thread_subject}</a>
+						{else}
+							<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;pid={$threads[id].first_unread_post}#post_{$threads[id].first_unread_post}'>{$threads[id].thread_subject}</a>
+						{/if}
 						{if $threads[id].thread_pages > 2}
 							{$locale.412}
 							(
