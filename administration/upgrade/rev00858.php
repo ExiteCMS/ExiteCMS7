@@ -20,7 +20,7 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(21,51,0,9,29,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision."<br /><font color='red'>Added the new locales tables.</font>");
+$revisions[] = array('revision' => $_revision, 'date' => mktime(21,51,0,9,29,2007), 'description' => "Required updates for ExiteCMS v6.2 rev.".$_revision."<br /><font color='red'>Added the new locales tables.</font>");
 
 // array to store the commands of this update
 $commands = array();

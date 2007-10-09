@@ -16,7 +16,7 @@
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.440 state=$_state style=$_style}
 {if !$smarty.const.iMEMBER}
-	<center><br />{$locale.003}<br />\n<br /></center>
+	<center><br /><b>{$locale.003}</b><br /><br /></center>
 {else}
 	<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}{if $is_admin}{$aidlink}&amp;user_id={$this_userdata.user_id}{/if}' enctype='multipart/form-data'>
 		<table align='center' cellpadding='0' cellspacing='0'>
@@ -281,7 +281,7 @@
 //
 function autotimezone() {
 	var now = new Date();
-	var serveroffset = {/literal}{$serveroffset}{literal};
+	var serveroffset = {/literal}{$serveroffset|default:0}{literal};
 	var offset = now.getTimezoneOffset() / -60 - serveroffset;
 	hours = parseInt(offset);
 	if (hours < 0) var minutes = (offset - hours) * -60; else var minutes = (offset - hours) * 60;

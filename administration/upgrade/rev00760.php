@@ -20,7 +20,7 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(12,25,0,7,28,2007), 'description' => "Required updates for ExiteCMS v7.00 rev.".$_revision."<br /><font color='red'>Now banners can be activated on a per-forum basis, and support for 'broken' timezones (like +10.5) has been added. GeoIP information can now be added manually (to correct mistakes, or add non-public IP's)</font>");
+$revisions[] = array('revision' => $_revision, 'date' => mktime(12,25,0,7,28,2007), 'description' => "Required updates for ExiteCMS v6.2 rev.".$_revision."<br /><font color='red'>Now banners can be activated on a per-forum basis, and support for 'broken' timezones (like +10.5) has been added. GeoIP information can now be added manually (to correct mistakes, or add non-public IP's)</font>");
 
 // array to store the commands of this update
 $commands = array();

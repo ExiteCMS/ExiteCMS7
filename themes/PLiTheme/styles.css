@@ -24,16 +24,16 @@ hr						{ border:none; color:#ccc; background-color:#ccc; height:1px; }
 form					{ margin:0px; }
 
 						/* buttons */
-.button					{ font:0.9em Arial,Sans-Serif; Sans-Serif; font-weight: bold; color:#606060; background-color:#e0e0e0; border-top:1px #ddd solid; border-left:1px #ddd solid; border-bottom:1px #666 solid; border-right:1px #666 solid; cursor:pointer; margin-top:2px; padding: 1px 2px; background:url(/themes/PLiTheme/images/buttonbg.jpg) repeat-x left top; }
+.button					{ font-size:0.9em; font-family:Verdana, Arial, Sans-Serif; font-weight: bold; color:#606060; background-color:#e0e0e0; border-top:1px #ddd solid; border-left:1px #ddd solid; border-bottom:1px #666 solid; border-right:1px #666 solid; cursor:pointer; margin-top:2px; padding: 1px 2px; background:url(/themes/PLiTheme/images/buttonbg.jpg) repeat-x left top; }
 
 						/* text entry fields */
-.textbox				{ font:1em Verdana, Arial,Sans-Serif; color:#000; background-color:#eee; border:1px #666 solid; }
+.textbox				{ font-size:1em; font-family:Verdana, Arial, Sans-Serif; color:#000; background-color:#eee; border:1px #666 solid; }
 
 /* --- Website template ------------------------------------ */
 
 						/* page body (normal mode & maintenance mode */
-.body 					{ font:0.7em Verdana,Arial,Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#bbbbbc; }
-.body-maint				{ font:0.7em Verdana,Arial,Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#ffb900; }
+.body 					{ font-size:0.7em; font-family:Verdana, Arial, Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#bbbbbc; }
+.body-maint				{ font-size:0.7em; font-family:Verdana, Arial, Sans-Serif; margin: 5px 5px 5px 5px; color:#000; background-color:#ffb900; }
 
 						/* column definitions (left, center, right) */
 .side-border-left		{ padding:5px 5px 0px 0px; }

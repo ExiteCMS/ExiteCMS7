@@ -229,7 +229,7 @@ switch($step) {
 		require_once PATH_INCLUDES."dbsetup_include.php";
 		if ($error == "") {
 
-			$result = dbquery("INSERT INTO ".$db_prefix."settings (sitename, siteurl, sitebanner, siteemail, siteusername, siteintro, 
+			$result = dbquery("INSERT INTO ".$db_prefix."settings (sitename, siteurl, siteemail, siteusername, siteintro, 
 				description, keywords, footer, opening_page, news_headline, news_columns, news_items, locale, theme, shortdate, longdate, 
 				forumdate, subheaderdate, timeoffset, numofthreads, attachments, attachmax, attachtypes, thread_notify, enable_registration, 
 				email_verification, admin_activation, display_validation, validation_method, thumb_w, thumb_h, photo_w, photo_h, photo_max_w, 
@@ -237,7 +237,7 @@ switch($step) {
 				smtp_password, bad_words_enabled, bad_words, bad_word_replace, guestposts, numofshouts, flood_interval, counter, max_users, 
 				max_users_datestamp, version, revision, remote_stats, maintenance, maintenance_message, donate_forum_id, forum_flags, 
 				newsletter_email, pm_inbox, pm_savebox, pm_sentbox) 
-			VALUES ('ExiteCMS Powered Website', 'http://www.yourdomain.com/', 'images/banner.gif', 'webmaster@yourdomain.com', '$username', 
+			VALUES ('ExiteCMS Powered Website', 'http://www.yourdomain.com/', 'webmaster@yourdomain.com', '$username', 
 				'<center>Welcome to www.yourdomain.com</center>', '', '', '<center>ExiteCMS &copy;2007 Exite BV</center>', 'news.php', 0, 1, 4, 
 				'$localeset', 'PLiTheme', '%d/%m/%Y %H:%M', '%B %d %Y %H:%M:%S', '%d-%m-%Y %H:%M', '%B %d %Y %H:%M:%S', '0', 5, 0, 150000, 
 				'.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3', 0, 1, 1, 0, 1, 'image', 100, 100, 400, 300, 1800, 1600, 150000, 'gd2', 

@@ -33,7 +33,6 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."settings SET
 		sitename='".stripinput($_POST['sitename'])."',
 		siteurl='".stripinput($_POST['siteurl']).(strrchr($_POST['siteurl'],"/") != "/" ? "/" : "")."',
-		sitebanner='".stripinput($_POST['sitebanner'])."',
 		siteemail='".stripinput($_POST['siteemail'])."',
 		newsletter_email='".stripinput($_POST['newsletter_email'])."',
 		siteusername='".stripinput($_POST['username'])."',

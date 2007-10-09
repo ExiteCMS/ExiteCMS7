@@ -103,6 +103,9 @@ $settings['timezones'] = array("-12","-11","-10","-9:30","-9","-8","-7","-6","-5
 	"+0:30","+1","+2","+3","+3:30","+4","+4:30","+5","+5:30","+6","+6:30","+7","+7:30","+8","+8:30","+8:45","+9","+9:30",
 	"+10","+10:30","+11","+11:30","+12","+12:45","+13","+14");
 
+// defint the sitebanner
+$settings['sitebanner'] = "site_logo.gif";
+
 // backward compatibility: make sure siteurl contains a relative path!
 $settings['siteurl'] = strstr(str_replace("http://", "", str_replace("https://", "", $settings['siteurl'])), "/");
 

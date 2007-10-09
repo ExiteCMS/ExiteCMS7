@@ -55,6 +55,8 @@ define('SIDE_WIDTH', "170");
 // make sure this is defined, we need it later
 if (!defined('FULL_SCREEN')) define('FULL_SCREEN', false);
 
+$settings['sitebanner'] = 'up.gif';
+
 /*----------------------------------------------------+
 | Load the header template                            |
 +----------------------------------------------------*/

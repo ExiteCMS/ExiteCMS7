@@ -181,9 +181,9 @@ function fontReset(aantal) {
 					</td>
 				</tr>
 			</table>
-			<div style='float;padding:1px;margin-top:-66px;margin-right:2px;'>
+			<div style='float:right;line-height:0px;margin-top:-65px;margin-right:3px;'>
 				{section name=index loop=$downloadbars}
-					<div class='bar' id='bar{$downloadbars[index].download_bar}' style='height:{$downloadbars[index].value}px;top:{$downloadbars[index].baseline}px;'></div>
+					<div class='bar' id='bar{$downloadbars[index].download_bar}' style='display:inline;overflow:hidden;line-height:0px;height:{$downloadbars[index].value}px;top:{$downloadbars[index].baseline}px;'></div>
 				{/section}
 			</div>
 		</td>

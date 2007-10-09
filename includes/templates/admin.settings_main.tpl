@@ -38,14 +38,6 @@
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
-				{$locale.404}
-			</td>
-			<td width='50%' class='tbl'>
-				<input type='text' name='sitebanner' value='{$settings2.sitebanner}' maxlength='255' class='textbox' style='width:230px;' />
-			</td>
-		</tr>
-		<tr>
-			<td width='50%' class='tbl'>
 				{$locale.405}
 			</td>
 			<td width='50%' class='tbl'>
