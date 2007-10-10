@@ -1,16 +1,32 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `06/10/2007 16:14`
+// Date generated  : `10/10/2007 22:34`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '877');
+define('CMS_REVISION', '909');
 
 if ($step == 1) {
 
 $fail = "0";
 $failed = array();
+
+//
+// Code to create table `CMSconfig`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."CMSconfig");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."CMSconfig (
+  `cfg_id` smallint(5) unsigned NOT NULL auto_increment,
+  `cfg_name` varchar(25) NOT NULL default '',
+  `cfg_value` text NOT NULL,
+  PRIMARY KEY  (`cfg_id`),
+  KEY `cfg_name` (`cfg_name`)
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "CMSconfig : ".mysql_error();
+}
 
 //
 // Code to create table `GeoIP`
@@ -764,87 +780,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."redirects (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "redirects : ".mysql_error();
-}
-
-//
-// Code to create table `settings`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."settings");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."settings (
-  `sitename` varchar(200) NOT NULL default '',
-  `siteurl` varchar(200) NOT NULL default '',
-  `sitebanner` varchar(200) NOT NULL default '',
-  `siteemail` varchar(100) NOT NULL default '',
-  `siteusername` varchar(30) NOT NULL default '',
-  `siteintro` text NOT NULL,
-  `description` text NOT NULL,
-  `keywords` text NOT NULL,
-  `footer` text NOT NULL,
-  `opening_page` varchar(100) NOT NULL default '',
-  `news_headline` tinyint(3) unsigned NOT NULL default '0',
-  `news_columns` tinyint(3) unsigned NOT NULL default '1',
-  `news_items` tinyint(3) unsigned NOT NULL default '4',
-  `news_latest` tinyint(1) unsigned NOT NULL default '0',
-  `locale` varchar(20) NOT NULL default 'English',
-  `theme` varchar(100) NOT NULL default '',
-  `shortdate` varchar(50) NOT NULL default '',
-  `longdate` varchar(50) NOT NULL default '',
-  `forumdate` varchar(50) NOT NULL default '',
-  `subheaderdate` varchar(50) NOT NULL default '',
-  `timeoffset` varchar(6) NOT NULL default '0',
-  `numofthreads` smallint(2) unsigned NOT NULL default '5',
-  `attachments` tinyint(1) unsigned NOT NULL default '0',
-  `attachmax` int(12) unsigned NOT NULL default '150000',
-  `attachtypes` varchar(150) NOT NULL default '.gif,.jpg,.png,.zip,.rar,.tar',
-  `thread_notify` tinyint(1) unsigned NOT NULL default '0',
-  `enable_registration` tinyint(1) unsigned NOT NULL default '1',
-  `email_verification` tinyint(1) unsigned NOT NULL default '1',
-  `admin_activation` tinyint(1) unsigned NOT NULL default '0',
-  `display_validation` tinyint(1) unsigned NOT NULL default '1',
-  `validation_method` varchar(5) NOT NULL default 'image',
-  `thumb_w` smallint(3) unsigned NOT NULL default '100',
-  `thumb_h` smallint(3) unsigned NOT NULL default '100',
-  `photo_w` smallint(4) unsigned NOT NULL default '400',
-  `photo_h` smallint(4) unsigned NOT NULL default '300',
-  `photo_max_w` smallint(4) unsigned NOT NULL default '1800',
-  `photo_max_h` smallint(4) unsigned NOT NULL default '1600',
-  `photo_max_b` int(10) unsigned NOT NULL default '150000',
-  `thumb_compression` varchar(3) NOT NULL default 'gd2',
-  `thumbs_per_row` smallint(2) unsigned NOT NULL default '4',
-  `thumbs_per_page` smallint(2) unsigned NOT NULL default '12',
-  `tinymce_enabled` tinyint(1) unsigned NOT NULL default '0',
-  `smtp_host` varchar(200) NOT NULL default '',
-  `smtp_username` varchar(100) NOT NULL default '',
-  `smtp_password` varchar(100) NOT NULL default '',
-  `bad_words_enabled` tinyint(1) unsigned NOT NULL default '0',
-  `bad_words` text NOT NULL,
-  `bad_word_replace` varchar(20) NOT NULL default '[censored]',
-  `guestposts` tinyint(1) unsigned NOT NULL default '0',
-  `numofshouts` tinyint(2) unsigned NOT NULL default '10',
-  `flood_interval` tinyint(2) unsigned NOT NULL default '15',
-  `counter` bigint(20) unsigned NOT NULL default '0',
-  `max_users` smallint(5) unsigned NOT NULL default '0',
-  `max_users_datestamp` int(10) unsigned NOT NULL default '0',
-  `version` decimal(5,2) NOT NULL default '7.00',
-  `revision` smallint(5) unsigned NOT NULL default '0',
-  `remote_stats` tinyint(1) unsigned NOT NULL default '0',
-  `maintenance` tinyint(1) unsigned NOT NULL default '0',
-  `maintenance_message` text NOT NULL,
-  `maintenance_color` varchar(10) NOT NULL default '#FFB900',
-  `donate_forum_id` smallint(5) NOT NULL default '0',
-  `forum_flags` smallint(1) NOT NULL default '0',
-  `forum_max_w` smallint(4) NOT NULL default '600',
-  `forum_max_h` smallint(4) NOT NULL default '600',
-  `newsletter_email` varchar(100) NOT NULL default '',
-  `pm_inbox` smallint(5) unsigned NOT NULL default '25',
-  `pm_sentbox` smallint(5) unsigned NOT NULL default '25',
-  `pm_savebox` smallint(5) unsigned NOT NULL default '25',
-  `pm_send2group` smallint(5) unsigned NOT NULL default '103',
-  `pm_hide_rcpts` tinyint(1) unsigned NOT NULL default '0'
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "settings : ".mysql_error();
 }
 
 //

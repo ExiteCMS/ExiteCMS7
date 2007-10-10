@@ -125,7 +125,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 			}
 			// if (some) upgrades succeeded, update the revision number
 			if ($settings['revision'] != $new_revision) {
-				$result = dbquery("UPDATE ".$db_prefix."settings SET revision = '".$new_revision."'");
+				$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
 			}
 			$variables['results'] = $results;
 			$variables['revision'] = $new_revision;

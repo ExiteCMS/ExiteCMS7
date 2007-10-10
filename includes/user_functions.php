@@ -26,7 +26,7 @@ if (dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$su
 
 // Set the users site_visited cookie if this is the first visit, and update the unique visit counter
 if (!isset($_COOKIE['site_visited'])) {
-	$result=dbquery("UPDATE ".$db_prefix."settings SET counter=counter+1");
+	$result=dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
 	setcookie("site_visited", "yes", time() + 31536000, "/", "", "0");
 }
 

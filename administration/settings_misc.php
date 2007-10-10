@@ -28,27 +28,28 @@ $variables['this_module'] = FUSION_SELF;
 if (!checkrights("S6") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."settings SET
-		tinymce_enabled='".(isNum($_POST['tinymce_enabled']) ? $_POST['tinymce_enabled'] : "0")."',
-		smtp_host='".stripinput($_POST['smtp_host'])."',
-		smtp_username='".stripinput($_POST['smtp_username'])."',
-		smtp_password='".stripinput($_POST['smtp_password'])."',
-		bad_words_enabled='".(isNum($_POST['bad_words_enabled']) ? $_POST['bad_words_enabled'] : "0")."',
-		bad_words='".addslash($_POST['bad_words'])."',
-		bad_word_replace='".stripinput($_POST['bad_word_replace'])."',
-		guestposts='".(isNum($_POST['guestposts']) ? $_POST['guestposts'] : "0")."',
-		remote_stats='".(isNum($_POST['remote_stats']) ? $_POST['remote_stats'] : "0")."',
-		numofshouts='".(isNum($_POST['numofshouts']) ? $_POST['numofshouts'] : "10")."',
-		flood_interval='".(isNum($_POST['flood_interval']) ? $_POST['flood_interval'] : "15")."',
-		forum_flags='".(isNum($_POST['forum_flags']) ? $_POST['forum_flags'] : "0")."',
-		maintenance='".(isNum($_POST['maintenance']) ? $_POST['maintenance'] : "0")."',
-		maintenance_message='".addslash(descript($_POST['maintenance_message']))."',
-		maintenance_color='".$_POST['maintenance_color']."'
-	");
-	redirect(FUSION_SELF.$aidlink);
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['tinymce_enabled']) ? $_POST['tinymce_enabled'] : "0")."' WHERE cfg_name = 'tinymce_enabled'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['smtp_host'])."' WHERE cfg_name = 'smtp_host'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['smtp_username'])."' WHERE cfg_name = 'smtp_username'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['smtp_password'])."' WHERE cfg_name = 'smtp_password'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['bad_words_enabled']) ? $_POST['bad_words_enabled'] : "0")."' WHERE cfg_name = 'bad_words_enabled'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".addslash($_POST['bad_words'])."' WHERE cfg_name = 'bad_words'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['bad_word_replace'])."' WHERE cfg_name = 'bad_words_replace'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['guestposts']) ? $_POST['guestposts'] : "0")."' WHERE cfg_name = 'guestposts'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['remote_stats']) ? $_POST['remote_stats'] : "0")."' WHERE cfg_name = 'remote_stats'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['numofshouts']) ? $_POST['numofshouts'] : "10")."' WHERE cfg_name = 'numofshouts'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['flood_interval']) ? $_POST['flood_interval'] : "15")."' WHERE cfg_name = 'flood_interval'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_flags']) ? $_POST['forum_flags'] : "0")."' WHERE cfg_name = 'forum_flags'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['maintenance']) ? $_POST['maintenance'] : "0")."' WHERE cfg_name = 'maintenance'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".addslash(descript($_POST['maintenance_message']))."' WHERE cfg_name = 'maintenance_message'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['maintenance_color']."' WHERE cfg_name = 'maintenance_color'");
 }
 
-$settings2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+$settings2 = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+while ($data = dbarray($result)) {
+	$settings2[$data['cfg_name']] = $data['cfg_value'];
+}
 $settings2['maintenance_message'] = stripslashes($settings2['maintenance_message']);
 $variables['settings2'] = $settings2;
 

@@ -75,8 +75,8 @@ if (isset($_POST['save_latest'])) {
 		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_latest_news = '".($settings['news_items'] + 1 - $key)."' WHERE news_id = '".$item."'");
 	}
 	
-	// update the news_latest settings flag
-	$result = dbquery("UPDATE ".$db_prefix."settings SET news_latest = '".(isset($_POST['news_latest']) ? "1" : "0")."'");
+	// update the news_latest CMSconfig flag
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isset($_POST['news_latest']) ? "1" : "0")."' WHERE cfg_name = 'news_latest'");
 	
 }
 

@@ -28,17 +28,18 @@ $variables['this_module'] = FUSION_SELF;
 if (!checkrights("S4") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."settings SET
-		enable_registration='".(isNum($_POST['enable_registration']) ? $_POST['enable_registration'] : "1")."',
-		email_verification='".(isNum($_POST['email_verification']) ? $_POST['email_verification'] : "1")."',
-		admin_activation='".(isNum($_POST['admin_activation']) ? $_POST['admin_activation'] : "0")."',
-		display_validation='".(isNum($_POST['display_validation']) ? $_POST['display_validation'] : "1")."',
-		validation_method='".$_POST['validation_method']."'
-	");
-	redirect(FUSION_SELF.$aidlink);
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['enable_registration']) ? $_POST['enable_registration'] : "1")."' WHERE cfg_name = 'enable_registration'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['email_verification']) ? $_POST['email_verification'] : "1")."' WHERE cfg_name = 'email_verification'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['admin_activation']) ? $_POST['admin_activation'] : "0")."' WHERE cfg_name = 'admin_activation'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['display_validation']) ? $_POST['display_validation'] : "1")."' WHERE cfg_name = 'display_validation'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['validation_method']."' WHERE cfg_name = 'validation_method'");
 }
 
-$settings2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+$settings2 = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+while ($data = dbarray($result)) {
+	$settings2[$data['cfg_name']] = $data['cfg_value'];
+}
 $variables['settings2'] = $settings2;
 
 // define the admin body panel

@@ -30,9 +30,7 @@ if (!checkrights("S8") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['savesettings'])) {
 	$localeset = stripinput($_POST['localeset']);
 	$old_localeset = stripinput($_POST['old_localeset']);
-	$result = dbquery("UPDATE ".$db_prefix."settings SET
-		locale='$localeset'
-	");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$localeset."' WHERE cfg_name = 'locale'");
 	if ($localeset != $old_localeset) {
 		include PATH_LOCALE.$localeset."/admin/main.php";
 		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['201']."' WHERE admin_link='administrators.php'");
@@ -73,7 +71,11 @@ if (isset($_POST['savesettings'])) {
 	redirect(FUSION_SELF.$aidlink);
 }
 
-$settings2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+$settings2 = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+while ($data = dbarray($result)) {
+	$settings2[$data['cfg_name']] = $data['cfg_value'];
+}
 $variables['settings2'] = $settings2;
 
 $variables['locales'] = array();

@@ -28,17 +28,19 @@ $variables['this_module'] = FUSION_SELF;
 if (!checkrights("S2") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."settings SET
-		shortdate='".$_POST['shortdate']."',
-		longdate='".$_POST['longdate']."',
-		forumdate='".$_POST['forumdate']."',
-		subheaderdate='".$_POST['subheaderdate']."',
-		timeoffset='".$_POST['timeoffset']."'
-	");
-	redirect(FUSION_SELF.$aidlink);
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['shortdate']."' WHERE cfg_name = 'shortdate'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['longdate']."' WHERE cfg_name = 'longdate'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['forumdate']."' WHERE cfg_name = 'forumdate'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['subheaderdate']."' WHERE cfg_name = 'subheaderdate'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['timeoffset']."' WHERE cfg_name = 'timeoffset'");
 }
 
-$settings2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+$settings2 = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+while ($data = dbarray($result)) {
+	$settings2[$data['cfg_name']] = $data['cfg_value'];
+}
+$variables['settings2'] = $settings2;
 
 $variables['options'] = array();
 $variables['options'][] = $locale['455'];
@@ -66,7 +68,6 @@ $variables['options'][] = "%d %B %Y %H:%M:%S";
 
 $variables['serverzone'] = sprintf($locale['457'], "GMT ".(date('O')=="+0000"?"":date('O')));
 $variables['localtime'] = time_system2local(time());
-$variables['settings2'] = $settings2;
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.settings_time', 'template' => 'admin.settings_time.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/settings.php");

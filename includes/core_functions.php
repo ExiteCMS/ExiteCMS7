@@ -95,15 +95,29 @@ if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the docume
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
 
-// fetch the Site Settings from the database and store them in the $settings variable
-$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+// fetch the CMSconfig from the database and store them in the $settings variable
+if (dbtable_exists($db_prefix."CMSconfig")) {
+	// get the settings from the CMSconfig table (introduced in revision 909)
+	$settings = array();
+	$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+	while ($data = dbarray($result)) {
+		$settings[$data['cfg_name']] = $data['cfg_value'];
+	}
+	// and drop the settings table if it exists
+	if (dbtable_exists($db_prefix."settings")) {
+		$result = dbquery("DROP TABLE ".$db_prefix."settings");
+	}
+} else {
+	// use the settings table
+	$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+}
 
 // add static information to the settings array (NEED TO FIND A BETTER SOLUTION FOR THIS!)
 $settings['timezones'] = array("-12","-11","-10","-9:30","-9","-8","-7","-6","-5","-4","-3:30","-3","-2:30","-2","-1","+0",
 	"+0:30","+1","+2","+3","+3:30","+4","+4:30","+5","+5:30","+6","+6:30","+7","+7:30","+8","+8:30","+8:45","+9","+9:30",
 	"+10","+10:30","+11","+11:30","+12","+12:45","+13","+14");
 
-// defint the sitebanner
+// define the sitebanner
 $settings['sitebanner'] = "site_logo.gif";
 
 // backward compatibility: make sure siteurl contains a relative path!

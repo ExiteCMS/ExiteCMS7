@@ -171,6 +171,41 @@ function dbarraynum($resource) {
 	}
 }
 
+function dbtable_exists($tbl, $db='') {
+	global $db_name;
+	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats;
+
+	$tables = array();
+
+	$_s_loadtime = explode(" ", microtime());
+	$_s_loadtime = $_s_loadtime[1] + $_s_loadtime[0];
+	$_loadstats['querytime'] -= $_s_loadtime;
+
+	$db_select = @mysql_select_db( ($db != "" && $db != $db_name) ? $db :$db_name );
+	$result = @mysql_query("SHOW TABLES");
+	while ($data = @mysql_fetch_array($result)) { 
+		$tables[] = $data[0]; 
+	}
+	@mysql_free_result($result);
+	
+	$_loadstats['queries']++;
+	$_loadstats['others']++;
+	$_db_last_function = "SHOW TABLES";
+	$_e_loadtime = explode(" ", microtime());
+	$_e_loadtime = $_e_loadtime[1] + $_e_loadtime[0];
+	$_loadstats['querytime'] += $_e_loadtime;
+	if ($_db_log) {
+		$_db_logs[] = array($_db_last_function, ($_e_loadtime - $_s_loadtime)*1000);
+	}
+
+	if (in_array($tbl, $tables)) { 
+		return true; 
+	} else { 
+		return false; 
+	}
+}
+
+
 function dbconnect($db_host, $db_user, $db_pass, $db_name) {
 	$db_connect = @mysql_connect($db_host, $db_user, $db_pass, true);
 	$db_select = @mysql_select_db($db_name);

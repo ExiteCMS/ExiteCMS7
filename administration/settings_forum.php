@@ -30,19 +30,20 @@ if (!checkrights("S3") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['prune'])) require_once PATH_ADMIN."forums_prune.php";
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."settings SET
-		numofthreads='".(isNum($_POST['numofthreads']) ? $_POST['numofthreads'] : "5")."',
-		attachments='".(isNum($_POST['attachments']) ? $_POST['attachments'] : "0")."',
-		attachmax='".(isNum($_POST['attachmax']) ? $_POST['attachmax'] : "150000")."',
-		forum_max_w='".(isNum($_POST['forum_max_w']) ? $_POST['forum_max_w'] : "400")."',
-		forum_max_h='".(isNum($_POST['forum_max_h']) ? $_POST['forum_max_h'] : "200")."',
-		attachtypes='".$_POST['attachtypes']."',
-		thread_notify='".(isNum($_POST['thread_notify']) ? $_POST['thread_notify'] : "0")."'
-	");
-	redirect(FUSION_SELF.$aidlink);
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['numofthreads']) ? $_POST['numofthreads'] : "5")."' WHERE cfg_name = 'numofthreads'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['attachments']) ? $_POST['attachments'] : "0")."' WHERE cfg_name = 'attachments'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['attachmax']) ? $_POST['attachmax'] : "150000")."' WHERE cfg_name = 'attachmax'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_max_w']) ? $_POST['forum_max_w'] : "400")."' WHERE cfg_name = 'forum_max_w'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_max_h']) ? $_POST['forum_max_h'] : "200")."' WHERE cfg_name = 'forum_max_h'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['attachtypes']."' WHERE cfg_name = 'attachtypes'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['thread_notify']) ? $_POST['thread_notify'] : "0")."' WHERE cfg_name = 'thread_notify'");
 }
 
-$settings2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+$settings2 = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+while ($data = dbarray($result)) {
+	$settings2[$data['cfg_name']] = $data['cfg_value'];
+}
 $variables['settings2'] = $settings2;
 
 // define the admin body panel
