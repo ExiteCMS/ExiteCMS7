@@ -488,6 +488,7 @@ if (isset($_POST['preview'])) {
 			$preview['attachments'] = array();
 			// add information about the current user
 			$preview = array_merge($preview, $userdata);
+			$preview['user_sig'] = parsemessage($preview['user_sig'], $preview['post_smileys']);
 			// process attachments
 			if ($settings['attachments'] == "1" && $fdata['forum_attach'] == "1") {
 				$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE post_id='$post_id' ORDER BY attach_id");

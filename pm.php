@@ -18,6 +18,9 @@ $variables = array();
 // load the locale for this module
 require_once PATH_LOCALE.LOCALESET."pm.php";
 
+// include the forum functions
+require_once PATH_INCLUDES."forum_functions_include.php";
+
 // include the image functions
 require_once PATH_INCLUDES."photo_functions_include.php";
 
@@ -129,8 +132,7 @@ function gathermsginfo($msgrec, $preview = false) {
 	}
 
 	// parse the messsage body
-	if (!$msgrec['pm_smileys']) $msgrec['pm_message'] = parsesmileys($msgrec['pm_message']);
-	$msgrec['pm_message'] = nl2br(parseubb($msgrec['pm_message']));
+	$msgrec['pm_message'] = parsemessage($msgrec['pm_message'], !$msgrec['pm_smileys']);
 	
 	// check if the users avatar exists
 	if (!empty($msgrec['user_avatar']) && !file_exists(PATH_IMAGES."avatars/".$msgrec['user_avatar'])) $msgrec['user_avatar'] = "imagenotfound.jpg";
@@ -737,8 +739,8 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$data = array();
 		$data['pm_id'] = $pm_id;
 		$data['pm_subject'] = stripinput($_POST['subject']);
-		$data['pm_message'] = stripinput($_POST['message']);
 		$data['pm_smileys'] = isset($_POST['chk_disablesmileys']) ? 0 : 1;
+		$data['pm_message'] = stripinput($_POST['message']);
 		$data['pm_size'] = 0;
 		$data['pm_datestamp'] = 0;
 		$data['pmindex_id'] = 0;
@@ -844,7 +846,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$variables['subject'] = (!strstr($data['pm_subject'], "RE: ") ? "RE: " : "").$data['pm_subject'];
 				$variables['org_message'] = $data['pm_message'];
 				if ($action != "reply") {
-					if ($data['pmindex_folder'] == 0)
+					if ($data['pmindex_user_id'] == $data['pmindex_from_id'])
 						$result2 = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = '".$data['pmindex_from_id']."'");
 					else
 						$result2 = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = '".$data['pmindex_to_id']."'");
@@ -1055,7 +1057,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			}
 			$variables['messages'][] = $data;
 		}
-//_debug($variables['messages'], true);	
+// _debug($variables['messages'], true);	
 		// main messsages panel
 		$variables['folder'] = $folder;
 		$variables['totals'] = $totals;
