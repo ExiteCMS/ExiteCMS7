@@ -60,20 +60,20 @@
 					{buttonlink name=$locale.401 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;msg_id=0"}
 				</td>
 				<td class='tbl1' align='right'>
-					<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onClick="javascript:setChecked('pm_form','check_mark[]',1);return false;">
-					<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onClick="javascript:setChecked('pm_form','check_mark[]',0);return false;">
+					<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;" />
+					<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;" />
 					&nbsp; {$locale.409}
 					{if $folder != "archive"}
-						<input type='submit' name='multi_archive' value='{$locale.404}' class='button'>
+						<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
 					{/if}
 					{if $folder == "archive"}
-						<input type='submit' name='multi_restore' value='{$locale.413}' class='button'>
+						<input type='submit' name='multi_restore' value='{$locale.413}' class='button' />
 					{/if}
 					{if $folder == "inbox"}
-						<input type='submit' name='multi_read' value='{$locale.414}' class='button'>
-						<input type='submit' name='multi_unread' value='{$locale.415}' class='button'>
+						<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
+						<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 					{/if}
-					<input type='submit' name='multi_delete' value='{$locale.416}' class='button'>					
+					<input type='submit' name='multi_delete' value='{$locale.416}' class='button' />
 				</td>
 			</tr>
 		</table>
@@ -181,7 +181,7 @@
 			{if $messages[id].pm_datestamp != 0}{$messages[id].pm_datestamp|date_format:"forumdate"}{/if}
 		</td>
 		<td class='tbl1' width='20'>
-			<input type='checkbox' name='check_mark[]' value='{$messages[id].pmindex_id}'>
+			<input type='checkbox' name='check_mark[]' value='{$messages[id].pmindex_id}' />
 		</td>
 	</tr>
 	{/if}
@@ -193,20 +193,20 @@
 	<table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 		<tr>
 			<td class='tbl1' align='right'>
-				<a href='#' onClick="javascript:setChecked('pm_form','check_mark[]',1);return false;">{$locale.410}</a> |
-				<a href='#' onClick="javascript:setChecked('pm_form','check_mark[]',0);return false;">{$locale.411}</a> |
+				<a href='#' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;">{$locale.410}</a> |
+				<a href='#' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;">{$locale.411}</a> |
 				{$locale.409}
 				{if $folder != "archive"}
-					<input type='submit' name='multi_archive' value='{$locale.404}' class='button'>
+					<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
 				{/if}
 				{if $folder == "archive"}
-					<input type='submit' name='multi_restore' value='{$locale.413}' class='button'>
+					<input type='submit' name='multi_restore' value='{$locale.413}' class='button' />
 				{/if}
 				{if $folder == "inbox"}
-					<input type='submit' name='multi_read' value='{$locale.414}' class='button'>
-					<input type='submit' name='multi_unread' value='{$locale.415}' class='button'>
+					<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
+					<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 				{/if}
-				<input type='submit' name='multi_delete' value='{$locale.416}' class='button'>					
+				<input type='submit' name='multi_delete' value='{$locale.416}' class='button' />
 				<br /><br />
 			</td>
 		</tr>

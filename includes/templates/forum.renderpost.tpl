@@ -129,7 +129,7 @@
 			<span class='small'>{$locale.504}</span> {$posts[pid].user_joined|date_format:"%d.%m.%y"}
 		</td>
 		<td valign='top' colspan='3' height='{$height}' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-bottom:none;'>
-		{$posts[pid].post_message|default:" "|escape:"entities"}
+		{$posts[pid].post_message|default:" "}
 		{section name=id loop=$posts[pid].attachments}
 			{if $smarty.section.id.first}
 				<br /><br />
@@ -242,7 +242,7 @@
 		<td colspan='3' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-top:none;'>
 		{if $posts[pid].post_showsig && $posts[pid].user_sig|default:"" != ""}
 			<hr />
-			{$posts[pid].user_sig}
+			{$posts[pid].user_sig|escape:"amp"}
 		{/if}
 		</td>
 	</tr>

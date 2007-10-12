@@ -19,7 +19,7 @@
 			<table width='100%'>
 				<tr>
 					<td class='infobar'>
-						<b><a name='news_{$news[item].news_id}' id='news_{$news[item].news_id}'></a>{$news[item].news_subject|escape}</b>
+						<b><a name='news_{$news[item].news_id}' id='news_{$news[item].news_id}'></a>{$news[item].news_subject|escape:"amp"}</b>
 					</td>
 				</tr>
 			</table>
@@ -29,7 +29,7 @@
 						<div style='width:100%;vertical-align:top;'>
 							<a href='news_cats.php?cat_id={$news[item].news_id}'>
 							<img src='{$smarty.const.IMAGES_NC}{$news[item].news_cat_image}' alt='{$news[item].news_cat_name}' align='left' style='border:0px;margin-top:3px;margin-right:5px' /></a>
-							{$news[item].news_news|escape}
+							{$news[item].news_news|escape:"amp"}
 						</div>
 					</td>
 				</tr>

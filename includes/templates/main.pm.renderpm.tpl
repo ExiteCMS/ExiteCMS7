@@ -47,9 +47,9 @@
 					{buttonlink name=$locale.444 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=quote&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 				{/if}
 				{if $folder == "archive" && $messages[id].pmindex_folder == 2}
-					{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=restore&amp;msg_id="|cat:$messages[id].pmindex_id}
+					{buttonlink name=$locale.412 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=restore&amp;msg_id="|cat:$messages[id].pmindex_id}
 				{else}
-					{buttonlink name=$locale.412 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+					{buttonlink name=$locale.404 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
 				{/if}
 				{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=delete&amp;msg_id="|cat:$messages[id].pmindex_id}
 			{/if}

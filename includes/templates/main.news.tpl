@@ -39,7 +39,7 @@
 				<td style='width:100%;vertical-align:top;'>
 					<a href='news_cats.php?cat_id={$news[column][item].news_cat_id}'>
 					<img src='{$smarty.const.IMAGES_NC}{$news[column][item].news_cat_image}' alt='{$news[column][item].news_cat_name}' align='left' style='border:0px;margin-top:3px;margin-right:5px' /></a>
-					{$news[column][item].news_news|escape}<br />
+					{$news[column][item].news_news|escape:"amp"}<br />
 				</td>
 			</tr>
 		</table>

@@ -27,9 +27,11 @@ function smarty_modifier_escape($string, $esc_type = 'entities', $char_set = '')
 	if ($char_set == '') $char_set = $locale['charset'];
 
     switch ($esc_type) {
+        case 'amp':
+			return str_replace("&", "&amp;", str_replace("&amp;", "&", $string));
+
         case 'entities':
-//            $string = htmlspecialchars($string, ENT_NOQUOTES, $char_set);
-			return str_replace("&lt;", "<", str_replace("&gt;", ">", str_replace('&amp;', '&', str_replace('&', '&amp;', $string))));
+			return str_replace("<", "&lt;", str_replace(">", "&gt;", str_replace("&", "&amp;", str_replace("&amp;", "&", $string))));
 
         case 'html':
             return htmlspecialchars($string, ENT_QUOTES, $char_set);

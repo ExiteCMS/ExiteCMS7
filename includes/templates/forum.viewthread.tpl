@@ -92,24 +92,37 @@
 {/if}
 <table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
-		<td class='tbl1' colspan='3' height='5'>
+		<td class='tbl1' colspan='2'height='5'>
 		</td>
 	</tr>
 	<tr>
-		<td class='smallalt'>
-			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
-			<a href='index.php'>{$locale.400}</a> » 
-			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
-			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
-		</td>
-		<td>
+		<td align='left' class='tbl'>
 		{if $smarty.const.iMEMBER}
+			{if $settings.thread_notify}
+				{if $has_thread_notify}
+					{buttonlink name=$locale.515 link="post.php?action=track_off&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
+				{else}
+					{buttonlink name=$locale.516 link="post.php?action=track_on&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
+				{/if}
+			{/if}
 			{if $user_can_post }
 				{if !$thread.thread_locked}
 					{buttonlink name=$locale.565 link="post.php?action=reply&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{/if}
+				{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			{/if}
 		{/if}
+		</td>
+		<td align='right' class='tbl'>
+			{buttonlink name=$locale.581 link=$smarty.const.FUSION_REQUEST|cat:"#page_top"|escape:"entities"}
+		</td>
+	</tr>
+	<tr>
+		<td class='smallalt' colspan='2'>
+			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
+			<a href='index.php'>{$locale.400}</a> » 
+			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
+			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
 		</td>
 	</tr>
 </table>
