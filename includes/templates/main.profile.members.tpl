@@ -185,10 +185,8 @@
 			</tr>
 			<tr>
 				<td class='tbl1'>
-	{else}
-		,
 	{/if}
-					<a href='{$smarty.const.FUSION_SELF}?group_id={$data.user_groups[group].group}'>{$data.user_groups[group].name}</a>
+					<a href='{$smarty.const.FUSION_SELF}?group_id={$data.user_groups[group].group}'>{$data.user_groups[group].name}</a>{if !$smarty.section.group.last},{/if}
 	{if $smarty.section.group.last}
 				</td>
 			</tr>
