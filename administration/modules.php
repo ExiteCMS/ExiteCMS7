@@ -260,7 +260,7 @@ if ($action == 'upgrade' && isset($id)) {
 	// load the module installer to start deinstallation
 	include PATH_MODULES.$data['mod_folder']."/module_installer.php";
 
-	// if defined, install the module's admin panel
+	// if defined, install the module's admin panel (if it hasn't been installed before)
 	if ($mod_admin_panel != "") {
 
 		// check if module rights are defined, If not, use the default
@@ -300,12 +300,18 @@ if ($action == 'upgrade' && isset($id)) {
 			$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
 			if (dbrows($result) == 0) $link_panel = "main_menu_panel";
 
-			// determine the next order in the menu for this link
-			$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$link_panel'"),0) + 1;
-
-			// add the new link
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
-				VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+			// check if the menu link is already defined
+			$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_url = '".$link_url."'");
+			if (dbrows($result) == 0) {
+				// determine the next order in the menu for this link
+				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$link_panel'"),0) + 1;
+	
+				// add the new link
+				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+					VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+			} else {
+				// do nothing
+			}
 		}
 	}
 
