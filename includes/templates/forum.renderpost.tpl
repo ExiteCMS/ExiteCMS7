@@ -242,7 +242,7 @@
 		<td colspan='3' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-top:none;'>
 		{if $posts[pid].post_showsig && $posts[pid].user_sig|default:"" != ""}
 			<hr />
-			{$posts[pid].user_sig|escape:"amp"}
+			{$posts[pid].user_sig}
 		{/if}
 		</td>
 	</tr>

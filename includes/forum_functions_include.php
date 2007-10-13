@@ -285,8 +285,8 @@ function parsemessage($rawmsg, $smileys=true) {
 			$message = str_replace("{**@@**}", $rawmsg, $message);
 			break;
 		}
-		// store this code block
-		$codeblocks[] = substr($rawmsg, 0, $j);
+		// store this code block (convert the & to prevent entity replacement upon display)
+		$codeblocks[] = str_replace("&", "&amp;", substr($rawmsg, 0, $j));
 		// strip the processed bit
 		$rawmsg = substr($rawmsg, $j);
 		// check if there are more code segments
