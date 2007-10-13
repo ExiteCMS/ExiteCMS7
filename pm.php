@@ -846,7 +846,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$variables['subject'] = (!strstr($data['pm_subject'], "RE: ") ? "RE: " : "").$data['pm_subject'];
 				$variables['org_message'] = $data['pm_message'];
 				if ($action != "reply") {
-					if ($data['pmindex_user_id'] == $data['pmindex_from_id'])
+					if ($data['pmindex_user_id'] == $data['pmindex_to_id'] || $data['pmindex_to_id'] == 0)
 						$result2 = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = '".$data['pmindex_from_id']."'");
 					else
 						$result2 = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = '".$data['pmindex_to_id']."'");
