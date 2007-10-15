@@ -19,7 +19,7 @@
 <head>
 <title>{$settings.sitename}</title>
 <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
-<link rel='stylesheet' href='{$smarty.const.THEME}styles.css' type='text/css' />
+{include file='_stylesheets.tpl'}
 </head>
 <body class='tbl2'>
 

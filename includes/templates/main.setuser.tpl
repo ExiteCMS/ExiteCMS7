@@ -21,7 +21,7 @@
 		<title>{$settings.sitename}</title>
 		<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
 		<meta http-equiv='refresh' content='{$refresh}; url=index.php' />
-		<link rel='stylesheet' href='{$smarty.const.THEME}styles.css' type='text/css' />
+		{include file='_stylesheets.tpl'}
 	</head>
 
 	<body class='tbl2' style='height:100%'>
