@@ -24,7 +24,7 @@ if(dbrows($result)) {
 	}
 }
 // click recorded, redirect back to the previous page
-if ($_SERVER['HTTP_REFERER'] != "") {
+if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "") {
 	header("Location:".$_SERVER['HTTP_REFERER']);
 } else {
 	header("Location:".BASEDIR."index.php");

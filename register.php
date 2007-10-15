@@ -26,7 +26,7 @@ include PATH_LOCALE.LOCALESET."register.php";
 include PATH_LOCALE.LOCALESET."user_fields.php";
 
 // check whether we allow registrations
-if ($settings['enable_registration'] == 0) {
+if ($settings['enable_registration'] == 1) {
 
 	// new user activation
 	if (isset($activate)) {
