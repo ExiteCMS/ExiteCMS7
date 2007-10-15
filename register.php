@@ -144,7 +144,7 @@ if ($settings['enable_registration'] == 1) {
 		}
 		
 		$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";
-		$user_offset = is_numeric($_POST['user_offset']) ? $_POST['user_offset'] : "0";
+		$user_offset = isset($_POST['user_offset']) && is_numeric($_POST['user_offset']) ? $_POST['user_offset'] : "0";
 		
 		if ($settings['email_verification'] == "0") {
 			$user_location = isset($_POST['user_location']) ? stripinput(trim($_POST['user_location'])) : "";

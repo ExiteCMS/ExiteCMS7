@@ -29,6 +29,11 @@ function getfilegroup($group, $userlevel) {
 function setmime($filename) {
 	$fileparts = pathinfo(strtolower($filename));
 
+	// if the file has no extension, assume it's binary
+	if (!isset($fileparts['extension'])) {
+		return "application/octet-stream";
+	}
+
 	// set the mime type based on the file's extension (I know, it's a guess...)	
 	switch ($fileparts['extension']) {
 		case "dwg":

@@ -47,10 +47,13 @@ if (isset($lookup)) {
 		// find a member by username in the database
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='".stripinput($lookup)."' LIMIT 1");
 	}
-	if (dbrows($result)) { $data = dbarray($result); }
-	$lookup = $data['user_id'];
-	// if not found, return to the homepage
-	if (!isset($lookup) || !isNum($lookup)) fallback("index.php");
+	if (dbrows($result)) { 
+		$data = dbarray($result); }
+		$lookup = $data['user_id'];
+	} else {
+		// if not found, return to the homepage
+		fallback("index.php");
+	}
 	// get country name and flag
 	$cc_name = GeoIP_Code2Name($data['user_cc_code']);
 	$cc_flag = GeoIP_Code2Flag($data['user_cc_code']);

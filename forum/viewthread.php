@@ -368,7 +368,7 @@ while ($data2 = dbarray($result)) {
 	} else {
 		$data2['forum_new_cat'] = false;
 	}
-	if ($data2['forum_id'] == $data['forum_id']) {
+	if ($data2['forum_id'] == $fdata['forum_id']) {
 		$data2['selected'] = true;
 	} else {
 		$data2['selected'] = false;
