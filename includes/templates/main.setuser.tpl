@@ -24,25 +24,21 @@
 		{include file='_stylesheets.tpl'}
 	</head>
 
-	<body class='tbl2' style='height:100%'>
-		<div style='position:absolute; top:35%;'>
-			<table align='center' cellpadding='0' cellspacing='1' width='800' class='tbl-border'>
-				<tr>
-					<td class='tbl1' style='font-family:Verdana, Arial, Sans-serif; font-size:0.8em;'>
-						<center>
-						<br /><br />
-						{if $settings.sitebanner|default:"" != ""}
-							<img src='{$smarty.const.THEME}images/{$settings.sitebanner}' alt='{$settings.sitename}' /><br /><br />
-						{/if}
-						{$message}
-						{$error}
-						{$locale.183}
-						{if $error != ""}<br /><br />[ <a href='/index.php'>{$locale.184}</a> ]{/if}
-						<br /><br />
-						</center>
-					</td>
-				</tr>
-			</table>
+	<body class='tbl2'>
+		<div class='splashscreen-h'>
+			<div class='splashscreen-v'>
+				<center>
+				<br /><br />
+				{if $settings.sitebanner|default:"" != ""}
+					<img src='{$smarty.const.THEME}images/{$settings.sitebanner}' alt='{$settings.sitename}' /><br /><br />
+				{/if}
+				{$message}
+				{$error}
+				{$locale.183}
+				{if $error != ""}<br /><br />[ <a href='/index.php'>{$locale.184}</a> ]{/if}
+				<br /><br />
+				</center>
+			</div>
 		</div>
 	</body>
 
