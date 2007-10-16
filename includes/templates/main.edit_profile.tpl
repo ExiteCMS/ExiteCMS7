@@ -18,7 +18,7 @@
 {if !$smarty.const.iMEMBER}
 	<center><br /><b>{$locale.003}</b><br /><br /></center>
 {else}
-	<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}{if $is_admin}{$aidlink}&amp;user_id={$this_userdata.user_id}{/if}' enctype='multipart/form-data'>
+	<form name='edit_profile_form' method='post' action='{$smarty.const.FUSION_SELF}{if $is_admin}{$aidlink}&amp;user_id={$this_userdata.user_id}{/if}' enctype='multipart/form-data'>
 		<table align='center' cellpadding='0' cellspacing='0'>
 			{if $update_profile}
 				{if $error|default:"" == ""}
@@ -217,7 +217,7 @@
 				<td class='tbl'>
 					<select name='user_offset' class='textbox'>
 					{section name=offset loop=$settings.timezones}
-						<option{if $this_userdata.user_offset == $settings.timezones[offset]} selected="selected"{/if}>{$settings.timezones[offset]}</option>
+						<option{if $this_userdata.user_offset == $settings.timezones[offset]} selected="selected"{/if} value='{$settings.timezones[offset]}'>{$settings.timezones[offset]}</option>
 					{/section}
 					</select>
 					&nbsp;
@@ -291,23 +291,26 @@ function autotimezone() {
 	//
 	// and preselect the correct time offset value
 	//
-	var dropdown = document.forms['inputform'].elements['user_offset'];
-	for (var i=0; i < dropdown.options.length && dropdown.options[i].value != offset; i++);
-	if (i != dropdown.options.length) dropdown.selectedIndex = i;
-	
-	function ValidateForm(frm) {
-		if (frm.username.value=="") {
-			alert("{/literal}{$locale.550}{literal}");
-			return false;
+	var dropdown = document.forms['edit_profile_form'].elements['user_offset'];
+	for (var i=0; i < dropdown.options.length; i++) {
+		if (dropdown.options[i].value == offset) {
+			dropdown.selectedIndex = i;
+			break;
 		}
-		if (frm.password1.value=="") {
-			alert("{/literal}{$locale.551}{literal}");
-			return false;
-		}
-		if (frm.email.value=="") {
-			alert("{/literal}{$locale.552}{literal}");
-			return false;
-		}
+	}
+}	
+function ValidateForm(frm) {
+	if (frm.username.value=="") {
+		alert("{/literal}{$locale.550}{literal}");
+		return false;
+	}
+	if (frm.password1.value=="") {
+		alert("{/literal}{$locale.551}{literal}");
+		return false;
+	}
+	if (frm.email.value=="") {
+		alert("{/literal}{$locale.552}{literal}");
+		return false;
 	}
 }
 </script>{/literal}

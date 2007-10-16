@@ -365,7 +365,7 @@ if (FPM_ACCESS) {
 		$variables['del_attach_check'] = isset($_POST['delete_attach']);
 		$variables['is_smiley_disabled'] = isset($_POST['disable_smileys']);
 		$variables['subject'] = trim(stripinput(censorwords($_POST['subject'])));;
-		$variables['message'] = trim(stripinput(censorwords($_POST['message'])));
+		$variables['message'] = trim(stripmessageinput(censorwords($_POST['message'])));
 	}
 	if (isset($_POST['fpm'])) {
 		for($i = 1; $i <= $fpm['option_show']; $i ++) {
@@ -453,7 +453,7 @@ if (isset($_POST['preview'])) {
 			if ($preview['post_subject'] == "" && isset($tdata) && is_array($tdata)) {
 				$preview['post_subject'] = "Re: ".$tdata['thread_subject'];
 			}
-			$preview['post_message'] = trim(stripinput(censorwords($_POST['message'])));
+			$preview['post_message'] = trim(stripmessageinput(censorwords($_POST['message'])));
 			if ($preview['post_message'] == "") {
 				$preview['post_message'] = $locale['421'];
 			}
@@ -601,7 +601,7 @@ if (isset($_POST["cancel"])) {
 					if ($subject == "") {
 						$subject = "Re: ".$tdata['thread_subject'];
 					}
-					$message = trim(stripinput(censorwords($_POST['message'])));
+					$message = trim(stripmessageinput(censorwords($_POST['message'])));
 					if ($action == 'edit') {
 						// update the post record
 						if ($_POST['message'] == $_POST['org_message'])
@@ -987,7 +987,7 @@ if (isset($_POST["cancel"])) {
 			}
 			if (isset($_POST['message'])) {
 				$variables['subject'] = trim(stripinput(censorwords($_POST['subject'])));;
-				$variables['message'] = trim(stripinput(censorwords($_POST['message'])));
+				$variables['message'] = trim(stripmessageinput(censorwords($_POST['message'])));
 				$variables['post_author'] = $_POST['post_author'];
 				$variables['is_sticky'] = isset($_POST['sticky']);
 				$variables['is_smiley_disabled'] = isset($_POST['disable_smileys']);

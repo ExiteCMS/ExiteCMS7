@@ -260,6 +260,54 @@ function resultdialog($title, $message="", $redirect=true, $backlink=false, $tim
 	$template_variables['forum.resultdialog'] = $variables;
 }
 
+// like stripinput, but leaves html entities in [code] sections alone
+function stripmessageinput($rawmsg) {
+
+	// temp message storage
+	$message = "";
+	$codeblocks = array();
+
+	// Split off the [code] blocks to exclude them from BBcode parsing
+	
+	// find the code [code] occurence
+	$i = strpos($rawmsg, "[code]");
+
+	// loop through the message until all are found and processed
+	while ($i !== false) {
+		// strip the bit before the [code] BBcode, and add a placeholder
+		$message .= substr($rawmsg, 0, $i+6)."{**@@**}";
+		// strip the processed bit
+		$rawmsg = substr($rawmsg, $i+6);
+		// find the end of the [code] block
+		$j = strpos($rawmsg, "[/code]");
+		// if not found, add the remaining bit, a forced [/code], and stop processing
+		if ($j === false) {
+			$message = str_replace("{**@@**}", $rawmsg, $message);
+			break;
+		}
+		// store this code block (convert the & to prevent entity replacement upon display)
+		$codeblocks[] = str_replace("&", "&amp;", substr($rawmsg, 0, $j));
+		// strip the processed bit
+		$rawmsg = substr($rawmsg, $j);
+		// check if there are more code segments
+		$i = strpos($rawmsg, "[code]");
+	}
+
+	// any text left?
+	if (strlen($rawmsg)) $message .= $rawmsg;
+
+	$message = stripinput($message);
+	
+	// re-insert the saved code blocks
+	foreach($codeblocks as $codeblock) {
+		// find the first placeholder
+		$i = strpos($message, "{**@@**}");
+		$message = substr($message, 0, $i).$codeblock.substr($message, $i+8);
+	}	
+	// return the parsed message body
+	return $message;
+}
+
 // parse the [code] sections in a post
 function parsemessage($rawmsg, $smileys=true) {
 
@@ -286,7 +334,7 @@ function parsemessage($rawmsg, $smileys=true) {
 			break;
 		}
 		// store this code block (convert the & to prevent entity replacement upon display)
-		$codeblocks[] = str_replace("&", "&amp;", substr($rawmsg, 0, $j));
+		$codeblocks[] = substr($rawmsg, 0, $j);
 		// strip the processed bit
 		$rawmsg = substr($rawmsg, $j);
 		// check if there are more code segments

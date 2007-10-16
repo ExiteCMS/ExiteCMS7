@@ -464,7 +464,7 @@ if (isset($_POST['send_message'])) {
 	
 	// check if we have a subject and a message body
 	$subject = stripinput(trim($_POST['subject']));
-	$message = stripinput(trim($_POST['message']));
+	$message = stripmessageinput(trim($_POST['message']));
 	// if not, return to the inbox folder
 	if ($subject == "" || $message == "") fallback(FUSION_SELF."?folder=inbox");
 
@@ -740,7 +740,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$data['pm_id'] = $pm_id;
 		$data['pm_subject'] = stripinput($_POST['subject']);
 		$data['pm_smileys'] = isset($_POST['chk_disablesmileys']) ? 0 : 1;
-		$data['pm_message'] = stripinput($_POST['message']);
+		$data['pm_message'] = stripmessageinput($_POST['message']);
 		$data['pm_size'] = 0;
 		$data['pm_datestamp'] = 0;
 		$data['pmindex_id'] = 0;
@@ -821,11 +821,11 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	if (isset($_POST['send_preview']) || isset($_POST['upload'])) {
 		// reload from POST variables
 		$variables['subject'] = stripinput($_POST['subject']);
-		$variables['message'] = stripinput($_POST['message']);
+		$variables['message'] = stripmessageinput($_POST['message']);
 		$variables['attach_comment'] = stripinput($_POST['attach_comment']);
 		$action = stripinput($_POST['action']);
 		$folder = stripinput($_POST['folder']);
-		$variables['org_message'] = isset($_POST['org_message']) ? stripinput($_POST['org_message']) : "";
+		$variables['org_message'] = isset($_POST['org_message']) ? $_POST['org_message'] : "";
 		$variables['pmindex_from_id'] = isset($_POST['pmindex_from_id']) ? $_POST['pmindex_from_id'] : 0;
 		$variables['pmindex_to_id'] = isset($_POST['pmindex_to_id']) ? $_POST['pmindex_to_id'] : 0;
 		if (!isset($_POST['chk_disablesmileys'])) 
@@ -862,7 +862,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				else
 					$variables['reply_message'] = $variables['org_message'];
 				$variables['reply_message'] = nl2br(parseubb($variables['reply_message']));
-				$variables['org_message'] = stripinput($variables['org_message']);
+				$variables['org_message'] = $variables['org_message'];
 				$variables['pmindex_from_id'] = $data['pmindex_from_id'];
 				$variables['pmindex_to_id'] = $data['pmindex_to_id'];
 			}
