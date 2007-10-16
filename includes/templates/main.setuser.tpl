@@ -24,7 +24,7 @@
 		{include file='_stylesheets.tpl'}
 	</head>
 
-	<body class='tbl2'>
+	<body class='body'>
 		<div class='splashscreen-h'>
 			<div class='splashscreen-v'>
 				<center>
