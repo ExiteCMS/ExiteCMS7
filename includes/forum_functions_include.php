@@ -395,7 +395,7 @@ function parsemessage($rawmsg, $smileys=true) {
 	// re-insert the saved code blocks
 	foreach($codeblocks as $codeblock) {
 		// split the codeblock to add linenumbers
-		$lines = explode("\n", $codeblock);
+		$lines = explode("\n", stripinput($codeblock));
 		// get rid of empty lines at the beginning and the end of the block
 		while (count($lines)>0 && trim($lines[0]) == "") {
 			array_shift($lines);
