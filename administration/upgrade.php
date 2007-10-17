@@ -12,7 +12,7 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (!defined('CMS_INIT_OK')) require_once dirname(__FILE__)."/../includes/core_functions.php";
+if (!defined('INIT_CMS_OK')) require_once dirname(__FILE__)."/../includes/core_functions.php";
 
 // make sure we have a valid revision level from the settings
 if (!isset($settings['revision']) || !isNum($settings['revision'])) $settings['revision'] = 0;
