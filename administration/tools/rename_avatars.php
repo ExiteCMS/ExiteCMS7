@@ -20,8 +20,8 @@ while ($data = dbarray($result)) {
 		echo "- avatar '".$data['user_avatar']."' for user '".$data['user_name']."' not found on disk!\n";
 	} else {
 		// generate a new filename
-		$avatarext = strrchr($data['user_avatar'],".");
-		while ($avatarname = md5(time())) {
+		$avatarext = strtolower(strrchr($data['user_avatar'],"."));
+		while ($avatarname = md5(microtime())) {
 			if (!file_exists(PATH_IMAGES."avatars/".$avatarname.$avatarext)) {
 				break;
 			}
