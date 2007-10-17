@@ -50,7 +50,18 @@
 		</td>
 	</tr>
 </table>
-<br />
+{if $totals.inbox == $global_options.pm_inbox || $totals.outbox == $global_options.pm_sentbox || $totals.archive == $global_options.pm_savebox}
+	<br />
+	{if $totals.inbox == $global_options.pm_inbox}
+		<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.488}</div>
+	{/if}
+	{if $totals.outbox == $global_options.pm_sentbox && $user_options.pmconfig_save_sent}
+		<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.489}</div>
+	{/if}
+	{if $totals.archive == $global_options.pm_savebox}
+		<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.490}</div>
+	{/if}
+{/if}
 <form name='pm_form' method='post' action='{$smarty.const.FUSION_SELF}?folder={$folder}'>
 {section name=id loop=$messages}
 	{if $smarty.section.id.first}
@@ -62,18 +73,22 @@
 				<td class='tbl1' align='right'>
 					<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;" />
 					<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;" />
+					<div style='display:inline; white-space:nowrap;'>
 					&nbsp; {$locale.409}
-					{if $folder != "archive"}
+					{if $folder != "archive" && $global_options.savebox > $totals.archive}
 						<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
 					{/if}
 					{if $folder == "archive"}
-						<input type='submit' name='multi_restore' value='{$locale.413}' class='button' />
+						{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
+							<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
+						{/if}
 					{/if}
 					{if $folder == "inbox"}
 						<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
 						<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 					{/if}
 					<input type='submit' name='multi_delete' value='{$locale.416}' class='button' />
+					</div>
 				</td>
 			</tr>
 		</table>
@@ -139,7 +154,7 @@
 	<tr>
 		<td class='tbl1'>
 			{if $messages[id].pmindex_read_datestamp == 0}<b>{/if}
-			<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;action=view&amp;msg_id={$messages[id].pmindex_id}#view_{$messages[id].pmindex_id}'>{$messages[id].pm_subject}</a>
+			<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;rowstart={$rowstart}&amp;action=view&amp;msg_id={$messages[id].pmindex_id}#view_{$messages[id].pmindex_id}'>{$messages[id].pm_subject}</a>
 			{if $messages[id].pmindex_read_datestamp == 0} - {$locale.449}</b>{/if}
 			<span class='small'>
 			{section name=rc loop=$messages[id].readstatus}
@@ -193,14 +208,16 @@
 	<table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 		<tr>
 			<td class='tbl1' align='right'>
-				<a href='#' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;">{$locale.410}</a> |
-				<a href='#' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;">{$locale.411}</a> |
+				<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;" />
+				<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;" />
 				{$locale.409}
-				{if $folder != "archive"}
+				{if $folder != "archive" && $global_options.savebox > $totals.archive}
 					<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
 				{/if}
 				{if $folder == "archive"}
-					<input type='submit' name='multi_restore' value='{$locale.413}' class='button' />
+					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
+						<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
+					{/if}
 				{/if}
 				{if $folder == "inbox"}
 					<input type='submit' name='multi_read' value='{$locale.414}' class='button' />

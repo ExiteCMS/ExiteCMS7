@@ -31,7 +31,7 @@
 			{/if}
 			</b>
 		</td>
-		<td class='tbl_top_mid'>
+		<td class='tbl_top_mid' style=''>
 			{if $is_inline}<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;rowstart={$rowstart}'>{/if}
 			{$messages[id].pm_subject}
 			{if $is_inline}</a>{/if}
@@ -39,7 +39,7 @@
 			{if $messages[id].pm_datestamp != 0}{if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}{$locale.408}{else}{$locale.407}{/if}: {$messages[id].pm_datestamp|date_format:"forumdate"}{/if}
 			</span>
 		</td>
-		<td class='tbl_top_mid' style='text-align:right'>
+		<td class='tbl_top_mid' style='text-align:right;white-space:nowrap'>
 			{if !$is_preview}
 				{buttonlink name=$locale.423 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=forward&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
 				{if $folder == "inbox" && $messages[id].pmindex_folder == 0}
@@ -47,9 +47,13 @@
 					{buttonlink name=$locale.444 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=quote&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 				{/if}
 				{if $folder == "archive" && $messages[id].pmindex_folder == 2}
-					{buttonlink name=$locale.412 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=restore&amp;msg_id="|cat:$messages[id].pmindex_id}
+					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
+						{buttonlink name=$locale.412 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=restore&amp;msg_id="|cat:$messages[id].pmindex_id}
+					{/if}
 				{else}
-					{buttonlink name=$locale.404 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+					{if $global_options.pm_savebox > $totals.archive}
+						{buttonlink name=$locale.404 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+					{/if}
 				{/if}
 				{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=delete&amp;msg_id="|cat:$messages[id].pmindex_id}
 			{/if}

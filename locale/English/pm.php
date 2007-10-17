@@ -13,7 +13,7 @@ $locale['409'] = "With the checked items do:";
 $locale['410'] = "Check all";
 $locale['411'] = "Uncheck all";
 $locale['412'] = "Restore";
-$locale['413'] = "Un-Archive";
+$locale['413'] = "?????";
 $locale['414'] = "Mark Read";
 $locale['415'] = "Mark Unread";
 $locale['416'] = "Delete";
@@ -94,6 +94,10 @@ $locale['483'] = "For Members only";
 $locale['484'] = "Your Private Messaging facility has been withdrawn due to misuse.";
 $locale['485'] = "Please select at least one message";
 $locale['486'] = "Please complete the required fields To, Subject and Message!";
+$locale['487'] = "Folder warnings";
+$locale['488'] = "Your inbox folder is full. Upon receiving a new message, the oldest one will be deleted.";
+$locale['489'] = "Your outbox folder is full. When sending a new message, the oldest one will be deleted.";
+$locale['490'] = "Your archive folder is full. Until you clean up, you can no longer archive messages.";
 
 // Tooltips
 $locale['500'] = "Click to write a new message";

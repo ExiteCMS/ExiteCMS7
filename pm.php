@@ -266,11 +266,50 @@ function storeupload() {
 }
 
 /*---------------------------------------------------+
+| Delete a single message, identified by pmindex_id  |
++----------------------------------------------------*/
+function deletemessage($msg_id, $user_id) {
+
+	global $db_prefix;
+
+	// delete the selected message
+	$result = dbquery("SELECT * FROM ".$db_prefix."pm_index WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$user_id."'");
+	if ($data = dbarray($result)) {
+		$result2 = dbquery("DELETE FROM ".$db_prefix."pm_index WHERE pmindex_id='".$msg_id."' AND pmindex_user_id='".$user_id."'");
+		if (dbcount("(*)", "pm_index", "pm_id = '".$data['pm_id']."'") == 0) {
+			$result2 = dbquery("SELECT * FROM ".$db_prefix."pm_attachments WHERE pm_id = '".$data['pm_id']."'");
+			while ($data2 = dbarray($result2)) {
+				@unlink(PATH_PM_ATTACHMENTS.$data2['pmattach_name']);
+				// if a thumb exists, delete that too...
+				if (file_exists(PATH_PM_ATTACHMENTS.$data2['pmattach_name'].".thumb")) {
+				    @unlink(PATH_PM_ATTACHMENTS.$data2['pmattach_name'].".thumb");
+				}
+			}
+			$result2 = dbquery("DELETE FROM ".$db_prefix."pm_attachments WHERE pm_id = '".$data['pm_id']."'");
+			$result2 = dbquery("DELETE FROM ".$db_prefix."pm WHERE pm_id = '".$data['pm_id']."'");
+		}
+	}
+}
+
+/*---------------------------------------------------+
 | Save the new message, and send notifications out   |
 +----------------------------------------------------*/
 function storemessage($message, $old_pm_id) {
 
-	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $user_options;
+	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $user_options, $totals;
+
+	// check if we need to make room in the outbox of the sender
+	if ($totals['outbox'] >= $global_options['pm_sentbox']) {
+		$limit = $totals['outbox'] - $global_options['pm_sentbox'] + 1;
+		$result = dbquery(
+			"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+			WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
+			ORDER BY m.pm_datestamp LIMIT ".$limit
+			);
+		while ($data = dbarray($result)) {
+			deletemessage($data['pmindex_id'], $userdata['user_id']);
+		}
+	}
 
 	// load the sendmail module, we might have to send notifications
 	require_once PATH_INCLUDES."sendmail_include.php";
@@ -342,12 +381,25 @@ function storemessage($message, $old_pm_id) {
 	
 	// loop through the users
 	foreach($message['user_ids'] as $user) {
+		// check if this recipient has room in his inbox. If not, create it
+		$inbox_total = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$user['user_id']."' AND pmindex_folder = '0'");
+		if ($inbox_total >= $global_options['pm_inbox']) {
+			$limit = $inbox_total - $global_options['pm_inbox'] + 1;
+			$result = dbquery(
+				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$user['user_id']."' AND i.pmindex_folder = '0'
+				ORDER BY m.pm_datestamp LIMIT ".$limit
+				);
+			while ($data = dbarray($result)) {
+				deletemessage($data['pmindex_id'], $user['user_id']);
+			}
+		}
 		// create an index record for the inbox of the recipient
 		$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_reply_id, pmindex_from_id, pmindex_from_email, pmindex_to_id, pmindex_to_email, pmindex_to_group, pmindex_folder, pmindex_read_requested)
 			 VALUES ('".$pm_id."', '".$user['user_id']."', '0', '".$userdata['user_id']."', '', '".$user['user_id']."', '', '0', '0', '1')");
 		// user notification if needed
 		if ($user['pmconfig_email_notify']) {
-//			sendemail($user['user_name'],$user['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$locale['625'],$user['user_name'].$locale['626']);
+			sendemail($user['user_name'],$user['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$locale['625'],$user['user_name'].$locale['626']);
 		}
 	}
 }
@@ -614,21 +666,9 @@ if (isset($_POST['close'])) {
 
 	// delete the selected messages
 	if ($msg_ids && $check_count > 0) {
-		$result = dbquery("SELECT * FROM ".$db_prefix."pm_index WHERE pmindex_id IN(".$msg_ids.") AND pmindex_user_id='".$userdata['user_id']."'");
-		while ($data = dbarray($result)) {
-			$result2 = dbquery("DELETE FROM ".$db_prefix."pm_index WHERE pmindex_id='".$data['pmindex_id']."' AND pmindex_user_id='".$userdata['user_id']."'");
-			if (dbcount("(*)", "pm_index", "pm_id = '".$data['pm_id']."'") == 0) {
-				$result2 = dbquery("SELECT * FROM ".$db_prefix."pm_attachments WHERE pm_id = '".$data['pm_id']."'");
-				while ($data2 = dbarray($result2)) {
-					@unlink(PATH_PM_ATTACHMENTS.$data2['pmattach_name']);
-					// if a thumb exists, delete that too...
-					if (file_exists(PATH_PM_ATTACHMENTS.$data2['pmattach_name'].".thumb")) {
-				    	@unlink(PATH_PM_ATTACHMENTS.$data2['pmattach_name'].".thumb");
-					}
-				}
-				$result2 = dbquery("DELETE FROM ".$db_prefix."pm_attachments WHERE pm_id = '".$data['pm_id']."'");
-				$result2 = dbquery("DELETE FROM ".$db_prefix."pm WHERE pm_id = '".$data['pm_id']."'");
-			}
+		$msg_ids = explode(",", $msg_ids);
+		foreach($msg_ids as $msg_id) {
+			deletemessage($msg_id, $userdata['user_id']);
 		}
 	}
 
@@ -654,22 +694,7 @@ if (isset($_POST['close'])) {
 } elseif ($action == "delete") {
 
 	// delete the selected message
-	$result = dbquery("SELECT * FROM ".$db_prefix."pm_index WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
-	if ($data = dbarray($result)) {
-		$result2 = dbquery("DELETE FROM ".$db_prefix."pm_index WHERE pmindex_id='".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
-		if (dbcount("(*)", "pm_index", "pm_id = '".$data['pm_id']."'") == 0) {
-			$result2 = dbquery("SELECT * FROM ".$db_prefix."pm_attachments WHERE pm_id = '".$data['pm_id']."'");
-			while ($data2 = dbarray($result2)) {
-				@unlink(PATH_PM_ATTACHMENTS.$data2['pmattach_name']);
-				// if a thumb exists, delete that too...
-				if (file_exists(PATH_PM_ATTACHMENTS.$data2['pmattach_name'].".thumb")) {
-				    @unlink(PATH_PM_ATTACHMENTS.$data2['pmattach_name'].".thumb");
-				}
-			}
-			$result2 = dbquery("DELETE FROM ".$db_prefix."pm_attachments WHERE pm_id = '".$data['pm_id']."'");
-			$result2 = dbquery("DELETE FROM ".$db_prefix."pm WHERE pm_id = '".$data['pm_id']."'");
-		}
-	}
+	deletemessage($msg_id, $userdata['user_id']);
 
 } elseif ($action == "archive") {
 
@@ -1057,7 +1082,6 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			}
 			$variables['messages'][] = $data;
 		}
-// _debug($variables['messages'], true);	
 		// main messsages panel
 		$variables['folder'] = $folder;
 		$variables['totals'] = $totals;
