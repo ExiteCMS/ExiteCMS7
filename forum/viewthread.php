@@ -139,7 +139,7 @@ $result = dbquery("UPDATE ".$db_prefix."threads SET thread_views=thread_views+1 
 // process the users quick reply to this thread
 if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 	$flood = false;
-	$message = stripinput(censorwords($_POST['message']));
+	$message = stripmessageinput(censorwords($_POST['message']));
 	if ($message != "") {
 		$result = dbquery("SELECT MAX(post_datestamp) AS last_post FROM ".$db_prefix."posts WHERE post_author='".$userdata['user_id']."'");
 		if (!iSUPERADMIN || dbrows($result) > 0) {
