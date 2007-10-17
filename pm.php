@@ -1071,14 +1071,16 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			}
 			// for messages that this user's send, get the read status
 			if ($data['pmindex_from_id'] == $userdata['user_id']) {
-				$result2 = dbquery("SELECT u.user_name, pmi.* FROM ".$db_prefix."pm_index pmi, ".$db_prefix."users u WHERE pmi.pmindex_user_id = u.user_id AND pm_id = '".$data['pm_id']."' AND pmindex_user_id != '".$userdata['user_id']."' AND pmindex_read_datestamp <> '0'");
-				if (dbrows($result2)) {
-					$readstatus = array();
-					while ($data2 = dbarray($result2)) {
-						$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read_datestamp' => $data2['pmindex_read_datestamp']);
+				$readstatus = array();
+				foreach($data['recipients'] as $recipient) {
+					$result2 = dbquery("SELECT u.user_name, pmi.* FROM ".$db_prefix."pm_index pmi, ".$db_prefix."users u WHERE pmi.pmindex_user_id = u.user_id AND pm_id = '".$data['pm_id']."' AND pmindex_user_id = '".$recipient['user_id']."'");
+					if ($data2 = dbarray($result2)) {
+						$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read' => ($data['pmindex_read_datestamp'] <> '0'), 'datestamp' => $data2['pmindex_read_datestamp']);
+					} else {
+						$readstatus[] = array('user_id' => 0, 'user_name' => "", 'read' => 0, 'datestamp' => 0);
 					}
-					$data['readstatus'] = $readstatus;
 				}
+				$data['readstatus'] = $readstatus;
 			}
 			$variables['messages'][] = $data;
 		}

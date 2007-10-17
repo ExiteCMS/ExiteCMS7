@@ -104,6 +104,15 @@
 			<td class='tbl2'>
 				{$locale.405}
 			</td>
+			<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
+				{if $folder == "inbox"}
+					{$locale.408}
+				{elseif $folder == "outbox"}
+					{$locale.407}
+				{elseif $folder == "archive"}
+					{$locale.407} &bull; {$locale.408}
+				{/if}
+			</td>
 			{if $folder != "outbox"}
 				<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
 					{$locale.406}
@@ -114,15 +123,11 @@
 					{$locale.421}
 				</td>
 			{/if}
+			{if $folder == "outbox"}
 			<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
-				{if $folder == "inbox"}
-					{$locale.408}
-				{elseif $folder == "outbox"}
-					{$locale.407}
-				{elseif $folder == "archive"}
-					{$locale.407} - {$locale.408}
-				{/if}
+				{$locale.542}
 			</td>
+			{/if}
 			<td class='tbl2' width='20'>
 			</td>
 		</tr>
@@ -141,7 +146,7 @@
 							<br />{$locale.542}
 						{/if}
 						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].readstatus[rc].user_id}'>{$messages[id].readstatus[rc].user_name}</a>
-						{$locale.543} {$messages[id].readstatus[rc].read_datestamp|date_format:"forumdate"}
+						{$locale.543} {$messages[id].readstatus[rc].datestamp|date_format:"forumdate"}
 						{if !$smarty.section.rc.last},{/if}
 					{/section}
 					</span>
@@ -156,16 +161,9 @@
 			{if $messages[id].pmindex_read_datestamp == 0}<b>{/if}
 			<a href='{$smarty.const.FUSION_SELF}?folder={$folder}&amp;rowstart={$rowstart}&amp;action=view&amp;msg_id={$messages[id].pmindex_id}#view_{$messages[id].pmindex_id}'>{$messages[id].pm_subject}</a>
 			{if $messages[id].pmindex_read_datestamp == 0} - {$locale.449}</b>{/if}
-			<span class='small'>
-			{section name=rc loop=$messages[id].readstatus}
-				{if $smarty.section.rc.first}
-					<br />{$locale.542}
-				{/if}
-				<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].readstatus[rc].user_id}'>{$messages[id].readstatus[rc].user_name}</a>
-				{$locale.543} {$messages[id].readstatus[rc].read_datestamp|date_format:"forumdate"}
-				{if !$smarty.section.rc.last},{/if}
-			{/section}
-			</span>
+		</td>
+		<td class='tbl1' style='white-space:nowrap'>
+			{if $messages[id].pm_datestamp != 0}{$messages[id].pm_datestamp|date_format:"forumdate"}{/if}
 		</td>
 		{if $folder != "outbox"}
 		<td class='tbl1' style='white-space:nowrap'>
@@ -192,9 +190,20 @@
 			{/if}
 		</td>
 		{/if}
+		{if $folder == "outbox"}
 		<td class='tbl1' style='white-space:nowrap'>
-			{if $messages[id].pm_datestamp != 0}{$messages[id].pm_datestamp|date_format:"forumdate"}{/if}
+			{section name=rc loop=$messages[id].readstatus}
+				{if $messages[id].readstatus[rc].user_id == 0}
+					{$locale.544}
+				{elseif $messages[id].readstatus[rc].datestamp == 0}
+					{$locale.543}
+				{else}
+					{$messages[id].readstatus[rc].datestamp|date_format:"forumdate"}
+				{/if}
+					<br />
+			{/section}
 		</td>
+		{/if}
 		<td class='tbl1' width='20'>
 			<input type='checkbox' name='check_mark[]' value='{$messages[id].pmindex_id}' />
 		</td>
@@ -211,17 +220,17 @@
 				<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;" />
 				<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;" />
 				{$locale.409}
-				{if $folder != "archive" && $global_options.savebox > $totals.archive}
+				{if $folder == "inbox"}
+					<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
+					<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
+				{/if}
+				{if $folder != "archive" && $global_options.pm_savebox > $totals.archive}
 					<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
 				{/if}
 				{if $folder == "archive"}
 					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
 						<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
 					{/if}
-				{/if}
-				{if $folder == "inbox"}
-					<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
-					<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 				{/if}
 				<input type='submit' name='multi_delete' value='{$locale.416}' class='button' />
 				<br /><br />

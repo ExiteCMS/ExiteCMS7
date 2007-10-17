@@ -128,8 +128,9 @@ $locale['513'] = "download(s)";
 // Read message
 $locale['540'] = "Location:";
 $locale['541'] = "Joined:";
-$locale['542'] = "Read by";
-$locale['543'] = "on";
+$locale['542'] = "Read";
+$locale['543'] = "not opened";
+$locale['544'] = "unknown";
 
 // buttons
 $locale['560'] = "pm";

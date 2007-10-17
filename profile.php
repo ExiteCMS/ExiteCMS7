@@ -48,7 +48,7 @@ if (isset($lookup)) {
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='".stripinput($lookup)."' LIMIT 1");
 	}
 	if (dbrows($result)) { 
-		$data = dbarray($result); }
+		$data = dbarray($result);
 		$lookup = $data['user_id'];
 	} else {
 		// if not found, return to the homepage
