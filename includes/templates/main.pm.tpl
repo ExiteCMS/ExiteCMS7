@@ -75,17 +75,17 @@
 					<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;" />
 					<div style='display:inline; white-space:nowrap;'>
 					&nbsp; {$locale.409}
-					{if $folder != "archive" && $global_options.savebox > $totals.archive}
+					{if $folder == "inbox"}
+						<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
+						<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
+					{/if}
+					{if $folder != "archive" && $global_options.pm_savebox > $totals.archive}
 						<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
 					{/if}
 					{if $folder == "archive"}
 						{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
 							<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
 						{/if}
-					{/if}
-					{if $folder == "inbox"}
-						<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
-						<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 					{/if}
 					<input type='submit' name='multi_delete' value='{$locale.416}' class='button' />
 					</div>
