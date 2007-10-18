@@ -11,7 +11,7 @@
 +----------------------------------------------------*/
 
 // upgrade for revision
-$_revision = '909';
+$_revision = '954';
 
 if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
@@ -21,39 +21,38 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(22,00,0,10,10,2007), 
+					'date' => mktime(10,00,0,10,18,2007), 
 					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
-					'description' => "New CMS settings structure, to create more flexibility for modules."
-				);
+					'description' => "Added a new and more secure Captcha system.");
 
 // array to store the commands of this update
 $commands = array();
 
 // database changes
 
-// create new CMSconfig table
-$commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##CMSconfig (
-  cfg_id smallint(5) unsigned NOT NULL auto_increment,
-  cfg_name varchar(25) NOT NULL default '',
-  cfg_value TEXT NOT NULL default '',
-  PRIMARY KEY  (cfg_id)
+// create new captcha table
+$commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##captcha (
+  captcha_datestamp INT(10) UNSIGNED NOT NULL default '0',
+  captcha_ip VARCHAR(20) NOT NULL,
+  captcha_encode VARCHAR(32) NOT NULL default '',
+  captcha_string VARCHAR(15) NOT NULL default ''
 ) ENGINE=MyISAM;");
 
-// and copy the settings to the new table
-$commands[] = array('type' => 'function', 'value' => "migrate_settings");
+// delete the old vcode table
+$commands[] = array('type' => 'db', 'value' => "DROP TABLE ##PREFIX##vcode");
+
+// update the users password with a double md5()
+$commands[] = array('type' => 'function', 'value' => "update_password");
 
 /*---------------------------------------------------+
 | functions required for part of the upgrade process |
 +----------------------------------------------------*/
-function migrate_settings() {
+function update_password() {
 	global $db_prefix;
 
-	$result = dbquery("SELECT * FROM ".$db_prefix."settings LIMIT 1");
-	if ($data = dbarray($result)) {
-		foreach($data as $name => $value) {
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_name, cfg_value) VALUES ('".$name."', '".$value."')");
-		}
+	$result = dbquery("SELECT user_id, user_password FROM ".$db_prefix."users");
+	while ($data = dbarray($result)) {
+		$result2 = dbquery("UPDATE ".$db_prefix."users SET user_password='".md5($data['user_password'])."' WHERE user_id='".$data['user_id']."'");
 	}
-
 }
 ?>

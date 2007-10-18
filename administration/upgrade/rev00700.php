@@ -23,7 +23,13 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(18,10,0,6,14,2007), 'description' => "Upgrade from PLi-Fusion v6.1.10 to ExiteCMS v6.2<br /><font color='red'><b>This is a major upgrade!</b><br />It replaces the old PHP-Fusion code with the new ExiteCMS templated CMS engine, and converts the PHP-Fusion database to the ExiteCMS format.<br /><br /><b>Make sure you have a backup, there is no way back from this upgrade!!!</b></font>");
+$revisions[] = array('revision' => $_revision, 
+					'date' => mktime(18,00,0,6,14,2007), 
+					'title' => "Migration from PLi-Fusion v6.1.10 to ExiteCMS v6.2",
+					'class' => 'rev_major',
+					'description' => "<u>This is a major operation!</u><br />It replaces the old PHP-Fusion code with the new ExiteCMS templated CMS engine, and converts the PHP-Fusion database to the ExiteCMS format.",
+					'footer' => "Make sure you have a backup, there is no way back from this upgrade!!!"
+				);
 
 // array to store the commands of this update
 $commands[$_revision] = array();

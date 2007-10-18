@@ -17,5 +17,6 @@ $locale['414'] = "Error messages";
 $locale['420'] = "MySQL error";
 $locale['421'] = "Upgrade function error";
 $locale['422'] = "General error";
-
+//
+$locale['430'] = "For more detailed information on these upgrades, check the changelogs on <a href='http://exitecms.exite.eu' alt='' target='_blank'>http://exitecms.exite.eu</a>";
 ?>

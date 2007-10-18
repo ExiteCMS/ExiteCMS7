@@ -24,7 +24,7 @@
 	<b>{$locale.404}</b>
 	</center>
 	<br />
-	<table align='center' cellpadding='0' cellspacing='1' width='650' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='90%' class='tbl-border'>
 		<tr>
 			<td align='center' width='1%' class='tbl2' style='white-space:nowrap;'>
 				<b>{$locale.410} </b>
@@ -67,7 +67,7 @@
 	<b>{$locale.403}</b>
 	</center>
 	<br />
-	<table align='center' cellpadding='0' cellspacing='1' width='650' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='90%' class='tbl-border'>
 		<tr>
 			<td align='center' width='1%' class='tbl2' style='white-space:nowrap;'>
 				<b>{$locale.410} </b>
@@ -88,7 +88,13 @@
 				{$revisions[rev].date|date_format:"forumdate"}
 			</td>
 			<td align='left' class='tbl1'>
-				{$revisions[rev].description}
+				<div class='{$revisions[rev].class|default:"rev_title"}'>{$revisions[rev].title}</div>
+				<br />
+				<div class='rev_desc'>{$revisions[rev].description}</div>
+				{if $revisions[rev].footer}
+					<br />
+					<div class='{$revisions[rev].class|default:"rev_title"}'>{$revisions[rev].footer}</div>
+				{/if}
 			</td>
 		</tr>
 		{/section}
@@ -121,7 +127,7 @@
 	<b>{$locale.407}</b>
 	</center>
 	<br />
-	<table align='center' cellpadding='0' cellspacing='1' width='650' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='90%' class='tbl-border'>
 		<tr>
 			<td align='center' width='1%' class='tbl2' style='white-space:nowrap;'>
 				<b>{$locale.410} </b>
@@ -142,11 +148,21 @@
 				{$revisions_installed[rev].date|date_format:"forumdate"}
 			</td>
 			<td align='left' class='tbl1'>
-				{$revisions_installed[rev].description}
+				<div class='rev_title'>{$revisions_installed[rev].title}</div>
+				<br />
+				<div class='rev_desc'>{$revisions_installed[rev].description}</div>				
+				{if $revisions_installed[rev].footer}
+					<br />
+					<div class='rev_title'>{$revisions_installed[rev].footer}</div>
+				{/if}
 			</td>
 		</tr>
 		{/section}
 	</table>
+	<br />
+	<center>
+	<b>{$locale.430}</b>
+	</center>
 	<br />
 {include file="_closetable.tpl"}
 {/if}

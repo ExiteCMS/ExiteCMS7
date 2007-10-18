@@ -113,8 +113,8 @@
 		<tr>
 			<td align='center' class='tbl'>
 				{$locale.411}
-				<input type='text' name='news_subject' value='{$news_subject}' class='textbox' style='width: 250px'>&nbsp;&nbsp;&nbsp;{$locale.511}
-				<select name='news_cat' class='textbox' style='width: 250px'>
+				<input type='text' name='news_subject' value='{$news_subject}' class='textbox' style='width: 225px'>&nbsp;&nbsp;&nbsp;{$locale.511}
+				<select name='news_cat' class='textbox' style='width: 225px'>
 					<option value='0'>{$locale.425}</option>
 					{section name=item loop=$news_cats}
 						<option value='{$news_cats[item].news_cat_id}' {if $news_cats[item].selected}selected{/if}>{$news_cats[item].news_cat_name}</option>
@@ -126,7 +126,7 @@
 			<td class='tbl'>
 				{$locale.412}
 				<br /><br />
-				<textarea name='body' cols='95' rows='10' class='textbox' style='width:100%; height:{math equation='x/5' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$body}</textarea>
+				<textarea name='body' cols='95' rows='10' class='{if $settings.tinymce_enabled !=1}textbox{/if}' style='width:100%; height:{math equation='x/5' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$body}</textarea>
 			</td>
 		</tr>
 		{if $settings.tinymce_enabled != 1}
@@ -175,7 +175,7 @@
 				<br />
 				{$locale.413}
 				<br /><br />
-				<textarea name='body2' cols='95' rows='10' class='textbox' style='width:100%; height:{math equation='x/2' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$body2}</textarea>
+				<textarea name='body2' cols='95' rows='10' class='{if $settings.tinymce_enabled !=1}textbox{/if}' style='width:100%; height:{math equation='x/2' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$body2}</textarea>
 			</td>
 		</tr>
 		{if $settings.tinymce_enabled != 1}

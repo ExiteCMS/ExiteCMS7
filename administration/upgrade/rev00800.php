@@ -20,7 +20,11 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(14,43,0,9,10,2007), 'description' => "Required updates for ExiteCMS v6.2 rev.".$_revision."<br /><font color='red'>This revision introduces sub menu's to the menu panels, with a choose of using indentation or foldable menu's.</font>");
+$revisions[] = array('revision' => $_revision, 
+					'date' => mktime(14,00,0,9,10,2007), 
+					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
+					'description' => "This revision introduces sub menu's to the menu panels, with a choose of using indentation or foldable menu's."
+				);
 
 // array to store the commands of this update
 $commands = array();

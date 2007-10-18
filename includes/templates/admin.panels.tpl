@@ -16,7 +16,7 @@
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 <br />
-<table align='center' cellpadding='0' cellspacing='1' width='650' class='tbl-border'>
+<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
 	{section name=id loop=$panels}
 	{if $panels[id].new_panel_side}
 	{if !$smarty.section.id.first}

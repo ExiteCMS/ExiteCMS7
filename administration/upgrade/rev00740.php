@@ -20,7 +20,11 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 'date' => mktime(18,58,0,7,17,2007), 'description' => "Required updates for ExiteCMS v6.2 rev.".$_revision."<br /><font color='red'>This revision introduces the new PM system, and drops support for the Photo Albums, Weblinks and Submissions modules.</font>");
+$revisions[] = array('revision' => $_revision, 
+					'date' => mktime(18,00,0,7,17,2007), 
+					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
+					'description' => "This revision introduces the new PM system, and drops support for the Photo Albums, Weblinks and Submissions modules."
+				);
 
 // array to store the commands of this update
 $commands = array();

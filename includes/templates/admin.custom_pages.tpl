@@ -47,7 +47,7 @@
 			<td class='tbl'>
 				{$locale.432}
 				<br />
-				<textarea name='page_content' cols='95' rows='20' class='textbox' style='width:100%; height:{math equation='x/2' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$page_content}</textarea>
+				<textarea name='page_content' cols='95' rows='20' class='{if $settings.tinymce_enabled != 1}textbox{/if}' style='width:100%; height:{math equation='x/2' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$page_content}</textarea>
 		</tr>
 		{if $settings.tinymce_enabled != 1}
 		<tr>

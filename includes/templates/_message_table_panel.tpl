@@ -17,9 +17,11 @@
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
 <center>
-	<br />{if $color|default:"" !=""}<font color='{$color}'>{/if}{if $bold|default:false}<b>{/if}{$message}{if $bold|default:false}</b>{/if}{if $color|default:"" !=""}</font>{/if}<br /><br />
+	<br />
+	{if $color|default:"" !=""}<font color='{$color}'>{/if}{if $bold|default:false}<b>{/if}{$message}{if $bold|default:false}</b>{/if}{if $color|default:"" !=""}</font>{/if}
+	<br /><br />
 	{if $link|default:"" !=""}
-		<a href='{$link}' alt=''>{$linktext|default:"Click here"}</a>
+		{buttonlink name=$linktext link=$link}
 		<br /><br />
 	{/if}
 </center>
