@@ -341,7 +341,7 @@ switch($step) {
 				$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 			}
 					
-			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', md5('$password1'), '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '".md5(md5($password1))."', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
 	
 			$result = dbquery("INSERT INTO ".$db_prefix."pm_config (user_id, pmconfig_save_sent, pmconfig_read_notify, pmconfig_email_notify, pmconfig_auto_archive ) VALUES ('0', '0', '1', '0', '90')");
 		

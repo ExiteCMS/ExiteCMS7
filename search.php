@@ -39,7 +39,7 @@ if (!isset($stype)) $stype = isset($_POST['stype']) ? $_POST['stype'] : "f";
 $variables['stype'] = $stype;
 
 if (isset($stext)) $stext = stripinput($stext);
-if (!isset($stext)) $stext = isset($_POST['stext']) ? $_POST['stext'] : "";
+if (!isset($stext)) $stext = isset($_POST['stext']) ? stripinput($_POST['stext']) : "";
 $variables['searchtext'] = str_replace(',', ' ', $stext);
 
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;

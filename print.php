@@ -24,13 +24,14 @@ include PATH_LOCALE.LOCALESET."print.php";
 if (!isset($item_id) || !isNum($item_id)) fallback("index.php");
 
 if ($type == "A") {
-	$res = dbquery(
-		"SELECT ta.*, user_id, user_name FROM ".$db_prefix."articles ta
+	$result = dbquery(
+		"SELECT ta.*,tac.*, tu.user_id,user_name FROM ".$db_prefix."articles ta
+		INNER JOIN ".$db_prefix."article_cats tac ON ta.article_cat=tac.article_cat_id
 		LEFT JOIN ".$db_prefix."users tu ON ta.article_name=tu.user_id
 		WHERE article_id='$item_id'"
 	);
-	if (dbrows($res) != 0) {
-		$data = dbarray($res);
+	if (dbrows($result)) {
+		$data = dbarray($result);
 		$data['article'] = str_replace("<--PAGEBREAK-->", "", stripslashes($data['article_article']));
 		if ($data['article_breaks'] == "y") $data['article'] = nl2br($data['article']);
 	}

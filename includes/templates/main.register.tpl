@@ -98,11 +98,7 @@
 					{$locale.504}
 				</td>
 				<td class='tbl'>
-					{if $settings.validation_method == "image"}
-						<img src='{$smarty.const.INCLUDES}vimage.php?vimage={$vcode_2}'>
-					{else}
-						<b>{$vcode_1}</b>
-					{/if}
+					{make_captcha}
 				</td>
 			</tr>
 			<tr>
@@ -110,7 +106,7 @@
 					{$locale.505}<span style='color:#ff0000'>*</span>
 				</td>
 				<td class='tbl'>
-					<input type='text' name='user_code' class='textbox' style='width:100px'>
+					<input type='text' name='captcha_code' class='textbox' style='width:100px'>
 				</td>
 			</tr>
 		{/if}

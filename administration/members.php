@@ -64,7 +64,7 @@ if ($step == "add") {
 		if (dbrows($result) != 0) $error = $locale['455']."<br>\n";
 		
 		if ($error == "") {
-			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_md5id, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '".md5(strtolower($username.$password1))."', '$fullname', md5('$password1'), '$email', '$hide_email', '', '0000-00-00', '', '', '', '', '', 'Default', '0', '', '', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_md5id, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '".md5(strtolower($username.$password1))."', '$fullname', md5(md5('$password1')), '$email', '$hide_email', '', '0000-00-00', '', '', '', '', '', 'Default', '0', '', '', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '0')");
 		}
 		$variables['message'] = $error;
 		$variables['is_added'] = true;

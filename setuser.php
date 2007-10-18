@@ -45,7 +45,7 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 			$cookie_vars = explode(".", $_COOKIE['userinfo']);
 			$user_pass = (preg_match("/^[0-9a-z]{32}$/", $cookie_vars['1']) ? $cookie_vars['1'] : "");
 			$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($user));
-			if (!dbcount("(user_id)", "users", "user_name='$user_name' AND user_password='$user_pass'")) {
+			if (!dbcount("(user_id)", "users", "user_name='$user_name' AND user_password='".$user_pass."'")) {
 				$message = "<b>".$locale['196']."</b><br /><br />\n";
 			} else {
 				$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");

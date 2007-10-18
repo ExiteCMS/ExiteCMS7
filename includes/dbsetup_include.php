@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `10/10/2007 22:34`
+// Date generated  : `18/10/2007 21:27`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '909');
+define('CMS_REVISION', '954');
 
 if ($step == 1) {
 
@@ -20,8 +20,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."CMSconfig (
   `cfg_id` smallint(5) unsigned NOT NULL auto_increment,
   `cfg_name` varchar(25) NOT NULL default '',
   `cfg_value` text NOT NULL,
-  PRIMARY KEY  (`cfg_id`),
-  KEY `cfg_name` (`cfg_name`)
+  PRIMARY KEY  (`cfg_id`)
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
@@ -43,23 +42,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "GeoIP : ".mysql_error();
-}
-
-//
-// Code to create table `GeoIP_backup`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."GeoIP_backup");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP_backup (
-  `ip_start` varchar(15) NOT NULL default '',
-  `ip_end` varchar(15) NOT NULL default '',
-  `ip_start_num` int(10) unsigned NOT NULL default '0',
-  `ip_end_num` int(10) unsigned NOT NULL default '0',
-  `ip_code` char(2) NOT NULL default '',
-  `ip_name` varchar(50) NOT NULL default ''
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "GeoIP_backup : ".mysql_error();
 }
 
 //
@@ -195,6 +177,21 @@ if (!$result) {
 }
 
 //
+// Code to create table `captcha`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."captcha");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."captcha (
+  `captcha_datestamp` int(10) unsigned NOT NULL default '0',
+  `captcha_ip` varchar(20) NOT NULL default '',
+  `captcha_encode` varchar(32) NOT NULL default '',
+  `captcha_string` varchar(15) NOT NULL default ''
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "captcha : ".mysql_error();
+}
+
+//
 // Code to create table `comments`
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."comments");
@@ -234,27 +231,6 @@ if (!$result) {
 }
 
 //
-// Code to create table `donations`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."donations");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."donations (
-  `donate_id` smallint(5) NOT NULL auto_increment,
-  `donate_name` varchar(50) NOT NULL default '',
-  `donate_amount` decimal(10,2) NOT NULL default '0.00',
-  `donate_currency` varchar(5) NOT NULL default '',
-  `donate_country` char(2) NOT NULL default '',
-  `donate_comment` varchar(200) NOT NULL default '',
-  `donate_timestamp` int(10) NOT NULL default '0',
-  `donate_type` tinyint(1) NOT NULL default '0',
-  `donate_state` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`donate_id`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "donations : ".mysql_error();
-}
-
-//
 // Code to create table `download_cats`
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."download_cats");
@@ -263,7 +239,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."download_cats (
   `download_cat_name` varchar(100) NOT NULL default '',
   `download_cat_description` text NOT NULL,
   `download_cat_sorting` varchar(50) NOT NULL default 'download_title ASC',
-  `download_cat_cat_sorting` varchar(50) NOT NULL default '',
+  `download_cat_cat_sorting` varchar(50) NOT NULL default 'download_cat_id DESC',
   `download_cat_access` tinyint(3) unsigned NOT NULL default '0',
   `download_cat_image` varchar(100) NOT NULL default '',
   `download_parent` tinyint(3) NOT NULL default '0',
@@ -484,24 +460,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locale (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "locale : ".mysql_error();
-}
-
-//
-// Code to create table `locales`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."locales");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locales (
-  `locale_id` smallint(5) unsigned NOT NULL auto_increment,
-  `locale_type` char(1) NOT NULL default '',
-  `locale_value1` varchar(50) NOT NULL default '',
-  `locale_value2` varchar(50) NOT NULL default '',
-  `locale_value3` varchar(50) NOT NULL default '',
-  `locale_value4` varchar(50) NOT NULL default '',
-  PRIMARY KEY  (`locale_id`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "locales : ".mysql_error();
 }
 
 //
@@ -811,8 +769,8 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."site_links (
   `link_visibility` tinyint(3) unsigned NOT NULL default '0',
   `link_position` tinyint(1) unsigned NOT NULL default '1',
   `link_window` tinyint(1) unsigned NOT NULL default '0',
-  `link_aid` tinyint(1) unsigned NOT NULL default '0',
-  `link_parent` tinyint(3) unsigned NOT NULL default '0',
+  `link_aid` tinyint(1) unsigned default '0',
+  `link_parent` tinyint(3) unsigned default '0',
   `link_order` smallint(2) unsigned NOT NULL default '0',
   PRIMARY KEY  (`link_id`)
 ) ENGINE=MYISAM;");
@@ -850,8 +808,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads (
   `thread_lastuser` smallint(5) unsigned NOT NULL default '0',
   `thread_sticky` tinyint(1) unsigned NOT NULL default '0',
   `thread_locked` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`thread_id`),
-  KEY `thread_lastpost` (`thread_lastpost`)
+  PRIMARY KEY  (`thread_id`)
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
@@ -922,20 +879,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "users : ".mysql_error();
-}
-
-//
-// Code to create table `vcode`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."vcode");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."vcode (
-  `vcode_datestamp` int(10) unsigned NOT NULL default '0',
-  `vcode_1` varchar(5) NOT NULL default '',
-  `vcode_2` varchar(32) NOT NULL default ''
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "vcode : ".mysql_error();
 }
 
 }

@@ -41,7 +41,7 @@ if (isset($email) && isset($account)) {
 			$mailbody = str_replace("[NEW_PASS]", $new_pass, $locale['411']);
 			$mailbody = str_replace("[USER_NAME]", $data['user_name'], $mailbody);
 			sendemail($data['user_name'],$email,$settings['siteusername'],$settings['siteemail'],$locale['409'].$settings['sitename'],$mailbody);
-			$result = dbquery("UPDATE ".$db_prefix."users SET user_password=md5('$new_pass') WHERE user_id='".$data['user_id']."'");
+			$result = dbquery("UPDATE ".$db_prefix."users SET user_password=md5(md5('$new_pass')) WHERE user_id='".$data['user_id']."'");
 			// define the body panel variables
 			$variables['message'] = $locale['402'];
 			$variables['bold'] = true;

@@ -16,6 +16,7 @@ $config = "";
 $excluded_tables = array();
 $excluded_tables[] = $db_prefix."0_varlog";
 $excluded_tables[] = $db_prefix."newsletters";
+$excluded_tables[] = $db_prefix."donations";
 $excluded_tables[] = $db_prefix."M2F_forums";
 $excluded_tables[] = $db_prefix."M2F_config";
 $excluded_tables[] = $db_prefix."M2F_status";
@@ -29,6 +30,7 @@ $excluded_tables[] = $db_prefix."wiki_pages";
 $excluded_tables[] = $db_prefix."wiki_referrers";
 $excluded_tables[] = $db_prefix."wiki_referrer_blacklist";
 $excluded_tables[] = $db_prefix."wiki_users";
+$excluded_tables[] = $db_prefix."wiki_images";
 
 // get the list of fusion tables from the database
 $table_list=array();

@@ -36,7 +36,7 @@ if ($settings['enable_registration'] == 1) {
 			$data = dbarray($result);
 			$user_info = unserialize($data['user_info']);
 			$activation = $settings['admin_activation'] == "1" ? "2" : "0";
-			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status, user_newsletters) VALUES('".$user_info['user_name']."', '".$user_info['user_fullname']."', '".md5($user_info['user_password'])."', '".$user_info['user_email']."', '".$user_info['user_hide_email']."', '', '0000-00-00', '', '', '', '', '', 'Default', '".$user_info['user_offset']."', '', '', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status, user_newsletters) VALUES('".$user_info['user_name']."', '".$user_info['user_fullname']."', '".md5(md5($user_info['user_password']))."', '".$user_info['user_email']."', '".$user_info['user_hide_email']."', '', '0000-00-00', '', '', '', '', '', 'Default', '".$user_info['user_offset']."', '', '', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation', '1')");
 			$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code='$activate'");	
 			if ($settings['admin_activation'] == "1") {
 				$variables['message'] = $locale['453'];
@@ -130,16 +130,8 @@ if ($settings['enable_registration'] == 1) {
 		}
 
 		if ($settings['display_validation'] == "1") {
-			if (isset($_POST['user_code'])) {
-				$user_code = stripinput($_POST['user_code']);
-				$result = dbquery("SELECT * FROM ".$db_prefix."vcode WHERE vcode_1='$user_code'");
-				if (dbrows($result) == 0) {
-					$error .= $locale['410']."<br /><br />\n";
-				} else {
-					$result = dbquery("DELETE FROM ".$db_prefix."vcode WHERE vcode_1='$user_code'");
-				}
-			} else {
-				$error .= $locale['410']."<br /><br />\n";
+			if (!check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) {
+				$error .= $locale['410']."<br />\n";
 			}
 		}
 		
@@ -191,7 +183,7 @@ if ($settings['enable_registration'] == 1) {
 				$template_variables['register.verify'] = $variables;
 			} else {
 				$activation = $settings['admin_activation'] == "1" ? "2" : "0";
-				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES('$username', md5('".$password1."'), '".$email."', '$user_hide_email', '$user_location', '$user_birthdate', '$user_aim', '$user_icq', '$user_msn', '$user_yahoo', '$user_web', '$user_theme', '$user_offset', '', '$user_sig', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation')");
+				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES('$username', md5(md5('".$password1."')), '".$email."', '$user_hide_email', '$user_location', '$user_birthdate', '$user_aim', '$user_icq', '$user_msn', '$user_yahoo', '$user_web', '$user_theme', '$user_offset', '', '$user_sig', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation')");
 				if ($settings['admin_activation'] == "1") {
 					$variables['message'] = $locale['453'];
 				} else {
@@ -218,17 +210,7 @@ if ($settings['enable_registration'] == 1) {
 		} else {
 			$theme_files = array();
 		}
-		if ($settings['display_validation'] == "1") {
-			srand((double)microtime()*1000000); 
-			$temp_num = md5(rand(0,9999)); 
-			$vcode_1 = substr($temp_num, 17, 5); 
-			$vcode_2 = md5($vcode_1);
-			unset($temp_num);
-			$result = dbquery("INSERT INTO ".$db_prefix."vcode VALUES('".time()."', '$vcode_1', '$vcode_2')");
-		}
 		$variables['theme_files'] = $theme_files;
-		$variables['vcode_1'] = $vcode_1;
-		$variables['vcode_2'] = $vcode_2;
 		// define the body panel variables
 		$template_panels[] = array('type' => 'body', 'name' => 'register', 'template' => 'main.register.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."register.php", PATH_LOCALE.LOCALESET."user_fields.php"));
 		$template_variables['register'] = $variables;

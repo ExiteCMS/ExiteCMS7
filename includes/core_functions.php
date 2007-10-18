@@ -90,7 +90,7 @@ if (file_exists(PATH_ROOT."config.php")) {
 }
 
 // if config.php is absent or empty, bail out with an error
-if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the documentation on how to perform the setup');
+if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the documentation on how to run the setup');
 
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
@@ -228,7 +228,7 @@ require_once PATH_INCLUDES."user_functions.php";
 if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 	include PATH_ADMIN."upgrade.php";
 	//  If so, force a switch to maintenance mode
-	if (UPGRADES) $settings['maintenance'] = 2;
+//	if (UPGRADES) $settings['maintenance'] = 2;
 }
 
 // check if we need to redirect to maintenance mode
@@ -281,8 +281,8 @@ function fallback($location) {
 
 // Clean URL Function, prevents entities in server globals
 function cleanurl($url) {
-	$bad_entities = array("&", "\"", "'", '\"', "\'", "<", ">", "(", ")");
-	$safe_entities = array("&", "", "", "", "", "", "", "", "");
+	$bad_entities = array("&", "\"", "'", '\"', "\'", "<", ">", "(", ")", "*");
+	$safe_entities = array("&amp;", "", "", "", "", "", "", "", "", "");
 	$url = str_replace($bad_entities, $safe_entities, $url);
 	return $url;
 }
@@ -641,6 +641,23 @@ function verify_image($file) {
 	elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*behaviour\([^>]*>#iU", $txt)) { $image_safe = false; }
 	elseif (preg_match("#</*(applet|link|style|script|iframe|frame|frameset)[^>]*>#i", $txt)) { $image_safe = false; }
 	return $image_safe;
+}
+
+// check captcha
+function check_captcha($captchs_encode, $captcha_string) {
+	global $db_prefix;
+
+	if (preg_match("/^[0-9a-z]+$/", $captchs_encode) && preg_match("/^[0-9a-z]+$/", $captcha_string)) {
+		$result = dbquery("SELECT * FROM ".$db_prefix."captcha WHERE captcha_ip='".USER_IP."' AND captcha_encode='".$captchs_encode."' AND captcha_string='".$captcha_string."'");
+		if (dbrows($result)) {
+			$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_ip='".USER_IP."' AND captcha_encode='".$captchs_encode."' AND captcha_string='".$captcha_string."'");
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
 }
 
 // Replace offensive words with the defined replacement word

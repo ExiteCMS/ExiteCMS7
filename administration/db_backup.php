@@ -34,7 +34,7 @@ if (isset($action) && $action == 'restore' && isset($_POST['local_delete'])) {
 
 // create the database backup
 if (isset($_POST['btn_create_backup'])) {
-	$user_password = md5($_POST['user_password']);
+	$user_password = md5(md5($_POST['user_password']));
 	if ($_POST['backup_keep'] == 0 && $_POST['backup_download'] == 0) {
 		$variables['error'] = 2;
 	} else if ($user_password != $userdata['user_password']) {
@@ -138,7 +138,7 @@ if (isset($_POST['btn_cancel'])) {
 // a restore is requested
 if (isset($_POST['btn_do_restore'])) {
 	// validate the users password against the one entered (extra security precaution)
-	$user_password = md5($_POST['user_password']);
+	$user_password = md5(md5($_POST['user_password']));
 	$fd = @fopen(PATH_ADMIN."db_backups/".$_POST['file'], "r");
 	if (!$fd) {
 		$variables['error'] = 5;

@@ -88,7 +88,7 @@
 				{$locale.405}:
 			</td>
 			<td class='tbl1'>
-				<input type='text' name='subject' value='{$subject}' maxlength='32' class='textbox' style='width:400px;' />
+				<input type='text' name='subject' value='{$subject}' maxlength='100' class='textbox' style='width:400px;' />
 			</td>
 		</tr>
 		{if $reply_message|default:"" != ""}

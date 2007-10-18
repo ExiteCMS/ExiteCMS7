@@ -35,10 +35,14 @@ if (!isset($_COOKIE['site_visited'])) {
 if (isset($_POST['login'])) {
 	$user_pass = md5($_POST['user_pass']);
 	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_POST['user_name']));
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='$user_pass'");
+	// double hashed passwords as of revision 954
+	if ($settings['revision'] >= 954) {
+		$user_pass = md5($user_pass);
+	}
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
 	if (dbrows($result) != 0) {
 		$data = dbarray($result);
-		$cookie_value = $data['user_id'].".".$data['user_password'];
+		$cookie_value = $data['user_id'].".".$user_pass;
 		// if the account is suspended, check for an expiry date
 		if ($data['user_status'] == 1 && $data['user_ban_expire'] > 0 && $data['user_ban_expire'] < time() ) {
 			// reset the user status and the expiry date
@@ -77,7 +81,7 @@ if (isset($_COOKIE['userinfo'])) {
 	$cookie_vars = explode(".", $_COOKIE['userinfo']);
 	$cookie_1 = isNum($cookie_vars['0']) ? $cookie_vars['0'] : "0";
 	$cookie_2 = (preg_match("/^[0-9a-z]{32}$/", $cookie_vars['1']) ? $cookie_vars['1'] : "");
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$cookie_1' AND user_password='$cookie_2'");
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$cookie_1' AND user_password='".$cookie_2."'");
 	if (dbrows($result) != 0) {
 		// HV - update the userinfo cookie, so it doesn't expire while the user is busy on the site
 		if (isset($_COOKIE['remember_me'])) {

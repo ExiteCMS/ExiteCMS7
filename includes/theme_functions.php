@@ -409,8 +409,8 @@ function theme_cleanup() {
 		$result = dbquery("DELETE FROM ".$db_prefix."flood_control WHERE flood_timestamp < '".(time() - $minute * 5)."'");
 		// thread notifies: set to 14 days
 		$result = dbquery("DELETE FROM ".$db_prefix."thread_notify WHERE notify_datestamp < '".(time() - $day * 14)."'");
-		// vcode images: set to 6 minutes
-		$result = dbquery("DELETE FROM ".$db_prefix."vcode WHERE vcode_datestamp < '".(time() - $minute * 6)."'");
+		// captcha images: set to 6 minutes
+		$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_datestamp < '".(time() - $minute * 6)."'");
 		// new registered users: set to 3 days
 		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_datestamp < '".(time() - $day * 3)."'");
 		// unread posts indicators: set to 30 days

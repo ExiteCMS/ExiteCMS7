@@ -30,7 +30,7 @@
 				<center>
 				<br /><br />
 				{if $settings.sitebanner|default:"" != ""}
-					<img src='{$smarty.const.THEME}images/{$settings.sitebanner}' alt='{$settings.sitename}' /><br /><br />
+					<img src='{$smarty.const.THEME}images/{$settings.sitebanner}' alt='{$settings.sitename}' width='400'/><br /><br />
 				{/if}
 				{$message}
 				{$error}
