@@ -256,55 +256,59 @@ function resultdialog($title, $message="", $redirect=true, $backlink=false, $tim
 
 	// define the search body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'forum.resultdialog', 'title' => $title, 'template' => 'forum.resultdialog.tpl', 
-									'locale' => array(PATH_LOCALE.LOCALESET."forum/post.php", PATH_LOCALE.LOCALESET."forum/main.php",PATH_LOCALE.LOCALESET."admin/forum_polls.php"));
+									'locale' => array(PATH_LOCALE.LOCALESET."forum/main.php",PATH_LOCALE.LOCALESET."forum/post.php", PATH_LOCALE.LOCALESET."admin/forum_polls.php"));
 	$template_variables['forum.resultdialog'] = $variables;
 }
 
-// like stripinput, but leaves html entities in [code] sections alone
-function stripmessageinput($rawmsg) {
+// like stripinput, but convert the & to &amp; as well (otherwise we lose html entities in code blocks)
+function stripmessageinput($text) {
 
-	// temp message storage
+	// Split off the [url] blocks to exclude them from url parsing
 	$message = "";
-	$codeblocks = array();
+	$urlblocks = array();
 
-	// Split off the [code] blocks to exclude them from BBcode parsing
-	
-	// find the code [code] occurence
-	$i = strpos($rawmsg, "[code]");
+	// find the code [url] occurence
+	$i = strpos($text, "[url");
 
 	// loop through the message until all are found and processed
 	while ($i !== false) {
-		// strip the bit before the [code] BBcode, and add a placeholder
-		$message .= substr($rawmsg, 0, $i+6)."{**@@**}";
+		// strip the bit before the [url] BBcode, and add a placeholder
+		$message .= substr($text, 0, $i+4)."{@@**@@}";
 		// strip the processed bit
-		$rawmsg = substr($rawmsg, $i+6);
-		// find the end of the [code] block
-		$j = strpos($rawmsg, "[/code]");
-		// if not found, add the remaining bit, a forced [/code], and stop processing
+		$text = substr($text, $i+4);
+		// find the end of the [url] block
+		$j = strpos($text, "[/url]");
+		// if not found, add the remaining bit, a forced [/url], and stop processing
 		if ($j === false) {
-			$message = str_replace("{**@@**}", $rawmsg, $message);
+			$message = str_replace("{@@**@@}", $text, $message);
 			break;
 		}
-		// store this code block (convert the & to prevent entity replacement upon display)
-		$codeblocks[] = str_replace("&", "&amp;", substr($rawmsg, 0, $j));
+		// store this url block
+		$urlblocks[] = substr($text, 0, $j);
 		// strip the processed bit
-		$rawmsg = substr($rawmsg, $j);
+		$text = substr($text, $j);
 		// check if there are more code segments
-		$i = strpos($rawmsg, "[code]");
+		$i = strpos($text, "[url");
 	}
 
 	// any text left?
-	if (strlen($rawmsg)) $message .= $rawmsg;
+	if (strlen($text)) $message .= $text;
 
-	$message = stripinput($message);
+	// now strip and convert to html entities
+	$message = stripinput(str_replace("&", "&amp;", $message));
 	
-	// re-insert the saved code blocks
-	foreach($codeblocks as $codeblock) {
+	// re-insert the saved url blocks
+	foreach($urlblocks as $urlblock) {
 		// find the first placeholder
-		$i = strpos($message, "{**@@**}");
-		$message = substr($message, 0, $i).$codeblock.substr($message, $i+8);
-	}	
-	// return the parsed message body
+		$i = strpos($message, "{@@**@@}");
+		// shorten and normalize the link if required
+		if ($urlblock{0} == "=") {
+			$message = substr($message, 0, $i).$urlblock.substr($message, $i+8);
+		} else {
+			$message = substr($message, 0, $i)."=".substr($urlblock,1)."]".shortenlink(substr($urlblock,1),70).substr($message, $i+8);
+		}
+	}
+
 	return $message;
 }
 
@@ -378,8 +382,7 @@ function parsemessage($rawmsg, $smileys=true) {
 
 	// find remaining URL's in the text, and convert them to a href as well
 	$pattern = '#(^|[^\"=]{1})(https?://|ftp://|mailto:|news:)([^(,\s<>\[\]\)]+)([,\s\n<>\)]|$)#sme';
-	$message = preg_replace($pattern,"'$1<a href=\'$2$3\' target=\'_blank\'>'.shortenlink('$2$3',75).'</a>$4'",$message);
-
+	$message = preg_replace($pattern,"'$1<a href=\'$2$3\' target=\'_blank\'>'.shortenlink('$2$3',83).'</a>$4'",$message);
 	// re-insert the saved url blocks
 	foreach($urlblocks as $urlblock) {
 		// find the first placeholder

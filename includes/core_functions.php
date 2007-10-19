@@ -302,7 +302,7 @@ function stripslash($text) {
 	return $text;
 }
 
-// stripslash function, add correct number of slashes depending on quotes_gpc
+// addslash function, add correct number of slashes depending on quotes_gpc
 function addslash($text) {
 	if (!QUOTES_GPC) {
 		$text = addslashes(addslashes($text));

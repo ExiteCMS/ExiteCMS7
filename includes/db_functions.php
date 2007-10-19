@@ -92,6 +92,7 @@ function dbquery($query, $display=true) {
 			echo mysql_error();
 			echo "</pre>";
 		}
+		trigger_error(mysql_error(), E_USER_ERROR);
 	}
 	$_e_loadtime = explode(" ", microtime());
 	$_e_loadtime = $_e_loadtime[1] + $_e_loadtime[0];

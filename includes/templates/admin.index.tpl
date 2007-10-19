@@ -15,7 +15,7 @@
 {* main menu, with the four admin sections in a tabbed view                *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title="PLi-Fusion v."|cat:$settings.version|cat:" &bull; "|cat:" SVN Revision "|cat:$settings.revision|cat:" &bull; "|cat:$locale.200|cat:" <b>"|cat:$settings.sitename|cat:"</b>"  state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title="ExiteCMS v."|cat:$settings.version|cat:" &bull; "|cat:" SVN Revision "|cat:$settings.revision|cat:" &bull; "|cat:$locale.200|cat:" <b>"|cat:$settings.sitename|cat:"</b>"  state=$_state style=$_style}
 <table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
 		{if $adminpage1|default:0 != 0}
