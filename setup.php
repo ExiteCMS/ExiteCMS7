@@ -288,7 +288,7 @@ switch($step) {
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (56, 'remote_stats', '0')");
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (57, 'maintenance', '0')");
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (58, 'maintenance_message', '')");
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (59, 'maintenance_color', 'red')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (59, 'maintenance_color', '#9C0204')");
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (61, 'forum_flags', '1')");
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (62, 'forum_max_w', '600')");
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (63, 'forum_max_h', '600')");

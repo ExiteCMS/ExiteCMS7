@@ -111,7 +111,7 @@
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.660}
-9E			</td>
+			</td>
 			<td width='50%' class='tbl'>
 				<input type='text' name='flood_interval' value='{$settings2.flood_interval}' maxlength='2' class='textbox' style='width:50px;' />
 			</td>
