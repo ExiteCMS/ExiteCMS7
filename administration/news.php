@@ -269,7 +269,9 @@ if ($variables['latest_news_selection']) {
 		$action = FUSION_SELF.$aidlink."&amp;news_id=$news_id";
 		$title = $locale['400'];
 	} else {
-		if (!isset($_POST['preview'])) {
+		if (isset($_POST['preview'])) {
+			$action = FUSION_SELF.$aidlink."&amp;news_id=$news_id";
+		} else {
 			$news_subject = "";
 			$news_cat = 0;
 			$body = "";
@@ -278,8 +280,8 @@ if ($variables['latest_news_selection']) {
 			$news_comments = 1;
 			$news_ratings = 1;
 			$news_visibility = 0;
+			$action = FUSION_SELF.$aidlink;
 		}
-		$action = FUSION_SELF.$aidlink;
 		$title = $locale['404'];
 	}
 	

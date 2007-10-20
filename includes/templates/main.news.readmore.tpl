@@ -35,7 +35,7 @@
 				</tr>
 			</table>
 			<div style='margin-top:5px'>
-				{if $allow_edit}<form name='editnews{$news[item].news_id}' method='post' action='/administration/news.php?aid={$aidlink}&amp;news_id=$news[item].news_id}'>{/if}
+				{if $allow_edit}<form name='editnews{$news[item].news_id}' method='post' action='/administration/news.php{$aidlink}&amp;news_id={$news[item].news_id}'>{/if}
 					<table width='100%' cellpadding='0' cellspacing='0'>
 						<tr>
 							<td class='infobar'>
