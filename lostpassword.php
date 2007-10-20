@@ -29,11 +29,12 @@ $variables = array();
 
 if (isset($email) && isset($account)) {
 	$error = 0;
-	if (FUSION_QUERY != "email=".$email."&account=".$account) fallback("index.php");
+	if (FUSION_QUERY != "email=".$email."&amp;account=".$account) fallback("index.php");
 	$email = stripinput(trim(eregi_replace(" +", "", $email)));
 	if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $email)) $error = 1;
 	if (!preg_match("/^[0-9a-z]{32}$/", $account)) $error = 1;
 	if ($error == 0) {
+
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_password='$account' AND user_email='$email'");
 		if (dbrows($result) != 0) {
 			$data = dbarray($result); $new_pass = "";
