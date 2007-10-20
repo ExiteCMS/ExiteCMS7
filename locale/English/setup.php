@@ -90,10 +90,10 @@ $locale['501'] = "Articles";
 $locale['502'] = "Downloads";
 $locale['503'] = "FAQ";
 $locale['504'] = "Discussion Forum";
-$locale['505'] = "Contact Me";
-$locale['507'] = "Web Links";
-$locale['508'] = "CMS Administration";
-$locale['509'] = "Search";
+$locale['505'] = "News Categories";
+$locale['506'] = "Contact Us";
+$locale['507'] = "Search";
+$locale['508'] = "Register";
 // Stage 2 - Panels
 $locale['520'] = "Main Menu";
 $locale['521'] = "Online Users";

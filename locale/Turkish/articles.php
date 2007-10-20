@@ -1,6 +1,0 @@
-<?php
-$locale['400'] = "Ýncelemeler";
-$locale['401'] = "Ýnceleme Kategorisi Bulunamadý";
-$locale['402'] = "YENÝ";
-$locale['403'] = "Bu Kategori Ýçinde Kayýtlý Ýnceleme Henüz Oluþturulmamýþ";
-?>

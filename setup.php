@@ -144,6 +144,7 @@ if ($step == "1") {
 "."$"."user_db_name="."\"".$_POST['db_name']."\"".";
 "."$"."user_db_prefix="."\"".$_POST['db_prefix']."\"".";
 ?>";
+	@rename(PATH_ROOT."config.def", PATH_ROOT."config.php");
 	$temp = fopen(PATH_ROOT."config.php","w");
 	if (!fwrite($temp, $config)) {
 		$error .= $locale['430']."<br /><br />";
@@ -165,7 +166,7 @@ switch($step) {
 		if (file_exists(PATH_ROOT."config.php") && filesize(PATH_ROOT."config.php")) {
 			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: A valid configuration exists.</b><br />Please consult the documentation on how to rerun the setup.</div>");
 		}
-		// check if the config template exists and is writeable. If so, rename it
+		// check if the config template exists
 		if (!file_exists(PATH_ROOT."config.def")) {
 			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The configuration template file is missing.</b><br />Please reinstall ExiteCMS.</div>");
 		}
@@ -181,9 +182,6 @@ switch($step) {
 		if (!is_writable(PATH_ATTACHMENTS)) $permissions .= PATH_ATTACHMENTS . "<br />";
 		if (!is_writable("config.def")) {
 			$permissions .= "Configuration Template" . "<br />";
-		} else {
-			@rename("config.def", "config.php");
-			if (!is_writable("config.php")) $permissions .= "Configuration Tile" . "<br />";
 		}
 		if ($permissions == "") {
 			$variables['write_check'] = true; 
@@ -226,79 +224,80 @@ switch($step) {
 	 	if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $email)) {
 			$error .= $locale['453']."<br /><br />\n";
 		}
+		$password = md5(md5($password1));
 
 		require_once PATH_INCLUDES."dbsetup_include.php";
 
 		if ($error == "") {
 
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (1, 'sitename', 'ExiteCMS Powered Website')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (2, 'siteurl', '/')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (3, 'siteemail', 'webmaster@yourdomain.com')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (4, 'siteusername', '$username')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (5, 'siteintro', '<center>ExiteCMS v7.0 &copy;2007 Exite BV.<br />See http://exitecms.exite.eu for more information</center>')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (6, 'description', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (7, 'keywords', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (8, 'footer', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (9, 'opening_page', 'news.php')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (10, 'news_headline', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (11, 'news_columns', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (12, 'news_items', '3')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (13, 'news_latest', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (14, 'locale', 'English')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (15, 'theme', 'ExiteCMS')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (16, 'shortdate', '%d/%m/%Y %H:%M')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (17, 'longdate', '%B %d %Y %H:%M:%S')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (18, 'forumdate', '%d-%m-%Y %H:%M')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (19, 'subheaderdate', '%B %d %Y %H:%M:%S')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (20, 'timeoffset', '+0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (21, 'numofthreads', '10')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (22, 'attachments', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (23, 'attachmax', '10485760')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (24, 'attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.esml,.psd,.mvi')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (25, 'thread_notify', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (26, 'enable_registration', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (27, 'email_verification', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (28, 'admin_activation', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (29, 'display_validation', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (30, 'validation_method', 'image')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (31, 'thumb_w', '150')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (32, 'thumb_h', '150')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (33, 'photo_w', '400')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (34, 'photo_h', '300')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (35, 'photo_max_w', '1800')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (36, 'photo_max_h', '1600')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (37, 'photo_max_b', '150000')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (38, 'thumb_compression', 'gd2')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (39, 'thumbs_per_row', '4')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (40, 'thumbs_per_page', '12')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (41, 'tinymce_enabled', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (42, 'smtp_host', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (43, 'smtp_username', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (44, 'smtp_password', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (45, 'bad_words_enabled', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (46, 'bad_words', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (47, 'bad_word_replace', '[censored]')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (48, 'guestposts', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (49, 'numofshouts', '5')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (50, 'flood_interval', '15')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (51, 'counter', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (52, 'max_users', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (53, 'max_users_datestamp', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (54, 'version', '7.00')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (55, 'revision', '909')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (56, 'remote_stats', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (57, 'maintenance', '0')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (58, 'maintenance_message', '')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (59, 'maintenance_color', 'red')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (61, 'forum_flags', '1')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (62, 'forum_max_w', '600')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (63, 'forum_max_h', '600')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (64, 'newsletter_email', 'noreply@yourdomain.com')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (65, 'pm_inbox', '100')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (66, 'pm_sentbox', '100')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (67, 'pm_savebox', '200')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (68, 'pm_send2group', '103')";
-			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (69, 'pm_hide_rcpts', '1')";
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (1, 'sitename', 'ExiteCMS Powered Website')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (2, 'siteurl', '/')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (3, 'siteemail', 'webmaster@yourdomain.com')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (4, 'siteusername', '$username')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (5, 'siteintro', '<center>ExiteCMS v7.0 &copy;2007 Exite BV.<br />See http://exitecms.exite.eu for more information</center>')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (6, 'description', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (7, 'keywords', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (8, 'footer', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (9, 'opening_page', 'news.php')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (10, 'news_headline', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (11, 'news_columns', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (12, 'news_items', '3')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (13, 'news_latest', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (14, 'locale', 'English')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (15, 'theme', 'ExiteCMS')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (16, 'shortdate', '%d/%m/%Y %H:%M')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (17, 'longdate', '%B %d %Y %H:%M:%S')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (18, 'forumdate', '%d-%m-%Y %H:%M')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (19, 'subheaderdate', '%B %d %Y %H:%M:%S')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (20, 'timeoffset', '+0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (21, 'numofthreads', '10')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (22, 'attachments', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (23, 'attachmax', '10485760')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (24, 'attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.esml,.psd,.mvi')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (25, 'thread_notify', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (26, 'enable_registration', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (27, 'email_verification', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (28, 'admin_activation', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (29, 'display_validation', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (30, 'validation_method', 'image')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (31, 'thumb_w', '150')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (32, 'thumb_h', '150')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (33, 'photo_w', '400')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (34, 'photo_h', '300')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (35, 'photo_max_w', '1800')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (36, 'photo_max_h', '1600')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (37, 'photo_max_b', '150000')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (38, 'thumb_compression', 'gd2')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (39, 'thumbs_per_row', '4')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (40, 'thumbs_per_page', '12')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (41, 'tinymce_enabled', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (42, 'smtp_host', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (43, 'smtp_username', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (44, 'smtp_password', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (45, 'bad_words_enabled', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (46, 'bad_words', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (47, 'bad_word_replace', '[censored]')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (48, 'guestposts', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (49, 'numofshouts', '5')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (50, 'flood_interval', '15')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (51, 'counter', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (52, 'max_users', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (53, 'max_users_datestamp', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (54, 'version', '7.00')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (55, 'revision', '955')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (56, 'remote_stats', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (57, 'maintenance', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (58, 'maintenance_message', '')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (59, 'maintenance_color', 'red')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (61, 'forum_flags', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (62, 'forum_max_w', '600')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (63, 'forum_max_h', '600')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (64, 'newsletter_email', 'noreply@yourdomain.com')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (65, 'pm_inbox', '100')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (66, 'pm_sentbox', '100')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (67, 'pm_savebox', '200')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (68, 'pm_send2group', '103')");
+			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (69, 'pm_hide_rcpts', '1')");
 
 			$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A', 'articles.gif', '".$locale['462']."', 'articles.php', 1)");
 			$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".$locale['461']."', 'article_cats.php', 1)");
@@ -341,7 +340,7 @@ switch($step) {
 				$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 			}
 					
-			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '".md5(md5($password1))."', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '$password', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
 	
 			$result = dbquery("INSERT INTO ".$db_prefix."pm_config (user_id, pmconfig_save_sent, pmconfig_read_notify, pmconfig_email_notify, pmconfig_auto_archive ) VALUES ('0', '0', '1', '0', '90')");
 		
@@ -356,7 +355,6 @@ switch($step) {
 			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['548']."', 'movies.gif')");
 			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['549']."', 'network.gif')");
 			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['550']."', 'news.gif')");
-			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['551']."', 'php-fusion.gif')");
 			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['552']."', 'security.gif')");
 			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['553']."', 'software.gif')");
 			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['554']."', 'themes.gif')");
@@ -371,14 +369,14 @@ switch($step) {
 			$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('Welcome message panel', 'welcome_message_panel', '1.0.0')");
 
 			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['500']."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['501']."', 'articles.php', '0', '1', '0', '2', 'main_menu_panel')");
+			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['501']."', 'article_cats.php', '0', '1', '0', '2', 'main_menu_panel')");
 			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['502']."', 'downloads.php', '0', '1', '0', '3', 'main_menu_panel')");
 			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['503']."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
 			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['504']."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'weblinks.php', '0', '1', '0', '6', 'main_menu_panel')");
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['494']."', 'news_cats.php', '0', '1', '0', '7', 'main_menu_panel')");
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['505']."', 'contact.php', '0', '1', '0', '8', 'main_menu_panel')");
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['509']."', 'search.php', '0', '1', '0', '9', 'main_menu_panel')");
+			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['505']."', 'news_cats.php', '0', '1', '0', '6', 'main_menu_panel')");
+			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['506']."', 'contact.php', '0', '1', '0', '7', 'main_menu_panel')");
+			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'search.php', '0', '1', '0', '8', 'main_menu_panel')");
+			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['508']."', 'register.php', '100', '2', '0', '9', 'main_menu_panel')");
 
 			$result = dbquery("INSERT INTO ".$db_prefix."forum_poll_settings (forum_id, enable_polls, create_permissions, vote_permissions, guest_permissions, require_approval, lock_threads, option_max, option_show, option_increment, duration_min, duration_max, hide_poll) VALUES ('0', '1', 'G101', 'G101', '0', '0', '0', '10', '5', '5', '86400', '0', '1')");
 

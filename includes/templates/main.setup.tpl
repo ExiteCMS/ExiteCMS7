@@ -62,10 +62,10 @@ td { font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 			</tr>
 		</table>
 		<br>
-		<table align='center' cellpadding='0' cellspacing='1' width='450' class='tbl-border'>
+		<table align='center' cellpadding='0' cellspacing='0' width='450'>
 			<tr>
-				<td align='center' class='tbl1'>
-					<img height='113' src='images/cms-logo-big.png'>
+				<td align='center'>
+					<img width='450' src='images/cms-logo-big.png'>
 				</td>
 			</tr>
 		</table>

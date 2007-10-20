@@ -113,7 +113,7 @@
 				</tr>
 				{sectionelse}
 				<tr>
-					<td colspan='5' class='tbl1'>
+					<td colspan='6' class='tbl1'>
 						{$locale.407}
 					</td>
 				</tr>
