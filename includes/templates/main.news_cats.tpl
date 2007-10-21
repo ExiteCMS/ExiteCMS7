@@ -47,7 +47,7 @@
 						<br />
 					{sectionelse}
 						<center>
-							<br /><br />
+							<br />
 							<b>{$locale.404}</b>
 							<br /><br />
 						</center>
