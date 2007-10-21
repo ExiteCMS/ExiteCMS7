@@ -299,6 +299,8 @@ switch($step) {
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (68, 'pm_send2group', '103')");
 			$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_id, cfg_name, cfg_value) VALUES (69, 'pm_hide_rcpts', '1')");
 
+			$result = dbquery("INSERT INTO ".$db_prefix."locale (locale_code, locale_name, locale_active) VALUES ('en', 'English', 1)");
+
 			$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A', 'articles.gif', '".$locale['462']."', 'articles.php', 1)");
 			$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".$locale['461']."', 'article_cats.php', 1)");
 			$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AD', 'admins.gif', '".$locale['460']."', 'administrators.php', 2)");
