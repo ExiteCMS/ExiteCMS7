@@ -16,7 +16,6 @@
 {***************************************************************************}
 {if $subcats}{assign var="_title" value=$locale.417}{else}{assign var="_title" value=$locale.418}{/if}
 {assign var="have_cats" value=false}
-{assign var="columns" value="2"} 																{* number of columns *}
 {math equation="(100-x)/x" x=$columns format="%u" assign="colwidth"}							{* width per column  *}
 {section name=cat loop=$download_cats}
 {cycle name=column values="1,2" assign="column" print=no} 										{* keep track of the current column *}

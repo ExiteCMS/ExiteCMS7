@@ -26,6 +26,7 @@ $locale['422'] = "News Items per page:";
 $locale['423'] = "All";
 $locale['424'] = "The number of news items per page can not be smaller than the number of headlines";
 $locale['425'] = "Required when the CMS is installed in a subdirectory of the website document root";
+$locale['426'] = "Download Panel Layout:";
 // Time & Date Settings
 $locale['450'] = "Time and Date";
 $locale['451'] = "Short date format:";

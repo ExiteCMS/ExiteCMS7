@@ -42,6 +42,9 @@ function countdownloads($cat_id) {
 // temp storage for template variables
 $variables = array();
 
+// store the number of columns in the panel
+$variables['columns'] = $settings['download_columns'];
+
 define('DOWNLOAD_LIMIT', 10);
 $variables['download__limit'] = DOWNLOAD_LIMIT;
 

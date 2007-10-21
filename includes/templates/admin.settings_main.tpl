@@ -150,6 +150,18 @@
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
+				{$locale.426}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='download_columns' class='textbox'>
+					<option value='1'{if $settings2.download_columns == 1} selected="selected"{/if}>{$locale.417}</option>
+					<option value='2'{if $settings2.download_columns == 2} selected="selected"{/if}>{$locale.418}</option>
+					<option value='3'{if $settings2.download_columns == 3} selected="selected"{/if}>{$locale.420}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
 				{$locale.415}
 			</td>
 			<td width='50%' class='tbl'>
