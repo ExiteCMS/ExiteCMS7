@@ -10,6 +10,7 @@ $locale['405'] = "Download Category Deleted";
 $locale['420'] = "Edit Download Category";
 $locale['421'] = "Add Download Category";
 // Add/Edit Download Category Form
+$locale['429'] = "Update category timestamp";
 $locale['430'] = "Category Name:";
 $locale['431'] = "Category Description:";
 $locale['432'] = "Save Category";

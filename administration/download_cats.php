@@ -86,10 +86,10 @@ if (isset($_POST['save_cat'])) {
 	} else {
 		$cat_cat_sorting = "download_cat_id DESC";
 	}
-	$cat_datestamp = time();
+	$update_datestamp = isNum($_POST['update_datestamp']) ? true : false;
 	if (cat_not_recursive($cat_id, $cat_sub)) {
 		if (isset($step) && $step == "edit") {
-			$result = dbquery("UPDATE ".$db_prefix."download_cats SET download_cat_name='$cat_name', download_cat_description='$cat_description', download_cat_sorting='$cat_sorting', download_cat_cat_sorting='$cat_cat_sorting', download_cat_access='$cat_access', download_cat_image='$cat_image', download_parent='$cat_sub', download_datestamp='$cat_datestamp' WHERE download_cat_id='$cat_id'");
+			$result = dbquery("UPDATE ".$db_prefix."download_cats SET download_cat_name='$cat_name', download_cat_description='$cat_description', download_cat_sorting='$cat_sorting', download_cat_cat_sorting='$cat_cat_sorting', download_cat_access='$cat_access', download_cat_image='$cat_image', download_parent='$cat_sub' ".($update_datestamp ? (", download_datestamp='".time()."'") : "")." WHERE download_cat_id='$cat_id'");
 		} else {
 			$result = dbquery("INSERT INTO ".$db_prefix."download_cats (download_cat_name, download_cat_description, download_cat_sorting, download_cat_cat_sorting, download_cat_access, download_cat_image, download_parent, download_datestamp) VALUES('$cat_name', '$cat_description', '$cat_sorting', '$cat_cat_sorting', '$cat_access', '$cat_image', '$cat_sub', '".time()."')");
 		}

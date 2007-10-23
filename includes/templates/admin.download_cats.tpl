@@ -111,6 +111,13 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='130' class='tbl'>
+			</td>
+			<td class='tbl'>
+				<input type='checkbox' name='update_datestamp' value='0' /> {$locale.429}
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<input type='submit' name='save_cat' value='{$locale.432}' class='button' />
 			</td>
