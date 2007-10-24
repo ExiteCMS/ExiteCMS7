@@ -64,6 +64,12 @@ $rows = dbrows($result);
 if ($rows != 0) {
 	while ($data = dbarray($result)) {
 		if (checkrights($data['admin_rights']) && $data['admin_link'] != "reserved") {
+			// check the location of the admin image, and add the correct path to it
+			if (!$path = strrchr($data['admin_link'], "/")) {
+				$path = ADMIN;
+			}
+			$data['admin_image'] = $path."images/".$data['admin_image'];
+			// store the record
 			$modules[] = $data;
 		}
 	}
