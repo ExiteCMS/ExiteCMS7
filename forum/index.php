@@ -24,9 +24,14 @@ $variables = array();
 // load the locale for this forum module
 include PATH_LOCALE.LOCALESET."forum/main.php";
 
-// load the advertisement include module
-require_once PATH_INCLUDES."advertisement.php";
-$variables['advert'] = get_advert(array(1,2));
+// load the advertisement include module and get an ad for this forum page
+if (file_exists(PATH_MODULES."advertising/get_ad.php")) {
+	// load the ad include module
+	require_once PATH_MODULES."advertising/get_ad.php";
+	$variables['advert'] = get_ad(array(1,2));
+} else {
+	$variables['advert'] = "";
+}
 
 // when is a folder hot?
 define('FOLDER_HOT', 20);
