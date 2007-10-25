@@ -64,12 +64,16 @@ $rows = dbrows($result);
 if ($rows != 0) {
 	while ($data = dbarray($result)) {
 		if (checkrights($data['admin_rights']) && $data['admin_link'] != "reserved") {
-			// check the location of the admin image, and add the correct path to it
+			// check the location and the existence of the admin image, and pass the full path to the template
 			$path = explode("/", $data['admin_link']);
-			if (isset($path[2])) {
+			if (isset($path[2]) && file_exists(PATH_MODULES.$path[2]."/images/".$data['admin_image'])) {
 				$data['admin_image'] = MODULES.$path[2]."/images/".$data['admin_image'];
 			} else {
-				$data['admin_image'] = ADMIN."images/".$data['admin_image'];
+				if (file_exists(PATH_ADMIN."images/".$data['admin_image'])) {
+					$data['admin_image'] = ADMIN."images/".$data['admin_image'];
+				} else {
+					$data['admin_image'] = ADMIN."images/module_panel.gif";
+				}
 			}
 			// store the record
 			$modules[] = $data;
