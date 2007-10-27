@@ -182,9 +182,8 @@ if (dbrows($result) != 0) {
 		$variables['tree'][] = array('node' => 'E', 'name' => $locale['505'], 'id' => 0);
 	}
 	// Then recurse through the download categories
-	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 AND download_parent = 0 ORDER BY download_cat_id DESC LIMIT 1");
-	if (dbrows($result) != 0) {
-		$data = dbarray($result);
+	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 AND download_parent = 0 ORDER BY download_datestamp DESC");
+	while($data = dbarray($result)) {
 		recurse_dc($data['download_cat_id'], 0);
 	}
 
