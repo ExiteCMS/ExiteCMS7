@@ -13,10 +13,13 @@
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
-require_once PATH_ROOT."/includes/theme_functions.php";
+require_once PATH_INCLUDES."theme_functions.php";
 
 // temp storage for template variables
 $variables = array();
+
+// load the DNS functions include
+include PATH_INCLUDES."dns_functions.php";
 
 // load the locates for this module
 include PATH_LOCALE.LOCALESET."members-profile.php";
@@ -69,7 +72,7 @@ if (isset($_POST['update_profile'])) {
 			} else {
 				$email = $_POST['user_email'];
 				$email_domain = substr(strrchr($email, "@"), 1);
-				if (getmxrr($email_domain, $mxhosts)) {
+				if (CMS_getmxrr($email_domain, $mxhosts)) {
 					// Get the hostname the MX record points to
 					$mailhost = $mxhosts[0];
 				} else {

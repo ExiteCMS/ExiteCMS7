@@ -1,5 +1,4 @@
-# /robots.txt file for http://www.pli-images.org/
-# mail webmaster@pli-images.org for constructive criticism
+# /robots.txt file
 
 User-agent: *
 Disallow: /files
