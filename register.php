@@ -133,7 +133,7 @@ if ($settings['enable_registration'] == 1) {
 		}
 
 		if ($settings['display_validation'] == "1") {
-			if (!check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) {
+			if (!isset($_POST['captcha_encode']) || !isset($_POST['captcha_code']) || !check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) {
 				$error .= $locale['410']."<br />\n";
 			}
 		}
