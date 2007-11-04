@@ -478,7 +478,7 @@ if (isset($_POST['preview'])) {
 			$preview['post_ip'] = $userdata['user_ip'];
 			$preview['group_names'] = array();
 			$preview['group_names'][] = array('type' => 'U', 'level' => $userdata['user_level'], 'name' => getuserlevel($userdata['user_level']));
-			if ($userdata['user_groups'] != "") {
+			if (!empty($userdata['user_groups'])) {
 				$gresult = dbquery("SELECT group_name, group_forumname, group_color FROM ".$db_prefix."user_groups WHERE group_id IN (".str_replace('.', ',', substr($userdata['user_groups'],1)).") AND group_visible & 2");
 				$grecs = dbrows($gresult);
 				while ($gdata = dbarray($gresult)) {
