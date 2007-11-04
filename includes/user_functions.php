@@ -135,20 +135,22 @@ if (isset($_COOKIE['userinfo'])) {
 }
 
 if (isset($userdata) && is_array($userdata)) {
-	// get the users own group memberships into an array
-	$groups = explode(".", substr($userdata['user_groups'], 1));
-	foreach ($groups as $group) {
-		// check if this groups has subgroups. If so, add them to the array
-		getsubgroups($group);
-	}
-	// create a new user_group field with all inherited groups, and
-	// get the inherited group rights and add them to the user own rights
-	$userdata['user_groups'] = "";
-	foreach ($groups as $group) {
-		$userdata['user_groups'] .= ".".$group;
-		$result = dbarray(dbquery("SELECT group_rights FROM ".$db_prefix."user_groups WHERE group_id = '".$group."'"));
-		if (isset($result['group_rights']) && $result['group_rights'] != "") {
-			$userdata['user_rights'] .= ($userdata['user_rights']==""?"":".").$result['group_rights'];
+	// if group memberships are defined, get the users own group memberships into an array
+	if (!empty($userdata['user_groups'])) {
+		$groups = explode(".", substr($userdata['user_groups'], 1));
+		foreach ($groups as $group) {
+			// check if this groups has subgroups. If so, add them to the array
+			getsubgroups($group);
+		}
+		// create a new user_group field with all inherited groups, and
+		// get the inherited group rights and add them to the user own rights
+		$userdata['user_groups'] = "";
+		foreach ($groups as $group) {
+			$userdata['user_groups'] .= ".".$group;
+			$result = dbarray(dbquery("SELECT group_rights FROM ".$db_prefix."user_groups WHERE group_id = '".$group."'"));
+			if (isset($result['group_rights']) && $result['group_rights'] != "") {
+				$userdata['user_rights'] .= ($userdata['user_rights']==""?"":".").$result['group_rights'];
+			}
 		}
 	}
 	// set the User level, Admin Rights & User Group definitions
