@@ -201,7 +201,7 @@ if (iMEMBER) {
 	$variables['rows'] = dbcount("(*)", "users", $orderby);
 	$variables['rowstart'] = $rowstart;
 	$variables['items_per_page'] = ITEMS_PER_PAGE;
-	$variables['pagenav_url'] = FUSION_SELF."?sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
+	$variables['pagenav_url'] = FUSION_SELF.$aidlink."&amp;sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
 }
 
 $variables['step'] = $step;
