@@ -137,8 +137,8 @@
 							{/if}
 						{/section}
 						<td class='tbl1'>
-							<input type='file' name='attach' class='textbox' style='width:200px;' />
 							<input type='submit' name='upload' value='{$locale.471}' class='button' />
+							<input type='file' name='attach' class='textbox' style='width:200px;' />
 							<br /><br />
 							<span class='small2'>{ssprintf format=$locale.466 var1=$attachmax var2=$attachtypes}</span>
 							<br /><br />
