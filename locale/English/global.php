@@ -151,10 +151,10 @@ $locale['151'] = "Return to Site";
 $locale['152'] = "Admin Panels";
 // Login 
 $locale['180'] = "Reason";
-$locale['181'] = "This ban wil expire on";
+$locale['181'] = "This suspension wil expire on";
 $locale['182'] = "<h1><br /><br /><br /></h1><center><b>We have detected that you have disabled Javascript.</b><br /><br />
 This website uses javascript to create an enhanced experience.<br />Some features might not work (correctly) if you <a href='%s'>continue</a>...</center>";
-$locale['183'] = "Please wait while we transfer you...";
+$locale['183'] = "Please wait while we redirect you...";
 $locale['184'] = "Or click here if you do not wish to wait";
 // Maintenance
 $locale['189'] = "The website administrator is performing a database update.<br />When this is finished, you will be returned to the homepage automatically.<br /><br />Thank you for your patience.";

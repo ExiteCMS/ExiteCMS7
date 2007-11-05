@@ -27,28 +27,33 @@ if (isset($_COOKIE['last_url'])) {
 	$variables['url'] = substr(strstr($_SERVER['HTTP_REFERER'], ":"), strlen($_SERVER['HTTP_HOST'])+3);
 }
 
+// array to store the lines of the setuser message
+$message = array();
+
+// make sure the error parameter has a value
+if (!isset($error) || !isNum($error)) $error = 0;
+
 if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 	header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 	setcookie("user", "", time() - 7200, "/", "", "0");
 	setcookie("userinfo", "", time() - 7200, "/", "", "0");
 	setcookie("lastvisit", "", time() - 7200, "/", "", "0");
 	$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_ip='".USER_IP."'");
-	if (isset($userdata['user_name'])) $message = "<b>".$locale['192'].$userdata['user_name']."</b><br /><br />\n";
-	$error = "";
+	if (isset($userdata['user_name'])) {
+		$message['line2'] =  "<b>".$locale['192'].$userdata['user_name']."</b>";
+	}
 } else {
-	if (!isset($error)) $error = "";
 	if ($error == 1) {
-		$error = "<b>".$locale['194']."</b><br /><br />\n";
+		$message['line1'] = "<b>".$locale['194']."</b>";
 		$data = dbarray(dbquery("SELECT user_ban_reason, user_ban_expire FROM ".$db_prefix."users WHERE user_id='$user_id'"));
 		if (is_array($data)) {
-			if ($data['user_ban_reason'] != "") $error .= "<b>".$locale['180']." : ".$data['user_ban_reason']."</b><br />\n";
-			if ($data['user_ban_expire'] > 0) $error .= "<b>".$locale['181']." ".showdate('forumdate', $data['user_ban_expire'])."</b><br />\n";
-			$error .= "<br / >";
+			if ($data['user_ban_reason'] != "") $message['line2'] = "<b>".$locale['180']." : ".$data['user_ban_reason']."</b>";
+			if ($data['user_ban_expire'] > 0) $message['line4']  = "<b>".$locale['181']." ".showdate('forumdate', $data['user_ban_expire'])."</b>";
 		}
 	} elseif ($error == 2) {
-		$error = "<b>".$locale['195']."</b><br /><br />\n";
+		$message['line2'] =  "<b>".$locale['195']."</b>";
 	} elseif ($error == 3) {
-		$error = "<b>".$locale['196']."</b><br /><br />\n";
+		$message['line2'] =  "<b>".$locale['196']."</b>";
 	} else {
 		if (isset($_COOKIE['userinfo'])) {
 			$cookie_vars = explode(".", $_COOKIE['userinfo']);
@@ -60,17 +65,20 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 					$variables['url'] = BASEDIR."edit_profile.php?check=email&value=".(90 - intval((time() - $data['user_bad_email']) / 86400));
 				}
 				$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");
-				$message = "<b>".$locale['193'].$user."</b><br /><br />\n";
+				$message['line2'] =  "<b>".$locale['193'].$user."</b>";
 			} else {
-				$message = "<b>".$locale['196']."</b><br /><br />\n";
+				$message['line2'] =  "<b>".$locale['196']."</b>";
 			}
 		}
 	}
 }
 
-$variables['message'] = isset($message)?$message:"";
+// store the message for use in the template
+$variables['message'] = $message;
+
+// auto-redirect counter (in seconds)
 $variables['error'] = $error;
-$variables['refresh'] = $error==""?1:10;
+$variables['refresh'] = $error==0 ? 1 : 10;
 
 // define the first body panel variables
 $template_panels[] = array('type' => 'body', 'name' => 'setuser', 'template' => 'main.setuser.tpl');

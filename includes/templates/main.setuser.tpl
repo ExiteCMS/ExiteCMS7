@@ -28,14 +28,21 @@
 		<div class='splashscreen-h'>
 			<div class='splashscreen-v'>
 				<center>
-				<br /><br />
+				<br />
 				{if $settings.sitebanner|default:"" != ""}
-					<img src='{$smarty.const.THEME}images/{$settings.sitebanner}' alt='{$settings.sitename}' width='400'/><br /><br />
+					<img src='{$smarty.const.THEME}images/{$settings.sitebanner}' alt='{$settings.sitename}' width='400'/>
+				{else}
+					<br /><br />
 				{/if}
-				{$message}
-				{$error}
+				<br /><br />
+				{$message.line1|default:""}<br />
+				{$message.line2|default:""}<br />
+				{$message.line3|default:""}<br />
+				{$message.line4|default:""}<br />
+				<br />
 				{$locale.183}
-				{if $error != ""}<br /><br />[ <a href='{$url}'>{$locale.184}</a> ]{/if}
+				<br />
+				{if $error != 0}[ <a href='{$url}'>{$locale.184}</a> ]{/if}
 				<br /><br />
 				</center>
 			</div>
