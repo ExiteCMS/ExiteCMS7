@@ -196,6 +196,7 @@ define("THEMES", BASEDIR."themes/");
 // extract server settings information
 if (isset($_SERVER['SERVER_SOFTWARE'])) {
 	// Common definitions - CGI mode
+	define("CMS_CLI", false);
 	$_SERVER['QUERY_STRING'] = isset($_SERVER['QUERY_STRING']) ? cleanurl($_SERVER['QUERY_STRING']) : "";
 	$_SERVER['REQUEST_URI'] = isset($_SERVER['REQUEST_URI']) ? cleanurl($_SERVER['REQUEST_URI']) : "";
 	$_SERVER['PHP_SELF'] = $_SERVER['PHP_SELF'];
@@ -207,6 +208,7 @@ if (isset($_SERVER['SERVER_SOFTWARE'])) {
 	define("FUSION_URL", $PHP_SELF);
 } else {
 	// Common definitions - CLI mode
+	define("CMS_CLI", true);
 	define("USER_IP", '0.0.0.0');
 }
 define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));

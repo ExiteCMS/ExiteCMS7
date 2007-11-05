@@ -37,12 +37,12 @@ $locale['233'] = "Miscellaneous Settings";
 $locale['234'] = "Private Message Options";
 $locale['235'] = "News Categories";
 $locale['236'] = "Language Settings";
+$locale['237'] = "Webmaster Toolbox for";
 // Website Statistics
 $locale['250'] = "Website Statistics";
 $locale['251'] = "Registered Members:";
 $locale['252'] = "Unactivated Members:";
-$locale['253'] = "Banned Members:";
-$locale['254'] = "x";
+$locale['253'] = "Suspended Members:";
 $locale['255'] = "x";
 $locale['256'] = "x";
 $locale['257'] = "Comments:";

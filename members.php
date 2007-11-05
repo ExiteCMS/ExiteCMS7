@@ -44,9 +44,9 @@ if (iMEMBER) {
 		}
 	} else {
 		if ($country == "") {
-			$filter .= " AND user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%'";
+			$filter .= " AND (user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%')";
 		} else {
-			$filter .= " AND user_cc_code = '".$country."' AND (user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%')";
+			$filter .= " AND (user_cc_code = '".$country."' AND (user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%'))";
 		}
 	}
 	// get the list of members

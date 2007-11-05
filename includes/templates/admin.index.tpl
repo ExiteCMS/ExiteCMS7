@@ -16,9 +16,11 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title="ExiteCMS v."|cat:$settings.version|cat:" &bull; "|cat:" SVN Revision "|cat:$settings.revision|cat:" &bull; "|cat:$locale.200|cat:" <b>"|cat:$settings.sitename|cat:"</b>"  state=$_state style=$_style}
+{assign var='cols' value='0'}
 <table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
 		{if $adminpage1|default:0 != 0}
+			{assign var='cols' value=$cols+1}
 			<td align='center' width='20%' class='{if $pagenum == 1}tbl1{else}tbl2{/if}'>
 				<span class='small'>
 				{if $pagenum == 1}<b>{$locale.ac01}</b>{else}<a href='index.php{$aidlink}&amp;pagenum=1'><b>{$locale.ac01}</b></a>{/if}
@@ -26,6 +28,7 @@
 			</td>
 		{/if}
 		{if $adminpage2|default:0 != 0}
+			{assign var='cols' value=$cols+1}
 			<td align='center' width='20%' class='{if $pagenum == 2}tbl1{else}tbl2{/if}'>
 				<span class='small'>
 				{if $pagenum == 2}<b>{$locale.ac02}</b>{else}<a href='index.php{$aidlink}&amp;pagenum=2'><b>{$locale.ac02}</b></a>{/if}
@@ -33,6 +36,7 @@
 			</td>
 		{/if}
 		{if $adminpage3|default:0 != 0}
+			{assign var='cols' value=$cols+1}
 			<td align='center' width='20%' class='{if $pagenum == 3}tbl1{else}tbl2{/if}'>
 				<span class='small'>
 				{if $pagenum == 3}<b>{$locale.ac03}</b>{else}<a href='index.php{$aidlink}&amp;pagenum=3'><b>{$locale.ac03}</b></a>{/if}
@@ -40,6 +44,7 @@
 			</td>
 		{/if}
 		{if $adminpage4|default:0 != 0}
+			{assign var='cols' value=$cols+1}
 			<td align='center' width='20%' class='{if $pagenum == 4}tbl1{else}tbl2{/if}'>
 				<span class='small'>
 				{if $pagenum == 4}<b>{$locale.ac04}</b>{else}<a href='index.php{$aidlink}&amp;pagenum=4'><b>{$locale.ac04}</b></a>{/if}
@@ -48,7 +53,7 @@
 		{/if}
 	</tr>
 	<tr>
-		<td colspan='4' class='tbl1'>
+		<td colspan='{$cols}' class='tbl1'>
 			{counter start=1 print=false assign='column'}
 			<table cellpadding='0' cellspacing='0' width='100%'>
 				{section name=link loop=$modules}
@@ -84,7 +89,7 @@
 		<td valign='top' width='33%' class='small'>
 			{$locale.251} {$statistics.members_registered}<br />
 			{$locale.252} {$statistics.members_unactive}<br />
-			{$locale.253} {$statistics.members_banned}<br />
+			{$locale.253} {$statistics.members_suspended}<br />
 		</td>
 		<td valign='top' width='33%' class='small'>
 			{$locale.259} {$statistics.posts}<br />

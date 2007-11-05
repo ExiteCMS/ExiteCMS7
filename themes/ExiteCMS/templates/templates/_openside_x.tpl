@@ -26,7 +26,7 @@
 				<tr>
 					<td class='sub-cap-main'>
 						<div style='display:inline; position:relative; float:right;margin-top:2px;'>
-							<img src='{$smarty.const.THEME}images/panel_{if $_state == 1}on{else}off{/if}.gif' name='b_{$_name}' onclick="javascript:flipBox('{$_name}')" />
+							<img src='{$smarty.const.THEME}images/panel_{if $_state == 1}on{else}off{/if}.gif' alt='' name='b_{$_name}' onclick="javascript:flipBox('{$_name}')" />
 						</div>
 						{$title|default:"&nbsp;"}
 					</td>

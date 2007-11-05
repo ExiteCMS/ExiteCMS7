@@ -261,6 +261,16 @@ function load_templates($_type='', $_name='') {
 				// we shouldn't get here
 			}
 		
+			//if this is a tools template...
+			$tpl_parts = explode(".", $panel['template']);
+			if ($tpl_parts[0] == "tools") {
+				// store the current template directories, we need to restore them later
+				$td = $template->template_dir;
+				$template->template_dir = array_merge(array(PATH_ADMIN.'tools/templates'), $template->template_dir);
+			} else {
+				// we shouldn't get here
+			}
+		
 			// if a template is defined, get the last modified date, and load the template
 			if (isset($panel['template'])) {
 				// get the timestamp of the template, and update the last update timestamp if newer
@@ -399,7 +409,7 @@ function theme_init() {
 +-----------------------------------------------------*/
 function theme_cleanup() {
 
-	global $db_prefix, $userdata, $_db_logs, $template;
+	global $db_prefix, $userdata, $_db_logs, $template, $settings;
 
 	// clean-up tasks, will be executed by all admins and super-admins
 	// WANWIZARD - 20070716 - THIS NEEDS TO BE MOVED TO A CRON JOB !!!
@@ -415,8 +425,10 @@ function theme_cleanup() {
 		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_datestamp < '".(time() - $day * 3)."'");
 		// unread posts indicators: set to 30 days
 		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE post_time < '".(time() - $day * 30)."'", false);
-		// deactivate accounts with a bad email address after 90 days
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_status = 1, user_ban_reason = '', user_ban_expire = '".time()."' WHERE user_bad_email > 0 AND user_bad_email < '".(time() - $day * 90)."'");
+		// deactivate accounts with a bad email address after 90 days (available since v7.0 rev.1060)
+		if ($settings['revision'] >= 1060) {
+			$result = dbquery("UPDATE ".$db_prefix."users SET user_status = 1, user_ban_reason = '', user_ban_expire = '".time()."' WHERE user_bad_email > 0 AND user_bad_email < '".(time() - $day * 90)."'");
+		}
 	}
 	
 	// close the database connection

@@ -88,7 +88,7 @@ $variables['statistics'] = array();
 
 $variables['statistics']['members_registered'] = dbcount("(user_id)", "users", "user_status<='1'");
 $variables['statistics']['members_unactive'] = dbcount("(user_id)", "users", "user_status='2'");
-$variables['statistics']['members_banned'] = dbcount("(user_id)", "users", "user_status='1'");
+$variables['statistics']['members_suspended'] = dbcount("(user_id)", "users", "user_status='1'");
 $variables['statistics']['messages_unread'] = dbcount("(post_id)", "posts_unread");
 $variables['statistics']['comments'] = dbcount("(comment_id)", "comments");
 $variables['statistics']['shouts'] = dbcount("(shout_id)", "shoutbox");
