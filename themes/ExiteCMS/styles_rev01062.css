@@ -32,10 +32,10 @@ form					{ margin:0px; }
 
 /* --- Website template ------------------------------------ */
 
-						/* page body (normal mode & maintenance mode */
+						/* page body (normal/user mode + maintenance/webmaster mode) */
 body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 20px 5px 20px; }
-.body 					{ color:#444; background-color:#fff; }
-.body-maint				{ color:#444; background-color:#999; }
+.body 					{ color:#444; background-color:#888; }
+.body-maint				{ color:#444; background-color:#AF575B; }
 
 						/* content body, can be different from the body when centered */
 .content				{ }
@@ -63,7 +63,7 @@ body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 20px 
 /* --- Browser window centered div ------------------------- */
 
 .splashscreen-h			{ font-size:0.8em; width:800px; position: absolute; top: 50%; left: 0px; width: 100%; margin-top: -150px; text-align: center; min-width: 900px; }
-.splashscreen-v			{ color:#444; background-color:#fff; border:1px solid #333; position: relative; text-align: left; width: 500px; height: 250px; margin: 0px auto; }
+.splashscreen-v			{ color:#444; background-color:#fff; border-left:3px solid #ccc; border-top:3px solid #ccc; border-right:3px solid #333; border-bottom:3px solid #333; position: relative; text-align: left; width: 500px; height: 250px; margin: 0px auto; }
 
 /* --- Header ---------------------------------------------- */
 
@@ -180,8 +180,3 @@ body.mceContentBody 	{ background-color:#fff; }
 /* ========================================================= */
 /* Add your own custom CSS tags below this line!             */
 /* ========================================================= */
-
-/* --- Google Maps ----------------------------------------- */
-
-#tooltip 				{ width: 200px; z-index: 99999;	}
-.tooltip 				{ font-weight:bold;padding: 2px;border:1px #036 solid;border-width:1px 2px 2px 1px;border-color: #000 #666 #666 #000;background-color:#FF9;color: #000;}
