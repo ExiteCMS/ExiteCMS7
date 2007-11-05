@@ -20,7 +20,7 @@
 	<head>
 		<title>{$settings.sitename}</title>
 		<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-		<meta http-equiv='refresh' content='{$refresh}; url=index.php' />
+		<meta http-equiv='refresh' content='{$refresh}; url={$url}' />
 		{include file='_stylesheets.tpl'}
 	</head>
 
@@ -35,7 +35,7 @@
 				{$message}
 				{$error}
 				{$locale.183}
-				{if $error != ""}<br /><br />[ <a href='/index.php'>{$locale.184}</a> ]{/if}
+				{if $error != ""}<br /><br />[ <a href='{$url}'>{$locale.184}</a> ]{/if}
 				<br /><br />
 				</center>
 			</div>

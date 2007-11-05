@@ -98,7 +98,7 @@ if ($step == "add") {
 	$variables['message'] = isset($message) ? $message : "";
 
 } elseif ($step == "unban") {
-	$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0' WHERE user_id='$user_id'");
+	$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_bad_email='0' WHERE user_id='$user_id'");
 	$message = $locale['431'];
 	$variables['message'] = isset($message) ? $message : "";
 } elseif ($step == "activate") {

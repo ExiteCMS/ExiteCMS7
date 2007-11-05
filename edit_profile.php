@@ -18,6 +18,9 @@ require_once PATH_INCLUDES."theme_functions.php";
 // temp storage for template variables
 $variables = array();
 
+// members only function
+if (!iMEMBER) fallback(BASEDIR."index.php");
+
 // load the DNS functions include
 include PATH_INCLUDES."dns_functions.php";
 
@@ -48,7 +51,7 @@ if (isset($_POST['update_profile'])) {
 	$result = dbquery("SELECT locale_code, locale_name FROM ".$db_prefix."locale WHERE locale_id = '".$_POST['user_locale']."'");
 	if ($data = dbarray($result)) {
 		if ($data['locale_name'] != $settings['locale']) {
-			die('setting locale cookie: '.$data['locale_code']);
+			die('TODO: setting locale cookie: '.$data['locale_code']);
 			setcookie("locale", $data['locale_code'], time() + 31536000, "/", "", "0");
 		}
 	}
@@ -185,7 +188,7 @@ if (isset($_POST['update_profile'])) {
 			}
 		}
 		if ($user_newpassword != "") { $newpass = " user_password=md5(md5('$user_newpassword')), "; } else { $newpass = " "; }
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig' WHERE user_id='".$this_userdata['user_id']."'");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_bad_email = '0', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig' WHERE user_id='".$this_userdata['user_id']."'");
 		if ($user_theme != $userdata['user_theme']) redirect(FUSION_SELF."?status=1");
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$this_userdata['user_id']."'");
 		if (dbrows($result) != 0) {
@@ -202,29 +205,48 @@ if (isset($_POST['update_profile'])) {
 	}
 }
 
-if (iMEMBER) {
-	if ($this_userdata['user_birthdate']!="0000-00-00") {
-		$user_birthdate = explode("-", $this_userdata['user_birthdate']);
-		$variables['user_day'] = number_format($user_birthdate['2']);
-		$variables['user_month'] = number_format($user_birthdate['1']);
-		$variables['user_year'] = $user_birthdate['0'];
-	} else {
-		$variables['user_day'] = 0; $variables['user_month'] = 0; $variables['user_year'] = 0;
+// called because of a profile setting check?
+if (isset($check)) {
+	switch ($check) {
+		case "email":
+			// define the search body panel variables
+			$check_message = sprintf($locale['491'], isset($value)?$value:"?").$locale['499'];
+			break;
 	}
-	if (!isset($this_userdata['user_fullname']) or empty($this_userdata['user_fullname'])) {
-	    $this_userdata['user_fullname'] = $this_userdata['user_name'];
+} else {
+	// any profile checks we want to do?
+	if ($this_userdata['user_bad_email']) {
+		$value = 90 - intval((time() - $this_userdata['user_bad_email']) / 86400);
+		$check_message = sprintf($locale['491'], isset($value)?$value:"?").$locale['499'];
 	}
-	// generate a list of available themes
-	$theme_files = makefilelist(PATH_THEMES, ".|..|.svn", true, "folders", $this_userdata['user_level'] >= 102);
-	array_unshift($theme_files, "Default");
- 	$variables['theme_files'] = $theme_files;
- 
-	// check if the user's avatar exists
-	if (!file_exists(PATH_IMAGES_AV.$this_userdata['user_avatar'])) $this_userdata['user_avatar'] = "imagenotfound.jpg";
-	$variables['avatar'] = array('size' => parsebytesize(30720), 'x' => 100, 'y' => 100);
-	$variables['timezone'] = sprintf($locale['u023'], "GMT ".(date('O')=="+0000"?"":date('O')));
-	$variables['serveroffset'] = substr(date('O'),0,1).(substr(date('O'),1)/100);
 }
+
+if (isset($check_message)) {
+	$template_panels[] = array('type' => 'body', 'name' => 'edit_profile_message', 'title' => $locale['424'], 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."members-profile.php");
+	$template_variables['edit_profile_message'] = array('message' => $check_message, 'bold' => true);
+}
+
+if ($this_userdata['user_birthdate']!="0000-00-00") {
+	$user_birthdate = explode("-", $this_userdata['user_birthdate']);
+	$variables['user_day'] = number_format($user_birthdate['2']);
+	$variables['user_month'] = number_format($user_birthdate['1']);
+	$variables['user_year'] = $user_birthdate['0'];
+} else {
+	$variables['user_day'] = 0; $variables['user_month'] = 0; $variables['user_year'] = 0;
+}
+if (!isset($this_userdata['user_fullname']) or empty($this_userdata['user_fullname'])) {
+    $this_userdata['user_fullname'] = $this_userdata['user_name'];
+}
+// generate a list of available themes
+$theme_files = makefilelist(PATH_THEMES, ".|..|.svn", true, "folders", $this_userdata['user_level'] >= 102);
+array_unshift($theme_files, "Default");
+$variables['theme_files'] = $theme_files;
+
+// check if the user's avatar exists
+if (!file_exists(PATH_IMAGES_AV.$this_userdata['user_avatar'])) $this_userdata['user_avatar'] = "imagenotfound.jpg";
+$variables['avatar'] = array('size' => parsebytesize(30720), 'x' => 100, 'y' => 100);
+$variables['timezone'] = sprintf($locale['u023'], "GMT ".(date('O')=="+0000"?"":date('O')));
+$variables['serveroffset'] = substr(date('O'),0,1).(substr(date('O'),1)/100);
 
 $variables['this_userdata'] = $this_userdata;
 

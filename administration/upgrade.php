@@ -34,6 +34,9 @@ foreach ($temp as $tempfile) {
 	}
 }
 
+// sort upgraded descending, to show the latest one first
+krsort($upgraded);
+
 // set a constant to define the upgrades available
 define('UPGRADES', count($upgrades));
 

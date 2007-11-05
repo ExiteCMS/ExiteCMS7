@@ -65,20 +65,28 @@
 				</div>
 				{if !$recipient_given}
 					<hr />
-					<select id='user_ids' name='user_ids' class='textbox'>
 					{section name=id loop=$user_list}
+						{if $smarty.section.id.first}
+						<select id='user_ids' name='user_ids' class='textbox'>
+						{/if}
 						<option value='{$user_list[id].user_id}'>{$user_list[id].user_name}</option>
-					{/section}
-					</select>
-					<input type='submit' name='select_user' value='{$locale.468}' class='button' onclick="AddUser();return false;" />
-					{if $allow_sendtoall}
-						&nbsp; - &nbsp;
-						<select id='group_ids' name='group_ids' class='textbox'>
-						{section name=id loop=$user_groups}
-							<option value='{$user_groups[id].0}'>{$user_groups[id].1}</option>
-						{/section}
+						{if $smarty.section.id.last}
 						</select>
-						<input type='submit' name='select_group' value='{$locale.469}' class='button' onclick="AddGroup();return false;" />
+						<input type='submit' name='select_user' value='{$locale.468}' class='button' onclick="AddUser();return false;" />
+						{if $allow_sendtoall}&nbsp; - &nbsp;{/if}
+						{/if}
+					{/section}
+					{if $allow_sendtoall}
+						{section name=id loop=$user_groups}
+							{if $smarty.section.id.first}
+							<select id='group_ids' name='group_ids' class='textbox'>
+							{/if}
+							<option value='{$user_groups[id].0}'>{$user_groups[id].1}</option>
+							{if $smarty.section.id.last}
+							</select>
+							<input type='submit' name='select_group' value='{$locale.469}' class='button' onclick="AddGroup();return false;" />
+							{/if}
+						{/section}
 					{/if}
 				{/if}
 			</td>
@@ -189,13 +197,14 @@
 			{/section}
 			<td class='tbl1'>
 				<input type='file' name='attach' class='textbox' style='width:200px;' />
-				<input type='submit' name='upload' value='{$locale.473}' class='button' />
 				<br /><br />
 				<span class='small2'>{ssprintf format=$locale.472 var1=$attachmax var2=$attachtypes}</span>
 				<br /><br />
 				{$locale.471}
 				<br />
 				<textarea name='attach_comment' cols='50' rows='2' class='textbox'>{$comments}</textarea>
+				<br />
+				<input type='submit' name='upload' value='{$locale.473}' class='button' />
 			</td>
 		</tr>
 		{/if}

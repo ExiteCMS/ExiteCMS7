@@ -42,11 +42,12 @@ if (isset($_POST['login'])) {
 	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
 	if (dbrows($result) != 0) {
 		$data = dbarray($result);
-		$cookie_value = $data['user_id'].".".$user_pass;
 		// if the account is suspended, check for an expiry date
 		if ($data['user_status'] == 1 && $data['user_ban_expire'] > 0 && $data['user_ban_expire'] < time() ) {
+			// if this user's email address is marked as bad, reset the countdown counter
+			$data['user_bad_email'] = $data['user_bad_email'] == 0 ? 0 : time();
 			// reset the user status and the expiry date
-			$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0' WHERE user_id='".$data['user_id']."'");
+			$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0', user_bad_email = '".$data['user_bad_email']."' WHERE user_id='".$data['user_id']."'");
 			$data['user_status'] = 0;
 		}
 		if ($data['user_status'] == 0) {	
@@ -60,6 +61,7 @@ if (isset($_POST['login'])) {
 			}
 			// HV - end of code change
 			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
+			$cookie_value = $data['user_id'].".".$user_pass;
 			setcookie("userinfo", $cookie_value, $cookie_exp, "/", "", "0");
 			redirect(BASEDIR."setuser.php?user=".$data['user_name'], "script");
 			exit;

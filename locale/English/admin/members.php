@@ -16,8 +16,8 @@ $locale['411'] = "%u member";
 $locale['412'] = "%u members";
 // Options
 $locale['415'] = "Edit this user's profile";
-$locale['416'] = "UnBan this user";
-$locale['417'] = "Ban this user";
+$locale['416'] = "Activate this account";
+$locale['417'] = "Ban this member";
 $locale['418'] = "Delete this user";
 $locale['419'] = "Activate the account";
 // User Profile
@@ -26,7 +26,7 @@ $locale['422'] = "Statistics";
 $locale['423'] = "User Groups";
 // Ban/Unban/Delete Member
 $locale['430'] = "Ban Imposed";
-$locale['431'] = "Ban Removed";
+$locale['431'] = "Account Reactivated";
 $locale['432'] = "Member Deleted";
 $locale['433'] = "Are you sure you wish to delete this member?";
 $locale['434'] = "Member Activated";

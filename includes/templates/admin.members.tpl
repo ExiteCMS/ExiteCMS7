@@ -178,7 +178,7 @@
 	{else}
 		{section name=id loop=$members}
 			{if $smarty.section.id.first}
-			<table align='center' cellpadding='0' cellspacing='1' width='700' class='tbl-border'>
+			<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
 				<tr>
 					<td class='tbl2'>
 						<div style='float:right;'><a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=add'><img src='{$smarty.const.THEME}images/page_add.gif' alt='{$locale.403}' title='{$locale.403}' /></a></div>

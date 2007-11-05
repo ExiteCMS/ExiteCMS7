@@ -414,7 +414,9 @@ function theme_cleanup() {
 		// new registered users: set to 3 days
 		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_datestamp < '".(time() - $day * 3)."'");
 		// unread posts indicators: set to 30 days
-		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE post_time < ".(time() - $day * 30), false);
+		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE post_time < '".(time() - $day * 30)."'", false);
+		// deactivate accounts with a bad email address after 90 days
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_status = 1, user_ban_reason = '', user_ban_expire = '".time()."' WHERE user_bad_email > 0 AND user_bad_email < '".(time() - $day * 90)."'");
 	}
 	
 	// close the database connection
@@ -427,6 +429,9 @@ function theme_cleanup() {
 	}
 
 	echo "</body>\n</html>\n";
+
+	// store the current URL in a cookie. We might need to redirect to it later
+	setcookie('last_url', FUSION_REQUEST, 0, '/');
 	
 	// and flush any output remaining
 	ob_end_flush();

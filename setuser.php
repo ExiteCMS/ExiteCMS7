@@ -18,6 +18,15 @@ require_once dirname(__FILE__)."/includes/theme_functions.php";
 // temp storage for template variables
 $variables = array();
 
+// set the redirect url (set in theme_cleanup)
+if (isset($_COOKIE['last_url'])) {
+	$variables['url'] = $_COOKIE['last_url'];
+} elseif (empty($_SERVER['HTTP_REFERER'])) {
+	$variables['url'] = BASEDIR."index.php";
+} else {
+	$variables['url'] = substr(strstr($_SERVER['HTTP_REFERER'], ":"), strlen($_SERVER['HTTP_HOST'])+3);
+}
+
 if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 	header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 	setcookie("user", "", time() - 7200, "/", "", "0");
@@ -45,11 +54,15 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 			$cookie_vars = explode(".", $_COOKIE['userinfo']);
 			$user_pass = (preg_match("/^[0-9a-z]{32}$/", $cookie_vars['1']) ? $cookie_vars['1'] : "");
 			$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($user));
-			if (!dbcount("(user_id)", "users", "user_name='$user_name' AND user_password='".$user_pass."'")) {
-				$message = "<b>".$locale['196']."</b><br /><br />\n";
-			} else {
+			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='".$user_name."' AND user_password='".$user_pass."'");
+			if ($data = dbarray($result)) {
+				if ($data['user_bad_email'] != 0) {
+					$variables['url'] = BASEDIR."edit_profile.php?check=email&value=".(90 - intval((time() - $data['user_bad_email']) / 86400));
+				}
 				$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");
 				$message = "<b>".$locale['193'].$user."</b><br /><br />\n";
+			} else {
+				$message = "<b>".$locale['196']."</b><br /><br />\n";
 			}
 		}
 	}

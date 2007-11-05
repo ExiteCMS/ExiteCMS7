@@ -20,7 +20,11 @@
 		<td colspan='3'>
 			<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 				<tr>
-					<td class='tbl2'><b>{$data.user_name}</b></td>
+					<td class='tbl2'>
+						<b>{$data.user_name}</b>
+						{if $data.user_status == 1} <span class='small'>({$locale.425})</span>{/if}
+						{if $data.user_status == 2} <span class='small'>({$locale.426})</span>{/if}
+					</td>
 					<td align='right' class='tbl2'>{$data.user_level}</td>
 				</tr>
 			</table>

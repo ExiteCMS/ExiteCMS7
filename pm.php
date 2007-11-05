@@ -902,9 +902,9 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	// if it's a post or a forward, prepare a list for the dropdown
 	if ($action == "post" || $action == "forward") {
 		$variables['user_list'] = array();
-		$result = dbquery("SELECT u.user_id, u.user_name FROM ".$db_prefix."users u ORDER BY user_level DESC, user_name ASC");
+		$result = dbquery("SELECT u.user_id, u.user_name FROM ".$db_prefix."users u WHERE user_status = 0 ORDER BY user_level DESC, user_name ASC");
 		while ($data = dbarray($result)) {
-			// only other users (can send a PM to yourself), skip the user_id passed to us (from a PM button p.e.)
+			// only other users (can't send a PM to yourself), skip the user_id passed to us (from a PM button p.e.)
 			if ($data['user_id'] != $userdata['user_id'] && $data['user_id'] != $user_id) {
 				$variables['user_list'][] = $data;
 			}

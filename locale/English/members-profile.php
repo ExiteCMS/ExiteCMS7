@@ -18,6 +18,9 @@ $locale['412'] = "%u members";
 $locale['420'] = "Member Profile";
 $locale['422'] = "Statistics";
 $locale['423'] = "User Groups";
+$locale['424'] = "Profile Error";
+$locale['425'] = "Account Deactivated";
+$locale['426'] = "Account Suspended";
 // Edit Profile
 $locale['440'] = "Edit Profile";
 $locale['441'] = "Profile successfully updated";
@@ -40,4 +43,6 @@ $locale['487'] = "<b>Warning:</b> unexpected script execution.";
 $locale['488'] = "No mailserver found for domain %s.";
 $locale['489'] = "Mailserver for domain %s doesn't accept email messages.";
 $locale['490'] = "Email address %s does not exist<br>(according to the mailserver %s).";
+$locale['491'] = "We have detected that your email address is no longer valid.<br />Your accounts will be deactivated in %s days.";
+$locale['499'] = "<br /><br />Please update your profile now.";
 ?>

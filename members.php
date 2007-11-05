@@ -37,23 +37,22 @@ $variables['country'] = $country;
 $rows = 0;
 if (iMEMBER) {
 	// create the where clause
+	$filter = "user_status = 0";	// only show activated accounts
 	if ($sortby == "all") {
-		if ($country == "") {
-			$orderby = "";
-		} else {
-			$orderby = " user_cc_code = '".$country."'";
+		if ($country != "") {
+			$filter .= " AND user_cc_code = '".$country."'";
 		}
 	} else {
 		if ($country == "") {
-			$orderby = " user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%'";
+			$filter .= " AND user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%'";
 		} else {
-			$orderby = " user_cc_code = '".$country."' AND (user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%')";
+			$filter .= " AND user_cc_code = '".$country."' AND (user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%')";
 		}
 	}
 	// get the list of members
 	$variables['members'] = array();
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
-	$result = dbquery("SELECT * FROM ".$db_prefix."users".($orderby==""?"":" WHERE").$orderby." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".ITEMS_PER_PAGE);
+	$result = dbquery("SELECT * FROM ".$db_prefix."users ".($filter==""?"":("WHERE ".$filter))." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".ITEMS_PER_PAGE);
 	$rows = dbrows($result);
 	$variables['members'] = array();
 	if ($rows != 0) {
@@ -92,7 +91,7 @@ if (iMEMBER) {
 	}
 	if (count($variables['search'])%2) $variables['search'][] = "";
 	$variables['sortby'] = $sortby;
-	$variables['rows'] = dbcount("(*)", "users", $orderby);
+	$variables['rows'] = dbcount("(*)", "users", $filter);
 	$variables['rowstart'] = $rowstart;
 	$variables['items_per_page'] = ITEMS_PER_PAGE;
 	$variables['pagenav_url'] = FUSION_SELF."?sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
