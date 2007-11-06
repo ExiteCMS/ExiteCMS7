@@ -77,16 +77,16 @@ function locale_load($locale_name) {
 	if (dbtable_exists($db_prefix."locales")) {
 
 		// get the last update date from the locale strings table
-		$result = dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix." WHERE locales_locale = '".$settings['locale']."' AND locales_name = '".$locale_name."'");
+		$data = dbarray(dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix."locales WHERE locales_locale = '".$settings['locale']."' AND locales_name = '".$locale_name."'"));
 
 		// if found...
-		if ($data = dbarray($result)) {
+		if ($data['last_update']) {
 
 			// if the locales cache does not exist or is out of date...
 			if (!file_exists($locales_file) || filemtime($locales_file) < $data['last_update']) {
 
 				// compile the locales cache file from the locales table
-				if ($handle = fopen($locales_file, 'w')) {
+				if ($handle = @fopen($locales_file, 'w')) {
 
 					// get the locale records for the selected locale and this locale_name
 					$result = dbquery("SELECT * FROM ".$db_prefix." WHERE locales_locale = '".$settings['locale']."' AND locales_name = '".$locale_name."' ORDER BY locales_key");
