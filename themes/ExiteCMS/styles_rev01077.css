@@ -24,7 +24,7 @@ hr						{ border:none; color:#bbb; background-color:#bbb; height:1px; }
 form					{ margin:0px; }
 
 						/* buttons */
-.button					{ font-size:90%; font-weight:normal; font-family:"trebuchet ms", Tahoma, Arial, Verdana, Sans-Serif; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:0; padding:0 1px 0 1px; }
+.button					{ font-size:90%; font-weight:normal; font-family:"trebuchet ms", Tahoma, Arial, Verdana, Sans-Serif; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
 .button:hover			{ color:#666; background-color:#ddd; border-top:1px #999 solid; border-left:1px #999 solid; border-bottom:1px #fff solid; border-right:1px #fff solid; }
 
 						/* text entry fields */
@@ -34,8 +34,8 @@ form					{ margin:0px; }
 
 						/* page body (normal/user mode + maintenance/webmaster mode) */
 body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 20px 5px 20px; }
-.body 					{ color:#444; background-color:#888; }
-.body-maint				{ color:#444; background-color:#AF575B; }
+.body 					{ color:#444; background-color:#aaa; }
+.body-maint				{ color:#444; background-color:#cf5a6a; }
 
 						/* content body, can be different from the body when centered */
 .content				{ }

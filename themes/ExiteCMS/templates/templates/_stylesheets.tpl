@@ -14,7 +14,7 @@
 {* Include template for the website stylesheets, Only define them here!    *}
 {*                                                                         *}
 {***************************************************************************}
-<link rel='stylesheet' href='{$smarty.const.THEME}styles_rev01062.css' type='text/css' />
+<link rel='stylesheet' href='{$smarty.const.THEME}styles_rev01077.css' type='text/css' />
 {***************************************************************************}
 {* End of Template                                                         *}
 {***************************************************************************}
