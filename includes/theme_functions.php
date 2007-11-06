@@ -225,7 +225,7 @@ function load_templates($_type='', $_name='') {
 			$template->assign('_state', isset($panel['state'])?$panel['state']:"");
 
 			// if one or more locales are assigned to this panel, load them first
-			if (isset($panel['locale']) {
+			if (isset($panel['locale'])) {
 				if (is_array($panel['locale'])) {
 					foreach($panel['locale'] as $panel_locale) {
 						locale_load($panel_locale);

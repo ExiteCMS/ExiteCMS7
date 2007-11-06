@@ -68,13 +68,13 @@ locale_load("main.global");
 +----------------------------------------------------*/
 function locale_load($locale_name) {
 
-	global $settings, $locale;
+	global $settings, $locale, $db_prefix;
 
 	// assemble the locale filename
-	$locales_file = PATH_ROOT."files/locales/".$locale['locale'].".".$locale_name.".php";
+	$locales_file = PATH_ROOT."files/locales/".$settings['locale'].".".$locale_name.".php";
 
 	// check if we need to recompile from the database
-	if (dbtable_exists($prefix."locales")) {
+	if (dbtable_exists($db_prefix."locales")) {
 
 		// get the last update date from the locale strings table
 		$result = dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix." WHERE locales_locale = '".$settings['locale']."' AND locales_name = '".$locale_name."'");
