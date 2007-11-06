@@ -5,6 +5,7 @@ Produced by Nick Jones (Digitanium)
 Email: digitanium@php-fusion.co.uk
 Web: http://www.php-fusion.co.uk
 */
+
 // Locale Settings
 setlocale(LC_TIME, "en_GB", "en","GB"); // Linux Server (Windows may differ)
 $locale['country'] = "GB";
@@ -157,7 +158,7 @@ This website uses javascript to create an enhanced experience.<br />Some feature
 $locale['183'] = "Please wait while we redirect you...";
 $locale['184'] = "Or click here if you do not wish to wait";
 // Maintenance
-$locale['189'] = "The website administrator is performing a database update.<br />When this is finished, you will be returned to the homepage automatically.<br /><br />Thank you for your patience.";
+$locale['189'] = "<b>This website is currently under maintenance.</b><br />When finished we will redirect you back to the homepage.<br />Thank you for your patience.";
 $locale['190'] = "Maintenance Mode Activated";
 // Miscellaneous
 $locale['191'] = "Your IP address is currently blacklisted.";
