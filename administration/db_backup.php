@@ -51,7 +51,7 @@ if (isset($_POST['btn_create_backup'])) {
 				$variables['error'] = 1;
 			} else {
 				gzwrite($fp, "#----------------------------------------------------------".$crlf);
-				gzwrite($fp, "# PHP-Fusion SQL Data Dump".$crlf);
+				gzwrite($fp, "# ExiteCMS SQL Data Dump".$crlf);
 				gzwrite($fp, "# Database Name: `".$db_name."`".$crlf);
 				gzwrite($fp, "# Table Prefix: `".$db_prefix."`".$crlf);
 				gzwrite($fp, "# Date: `".date("d/m/Y H:i")."`".$crlf);
