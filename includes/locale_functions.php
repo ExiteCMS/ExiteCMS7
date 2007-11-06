@@ -149,7 +149,7 @@ function locale_load($locale_name) {
 	if (!empty($locales_file)) {
 		if (file_exists($locales_file)) {
 			// and it exists, load it
-			require_once $locales_file;
+			require $locales_file;
 		} else {
 			// otherwise, if the locale is not English, try to load the English version
 			if ($settings['locale'] != "English") {
