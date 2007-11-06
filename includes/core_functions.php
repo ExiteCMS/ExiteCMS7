@@ -67,7 +67,6 @@ ob_start();
 define("PATH_ROOT", realpath(dirname(__FILE__).'/../').'/');
 define("PATH_ADMIN", PATH_ROOT."administration/");
 define("PATH_THEMES", PATH_ROOT."themes/");
-define("PATH_LOCALE", PATH_ROOT."locale/");
 define("PATH_PHOTOS", PATH_ROOT."images/photoalbum/");
 define("PATH_IMAGES", PATH_ROOT."images/");
 define("PATH_IMAGES_A", PATH_IMAGES."articles/");
@@ -129,52 +128,8 @@ define ("BASEDIR", $settings['siteurl']);
 // and make the siteurl fully qualified using the current server host info
 $settings['siteurl'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on") ? "https://" : "http://").$_SERVER['HTTP_HOST'].$settings['siteurl'];
 
-// locale detection - step 1 - check if there's a locale cookie set
-if (isset($_COOKIE['locale'])) {
-	// check if we (still) support this language. If so, update the locale setting
-	$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$_COOKIE['locale']."' AND locale_active = '1'");
-	if ($data = dbarray($result)) {
-		$settings['locale'] = $data['locale_name'];
-		define("LOCALESET", $settings['locale']."/");
-	}
-}
-
-// locale detection - step 2 - check the browsers accepted languages
-if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-	// check which languages are supported by the users browser
-	$temp = explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-	foreach($temp as $lng) {
-		$thislng = explode(";", $lng);
-		// check if we support this language
-		$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$thislng[0]."' AND locale_active = '1'");
-		if ($data = dbarray($result)) {
-			// if so, set the locale
-			$settings['locale'] = $data['locale_name'];
-			define("LOCALESET", $settings['locale']."/");
-			break;
-		}
-	}
-	// if not found, loop again on languages only
-	if (!defined('LOCALESET')) {
-		foreach($temp as $lng) {
-			$thislng = explode(";", $lng);
-			$thislng = explode("-", $thislng[0]);
-			// check if we support this language
-			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$thislng[0]."' AND locale_active = '1'");
-			if ($data = dbarray($result)) {
-				// if so, set the locale
-				$settings['locale'] = $data['locale_name'];
-				define("LOCALESET", $settings['locale']."/");
-				break;
-			}
-		}
-	}
-}
-
-// locale detection - step 3 - use the website's default
-if (!defined('LOCALESET')) {
-	define("LOCALESET", $settings['locale']."/");
-}
+// include the locale functions
+require_once PATH_INCLUDES."locale_functions.php";
 
 // URL path definitions relative to BASEDIR
 define("ADMIN", BASEDIR."administration/");
@@ -216,12 +171,6 @@ define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
 // Browser window dimensions (assume 1024x768 if no cookies found)
 define("BROWSER_WIDTH", isset($_COOKIE['width']) ? $_COOKIE['width'] : 1024);
 define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
-
-// Initialise the $locale array
-$locale = array();
-
-// Load the global language file
-include PATH_LOCALE.LOCALESET."global.php";
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
