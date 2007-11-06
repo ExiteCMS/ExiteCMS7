@@ -19,7 +19,7 @@ require_once dirname(__FILE__)."/includes/theme_functions.php";
 $variables = array();
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."print.php";
+locale_load("main.print");
 
 if (!isset($item_id) || !isNum($item_id)) fallback("index.php");
 
@@ -55,7 +55,7 @@ if (isset($data)) $variables['data'] = $data;
 $variables['type'] = $type;
 
 // define the first body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'print', 'template' => 'main.print.tpl', 'locale' => PATH_LOCALE.LOCALESET."print.php");
+$template_panels[] = array('type' => 'body', 'name' => 'print', 'template' => 'main.print.tpl', 'locale' => "main.print");
 $template_variables['print'] = $variables;
 
 load_templates('body', '');

@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/news-articles.php";
+locale_load("admin.news-articles");
 
 // temp storage for template variables
 $variables = array();
@@ -38,7 +38,7 @@ if (isset($action) && $action == "delete") {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.news_cats.delete', 'title' => $locale['430'], 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.news_cats.delete', 'title' => $locale['430'], 'template' => '_message_table_panel.tpl', 'locale' => "admin.news-articles");
 	$template_variables['admin.news_cats.delete'] = $variables;
 	$variables = array();
 }
@@ -83,7 +83,7 @@ while ($data = dbarray($result)) {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.news_cats', 'title' => $title, 'template' => 'admin.news_cats.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.news_cats', 'title' => $title, 'template' => 'admin.news_cats.tpl', 'locale' => "admin.news-articles");
 $template_variables['admin.news_cats'] = $variables;
 
 // Call the theme code to generate the output for this webpage

@@ -13,7 +13,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/redirects.php";
+locale_load("admin.redirects");
 
 // temp storage for template variables
 $variables = array();
@@ -167,7 +167,7 @@ while ($data = dbarray($result)) {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.redirects', 'title' => $title, 'template' => 'admin.redirects.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/redirects.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.redirects', 'title' => $title, 'template' => 'admin.redirects.tpl', 'locale' => "admin.redirects");
 $template_variables['admin.redirects'] = $variables;
 
 // Call the theme code to generate the output for this webpage

@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/faq.php";
+locale_load("admin.faq");
 
 // temp storage for template variables
 $variables = array();
@@ -43,7 +43,7 @@ if (isset($status)) {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.faq.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/faq.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.faq.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.faq");
 	$template_variables['admin.faq.status'] = $variables;
 	$variables = array();
 }
@@ -174,7 +174,7 @@ while ($data = dbarray($result)) {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.faq', 'template' => 'admin.faq.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/faq.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.faq', 'template' => 'admin.faq.tpl', 'locale' => "admin.faq");
 $template_variables['admin.faq'] = $variables;
 
 // Call the theme code to generate the output for this webpage

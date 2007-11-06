@@ -25,8 +25,8 @@ define('FULL_SCREEN', (iMEMBER && $userdata['user_forum_fullscreen']));
 $variables = array();
 
 // load the locales for this forum module
-require_once PATH_LOCALE.LOCALESET."forum/main.php";
-require_once PATH_LOCALE.LOCALESET."admin/forum_polls.php";
+locale_load("forum.main");
+locale_load("admin.forum_polls");
 
 // needed for localisation functions
 require_once PATH_INCLUDES."geoip_include.php";
@@ -180,7 +180,7 @@ $variables['forum_id'] = $forum_id;
 $variables['pagenav_url'] = FUSION_SELF."?forum_id=".$forum_id."&amp;";
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'forum.viewforum', 'template' => 'forum.viewforum.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."forum/main.php",PATH_LOCALE.LOCALESET."admin/forum_polls.php"));
+$template_panels[] = array('type' => 'body', 'name' => 'forum.viewforum', 'template' => 'forum.viewforum.tpl', 'locale' => array("forum.main","admin.forum_polls"));
 $template_variables['forum.viewforum'] = $variables;
 
 // Call the theme code to generate the output for this webpage

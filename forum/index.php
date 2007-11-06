@@ -22,7 +22,7 @@ define('FULL_SCREEN', (iMEMBER && $userdata['user_forum_fullscreen']));
 $variables = array();
 
 // load the locale for this forum module
-include PATH_LOCALE.LOCALESET."forum/main.php";
+locale_load("forum.main");
 
 // load the advertisement include module and get an ad for this forum page
 if (file_exists(PATH_MODULES."advertising/get_ad.php")) {
@@ -87,7 +87,7 @@ while ($data = dbarray($result)) {
 }
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'forum.index', 'template' => 'forum.index.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/main.php");
+$template_panels[] = array('type' => 'body', 'name' => 'forum.index', 'template' => 'forum.index.tpl', 'locale' => "forum.main");
 $template_variables['forum.index'] = $variables;
 
 // Call the theme code to generate the output for this webpage

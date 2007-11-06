@@ -25,8 +25,8 @@ if (!iMEMBER) fallback(BASEDIR."index.php");
 include PATH_INCLUDES."dns_functions.php";
 
 // load the locates for this module
-include PATH_LOCALE.LOCALESET."members-profile.php";
-include PATH_LOCALE.LOCALESET."user_fields.php";
+locale_load("main.members-profile");
+locale_load("main.user_fields");
 
 // admin function check
 if (isset($user_id)) {
@@ -222,7 +222,7 @@ if (isset($check)) {
 }
 
 if (isset($check_message)) {
-	$template_panels[] = array('type' => 'body', 'name' => 'edit_profile_message', 'title' => $locale['424'], 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."members-profile.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'edit_profile_message', 'title' => $locale['424'], 'template' => '_message_table_panel.tpl', 'locale' => "main.members-profile");
 	$template_variables['edit_profile_message'] = array('message' => $check_message, 'bold' => true);
 }
 
@@ -258,7 +258,7 @@ while ($data = dbarray($result)) {
 }
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."members-profile.php", PATH_LOCALE.LOCALESET."user_fields.php"));
+$template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array("main.members-profile", "main.user_fields"));
 $template_variables['edit_profile'] = $variables;
 
 // Call the theme code to generate the output for this webpage

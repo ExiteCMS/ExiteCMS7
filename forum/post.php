@@ -44,8 +44,8 @@ define('FULL_SCREEN', (iMEMBER && $userdata['user_forum_fullscreen']));
 $variables = array();
 
 // load the locales for this forum module
-include PATH_LOCALE.LOCALESET."forum/main.php";
-include PATH_LOCALE.LOCALESET."forum/post.php";
+locale_load("forum.main");
+locale_load("forum.post");
 
 // shared forum functions includes
 require_once PATH_INCLUDES."forum_functions_include.php";
@@ -892,7 +892,7 @@ if (isset($_POST["cancel"])) {
 		$variables['stage'] = 2;
 
 		// define the panel
-		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.2', 'template' => 'forum.post.move.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."forum/main.php", PATH_LOCALE.LOCALESET."forum/post.php"));
+		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.2', 'template' => 'forum.post.move.tpl', 'locale' => array("forum.main", "forum.post"));
 		$template_variables['forum.movepost.2'] = $variables;
 
 	} else {				
@@ -929,7 +929,7 @@ if (isset($_POST["cancel"])) {
 		}
 
 		// define the panel
-		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.1', 'template' => 'forum.post.move.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."forum/main.php", PATH_LOCALE.LOCALESET."forum/post.php"));
+		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.1', 'template' => 'forum.post.move.tpl', 'locale' => array("forum.main", "forum.post"));
 		$template_variables['forum.movepost.1'] = $variables;
 	}	
 } elseif (isset($_POST["renew_post"])) {
@@ -1080,7 +1080,7 @@ if (isset($_POST["cancel"])) {
 			$variables['attachmax'] = parsebytesize($settings['attachmax']);
 			$variables['attachtypes'] = str_replace(',', ' ', $settings['attachtypes']);
 			// define the panel
-			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."forum/main.php", PATH_LOCALE.LOCALESET."forum/post.php", PATH_LOCALE.LOCALESET."admin/forum_polls.php"));
+			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array("forum.main", "forum.post", "admin.forum_polls"));
 			$template_variables['forum.post'] = $variables;
 			break;
 	

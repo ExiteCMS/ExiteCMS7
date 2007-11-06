@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/news-articles.php";
+locale_load("admin.news-articles");
 
 // temp storage for template variables
 $variables = array();
@@ -319,7 +319,7 @@ if ($variables['latest_news_selection']) {
 }
 
 // store the info to generate the panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.news', 'title' => $title, 'template' => 'admin.news.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.news', 'title' => $title, 'template' => 'admin.news.tpl', 'locale' => "admin.news-articles");
 $template_variables['admin.news'] = $variables;
 
 require_once PATH_THEME."/theme.php";

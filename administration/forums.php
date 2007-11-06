@@ -16,8 +16,8 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locales for this module
-include PATH_LOCALE.LOCALESET."admin/forums.php";
-include PATH_LOCALE.LOCALESET."admin/forum_polls.php";
+locale_load("admin.forums");
+locale_load("admin.forum_polls");
 
 // temp storage for template variables
 $variables = array();
@@ -115,7 +115,7 @@ if (isset($status)) {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.forums.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/forums.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.forums.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.forums");
 	$template_variables['admin.forums.status'] = $variables;
 	$variables = array();
 }	
@@ -550,7 +550,7 @@ if (isset($forum_id)) {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.forums', 'template' => 'admin.forums.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."admin/forums.php",PATH_LOCALE.LOCALESET."admin/forum_polls.php"));
+$template_panels[] = array('type' => 'body', 'name' => 'admin.forums', 'template' => 'admin.forums.tpl', 'locale' => array("admin.forums","admin.forum_polls"));
 $template_variables['admin.forums'] = $variables;
 
 // Call the theme code to generate the output for this webpage

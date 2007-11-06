@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."custom_pages.php";
+locale_load("main.custom_pages");
 
 // temp storage for template variables
 $variables = array();
@@ -46,7 +46,7 @@ $variables['content'] = $content;
 $variables['custompage'] = $custompage;
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'viewpage', 'title' => $title, 'template' => 'main.viewpage.tpl', 'locale' => PATH_LOCALE.LOCALESET."custom_pages.php");
+$template_panels[] = array('type' => 'body', 'name' => 'viewpage', 'title' => $title, 'template' => 'main.viewpage.tpl', 'locale' => "main.custom_pages");
 $template_variables['viewpage'] = $variables;
 
 if (dbrows($result) && checkgroup($data['page_access'])) {

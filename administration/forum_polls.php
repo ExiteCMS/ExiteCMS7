@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/forum_polls.php";
+locale_load("admin.forum_polls");
 
 // temp storage for template variables
 $variables = array();
@@ -257,7 +257,7 @@ if ($edit_forum != "") {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.forum_polls', 'template' => 'admin.forum_polls.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/forum_polls.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.forum_polls', 'template' => 'admin.forum_polls.tpl', 'locale' => "admin.forum_polls");
 $template_variables['admin.forum_polls'] = $variables;
 
 // Call the theme code to generate the output for this webpage

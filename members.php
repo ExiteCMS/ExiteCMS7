@@ -19,7 +19,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 $variables = array();
 
 //load the locale for this module
-require_once PATH_LOCALE.LOCALESET."members-profile.php";
+locale_load("main.members-profile");
 
 // load the GeoIP include module
 require_once PATH_INCLUDES."geoip_include.php";
@@ -97,7 +97,7 @@ if (iMEMBER) {
 	$variables['pagenav_url'] = FUSION_SELF."?sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
 }
 
-$template_panels[] = array('type' => 'body', 'name' => 'members', 'template' => 'main.members.tpl', 'locale' => PATH_LOCALE.LOCALESET."members-profile.php");
+$template_panels[] = array('type' => 'body', 'name' => 'members', 'template' => 'main.members.tpl', 'locale' => "main.members-profile");
 $template_variables['members'] = $variables;
 
 // Call the theme code to generate the output for this webpage

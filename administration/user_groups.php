@@ -19,7 +19,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 $variables = array();
 
 //load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/user_groups.php";
+locale_load("admin.user_groups");
 
 //check if the user has a right to be here. If not, bail out
 if (!checkrights("UG") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
@@ -73,8 +73,8 @@ if (isset($status)) {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.article_cats.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
-	$template_variables['admin.article_cats.status'] = $variables;
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.user_groups.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.user_groups");
+	$template_variables['admin.user_groups.status'] = $variables;
 	$variables = array();
 }
 
@@ -316,7 +316,7 @@ if (isset($_POST['update_admin'])) {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.user_groups', 'title' => $title, 'template' => 'admin.user_groups.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/user_groups.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.user_groups', 'title' => $title, 'template' => 'admin.user_groups.tpl', 'locale' => "admin.user_groups");
 $template_variables['admin.user_groups'] = $variables;
 
 // Call the theme code to generate the output for this webpage

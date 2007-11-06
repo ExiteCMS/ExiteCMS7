@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/comments.php";
+locale_load("admin.comments");
 
 // temp storage for template variables
 $variables = array();
@@ -66,7 +66,7 @@ $variables['ctype'] = $ctype;
 $variables['comment_id'] = $comment_id;
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.comments', 'template' => 'admin.comments.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/comments.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.comments', 'template' => 'admin.comments.tpl', 'locale' => "admin.comments");
 $template_variables['admin.comments'] = $variables;
 
 // Call the theme code to generate the output for this webpage

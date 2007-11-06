@@ -17,7 +17,8 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 
 define('AC_OVERVIEW_LIMIT', 5);
 
-include PATH_LOCALE.LOCALESET."article_cats.php";
+// load the locale for this module
+locale_load("main.article_cats");
 
 // make sure the cat_id is valid
 if (isset($cat_id) && !isNum($cat_id)) fallback(FUSION_SELF);
@@ -79,7 +80,7 @@ $variables['show_all'] = $show_all;
 $variables['overview_limit'] = AC_OVERVIEW_LIMIT;
 
 // define the body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'article_cats', 'template' => 'main.article_cats.tpl', 'locale' => PATH_LOCALE.LOCALESET."article_cats.php");
+$template_panels[] = array('type' => 'body', 'name' => 'article_cats', 'template' => 'main.article_cats.tpl', 'locale' => "main.article_cats");
 $template_variables['article_cats'] = $variables;
 
 // Call the theme code to generate the output for this webpage

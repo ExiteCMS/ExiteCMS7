@@ -256,7 +256,7 @@ function resultdialog($title, $message="", $redirect=true, $backlink=false, $tim
 
 	// define the search body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'forum.resultdialog', 'title' => $title, 'template' => 'forum.resultdialog.tpl', 
-									'locale' => array(PATH_LOCALE.LOCALESET."forum/main.php",PATH_LOCALE.LOCALESET."forum/post.php", PATH_LOCALE.LOCALESET."admin/forum_polls.php"));
+									'locale' => array("forum.main", "forum.post", "admin.forum_polls"));
 	$template_variables['forum.resultdialog'] = $variables;
 }
 

@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/blacklist.php";
+locale_load("admin.blacklist");
 
 // temp storage for template variables
 $variables = array();
@@ -38,7 +38,7 @@ if (isset($status)) {
 	$variables['message'] = $message;
 	$variables['bold'] = true;
 	// define the admin body panel
-	$template_panels[] = array('type' => 'body', 'name' => 'blacklist.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/blacklist.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'blacklist.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.blacklist");
 	$template_variables['blacklist.status'] = $variables;
 }
 
@@ -87,7 +87,7 @@ if ($step == "delete") {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.blacklist', 'template' => 'admin.blacklist.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/blacklist.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.blacklist', 'template' => 'admin.blacklist.tpl', 'locale' => "admin.blacklist");
 $template_variables['admin.blacklist'] = $variables;
 
 // Call the theme code to generate the output for this webpage

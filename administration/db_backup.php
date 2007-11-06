@@ -124,7 +124,7 @@ if (isset($_POST['btn_create_backup'])) {
 }
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/db-backup.php";
+locale_load("admin.db-backup");
 
 // make sure the parameter is valid
 if (!isset($action)) $action = "";
@@ -298,7 +298,7 @@ $variables['db_fusion_tables'] = get_table_count($db_prefix);
 $variables['action'] = isset($action) ? $action : "";
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.db_backup', 'template' => 'admin.db_backup.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/db-backup.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.db_backup', 'template' => 'admin.db_backup.tpl', 'locale' => "admin.db-backup");
 $template_variables['admin.db_backup'] = $variables;
 
 // Call the theme code to generate the output for this webpage

@@ -23,7 +23,7 @@ if (isset($cat_id) && !isNum($cat_id)) fallback("index.php");
 define('ITEMS_PER_PAGE', 15);
 
 // load this module's locales
-include PATH_LOCALE.LOCALESET."faq.php";
+locale_load("main.faq");
 
 // temp storage for template variables
 $variables = array();
@@ -61,7 +61,7 @@ if (!$cat_id) {
 
 $variables['cat_id'] = $cat_id;
 // define the body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'faq', 'title' => $title, 'template' => 'main.faq.tpl', 'locale' => PATH_LOCALE.LOCALESET."faq.php");
+$template_panels[] = array('type' => 'body', 'name' => 'faq', 'title' => $title, 'template' => 'main.faq.tpl', 'locale' => "main.faq");
 $template_variables['faq'] = $variables;
 
 // Call the theme code to generate the output for this webpage

@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/settings.php";
+locale_load("admin.settings");
 
 // temp storage for template variables
 $variables = array();
@@ -70,7 +70,7 @@ $variables['serverzone'] = sprintf($locale['457'], "GMT ".(date('O')=="+0000"?""
 $variables['localtime'] = time_system2local(time());
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.settings_time', 'template' => 'admin.settings_time.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/settings.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.settings_time', 'template' => 'admin.settings_time.tpl', 'locale' => "admin.settings");
 $template_variables['admin.settings_time'] = $variables;
 
 // Call the theme code to generate the output for this webpage

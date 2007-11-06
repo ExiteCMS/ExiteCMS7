@@ -19,7 +19,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 if (iMEMBER) fallback(BASEDIR."index.php");
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."lostpassword.php";
+locale_load("main.lostpassword");
 
 // get the sendmail include
 require_once PATH_INCLUDES."sendmail_include.php";
@@ -46,7 +46,7 @@ if (isset($email) && isset($account)) {
 			// define the body panel variables
 			$variables['message'] = $locale['402'];
 			$variables['bold'] = true;
-			$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."lostpassword.php");
+			$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => "main.lostpassword");
 			$template_variables['lostpassword'] = $variables;
 		} else {
 			$error = 1;
@@ -68,7 +68,7 @@ if (isset($email) && isset($account)) {
 			$variables['link'] = "index.php";
 			$variables['linktext'] = $locale['403'];
 			$variables['bold'] = true;
-			$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."lostpassword.php");
+			$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => "main.lostpassword");
 			$template_variables['lostpassword'] = $variables;
 		} else {
 			// define the body panel variables
@@ -76,7 +76,7 @@ if (isset($email) && isset($account)) {
 			$variables['link'] = FUSION_SELF;
 			$variables['linktext'] = $locale['406'];
 			$variables['bold'] = true;
-			$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."lostpassword.php");
+			$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => "main.lostpassword");
 			$template_variables['lostpassword'] = $variables;
 		}
 	} else {
@@ -85,12 +85,12 @@ if (isset($email) && isset($account)) {
 		$variables['link'] = FUSION_SELF;
 		$variables['linktext'] = $locale['403'];
 		$variables['bold'] = true;
-		$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."lostpassword.php");
+		$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => '_message_table_panel.tpl', 'locale' => "main.lostpassword");
 		$template_variables['lostpassword'] = $variables;
 	}
 } else {
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => 'main.lostpassword.tpl', 'locale' => PATH_LOCALE.LOCALESET."lostpassword.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'lostpassword', 'template' => 'main.lostpassword.tpl', 'locale' => "main.lostpassword");
 	$template_variables['lostpassword'] = $variables;
 }
 

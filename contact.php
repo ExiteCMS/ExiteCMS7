@@ -30,7 +30,7 @@ if (isset($target) && isset($tc)) {
 }
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."contact.php";
+locale_load("main.contact");
 
 if (isset($_POST['sendmessage'])) {
 	$errors = array();
@@ -63,7 +63,7 @@ if (isset($_POST['sendmessage'])) {
 } else {
 	// define the body panel variables
 	$variables['target'] = $target;
-	$template_panels[] = array('type' => 'body', 'name' => 'main.contact', 'template' => 'main.contact.tpl', 'locale' => PATH_LOCALE.LOCALESET.'contact.php');
+	$template_panels[] = array('type' => 'body', 'name' => 'main.contact', 'template' => 'main.contact.tpl', 'locale' => "main.contact");
 	$template_variables['main.contact'] = $variables;
 }
 

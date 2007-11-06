@@ -22,8 +22,8 @@ if (!iMEMBER) fallback(BASEDIR."index.php");
 require_once PATH_INCLUDES."geoip_include.php";
 
 // load the locales for this module
-include PATH_LOCALE.LOCALESET."members-profile.php";
-include PATH_LOCALE.LOCALESET."user_fields.php";
+locale_load("main.members-profile");
+locale_load("main.user_fields");
 
 // temp storage for template variables
 $variables = array();
@@ -112,7 +112,7 @@ if (isset($lookup)) {
 
 	// define the body panel variables
 	$variables['data'] = $data;
-	$template_panels[] = array('type' => 'body', 'name' => 'profile', 'template' => 'main.profile.members.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."members-profile.php", PATH_LOCALE.LOCALESET."user_fields.php"));
+	$template_panels[] = array('type' => 'body', 'name' => 'profile', 'template' => 'main.profile.members.tpl', 'locale' => array("main.members-profile", "main.user_fields"));
 	$template_variables['profile'] = $variables;
 }
 
@@ -144,7 +144,7 @@ if (isset($group_id)) {
 	}
 	// define the body panel variables
 	$variables['members'] = $members;
-	$template_panels[] = array('type' => 'body', 'name' => 'profile', 'template' => 'main.profile.groups.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."members-profile.php", PATH_LOCALE.LOCALESET."user_fields.php"));
+	$template_panels[] = array('type' => 'body', 'name' => 'profile', 'template' => 'main.profile.groups.tpl', 'locale' => array("main.members-profile", "main.user_fields"));
 	$template_variables['profile'] = $variables;
 }
 

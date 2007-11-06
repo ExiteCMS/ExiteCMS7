@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/downloads.php";
+locale_load("admin.downloads");
 
 // TODO - WANWIZARD - 20070718 - NEED TO MOVE THIS TO SETTINGS
 define('MAX_BARS', 9);
@@ -230,7 +230,7 @@ if (dbrows($result) != 0) {
 }
 
 // panel definitions
-$template_panels[] = array('type' => 'body', 'name' => 'admin.downloads', 'title' => $title, 'template' => 'admin.downloads.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/downloads.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.downloads', 'title' => $title, 'template' => 'admin.downloads.tpl', 'locale' => "admin.downloads");
 $template_variables['admin.downloads'] = $variables;
 
 

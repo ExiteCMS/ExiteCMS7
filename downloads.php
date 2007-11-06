@@ -20,7 +20,7 @@ if (isset($download_id) && !isNum($download_id)) fallback("index.php");
 if (isset($cat_id) && !isNum($cat_id)) fallback("index.php");
 
 // load this module's locales
-include PATH_LOCALE.LOCALESET."downloads.php";
+locale_load("main.downloads");
 
 function countdownloads($cat_id) {
 	global $db_prefix;
@@ -120,7 +120,7 @@ if (isset($cat_id)) {
 }
 
 // define the body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'downloads', 'template' => 'main.downloads.tpl', 'locale' => PATH_LOCALE.LOCALESET."downloads.php");
+$template_panels[] = array('type' => 'body', 'name' => 'downloads', 'template' => 'main.downloads.tpl', 'locale' => "main.downloads");
 $template_variables['downloads'] = $variables;
 
 // Call the theme code to generate the output for this webpage

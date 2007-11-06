@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/main.php";
+locale_load("admin.main");
 
 // temp storage for template variables
 $variables = array();
@@ -95,7 +95,7 @@ $variables['statistics']['shouts'] = dbcount("(shout_id)", "shoutbox");
 $variables['statistics']['posts'] = dbcount("(post_id)", "posts");
 
 // define the body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'admin.index', 'template' => 'admin.index.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/main.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.index', 'template' => 'admin.index.tpl', 'locale' => "admin.main");
 $template_variables['admin.index'] = $variables;
 
 // Call the theme code to generate the output for this webpage

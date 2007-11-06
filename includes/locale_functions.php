@@ -53,14 +53,9 @@ if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($
 	}
 }
 
-// locale defines (no longer needed once we moved to the new locale system!)
-
+// locale defines
 define("PATH_LOCALE", PATH_ROOT."locale/");
-
-// locale detection - step 3 - use the website's default
-if (!defined('LOCALESET')) {
-	define("LOCALESET", $settings['locale']."/");
-}
+if (!defined('LOCALESET')) define("LOCALESET", $settings['locale']."/");
 
 // Initialise the $locale array
 $locale = array();
@@ -74,9 +69,9 @@ locale_load("main.global");
 function locale_load($locale_name) {
 
 	global $settings, $locale;
-	
+
 	// assemble the locale filename
-	$locales_file = PATH_ROOT."files/".$locale['locale'].".".$locale_name.".php";
+	$locales_file = PATH_ROOT."files/locales/".$locale['locale'].".".$locale_name.".php";
 
 	// check if we need to recompile from the database
 	if (dbtable_exists($prefix."locales")) {
@@ -108,6 +103,8 @@ function locale_load($locale_name) {
 					}
 					fwrite($handle, "?>"."\n");
 					fclose($handle);
+				} else {
+					trigger_error("ExiteCMS locales error: no write access to ".$locales_file."!", E_USER_ERROR);
 				}
 			}
 		}
@@ -126,6 +123,10 @@ function locale_load($locale_name) {
 				$locales_file = PATH_LOCALE.$settings['locale']."/admin/".$nameparts[1].".php";
 				break;
 
+			case "forum":	// forum modules
+				$locales_file = PATH_LOCALE.$settings['locale']."/forum/".$nameparts[1].".php";
+				break;
+
 			case "main":	// main modules
 				$locales_file = PATH_LOCALE.$settings['locale']."/".$nameparts[1].".php";
 				break;
@@ -140,12 +141,26 @@ function locale_load($locale_name) {
 
 			default:
 				// unknown module type
+				trigger_error("ExiteCMS locales error: unknown or invalid module type specified in ".$locale_name."!", E_USER_ERROR);
 		}		
 	}
 	
-	// if a locales file could be assembled, and it exists, load it
-	if (!empty($locales_file) && file_exists($locales_file)) {
-		include $locales_file;
+	// if a locales file could be assembled...
+	if (!empty($locales_file)) {
+		if (file_exists($locales_file)) {
+			// and it exists, load it
+			require_once $locales_file;
+		} else {
+			// otherwise, if the locale is not English, try to load the English version
+			if ($settings['locale'] != "English") {
+				$current_locale = $settings['locale'];
+				$settings['locale'] = "English";
+				locale_load($locale_name);
+				$settings['locale'] = $current_locale;
+			} else {
+				trigger_error("ExiteCMS locales error: unable to locate a locale for ".$locale_name."!", E_USER_ERROR);
+			}
+		}
 	}
 
 }

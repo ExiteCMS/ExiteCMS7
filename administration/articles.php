@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/news-articles.php";
+locale_load("admin.news-articles");
 
 // temp storage for template variables
 $variables = array();
@@ -40,7 +40,7 @@ if (isset($status)) {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.article.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.article.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.news-articles");
 	$template_variables['admin.article.status'] = $variables;
 	$variables = array();
 }
@@ -51,7 +51,7 @@ if (dbrows($result) == 0) {
 	// if not, ask the user to define those first
 	$variables['message'] = $locale['518']."<br />".$locale['519']."<br /><a href='article_cats.php".$aidlink."'>".$locale['520']."</a>".$locale['521'];
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.article.no_cats', 'title' => $locale['517'], 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.article.no_cats', 'title' => $locale['517'], 'template' => '_message_table_panel.tpl', 'locale' => "admin.news-articles");
 	$template_variables['admin.article.no_cats'] = $variables;
 	$variables = array();
 
@@ -100,10 +100,10 @@ if (dbrows($result) == 0) {
 			$comments = isset($_POST['article_comments']);
 			$ratings = isset($_POST['article_ratings']);
 			$variables['message'] = $bodypreview;
-			$template_panels[] = array('type' => 'body', 'name' => 'admin.article.preview1', 'title' => $subject, 'template' => '_message_table_panel.simple.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+			$template_panels[] = array('type' => 'body', 'name' => 'admin.article.preview1', 'title' => $subject, 'template' => '_message_table_panel.simple.tpl', 'locale' => "admin.news-articles");
 			$template_variables['admin.article.preview1'] = $variables;
 			$variables['message'] = $body2preview;
-			$template_panels[] = array('type' => 'body', 'name' => 'admin.article.preview2', 'title' => $subject, 'template' => '_message_table_panel.simple.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+			$template_panels[] = array('type' => 'body', 'name' => 'admin.article.preview2', 'title' => $subject, 'template' => '_message_table_panel.simple.tpl', 'locale' => "admin.news-articles");
 			$template_variables['admin.article.preview2'] = $variables;
 			$variables = array();
 		}
@@ -162,7 +162,7 @@ if (dbrows($result) == 0) {
 		define('LOAD_TINYMCE', true);
 
 		// define the admin body panel
-		$template_panels[] = array('type' => 'body', 'name' => 'admin.articles', 'template' => 'admin.articles.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/news-articles.php");
+		$template_panels[] = array('type' => 'body', 'name' => 'admin.articles', 'template' => 'admin.articles.tpl', 'locale' => "admin.news-articles");
 		$template_variables['admin.articles'] = $variables;
 	}
 }

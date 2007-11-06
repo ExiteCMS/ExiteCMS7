@@ -53,7 +53,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 	require_once PATH_ROOT."/includes/theme_functions.php";
 
 	// load the locale for this module
-	include PATH_LOCALE.LOCALESET."admin/upgrade.php";
+	locale_load("admin.upgrade");
 
 	// temp storage for template variables
 	$variables = array();
@@ -151,7 +151,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 	// check for newer revisions on the ExiteCMS website
 	$variables['new_upgrades'] = false;
 
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.upgrade', 'template' => 'admin.upgrade.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/upgrade.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.upgrade', 'template' => 'admin.upgrade.tpl', 'locale' => "admin.upgrade");
 	$template_variables['admin.upgrade'] = $variables;
 
 	// Call the theme code to generate the output for this webpage

@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-require_once PATH_LOCALE.LOCALESET."admin/downloads.php";
+locale_load("admin.downloads");
 
 //check if the user has a right to be here. If not, bail out
 if (!checkrights("DC") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
@@ -181,7 +181,7 @@ $variables['formaction'] = $formaction;
 $variables['is_edit'] = isset($step);
 
 // panel definitions
-$template_panels[] = array('type' => 'body', 'name' => 'admin.download_cats', 'title' => $title, 'template' => 'admin.download_cats.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/downloads.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.download_cats', 'title' => $title, 'template' => 'admin.download_cats.tpl', 'locale' => "admin.downloads");
 $template_variables['admin.download_cats'] = $variables;
 
 // Call the theme code to generate the output for this webpage

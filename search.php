@@ -31,7 +31,7 @@ $searchable = array('news_cats.php',
 $searchtypes = array('n', 'f', 'a', 'd', 'w');
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."search.php";
+locale_load("main.search");
 
 // validate the possible parameters
 if (isset($stype)) $stype = $stype;
@@ -154,7 +154,7 @@ if ($stext != "" && strlen($stext) >= "3") {
 }
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'search', 'template' => 'main.search.tpl', 'locale' => PATH_LOCALE.LOCALESET."search.php");
+$template_panels[] = array('type' => 'body', 'name' => 'search', 'template' => 'main.search.tpl', 'locale' => "main.search");
 $template_variables['search'] = $variables;
 
 

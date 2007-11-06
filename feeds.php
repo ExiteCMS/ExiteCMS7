@@ -16,7 +16,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 if (!FUSION_QUERY || !isset($type)) fallback("index.php");
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."feeds.php";
+locale_load("main.feeds");
 
 // define how many items we want per RSS feed
 define('ITEMS_PER_FEED', 50);

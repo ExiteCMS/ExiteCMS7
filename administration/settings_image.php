@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/settings.php";
+locale_load("admin.settings");
 
 // temp storage for template variables
 $variables = array();
@@ -48,7 +48,7 @@ while ($data = dbarray($result)) {
 $variables['settings2'] = $settings2;
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.settings_image', 'template' => 'admin.settings_image.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/settings.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.settings_image', 'template' => 'admin.settings_image.tpl', 'locale' => "admin.settings");
 $template_variables['admin.settings_image'] = $variables;
 
 // Call the theme code to generate the output for this webpage

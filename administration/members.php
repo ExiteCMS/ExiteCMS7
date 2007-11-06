@@ -21,8 +21,8 @@ if (!checkrights("M") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."i
 $variables = array();
 
 //load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/members.php";
-include PATH_LOCALE.LOCALESET."user_fields.php";
+locale_load("admin.members");
+locale_load("main.user_fields");
 
 // load the GeoIP include module
 require_once PATH_INCLUDES."geoip_include.php";
@@ -206,7 +206,7 @@ if (iMEMBER) {
 
 $variables['step'] = $step;
 $variables['user_id'] = $user_id;
-$template_panels[] = array('type' => 'body', 'name' => 'admin.members', 'template' => 'admin.members.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."admin/members.php", PATH_LOCALE.LOCALESET."user_fields.php"));
+$template_panels[] = array('type' => 'body', 'name' => 'admin.members', 'template' => 'admin.members.tpl', 'locale' => array("admin.members", "main.user_fields"));
 $template_variables['admin.members'] = $variables;
 
 // Call the theme code to generate the output for this webpage

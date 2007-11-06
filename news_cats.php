@@ -18,7 +18,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 define('NC_OVERVIEW_LIMIT', 5);
 
 // load this module's locales
-include PATH_LOCALE.LOCALESET."news_cats.php";
+locale_load("main.news_cats");
 
 // make sure the cat_id is valid
 if (isset($cat_id) && !isNum($cat_id)) fallback(FUSION_SELF);
@@ -78,7 +78,7 @@ $variables['show_all'] = $show_all;
 $variables['overview_limit'] = NC_OVERVIEW_LIMIT;
 
 // define the body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'news_cats', 'template' => 'main.news_cats.tpl', 'locale' => PATH_LOCALE.LOCALESET."news_cats.php");
+$template_panels[] = array('type' => 'body', 'name' => 'news_cats', 'template' => 'main.news_cats.tpl', 'locale' => "main.news_cats");
 $template_variables['news_cats'] = $variables;
 
 // Call the theme code to generate the output for this webpage

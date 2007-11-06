@@ -16,7 +16,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 $variables = array();
 
 // load the locale for this module
-require_once PATH_LOCALE.LOCALESET."pm.php";
+locale_load("main.pm");
 
 // include the forum functions
 require_once PATH_INCLUDES."forum_functions_include.php";
@@ -1012,7 +1012,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			$title = $locale['420'];
 	}
 	// define the panel and assign the template variables
-	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => PATH_LOCALE.LOCALESET."pm.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => "main.pm");
 	$template_variables['pm.post'] = $variables;
 
 } else {
@@ -1029,7 +1029,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$variables['folder'] = $folder;
 		$variables['totals'] = $totals;
 		// define the panel and assign the template variables
-		$template_panels[] = array('type' => 'body', 'name' => 'pm.options', 'title' => $locale['400'].' - '.$locale['425'], 'template' => 'main.pm.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."pm.php");
+		$template_panels[] = array('type' => 'body', 'name' => 'pm.options', 'title' => $locale['400'].' - '.$locale['425'], 'template' => 'main.pm.options.tpl', 'locale' => "main.pm");
 		$template_variables['pm.options'] = $variables;
 	
 	} else {
@@ -1091,7 +1091,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$variables['rowstart'] = $rowstart;
 		$variables['pagenav_url'] = FUSION_SELF."?folder=".$folder."&amp;";
 		// define the panel and assign the template variables
-		$template_panels[] = array('type' => 'body', 'name' => 'pm', 'title' => $locale['400'].' - '.$title, 'template' => 'main.pm.tpl', 'locale' => PATH_LOCALE.LOCALESET."pm.php");
+		$template_panels[] = array('type' => 'body', 'name' => 'pm', 'title' => $locale['400'].' - '.$title, 'template' => 'main.pm.tpl', 'locale' => "main.pm");
 		$template_variables['pm'] = $variables;
 	}
 }

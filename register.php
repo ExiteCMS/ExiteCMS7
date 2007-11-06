@@ -25,8 +25,8 @@ if (iMEMBER) fallback(BASEDIR."index.php");
 include PATH_INCLUDES."dns_functions.php";
 
 // load the locales for this module
-include PATH_LOCALE.LOCALESET."register.php";
-include PATH_LOCALE.LOCALESET."user_fields.php";
+locale_load("main.register");
+locale_load("main.user_fields");
 
 // check whether we allow registrations
 if ($settings['enable_registration'] == 1) {
@@ -47,7 +47,7 @@ if ($settings['enable_registration'] == 1) {
 				$variables['message'] = $locale['452'];
 			}
 			// define the body panel variables
-			$template_panels[] = array('type' => 'body', 'name' => 'register.activate', 'template' => 'main.register.activate.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."register.php", PATH_LOCALE.LOCALESET."user_fields.php"));
+			$template_panels[] = array('type' => 'body', 'name' => 'register.activate', 'template' => 'main.register.activate.tpl', 'locale' => array("main.register", "main.user_fields"));
 			$template_variables['register.activate'] = $variables;
 		} else {
 			fallback(BASEDIR."index.php");
@@ -215,7 +215,7 @@ if ($settings['enable_registration'] == 1) {
 		}
 		$variables['theme_files'] = $theme_files;
 		// define the body panel variables
-		$template_panels[] = array('type' => 'body', 'name' => 'register', 'template' => 'main.register.tpl', 'locale' => array(PATH_LOCALE.LOCALESET."register.php", PATH_LOCALE.LOCALESET."user_fields.php"));
+		$template_panels[] = array('type' => 'body', 'name' => 'register', 'template' => 'main.register.tpl', 'locale' => array("main.register", "main.user_fields"));
 		$template_variables['register'] = $variables;
 	}
 } else {

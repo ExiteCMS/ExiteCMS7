@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/image_uploads.php";
+locale_load("admin.image_uploads");
 
 // temp storage for template variables
 $variables = array();
@@ -54,7 +54,7 @@ if (isset($status)) {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.forums.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/forums.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.forums.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.forums");
 	$template_variables['admin.forums.status'] = $variables;
 	$variables = array();
 }
@@ -104,7 +104,7 @@ if (isset($del)) {
 }
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.images', 'template' => 'admin.images.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/image_uploads.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.images', 'template' => 'admin.images.tpl', 'locale' => "admin.image_uploads");
 $template_variables['admin.images'] = $variables;
 
 // Call the theme code to generate the output for this webpage

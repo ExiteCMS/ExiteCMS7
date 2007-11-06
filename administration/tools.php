@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/main.php";
+locale_load("admin.main");
 
 // check for the proper admin access rights
 if (!checkrights("T") || !defined("iAUTH") || $aid != iAUTH) fallback(ADMIN."index.php");
@@ -46,7 +46,7 @@ $variables['rows'] = count($modules);
 $variables['modules'] = $modules;
 
 // define the body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'admin.tools', 'template' => 'admin.tools.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/main.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.tools', 'template' => 'admin.tools.tpl', 'locale' => "admin.main");
 $template_variables['admin.tools'] = $variables;
 
 // Call the theme code to generate the output for this webpage

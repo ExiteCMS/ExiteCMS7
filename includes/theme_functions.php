@@ -161,10 +161,13 @@ $template_variables = array();
 | load_templates - process templates                   |
 +-----------------------------------------------------*/
 function load_templates($_type='', $_name='') {
-	global $settings, $userdata, $db_prefix, $aidlink,
+	global $settings, $locale, $userdata, $db_prefix, $aidlink,
 			$template, $template_panels, $template_variables, 
 			$_loadstats, $_headparms, $_bodyparms, $_last_updated;
 
+	// store the current locales. We need to restore them later
+	$current_locale = $locale;
+	
 	// reset all assigned template variables
 	$template->clear_all_assign();
 
@@ -172,7 +175,7 @@ function load_templates($_type='', $_name='') {
 	$locale = array();
 	
 	// Load the global language file
-	include PATH_LOCALE.LOCALESET."global.php";
+	locale_load("main.global");
 
 	// assign CMS website settings to the template
 	$template->assign("settings", $settings);
@@ -222,13 +225,13 @@ function load_templates($_type='', $_name='') {
 			$template->assign('_state', isset($panel['state'])?$panel['state']:"");
 
 			// if one or more locales are assigned to this panel, load them first
-			if (isset($panel['locale']) && (is_array($panel['locale']) || $panel['locale'] != "")) {
+			if (isset($panel['locale']) {
 				if (is_array($panel['locale'])) {
 					foreach($panel['locale'] as $panel_locale) {
-						include $panel_locale;
+						locale_load($panel_locale);
 					}
 				} else {
-					include $panel['locale'];
+					locale_load($panel['locale']);
 				}
 			}
 			// then assign the locales to the template
@@ -285,6 +288,9 @@ function load_templates($_type='', $_name='') {
 			if (isset($td) && is_array($td)) $template->template_dir = $td;
 		}
 	}
+
+	// restore the current locales.
+	$locale = $current_locale;
 }
 
 /*-----------------------------------------------------+

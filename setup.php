@@ -84,8 +84,7 @@ function makefilelist($folder, $filter, $sort=true, $type="files") {
 define("PATH_ROOT", dirname(__FILE__).'/');
 define("PATH_ADMIN", PATH_ROOT."administration/");
 define("PATH_THEMES", PATH_ROOT."themes/");
-define("PATH_THEME", PATH_ROOT."themes/PLiTheme/");
-define("PATH_LOCALE", PATH_ROOT."locale/");
+define("PATH_THEME", PATH_ROOT."themes/ExiteCMS/");
 define("PATH_PHOTOS", PATH_ROOT."images/photoalbum/");
 define("PATH_IMAGES", PATH_ROOT."images/");
 define("PATH_IMAGES_A", PATH_IMAGES."articles/");
@@ -96,7 +95,7 @@ define("PATH_IMAGES_NC", PATH_IMAGES."news_cats/");
 define("PATH_IMAGES_DC", PATH_IMAGES."download_cats/");
 define("PATH_INCLUDES", PATH_ROOT."includes/");
 define("PATH_MODULES", PATH_ROOT."modules/");
-define("PATH_ATTACHMENTS", PATH_ROOT."files/");
+define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments");
 
 define("FUSION_SELF", isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "" ? basename($_SERVER['REDIRECT_URL']) : basename($_SERVER['PHP_SELF']));
 define('INIT_CMS_OK', true);			
@@ -110,9 +109,8 @@ $variables = array();
 // parameter validation
 $step = (isset($_GET['step']) ? $_GET['step'] : "0");
 $variables['step'] = $step;
-$localeset = (isset($_GET['localeset']) ? $_GET['localeset'] : "English");
-$variables['localeset'] = $localeset;
-define("LOCALESET", $localeset.'/');
+$settings = array("locale" => (isset($_GET['localeset']) ? $_GET['localeset'] : "English"));
+$variables['localeset'] = $settings['locale'];
 
 // check if the cache directories are writeable
 if (!is_writable(PATH_ATTACHMENTS."cache")) {
@@ -155,9 +153,10 @@ if ($step == "1") {
 }
 
 require_once PATH_ROOT."includes/theme_functions.php";
+require_once PATH_ROOT."includes/locale_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.$localeset."/setup.php";
+locale_load("main.setup");
 
 // process the different setup steps
 switch($step) {
@@ -391,7 +390,7 @@ if (isset($message)) $variables['message'] = $message;
 $variables['error'] = $error;
 
 // define the setup body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'setup', 'template' => 'main.setup.tpl', 'locale' => PATH_LOCALE.$localeset."/setup.php");
+$template_panels[] = array('type' => 'body', 'name' => 'setup', 'template' => 'main.setup.tpl', 'locale' => "main.setup");
 $template_variables['setup'] = $variables;
 
 load_templates('body', '');

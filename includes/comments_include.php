@@ -15,7 +15,7 @@
 if (eregi("comments_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // load the locale for this include
-include PATH_LOCALE.LOCALESET."comments.php";
+locale_load("main.comments");
 
 // function to display the comments panel
 function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
@@ -78,7 +78,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 	$variables['post_link'] = $clink;
 
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => PATH_LOCALE.LOCALESET."comments.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => "main.comments");
 	$template_variables['comments_include'] = $variables;
 }
 ?>

@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/custom_pages.php";
+locale_load("admin.custom_pages");
 
 // temp storage for template variables
 $variables = array();
@@ -46,7 +46,7 @@ if (isset($status)) {
 	}
 	// define the message panel variables
 	$variables['bold'] = true;
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.custom_pages.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/custom_pages.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.custom_pages.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.custom_pages");
 	$template_variables['admin.custom_pages.status'] = $variables;
 	$variables = array();
 }
@@ -90,7 +90,7 @@ if (isset($_POST['save'])) {
 		$ratings = (isset($_POST['page_ratings']) && $_POST['page_ratings']) ? " checked" : "";
 
 		$variables['message'] = $page_content;
-		$template_panels[] = array('type' => 'body', 'name' => 'admin.custom_pages.preview', 'title' => $page_title, 'template' => '_message_table_panel.simple.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/custom_pages.php");
+		$template_panels[] = array('type' => 'body', 'name' => 'admin.custom_pages.preview', 'title' => $page_title, 'template' => '_message_table_panel.simple.tpl', 'locale' => "admin.custom_pages");
 		$template_variables['admin.custom_pages.preview'] = $variables;
 		//$page_content = stripinput((QUOTES_GPC ? addslashes($page_content) : $page_content));
 		$page_content = phpentities($page_content);
@@ -146,7 +146,7 @@ if (isset($_POST['save'])) {
 	$variables['addlink'] = $addlink;
 
 	// define the admin body panel
-	$template_panels[] = array('type' => 'body', 'name' => 'admin.custom_pages', 'template' => 'admin.custom_pages.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/custom_pages.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'admin.custom_pages', 'template' => 'admin.custom_pages.tpl', 'locale' => "admin.custom_pages");
 	$template_variables['admin.custom_pages'] = $variables;
 }
 

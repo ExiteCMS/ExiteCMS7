@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // load the locale for this module
-include PATH_LOCALE.LOCALESET."admin/settings.php";
+locale_load("admin.settings");
 
 // temp storage for template variables
 $variables = array();
@@ -62,7 +62,7 @@ $variables['pm_auto_archive'] = $options['pmconfig_auto_archive'];
 $variables['pm_view'] = $options['pmconfig_view'];
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.settings_messages', 'template' => 'admin.settings_messages.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/settings.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.settings_messages', 'template' => 'admin.settings_messages.tpl', 'locale' => "admin.settings");
 $template_variables['admin.settings_messages'] = $variables;
 
 // Call the theme code to generate the output for this webpage

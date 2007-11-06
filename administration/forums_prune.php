@@ -49,6 +49,6 @@ $result = dbquery("DELETE FROM ".$db_prefix."threads WHERE thread_lastpost < $ex
 // define the message panel variables
 $variables['bold'] = true;
 $variables['message'] =$locale['801'].$delposts."<br />".$locale['802'].$delthreads."<br />".$locale['803'].$delattach."<br />";
-$template_panels[] = array('type' => 'body', 'name' => 'admin.forums_prune', 'title' => $locale['800'], 'template' => '_message_table_panel.tpl', 'locale' => PATH_LOCALE.LOCALESET."admin/settings.php");
+$template_panels[] = array('type' => 'body', 'name' => 'admin.forums_prune', 'title' => $locale['800'], 'template' => '_message_table_panel.tpl', 'locale' => "admin.settings");
 $template_variables['admin.forums_prune'] = $variables;
 ?>

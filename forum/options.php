@@ -19,7 +19,7 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 $variables = array();
 
 // load the locale for this forum module
-include PATH_LOCALE.LOCALESET."forum/options.php";
+locale_load("forum.options");
 
 // validate parameters
 if (iMEMBER) {
@@ -68,7 +68,7 @@ if ($step == "renew") {
 		}
 	}
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.renew', 'title' => $locale['458'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.renew', 'title' => $locale['458'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.renew'] = $variables;
 }
 
@@ -108,7 +108,7 @@ if ($step == "delete") {
 		}
 	}
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.delete', 'title' => $locale['400'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.delete', 'title' => $locale['400'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.delete'] = $variables;
 }
 
@@ -116,7 +116,7 @@ if ($step == "delete") {
 if ($step == "lock") {
 	$result = dbquery("UPDATE ".$db_prefix."threads SET thread_locked='1' WHERE thread_id='$thread_id'");
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.lock', 'title' => $locale['410'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.lock', 'title' => $locale['410'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.lock'] = $variables;
 }
 
@@ -124,7 +124,7 @@ if ($step == "lock") {
 if ($step == "unlock") {
 	$result = dbquery("UPDATE ".$db_prefix."threads SET thread_locked='0' WHERE thread_id='$thread_id'");
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.unlock', 'title' => $locale['420'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.unlock', 'title' => $locale['420'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.unlock'] = $variables;
 }
 
@@ -132,7 +132,7 @@ if ($step == "unlock") {
 if ($step == "sticky") {
 	$result = dbquery("UPDATE ".$db_prefix."threads SET thread_sticky='1' WHERE thread_id='$thread_id'");
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.sticky', 'title' => $locale['430'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.sticky', 'title' => $locale['430'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.sticky'] = $variables;
 }
 
@@ -140,7 +140,7 @@ if ($step == "sticky") {
 if ($step == "nonsticky") {
 	$result = dbquery("UPDATE ".$db_prefix."threads SET thread_sticky='0' WHERE thread_id='$thread_id'");
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.sticky', 'title' => $locale['440'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.sticky', 'title' => $locale['440'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.sticky'] = $variables;
 }
 
@@ -232,7 +232,7 @@ if ($step == "move") {
 	}
 
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.move', 'title' => $locale['450'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.move', 'title' => $locale['450'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.move'] = $variables;
 }
 
@@ -260,7 +260,7 @@ if ($step == "merge") {
 		}
 	}
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.merge', 'title' => $locale['455'], 'template' => 'forum.options.tpl', 'locale' => PATH_LOCALE.LOCALESET."forum/options.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.merge', 'title' => $locale['455'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.merge'] = $variables;
 }
 

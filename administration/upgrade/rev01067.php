@@ -32,7 +32,7 @@ $commands = array();
 
 // Need a locale from the setup locale file
 $oldlocale = $locale; $locale = array();
-include PATH_LOCALE.LOCALESET."/setup.php";
+locale_load("main.setup");
 
 // Add the admin record for the webmaster toolbox to the admin table
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('T',  'tools.gif', '".$locale['495']."', 'tools.php', 3)");

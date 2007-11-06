@@ -15,7 +15,7 @@
 if (eregi("ratings_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // load the locale for this include
-include PATH_LOCALE.LOCALESET."ratings.php";
+locale_load("main.ratings");
 
 // function to display the ratings panel
 function showratings($rating_type,$rating_item_id,$rating_link) {
@@ -72,7 +72,7 @@ function showratings($rating_type,$rating_item_id,$rating_link) {
 	$variables['total_votes'] = $total_votes;
 	$variables['ratings'] = $ratings;
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'ratings_include', 'template' => 'include.ratings.tpl', 'locale' => PATH_LOCALE.LOCALESET."ratings.php");
+	$template_panels[] = array('type' => 'body', 'name' => 'ratings_include', 'template' => 'include.ratings.tpl', 'locale' => "main.ratings");
 	$template_variables['ratings_include'] = $variables;
 }
 ?>
