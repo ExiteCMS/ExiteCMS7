@@ -31,9 +31,18 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.404}
+			</td>
+			<td width='50%' class='tbl'>
+				{html_options name="country" options=$countries selected=$settings2.country|default:"--" class="textbox"}
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='hidden' name='old_localeset' value='{$settings2.locale}' />
+				<input type='hidden' name='old_country' value='{$settings2.country|default:""}' />
 				<input type='submit' name='savesettings' value='{$locale.750}' class='button' />
 			</td>
 		</tr>

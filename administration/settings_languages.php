@@ -64,6 +64,11 @@ if (isset($_POST['savesettings'])) {
 		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['234']."' WHERE admin_link='settings_messages.php'");
 		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['236']."' WHERE admin_link='settings_languages.php'");
 	}
+	if (empty($_POST['old_country'])) {
+		$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_name, cfg_value) VALUES ('country', '".$_POST['country']."')");
+	} else {
+		$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['country']."' WHERE cfg_name = 'country'");
+	}
 	redirect(FUSION_SELF.$aidlink);
 }
 
@@ -78,6 +83,16 @@ $variables['locales'] = array();
 $result = dbquery("SELECT locale_name FROM ".$db_prefix."locale WHERE locale_active = '1' ORDER BY locale_name");
 while ($data = dbarray($result)) {
 	$variables['locales'][] = $data['locale_name'];
+}
+
+$variables['countries'] = array();
+$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_locale = '".$settings['locale']."' AND locales_name = 'countrycode' ORDER BY locales_value");
+if (!dbrows($result)) {
+	// no translated country names found, load the english set instead
+	$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_locale = 'English' AND locales_name = 'countrycode' ORDER BY locales_value");
+}
+while ($data = dbarray($result)) {
+	$variables['countries'][$data['locales_key']] = $data['locales_value'];
 }
 
 // define the admin body panel

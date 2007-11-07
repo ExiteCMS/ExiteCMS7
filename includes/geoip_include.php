@@ -70,19 +70,23 @@ function GeoIP_IP2Name($ip_addr) {
 			}
 		}
 		$_GeoIP_result['ip_addr'] = $ip_addr;
-		return $_GeoIP_result['ip_name'];
+		return GeoIP_Code2Name($_GeoIP_result['ip_code']);
 	}
 }
 
 function GeoIP_Code2Name($ip_code) {
-	global $db_prefix;
+	global $db_prefix, $settings;
 
-	$result = dbquery("SELECT * FROM ".$db_prefix."GeoIP WHERE ip_code ='".$ip_code."' LIMIT 1");
+	$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_locale = '".$settings['locale']."' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+	if (!dbrows($result)) {
+		// no translated country names found, load the english set instead
+		$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_locale = 'English' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+	}
 	if (dbrows($result) == 0) {
 		return "";
 	}
 	$data = dbarray($result);
-	return $data['ip_name'];
+	return $data['locales_value'];
 }
 
 function GeoIP_IP2Flag($ip_addr, $tag=true, $width=false, $height=false) {
@@ -112,7 +116,7 @@ function GeoIP_Code2Flag($ip_code, $tag=true, $width=false, $height=false) {
 	}
 	$data = dbarray($result);
 	$geoip_flag = strtolower($data['ip_code']);
-	$geoip_name = $data['ip_name'];
+	$geoip_name = GeoIP_Code2Name($data['ip_code']);
 	if (!is_file(PATH_IMAGES."flags/".$geoip_flag.".gif")) {
 		if ($tag) {
 			$geoip_flag = "<img width='".($width?$width:"16")."' height='".($height?$height:"11")."' src='".IMAGES."spacer.gif' title='' alt='' />&nbsp;";

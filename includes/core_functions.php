@@ -177,18 +177,21 @@ require_once PATH_INCLUDES."user_functions.php";
 
 // check for upgrades in progress.
 if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
+
 	include PATH_ADMIN."upgrade.php";
 	//  If so, force a switch to maintenance mode
 	if (UPGRADES) $settings['maintenance'] = 2;
-}
 
-// if not called from the maintenance mode module! (to prevent a loop, endless ;-)
-// check if we need to redirect to maintenance mode (for users) or upgrade (for webmasters)
-if ($settings['maintenance'] && !eregi("maintenance.php", $_SERVER['PHP_SELF'])) {
-	if (!iSUPERADMIN) {
-		redirect('maintenance.php?reason='.$settings['maintenance']);
-	} else {
-		redirect(ADMIN.'upgrade.php'.$aidlink);
+	// if not called from the maintenance mode module! (to prevent a loop, endless ;-)
+	// check if we need to redirect to maintenance mode (for users) or upgrade (for webmasters)
+	if ($settings['maintenance'] && !eregi("maintenance.php", $_SERVER['PHP_SELF'])) {
+		if (!iSUPERADMIN) {
+			// deny all non-webmasters access to the site
+			redirect('maintenance.php?reason='.$settings['maintenance']);
+		} else {
+			// force webmasters to the upgrade module
+			redirect(ADMIN.'upgrade.php'.$aidlink);
+		}
 	}
 }
 

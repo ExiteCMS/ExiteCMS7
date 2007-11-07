@@ -69,8 +69,7 @@ if (isset($lookup)) {
 	// user's birthday (using the current locale for the month name)
 	if ($data['user_birthdate'] != "0000-00-00") {
 		$birthdate = explode("-", $data['user_birthdate']);
-		$data['user_birthdate'] = strftime(nl_langinfo(D_FMT), mktime(1,0,0,$birthdate[1],$birthdate[2],$birthdate[0]))
-		}
+		$data['user_birthdate'] = strftime(str_replace("%m", "%B", preg_replace("/[^a-z%]/i", " ", nl_langinfo(D_FMT))), mktime(1,0,0,$birthdate[1],$birthdate[2],$birthdate[0]));
 	} else {
 	    $data['user_birthdate'] = $locale['u048'];
 	}

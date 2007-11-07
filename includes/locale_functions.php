@@ -66,8 +66,8 @@ if (dbtable_exists($db_prefix."locale")) {
 	if (dbrows($result)) {
 		$data = dbarray($result);
 		$settings['locale_code'] = $data['locale_code'];
-		$settings['charset'] = $data['locale_charset'];
-		$settings['locales'] = $data['locale_locale'];
+		if (isset($data['locale_charset'])) $settings['charset'] = $data['locale_charset'];
+		if (isset($data['locale_locale'])) $settings['locales'] = $data['locale_locale'];
 	}
 }
 // if we couldn't find it, use some default values

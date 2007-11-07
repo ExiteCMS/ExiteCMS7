@@ -88,6 +88,9 @@ if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
 			}
 			display("* Imported ".$row." records into the GeoIP_import table.");
 			fclose($handle);
+			// delete the ip_name field, to make the table more compact
+			display("* Remove the country name from the GeoIP table.");
+			$result = dbquery("ALTER TABLE ".$db_prefix."GeoIP_import DROP ip_name");	
 			// delete the GeoIP table, rename the temp table
 			display("* Rename the old GeoIP table to GeoIP_backup, and the new GeoIP_import table to GeoIP.");
 			$result = dbquery("RENAME TABLE ".$db_prefix."GeoIP TO ".$db_prefix."GeoIP_backup, ".$db_prefix."GeoIP_import TO ".$db_prefix."GeoIP");	

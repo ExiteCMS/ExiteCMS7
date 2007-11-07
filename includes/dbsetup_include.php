@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `18/10/2007 21:27`
+// Date generated  : `07/11/2007 23:50`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '954');
+define('CMS_REVISION', '1082');
 
 if ($step == 1) {
 
@@ -36,8 +36,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP (
   `ip_end` varchar(15) NOT NULL default '',
   `ip_start_num` int(10) unsigned NOT NULL default '0',
   `ip_end_num` int(10) unsigned NOT NULL default '0',
-  `ip_code` char(2) NOT NULL default '',
-  `ip_name` varchar(50) NOT NULL default ''
+  `ip_code` char(2) NOT NULL default ''
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
@@ -64,7 +63,7 @@ if (!$result) {
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."admin");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."admin (
   `admin_id` tinyint(2) unsigned NOT NULL auto_increment,
-  `admin_rights` varchar(2) NOT NULL default '',
+  `admin_rights` char(2) NOT NULL default '',
   `admin_image` varchar(50) NOT NULL default '',
   `admin_title` varchar(50) NOT NULL default '',
   `admin_link` varchar(100) NOT NULL default 'reserved',
@@ -77,10 +76,10 @@ if (!$result) {
 }
 
 //
-// Code to create table `adverts`
+// Code to create table `advertising`
 //
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."adverts");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."adverts (
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."advertising");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."advertising (
   `adverts_id` smallint(5) NOT NULL auto_increment,
   `adverts_userid` smallint(5) NOT NULL default '0',
   `adverts_contract` tinyint(1) NOT NULL default '0',
@@ -100,7 +99,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."adverts (
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "adverts : ".mysql_error();
+	$failed[] = "advertising : ".mysql_error();
 }
 
 //
@@ -454,12 +453,32 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locale (
   `locale_id` smallint(5) unsigned NOT NULL auto_increment,
   `locale_code` varchar(8) NOT NULL default '',
   `locale_name` varchar(50) NOT NULL default '',
+  `locale_locale` varchar(25) NOT NULL default '',
+  `locale_charset` varchar(25) NOT NULL default '',
   `locale_active` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`locale_id`)
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "locale : ".mysql_error();
+}
+
+//
+// Code to create table `locales`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."locales");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locales (
+  `locales_id` int(10) unsigned NOT NULL auto_increment,
+  `locales_locale` varchar(50) NOT NULL default '',
+  `locales_name` varchar(50) NOT NULL default '',
+  `locales_key` varchar(25) NOT NULL default '',
+  `locales_value` text NOT NULL,
+  `locales_datestamp` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`locales_id`)
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "locales : ".mysql_error();
 }
 
 //
@@ -848,6 +867,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
   `user_password` varchar(32) NOT NULL default '',
   `user_webmaster` tinyint(1) unsigned NOT NULL default '0',
   `user_email` varchar(100) NOT NULL default '',
+  `user_bad_email` int(10) unsigned NOT NULL default '0',
   `user_hide_email` tinyint(1) unsigned NOT NULL default '1',
   `user_location` varchar(50) NOT NULL default '',
   `user_birthdate` date NOT NULL default '0000-00-00',
