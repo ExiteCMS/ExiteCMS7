@@ -111,6 +111,7 @@ $step = (isset($_GET['step']) ? $_GET['step'] : "0");
 $variables['step'] = $step;
 $settings = array("locale" => (isset($_GET['localeset']) ? $_GET['localeset'] : "English"));
 $variables['localeset'] = $settings['locale'];
+$variables['charset'] = "iso-8859-1";
 
 // check if the cache directories are writeable
 if (!is_writable(PATH_ATTACHMENTS."cache")) {

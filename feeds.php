@@ -86,8 +86,8 @@ if (!isset($channels) || !is_array($channels) || !isset($channel_count) || $chan
 if (!isset($feeds) || !is_array($feeds) || !isset($feed_count) || $feed_count == 0) fallback(FORUM."index.php");
 
 // start building the XML file
-header("Content-type: text/xml; charset=".$locale['charset']);
-echo "<?xml version=\"1.0\" encoding=\"".$locale['charset']."\"?>\n";
+header("Content-type: text/xml; charset=".$settings['charset']);
+echo "<?xml version=\"1.0\" encoding=\"".$settings['charset']."\"?>\n";
 echo "<rss version=\"2.0\">\n";
 
 // loop through the channels

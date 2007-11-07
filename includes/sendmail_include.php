@@ -18,8 +18,8 @@ function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type
 	require_once PATH_INCLUDES."phpmailer_include.php";
 	
 	$mail = new PHPMailer();
-	if (file_exists(PATH_INCLUDES."languages/phpmailer.lang-".$locale['phpmailer'].".php")) {
-		$mail->SetLanguage($locale['phpmailer'], PATH_INCLUDES."language/");
+	if (file_exists(PATH_INCLUDES."languages/phpmailer.lang-".$settings['locale_code'].".php")) {
+		$mail->SetLanguage($settings['locale_code'], PATH_INCLUDES."language/");
 	} else {
 		$mail->SetLanguage("en", PATH_INCLUDES."language/");
 	}
@@ -35,7 +35,7 @@ function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type
 			$mail->SMTPAuth = true;
 	}
 	
-	$mail->CharSet = $locale['charset'];
+	$mail->CharSet = $settings['charset'];
 	$mail->From = $fromemail;
 	$mail->FromName = $fromname;
 	$mail->AddAddress($toemail, $toname);

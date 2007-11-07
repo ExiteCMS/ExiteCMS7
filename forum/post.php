@@ -464,7 +464,7 @@ if (isset($_POST['preview'])) {
 			}
 			if ($settings['forum_flags']) {
 				if ($userdata['user_id'] == 1) {
-					$preview['cc_flag'] = GeoIP_Code2Flag($locale['country']);
+					$preview['cc_flag'] = GeoIP_Code2Flag($settings['country']);
 				} else {
 					$preview['cc_flag'] = GeoIP_IP2Flag($userdata['user_ip']);
 				}

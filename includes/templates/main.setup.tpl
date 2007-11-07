@@ -18,7 +18,7 @@
 <html>
 <head>
 <title>{$locale.title}</title>
-<meta http-equiv='Content-Type' content='text/html; charset={$locale.charset}'>
+<meta http-equiv='Content-Type' content='text/html; charset={$settings.charset}'>
 {literal}<style type="text/css">
 <!--
 a { color:#003D71; text-decoration:none; }

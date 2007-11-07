@@ -6,18 +6,9 @@ Email: digitanium@php-fusion.co.uk
 Web: http://www.php-fusion.co.uk
 */
 
-// Locale Settings
-setlocale(LC_TIME, "en_GB", "en","GB"); // Linux Server (Windows may differ)
-$locale['country'] = "GB";
-$locale['charset'] = "iso-8859-1";
-$locale['tinymce'] = "en";
-$locale['phpmailer'] = "en";
-
-// Full & Short Months, Date info
+// Full & Short Months
 $locale['months'] = "&nbsp|January|February|March|April|May|June|July|August|September|October|November|December";
 $locale['shortmonths'] = "&nbsp|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec";
-$locale['dateformat'] = "mm-dd-yyyy";
-$locale['datesequence'] = array("M", "D", "Y");
 
 // Standard User Levels
 $locale['usera'] = "Anonymous";

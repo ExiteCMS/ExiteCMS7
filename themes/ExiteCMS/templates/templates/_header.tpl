@@ -21,7 +21,7 @@
 
 <head>
 	<title>{$settings.sitename}</title>
-	<meta http-equiv='Content-Type' content='text/html; charset={$locale.charset}' />
+	<meta http-equiv='Content-Type' content='text/html; charset={$settings.charset}' />
 	<meta name='description' content='{$settings.description}' />
 	<meta name='keywords' content='{$settings.keywords}' />
 	<meta name='verify-v1' content='6uLZe0u5c6hJ3XE0LoGBQRuU7IdJ/B6BIa2Si7b1dkw=' />
@@ -38,7 +38,7 @@
 			mode:'textareas',
 			editor_deselector:'textbox',
 			theme:'advanced',
-			language:'en',
+			language:'{/literal}{$settings.locale_code}{literal}',
 			entities:'60,lt,62,gt',
 			document_base_url:'{/literal}{$settings.siteurl}{literal}',
 			relative_urls:'false',
@@ -66,7 +66,7 @@
 			tinyMCE.init({
 			mode:'textareas',
 			theme:'simple',
-			language:'en',
+			language:'{/literal}{$settings.locale_code}{literal}',
 			convert_newlines_to_brs:'true',
 			force_br_newlines:'true',
 			force_p_newlines:'false'

@@ -121,10 +121,10 @@
 			<tr>
 				<td class='tbl'>
 					{$locale.u010}
-					<span class='small2'>( mm/dd/yyyy )</span>
+					<span class='small2'>( {$settings.dateformat} )</span>
 				</td>
-				<td class='tbl'>
-					{foreach from=$locale.datesequence item=field}
+				<td class='tbl'>}
+					{foreach from=$settings.datesequence item=field}
 					{if $field == "D"}
 					<select name='user_day' class='textbox'>
 						<option> </option>

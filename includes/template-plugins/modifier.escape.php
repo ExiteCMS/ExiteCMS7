@@ -21,10 +21,10 @@
  */
 function smarty_modifier_escape($string, $esc_type = 'entities', $char_set = '')
 {
-	global $locale;
+	global $locale, $settings;
 	
 	// set a default char_set if none given
-	if ($char_set == '') $char_set = $locale['charset'];
+	if ($char_set == '') $char_set = $settings['charset'];
 
     switch ($esc_type) {
         case 'amp':

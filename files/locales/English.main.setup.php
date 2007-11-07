@@ -1,6 +1,6 @@
 <?php
 $locale['title'] = "ExiteCMS Setup";
-$locale['charset'] = "iso-8859-1";
+
 $locale['400'] = "Select your default locale";
 $locale['401'] = "Unable to establish database connection.<br><br>
 Please ensure you have entered the correct details.";

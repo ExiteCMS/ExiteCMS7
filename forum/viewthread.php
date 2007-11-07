@@ -251,7 +251,7 @@ if ($rows != 0) {
 		// country flag
 		if ($settings['forum_flags']) {
 			if ($data['post_author'] == 1) {
-				$data['cc_flag'] = GeoIP_Code2Flag($locale['country']);
+				$data['cc_flag'] = GeoIP_Code2Flag($settings['country']);
 			} else {
 				$data['cc_flag'] = GeoIP_IP2Flag($data['post_ip']);
 			}
