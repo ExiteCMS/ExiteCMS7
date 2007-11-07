@@ -57,31 +57,26 @@ if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($
 define("PATH_LOCALE", PATH_ROOT."locale/");
 if (!defined('LOCALESET')) define("LOCALESET", $settings['locale']."/");
 
-// define the website server locale (if not defined)
-if (!isset($settings['unix_locale'])) $settings['unix_locale'] = "en_US";
-
-// set system locales
-setlocale(LC_TIME, $settings['unix_locale']); // *nix Server (TODO: Windows may differ)
-
-// define the website characterset (if not defined)
-if (!isset($settings['charset'])) $settings['charset'] = "iso-8859-1";
-
 // define the website location (country) (if not defined)
 if (!isset($settings['country'])) $settings['country'] = "??";
 
-// get the locale code, we need this in several places
+// get locales information, we need this in several places
 if (dbtable_exists($db_prefix."locale")) {
-	$result = dbquery("SELECT locale_code FROM ".$db_prefix."locale WHERE locale_name = '".$settings['locale']."'");
-	if ($dbrows($result)) {
+	$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_name = '".$settings['locale']."'");
+	if (dbrows($result)) {
 		$data = dbarray($result);
 		$settings['locale_code'] = $data['locale_code'];
+		$settings['charset'] = $data['locale_charset'];
+		$settings['locales'] = $data['locale_locale'];
 	}
 }
+// if we couldn't find it, use some default values
 if (!isset($settings['locale_code'])) $settings['locale_code'] = "en";
+if (!isset($settings['charset'])) $settings['charset'] = "iso-8859-1";
+if (!isset($settings['locales'])) $settings['locales'] = "en_US|en_GB|english|eng";
 
-// Date info (TODO: need to find a better solution for this)
-if (!isset($settings['dateformat'])) $settings['dateformat'] = "mm-dd-yyyy";
-if (!isset($settings['datesequence'])) $settings['datesequence'] = array("M", "D", "Y");
+// set the locale for strfime()
+setlocale(LC_TIME, explode("|", $settings['locales']));
 
 // Initialise the $locale array
 $locale = array();

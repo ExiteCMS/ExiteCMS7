@@ -66,10 +66,11 @@ if (isset($lookup)) {
 	}
 	// user level
 	$data['user_level'] = getuserlevel($data['user_level']);
+	// user's birthday (using the current locale for the month name)
 	if ($data['user_birthdate'] != "0000-00-00") {
-	    $months = explode("|", $locale['months']);
-	    $user_birthdate = explode("-", $data['user_birthdate']);
-	    $data['user_birthdate'] = $months[number_format($user_birthdate['1'])]." ".number_format($user_birthdate['2'])." ".$user_birthdate['0'];
+		$birthdate = explode("-", $data['user_birthdate']);
+		$data['user_birthdate'] = strftime(nl_langinfo(D_FMT), mktime(1,0,0,$birthdate[1],$birthdate[2],$birthdate[0]))
+		}
 	} else {
 	    $data['user_birthdate'] = $locale['u048'];
 	}

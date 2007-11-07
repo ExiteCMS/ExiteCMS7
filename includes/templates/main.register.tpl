@@ -121,33 +121,27 @@
 			<tr>
 				<td class='tbl'>
 					{$locale.u010}
-					<span class='small2'>( {$settings.dateformat} )</span>
+					<span class='small2'>( yyyy/mm/dd )</span>
 				</td>
 				<td class='tbl'>}
-					{foreach from=$settings.datesequence item=field}
-					{if $field == "D"}
-					<select name='user_day' class='textbox'>
-						<option> </option>
-						{section name=d start=1 loop=32}
-							<option{if $smarty.section.d.index == $user_day} selected{/if}>{$smarty.section.d.index}</option>
-						{/section}
-					</select>
-					{elseif $field == "M"}
-					<select name='user_month' class='textbox'>
-						<option> </option>
-						{section name=m start=1 loop=13}
-							<option{if $smarty.section.m.index == $user_month} selected{/if}>{$smarty.section.m.index}</option>
-						{/section}
-					</select>
-					{elseif $field == "Y"}
 					<select name='user_year' class='textbox'>
 						<option> </option>
 						{section name=y start=1900 loop=$smarty.now|date_format:"%Y"}
 							<option{if $smarty.section.y.index == $user_year} selected{/if}>{$smarty.section.y.index}</option>
 						{/section}
 					</select>
-					{/if}
-					{/foreach}
+					<select name='user_month' class='textbox'>
+						<option> </option>
+						{section name=m start=1 loop=13}
+							<option{if $smarty.section.m.index == $user_month} selected{/if}>{$smarty.section.m.index}</option>
+						{/section}
+					</select>
+					<select name='user_day' class='textbox'>
+						<option> </option>
+						{section name=d start=1 loop=32}
+							<option{if $smarty.section.d.index == $user_day} selected{/if}>{$smarty.section.d.index}</option>
+						{/section}
+					</select>
 				</td>
 			</tr>
 			<tr>

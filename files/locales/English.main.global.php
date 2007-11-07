@@ -6,10 +6,6 @@ Email: digitanium@php-fusion.co.uk
 Web: http://www.php-fusion.co.uk
 */
 
-// Full & Short Months
-$locale['months'] = "&nbsp|January|February|March|April|May|June|July|August|September|October|November|December";
-$locale['shortmonths'] = "&nbsp|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept|Oct|Nov|Dec";
-
 // Standard User Levels
 $locale['usera'] = "Anonymous";
 $locale['user0'] = "Public";
