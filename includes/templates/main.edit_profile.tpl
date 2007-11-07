@@ -116,8 +116,7 @@
 			{$locale.u010}
 		</td>
 			<td class='tbl'>
-				{html_select_date prefix='user_' time=$this_userdata.user_birthdate start_year="1900" end_year="-1" all_extra="class='textbox" field_order="YMD"}
-				<span class='small2'>(yyyy/mm/dd)</span>
+				{html_select_date prefix='user_' time=$this_userdata.user_birthdate start_year="1900" end_year="-1" all_extra="class='textbox'"}
 			</td>
 		</tr>
 		<tr>
