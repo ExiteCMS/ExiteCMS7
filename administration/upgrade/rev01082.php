@@ -30,10 +30,10 @@ $revisions[] = array('revision' => $_revision,
 $commands = array();
 
 // add the new fields to the locales table
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locales ADD locale_locale VARCHAR(25) NOT NULL DEFAULT '' AFTER locale_name");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locales ADD locale_charset VARCHAR(25) NOT NULL DEFAULT '' AFTER locale_locale");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locale ADD locale_locale VARCHAR(25) NOT NULL DEFAULT '' AFTER locale_name");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locale ADD locale_charset VARCHAR(25) NOT NULL DEFAULT '' AFTER locale_locale");
 
-// and pupulate them with default values
-$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##locales SET locale_locale = 'en_US|en_GB|english|eng', locale_charset = 'iso-8859-1'");
+// and populate them with a default value
+$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##locale SET locale_locale = 'en_US|en_GB|english|eng', locale_charset = 'iso-8859-1'");
 
 ?>

@@ -133,10 +133,10 @@ if (isset($_POST['update_profile'])) {
 	$user_fullname = $_POST['user_fullname'];
 	$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";
 	$user_location = isset($_POST['user_location']) ? stripinput(trim($_POST['user_location'])) : "";
-	if ($_POST['user_month'] != "--" && $_POST['user_day'] != "--" && $_POST['user_year'] != "----") {
-		$user_birthdate = (isNum($_POST['user_year']) ? $_POST['user_year'] : "0000")
-		."-".(isNum($_POST['user_month']) ? $_POST['user_month'] : "00")
-		."-".(isNum($_POST['user_day']) ? $_POST['user_day'] : "00");
+	if ($_POST['user_Month'] != "--" && $_POST['user_Day'] != "--" && $_POST['user_Year'] != "----") {
+		$user_birthdate = (isNum($_POST['user_Year']) ? $_POST['user_Year'] : "0000")
+		."-".(isNum($_POST['user_Month']) ? $_POST['user_Month'] : "00")
+		."-".(isNum($_POST['user_Day']) ? $_POST['user_Day'] : "00");
 	} else {
 		$user_birthdate = "0000-00-00";
 	}
@@ -226,14 +226,8 @@ if (isset($check_message)) {
 	$template_variables['edit_profile_message'] = array('message' => $check_message, 'bold' => true);
 }
 
-if ($this_userdata['user_birthdate']!="0000-00-00") {
-	$user_birthdate = explode("-", $this_userdata['user_birthdate']);
-	$variables['user_day'] = number_format($user_birthdate['2']);
-	$variables['user_month'] = number_format($user_birthdate['1']);
-	$variables['user_year'] = $user_birthdate['0'];
-} else {
-	$variables['user_day'] = 0; $variables['user_month'] = 0; $variables['user_year'] = 0;
-}
+$this_userdata['user_birthdate'] = str_replace("00", "--", $this_userdata['user_birthdate']);
+
 if (!isset($this_userdata['user_fullname']) or empty($this_userdata['user_fullname'])) {
     $this_userdata['user_fullname'] = $this_userdata['user_name'];
 }

@@ -143,10 +143,10 @@ if ($settings['enable_registration'] == 1) {
 		
 		if ($settings['email_verification'] == "0") {
 			$user_location = isset($_POST['user_location']) ? stripinput(trim($_POST['user_location'])) : "";
-			if ($_POST['user_month'] != 0 && $_POST['user_day'] != 0 && $_POST['user_year'] != 0) {
-				$user_birthdate = (isNum($_POST['user_year']) ? $_POST['user_year'] : "0000")
-				."-".(isNum($_POST['user_month']) ? $_POST['user_month'] : "00")
-				."-".(isNum($_POST['user_day']) ? $_POST['user_day'] : "00");
+			if ($_POST['user_Month'] != 0 && $_POST['user_Day'] != 0 && $_POST['user_Year'] != 0) {
+				$user_birthdate = (isNum($_POST['user_Year']) ? $_POST['user_Year'] : "0000")
+				."-".(isNum($_POST['user_Month']) ? $_POST['user_Month'] : "00")
+				."-".(isNum($_POST['user_Day']) ? $_POST['user_Day'] : "00");
 			} else {
 				$user_birthdate = "0000-00-00";
 			}
