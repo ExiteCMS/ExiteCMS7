@@ -132,7 +132,7 @@ function gathermsginfo($msgrec, $preview = false) {
 	}
 
 	// parse the messsage body
-	$msgrec['pm_message'] = parsemessage($msgrec['pm_message'], !$msgrec['pm_smileys']);
+	$msgrec['pm_message'] = parsemessage($msgrec['pm_message'], $msgrec['pm_smileys']==0);
 	
 	// check if the users avatar exists
 	if (!empty($msgrec['user_avatar']) && !file_exists(PATH_IMAGES."avatars/".$msgrec['user_avatar'])) $msgrec['user_avatar'] = "imagenotfound.jpg";
@@ -526,7 +526,7 @@ if (isset($_POST['send_message'])) {
 	$newmsg['pm_datestamp'] = time();
 
 	// smileys setting for this post
-	$newmsg['pm_smileys'] = isset($_POST['chk_disablesmileys']) ? "0" : "1";
+	$newmsg['pm_smileys'] = isset($_POST['chk_disablesmileys']) ? "1" : "0";
 
 	// create the list of users to send this message to
 	$newmsg['recipients'] = isset($_POST['recipients']) && is_array($_POST['recipients']) ? $_POST['recipients'] : array();
@@ -764,7 +764,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$data = array();
 		$data['pm_id'] = $pm_id;
 		$data['pm_subject'] = stripinput($_POST['subject']);
-		$data['pm_smileys'] = isset($_POST['chk_disablesmileys']) ? 0 : 1;
+		$data['pm_smileys'] = isset($_POST['chk_disablesmileys']) ? "1" : "0";
 		$data['pm_message'] = stripmessageinput($_POST['message']);
 		$data['pm_size'] = 0;
 		$data['pm_datestamp'] = 0;
