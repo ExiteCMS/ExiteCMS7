@@ -31,6 +31,9 @@ $commands = array();
 
 // database changes
 
+// drop the old locales table
+$commands[] = array('type' => 'db', 'value' => "DROP TABLE IF EXISTS ##PREFIX##locales");
+
 // create new locales table
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##locales (
   locales_id int(10) UNSIGNED NOT NULL auto_increment,
