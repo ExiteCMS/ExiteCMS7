@@ -77,10 +77,10 @@ function GeoIP_IP2Name($ip_addr) {
 function GeoIP_Code2Name($ip_code) {
 	global $db_prefix, $settings;
 
-	$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_locale = '".$settings['locale']."' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+	$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
 	if (!dbrows($result)) {
 		// no translated country names found, load the english set instead
-		$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_locale = 'English' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+		$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = 'en' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
 	}
 	if (dbrows($result) == 0) {
 		return "";

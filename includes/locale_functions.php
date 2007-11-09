@@ -92,13 +92,13 @@ function locale_load($locale_name) {
 	global $settings, $locale, $db_prefix;
 
 	// assemble the locale filename
-	$locales_file = PATH_ROOT."files/locales/".$settings['locale'].".".$locale_name.".php";
+	$locales_file = PATH_ROOT."files/locales/".$settings['locale_code'].".".$locale_name.".php";
 
 	// check if we need to recompile from the database
 	if (dbtable_exists($db_prefix."locales")) {
 
 		// get the last update date from the locale strings table
-		$data = dbarray(dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix."locales WHERE locales_locale = '".$settings['locale']."' AND locales_name = '".$locale_name."'"));
+		$data = dbarray(dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."'"));
 
 		// if found...
 		if ($data['last_update']) {
@@ -110,11 +110,11 @@ function locale_load($locale_name) {
 				if ($handle = @fopen($locales_file, 'w')) {
 
 					// get the locale records for the selected locale and this locale_name
-					$result = dbquery("SELECT * FROM ".$db_prefix." WHERE locales_locale = '".$settings['locale']."' AND locales_name = '".$locale_name."' ORDER BY locales_key");
+					$result = dbquery("SELECT * FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."' ORDER BY locales_key");
 					if (dbrows($result)) {
 						fwrite($handle, "<?php"."\n");
 						fwrite($handle, "// ----------------------------------------------------------"."\n");
-						fwrite($handle, "// locale : ".$locale['locale']."\n");
+						fwrite($handle, "// locale : ".$settings['locale']."\n");
 						fwrite($handle, "// name   : ".$locale_name."\n");
 						fwrite($handle, "// date   : ".date("D M j Y, G:i:s T")."\n");
 						fwrite($handle, "// ----------------------------------------------------------"."\n");
@@ -174,9 +174,18 @@ function locale_load($locale_name) {
 		} else {
 			// otherwise, if the locale is not English, try to load the English version
 			if ($settings['locale'] != "English") {
+				$current_locale_code = $settings['locale_code'];
 				$current_locale = $settings['locale'];
-				$settings['locale'] = "English";
+				$result = dbquery("SELECT locale_name FROM ".$db_prefix."locale WHERE locale_code = 'en'");
+				if (dbrows($result)) {
+					$data = dbarray($result);
+					$settings['locale'] = $data['locale_name'];
+				} else {
+					// system default language missing?
+					trigger_error("ExiteCMS locales error: Can't load the system default language!", E_USER_ERROR);
+				}
 				locale_load($locale_name);
+				$settings['locale_code'] = $current_locale_code;
 				$settings['locale'] = $current_locale;
 			} else {
 				trigger_error("ExiteCMS locales error: unable to locate a locale for ".$locale_name."!", E_USER_ERROR);
