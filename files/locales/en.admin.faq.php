@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Delete FAQ Category
 $locale['400'] = "Delete FAQ Category";
 $locale['401'] = "FAQ Category Deleted";

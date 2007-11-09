@@ -14,7 +14,7 @@
 {* Template for the main module 'search'                                   *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title=$locale.400|cat:" "|cat:$settings.sitename state=$_state style=$_style}
 <center>
 	{section name=idx loop=$links}
 	{if $smarty.section.idx.first}

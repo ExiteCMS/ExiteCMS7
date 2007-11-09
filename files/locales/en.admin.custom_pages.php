@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "Edit Custom Page";
 $locale['401'] = "Page Updated";
 $locale['402'] = "The url to this page is: ";

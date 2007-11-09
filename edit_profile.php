@@ -62,7 +62,7 @@ if (isset($_POST['update_profile'])) {
 		
 		if ($username != $this_userdata['user_name']) {
 			$result = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_name='$username'");
-			if (dbrows($result) != 0) $error = $locale['482']."<br>\n";
+			if (dbrows($result) != 0) $error = sprintf($locale['482'],(isset($_POST['user_name']) ? $_POST['user_name'] : ""))."<br>\n";
 		}
 		
 		if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $_POST['user_email'])) $error .= $locale['483']."<br>\n";
@@ -70,7 +70,7 @@ if (isset($_POST['update_profile'])) {
 		if ($_POST['user_email'] != $this_userdata['user_email']) {
 			$result = dbquery("SELECT user_email FROM ".$db_prefix."users WHERE user_email='".$_POST['user_email']."'");
 			if (dbrows($result) != 0) {
-				$error = $locale['484']."<br>\n";
+				$error = sprintf($locale['484'],(isset($_POST['user_email']) ? $_POST['user_email'] : ""))."<br>\n";
 			} else {
 				$email = $_POST['user_email'];
 				$email_domain = substr(strrchr($email, "@"), 1);

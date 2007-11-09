@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Delete Image
 $locale['400'] = "Delete Image";
 $locale['401'] = "Image Deleted";

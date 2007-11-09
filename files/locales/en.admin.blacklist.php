@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Delete blacklisted user
 $locale['400'] = "Delete user from Blacklist";
 $locale['401'] = "User deleted from Blacklist";

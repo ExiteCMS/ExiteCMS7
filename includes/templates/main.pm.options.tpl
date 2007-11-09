@@ -65,7 +65,7 @@
 		</tr>
 		<tr>
 			<td align='right' class='tbl1' width='70%'>
-				{$locale.622}
+				{$locale.403|string_format:$locale.622}
 			</td>
 			<td class='tbl1' width='30%'>
 				<select name='pm_save_sent' class='textbox'>
@@ -79,7 +79,7 @@
 
 		<tr>
 			<td align='right' class='tbl1' width='70%'>
-				{$locale.635}
+				{ssprintf format=$locale.635 var1=$locale.402 var2=$locale.403}
 			</td>
 			<td class='tbl1' width='30%'>
 				<select disabled readonly name='pm_auto_archive' class='textbox'>

@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "Settings";
 // Site Settings
 $locale['401'] = "Main";

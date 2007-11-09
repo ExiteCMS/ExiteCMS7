@@ -7,7 +7,7 @@ Please ensure you have entered the correct details.";
 $locale['402'] = "Unable to select the database table.<br><br>
 Please ensure you have entered the correct details.";
 // Step 0 - Welcome
-$locale['410'] = "Welcome to ".$locale['title'];
+$locale['410'] = "Welcome to ExiteCMS Setup";
 $locale['411'] = "Write permissions check passed";
 $locale['412'] = "Write permissions check failed on:";
 $locale['413'] = "Please ensure that your webserver has write<br />access (chmod) on these folders.";

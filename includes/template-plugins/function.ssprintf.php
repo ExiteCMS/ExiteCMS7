@@ -18,7 +18,8 @@
  * Install: Drop into the plugin directory
  * -------------------------------------------------------------
  *      NOTE:
- *          The order of params is very importent for sprintf()
+ *          The order of params is very important for sprintf()
+ *          unless you're using argument swapping.
  *          so please use this function carefully :)
  * -------------------------------------------------------------
  *      CHANGES:

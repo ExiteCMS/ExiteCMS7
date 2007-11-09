@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Admin Links
 $locale['200'] = "CMS Administration for";
 $locale['201'] = "Administrators";

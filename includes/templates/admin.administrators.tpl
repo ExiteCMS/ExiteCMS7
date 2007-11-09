@@ -58,7 +58,7 @@
 						<input type='checkbox' name='all_rights' value='1' /> {$locale.411}
 						{if $userdata.user_id == "1"}
 							<br />
-							<input type='checkbox' name='make_super' value='1' /> {$locale.412}
+							<input type='checkbox' name='make_super' value='1' /> {$locale.user3|string_format:$locale.412}
 						{/if}
 					</form>
 				</td>

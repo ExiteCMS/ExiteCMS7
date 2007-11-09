@@ -678,8 +678,8 @@ if (isset($_POST["cancel"])) {
 							$data2 = dbarray(dbquery("SELECT thread_subject FROM ".$db_prefix."threads WHERE thread_id='$thread_id'"));
 							$link = $settings['siteurl']."forum/viewthread.php?forum_id=$forum_id&thread_id=$thread_id&pid=$post_id#post_$post_id";
 							while ($data = dbarray($result)) {
-								$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}");
-								$message_el2 = array($data['user_name'], $data2['thread_subject'], $link);
+								$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}", "{SITE_NAME}", "{SITE_WEBMASTER}");
+								$message_el2 = array($data['user_name'], $data2['thread_subject'], $link, html_entity_decode($settings['sitename']), html_entity_decode($settings['siteusername']));
 								$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $locale['550']);
 								$message_content = str_replace($message_el1, $message_el2, $locale['551']);
 								sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);

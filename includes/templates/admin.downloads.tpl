@@ -78,7 +78,7 @@
 					{/section}
 					</select>
 					<br />
-					<span class='small2'>{$locale.490}</span>
+					<span class='small2'>{$locale.455|string_format:$locale.490}</span>
 				</td>
 			</tr>
 			<tr>

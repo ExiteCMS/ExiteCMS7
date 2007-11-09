@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "Article Categories";
 $locale['401'] = "Category:";
 $locale['402'] = "Number of Items:";

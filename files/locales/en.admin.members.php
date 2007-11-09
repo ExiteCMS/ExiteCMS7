@@ -31,11 +31,10 @@ $locale['432'] = "Member Deleted";
 $locale['433'] = "Are you sure you wish to delete this member?";
 $locale['434'] = "Member Activated";
 $locale['435'] = "Account activated at ";
-$locale['436'] = "Hello [USER_NAME],\n
-Your account at ".$settings['sitename']." has been activated.\n
+$locale['436'] = "Hello %1\$s,\n
+Your account at %2\$s has been activated.\n
 You can now login using your chosen username and password.\n
-Regards,
-".$settings['siteusername'];
+Regards, %3\$s";
 $locale['437'] = "When the user logs in, say";
 $locale['438'] = "Ban expires in howmany days?";
 $locale['439'] = "( 0 = ban does not expiry automatically )";
@@ -44,16 +43,16 @@ $locale['440'] = "Edit Profile";
 $locale['441'] = "Profile successfully updated";
 $locale['442'] = "Unable to update Profile:";
 // Update Profile Errors
-$locale['450'] = "Cannot edit primary administrator.";
+$locale['450'] = "x-450";
 $locale['451'] = "You must specify a user name & email address.";
 $locale['452'] = "User name contains invalid characters.";
-$locale['453'] = "The user name ".(isset($_POST['user_name']) ? $_POST['user_name'] : "")." is in use.";
+$locale['453'] = "The user name %s is in use.";
 $locale['454'] = "Invalid email address.";
-$locale['455'] = "The email address ".(isset($_POST['user_email']) ? $_POST['user_email'] : "")." is in use.";
+$locale['455'] = "The email address %s is in use.";
 $locale['456'] = "New Passwords do not match.";
 $locale['457'] = "Invalid password, use alpha numeric characters only.<br>
 Password must be a minimum of 6 characters long.";
-$locale['458'] = "<b>Warning:</b> unexpected script execution.";
+$locale['458'] = "x-458";
 // Edit Profile Form
 $locale['460'] = "Update Profile";
 // Ban Errors
@@ -70,17 +69,4 @@ $locale['476'] = "The member account has been created.";
 $locale['477'] = "The member account could not be created.";
 $locale['478'] = "Return to Members Admin";
 $locale['479'] = "Return to Admin Index";
-// Update Profile Errors
-$locale['480'] = "You must specify a user name, full name & email address.";
-$locale['481'] = "User name contains invalid characters.";
-$locale['482'] = "The user name ".(isset($_POST['user_name']) ? $_POST['user_name'] : "")." is in use.";
-$locale['483'] = "Invalid email address.";
-$locale['484'] = "The email address ".(isset($_POST['user_email']) ? $_POST['user_email'] : "")." is in use.";
-$locale['485'] = "New passwords do not match.";
-$locale['486'] = "Invalid password, use alpha numeric characters only.<br>
-Password must be a minimum of 6 characters long.";
-$locale['487'] = "<b>Warning:</b> unexpected script execution.";
-$locale['488'] = "No mailserver found for domain %s.";
-$locale['489'] = "Mailserver for domain %s doesn't accept email messages.";
-$locale['490'] = "Email address %s does not exist<br>(according to the mailserver %s).";
 ?>

@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "Delete menu item";
 $locale['401'] = "Menu item deleted";
 $locale['402'] = "Return to Menu Administration";

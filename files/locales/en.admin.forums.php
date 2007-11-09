@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Edit/Add Forum Category
 $locale['400'] = "Edit Forum Category";
 $locale['401'] = "Forum Category Updated";

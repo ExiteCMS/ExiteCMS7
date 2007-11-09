@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "ExiteCMS Upgrade";
 $locale['401'] = "There are no ExiteCMS upgrades waiting to be installed.";
 $locale['402'] = "There are new upgrades available on the ExiteCMS website.<br />Click <a href='http://exitecms.exite.eu'>here</a> to download them.";

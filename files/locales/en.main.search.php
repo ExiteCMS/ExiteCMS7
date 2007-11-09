@@ -1,6 +1,6 @@
 <?php
 // Search form
-$locale['400'] = "Search ".$settings['sitename'];
+$locale['400'] = "Search";
 $locale['401'] = "Search for:";
 $locale['402'] = "Articles";
 $locale['403'] = "News";

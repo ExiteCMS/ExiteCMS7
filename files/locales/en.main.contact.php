@@ -1,12 +1,8 @@
 <?php
-// when we're processing the template, get the 'target' from the template variables
-if (isset($panel_name))	{
-	$target = $template_variables[$panel_name]['target'];
-}
 // Contact Form
-$locale['400'] = "Contact ".$settings['siteusername'];
-$locale['401'] = "<b>There are many ways you can contact ".$settings['siteusername']."</b>.<br /><br />You can Email us directly at
-<a href='mailto:".str_replace("@","&#64;",$target)."'>".str_replace("@","&#64;",$target)."</a>.<br /><br />
+$locale['400'] = "Contact";
+$locale['401'] = "<b>There are many ways you can contact us</b>.<br /><br />You can Email us directly at\n";
+$locale['401a'] = ".<br /><br />
 If you are a Member you can send the webmaster a <a href='messages.php?msg_send=1'>Private Message</a>.<br /><br />
 Alternatively, you can fill in this form, this sends your message to us via Email.";
 $locale['402'] = "Name:";

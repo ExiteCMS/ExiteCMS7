@@ -18,7 +18,9 @@
 <table align='center' width='500'>
 	<tr>
 		<td>
-			<center>{$locale.401}</center>
+			<center>
+				{$locale.401}{mailto address=$target encode="javascript_charcode"}{$locale.401a}
+			</center>
 			<br />
 			<form name='userform' method='post' action='{$smarty.const.FUSION_SELF}'>
 				<table align='center' cellpadding='0' cellspacing='0' class='tbl'>

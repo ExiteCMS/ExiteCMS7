@@ -97,12 +97,12 @@ $locale['532'] = "Search";
 $locale['550'] = "Thread Reply Notification - {THREAD_SUBJECT}";
 $locale['551'] = "Hello {USERNAME},
 
-A reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at ".html_entity_decode($settings['sitename']).". You can use the following link to view the reply:
+A reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:
 
 {THREAD_URL}
 
 If you no longer wish to watch this thread you can click the 'Tracking Off' button located at the bottom of the thread.
 
 Regards,
-".html_entity_decode($settings['siteusername']).".";
+{SITE_WEBMASTER}.";
 ?>

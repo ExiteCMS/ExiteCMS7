@@ -15,7 +15,7 @@
 {* contact, which is displayed after the user has sent a message           *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title=$locale.400|cat:" "|cat:$settings.siteusername state=$_state style=$_style}
 {if $error|default:0 = 0}
 	<center>
 		<br />

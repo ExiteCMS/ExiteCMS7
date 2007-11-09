@@ -122,7 +122,7 @@ function locale_load($locale_name) {
 					while ($data = dbarray($result)) {
 						fwrite($handle, "\$locale['".$data['locales_key']."'] = \"".$data['locales_value']."\"".";\n");
 					}
-					fwrite($handle, "?>"."\n");
+					fwrite($handle, "?>");
 					fclose($handle);
 				} else {
 					trigger_error("ExiteCMS locales error: no write access to ".$locales_file."!", E_USER_ERROR);

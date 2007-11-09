@@ -12,14 +12,14 @@ We will then email you a new password. When logged in again, choose 'Edit Profil
 $locale['408'] = "Send me a new password";
 $locale['409'] = "New password for ";
 $locale['410'] = "Hello [USER_NAME],\n
-You have or someone has requested a new password to access your ".$settings['sitename']." account.\n
+You have or someone has requested a new password to access your [SITENAME] account.\n
 To change your password please click the following link:\n
 [NEW_PASS_LINK]\n
 Regards,
-".$settings['siteusername'];
+[SITEUSERNAME]";
 $locale['411'] = "Hello [USER_NAME],\n
-Your new password to access your ".$settings['sitename']." account is:\n
+Your new password to access your [SITENAME] account is:\n
 [NEW_PASS]\n
 Regards,
-".$settings['siteusername'];
+[SITEUSERNAME]";
 ?>

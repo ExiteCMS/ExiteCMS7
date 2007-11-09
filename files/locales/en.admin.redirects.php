@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Panel titles
 $locale['400'] = "Add new redirect URL";
 $locale['401'] = "Edit redirect URL";

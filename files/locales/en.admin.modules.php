@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Modules Management
 $locale['400'] = "Modules & Plugins";
 $locale['401'] = "Install";

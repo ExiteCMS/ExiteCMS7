@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Edit Shout
 $locale['400'] = "Edit Comment";
 $locale['401'] = "Save Comment";

@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['c100'] = "Comments";
 $locale['c101'] = "No Comments have been Posted.";
 $locale['c102'] = "Post Comment";

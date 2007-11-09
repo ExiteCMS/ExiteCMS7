@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "FAQ (Frequently Asked Questions)";
 $locale['401'] = "FAQ";
 // Notices

@@ -89,8 +89,8 @@ $locale['061'] = "Username";
 $locale['062'] = "Password";
 $locale['063'] = "Enable extended expiration";
 $locale['064'] = "Login";
-$locale['065'] = "Not a member yet?<br /><a href='".$settings['siteurl']."register.php' class='side'>Click here</a> to register.";
-$locale['066'] = "Forgotten your password?<br />Request a new one <a href='".$settings['siteurl']."lostpassword.php' class='side'>here</a>.";
+$locale['065'] = "Not a member yet?<br /><a href='%sregister.php' class='side'>Click here</a> to register.";
+$locale['066'] = "Forgotten your password?<br />Request a new one <a href='%slostpassword.php' class='side'>here</a>.";
 //
 $locale['080'] = "Edit Profile";
 $locale['081'] = "Private Messages";

@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Delete Thread
 $locale['400'] = "Delete Thread";
 $locale['401'] = "The Thread has been deleted.";

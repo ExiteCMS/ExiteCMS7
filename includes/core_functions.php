@@ -631,18 +631,20 @@ function censorwords($text) {
 // Create a list of files or folders and store them in an array
 function makefilelist($folder, $filter, $sort=true, $type="files", $hidden=false) {
 	$res = array();
-	$filter = explode("|", $filter); 
-	$temp = opendir($folder);
-	while ($file = readdir($temp)) {
-		if (!$hidden && $file{0} == ".") continue;
-		if ($type == "files" && !in_array($file, $filter)) {
-			if (!is_dir($folder.$file)) $res[] = $file;
-		} elseif ($type == "folders" && !in_array($file, $filter)) {
-			if (is_dir($folder.$file)) $res[] = $file;
+	if (is_dir($folder)) {
+		$filter = explode("|", $filter); 
+		$temp = opendir($folder);
+		while ($file = readdir($temp)) {
+			if (!$hidden && $file{0} == ".") continue;
+			if ($type == "files" && !in_array($file, $filter)) {
+				if (!is_dir($folder.$file)) $res[] = $file;
+			} elseif ($type == "folders" && !in_array($file, $filter)) {
+				if (is_dir($folder.$file)) $res[] = $file;
+			}
 		}
+		closedir($temp);
+		if ($sort) sort($res);
 	}
-	closedir($temp);
-	if ($sort) sort($res);
 	return $res;
 }
 

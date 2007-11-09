@@ -8,8 +8,8 @@ $locale['404'] = "Your two Passwords do not match.";
 $locale['405'] = "Invalid password, use alpha numeric characters only.<br />
 Password must be a minimum of 6 characters long.";
 $locale['406'] = "Your email address does not appear to be valid.";
-$locale['407'] = "Sorry, the user name ".(isset($_POST['username']) ? $_POST['username'] : "")." is in use.";
-$locale['408'] = "Sorry, the email address ".(isset($_POST['email']) ? $_POST['email'] : "")." is in use.";
+$locale['407'] = "Sorry, the user name %s is in use.";
+$locale['408'] = "Sorry, the email address %s is in use.";
 $locale['409'] = "An inactive account has been registered with the email address.";
 $locale['410'] = "Incorrect validation code.";
 $locale['411'] = "Your email address or email domain is blacklisted.";
@@ -17,12 +17,12 @@ $locale['412'] = "No mailserver found for domain %s.";
 $locale['413'] = "Mailserver for domain %s doesn't accept email messages.";
 $locale['414'] = "Email address %s does not exist<br>(according to the mailserver %s).";
 // Email Message
-$locale['449'] = "Welcome to ".$settings['sitename'];
-$locale['450'] = "Hello ".(isset($_POST['username']) ? $_POST['username'] : "").",\n
-Welcome to ".$settings['sitename'].". Here are your login details:\n
-Username: ".(isset($_POST['username']) ? $_POST['username'] : "")."
-Fullname: ".(isset($_POST['fullname']) ? $_POST['fullname'] : "")."
-Password: ".(isset($_POST['password1']) ? $_POST['password1'] : "")."\n
+$locale['449'] = "Welcome to %s";
+$locale['450'] = "Hello [USER_NAME],\n
+Welcome to [SITENAME]. Here are your login details:\n
+Username: [USERNAME]
+Fullname: [FULLNAME]
+Password: [PASSWORD]\n
 Please activate your account via the following link:\n";
 // Registration Success/Fail
 $locale['451'] = "Registration complete";
@@ -31,7 +31,7 @@ $locale['453'] = "An administrator will activate your account shortly.";
 $locale['454'] = "Your registration is almost complete, you will receive an email containing your login details along with a link to verify your account.";
 $locale['455'] = "Your account has been verified.";
 $locale['456'] = "Registration Failed";
-$locale['457'] = "Send mail failed, please contact the <a href='mailto:".$settings['siteemail']."'>Site Administrator</a>.";
+$locale['457'] = "Send mail failed, please contact the <a href='mailto:%s'>Site Administrator</a>.";
 $locale['458'] = "Registration failed for the following reason(s):";
 $locale['459'] = "Please Try Again";
 // Register Form

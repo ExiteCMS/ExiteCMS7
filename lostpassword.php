@@ -41,6 +41,8 @@ if (isset($email) && isset($account)) {
 			for ($i=0;$i<=7;$i++) { $new_pass .= chr(rand(97, 122)); }
 			$mailbody = str_replace("[NEW_PASS]", $new_pass, $locale['411']);
 			$mailbody = str_replace("[USER_NAME]", $data['user_name'], $mailbody);
+			$mailbody = str_replace("[SITENAME]", $settings['sitename'], $mailbody);
+			$mailbody = str_replace("[SITEUSERNAME]", $settings['siteusername'], $mailbody);
 			sendemail($data['user_name'],$email,$settings['siteusername'],$settings['siteemail'],$locale['409'].$settings['sitename'],$mailbody);
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_password=md5(md5('$new_pass')) WHERE user_id='".$data['user_id']."'");
 			// define the body panel variables
@@ -62,6 +64,8 @@ if (isset($email) && isset($account)) {
 			$new_pass_link = $settings['siteurl']."lostpassword.php?email=".$data['user_email']."&account=".$data['user_password'];
 			$mailbody = str_replace("[NEW_PASS_LINK]", $new_pass_link, $locale['410']);
 			$mailbody = str_replace("[USER_NAME]", $data['user_name'], $mailbody);
+			$mailbody = str_replace("[SITENAME]", $settings['sitename'], $mailbody);
+			$mailbody = str_replace("[SITEUSERNAME]", $settings['siteusername'], $mailbody);
 			sendemail($data['user_name'],$email,$settings['siteusername'],$settings['siteemail'],$locale['409'].$settings['sitename'],$mailbody);
 			// define the body panel variables
 			$variables['message'] = $locale['401'];

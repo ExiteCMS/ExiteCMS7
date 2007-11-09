@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Delete Submission
 $locale['400'] = "Delete submission";
 $locale['401'] = "The submission has been deleted";

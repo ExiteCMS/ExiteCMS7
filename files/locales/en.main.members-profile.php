@@ -34,9 +34,9 @@ $locale['471'] = " beginning with ";
 // Update Profile Errors
 $locale['480'] = "You must specify a user name, full name & email address.";
 $locale['481'] = "User name contains invalid characters.";
-$locale['482'] = "The user name ".(isset($_POST['user_name']) ? $_POST['user_name'] : "")." is in use.";
+$locale['482'] = "The user name %s is in use.";
 $locale['483'] = "Invalid email address.";
-$locale['484'] = "The email address ".(isset($_POST['user_email']) ? $_POST['user_email'] : "")." is in use.";
+$locale['484'] = "The email address %s is in use.";
 $locale['485'] = "New passwords do not match.";
 $locale['486'] = "Invalid password, use alpha numeric characters only.<br>
 Password must be a minimum of 6 characters long.";

@@ -118,10 +118,10 @@ if ($settings['enable_registration'] == 1) {
 		if (dbrows($result) != 0) $error .= $locale['411']."<br /><br />\n";
 		
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$username'");
-		if (dbrows($result) != 0) $error .= $locale['407']."<br /><br />\n";
+		if (dbrows($result) != 0) $error .= sprintf($locale['407'],(isset($_POST['username']) ? $_POST['username'] : ""))."<br /><br />\n";
 		
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_email='".$email."'");
-		if (dbrows($result) != 0) $error .= $locale['408']."<br /><br />\n";
+		if (dbrows($result) != 0) $error .= sprintf($locale['408'],(isset($_POST['email']) ? $_POST['email'] : ""))."<br /><br />\n";
 		
 		if ($settings['email_verification'] == "1") {
 			$result = dbquery("SELECT * FROM ".$db_prefix."new_users");
@@ -164,8 +164,11 @@ if ($settings['enable_registration'] == 1) {
 				mt_srand((double)microtime()*1000000); $salt = "";
 				for ($i=0;$i<=7;$i++) { $salt .= chr(rand(97, 122)); }
 				$user_code = md5($email.$salt);
-				$activation_url = $settings['siteurl']."register.php?activate=".$user_code;
-				if (sendemail($username,$email,$settings['siteusername'],$settings['siteemail'],$locale['449'], $locale['450'].$activation_url)) {
+				$msg_search = array("[USERNAME]", "[SITENAME]", "[FULLNAME]", "[PASSWORD]");
+				$msg_replace = array((isset($_POST['username']) ? $_POST['username'] : ""), $settings['sitename'], (isset($_POST['fullname']) ? $_POST['fullname'] : ""), (isset($_POST['password1']) ? $_POST['password1'] : ""));
+				$msg = str_replace($msg_search, $msg_replace, $locale['450']);
+				$msg .= $settings['siteurl']."register.php?activate=".$user_code;				
+				if (sendemail($username,$email,$settings['siteusername'],$settings['siteemail'],sprintf($locale['449'],$settings['sitename']), $msg)) {
 					$user_info = serialize(array(
 						"user_name" => $username,
 						"user_fullname" => $fullname,
@@ -178,7 +181,7 @@ if ($settings['enable_registration'] == 1) {
 					$variables['message'] = $locale['454'];
 					$title = $locale['400'];
 				} else {
-					$variables['message'] = $locale['457'];
+					$variables['message'] = sprintf($locale['457'],$settings['siteemail']);
 					$title = $locale['456'];
 				}
 				// define the body panel variables

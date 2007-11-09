@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['r100'] = "Ratings";
 $locale['r101'] = "No Ratings have been Posted.";
 $locale['r102'] = "Remove Rating";

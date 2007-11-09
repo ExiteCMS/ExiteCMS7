@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Panel Management
 $locale['400'] = "Panels";
 $locale['401'] = "Panel";

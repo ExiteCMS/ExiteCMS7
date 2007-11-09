@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['u001'] = "User Name:";
 $locale['u002'] = "Password:";
 $locale['u003'] = "New Password:";

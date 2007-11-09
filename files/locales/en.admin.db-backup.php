@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Database Restore
 $locale['400'] = "Database Restore";
 $locale['401'] = "Error";

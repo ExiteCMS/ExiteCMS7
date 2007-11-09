@@ -58,10 +58,10 @@ if ($step == "add") {
 			$error .= $locale['454']."<br>\n";
 		}	
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$username'");
-		if (dbrows($result) != 0) $error = $locale['453']."<br>\n";
+		if (dbrows($result) != 0) $error = sprintf($locale['453'],(isset($_POST['user_name']) ? $_POST['user_name'] : ""))."<br>\n";
 		
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_email='".$_POST['email']."'");
-		if (dbrows($result) != 0) $error = $locale['455']."<br>\n";
+		if (dbrows($result) != 0) $error = sprintf($locale['455'],(isset($_POST['user_email']) ? $_POST['user_email'] : ""))."<br>\n";
 		
 		if ($error == "") {
 			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_md5id, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '".md5(strtolower($username.$password1))."', '$fullname', '".md5(md5('$password1'))."', '$email', '$hide_email', '', '0000-00-00', '', '', '', '', '', 'Default', '0', '', '', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '0')");
@@ -108,7 +108,7 @@ if ($step == "add") {
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0' WHERE user_id='$user_id'");
 		if ($settings['email_verification'] == "1") {
 			require_once PATH_INCLUDES."sendmail_include.php";
-			sendemail($udata['user_name'],$udata['user_email'],$settings['siteusername'],$settings['siteemail'],$locale['435'].$settings['sitename'],str_replace("[USER_NAME]", $udata['user_name'], $locale['436']));
+			sendemail($udata['user_name'],$udata['user_email'],$settings['siteusername'],$settings['siteemail'],$locale['435'].$settings['sitename'],sprintf($locale['436'], $udata['user_name'], $settings['sitename'], $settings['siteusername']));
 		}
 		$message = $locale['434'];
 	}

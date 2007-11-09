@@ -1,4 +1,4 @@
-<?php
+<?php 
 // News
 $locale['400'] = "Edit News";
 $locale['401'] = "News Item Updated";

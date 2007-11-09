@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Delete Download Category
 $locale['400'] = "Delete Download Category";
 $locale['401'] = "Download Category Cannot be Deleted";
@@ -52,7 +52,7 @@ $locale['486'] = "Version:";
 $locale['487'] = "Filesize:";
 $locale['488'] = "Save Download";
 $locale['489'] = "Update Publication Date";
-$locale['490'] = "Attention! All downloads in '".$locale['455']."' are publicly accessable!";
+$locale['490'] = "Attention! All downloads in '%s' are publicly accessable!";
 // Current Downloads
 $locale['500'] = "Current Downloads";
 $locale['501'] = "Download Item [Click to Test]";

@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['FPM_000'] = "Forum Polls";
 $locale['FPM_001'] = "This allows users to add polls in the forum.";
 

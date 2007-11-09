@@ -1,4 +1,4 @@
-<?php
+<?php 
 $locale['400'] = "Downloads";
 $locale['401'] = "Items:";
 // Download File Information
