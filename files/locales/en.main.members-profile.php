@@ -21,6 +21,7 @@ $locale['423'] = "User Groups";
 $locale['424'] = "Profile Error";
 $locale['425'] = "Account Deactivated";
 $locale['426'] = "Account Suspended";
+$locale['427'] = "Official translator for the languages";
 // Edit Profile
 $locale['440'] = "Edit Profile";
 $locale['441'] = "Profile successfully updated";

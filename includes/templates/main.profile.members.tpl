@@ -197,6 +197,25 @@
 		</table>
 	{/if}
 {/section}
+{section name=id loop=$data.translations}
+	{if $smarty.section.id.first}
+		<br />
+		<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+			<tr>
+				<td class='tbl2'>
+					<b>{$locale.427}</b>
+				</td>
+			</tr>
+			<tr>
+				<td class='tbl1'>
+	{/if}
+					{$data.translations[id].locale_name}{if !$smarty.section.id.last},{/if}
+	{if $smarty.section.id.last}
+				</td>
+			</tr>
+		</table>
+	{/if}
+{/section}
 {include file="_closetable.tpl"}
 {***************************************************************************}
 {* End of template                                                         *}

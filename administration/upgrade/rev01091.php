@@ -41,4 +41,7 @@ $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##CMSconfig SET c
 // change the locale name field to code in the locales table
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locales CHANGE locales_locale locales_code VARCHAR(8) NOT NULL DEFAULT ''");
 
+// add a locale field to the users table
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_locale VARCHAR(8) NOT NULL DEFAULT 'en' AFTER user_theme");
+
 ?>

@@ -55,7 +55,7 @@ if ($action == 'install' && isset($module)) {
 		if (!isset($mod_admin_page) || !isNum($mod_admin_page) || $mod_admin_page < 1 || $mod_admin_page > 4) $mod_admin_page = 4;
 
 		// check if an icon for the admin panel is defined, If not, use the modules and plugins default icon
-		if ($mod_admin_image == "" || !file_exists(PATH_ADMIN."images/".$mod_admin_image)) $mod_admin_image = "modules_panel.gif";
+		if ($mod_admin_image == "" || (!file_exists(PATH_MODULES.$mod_folder."/images/".$mod_admin_image) && !file_exists(PATH_ADMIN."images/".$mod_admin_image))) $mod_admin_image = "modules_panel.gif";
 
 		// add the admin panel of this module
 		$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('".$mod_admin_rights."', '$mod_admin_image', '$mod_title', '".MODULES."$mod_folder/$mod_admin_panel', '".$mod_admin_page."')");

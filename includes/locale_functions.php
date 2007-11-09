@@ -173,18 +173,23 @@ function locale_load($locale_name) {
 			require $locales_file;
 		} else {
 			// otherwise, if the locale is not English, try to load the English version
-			if ($settings['locale'] != "English") {
+			if ($settings['locale_code'] != "en") {
+				// save the current locale
 				$current_locale_code = $settings['locale_code'];
 				$current_locale = $settings['locale'];
-				$result = dbquery("SELECT locale_name FROM ".$db_prefix."locale WHERE locale_code = 'en'");
+				// retrieve the info for the default locale
+				$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = 'en'");
 				if (dbrows($result)) {
 					$data = dbarray($result);
+					$settings['locale_code'] = $data['locale_code'];
 					$settings['locale'] = $data['locale_name'];
 				} else {
 					// system default language missing?
 					trigger_error("ExiteCMS locales error: Can't load the system default language!", E_USER_ERROR);
 				}
+				// try to load the default locale instead
 				locale_load($locale_name);
+				// restore the original locale
 				$settings['locale_code'] = $current_locale_code;
 				$settings['locale'] = $current_locale;
 			} else {

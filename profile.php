@@ -110,6 +110,15 @@ if (isset($lookup)) {
 		}
 	}
 
+	// if the translators table is present, check if this user is a translator
+	$data['translations'] = array();
+	if (dbtable_exists($db_prefix."translators")) {
+		$result = dbquery("SELECT * FROM ".$db_prefix."translators t, ".$db_prefix."locale l WHERE t.translate_locale_code = l.locale_code AND t.translate_translator = '".$data['user_id']."'");
+		while ($data2 = dbarray($result)) {
+			$data['translations'][] = $data2;
+		};
+	}
+
 	// define the body panel variables
 	$variables['data'] = $data;
 	$template_panels[] = array('type' => 'body', 'name' => 'profile', 'template' => 'main.profile.members.tpl', 'locale' => array("main.members-profile", "main.user_fields"));

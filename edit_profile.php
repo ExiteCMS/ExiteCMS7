@@ -51,7 +51,6 @@ if (isset($_POST['update_profile'])) {
 	$result = dbquery("SELECT locale_code, locale_name FROM ".$db_prefix."locale WHERE locale_id = '".$_POST['user_locale']."'");
 	if ($data = dbarray($result)) {
 		if ($data['locale_name'] != $settings['locale']) {
-			die('TODO: setting locale cookie: '.$data['locale_code']);
 			setcookie("locale", $data['locale_code'], time() + 31536000, "/", "", "0");
 		}
 	}
