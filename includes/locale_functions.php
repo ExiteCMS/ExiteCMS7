@@ -98,34 +98,66 @@ function locale_load($locale_name) {
 	if (dbtable_exists($db_prefix."locales")) {
 
 		// get the last update date from the locale strings table
-		$data = dbarray(dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."'"));
+		$result = dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."'");
 
 		// if found...
-		if ($data['last_update']) {
+		if ($data = dbarray($result)) {
+		
+			// and there is data in the database...
+			if (!is_null($data['last_update'])) {
 
-			// if the locales cache does not exist or is out of date...
-			if (!file_exists($locales_file) || filemtime($locales_file) < $data['last_update']) {
-
-				// compile the locales cache file from the locales table
-				if ($handle = @fopen($locales_file, 'w')) {
-
-					// get the locale records for the selected locale and this locale_name
-					$result = dbquery("SELECT * FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."' ORDER BY locales_key");
-					if (dbrows($result)) {
-						fwrite($handle, "<?php"."\n");
-						fwrite($handle, "// ----------------------------------------------------------"."\n");
-						fwrite($handle, "// locale : ".$settings['locale']."\n");
-						fwrite($handle, "// name   : ".$locale_name."\n");
-						fwrite($handle, "// date   : ".date("D M j Y, G:i:s T")."\n");
-						fwrite($handle, "// ----------------------------------------------------------"."\n");
+				// if the locales cache does not exist or is out of date...
+				if (!file_exists($locales_file) || filemtime($locales_file) < $data['last_update']) {
+	
+					// get the translator information for each of the locale found
+					$translators = "ExiteCMS team, ";
+					$result2 = dbquery("SELECT t.*, u.user_id, u.user_name FROM ".$db_prefix."translators t, ".$db_prefix."users u WHERE t.translate_locale_code = '".$settings['locale_code']."' AND t.translate_translator = u.user_id ORDER BY u.user_name");
+					while ($data2 = dbarray($result2)) {
+						$translators .= $data2['user_name'].",";
 					}
-					while ($data = dbarray($result)) {
-						fwrite($handle, "\$locale['".$data['locales_key']."'] = \"".$data['locales_value']."\"".";\n");
+					// compile the locales cache file from the locales table
+					if ($handle = @fopen($locales_file, 'w')) {
+
+						// get the locale records for the selected locale and this locale_name
+						$result2 = dbquery("SELECT * FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."' ORDER BY locales_key");
+						if (dbrows($result2)) {
+							fwrite($handle, "<?php"."\n");
+							fwrite($handle, "// ----------------------------------------------------------"."\n");
+							fwrite($handle, "// locale       : ".$settings['locale']."\n");
+							fwrite($handle, "// locale name  : ".$locales_name."\n");
+							fwrite($handle, "// generated on : ".date("D M j Y, G:i:s T")."\n");
+							fwrite($handle, "// translators  : ".substr($translators,0,-1)."\n");
+							fwrite($handle, "// ----------------------------------------------------------"."\n");
+						}
+						while ($localerec = dbarray($result2)) {
+							// check if we're dealing with an array
+							if (substr($localerec['locales_value'],0,8) == "#ARRAY#\n") {
+								// generate the array definition
+								fwrite($handle, "\$locale['".$localerec['locales_key']."'] = array();\n");
+								// extract the array
+								$localerec['locales_value'] = unserialize(substr($localerec['locales_value'],8));
+								// loop through the elements
+								foreach($localerec['locales_value'] as $key => $value) {
+									if (is_array($value)) {
+										// multi-dimensional array
+										fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key'] = array();\n");
+										foreach($value as $key2 => $value2) {
+											fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key']['$key2'] = \"".str_replace($search, $replace, $value2)."\"".";\n");
+										}
+									} else {
+										// single-dimensional array
+										fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key'] = \"".str_replace($search, $replace, $value)."\"".";\n");
+									}
+								}
+							} else {
+								fwrite($handle, "\$locale['".$localerec['locales_key']."'] = \"".str_replace($search, $replace, $localerec['locales_value'])."\"".";\n");
+							}
+						}
+						fwrite($handle, "?>");
+						fclose($handle);
+					} else {
+						trigger_error("ExiteCMS locales error: no write access to ".$locales_file."!", E_USER_ERROR);
 					}
-					fwrite($handle, "?>");
-					fclose($handle);
-				} else {
-					trigger_error("ExiteCMS locales error: no write access to ".$locales_file."!", E_USER_ERROR);
 				}
 			}
 		}
