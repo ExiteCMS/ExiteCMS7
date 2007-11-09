@@ -1,4 +1,10 @@
-<?php 
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : main.ratings
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['r100'] = "Ratings";
 $locale['r101'] = "No Ratings have been Posted.";
 $locale['r102'] = "Remove Rating";
@@ -11,7 +17,6 @@ $locale['r108'] = "No Votes";
 $locale['r109'] = "Vote";
 $locale['r110'] = "Votes";
 $locale['r111'] = "on";
-// Rating Options
 $locale['r120'] = "Awesome!";
 $locale['r121'] = "Very Good";
 $locale['r122'] = "Good";

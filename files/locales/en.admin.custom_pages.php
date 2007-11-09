@@ -1,4 +1,10 @@
-<?php 
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.custom_pages
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Edit Custom Page";
 $locale['401'] = "Page Updated";
 $locale['402'] = "The url to this page is: ";
@@ -11,11 +17,9 @@ $locale['408'] = "Page Deleted";
 $locale['409'] = "Delete this custom page?";
 $locale['410'] = "Please specify a page title";
 $locale['411'] = "You can not delete the 404 error page";
-// edit/delete existing custom page
 $locale['420'] = "Current Custom Pages";
 $locale['421'] = "Edit";
 $locale['422'] = "Delete";
-// custom_pages form
 $locale['430'] = "Page Title:";
 $locale['431'] = "Access: ";
 $locale['432'] = "Page Content:";

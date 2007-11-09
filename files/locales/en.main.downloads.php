@@ -1,7 +1,12 @@
-<?php 
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : main.downloads
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Downloads";
 $locale['401'] = "Items:";
-// Download File Information
 $locale['410'] = "[NEW]";
 $locale['411'] = "License:";
 $locale['412'] = "O/S:";
@@ -13,7 +18,6 @@ $locale['417'] = "Sub Download Categories";
 $locale['418'] = "Download Categories";
 $locale['419'] = "Size:";
 $locale['420'] = "(link)";
-// Downloads Notices
 $locale['430'] = "No Download Categories defined";
 $locale['431'] = "No Downloads have been added to this Category";
 ?>

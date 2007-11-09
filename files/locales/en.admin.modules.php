@@ -1,9 +1,12 @@
-<?php 
-// Modules Management
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.modules
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Modules & Plugins";
 $locale['401'] = "Install";
-
-// Headers
 $locale['403'] = "Filter on status";
 $locale['404'] = "Plugin:";
 $locale['405'] = "Module:";
@@ -27,7 +30,6 @@ $locale['422'] = "Upgrade";
 $locale['423'] = "Go";
 $locale['424'] = "There are no modules and plugins available for installation";
 $locale['425'] = "There are no modules and plugins available that match your filter";
-// Installer Module errors
 $locale['mod001'] = "This module requires at least version %s of ExiteCMS.<br />";
 $locale['mod002'] = "This module is written for version %s of ExiteCMS. Please ask the author for an upgrade.<br />";
 $locale['mod003'] = "This module requires a minumum ExiteCMS revision level of %s.<br />";

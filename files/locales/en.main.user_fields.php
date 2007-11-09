@@ -1,4 +1,10 @@
-<?php 
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : main.user_fields
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['u001'] = "User Name:";
 $locale['u002'] = "Password:";
 $locale['u003'] = "New Password:";
@@ -27,7 +33,6 @@ $locale['u025'] = "Country:";
 $locale['u026'] = "Newsletters format:";
 $locale['u027'] = "Browser Time";
 $locale['u028'] = "Language";
-// profile panel info
 $locale['u030'] = "Panel state:";
 $locale['u031'] = "Panel name:";
 $locale['u032'] = "Hidden";
@@ -35,11 +40,9 @@ $locale['u033'] = "Open";
 $locale['u034'] = "Closed";
 $locale['u035'] = "";
 $locale['u036'] = "";
-// newsletters
 $locale['u037'] = "Html";
 $locale['u038'] = "Text";
 $locale['u039'] = "No mailings";
-// Items shown in profiles
 $locale['u040'] = "Date Joined:";
 $locale['u041'] = "Shoutbox Posts:";
 $locale['u042'] = "Comments Posted:";
@@ -57,9 +60,7 @@ $locale['u053'] = "PM";
 $locale['u054'] = "Posts unread:";
 $locale['u055'] = "View";
 $locale['u056'] = "Unknown";
-// Profile Options
 $locale['u060'] = "Send Private Message";
 $locale['u061'] = "View all posts of this member";
-// custom fields 
 $locale['u901'] = "Full Name";
 ?>

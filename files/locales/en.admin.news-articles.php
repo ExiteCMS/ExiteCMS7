@@ -1,5 +1,10 @@
-<?php 
-// News
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.news-articles
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Edit News";
 $locale['401'] = "News Item Updated";
 $locale['402'] = "Return to News Admin";
@@ -28,7 +33,6 @@ $locale['424'] = "Enable Ratings";
 $locale['425'] = "- None -";
 $locale['426'] = "Make this news item sticky";
 $locale['427'] = "Post date:";
-// News Categories
 $locale['430'] = "Delete News Category";
 $locale['431'] = "News Category Cannot be Deleted";
 $locale['432'] = "There are News items linked to this Category";
@@ -43,7 +47,6 @@ $locale['440'] = "News Categories";
 $locale['441'] = "Edit";
 $locale['442'] = "Delete";
 $locale['443'] = "No News Categories defined";
-// Article Categories
 $locale['450'] = "Delete Articles Category";
 $locale['451'] = "Articles Category Cannot be Deleted";
 $locale['452'] = "There are Articles linked to this Category";
@@ -67,7 +70,6 @@ $locale['469'] = "Article Subject";
 $locale['470'] = "Article Date";
 $locale['471'] = "Ascending";
 $locale['472'] = "Descending";
-// Articles
 $locale['500'] = "Edit Article";
 $locale['501'] = "Article Updated";
 $locale['502'] = "Return to Articles Admin";
@@ -90,18 +92,13 @@ $locale['518'] = "There are no Article Categories defined";
 $locale['519'] = "You must define at least one category before you can add any Articles";
 $locale['520'] = "Click here";
 $locale['521'] = " to go to Article Categories";
-// Latest news
 $locale['540'] = "Latest News selection";
 $locale['541'] = "Latest News Headlines:";
 $locale['542'] = "Latest News Items:";
 $locale['543'] = "News Item";
 $locale['544'] = "Update";
-$locale['545'] = "On this page you define the sequence in which the news articles are displayed on the news homepage. 
-					First, all headlines you selected are displayed. After that, the latest news items. Both in the order
-					in which they are selected.<br />If the checkbox below is not checked, all other news items that are not
-					expired will be shown next.";
+$locale['545'] = "On this page you define the sequence in which the news articles are displayed on the news homepage. \n					First, all headlines you selected are displayed. After that, the latest news items. Both in the order\n					in which they are selected.<br />If the checkbox below is not checked, all other news items that are not\n					expired will be shown next.";
 $locale['546'] = "Hide all non-selected news items from the Latest News page";
-// Popup Error/Warning Messages
 $locale['550'] = "Please specify a subject";
 $locale['551'] = "Delete this News?";
 $locale['552'] = "Delete this Article?";

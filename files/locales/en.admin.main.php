@@ -1,5 +1,10 @@
-<?php 
-// Admin Links
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.main
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['200'] = "CMS Administration for";
 $locale['201'] = "Administrators";
 $locale['202'] = "Article Categories";
@@ -38,7 +43,6 @@ $locale['234'] = "Private Message Options";
 $locale['235'] = "News Categories";
 $locale['236'] = "Language Settings";
 $locale['237'] = "Webmaster Toolbox for";
-// Website Statistics
 $locale['250'] = "Website Statistics";
 $locale['251'] = "Registered Members:";
 $locale['252'] = "Unactivated Members:";

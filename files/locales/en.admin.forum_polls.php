@@ -1,8 +1,12 @@
-<?php 
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.forum_polls
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['FPM_000'] = "Forum Polls";
 $locale['FPM_001'] = "This allows users to add polls in the forum.";
-
-// forum_polls.php
 $locale['FPM_010'] = "Forum Poll Administration";
 $locale['FPM_011'] = "Poll Terminated";
 $locale['FPM_012'] = "Poll Deleted";
@@ -47,8 +51,6 @@ $locale['FPM_050'] = "Login to Vote";
 $locale['FPM_051'] = "Select";
 $locale['FPM_052'] = "User Groups";
 $locale['FPM_053'] = "Users";
-
-// includes/post.php
 $locale['FPM_100'] = "Poll (Optional)";
 $locale['FPM_101'] = "Question";
 $locale['FPM_102'] = "Use Thread Subject";
@@ -72,8 +74,6 @@ $locale['FPM_119'] = "Remove Poll";
 $locale['FPM_120'] = "Reset the Start Date";
 $locale['FPM_121'] = "Delete all Votes";
 $locale['FPM_122'] = "Poll type";
-
-// includes/view.php
 $locale['FPM_200'] = "(Poll)";
 $locale['FPM_201'] = "Poll: ";
 $locale['FPM_202'] = "Vote";
@@ -84,12 +84,7 @@ $locale['FPM_206'] = "Began: ";
 $locale['FPM_207'] = "Ended: ";
 $locale['FPM_208'] = "Ends: ";
 $locale['FPM_209'] = "No End Date Set";
-
-// poll types
 $locale['FPM_300'] = "Anonymous - only show a percentage result";
 $locale['FPM_301'] = "Public - show who voted for which item";
-
-// messages
 $locale['FPM_400'] = "For the forums marked <font color='green'>green</font>, special settings have been defined. For forums marked <font color='red'>red</font>, global settings are used";
-
 ?>

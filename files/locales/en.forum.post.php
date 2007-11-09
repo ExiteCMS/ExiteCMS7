@@ -1,5 +1,10 @@
 <?php
-// Post Titles
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : forum.post
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Preview Thread";
 $locale['401'] = "Post Thread";
 $locale['402'] = "Preview Reply";
@@ -18,7 +23,6 @@ $locale['415'] = "Reply to Post";
 $locale['416'] = "Renew Post";
 $locale['417'] = "Cancel";
 $locale['418'] = "Cancel Post";
-// Post Preview
 $locale['420'] = "No Subject";
 $locale['421'] = "No Message, Post will be rejected if you do not include a Message";
 $locale['422'] = "Author:";
@@ -30,12 +34,10 @@ $locale['427'] = "Edited by ";
 $locale['428'] = " on ";
 $locale['429'] = " wrote:";
 $locale['430'] = "download(s)";
-// post flooding messages
 $locale['431'] = "Error: This forum is protected against post flooding.";
 $locale['432'] = "YOU ARE LOGGED OUT. YOUR ACCOUNT IS NOW SUSPENDED.";
 $locale['433'] = "You are allowed to post one message per %u seconds";
 $locale['434'] = "Suspended due to post flooding";
-// Post Error/Success
 $locale['439'] = "Your Post has been cancelled";
 $locale['440'] = "Unknown error %u detected while uploading %s.";
 $locale['440a'] = "Attachment file type not allowed.";
@@ -61,7 +63,6 @@ $locale['456'] = "This post has been moved to the selected thread";
 $locale['457'] = "Back to your post";
 $locale['458'] = "Error: Your have already posted this message. Did you use the back button?";
 $locale['459'] = "The post time of this post has been set to the current time";
-//// Post Form
 $locale['460'] = "Subject";
 $locale['461'] = "Message";
 $locale['462'] = "Font Color: ";
@@ -74,9 +75,25 @@ $locale['468'] = "Smileys";
 $locale['469'] = "Add a Poll";
 $locale['470'] = "Sticky Post";
 $locale['471'] = "Upload attachment";
-$locale['472'] = array('maroon', 'red', 'orange', 'brown', 'yellow', 'green', 'lime', 'olive', 'cyan', 'blue', 'navy', 'purple', 'violet', 'black', 'gray', 'silver', 'white');
+$locale['472'] = array();
+$locale['472']['0'] = "maroon";
+$locale['472']['1'] = "red";
+$locale['472']['2'] = "orange";
+$locale['472']['3'] = "brown";
+$locale['472']['4'] = "yellow";
+$locale['472']['5'] = "green";
+$locale['472']['6'] = "lime";
+$locale['472']['7'] = "olive";
+$locale['472']['8'] = "cyan";
+$locale['472']['9'] = "blue";
+$locale['472']['10'] = "navy";
+$locale['472']['11'] = "purple";
+$locale['472']['12'] = "violet";
+$locale['472']['13'] = "black";
+$locale['472']['14'] = "gray";
+$locale['472']['15'] = "silver";
+$locale['472']['16'] = "white";
 $locale['473'] = "Comments (Max.length: 255 characters):";
-// Post Form Options
 $locale['480'] = " Make this Thread Sticky";
 $locale['481'] = " Show My Signature in this Post";
 $locale['482'] = " Delete this Post";
@@ -86,23 +103,11 @@ $locale['485'] = " Notify me when a reply is posted";
 $locale['486'] = " Move post to forum";
 $locale['487'] = " Move post to thread";
 $locale['488'] = " Remove uploaded attachment:";
-// Post Access Violation
 $locale['500'] = "You cannot edit this post.";
 $locale['501'] = "You cannot move a post that has a poll attached to it.";
-// Search Forum Form
 $locale['530'] = "Search Forum";
 $locale['531'] = "Search Keyword(s)";
 $locale['532'] = "Search";
-// Forum Notification Email
 $locale['550'] = "Thread Reply Notification - {THREAD_SUBJECT}";
-$locale['551'] = "Hello {USERNAME},
-
-A reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:
-
-{THREAD_URL}
-
-If you no longer wish to watch this thread you can click the 'Tracking Off' button located at the bottom of the thread.
-
-Regards,
-{SITE_WEBMASTER}.";
+$locale['551'] = "Hello {USERNAME},\n\nA reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:\n\n{THREAD_URL}\n\nIf you no longer wish to watch this thread you can click the 'Tracking Off' button located at the bottom of the thread.\n\nRegards,\n{SITE_WEBMASTER}.";
 ?>

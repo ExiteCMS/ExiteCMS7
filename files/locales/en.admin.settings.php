@@ -1,6 +1,11 @@
-<?php 
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.settings
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Settings";
-// Site Settings
 $locale['401'] = "Main";
 $locale['402'] = "Site name:";
 $locale['403'] = "Site root directory:";
@@ -27,7 +32,6 @@ $locale['423'] = "All";
 $locale['424'] = "The number of news items per page can not be smaller than the number of headlines";
 $locale['425'] = "Required when the CMS is installed in a subdirectory of the website document root";
 $locale['426'] = "Download Panel Layout:";
-// Time & Date Settings
 $locale['450'] = "Time and Date";
 $locale['451'] = "Short date format:";
 $locale['452'] = "Long date format:";
@@ -36,7 +40,6 @@ $locale['454'] = "Sub-header date format:";
 $locale['455'] = "-- Select a Format --";
 $locale['456'] = "Offset between server time and display time:";
 $locale['457'] = "( Server timezone is <b>%s</b> )";
-// Forum Settings
 $locale['500'] = "Forum";
 $locale['501'] = "Latest active forum threads panel:";
 $locale['502'] = "On";
@@ -59,7 +62,6 @@ $locale['519'] = "Enable forum thread notification:";
 $locale['520'] = "Show members location:";
 $locale['521'] = "Maximum size for an attached image:";
 $locale['522'] = "Larger images will be converted to thumbnails";
-// Registration Settings
 $locale['550'] = "Registration";
 $locale['551'] = "Enable registration system?";
 $locale['552'] = "Use email verification for registration?";
@@ -68,7 +70,6 @@ $locale['554'] = "Validation code display method:";
 $locale['555'] = "Image";
 $locale['556'] = "Text";
 $locale['557'] = "New members activated by admin?";
-// Image Settings
 $locale['600'] = "Image";
 $locale['601'] = "Thumb size:";
 $locale['602'] = "Photo size:";
@@ -80,7 +81,6 @@ $locale['607'] = "GD1";
 $locale['608'] = "GD2";
 $locale['609'] = "Thumbs per row:";
 $locale['610'] = "Thumbs per page:";
-// Other Settings
 $locale['650'] = "Miscellaneous";
 $locale['651'] = "Bad words list:";
 $locale['652'] = "Enter one word per line.";
@@ -102,7 +102,6 @@ $locale['667'] = "In seconds.Only one post per interval is allowed.";
 $locale['668'] = "Use external download statistics:";
 $locale['669'] = "Maintenance mode background color:";
 $locale['670'] = "If yes, an external program has to update the download counters.";
-// Private Message Settings
 $locale['700'] = "Private Messages";
 $locale['701'] = "Inbox message limit:";
 $locale['702'] = "Outbox message limit:";
@@ -123,15 +122,12 @@ $locale['718'] = "Headers only";
 $locale['719'] = "Message details";
 $locale['720'] = "Enable group messages for:";
 $locale['721'] = "Show all recipients of a message:";
-// Save Settings
 $locale['750'] = "Save Settings";
 $locale['751'] = "<< Prev";
 $locale['752'] = "Next >>";
-// Other Settings
 $locale['800'] = "Prune forums";
 $locale['801'] = "Posts deleted: ";
 $locale['802'] = "Threads deleted: ";
 $locale['803'] = "Attachments deleted: ";
-// Languages
 $locale['850'] = "Languages";
 ?>

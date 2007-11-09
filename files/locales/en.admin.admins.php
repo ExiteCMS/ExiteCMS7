@@ -1,4 +1,10 @@
 <?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.admins
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Administrators";
 $locale['401'] = "User Name";
 $locale['402'] = "Admin Level";
@@ -7,11 +13,9 @@ $locale['404'] = "Primary Admin";
 $locale['405'] = "No Rights assigned";
 $locale['406'] = "Edit";
 $locale['407'] = "Remove";
-// Edit admin rights
 $locale['410'] = "Edit rights";
 $locale['411'] = "Assign all admin rights to this member";
 $locale['412'] = "Apply %s privileges";
-// Edit Admin Rights
 $locale['420'] = "Edit the rights of";
 $locale['421'] = "Content Admin";
 $locale['422'] = "User Admin";

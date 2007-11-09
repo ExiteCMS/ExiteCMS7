@@ -1,5 +1,10 @@
-<?php 
-// Forum Index
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : forum.main
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Discussion Forums";
 $locale['401'] = "Forum";
 $locale['402'] = "Threads";
@@ -14,9 +19,7 @@ $locale['410'] = "Forum with no new posts since last visit.";
 $locale['411'] = "Moderated by ";
 $locale['412'] = "Page: ";
 $locale['413'] = "RSS Feed";
-// Preview Forum Post
 $locale['430'] = "download(s)";
-// View Forum
 $locale['450'] = "View Forum";
 $locale['451'] = "Subject";
 $locale['452'] = "Author";
@@ -29,7 +32,6 @@ $locale['458'] = "Open Thread with no new posts";
 $locale['459'] = "Locked Thread.";
 $locale['460'] = "Sticky Thread.";
 $locale['461'] = "You are not authorised to view this Forum.";
-// View Thread
 $locale['500'] = "View Thread";
 $locale['501'] = "Author";
 $locale['502'] = "Posts:";
@@ -49,7 +51,6 @@ $locale['515'] = "Stop tracking this thread";
 $locale['516'] = "Track this thread by email";
 $locale['517'] = "Toggle smileys";
 $locale['518'] = "pixels";
-// Moderator Options
 $locale['520'] = "Moderator Options:";
 $locale['521'] = "Delete Thread";
 $locale['522'] = "Lock Thread";
@@ -61,11 +62,8 @@ $locale['527'] = "Renew Thread";
 $locale['528'] = "Go";
 $locale['529'] = "Merge Threads";
 $locale['530'] = "Suspended due to post flooding";
-// Jump to Forum
 $locale['540'] = "Jump to Forum:";
-// Search Forum
 $locale['550'] = "Search";
-// Image Alt attributes
 $locale['560'] = "New Posts";
 $locale['561'] = "No New Posts";
 $locale['562'] = "Hot Thread";

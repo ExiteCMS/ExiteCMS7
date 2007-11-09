@@ -1,5 +1,10 @@
-<?php 
-// Panel Management
+<?php
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : admin.panels
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Panels";
 $locale['401'] = "Panel";
 $locale['402'] = "Move";
@@ -8,14 +13,12 @@ $locale['404'] = "Type";
 $locale['405'] = "Access";
 $locale['406'] = "Options";
 $locale['407'] = "State";
-// Panel Settings
 $locale['420'] = "Left Column Panels";
 $locale['421'] = "Upper Body Panels";
 $locale['422'] = "Right Column panels";
 $locale['423'] = "File";
 $locale['424'] = "Dynamic";
 $locale['425'] = "Lower Body Panels";
-// Panel Options
 $locale['430'] = "Move to the left-side panel";
 $locale['431'] = "Move to the right-side panel";
 $locale['432'] = "Move up";
@@ -35,7 +38,6 @@ $locale['445'] = "Move to the upper body section";
 $locale['446'] = "Move to lower body section";
 $locale['447'] = "No";
 $locale['448'] = "Yes";
-// Add/Edit Panel Form
 $locale['450'] = "Edit Panel";
 $locale['451'] = "Add Panel";
 $locale['452'] = "Panel Name:";
@@ -52,17 +54,14 @@ $locale['462'] = "Default state:";
 $locale['463'] = "Open";
 $locale['464'] = "Closed";
 $locale['465'] = "Panel Template:";
-// Panel Location
 $locale['466'] = "Left Column";
 $locale['467'] = "Upper Center";
 $locale['468'] = "Right Column";
 $locale['469'] = "Lower Center";
-// Update/Add new Panel Errors
 $locale['470'] = "Panel name not defined";
 $locale['471'] = "Panel name in use";
 $locale['472'] = "Panel content not defined";
 $locale['473'] = "Panel filename not defined";
-// Update/Add new Panel Success/Fail
 $locale['480'] = "Update Panel";
 $locale['481'] = "Could not update Panel";
 $locale['482'] = "Panel updated";

@@ -1,5 +1,10 @@
 <?php
-// Standard
+// ----------------------------------------------------------
+// locale       : English
+// locale name  : main.pm
+// generated on : Fri Nov 9 2007, 22:33:51 CET
+// translators  : ExiteCMS team, WanWizard
+// ----------------------------------------------------------
 $locale['400'] = "Private Messages";
 $locale['401'] = "New message";
 $locale['402'] = "Inbox";
@@ -48,9 +53,25 @@ $locale['444'] = "Quote";
 $locale['445'] = "of";
 $locale['446'] = "Forward";
 $locale['447'] = "Font Color";
-$locale['448'] = array('maroon', 'red', 'orange', 'brown', 'yellow', 'green', 'lime', 'olive', 'cyan', 'blue', 'navy', 'purple', 'violet', 'black', 'gray', 'silver', 'white');
+$locale['448'] = array();
+$locale['448']['0'] = "maroon";
+$locale['448']['1'] = "red";
+$locale['448']['2'] = "orange";
+$locale['448']['3'] = "brown";
+$locale['448']['4'] = "yellow";
+$locale['448']['5'] = "green";
+$locale['448']['6'] = "lime";
+$locale['448']['7'] = "olive";
+$locale['448']['8'] = "cyan";
+$locale['448']['9'] = "blue";
+$locale['448']['10'] = "navy";
+$locale['448']['11'] = "purple";
+$locale['448']['12'] = "violet";
+$locale['448']['13'] = "black";
+$locale['448']['14'] = "gray";
+$locale['448']['15'] = "silver";
+$locale['448']['16'] = "white";
 $locale['449'] = "(new message)";
-// Search Options
 $locale['450'] = "Search and Sort Options";
 $locale['451'] = "Search / Sort";
 $locale['452'] = "Clear";
@@ -67,8 +88,6 @@ $locale['462'] = "Subject";
 $locale['463'] = "Message";
 $locale['464'] = "Sender";
 $locale['465'] = "Date/Time received";
-
-// Post message
 $locale['467'] = "Click to remove recipient";
 $locale['468'] = "Add Member";
 $locale['469'] = "Add Group";
@@ -85,8 +104,6 @@ $locale['475'] = "Attachment upload";
 $locale['476'] = " Remove uploaded attachment:";
 $locale['477'] = " Delete attachment:";
 $locale['478'] = " Exclude attachment:";
-
-// Error Messages
 $locale['480'] = "Error";
 $locale['481'] = "Wrong Message ID";
 $locale['482'] = "Wrong Member ID";
@@ -98,8 +115,6 @@ $locale['487'] = "Folder warnings";
 $locale['488'] = "Your inbox folder is full. Upon receiving a new message, the oldest one will be deleted.";
 $locale['489'] = "Your outbox folder is full. When sending a new message, the oldest one will be deleted.";
 $locale['490'] = "Your archive folder is full. Until you clean up, you can no longer archive messages.";
-
-// Tooltips
 $locale['500'] = "Click to write a new message";
 $locale['501'] = "Click to view your received messages";
 $locale['502'] = "Click to view your sent messages";
@@ -110,37 +125,25 @@ $locale['506'] = "Click to view the senders profile";
 $locale['507'] = "Click to mark all messages";
 $locale['508'] = "Click to unmark all messages";
 $locale['509'] = "Click to view messages from all senders";
-$locale['510'] = "Click to view messages from senders beginning with %s";
-$locale['511'] = "Click to move the marked messages to your savebox";
-$locale['512'] = "Click to move the marked messages to your inbox";
-$locale['513'] = "Click to set the marked messages as read";
-$locale['514'] = "Click to set the marked messages as unread";
-$locale['515'] = "Click to delete the marked messages";
-$locale['516'] = "Click to make configuration changes";
-$locale['517'] = "Click to send this member a new private message";
-
-// attachments
 $locale['510'] = " attached the following file(s):";
 $locale['511'] = "pixels";
 $locale['512'] = "<font color='red'>file not found!</font>";
 $locale['513'] = "download(s)";
-
-// Read message
+$locale['514'] = "Click to set the marked messages as unread";
+$locale['515'] = "Click to delete the marked messages";
+$locale['516'] = "Click to make configuration changes";
+$locale['517'] = "Click to send this member a new private message";
 $locale['540'] = "Location:";
 $locale['541'] = "Joined:";
 $locale['542'] = "Read";
 $locale['543'] = "not opened";
 $locale['544'] = "unknown";
-
-// buttons
 $locale['560'] = "pm";
 $locale['561'] = "msn";
 $locale['562'] = "icq";
 $locale['563'] = "web";
 $locale['564'] = "aim";
 $locale['565'] = "skype";
-
-// Options
 $locale['620'] = "Options";
 $locale['621'] = "Notify me via email when I receive a new PM:";
 $locale['622'] = "Save a copy of my message in the %s folder:";
