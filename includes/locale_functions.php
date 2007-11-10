@@ -110,8 +110,8 @@ function locale_load($locale_name) {
 				if (!file_exists($locales_file) || filemtime($locales_file) < $data['last_update']) {
 	
 					// get the translator information for each of the locale found
-					$translators = "ExiteCMS team,";
-					if (dbtable_exists($db_prefix."translation")) {
+					if (dbtable_exists($db_prefix."translators")) {
+						$translators = "ExiteCMS team,";
 						$result2 = dbquery("SELECT t.*, u.user_id, u.user_name FROM ".$db_prefix."translators t, ".$db_prefix."users u WHERE t.translate_locale_code = '".$settings['locale_code']."' AND t.translate_translator = u.user_id ORDER BY u.user_name");
 						while ($data2 = dbarray($result2)) {
 							$translators .= $data2['user_name'].",";
@@ -128,7 +128,9 @@ function locale_load($locale_name) {
 							fwrite($handle, "// locale       : ".$settings['locale']."\n");
 							fwrite($handle, "// locale name  : ".$locale_name."\n");
 							fwrite($handle, "// generated on : ".date("D M j Y, G:i:s T")."\n");
-							fwrite($handle, "// translators  : ".substr($translators,0,-1)."\n");
+							if (!empty($translators)) {
+								fwrite($handle, "// translators  : ".substr($translators,0,-1)."\n");
+							}
 							fwrite($handle, "// ----------------------------------------------------------"."\n");
 						}
 
