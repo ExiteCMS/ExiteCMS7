@@ -111,9 +111,11 @@ function locale_load($locale_name) {
 	
 					// get the translator information for each of the locale found
 					$translators = "ExiteCMS team,";
-					$result2 = dbquery("SELECT t.*, u.user_id, u.user_name FROM ".$db_prefix."translators t, ".$db_prefix."users u WHERE t.translate_locale_code = '".$settings['locale_code']."' AND t.translate_translator = u.user_id ORDER BY u.user_name");
-					while ($data2 = dbarray($result2)) {
-						$translators .= $data2['user_name'].",";
+					if (dbtable_exists($db_prefix."translation")) {
+						$result2 = dbquery("SELECT t.*, u.user_id, u.user_name FROM ".$db_prefix."translators t, ".$db_prefix."users u WHERE t.translate_locale_code = '".$settings['locale_code']."' AND t.translate_translator = u.user_id ORDER BY u.user_name");
+						while ($data2 = dbarray($result2)) {
+							$translators .= $data2['user_name'].",";
+						}
 					}
 					// compile the locales cache file from the locales table
 					if ($handle = @fopen($locales_file, 'w')) {
