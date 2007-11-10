@@ -266,7 +266,7 @@ function load_templates($_type='', $_name='') {
 		
 			//if this is a tools template...
 			$tpl_parts = explode(".", $panel['template']);
-			if ($tpl_parts[0] == "tools") {
+			if ($tpl_parts[0] == "admin" && $tpl_parts[1] == "tools") {
 				// store the current template directories, we need to restore them later
 				$td = $template->template_dir;
 				$template->template_dir = array_merge(array(PATH_ADMIN.'tools/templates'), $template->template_dir);

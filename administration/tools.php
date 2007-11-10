@@ -35,7 +35,13 @@ foreach($dirlist as $module) {
 	// skip all non-PHP files
 	if (substr($module,-4) != ".php") continue;
 	// temp array to store the module info
-	$temp = array('admin_link' => ADMIN."tools/".$module, 'admin_image' => ADMIN."images/tools.gif");
+	if (substr($module,0,14) == "language_pack_") {
+		// language packs
+		$temp = array('admin_link' => ADMIN."tools/".$module, 'admin_image' => ADMIN."images/settings_lang.gif");
+	} else {
+		// other toolbox modules
+		$temp = array('admin_link' => ADMIN."tools/".$module, 'admin_image' => ADMIN."images/tools.gif");
+	}
 	// strip the extension, sanitize the name, use it as title
 	$temp['admin_title'] = ucwords(str_replace("_", " ", substr($module,0,-4)));
 	// store the module info for the template

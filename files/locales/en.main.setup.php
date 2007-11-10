@@ -2,8 +2,8 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Fri Nov 9 2007, 22:33:51 CET
-// translators  : ExiteCMS team, WanWizard
+// generated on : Sat Nov 10 2007, 17:27:24 CET
+// translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";
 $locale['401'] = "Unable to establish database connection.<br><br>\nPlease ensure you have entered the correct details.";
