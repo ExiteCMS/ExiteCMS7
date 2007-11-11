@@ -114,7 +114,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 			}
 			// check if we need to add an aidlink to the url
 			if (iADMIN && $data['link_aid'] && isset($aidlink)) {
-				$data['link_url'] .= (strpos($data['link_url'], '?') ? ("&amp;".iAUTH) : $aidlink);
+				$data['link_url'] .= (strpos($data['link_url'], '?') ? ("&amp;".substr($aidlink,1)) : $aidlink);
 			}
 			// get the name of the user group attached to this link
 			$data['link_visibility_name'] = getgroupname($data['link_visibility'], '-1');
