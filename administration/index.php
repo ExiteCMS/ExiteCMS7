@@ -75,6 +75,15 @@ if ($rows != 0) {
 					$data['admin_image'] = ADMIN."images/module_panel.gif";
 				}
 			}
+			// check if the module name is localized
+			if (isNum($data['admin_title'])) {
+				// get the localised name from the locales table
+				$result2 = dbquery("SELECT * FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' and locales_name = 'admin.main' and locales_key = '".$data['admin_title']."'");
+				if (dbrows($result2)) {
+					$data2 = dbarray($result2);
+					$data['admin_title'] = $data2['locales_value'];
+				}
+			}
 			// store the record
 			$modules[] = $data;
 		}

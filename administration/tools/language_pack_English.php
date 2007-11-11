@@ -474,7 +474,7 @@ function install_language_pack() {
 	$localestrings['215'] = "Members";
 	$localestrings['216'] = "News";
 	$localestrings['217'] = "Panels";
-	$localestrings['218'] = "x";
+	$localestrings['218'] = "URL redirects";
 	$localestrings['219'] = "PHP Info";
 	$localestrings['220'] = "Polls";
 	$localestrings['221'] = "x";
@@ -636,7 +636,7 @@ function install_language_pack() {
 	$localestrings['423'] = "Enable Comments";
 	$localestrings['424'] = "Enable Ratings";
 	$localestrings['425'] = "- None -";
-	$localestrings['426'] = "Make this news item sticky";
+	$localestrings['426'] = "x-426";
 	$localestrings['427'] = "Post date:";
 	$localestrings['430'] = "Delete News Category";
 	$localestrings['431'] = "News Category Cannot be Deleted";

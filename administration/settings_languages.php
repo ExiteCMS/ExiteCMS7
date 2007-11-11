@@ -31,39 +31,6 @@ if (isset($_POST['savesettings'])) {
 	$settings['locale'] = stripinput($_POST['localeset']);
 	$old_localeset = stripinput($_POST['old_localeset']);
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$settings['locale']."' WHERE cfg_name = 'locale'");
-	if ($settings['locale'] != $old_localeset) {
-		locale_load("admin.main");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['201']."' WHERE admin_link='administrators.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['202']."' WHERE admin_link='article_cats.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['203']."' WHERE admin_link='articles.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['204']."' WHERE admin_link='blacklist.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['206']."' WHERE admin_link='custom_pages.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['207']."' WHERE admin_link='db_backup.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['208']."' WHERE admin_link='download_cats.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['209']."' WHERE admin_link='downloads.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['210']."' WHERE admin_link='faq.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['211']."' WHERE admin_link='forums.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['212']."' WHERE admin_link='images.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['213']."' WHERE admin_link='modules.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['215']."' WHERE admin_link='members.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['216']."' WHERE admin_link='news.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['235']."' WHERE admin_link='news_cats.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['217']."' WHERE admin_link='panels.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['219']."' WHERE admin_link='phpinfo.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['220']."' WHERE admin_link='polls.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['222']."' WHERE admin_link='site_links.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['223']."' WHERE admin_link='tools.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['224']."' WHERE admin_link='upgrade.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['225']."' WHERE admin_link='user_groups.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['228']."' WHERE admin_link='settings_main.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['229']."' WHERE admin_link='settings_time.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['230']."' WHERE admin_link='settings_forum.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['231']."' WHERE admin_link='settings_registration.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['232']."' WHERE admin_link='settings_photo.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['233']."' WHERE admin_link='settings_misc.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['234']."' WHERE admin_link='settings_messages.php'");
-		$result = dbquery("UPDATE ".$db_prefix."admin SET admin_title='".$locale['236']."' WHERE admin_link='settings_languages.php'");
-	}
 	if (empty($_POST['old_country'])) {
 		$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_name, cfg_value) VALUES ('country', '".$_POST['country']."')");
 	} else {
@@ -86,10 +53,10 @@ while ($data = dbarray($result)) {
 }
 
 $variables['countries'] = array();
-$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_locale = '".$settings['locale']."' AND locales_name = 'countrycode' ORDER BY locales_value");
+$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'countrycode' ORDER BY locales_value");
 if (!dbrows($result)) {
 	// no translated country names found, load the english set instead
-	$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_locale = 'English' AND locales_name = 'countrycode' ORDER BY locales_value");
+	$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_code = 'en' AND locales_name = 'countrycode' ORDER BY locales_value");
 }
 while ($data = dbarray($result)) {
 	$variables['countries'][$data['locales_key']] = $data['locales_value'];

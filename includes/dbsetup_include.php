@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `07/11/2007 23:50`
+// Date generated  : `11/11/2007 12:53`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '1082');
+define('CMS_REVISION', '1091');
 
 if ($step == 1) {
 
@@ -73,33 +73,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."admin (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "admin : ".mysql_error();
-}
-
-//
-// Code to create table `advertising`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."advertising");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."advertising (
-  `adverts_id` smallint(5) NOT NULL auto_increment,
-  `adverts_userid` smallint(5) NOT NULL default '0',
-  `adverts_contract` tinyint(1) NOT NULL default '0',
-  `adverts_contract_start` int(10) unsigned NOT NULL default '0',
-  `adverts_contract_end` int(10) unsigned NOT NULL default '0',
-  `adverts_priority` tinyint(1) unsigned NOT NULL default '1',
-  `adverts_location` tinyint(2) unsigned NOT NULL default '0',
-  `adverts_url` varchar(200) NOT NULL default '',
-  `adverts_shown` int(11) NOT NULL default '0',
-  `adverts_clicks` int(11) NOT NULL default '0',
-  `adverts_sold` int(11) NOT NULL default '0',
-  `adverts_image` varchar(50) NOT NULL default '',
-  `adverts_html` text NOT NULL,
-  `adverts_status` enum('0','1') NOT NULL default '0',
-  `adverts_expired` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`adverts_id`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "advertising : ".mysql_error();
 }
 
 //
@@ -469,12 +442,14 @@ if (!$result) {
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."locales");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locales (
   `locales_id` int(10) unsigned NOT NULL auto_increment,
-  `locales_locale` varchar(50) NOT NULL default '',
+  `locales_code` varchar(8) NOT NULL default '',
   `locales_name` varchar(50) NOT NULL default '',
   `locales_key` varchar(25) NOT NULL default '',
   `locales_value` text NOT NULL,
+  `locales_translator` smallint(5) unsigned NOT NULL default '0',
   `locales_datestamp` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`locales_id`)
+  PRIMARY KEY  (`locales_id`),
+  KEY `localenamekey` (`locales_code`,`locales_name`,`locales_key`)
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
@@ -760,23 +735,6 @@ if (!$result) {
 }
 
 //
-// Code to create table `shoutbox`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."shoutbox");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."shoutbox (
-  `shout_id` smallint(5) unsigned NOT NULL auto_increment,
-  `shout_name` varchar(50) NOT NULL default '',
-  `shout_message` varchar(200) NOT NULL default '',
-  `shout_datestamp` int(10) unsigned NOT NULL default '0',
-  `shout_ip` varchar(20) NOT NULL default '0.0.0.0',
-  PRIMARY KEY  (`shout_id`)
-) ENGINE=MYISAM;");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "shoutbox : ".mysql_error();
-}
-
-//
 // Code to create table `site_links`
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."site_links");
@@ -878,6 +836,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
   `user_web` varchar(200) NOT NULL default '',
   `user_forum_fullscreen` tinyint(1) unsigned NOT NULL default '0',
   `user_theme` varchar(100) NOT NULL default 'Default',
+  `user_locale` varchar(8) NOT NULL default 'en',
   `user_offset` varchar(6) NOT NULL default '',
   `user_avatar` varchar(100) NOT NULL default '',
   `user_sig` text NOT NULL,
