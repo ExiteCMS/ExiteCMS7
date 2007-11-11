@@ -28,6 +28,7 @@ if (isset($userdata['user_id'])) {
 		$variables['adminpage2'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='2'");
 		$variables['adminpage3'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='3'");
 		$variables['adminpage4'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='4'");
+		$variables['adminpage5'] = iSUPERADMIN;
 	}
 	$variables['new_pm_msg'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id ='".$userdata['user_id']."' AND pmindex_to_id='".$userdata['user_id']."' AND pmindex_read_datestamp = '0'");
 	$variables['new_post_msg'] = dbcount("(post_id)", "posts_unread", "user_id='".$userdata['user_id']."'");
