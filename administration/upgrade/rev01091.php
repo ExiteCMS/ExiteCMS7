@@ -23,7 +23,7 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 $revisions[] = array('revision' => $_revision, 
 					'date' => mktime(01,00,0,11,08,2007), 
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
-					'description' => "Added characterset, and date format information to the locales table."
+					'description' => "Added translator info to the locales table, and a locale selection field to the user stable."
 				);
 
 // array to store the commands of this update

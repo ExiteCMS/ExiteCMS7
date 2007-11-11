@@ -1,9 +1,9 @@
 <?php
 // ----------------------------------------------------------
-// locale       : en
+// locale       : English
 // locale name  : main.global
-// generated on : Sat Nov 10 2007, 22:09:36 CET
-// translators  : ExiteCMS team,WanWizard
+// generated on : Sun Nov 11 2007, 1:02:37 CET
+// translators  : ExiteCMS team
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
 $locale['002'] = "No links defined\n";
@@ -124,6 +124,7 @@ $locale['ac01'] = "Content Management";
 $locale['ac02'] = "User Administration";
 $locale['ac03'] = "Website Configuration";
 $locale['ac04'] = "Installed Modules";
+$locale['ac05'] = "Webmaster Toolbox";
 $locale['sysusr'] = "Automatic Post";
 $locale['user0'] = "Public";
 $locale['user1'] = "Member";

@@ -5,18 +5,11 @@
 | Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| The ExiteCMS team thanks the following person(s):  |
-|                                                    |
-| WanWizard                                          |
-|                                                    |
-| for their efforts in making this translation file. |
-| They can be reached on http://exitecms.exite.eu    |
-+----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-require_once dirname(__FILE__)."/../../includes/core_functions.php";
+if (!defined('CMS_SETUP')) require_once dirname(__FILE__)."/../../includes/core_functions.php";
 
 // check for the proper admin access rights
 if (!CMS_CLI && (!checkrights("T") || !defined("iAUTH") || $aid != iAUTH)) fallback(ADMIN."index.php");
@@ -29,29 +22,40 @@ locale_load("admin.main");
 +----------------------------------------------------*/
 define('LP_LOCALE', "en");
 define('LP_LANGUAGE', "English");
+define('LP_LOCALES', "en_US|en_GB|english|eng");
+define('LP_CHARSET', "iso-8859-1");
 define('LP_VERSION', "7.00");
-define('LP_DATE', "1194723487");
+define('LP_DATE', "1194739913");
 
 /*---------------------------------------------------+
 | local functions                                    |
 +----------------------------------------------------*/
-function load_locale($localestrings, $locales_name) {
-	global $db_prefix;
+function load_localestrings($localestrings, $locales_name) {
+	global $step, $db_prefix;
+
+	// if this is an upgrade, remove the old locale strings first
+	if ($step == "upgrade") {
+		$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_code = '".LP_LOCALE."' AND locales_name = '$locales_name'");
+	}
 
 	// proces the imported locale strings
 	foreach ($localestrings as $key => $value) {
 		if (is_array($value)) {
 			$value = "#ARRAY#\n".serialize($value);
 		}
-		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('".LP_LOCALE."', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '0')");
+		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('".LP_LOCALE."', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".time()."')");
 	}
 	return true;
 }
 
 function install_language_pack() {
-	global $db_prefix;
+	global $step, $db_prefix;
 
-	$result = dbquery("INSERT INTO ".$db_prefix."locale (locale_code, locale_name, locale_locale, locale_charset, locale_active) VALUES ('en', 'English', 'en_US|en_GB|english|eng', 'iso-8859-1', 1)");
+	if ($step == "install") {
+
+		$result = dbquery("INSERT INTO ".$db_prefix."locale (locale_code, locale_name, locale_locale, locale_charset, locale_active) VALUES ('en', 'English', 'en_US|en_GB|english|eng', 'iso-8859-1', 1)");
+
+	}
 
 	$localestrings = array();
 	$localestrings['400'] = "Administrators";
@@ -73,7 +77,7 @@ function install_language_pack() {
 	$localestrings['425'] = "Check all";
 	$localestrings['426'] = "UnCheck all";
 	$localestrings['427'] = "Modules & Plugins";
-	load_locale($localestrings, "admin.admins");
+	load_localestrings($localestrings, "admin.admins");
 
 	$localestrings = array();
 	$localestrings['400'] = "Delete user from Blacklist";
@@ -94,7 +98,7 @@ function install_language_pack() {
 	$localestrings['464'] = "Delete";
 	$localestrings['465'] = "The blacklist is currently empty.";
 	$localestrings['470'] = "Blacklisted because of an offensive, rude or inappropriate comments posting";
-	load_locale($localestrings, "admin.blacklist");
+	load_localestrings($localestrings, "admin.blacklist");
 
 	$localestrings = array();
 	$localestrings['400'] = "Edit Comment";
@@ -106,7 +110,7 @@ function install_language_pack() {
 	$localestrings['413'] = "Blacklist User";
 	$localestrings['414'] = "Delete Comment?";
 	$localestrings['415'] = "There are no comments for this item.";
-	load_locale($localestrings, "admin.comments");
+	load_localestrings($localestrings, "admin.comments");
 
 	$localestrings = array();
 	$localestrings['400'] = "Edit Custom Page";
@@ -132,7 +136,7 @@ function install_language_pack() {
 	$localestrings['435'] = "Enable Ratings";
 	$localestrings['436'] = "Preview Page";
 	$localestrings['437'] = "Save Page";
-	load_locale($localestrings, "admin.custom_pages");
+	load_localestrings($localestrings, "admin.custom_pages");
 
 	$localestrings = array();
 	$localestrings['400'] = "Database Restore";
@@ -183,7 +187,7 @@ function install_language_pack() {
 	$localestrings['462'] = "Download the backup:";
 	$localestrings['480'] = "Restore Backup";
 	$localestrings['481'] = "Filename:";
-	load_locale($localestrings, "admin.db-backup");
+	load_localestrings($localestrings, "admin.db-backup");
 
 	$localestrings = array();
 	$localestrings['400'] = "Delete Download Category";
@@ -231,7 +235,7 @@ function install_language_pack() {
 	$localestrings['487'] = "Filesize:";
 	$localestrings['488'] = "Save Download";
 	$localestrings['489'] = "Update Publication Date";
-	$localestrings['490'] = "Attention! All downloads in \'%s\' are publicly accessable!";
+	$localestrings['490'] = "Attention! All downloads in '%s' are publicly accessable!";
 	$localestrings['500'] = "Current Downloads";
 	$localestrings['501'] = "Download Item [Click to Test]";
 	$localestrings['502'] = "Options";
@@ -250,7 +254,7 @@ function install_language_pack() {
 	$localestrings['522'] = "Save Bar Content";
 	$localestrings['523'] = "Download Bars Panel Content succesfully saved";
 	$localestrings['524'] = "Download Bars Title";
-	load_locale($localestrings, "admin.downloads");
+	load_localestrings($localestrings, "admin.downloads");
 
 	$localestrings = array();
 	$localestrings['400'] = "Delete FAQ Category";
@@ -258,7 +262,7 @@ function install_language_pack() {
 	$localestrings['402'] = "Return to FAQs Admin";
 	$localestrings['403'] = "Return to Admin Index";
 	$localestrings['404'] = "FAQ Category Cannot be Deleted";
-	$localestrings['405'] = "There are FAQ\'s linked to this Category";
+	$localestrings['405'] = "There are FAQ's linked to this Category";
 	$localestrings['420'] = "Add FAQ Category";
 	$localestrings['421'] = "Edit FAQ Category";
 	$localestrings['422'] = "Add FAQ";
@@ -270,15 +274,15 @@ function install_language_pack() {
 	$localestrings['461'] = "Question";
 	$localestrings['462'] = "Answer";
 	$localestrings['463'] = "Save FAQ";
-	$localestrings['480'] = "Current FAQ\'s";
+	$localestrings['480'] = "Current FAQ's";
 	$localestrings['481'] = "Category / Question";
 	$localestrings['482'] = "Options";
 	$localestrings['483'] = "Edit";
 	$localestrings['484'] = "Delete";
-	$localestrings['485'] = "No FAQ\'s have been added.";
+	$localestrings['485'] = "No FAQ's have been added.";
 	$localestrings['486'] = "No FAQ Categories defined.";
 	$localestrings['487'] = "Delete FAQ?";
-	load_locale($localestrings, "admin.faq");
+	load_localestrings($localestrings, "admin.faq");
 
 	$localestrings = array();
 	$localestrings['400'] = "Edit Forum Category";
@@ -340,7 +344,7 @@ function install_language_pack() {
 	$localestrings['491'] = "Move up";
 	$localestrings['492'] = "Move down";
 	$localestrings['493'] = "Refresh Forum Ordering";
-	load_locale($localestrings, "admin.forums");
+	load_localestrings($localestrings, "admin.forums");
 
 	$localestrings = array();
 	$localestrings['FPM_000'] = "Forum Polls";
@@ -424,8 +428,8 @@ function install_language_pack() {
 	$localestrings['FPM_209'] = "No End Date Set";
 	$localestrings['FPM_300'] = "Anonymous - only show a percentage result";
 	$localestrings['FPM_301'] = "Public - show who voted for which item";
-	$localestrings['FPM_400'] = "For the forums marked <font color=\'green\'>green</font>, special settings have been defined. For forums marked <font color=\'red\'>red</font>, global settings are used";
-	load_locale($localestrings, "admin.forum_polls");
+	$localestrings['FPM_400'] = "For the forums marked <font color='green'>green</font>, special settings have been defined. For forums marked <font color='red'>red</font>, global settings are used";
+	load_localestrings($localestrings, "admin.forum_polls");
 
 	$localestrings = array();
 	$localestrings['400'] = "Delete Image";
@@ -449,7 +453,7 @@ function install_language_pack() {
 	$localestrings['463'] = "This folder is empty";
 	$localestrings['464'] = "Update image list for TinyMCE editor";
 	$localestrings['465'] = "Cancel";
-	load_locale($localestrings, "admin.image_uploads");
+	load_localestrings($localestrings, "admin.image_uploads");
 
 	$localestrings = array();
 	$localestrings['200'] = "CMS Administration for";
@@ -503,7 +507,7 @@ function install_language_pack() {
 	$localestrings['261'] = "x";
 	$localestrings['262'] = "Unread Posts:";
 	$localestrings['300'] = "ExiteCMS Language packs";
-	$localestrings['301'] = "This is the <u>%s</u> language pack (locale \'%s\') for ExiteCMS version %s";
+	$localestrings['301'] = "This is the <u>%s</u> language pack (locale '%s') for ExiteCMS version %s";
 	$localestrings['302'] = "Install";
 	$localestrings['303'] = "Remove";
 	$localestrings['304'] = "Upgrade";
@@ -512,7 +516,7 @@ function install_language_pack() {
 	$localestrings['307'] = "Language pack for %s (%s) succesfully upgraded";
 	$localestrings['308'] = "While processing the language pack for %s (%s), an error occured. The error is:";
 	$localestrings['309'] = "You can not install this language pack. This pack is for ExiteCMS version";
-	load_locale($localestrings, "admin.main");
+	load_localestrings($localestrings, "admin.main");
 
 	$localestrings = array();
 	$localestrings['400'] = "Members List";
@@ -528,7 +532,7 @@ function install_language_pack() {
 	$localestrings['410'] = "View User Group";
 	$localestrings['411'] = "%u member";
 	$localestrings['412'] = "%u members";
-	$localestrings['415'] = "Edit this user\'s profile";
+	$localestrings['415'] = "Edit this user's profile";
 	$localestrings['416'] = "Activate this account";
 	$localestrings['417'] = "Ban this member";
 	$localestrings['418'] = "Delete this user";
@@ -570,7 +574,7 @@ function install_language_pack() {
 	$localestrings['477'] = "The member account could not be created.";
 	$localestrings['478'] = "Return to Members Admin";
 	$localestrings['479'] = "Return to Admin Index";
-	load_locale($localestrings, "admin.members");
+	load_localestrings($localestrings, "admin.members");
 
 	$localestrings = array();
 	$localestrings['400'] = "Modules & Plugins";
@@ -603,7 +607,7 @@ function install_language_pack() {
 	$localestrings['mod003'] = "This module requires a minumum ExiteCMS revision level of %s.<br />";
 	$localestrings['mod004'] = "This module can not be installed. Required information is missing from the modules installer.<br />";
 	$localestrings['mod005'] = "This module does not function beyond ExiteCMS revision level %s.<br />";
-	load_locale($localestrings, "admin.modules");
+	load_localestrings($localestrings, "admin.modules");
 
 	$localestrings = array();
 	$localestrings['400'] = "Edit News";
@@ -703,7 +707,7 @@ function install_language_pack() {
 	$localestrings['550'] = "Please specify a subject";
 	$localestrings['551'] = "Delete this News?";
 	$localestrings['552'] = "Delete this Article?";
-	load_locale($localestrings, "admin.news-articles");
+	load_localestrings($localestrings, "admin.news-articles");
 
 	$localestrings = array();
 	$localestrings['400'] = "Panels";
@@ -771,7 +775,7 @@ function install_language_pack() {
 	$localestrings['485'] = "New Panel Added";
 	$localestrings['486'] = "Return to Panel Management";
 	$localestrings['487'] = "Return to Admin Index";
-	load_locale($localestrings, "admin.panels");
+	load_localestrings($localestrings, "admin.panels");
 
 	$localestrings = array();
 	$localestrings['400'] = "Add new redirect URL";
@@ -790,7 +794,7 @@ function install_language_pack() {
 	$localestrings['432'] = "Edit";
 	$localestrings['433'] = "Delete";
 	$localestrings['480'] = "No Redirect URLs present";
-	$localestrings['481'] = "Note: the URL\'s you type here are relative to the root of the website, and should start with a \'/\'.<br />\n		Make sure you\'re not defining a redirect for any of the existing website functions (like /index.php)!";
+	$localestrings['481'] = "Note: the URL's you type here are relative to the root of the website, and should start with a '/'.<br />\n		Make sure you're not defining a redirect for any of the existing website functions (like /index.php)!";
 	$localestrings['482'] = "New redirect URL saved successfully";
 	$localestrings['483'] = "Redirect URL saved successfully";
 	$localestrings['484'] = "Please enter a value for both URL fields";
@@ -800,7 +804,7 @@ function install_language_pack() {
 	$localestrings['488'] = "Are you sure you want to delete this redirect URL?";
 	$localestrings['489'] = "Requested url_id is missing. Maybe it was deleted by someone else?";
 	$localestrings['490'] = "If checked, the first field is used to match, the second to convert the URL";
-	load_locale($localestrings, "admin.redirects");
+	load_localestrings($localestrings, "admin.redirects");
 
 	$localestrings = array();
 	$localestrings['400'] = "Settings";
@@ -908,8 +912,8 @@ function install_language_pack() {
 	$localestrings['707'] = "Private Message Limits";
 	$localestrings['708'] = "Default values for user options";
 	$localestrings['709'] = "Email notification?";
-	$localestrings['710'] = "Save sent PM\'s?";
-	$localestrings['711'] = "Note: For these options, the users individual options take precendence if they\'re set. If no user option is set, then the global options are applied.";
+	$localestrings['710'] = "Save sent PM's?";
+	$localestrings['711'] = "Note: For these options, the users individual options take precendence if they're set. If no user option is set, then the global options are applied.";
 	$localestrings['712'] = "Auto archive messages in:";
 	$localestrings['713'] = "days";
 	$localestrings['714'] = "Never";
@@ -928,7 +932,7 @@ function install_language_pack() {
 	$localestrings['802'] = "Threads deleted: ";
 	$localestrings['803'] = "Attachments deleted: ";
 	$localestrings['850'] = "Languages";
-	load_locale($localestrings, "admin.settings");
+	load_localestrings($localestrings, "admin.settings");
 
 	$localestrings = array();
 	$localestrings['400'] = "Delete menu item";
@@ -961,17 +965,17 @@ function install_language_pack() {
 	$localestrings['443'] = "Move down";
 	$localestrings['444'] = "Refresh Link Ordering";
 	$localestrings['445'] = "Menu Panel:";
-	$localestrings['446'] = "Use \'---\' as Link URL to define a menu divider or a sub menu entry<br />When the Menu Item is \'---\' as well, a line will be used as divider";
+	$localestrings['446'] = "Use '---' as Link URL to define a menu divider or a sub menu entry<br />When the Menu Item is '---' as well, a line will be used as divider";
 	$localestrings['447'] = "Parent Item:";
 	$localestrings['448'] = "None";
 	$localestrings['449'] = "If this menu item has sub items, these will be deleted as well. Are you sure?";
 	$localestrings['450'] = "Add administration AID to this Link URL";
-	load_locale($localestrings, "admin.sitelinks");
+	load_localestrings($localestrings, "admin.sitelinks");
 
 	$localestrings = array();
 	$localestrings['400'] = "ExiteCMS Upgrade";
 	$localestrings['401'] = "There are no ExiteCMS upgrades waiting to be installed.";
-	$localestrings['402'] = "There are new upgrades available on the ExiteCMS website.<br />Click <a href=\'http://exitecms.exite.eu\'>here</a> to download them.";
+	$localestrings['402'] = "There are new upgrades available on the ExiteCMS website.<br />Click <a href='http://exitecms.exite.eu'>here</a> to download them.";
 	$localestrings['403'] = "The following upgrades are waiting to be installed:";
 	$localestrings['404'] = "The following upgrades have failed:";
 	$localestrings['405'] = "ExiteCMS has been succesfully upgraded to revision %s.";
@@ -985,8 +989,8 @@ function install_language_pack() {
 	$localestrings['420'] = "MySQL error";
 	$localestrings['421'] = "Upgrade function error";
 	$localestrings['422'] = "General error";
-	$localestrings['430'] = "For more detailed information on these upgrades, check the changelogs on <a href=\'http://exitecms.exite.eu\' alt=\'\' target=\'_blank\'>http://exitecms.exite.eu</a>";
-	load_locale($localestrings, "admin.upgrade");
+	$localestrings['430'] = "For more detailed information on these upgrades, check the changelogs on <a href='http://exitecms.exite.eu' alt='' target='_blank'>http://exitecms.exite.eu</a>";
+	load_localestrings($localestrings, "admin.upgrade");
 
 	$localestrings = array();
 	$localestrings['400'] = "Edit User Group";
@@ -1041,14 +1045,13 @@ function install_language_pack() {
 	$localestrings['449'] = "Save Group Admin Rights";
 	$localestrings['451'] = "Visible in user profiles:";
 	$localestrings['452'] = "Visible in Forum posts:";
-	load_locale($localestrings, "admin.user_groups");
+	load_localestrings($localestrings, "admin.user_groups");
 
 	$localestrings = array();
 	$localestrings['big5'] = "Chinese Traditional (Big5)";
 	$localestrings['csISO2022JP'] = "Japanese (JIS-Allow 1 byte Kana)";
 	$localestrings['euc-jp'] = "Japanese (EUC)";
 	$localestrings['euc-kr'] = "Korean (EUC)";
-	$localestrings['iso-2022-jp'] = "Japanese (JIS)";
 	$localestrings['iso-2022-jp'] = "Japanese (JIS)";
 	$localestrings['iso-2022-kr'] = "Korean (ISO)";
 	$localestrings['iso-8859-1'] = "Western European (ISO)";
@@ -1068,7 +1071,7 @@ function install_language_pack() {
 	$localestrings['shift_jis'] = "Japanese (Shift-JIS)";
 	$localestrings['utf-7'] = "Unicode (UTF-7)";
 	$localestrings['utf-8'] = "Unicode (UTF-8)";
-	load_locale($localestrings, "charsets");
+	load_localestrings($localestrings, "charsets");
 
 	$localestrings = array();
 	$localestrings['--'] = "Country unknown";
@@ -1112,7 +1115,7 @@ function install_language_pack() {
 	$localestrings['cf'] = "Central African Republic";
 	$localestrings['cg'] = "Congo";
 	$localestrings['ch'] = "Switzerland";
-	$localestrings['ci'] = "Cote D\'Ivoire";
+	$localestrings['ci'] = "Cote D'Ivoire";
 	$localestrings['ck'] = "Cook Islands";
 	$localestrings['cl'] = "Chile";
 	$localestrings['cm'] = "Cameroon";
@@ -1188,7 +1191,7 @@ function install_language_pack() {
 	$localestrings['ki'] = "Kiribati";
 	$localestrings['km'] = "Comoros";
 	$localestrings['kn'] = "Saint Kitts And Nevis";
-	$localestrings['kp'] = "Democratic People\'s Republic Of Korea";
+	$localestrings['kp'] = "Democratic People's Republic Of Korea";
 	$localestrings['kr'] = "Republic Of Korea";
 	$localestrings['ku'] = "Kurdistan";
 	$localestrings['kw'] = "Kuwait";
@@ -1306,7 +1309,7 @@ function install_language_pack() {
 	$localestrings['za'] = "South Africa";
 	$localestrings['zm'] = "Zambia";
 	$localestrings['zw'] = "Zimbabwe";
-	load_locale($localestrings, "countrycode");
+	load_localestrings($localestrings, "countrycode");
 
 	$localestrings = array();
 	$localestrings['abu dhabi'] = "ae";
@@ -1564,7 +1567,7 @@ function install_language_pack() {
 	$localestrings['Yemen'] = "ye";
 	$localestrings['Zambia'] = "zm";
 	$localestrings['Zimbabwe'] = "zw";
-	load_locale($localestrings, "countryname");
+	load_localestrings($localestrings, "countryname");
 
 	$localestrings = array();
 	$localestrings['ad'] = "Euro";
@@ -1775,7 +1778,7 @@ function install_language_pack() {
 	$localestrings['tl'] = "Indonesia Rupiahs";
 	$localestrings['tm'] = "Manats";
 	$localestrings['tn'] = "Dinars";
-	$localestrings['to'] = "Pa\'anga";
+	$localestrings['to'] = "Pa'anga";
 	$localestrings['tr'] = "New Lira";
 	$localestrings['tt'] = "Dollars";
 	$localestrings['tv'] = "Tuvalu Dollars";
@@ -1800,7 +1803,7 @@ function install_language_pack() {
 	$localestrings['za'] = "South African Rand";
 	$localestrings['zm'] = "Kwacha";
 	$localestrings['zw'] = "Zimbabwian Dollars";
-	load_locale($localestrings, "currency");
+	load_localestrings($localestrings, "currency");
 
 	$localestrings = array();
 	$localestrings['ad'] = "EUR";
@@ -2036,7 +2039,7 @@ function install_language_pack() {
 	$localestrings['za'] = "ZAR";
 	$localestrings['zm'] = "ZMK";
 	$localestrings['zw'] = "ZWD";
-	load_locale($localestrings, "currencycode");
+	load_localestrings($localestrings, "currencycode");
 
 	$localestrings = array();
 	$localestrings['400'] = "Discussion Forums";
@@ -2072,7 +2075,7 @@ function install_language_pack() {
 	$localestrings['503'] = "Location:";
 	$localestrings['504'] = "Joined:";
 	$localestrings['505'] = "Posted on ";
-	$localestrings['506'] = "<font color=\'red\'>file not found!</font>";
+	$localestrings['506'] = "<font color='red'>file not found!</font>";
 	$localestrings['507'] = " attached the following file(s):";
 	$localestrings['508'] = "Edited by ";
 	$localestrings['509'] = " on ";
@@ -2122,7 +2125,7 @@ function install_language_pack() {
 	$localestrings['579'] = "aim";
 	$localestrings['580'] = "skype";
 	$localestrings['581'] = "Top";
-	load_locale($localestrings, "forum.main");
+	load_localestrings($localestrings, "forum.main");
 
 	$localestrings = array();
 	$localestrings['400'] = "Delete Thread";
@@ -2155,7 +2158,7 @@ function install_language_pack() {
 	$localestrings['463'] = "Posted";
 	$localestrings['464'] = "No matches found, please try again.";
 	$localestrings['465'] = "Please specify at least one word to search for.";
-	load_locale($localestrings, "forum.options");
+	load_localestrings($localestrings, "forum.options");
 
 	$localestrings = array();
 	$localestrings['400'] = "Preview Thread";
@@ -2210,8 +2213,8 @@ function install_language_pack() {
 	$localestrings['451'] = "Track Thread";
 	$localestrings['452'] = "You are now tracking this thread";
 	$localestrings['453'] = "You are no longer tracking this thread";
-	$localestrings['454'] = "This post has now been marked \'sticky\' and has been moved to the start of the thread";
-	$localestrings['455'] = "The \'sticky\' marker has been removed from this post";
+	$localestrings['454'] = "This post has now been marked 'sticky' and has been moved to the start of the thread";
+	$localestrings['455'] = "The 'sticky' marker has been removed from this post";
 	$localestrings['456'] = "This post has been moved to the selected thread";
 	$localestrings['457'] = "Back to your post";
 	$localestrings['458'] = "Error: Your have already posted this message. Did you use the back button?";
@@ -2262,15 +2265,15 @@ function install_language_pack() {
 	$localestrings['531'] = "Search Keyword(s)";
 	$localestrings['532'] = "Search";
 	$localestrings['550'] = "Thread Reply Notification - {THREAD_SUBJECT}";
-	$localestrings['551'] = "Hello {USERNAME},\n\nA reply has been posted in the forum thread \'{THREAD_SUBJECT}\' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:\n\n{THREAD_URL}\n\nIf you no longer wish to watch this thread you can click the \'Tracking Off\' button located at the bottom of the thread.\n\nRegards,\n{SITE_WEBMASTER}.";
-	load_locale($localestrings, "forum.post");
+	$localestrings['551'] = "Hello {USERNAME},\n\nA reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:\n\n{THREAD_URL}\n\nIf you no longer wish to watch this thread you can click the 'Tracking Off' button located at the bottom of the thread.\n\nRegards,\n{SITE_WEBMASTER}.";
+	load_localestrings($localestrings, "forum.post");
 
 	$localestrings = array();
 	$localestrings['400'] = "Articles";
 	$localestrings['401'] = "No Article Categories defined";
 	$localestrings['402'] = "<b>New this week</b>";
 	$localestrings['403'] = "No Articles have been added to this Category";
-	load_locale($localestrings, "main.articles");
+	load_localestrings($localestrings, "main.articles");
 
 	$localestrings = array();
 	$localestrings['400'] = "Article Categories";
@@ -2282,7 +2285,7 @@ function install_language_pack() {
 	$localestrings['406'] = "Show All Categories";
 	$localestrings['407'] = "No News Categories defined";
 	$localestrings['408'] = "of";
-	load_locale($localestrings, "main.article_cats");
+	load_localestrings($localestrings, "main.article_cats");
 
 	$localestrings = array();
 	$localestrings['c100'] = "Comments";
@@ -2294,12 +2297,12 @@ function install_language_pack() {
 	$localestrings['c106'] = "Manage Comments";
 	$localestrings['c107'] = " Disable smileys in this comment";
 	$localestrings['c108'] = "Toggle smileys";
-	load_locale($localestrings, "main.comments");
+	load_localestrings($localestrings, "main.comments");
 
 	$localestrings = array();
 	$localestrings['400'] = "Contact";
 	$localestrings['401'] = "<b>There are many ways you can contact us</b>.<br /><br />You can Email us directly at\n";
-	$localestrings['401a'] = ".<br /><br />\nIf you are a Member you can send the webmaster a <a href=\'messages.php?msg_send=1\'>Private Message</a>.<br /><br />\nAlternatively, you can fill in this form, this sends your message to us via Email.";
+	$localestrings['401a'] = ".<br /><br />\nIf you are a Member you can send the webmaster a <a href='messages.php?msg_send=1'>Private Message</a>.<br /><br />\nAlternatively, you can fill in this form, this sends your message to us via Email.";
 	$localestrings['402'] = "Name:";
 	$localestrings['403'] = "Email Address:";
 	$localestrings['404'] = "Subject:";
@@ -2313,13 +2316,13 @@ function install_language_pack() {
 	$localestrings['441'] = "Thank You";
 	$localestrings['442'] = "Your message was not sent for the following reason(s):";
 	$localestrings['443'] = "Please try again.";
-	load_locale($localestrings, "main.contact");
+	load_localestrings($localestrings, "main.contact");
 
 	$localestrings = array();
 	$localestrings['400'] = "You are not permitted to view this page.";
 	$localestrings['401'] = "Internal Error";
 	$localestrings['402'] = "Unable to retrieve page content.";
-	load_locale($localestrings, "main.custom_pages");
+	load_localestrings($localestrings, "main.custom_pages");
 
 	$localestrings = array();
 	$localestrings['400'] = "Downloads";
@@ -2337,20 +2340,20 @@ function install_language_pack() {
 	$localestrings['420'] = "(link)";
 	$localestrings['430'] = "No Download Categories defined";
 	$localestrings['431'] = "No Downloads have been added to this Category";
-	load_locale($localestrings, "main.downloads");
+	load_localestrings($localestrings, "main.downloads");
 
 	$localestrings = array();
 	$localestrings['400'] = "FAQ (Frequently Asked Questions)";
 	$localestrings['401'] = "FAQ";
 	$localestrings['410'] = "No FAQ Categories defined.";
-	$localestrings['411'] = "No FAQ\'s have been added to this category.";
+	$localestrings['411'] = "No FAQ's have been added to this category.";
 	$localestrings['420'] = "Question:";
 	$localestrings['421'] = "Answer:";
-	load_locale($localestrings, "main.faq");
+	load_localestrings($localestrings, "main.faq");
 
 	$localestrings = array();
 	$localestrings['400'] = "Forum:";
-	load_locale($localestrings, "main.feeds");
+	load_localestrings($localestrings, "main.feeds");
 
 	$localestrings = array();
 	$localestrings['001'] = "Navigation";
@@ -2409,8 +2412,8 @@ function install_language_pack() {
 	$localestrings['062'] = "Password";
 	$localestrings['063'] = "Enable extended expiration";
 	$localestrings['064'] = "Login";
-	$localestrings['065'] = "Not a member yet?<br /><a href=\'%sregister.php\' class=\'side\'>Click here</a> to register.";
-	$localestrings['066'] = "Forgotten your password?<br />Request a new one <a href=\'%slostpassword.php\' class=\'side\'>here</a>.";
+	$localestrings['065'] = "Not a member yet?<br /><a href='%sregister.php' class='side'>Click here</a> to register.";
+	$localestrings['066'] = "Forgotten your password?<br />Request a new one <a href='%slostpassword.php' class='side'>here</a>.";
 	$localestrings['080'] = "Edit Profile";
 	$localestrings['081'] = "Private Messages";
 	$localestrings['082'] = "Members List";
@@ -2454,7 +2457,7 @@ function install_language_pack() {
 	$localestrings['152'] = "Admin Panels";
 	$localestrings['180'] = "Reason";
 	$localestrings['181'] = "This suspension wil expire on";
-	$localestrings['182'] = "<h1><br /><br /><br /></h1><center><b>We have detected that you have disabled Javascript.</b><br /><br />\nThis website uses javascript to create an enhanced experience.<br />Some features might not work (correctly) if you <a href=\'%s\'>continue</a>...</center>";
+	$localestrings['182'] = "<h1><br /><br /><br /></h1><center><b>We have detected that you have disabled Javascript.</b><br /><br />\nThis website uses javascript to create an enhanced experience.<br />Some features might not work (correctly) if you <a href='%s'>continue</a>...</center>";
 	$localestrings['183'] = "Please wait while we redirect you...";
 	$localestrings['184'] = "Or click here if you do not wish to wait";
 	$localestrings['189'] = "<b>This website is currently under maintenance.</b><br />When finished we will redirect you back to the homepage.<br />Thank you for your patience.";
@@ -2466,12 +2469,13 @@ function install_language_pack() {
 	$localestrings['195'] = "This account has not been activated.";
 	$localestrings['196'] = "Invalid username or password.";
 	$localestrings['197'] = "Page last updated";
-	$localestrings['198'] = "<font color=\'red\'><b>Warning:</b></font> setup.php detected, please delete it immediately";
+	$localestrings['198'] = "<font color='red'><b>Warning:</b></font> setup.php detected, please delete it immediately";
 	$localestrings['199'] = "wrote";
 	$localestrings['ac01'] = "Content Management";
 	$localestrings['ac02'] = "User Administration";
 	$localestrings['ac03'] = "Website Configuration";
 	$localestrings['ac04'] = "Installed Modules";
+	$localestrings['ac05'] = "Webmaster Toolbox";
 	$localestrings['sysusr'] = "Automatic Post";
 	$localestrings['user0'] = "Public";
 	$localestrings['user1'] = "Member";
@@ -2479,7 +2483,7 @@ function install_language_pack() {
 	$localestrings['user3'] = "Webmaster";
 	$localestrings['usera'] = "Anonymous";
 	$localestrings['userf1'] = "Moderator";
-	load_locale($localestrings, "main.global");
+	load_localestrings($localestrings, "main.global");
 
 	$localestrings = array();
 	$localestrings['400'] = "Lost Password";
@@ -2489,12 +2493,12 @@ function install_language_pack() {
 	$localestrings['404'] = "The email address you specified could not be found.";
 	$localestrings['405'] = "The email address you specified is invalid.";
 	$localestrings['406'] = "Please try again.";
-	$localestrings['407'] = "Please enter the email address your account is registered with below.<br /><br />\nWe will first send you a verification email. Click on the link in that email to validate your request.<br />\nWe will then email you a new password. When logged in again, choose \'Edit Profile\' to change your password.";
+	$localestrings['407'] = "Please enter the email address your account is registered with below.<br /><br />\nWe will first send you a verification email. Click on the link in that email to validate your request.<br />\nWe will then email you a new password. When logged in again, choose 'Edit Profile' to change your password.";
 	$localestrings['408'] = "Send me a new password";
 	$localestrings['409'] = "New password for ";
 	$localestrings['410'] = "Hello [USER_NAME],\n\nYou have or someone has requested a new password to access your [SITENAME] account.\n\nTo change your password please click the following link:\n\n[NEW_PASS_LINK]\n\nRegards,\n[SITEUSERNAME]";
 	$localestrings['411'] = "Hello [USER_NAME],\n\nYour new password to access your [SITENAME] account is:\n\n[NEW_PASS]\n\nRegards,\n[SITEUSERNAME]";
-	load_locale($localestrings, "main.lostpassword");
+	load_localestrings($localestrings, "main.lostpassword");
 
 	$localestrings = array();
 	$localestrings['400'] = "Members List";
@@ -2532,11 +2536,11 @@ function install_language_pack() {
 	$localestrings['486'] = "Invalid password, use alpha numeric characters only.<br>\nPassword must be a minimum of 6 characters long.";
 	$localestrings['487'] = "<b>Warning:</b> unexpected script execution.";
 	$localestrings['488'] = "No mailserver found for domain %s.";
-	$localestrings['489'] = "Mailserver for domain %s doesn\'t accept email messages.";
+	$localestrings['489'] = "Mailserver for domain %s doesn't accept email messages.";
 	$localestrings['490'] = "Email address %s does not exist<br>(according to the mailserver %s).";
 	$localestrings['491'] = "We have detected that your email address is no longer valid.<br />Your accounts will be deactivated in %s days.";
 	$localestrings['499'] = "<br /><br />Please update your profile now.";
-	load_locale($localestrings, "main.members-profile");
+	load_localestrings($localestrings, "main.members-profile");
 
 	$localestrings = array();
 	$localestrings['400'] = "News Categories";
@@ -2547,7 +2551,7 @@ function install_language_pack() {
 	$localestrings['405'] = "More";
 	$localestrings['406'] = "Show All Categories";
 	$localestrings['407'] = "No News Categories defined";
-	load_locale($localestrings, "main.news_cats");
+	load_localestrings($localestrings, "main.news_cats");
 
 	$localestrings = array();
 	$localestrings['400'] = "Private Messages";
@@ -2625,9 +2629,9 @@ function install_language_pack() {
 	$localestrings['455'] = "in";
 	$localestrings['456'] = "Sort by";
 	$localestrings['457'] = "(Use ? and * as Wildcards)";
-	$localestrings['458'] = "Currently displaying Members with \'%s\' in \'%s\' ";
-	$localestrings['459'] = "Sender Beginning with \'%s\' ";
-	$localestrings['460'] = "Sort by \'%s\'";
+	$localestrings['458'] = "Currently displaying Members with '%s' in '%s' ";
+	$localestrings['459'] = "Sender Beginning with '%s' ";
+	$localestrings['460'] = "Sort by '%s'";
 	$localestrings['461'] = "This %s is empty";
 	$localestrings['462'] = "Subject";
 	$localestrings['463'] = "Message";
@@ -2672,7 +2676,7 @@ function install_language_pack() {
 	$localestrings['509'] = "Click to view messages from all senders";
 	$localestrings['510'] = " attached the following file(s):";
 	$localestrings['511'] = "pixels";
-	$localestrings['512'] = "<font color=\'red\'>file not found!</font>";
+	$localestrings['512'] = "<font color='red'>file not found!</font>";
 	$localestrings['513'] = "download(s)";
 	$localestrings['514'] = "Click to set the marked messages as unread";
 	$localestrings['515'] = "Click to delete the marked messages";
@@ -2697,8 +2701,8 @@ function install_language_pack() {
 	$localestrings['625'] = "You have a new private message waiting at %s";
 	$localestrings['626'] = ",\r\nYou have received a new Private Message at %1\$s. You can read your private message at %2\$smessages.php\r\n\r\nYou can disable email notification through the options panel of the Private Message page if you no longer wish to be notified of new messages.";
 	$localestrings['627'] = "Error";
-	$localestrings['628'] = "Unable to send the Private Message. The user\'s inbox is full.";
-	$localestrings['629'] = "You can\'t move the selected message(s) into the specified folder as it will exceed the maximum message limit.";
+	$localestrings['628'] = "Unable to send the Private Message. The user's inbox is full.";
+	$localestrings['629'] = "You can't move the selected message(s) into the specified folder as it will exceed the maximum message limit.";
 	$localestrings['630'] = " Message Limit";
 	$localestrings['631'] = "Yes";
 	$localestrings['632'] = "No";
@@ -2710,13 +2714,13 @@ function install_language_pack() {
 	$localestrings['638'] = "In the folder list, show me the:";
 	$localestrings['639'] = "Headers only";
 	$localestrings['640'] = "Message details";
-	load_locale($localestrings, "main.pm");
+	load_localestrings($localestrings, "main.pm");
 
 	$localestrings = array();
 	$localestrings['400'] = "Posted by ";
 	$localestrings['401'] = " on ";
 	$localestrings['402'] = "Extended News";
-	load_locale($localestrings, "main.print");
+	load_localestrings($localestrings, "main.print");
 
 	$localestrings = array();
 	$localestrings['r100'] = "Ratings";
@@ -2736,7 +2740,7 @@ function install_language_pack() {
 	$localestrings['r122'] = "Good";
 	$localestrings['r123'] = "Average";
 	$localestrings['r124'] = "Poor";
-	load_locale($localestrings, "main.ratings");
+	load_localestrings($localestrings, "main.ratings");
 
 	$localestrings = array();
 	$localestrings['400'] = "Register";
@@ -2752,7 +2756,7 @@ function install_language_pack() {
 	$localestrings['410'] = "Incorrect validation code.";
 	$localestrings['411'] = "Your email address or email domain is blacklisted.";
 	$localestrings['412'] = "No mailserver found for domain %s.";
-	$localestrings['413'] = "Mailserver for domain %s doesn\'t accept email messages.";
+	$localestrings['413'] = "Mailserver for domain %s doesn't accept email messages.";
 	$localestrings['414'] = "Email address %s does not exist<br>(according to the mailserver %s).";
 	$localestrings['449'] = "Welcome to %s";
 	$localestrings['450'] = "Hello [USER_NAME],\n\nWelcome to [SITENAME]. Here are your login details:\n\nUsername: [USERNAME]\nFullname: [FULLNAME]\nPassword: [PASSWORD]\n\nPlease activate your account via the following link:\n";
@@ -2762,12 +2766,12 @@ function install_language_pack() {
 	$localestrings['454'] = "Your registration is almost complete, you will receive an email containing your login details along with a link to verify your account.";
 	$localestrings['455'] = "Your account has been verified.";
 	$localestrings['456'] = "Registration Failed";
-	$localestrings['457'] = "Send mail failed, please contact the <a href=\'mailto:%s\'>Site Administrator</a>.";
+	$localestrings['457'] = "Send mail failed, please contact the <a href='mailto:%s'>Site Administrator</a>.";
 	$localestrings['458'] = "Registration failed for the following reason(s):";
 	$localestrings['459'] = "Please Try Again";
 	$localestrings['500'] = "Please enter your details below. ";
 	$localestrings['501'] = "A verification email will be sent to your specified email address. ";
-	$localestrings['502'] = "Fields marked <span style=\'color:#ff0000;\'>*</span> must be completed.\nYour user name and password is case-sensitive. Your full name is used in email communication only.";
+	$localestrings['502'] = "Fields marked <span style='color:#ff0000;'>*</span> must be completed.\nYour user name and password is case-sensitive. Your full name is used in email communication only.";
 	$localestrings['503'] = " You can enter additional information by going to Edit Profile once you are logged in.";
 	$localestrings['504'] = "Validation Code:";
 	$localestrings['505'] = "Enter Validation Code:";
@@ -2776,7 +2780,7 @@ function install_language_pack() {
 	$localestrings['550'] = "Please specify a user name.";
 	$localestrings['551'] = "Please specify a password.";
 	$localestrings['552'] = "Please specify an email address.";
-	load_locale($localestrings, "main.register");
+	load_localestrings($localestrings, "main.register");
 
 	$localestrings = array();
 	$localestrings['400'] = "Search";
@@ -2836,20 +2840,20 @@ function install_language_pack() {
 	$localestrings['480']['2']['1'] = "A leading minus sign indicates that this word must not be present in any row returned.";
 	$localestrings['480']['3'] = array();
 	$localestrings['480']['3']['0'] = "&lt; &gt;";
-	$localestrings['480']['3']['1'] = "These two operators are used to change a word\'s contribution to the relevance value that is assigned to a row. The &lt; operator decreases the contribution and the &gt; operator increases it.";
+	$localestrings['480']['3']['1'] = "These two operators are used to change a word's contribution to the relevance value that is assigned to a row. The &lt; operator decreases the contribution and the &gt; operator increases it.";
 	$localestrings['480']['4'] = array();
 	$localestrings['480']['4']['0'] = "( )";
 	$localestrings['480']['4']['1'] = "Parentheses are put round sub-expressions to give them higher precedence in the search.";
 	$localestrings['480']['5'] = array();
 	$localestrings['480']['5']['0'] = "~";
-	$localestrings['480']['5']['1'] = "A leading tilde acts as a negation operator, causing the word\'s contribution to the row relevance to be negative. It\'s useful for marking noise words. A row that contains such a word will be rated lower than others, but will not be excluded altogether, as it would be with the minus operator.";
+	$localestrings['480']['5']['1'] = "A leading tilde acts as a negation operator, causing the word's contribution to the row relevance to be negative. It's useful for marking noise words. A row that contains such a word will be rated lower than others, but will not be excluded altogether, as it would be with the minus operator.";
 	$localestrings['480']['6'] = array();
 	$localestrings['480']['6']['0'] = "*";
 	$localestrings['480']['6']['1'] = "An asterisk is the truncation operator. Unlike the other operators, it is appended to the word, or fragment, not prepended.";
 	$localestrings['480']['7'] = array();
 	$localestrings['480']['7']['0'] = "\" \"";
 	$localestrings['480']['7']['1'] = "Double quotes at the beginning and end of a phrase, matches only rows that contain the complete phrase, as it was typed.";
-	load_locale($localestrings, "main.search");
+	load_localestrings($localestrings, "main.search");
 
 	$localestrings = array();
 	$localestrings['400'] = "Select your default locale";
@@ -2859,7 +2863,7 @@ function install_language_pack() {
 	$localestrings['411'] = "Write permissions check passed";
 	$localestrings['412'] = "Write permissions check failed on:";
 	$localestrings['413'] = "Please ensure that your webserver has write<br />access (chmod) on these folders.";
-	$localestrings['414'] = "Please complete the following form and click \'Next Step\'.";
+	$localestrings['414'] = "Please complete the following form and click 'Next Step'.";
 	$localestrings['420'] = "MySQL Database access settings";
 	$localestrings['421'] = "Database Hostname:";
 	$localestrings['422'] = "Database Username:";
@@ -2868,9 +2872,9 @@ function install_language_pack() {
 	$localestrings['425'] = "Table Prefix:";
 	$localestrings['426'] = "Next Step >>";
 	$localestrings['430'] = "Unable to write to config<br>\nPlease check write permissions and restart setup.";
-	$localestrings['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href=\'http://exitecms.exite.eu\' target=\'blank\'>http://exitecms.exite.eu</a>";
+	$localestrings['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 	$localestrings['432'] = "The config has been written successfully.<br><br>\n";
-	$localestrings['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click \'Next Step\'.";
+	$localestrings['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
 	$localestrings['440'] = "Super Admin login details";
 	$localestrings['441'] = "Username:";
 	$localestrings['442'] = "Password:";
@@ -2957,10 +2961,10 @@ function install_language_pack() {
 	$localestrings['561'] = "Most likely, this is a result of yet another reorganization of this Website to reflect our constant evolution and ongoing development, coupled with a transition from an old server with lots of legacy files to a shiny new server.";
 	$localestrings['562'] = "But then again, it might just be a completely random event and the result of too many cosmic rays. Who knows?";
 	$localestrings['563'] = "Your best bet for finding what you seek is to start at our home page (<a href=\"/\">click here to jump to the home page</a>), check out our menu, or use the search menu option.";
-	$localestrings['564'] = "If that doesn\'t work, and you think it\'s a document that should be here, please send a PM to the webmaster and let us know about it (registered users only).";
-	$localestrings['580'] = "Setup is complete, ExiteCMS is now ready for use.<br>\n<a href=\'index.php\'>Click here</a> to go to your ExiteCMS powered site.<br>\n<b>Note:</b> you should delete setup.php from your server<br>\nand chmod your config.php back to 644 for security purposes.<br><br>\nThank you for choosing ExiteCMS.";
+	$localestrings['564'] = "If that doesn't work, and you think it's a document that should be here, please send a PM to the webmaster and let us know about it (registered users only).";
+	$localestrings['580'] = "Setup is complete, ExiteCMS is now ready for use.<br>\n<a href='index.php'>Click here</a> to go to your ExiteCMS powered site.<br>\n<b>Note:</b> you should delete setup.php from your server<br>\nand chmod your config.php back to 644 for security purposes.<br><br>\nThank you for choosing ExiteCMS.";
 	$localestrings['title'] = "ExiteCMS Setup";
-	load_locale($localestrings, "main.setup");
+	load_localestrings($localestrings, "main.setup");
 
 	$localestrings = array();
 	$localestrings['u001'] = "User Name:";
@@ -3021,7 +3025,7 @@ function install_language_pack() {
 	$localestrings['u060'] = "Send Private Message";
 	$localestrings['u061'] = "View all posts of this member";
 	$localestrings['u901'] = "Full Name";
-	load_locale($localestrings, "main.user_fields");
+	load_localestrings($localestrings, "main.user_fields");
 	return "";
 }
 
@@ -3029,12 +3033,15 @@ function install_language_pack() {
 | main code                                          |
 +----------------------------------------------------*/
 
-// if in CLI mode...
-if (CMS_CLI) {
-	// import the new language. If already present, overwrite it
+
+if (defined('CMS_SETUP') && !defined('CMS_SETUP_LOAD')) {
+	// skip if in setup and no load request was given
+	$step = "skip";
+} elseif (CMS_CLI) {
+	// in CLI mode, just import the language pack. If already present, overwrite it
 	$step = "upgrade";
 } else {
-	//else load the theme functions
+	//else load the theme functions for interactive mode
 	require_once PATH_INCLUDES."theme_functions.php";
 }
 
@@ -3048,7 +3055,7 @@ $variables['message'] = "";
 if (!isset($step)) $step = "";
 
 // de-install the language pack
-if ($step == "remove" || $step == "upgrade") {
+if ($step == "remove") {
 	// check if the locale exists
 	$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".LP_LOCALE."'");
 	if (dbrows($result)) {
@@ -3080,8 +3087,15 @@ if ($step == "install" || $step == "upgrade") {
 	}
 }
 
-if (CMS_CLI) {
+if (defined('CMS_SETUP')) {
 
+	// no output at all in setup mode
+	
+} elseif (CMS_CLI) {
+
+	// output in CLI mode
+	echo "Language pack installed.\n";
+	
 } else {
 
 	// interactive mode

@@ -135,10 +135,13 @@ function locale_load($locale_name) {
 						}
 
 						// search and replace array's
+						$keysearch = array("$", '"', '\'', chr(10), chr(13));
+						$keyreplace = array("\\$", '\\"', "\\'", "\\n", "\\r");
 						$search = array("$", '"', chr(10), chr(13));
 						$replace = array("\\$", '\\"', "\\n", "\\r");
 
 						while ($localerec = dbarray($result2)) {
+							$localerec['locales_key'] = str_replace($keysearch, $keyreplace, $localerec['locales_key']);
 							// check if we're dealing with an array
 							if (substr($localerec['locales_value'],0,8) == "#ARRAY#\n") {
 								// generate the array definition
@@ -147,19 +150,24 @@ function locale_load($locale_name) {
 								$localerec['locales_value'] = unserialize(substr($localerec['locales_value'],8));
 								// loop through the elements
 								foreach($localerec['locales_value'] as $key => $value) {
+									$key = str_replace($keysearch, $keyreplace, $key);
 									if (is_array($value)) {
 										// multi-dimensional array
 										fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key'] = array();\n");
 										foreach($value as $key2 => $value2) {
-											fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key']['$key2'] = \"".str_replace($search, $replace, $value2)."\"".";\n");
+											$key2 = str_replace($keysearch, $keyreplace, $key2);
+											$value2 = str_replace($search, $replace, $value2);
+											fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key']['$key2'] = \"".$value2."\"".";\n");
 										}
 									} else {
 										// single-dimensional array
-										fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key'] = \"".str_replace($search, $replace, $value)."\"".";\n");
+										$value = str_replace($search, $replace, $value);
+										fwrite($handle, "\$locale['".$localerec['locales_key']."']['$key'] = \"".$value."\"".";\n");
 									}
 								}
 							} else {
-								fwrite($handle, "\$locale['".$localerec['locales_key']."'] = \"".str_replace($search, $replace, $localerec['locales_value'])."\"".";\n");
+								$localerec['locales_value'] = str_replace($search, $replace, $localerec['locales_value']);
+								fwrite($handle, "\$locale['".$localerec['locales_key']."'] = \"".$localerec['locales_value']."\"".";\n");
 							}
 						}
 						fwrite($handle, "?>");
