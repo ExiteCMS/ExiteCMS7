@@ -69,8 +69,9 @@
 							{$locale.462}
 							<select name='bbcolor' class='textbox' style='width:90px;' onchange="addText('message', '[color=' + this.options[this.selectedIndex].value + ']', '[/color]');this.selectedIndex=0;">
 								<option value=''>Default</option>
-								{foreach from=$locale.472 item=color}
-									<option value='{$color}' style='color:{$color};'>{$color|capitalize}</option>
+								{foreach from=$settings.colorlist item=color name=colorname}
+									{assign var=x value=$smarty.foreach.colorname.index}
+									<option value='{$color}' style='color:{$color};'>{$locale.472.$x|capitalize}</option>
 								{/foreach}
 							</select>
 						</td>
