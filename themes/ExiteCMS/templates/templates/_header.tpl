@@ -38,7 +38,7 @@
 			mode:'textareas',
 			editor_deselector:'textbox',
 			theme:'advanced',
-			language:'{/literal}{$settings.locale_code}{literal}',
+			language:'{/literal}{$settings.tinyMCE_locale}{literal}',
 			entities:'60,lt,62,gt',
 			document_base_url:'{/literal}{$settings.siteurl}{literal}',
 			relative_urls:'false',
