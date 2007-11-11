@@ -119,6 +119,15 @@ if (isset($user_id)) {
 		while ($data = dbarray($result)) {
 			$data['page_name'] = $admin_pages[$data['admin_page']-1];
 			$data['assigned'] = in_array($data['admin_rights'], $user_rights);
+			// check if the module name is localized
+			if (isNum($data['admin_title'])) {
+				// get the localised name from the locales table
+				$result2 = dbquery("SELECT * FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' and locales_name = 'admin.main' and locales_key = '".$data['admin_title']."'");
+				if (dbrows($result2)) {
+					$data2 = dbarray($result2);
+					$data['admin_title'] = $data2['locales_value'];
+				}
+			}
 			$variables['modules'][] = $data;
 		}
 	} else {
