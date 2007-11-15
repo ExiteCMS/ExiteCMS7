@@ -166,7 +166,7 @@
 			<td class='tbl'>
 				<select name='user_locale' class='textbox' style='width:200px;'>
 					{section name=locales loop=$locales}
-						<option value='{$locales[locales].locale_id}'{if $locales[locales].selected} selected="selected"{/if}>{$locales[locales].locale_name}</option>
+						<option value='{$locales[locales].locale_code}' {if $locales[locales].selected}selected="selected"{/if}>{$locales[locales].locale_name}</option>
 					{/section}
 				</select>
 			</td>

@@ -48,11 +48,10 @@ if (isset($_POST['update_profile'])) {
 	$error = ""; $set_avatar = "";
 	$variables['update_profile'] = true;
 
-	$result = dbquery("SELECT locale_code, locale_name FROM ".$db_prefix."locale WHERE locale_id = '".$_POST['user_locale']."'");
-	if ($data = dbarray($result)) {
-		if ($data['locale_name'] != $settings['locale']) {
-			setcookie("locale", $data['locale_code'], time() + 31536000, "/", "", "0");
-		}
+	if ($_POST['user_locale'] != $settings['locale']) {
+		setcookie("locale", $_POST['user_locale'], time() + 31536000, "/", "", "0");
+	} else {
+		setcookie("locale", $_POST['user_locale'], time() - 3600, "/");
 	}
 	$username = trim(eregi_replace(" +", " ", $_POST['user_name']));
 	if ($username == "" || $_POST['user_email'] == "" || $_POST['user_fullname'] == "" ) {
@@ -187,7 +186,7 @@ if (isset($_POST['update_profile'])) {
 			}
 		}
 		if ($user_newpassword != "") { $newpass = " user_password=md5(md5('$user_newpassword')), "; } else { $newpass = " "; }
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_bad_email = '0', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig' WHERE user_id='".$this_userdata['user_id']."'");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_bad_email = '0', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig', user_locale='".$_POST['user_locale']."' WHERE user_id='".$this_userdata['user_id']."'");
 		if ($user_theme != $userdata['user_theme']) redirect(FUSION_SELF."?status=1");
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$this_userdata['user_id']."'");
 		if (dbrows($result) != 0) {
@@ -198,6 +197,7 @@ if (isset($_POST['update_profile'])) {
 			if ($variables['is_admin']) {
 				redirect(ADMIN."members.php".$aidlink."&amp;update_profile=ok");
 			}
+			fallback(FUSION_SELF);
 		}
 	} else {
 		$variables['error'] = $error;
@@ -244,9 +244,9 @@ $variables['serveroffset'] = substr(date('O'),0,1).(substr(date('O'),1)/100);
 $variables['this_userdata'] = $this_userdata;
 
 $variables['locales'] = array();
-$result = dbquery("SELECT locale_id, locale_name FROM ".$db_prefix."locale WHERE locale_active = '1' ORDER BY locale_name");
+$result = dbquery("SELECT locale_code, locale_name FROM ".$db_prefix."locale WHERE locale_active = '1' ORDER BY locale_name");
 while ($data = dbarray($result)) {
-	$data['selected'] = $data['locale_name'] == $settings['locale'];
+	$data['selected'] = $data['locale_code'] == $userdata['user_locale'];
 	$variables['locales'][] = $data;
 }
 
