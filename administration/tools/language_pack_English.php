@@ -22,7 +22,7 @@ if (!defined('CMS_SETUP')) require_once dirname(__FILE__)."/../../includes/core_
 if (!CMS_CLI && (!checkrights("T") || !defined("iAUTH") || $aid != iAUTH)) fallback(ADMIN."index.php");
 
 // load the locale for this module
-locale_load("admin.main");
+if (!CMS_CLI) locale_load("admin.main");
 
 /*---------------------------------------------------+
 | defines                                            |
@@ -32,7 +32,7 @@ define('LP_LANGUAGE', "English");
 define('LP_LOCALES', "en_US|en_GB|english|eng");
 define('LP_CHARSET', "iso-8859-1");
 define('LP_VERSION', "7.00");
-define('LP_DATE', "1194960875");
+define('LP_DATE', "1195160770");
 
 /*---------------------------------------------------+
 | local functions                                    |
@@ -61,26 +61,6 @@ function install_language_pack() {
 	if ($step == "install") {
 		$result = dbquery("INSERT INTO ".$db_prefix."locale (locale_code, locale_name, locale_locale, locale_charset, locale_active) VALUES ('en', 'English', 'en_US|en_GB|english|eng', 'iso-8859-1', 1)");
 	}
-
-	$localestrings = array();
-	$localestrings['maroon'] = "Maroon";
-	$localestrings['red'] = "Red";
-	$localestrings['orange'] = "Orange";
-	$localestrings['brown'] = "Brown";
-	$localestrings['yellow'] = "Yellow";
-	$localestrings['green'] = "Green";
-	$localestrings['lime'] = "Lime";
-	$localestrings['olive'] = "Olive";
-	$localestrings['cyan'] = "Cyan";
-	$localestrings['blue'] = "Blue";
-	$localestrings['navy'] = "Navy";
-	$localestrings['purple'] = "Purple";
-	$localestrings['violet'] = "Violet";
-	$localestrings['black'] = "Black";
-	$localestrings['grey'] = "Grey";
-	$localestrings['silver'] = "Silver";
-	$localestrings['white'] = "White";
-	load_localestrings($localestrings, "colors");
 
 	$localestrings = array();
 	$localestrings['400'] = "Administrators";
@@ -1099,6 +1079,26 @@ function install_language_pack() {
 	$localestrings['utf-7'] = "Unicode (UTF-7)";
 	$localestrings['utf-8'] = "Unicode (UTF-8)";
 	load_localestrings($localestrings, "charsets");
+
+	$localestrings = array();
+	$localestrings['black'] = "Black";
+	$localestrings['blue'] = "Blue";
+	$localestrings['brown'] = "Brown";
+	$localestrings['cyan'] = "Cyan";
+	$localestrings['green'] = "Green";
+	$localestrings['grey'] = "Grey";
+	$localestrings['lime'] = "Lime";
+	$localestrings['maroon'] = "Maroon";
+	$localestrings['navy'] = "Navy";
+	$localestrings['olive'] = "Olive";
+	$localestrings['orange'] = "Orange";
+	$localestrings['purple'] = "Purple";
+	$localestrings['red'] = "Red";
+	$localestrings['silver'] = "Silver";
+	$localestrings['violet'] = "Violet";
+	$localestrings['white'] = "White";
+	$localestrings['yellow'] = "Yellow";
+	load_localestrings($localestrings, "colors");
 
 	$localestrings = array();
 	$localestrings['--'] = "Country unknown";
@@ -3079,7 +3079,7 @@ if ($step == "remove") {
 			// update the members default locale
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_locale = 'en' WHERE user_locale = '".LP_LOCALE."'");
 			// report the save succesfully, and go back to the overview table
-			$variables['message'] .= sprintf($locale['305'],LP_LOCALE, LP_LANGUAGE);
+			if (!CMS_CLI) $variables['message'] .= sprintf($locale['305'],LP_LOCALE, LP_LANGUAGE);
 		}
 	}
 }
@@ -3087,12 +3087,12 @@ if ($step == "remove") {
 // install the language pack
 if ($step == "install" || $step == "upgrade") {
 	if ($error = install_language_pack()) {
-		$variables['message'] .= sprintf($locale['308'],LP_LOCALE, LP_LANGUAGE)."<br /><br />".$error;
+		if (!CMS_CLI) $variables['message'] .= sprintf($locale['308'],LP_LOCALE, LP_LANGUAGE)."<br /><br />".$error;
 	} else {
 		if ($step == "install") {
-			$variables['message'] .= sprintf($locale['306'],LP_LOCALE, LP_LANGUAGE);
+			if (!CMS_CLI) $variables['message'] .= sprintf($locale['306'],LP_LOCALE, LP_LANGUAGE);
 		} else {
-			$variables['message'] .= sprintf($locale['307'],LP_LOCALE, LP_LANGUAGE);
+			if (!CMS_CLI) $variables['message'] .= sprintf($locale['307'],LP_LOCALE, LP_LANGUAGE);
 		}
 	}
 }
