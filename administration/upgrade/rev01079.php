@@ -543,7 +543,7 @@ $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (l
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Reunion', 're', '1194378981')");
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Lao People\'s Democratic Republic', 'la', '1194378981')");
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Montenegro', 'me', '1194378981')");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Occupied Palestinian Territory', '1194378981')");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Occupied Palestinian Territory', 'ps', '1194378981')");
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Antarctica', 'aq', '1194378981')");
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##locales (locales_locale, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', 'countryname', 'Sao Tome and Principe', 'st', '1194378981')");
 
