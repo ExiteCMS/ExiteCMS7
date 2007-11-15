@@ -126,6 +126,9 @@ $settings['siteurl'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on") ? 
 // include the locale functions
 require_once PATH_INCLUDES."locale_functions.php";
 
+// Load the global language file
+locale_load("main.global");
+
 // URL path definitions relative to BASEDIR
 define("ADMIN", BASEDIR."administration/");
 define("IMAGES", BASEDIR."images/");

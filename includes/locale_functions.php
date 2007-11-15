@@ -88,9 +88,6 @@ if (file_exists(PATH_INCLUDES."jscripts/tiny_mce/langs".$settings['locale_code']
 // Initialise the $locale array
 $locale = array();
 
-// Load the global language file
-locale_load("main.global");
-
 /*----------------------------------------------------+
 | locale_functions include - general functions below  |
 +----------------------------------------------------*/

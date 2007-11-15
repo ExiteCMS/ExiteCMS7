@@ -54,19 +54,8 @@ function makefilelist($folder, $filter, $sort=true, $type="files", $hidden=false
 
 define("PATH_ROOT", realpath(dirname(__FILE__).'/../../').'/');
 define("PATH_ADMIN", PATH_ROOT."administration/");
-define("PATH_THEMES", PATH_ROOT."themes/");
-define("PATH_PHOTOS", PATH_ROOT."images/photoalbum/");
-define("PATH_IMAGES", PATH_ROOT."images/");
-define("PATH_IMAGES_A", PATH_IMAGES."articles/");
-define("PATH_IMAGES_ADS", PATH_IMAGES."advertising/");
-define("PATH_IMAGES_AV", PATH_IMAGES."avatars/");
-define("PATH_IMAGES_N", PATH_IMAGES."news/");
-define("PATH_IMAGES_NC", PATH_IMAGES."news_cats/");
-define("PATH_IMAGES_DC", PATH_IMAGES."download_cats/");
 define("PATH_INCLUDES", PATH_ROOT."includes/");
 define("PATH_MODULES", PATH_ROOT."modules/");
-define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
-define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
 
 // mark that CMS Engine is properly initialized
 define("INIT_CMS_OK", TRUE);
@@ -74,9 +63,15 @@ define("INIT_CMS_OK", TRUE);
 // force CLI mode for this module
 define("CMS_CLI", TRUE);
 
-// code to calculate the page loading time, this can be used
-// to show statistics in theme.php, p.e. when generating the
-// code for the page footer
+// load the config file
+if (file_exists(PATH_ROOT."config.php")) {
+	@include_once PATH_ROOT."config.php";
+}
+
+// if config.php is absent or empty, bail out with an error
+if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the documentation on how to run the setup');
+
+// required array for db_functions.php
 $_loadstats = array();
 $_loadtime = explode(" ", microtime());
 $_loadtime = $_loadtime[1] + $_loadtime[0];
@@ -90,14 +85,6 @@ $_loadstats['updates'] = 0;
 $_loadstats['others'] = 0;
 $_loadstats['compression'] = (ini_get('zlib.output_compression') == "1");
 unset($_loadtime);
-
-// load the config file
-if (file_exists(PATH_ROOT."config.php")) {
-	@include_once PATH_ROOT."config.php";
-}
-
-// if config.php is absent or empty, bail out with an error
-if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the documentation on how to run the setup');
 
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
@@ -119,8 +106,8 @@ if (dbtable_exists($db_prefix."CMSconfig")) {
 	$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
 }
 
-// mark the core functions as loaded
-define("CMS_SETUP", TRUE);
+// load the locale functions
+require_once PATH_INCLUDES."locale_functions.php";
 
 // define the array to store our progress messages in when not in CLI mode
 $messages = array();
@@ -130,29 +117,20 @@ if (!isset($settings['revision']) || !is_numeric($settings['revision'])) $settin
 
 // check for available upgrades
 $upgrades = array();
-$upgraded = array();
 $temp = makefilelist(PATH_ADMIN."upgrade", ".|..");
 foreach ($temp as $tempfile) {
 	// make sure it's a valid rev file format
 	if (strlen($tempfile) != 12 || substr($tempfile,0,3) != "rev" || substr($tempfile,-4) != ".php") continue;
 	$thisrev = substr($tempfile,3,5);
 	if (is_numeric($thisrev)) {
-		if ($thisrev <= $settings['revision']) {
-			$upgraded[] = $tempfile;
-		} else {
+		if ($thisrev > $settings['revision']) {
 			$upgrades[] = $tempfile;
 		}
 	}
 }
 
-// sort upgraded descending, to show the latest one first
-krsort($upgraded);
-
 // set a constant to define the upgrades available
 define('UPGRADES', count($upgrades));
-
-// set a constant to define the upgrades already installed
-define('UPGRADED', count($upgraded));
 
 // check if there are upgrades available
 $found_error = false;
@@ -215,7 +193,14 @@ if (UPGRADES) {
 
 // load the english locale if no errors detected
 if (!$found_error) {
+	// pretend we're doing the initial locale load from the setup procedure
+	define("CMS_SETUP", TRUE);
+	define("CMS_SETUP_LOAD", TRUE);
 	require_once "language_pack_English.php";
+} else {
+	foreach($errors as $err) {
+		display($err);
+	}
 }
 echo "Done!";
 ?>
