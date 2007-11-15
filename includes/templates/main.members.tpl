@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* ExiteCMS template: main.viewpage.tpl                                    *}
+{* ExiteCMS template: main.members.tpl                                     *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -11,7 +11,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* Template for the main module 'viewpage', to display a custom page       *}
+{* Template for the main module 'members', to display the member list      *}
 {*                                                                         *}
 {***************************************************************************}
 {if $country_name|default:"" == ""}

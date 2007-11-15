@@ -1069,6 +1069,13 @@ if (isset($_POST["cancel"])) {
 				}
 			}
 
+			// colors for the color dropdown
+			$variables['fontcolors'] = array();
+			$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'colors'");
+			while ($data = dbarray($result)) {
+				$variables['fontcolors'][] = array('color' => $data['locales_key'], 'name' => $data['locales_value']);
+			}
+
 			// store the variables needed by this panel
 			$variables['action'] = $action;
 			$variables['forum_id'] = $forum_id;

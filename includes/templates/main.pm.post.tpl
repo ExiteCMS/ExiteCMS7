@@ -143,9 +143,9 @@
 				{$locale.447}:
 				<select name='bbcolor' class='textbox' style='width:90px;' onchange="addText('message', '[color=' + this.options[this.selectedIndex].value + ']', '[/color]');this.selectedIndex=0;">
 					<option value=''>Default</option>
-					{foreach from=$locale.448 item=color}
-						<option value='{$color}' style='color:{$color};'>{$color|capitalize}</option>
-					{/foreach}
+					{section name=id loop=$fontcolors}
+						<option value='{$fontcolors[id].color}' style='color:{$fontcolors[id].color};'>{$fontcolors[id].name|capitalize}</option>
+					{/section}
 				</select>
 			</td>
 		</tr>

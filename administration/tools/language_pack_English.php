@@ -5,6 +5,13 @@
 | Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
+| The ExiteCMS team thanks the following person(s):  |
+|                                                    |
+| WanWizard                                          |
+|                                                    |
+| for their efforts in making this translation file. |
+| They can be reached on http://exitecms.exite.eu    |
++----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -25,7 +32,7 @@ define('LP_LANGUAGE', "English");
 define('LP_LOCALES', "en_US|en_GB|english|eng");
 define('LP_CHARSET', "iso-8859-1");
 define('LP_VERSION', "7.00");
-define('LP_DATE', "1194739913");
+define('LP_DATE', "1194960875");
 
 /*---------------------------------------------------+
 | local functions                                    |
@@ -52,10 +59,28 @@ function install_language_pack() {
 	global $step, $db_prefix;
 
 	if ($step == "install") {
-
 		$result = dbquery("INSERT INTO ".$db_prefix."locale (locale_code, locale_name, locale_locale, locale_charset, locale_active) VALUES ('en', 'English', 'en_US|en_GB|english|eng', 'iso-8859-1', 1)");
-
 	}
+
+	$localestrings = array();
+	$localestrings['maroon'] = "Maroon";
+	$localestrings['red'] = "Red";
+	$localestrings['orange'] = "Orange";
+	$localestrings['brown'] = "Brown";
+	$localestrings['yellow'] = "Yellow";
+	$localestrings['green'] = "Green";
+	$localestrings['lime'] = "Lime";
+	$localestrings['olive'] = "Olive";
+	$localestrings['cyan'] = "Cyan";
+	$localestrings['blue'] = "Blue";
+	$localestrings['navy'] = "Navy";
+	$localestrings['purple'] = "Purple";
+	$localestrings['violet'] = "Violet";
+	$localestrings['black'] = "Black";
+	$localestrings['grey'] = "Grey";
+	$localestrings['silver'] = "Silver";
+	$localestrings['white'] = "White";
+	load_localestrings($localestrings, "colors");
 
 	$localestrings = array();
 	$localestrings['400'] = "Administrators";
@@ -2283,7 +2308,7 @@ function install_language_pack() {
 	$localestrings['404'] = "There are no article items in this category.";
 	$localestrings['405'] = "Show All Items";
 	$localestrings['406'] = "Show All Categories";
-	$localestrings['407'] = "No News Categories defined";
+	$localestrings['407'] = "No Article Categories defined";
 	$localestrings['408'] = "of";
 	load_localestrings($localestrings, "main.article_cats");
 
@@ -2389,8 +2414,8 @@ function install_language_pack() {
 	$localestrings['036'] = "Posted";
 	$localestrings['037'] = "You have not started any forum threads yet.";
 	$localestrings['038'] = "No forum messages have been posted that are available for viewing.";
-	$localestrings['039'] = "There are %u unread posts in %u threads since your last visit.";
-	$localestrings['039a'] = "There is 1 unread post in 1 thread since your last visit.";
+	$localestrings['039'] = "There are %u unread posts in %u threads.";
+	$localestrings['039a'] = "There is 1 unread post in 1 thread.";
 	$localestrings['040'] = "Posted by ";
 	$localestrings['041'] = "on ";
 	$localestrings['042'] = "Read More";
@@ -2602,24 +2627,7 @@ function install_language_pack() {
 	$localestrings['445'] = "of";
 	$localestrings['446'] = "Forward";
 	$localestrings['447'] = "Font Color";
-	$localestrings['448'] = array();
-	$localestrings['448']['0'] = "maroon";
-	$localestrings['448']['1'] = "red";
-	$localestrings['448']['2'] = "orange";
-	$localestrings['448']['3'] = "brown";
-	$localestrings['448']['4'] = "yellow";
-	$localestrings['448']['5'] = "green";
-	$localestrings['448']['6'] = "lime";
-	$localestrings['448']['7'] = "olive";
-	$localestrings['448']['8'] = "cyan";
-	$localestrings['448']['9'] = "blue";
-	$localestrings['448']['10'] = "navy";
-	$localestrings['448']['11'] = "purple";
-	$localestrings['448']['12'] = "violet";
-	$localestrings['448']['13'] = "black";
-	$localestrings['448']['14'] = "gray";
-	$localestrings['448']['15'] = "silver";
-	$localestrings['448']['16'] = "white";
+	$localestrings['448'] = "Archive";
 	$localestrings['449'] = "(new message)";
 	$localestrings['450'] = "Search and Sort Options";
 	$localestrings['451'] = "Search / Sort";

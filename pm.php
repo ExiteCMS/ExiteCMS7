@@ -480,7 +480,7 @@ switch ($variables['user_options']['pmconfig_view']) {
 }
 
 // determine the active folder
-if (!isset($folder) || !preg_match("/^(inbox|outbox|archive|options)$/", $folder)) $folder = "inbox";
+if (!isset($folder) || !preg_match("/^(".$locale['402']."|".$locale['403']."|".$locale['404']."|".$locale['425'].")$/", $folder)) $folder = $locale['402'];
 
 // get the folder totals
 $totals = array();
@@ -518,7 +518,7 @@ if (isset($_POST['send_message'])) {
 	$subject = stripinput(trim($_POST['subject']));
 	$message = stripmessageinput(trim($_POST['message']));
 	// if not, return to the inbox folder
-	if ($subject == "" || $message == "") fallback(FUSION_SELF."?folder=inbox");
+	if ($subject == "" || $message == "") fallback(FUSION_SELF."?folder=".$locale[402]);
 
 	$newmsg['pm_subject'] = $subject;
 	$newmsg['pm_message'] = $message;
@@ -588,7 +588,7 @@ if (isset($_POST['send_message'])) {
 	
 	// return to the outbox folder
 	$action = "";
-	$folder = "outbox";
+	$folder = $locale['403'];
 
 }
 
@@ -1011,6 +1011,13 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		default:
 			$title = $locale['420'];
 	}
+	// colors for the color dropdown
+	$variables['fontcolors'] = array();
+	$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'colors'");
+	while ($data = dbarray($result)) {
+		$variables['fontcolors'][] = array('color' => $data['locales_key'], 'name' => $data['locales_value']);
+	}
+
 	// define the panel and assign the template variables
 	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => "main.pm");
 	$template_variables['pm.post'] = $variables;
@@ -1023,7 +1030,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	$totals['archive'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$userdata['user_id']."' AND pmindex_folder = '2'");
 	
 	// process the folder selection
-	if ($folder == "options") {
+	if ($folder == $locale['425']) {
 	
 		// prepare to show the option screen
 		$variables['folder'] = $folder;
@@ -1036,23 +1043,21 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	
 		// prepare to show the selected mailbox folder
 		if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
+		$title = $folder;
 		// select the records for this folder's page
-		if ($folder == "inbox") {
-			$title = $locale['402'];
+		if ($folder == $locale[402]) {
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '0'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);
-		} elseif ($folder == "outbox") {
-			$title = $locale['403'];
+		} elseif ($folder == $locale[403]) {
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);
-		} elseif ($folder == "archive") {
-			$title = $locale['404'];
+		} elseif ($folder == $locale[404]) {
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '2'
@@ -1087,7 +1092,17 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		// main messsages panel
 		$variables['folder'] = $folder;
 		$variables['totals'] = $totals;
-		$variables['rows'] = $totals[$folder];
+		switch ($folder) {
+			case $locale['402']:
+				$variables['rows'] = $totals['inbox'];
+				break;
+			case $locale['403']:
+				$variables['rows'] = $totals['outbox'];
+				break;
+			case $locale['404']:
+				$variables['rows'] = $totals['archive'];
+				break;
+		}
 		$variables['rowstart'] = $rowstart;
 		$variables['pagenav_url'] = FUSION_SELF."?folder=".$folder."&amp;";
 		// define the panel and assign the template variables

@@ -46,13 +46,13 @@
 					{buttonlink name=$locale.433 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=reply&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 					{buttonlink name=$locale.444 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=quote&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 				{/if}
-				{if $folder == "archive" && $messages[id].pmindex_folder == 2}
+				{if $folder == $locale.404 && $messages[id].pmindex_folder == 2}
 					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
 						{buttonlink name=$locale.412 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=restore&amp;msg_id="|cat:$messages[id].pmindex_id}
 					{/if}
 				{else}
 					{if $global_options.pm_savebox > $totals.archive}
-						{buttonlink name=$locale.404 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
+						{buttonlink name=$locale.448 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=archive&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
 					{/if}
 				{/if}
 				{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=delete&amp;msg_id="|cat:$messages[id].pmindex_id}

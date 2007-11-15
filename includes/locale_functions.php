@@ -85,9 +85,6 @@ if (file_exists(PATH_INCLUDES."jscripts/tiny_mce/langs".$settings['locale_code']
 	$settings['tinyMCE_locale'] = 'en';
 }
 
-// colorlist: needed to make list of colors which is independent of the loaded locale
-$settings['colorlist'] = array('0' => "maroon", '1' => "red", '2' => "orange", '3' => "brown", '4' => "yellow", '5' => "green", '6' => "lime", '7' => "olive", '8' => "cyan", '9' => "blue", '10' => "navy", '11' => "purple", '12' => "violet", '13' => "black", '14' => "gray", '15' => "silver", '16' => "white");
-
 // Initialise the $locale array
 $locale = array();
 

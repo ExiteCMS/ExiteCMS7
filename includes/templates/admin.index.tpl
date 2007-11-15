@@ -62,7 +62,7 @@
 					<td align='center' valign='top' width='25%' class='tbl'>
 						{if $admin_images|default:false}
 							<span class='small'>
-								<a href='{$modules[link].admin_link}{$aidlink}'><img src='{$modules[link].admin_image}' valign='top' alt='{$modules[link].admin_title|escape:"html"}' style='border:0px;' /></a>
+								<a href='{$modules[link].admin_link}{$aidlink}'><img src='{$modules[link].admin_image}' valign='top' height='48' alt='{$modules[link].admin_title|escape:"html"}' style='border:0px;' /></a>
 								<br />
 								<a href='{$modules[link].admin_link}{$aidlink}'>{$modules[link].admin_title|escape:"html"}</a>
 								<br /><br />

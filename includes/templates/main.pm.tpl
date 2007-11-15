@@ -36,17 +36,17 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 <table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
-		<td width='24%' align='center' class='{if $folder == "inbox"}tbl1{else}tbl2{/if}'>
-			<a href='{$smarty.const.FUSION_SELF}?folder=inbox'><b>{$locale.402} [{$totals.inbox} {$locale.445} {$global_options.pm_inbox}]</b></a>
+		<td width='24%' align='center' class='{if $folder == $locale.402}tbl1{else}tbl2{/if}'>
+			<a href='{$smarty.const.FUSION_SELF}?folder={$locale.402}'><b>{$locale.402} [{$totals.inbox} {$locale.445} {$global_options.pm_inbox}]</b></a>
 		</td>
-		<td width='25%' align='center' class='{if $folder == "outbox"}tbl1{else}tbl2{/if}'>
-			<a href='{$smarty.const.FUSION_SELF}?folder=outbox'><b>{$locale.403} [{$totals.outbox} {$locale.445} {$global_options.pm_sentbox}]</b></a>
+		<td width='25%' align='center' class='{if $folder == $locale.403}tbl1{else}tbl2{/if}'>
+			<a href='{$smarty.const.FUSION_SELF}?folder={$locale.403}'><b>{$locale.403} [{$totals.outbox} {$locale.445} {$global_options.pm_sentbox}]</b></a>
 		</td>
-		<td width='24%' align='center' class='{if $folder == "archive"}tbl1{else}tbl2{/if}'>
-			<a href='{$smarty.const.FUSION_SELF}?folder=archive'><b>{$locale.404} [{$totals.archive} {$locale.445} {$global_options.pm_savebox}]</b></a>
+		<td width='24%' align='center' class='{if $folder == $locale.404}tbl1{else}tbl2{/if}'>
+			<a href='{$smarty.const.FUSION_SELF}?folder={$locale.404}'><b>{$locale.404} [{$totals.archive} {$locale.445} {$global_options.pm_savebox}]</b></a>
 		</td>
-		<td width='13%' align='center' class='{if $folder == "options"}tbl1{else}tbl2{/if}'>
-			<a href='{$smarty.const.FUSION_SELF}?folder=options'><b>{$locale.425}</b></a>
+		<td width='13%' align='center' class='{if $folder == $locale.425}tbl1{else}tbl2{/if}'>
+			<a href='{$smarty.const.FUSION_SELF}?folder={$locale.425}'><b>{$locale.425}</b></a>
 		</td>
 	</tr>
 </table>
@@ -79,10 +79,10 @@
 						<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
 						<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 					{/if}
-					{if $folder != "archive" && $global_options.pm_savebox > $totals.archive}
-						<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
+					{if $folder != $locale.404 && $global_options.pm_savebox > $totals.archive}
+						<input type='submit' name='multi_archive' value='{$locale.448}' class='button' />
 					{/if}
-					{if $folder == "archive"}
+					{if $folder == $locale.404}
 						{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
 							<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
 						{/if}
@@ -105,25 +105,25 @@
 				{$locale.405}
 			</td>
 			<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
-				{if $folder == "inbox"}
+				{if $folder == $locale.402}
 					{$locale.408}
-				{elseif $folder == "outbox"}
+				{elseif $folder == $locale.403}
 					{$locale.407}
-				{elseif $folder == "archive"}
+				{elseif $folder == $locale.404}
 					{$locale.407} &bull; {$locale.408}
 				{/if}
 			</td>
-			{if $folder != "outbox"}
+			{if $folder != $locale.403}
 				<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
 					{$locale.406}
 				</td>
 			{/if}
-			{if $folder != "inbox"}
+			{if $folder != $locale.402}
 				<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
 					{$locale.421}
 				</td>
 			{/if}
-			{if $folder == "outbox"}
+			{if $folder == $locale.403}
 			<td align='center' class='tbl2' width='1%' style='white-space:nowrap'>
 				{$locale.542}
 			</td>
@@ -165,15 +165,15 @@
 		<td class='tbl1' style='white-space:nowrap'>
 			{if $messages[id].pm_datestamp != 0}{$messages[id].pm_datestamp|date_format:"forumdate"}{/if}
 		</td>
-		{if $folder != "outbox"}
+		{if $folder != $locale.403}
 		<td class='tbl1' style='white-space:nowrap'>
 			{$messages[id].sender.cc_flag}
 			<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].sender.user_id}'>{$messages[id].sender.user_name}</a>
 		</td>
 		{/if}
-		{if $folder != "inbox"}
+		{if $folder != $locale.402}
 		<td class='tbl1' style='white-space:nowrap'>
-			{if $folder == "archive" && $messages[id].pmindex_to_id && $global_options.pm_hide_rcpts && $messages[id].recipient_count > 1}
+			{if $folder == $locale.404 && $messages[id].pmindex_to_id && $global_options.pm_hide_rcpts && $messages[id].recipient_count > 1}
 				{$messages[id].recipient.cc_flag}
 				<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].recipient.user_id}'>{$messages[id].recipient.user_name}</a>
 			{else}
@@ -190,7 +190,7 @@
 			{/if}
 		</td>
 		{/if}
-		{if $folder == "outbox"}
+		{if $folder == $locale.403}
 		<td class='tbl1' style='white-space:nowrap'>
 			{section name=rc loop=$messages[id].readstatus}
 				{if $messages[id].readstatus[rc].user_id == 0}
@@ -220,14 +220,14 @@
 				<input type='button' class='button' name='{$locale.410|replace:" ":"_"}' value='{$locale.410}' onclick="javascript:setChecked('pm_form','check_mark[]',1);return false;" />
 				<input type='button' class='button' name='{$locale.411|replace:" ":"_"}' value='{$locale.411}' onclick="javascript:setChecked('pm_form','check_mark[]',0);return false;" />
 				{$locale.409}
-				{if $folder == "inbox"}
+				{if $folder == $locale.402}
 					<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
 					<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 				{/if}
-				{if $folder != "archive" && $global_options.pm_savebox > $totals.archive}
-					<input type='submit' name='multi_archive' value='{$locale.404}' class='button' />
+				{if $folder != $locale.404 && $global_options.pm_savebox > $totals.archive}
+					<input type='submit' name='multi_archive' value='{$locale.448}' class='button' />
 				{/if}
-				{if $folder == "archive"}
+				{if $folder == $locale.404}
 					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
 						<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
 					{/if}
