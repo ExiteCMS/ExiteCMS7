@@ -71,7 +71,7 @@ if (isset($lookup)) {
 		$birthdate = explode("-", $data['user_birthdate']);
 		$data['user_birthdate'] = strftime(str_replace("%m", "%B", preg_replace("/[^a-z%]/i", " ", nl_langinfo(D_FMT))), mktime(1,0,0,$birthdate[1],$birthdate[2],$birthdate[0]));
 	} else {
-	    $data['user_birthdate'] = $locale['u048'];
+	    $data['user_birthdate'] = "";
 	}
 	if ($data['user_web']) {
 		$urlprefix = !strstr($data['user_web'], "http://") ? "http://" : "";

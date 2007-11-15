@@ -39,6 +39,16 @@ function smarty_modifier_date_format($string, $format = '%b %e, %Y', $default_da
 		case "subheaderdate":
 		case "forumdate":
 			$format = $settings[$format];
+	}
+	switch($format) {
+		case "localedate":
+			$format = preg_replace("/[^a-zA-z%]/", " ", str_replace("%m", "%B", nl_langinfo(D_FMT)));
+			break;
+		case "localetime":
+			$format = nl_langinfo(T_FMT);
+			break;
+		case "localedatetime":
+			$format = preg_replace("/[^a-zA-z%]/", " ", str_replace("%m", "%B", nl_langinfo(D_FMT)))." ".nl_langinfo(T_FMT);
 			break;
 	}	
     if ($string != '') {

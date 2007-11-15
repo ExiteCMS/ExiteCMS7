@@ -111,12 +111,7 @@ if (dbtable_exists($db_prefix."CMSconfig")) {
 	$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
 }
 
-// add static information to the settings array (NEED TO FIND A BETTER SOLUTION FOR THIS!)
-$settings['timezones'] = array("-12","-11","-10","-9:30","-9","-8","-7","-6","-5","-4","-3:30","-3","-2:30","-2","-1","+0",
-	"+0:30","+1","+2","+3","+3:30","+4","+4:30","+5","+5:30","+6","+6:30","+7","+7:30","+8","+8:30","+8:45","+9","+9:30",
-	"+10","+10:30","+11","+11:30","+12","+12:45","+13","+14");
-
-// define the sitebanner
+// define the default sitebanner
 $settings['sitebanner'] = "site_logo.gif";
 
 // backward compatibility: make sure siteurl contains a relative path!
@@ -125,7 +120,7 @@ $settings['siteurl'] = strstr(str_replace("http://", "", str_replace("https://",
 // define the website basedir (relative path from the root)
 define ("BASEDIR", $settings['siteurl']);
 
-// and make the siteurl fully qualified using the current server host info
+// now make the siteurl fully qualified using the current server host info
 $settings['siteurl'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on") ? "https://" : "http://").$_SERVER['HTTP_HOST'].$settings['siteurl'];
 
 // include the locale functions
@@ -654,13 +649,28 @@ function showdate($format, $val=false) {
 
 	// if no date value is passed, use now
 	if (!$val) $val = time();
-	
+
 	// return it in the format requested
-	if ($format == "shortdate" || $format == "longdate" || $format == "forumdate" || $format == "subheaderdate") {
-		return strftime($settings[$format], $val);
-	} else {
-		return strftime($format, $val);
+	switch($format) {
+		case "shortdate":
+		case "longdate":
+		case "subheaderdate":
+		case "forumdate":
+			$format = $settings[$format];
 	}
+	switch($format) {
+		case "localedate":
+			$format = preg_replace("/[^a-zA-z%]/", " ", str_replace("%m", "%B", nl_langinfo(D_FMT)));
+			break;
+		case "localetime":
+			$format = nl_langinfo(T_FMT);
+			break;
+		case "localedatetime":
+			$format = preg_replace("/[^a-zA-z%]/", " ", str_replace("%m", "%B", nl_langinfo(D_FMT)))." ".nl_langinfo(T_FMT);
+			break;
+		default:
+	}	
+	return strftime($format, $val);
 }
 
 //convert system time to local time

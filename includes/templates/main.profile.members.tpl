@@ -62,7 +62,11 @@
 			<b>{$locale.u010}</b>
 		</td>
 		<td class='tbl1'>
-			{$data.user_birthdate|date_format:"longdate"|replace:"00:00:00":""}
+			{if $data.user_birthdate}
+				{$data.user_birthdate|date_format:"localedate"}
+			{else}
+				{$locale.u048}
+			{/if}
 		</td>
 	</tr>
 	<tr>

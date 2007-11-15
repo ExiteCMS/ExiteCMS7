@@ -83,12 +83,16 @@
 				{$locale.u016}
 			</td>
 			<td class='tbl'>
-				<select name='user_offset' class='textbox'>
-				{section name=offset loop=$settings.timezones}
-					<option>{$settings.timezones[offset]}</option>
-				{/section}
+				<select name='user_offset' class='textbox' style='width:75px;'>
+					{section name=offset max=24 loop=25 step=-1}
+						<option{if $this_userdata.user_offset == $smarty.section.offset.index/-2} selected="selected"{/if}>{$smarty.section.offset.index/-2}</option>
+					{/section}
+					{section name=offset start=0 loop=25 step=1}
+						<option{if $this_userdata.user_offset == $smarty.section.offset.index/2} selected="selected"{/if}>+{$smarty.section.offset.index/2}</option>
+					{/section}
 				</select>
-				&nbsp;&nbsp;
+				&nbsp;
+				&nbsp;
 				{$timezone}
 			</td>
 		</tr>

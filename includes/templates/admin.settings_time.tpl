@@ -26,11 +26,11 @@
 		<tr>
 			<td class='tbl'>
 			<select name='shortdatetext' class='textbox' style='width:201px;'>
-				{foreach from=$options item=option}
-				<option value='{$option}'>{$localtime|date_format:$option}</option>
+				{foreach from=$options item=option key=optionkey}
+				<option value='{$optionkey}'>{$localtime|date_format:$option}</option>
 				{/foreach}
 			</select>
-			&nbsp;<input type='button' name='setshortdate' value='>>' onclick="shortdate.value=shortdatetext.options[shortdatetext.selectedIndex].value;shortdatetext.selectedIndex=0;" class='button' />
+			&nbsp;<input type='button' name='setshortdate' value='>>' onclick="if (shortdatetext.selectedIndex>0) {ldelim}shortdate.value=shortdatetext.options[shortdatetext.selectedIndex].value;shortdatetext.selectedIndex=0;{rdelim}" class='button' />
 			&nbsp;<input type='text' name='shortdate' value='{$settings2.shortdate}' maxlength='50' class='textbox' style='width:180px;' />
 			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.shortdate} )</span>
 			<br /><br />
@@ -44,11 +44,11 @@
 		<tr>
 			<td class='tbl'>
 			<select name='longdatetext' class='textbox' style='width:201px;'>
-				{foreach from=$options item=option}
-				<option value='{$option}'>{$localtime|date_format:$option}</option>
+				{foreach from=$options item=option key=optionkey}
+				<option value='{$optionkey}'>{$localtime|date_format:$option}</option>
 				{/foreach}
 			</select>
-			&nbsp;<input type='button' name='setlongdate' value='>>' onclick="longdate.value=longdatetext.options[longdatetext.selectedIndex].value;longdatetext.selectedIndex=0;" class='button' />
+			&nbsp;<input type='button' name='setlongdate' value='>>' onclick="if (longdatetext.selectedIndex>0) {ldelim}longdate.value=longdatetext.options[longdatetext.selectedIndex].value;longdatetext.selectedIndex=0;{rdelim}" class='button' />
 			&nbsp;<input type='text' name='longdate' value='{$settings2.longdate}' maxlength='50' class='textbox' style='width:180px;' />
 			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.longdate} )</span>
 			<br /><br />
@@ -62,11 +62,11 @@
 		<tr>
 			<td class='tbl'>
 			<select name='forumdatetext' class='textbox' style='width:201px;'>
-				{foreach from=$options item=option}
-				<option value='{$option}'>{$localtime|date_format:$option}</option>
+				{foreach from=$options item=option key=optionkey}
+				<option value='{$optionkey}'>{$localtime|date_format:$option}</option>
 				{/foreach}
 			</select>
-			&nbsp;<input type='button' name='setforumdate' value='>>' onclick="forumdate.value=forumdatetext.options[forumdatetext.selectedIndex].value;forumdatetext.selectedIndex=0;" class='button' />
+			&nbsp;<input type='button' name='setforumdate' value='>>' onclick="if (forumdatetext.selectedIndex>0) {ldelim}forumdate.value=forumdatetext.options[forumdatetext.selectedIndex].value;forumdatetext.selectedIndex=0;{rdelim}" class='button' />
 			&nbsp;<input type='text' name='forumdate' value='{$settings2.forumdate}' maxlength='50' class='textbox' style='width:180px;' />
 			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.forumdate} )</span>
 			<br /><br />
@@ -80,11 +80,11 @@
 		<tr>
 			<td class='tbl'>
 			<select name='subheaderdatetext' class='textbox' style='width:201px;'>
-				{foreach from=$options item=option}
-				<option value='{$option}'>{$localtime|date_format:$option}</option>
+				{foreach from=$options item=option key=optionkey}
+				<option value='{$optionkey}'>{$localtime|date_format:$option}</option>
 				{/foreach}
 			</select>
-			&nbsp;<input type='button' name='setsubheaderdate' value='>>' onclick="subheaderdate.value=subheaderdatetext.options[subheaderdatetext.selectedIndex].value;subheaderdatetext.selectedIndex=0;" class='button' />
+			&nbsp;<input type='button' name='setsubheaderdate' value='>>' onclick="if (subheaderdatetext.selectedIndex>0) {ldelim}subheaderdate.value=subheaderdatetext.options[subheaderdatetext.selectedIndex].value;subheaderdatetext.selectedIndex=0;{rdelim}" class='button' />
 			&nbsp;<input type='text' name='subheaderdate' value='{$settings2.subheaderdate}' maxlength='50' class='textbox' style='width:180px;' />
 			&nbsp;<span class='small'>( {$smarty.now|date_format:$settings2.subheaderdate} )</span>
 			<br /><br />
@@ -98,9 +98,12 @@
 		<tr>
 			<td class='tbl'>
 			<select name='timeoffset' class='textbox' style='width:75px;'>
-				{foreach from=$settings.timezones item=timezone}
-				<option{if $settings2.timeoffset == $timezone} selected="selected"{/if}>{$timezone}</option>
-				{/foreach}
+				{section name=offset max=24 loop=25 step=-1}
+					<option{if $settings2.timeoffset == -$smarty.section.offset.index} selected="selected"{/if}>-{$smarty.section.offset.index/2}</option>
+				{/section}
+				{section name=offset start=0 loop=25 step=1}
+					<option{if $settings2.timeoffset == $smarty.section.offset.index} selected="selected"{/if}>+{$smarty.section.offset.index/2}</option>
+				{/section}
 			</select>
 			&nbsp;<span class='small'>{$serverzone}</span>
 			<br /><br />

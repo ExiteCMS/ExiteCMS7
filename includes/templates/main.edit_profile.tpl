@@ -116,7 +116,7 @@
 			{$locale.u010}
 		</td>
 			<td class='tbl'>
-				{html_select_date prefix='user_' time=$this_userdata.user_birthdate start_year="1900" end_year="-1" all_extra="class='textbox'"}
+				{html_select_date prefix='user_' time=$this_userdata.user_birthdate start_year="1900" end_year="-1" day_empty="--" month_empty="--" year_empty="--" all_extra="class='textbox'"}
 			</td>
 		</tr>
 		<tr>
@@ -188,10 +188,13 @@
 				{$locale.u016}
 			</td>
 			<td class='tbl'>
-				<select name='user_offset' class='textbox'>
-				{section name=offset loop=$settings.timezones}
-					<option{if $this_userdata.user_offset == $settings.timezones[offset]} selected="selected"{/if} value='{$settings.timezones[offset]}'>{$settings.timezones[offset]}</option>
-				{/section}
+				<select name='user_offset' class='textbox' style='width:75px;'>
+					{section name=offset max=24 loop=25 step=-1}
+						<option{if $this_userdata.user_offset == $smarty.section.offset.index/-2} selected="selected"{/if}>{$smarty.section.offset.index/-2}</option>
+					{/section}
+					{section name=offset start=0 loop=25 step=1}
+						<option{if $this_userdata.user_offset == $smarty.section.offset.index/2} selected="selected"{/if}>+{$smarty.section.offset.index/2}</option>
+					{/section}
 				</select>
 				&nbsp;
 				<input type='button' value='{$locale.u027}' class='button' onclick="autotimezone();return false;" />

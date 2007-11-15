@@ -2,8 +2,8 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Sun Nov 11 2007, 1:02:37 CET
-// translators  : ExiteCMS team
+// generated on : Thu Nov 15 2007, 14:36:37 CET
+// translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
 $locale['002'] = "No links defined\n";
@@ -38,8 +38,8 @@ $locale['035'] = "Subject";
 $locale['036'] = "Posted";
 $locale['037'] = "You have not started any forum threads yet.";
 $locale['038'] = "No forum messages have been posted that are available for viewing.";
-$locale['039'] = "There are %u unread posts in %u threads since your last visit.";
-$locale['039a'] = "There is 1 unread post in 1 thread since your last visit.";
+$locale['039'] = "There are %u unread posts in %u threads.";
+$locale['039a'] = "There is 1 unread post in 1 thread.";
 $locale['040'] = "Posted by ";
 $locale['041'] = "on ";
 $locale['042'] = "Read More";

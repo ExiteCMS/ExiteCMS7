@@ -867,6 +867,8 @@ function install_language_pack() {
 	$localestrings['455'] = "-- Select a Format --";
 	$localestrings['456'] = "Offset between server time and display time:";
 	$localestrings['457'] = "( Server timezone is <b>%s</b> )";
+	$localestrings['458'] = "Use locale for date";
+	$localestrings['459'] = "Use locale for date/time";
 	$localestrings['500'] = "Forum";
 	$localestrings['501'] = "Latest active forum threads panel:";
 	$localestrings['502'] = "On";
@@ -2990,7 +2992,7 @@ function install_language_pack() {
 	$localestrings['u013'] = "Skype:";
 	$localestrings['u014'] = "Website URL:";
 	$localestrings['u015'] = "Theme:";
-	$localestrings['u016'] = "Time Offset:";
+	$localestrings['u016'] = "Timezone Offset:";
 	$localestrings['u017'] = "Avatar";
 	$localestrings['u018'] = "Click Browse to upload an image";
 	$localestrings['u019'] = "Delete";
