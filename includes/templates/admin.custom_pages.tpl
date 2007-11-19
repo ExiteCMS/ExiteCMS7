@@ -34,7 +34,7 @@
 		<tr>
 			<td align='center' class='tbl'>
 				{$locale.430}
-				<input type='textbox' name='page_title' value='{$page_title}' class='textbox' style='width: 250px;' />
+				<input type='text' name='page_title' value='{$page_title}' class='textbox' style='width: 250px;' />
 				&nbsp;{$locale.431}
 				<select name='page_access' class='textbox' style='width:150px;'>
 				{section name=id loop=$user_groups}

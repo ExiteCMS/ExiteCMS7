@@ -226,7 +226,7 @@
 			{buttonlink name=$locale.576 link="mailto:"|cat:$posts[pid].user_msn}
 		{/if}
 		{if $posts[pid].user_icq|default:"" != ""}
-			{buttonlink name=$locale.578 link="http://web.icq.com/wwp?Uin="|cat:$posts[pid].user_icq new="yes"}
+			{buttonlink name=$locale.578 link="http://web.icq.com/people/about_me.php?uin="|cat:$posts[pid].user_icq new="yes"}
 		{/if}
 		{if $posts[pid].user_web|default:"" != ""}
 			{buttonlink name=$locale.577 link=$posts[pid].user_web new="yes"}

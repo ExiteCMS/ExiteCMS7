@@ -115,7 +115,7 @@ if (isset($_POST['save'])) {
 		}
 	}
 	if (isset($page_id)) {
-		$action = FUSION_SELF.$aidlink."&page_id=$page_id";
+		$action = FUSION_SELF.$aidlink."&amp;page_id=$page_id";
 		$title = $locale['400'];
 	} else {
 		if (!isset($_POST['preview'])) {

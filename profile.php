@@ -77,7 +77,7 @@ if (isset($lookup)) {
 		$urlprefix = !strstr($data['user_web'], "http://") ? "http://" : "";
 		$data['user_web'] = $urlprefix.$data['user_web'];
 	}
-	$data['show_pm_button'] = (!isset($userdata['user_id']) || $data['user_id'] != $userdata['user_id']);
+	$data['show_pm_button'] = (iMEMBER && $data['user_id'] != $userdata['user_id']);
 	if ($userdata['user_level'] >= 102) {
 		$ip = (empty($data['user_ip']) || $data['user_ip'] == "X" || $data['user_ip'] == "0.0.0.0") ? false : $data['user_ip'];
 		if ($ip) {
