@@ -2709,7 +2709,7 @@ function install_language_pack() {
 	$localestrings['623'] = "Save Options";
 	$localestrings['624'] = "Saved Options";
 	$localestrings['625'] = "You have a new private message waiting at %s";
-	$localestrings['626'] = ",\r\nYou have received a new Private Message at %1\$s. You can read your private message at %2\$smessages.php\r\n\r\nYou can disable email notification through the options panel of the Private Message page if you no longer wish to be notified of new messages.";
+	$localestrings['626'] = ",\r\nYou have received a new Private Message from '%1\$s' at %2\$s. You can read your private message at %3\$smessages.php\r\n\r\nYou can disable email notification through the options panel of the Private Message page if you no longer wish to be notified of new messages.";
 	$localestrings['627'] = "Error";
 	$localestrings['628'] = "Unable to send the Private Message. The user's inbox is full.";
 	$localestrings['629'] = "You can't move the selected message(s) into the specified folder as it will exceed the maximum message limit.";
