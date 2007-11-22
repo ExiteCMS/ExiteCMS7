@@ -58,15 +58,20 @@ function find_date_format() {
 		// if we found 3 parts in the date string
 		if (count($date_fields) == 3) {
 
+			// possible values
+			$months = array(strftime("%d"), strftime("%e"));
+			$days = array(strftime("%m"), strftime("%b"), strftime("%B"));
+			$years = array(strftime("%Y"), strftime("%y"));
+
 			// part 1
 			if ($date_fields[0] == $date_fields[1]) {
 				// month and date the same, then assume MD if the locale used am/pm, or DM otherwise
 				$format = strftime("%p") == "" ? "D" : "M";
-			} elseif ($date_fields[0] == strftime("%d") || $date_fields[0] == strftime("%e")) {
+			} elseif (in_array($date_fields[0], $days)) {
 				$format = "D";
-			} elseif ($date_fields[0] == strftime("%m") || $date_fields[0] == strftime("%b") || $date_fields[0] == strftime("%B") || $date_fields[0] == strftime("%m")) {
+			} elseif (in_array($date_fields[0], $months)) {
 				$format = "M";
-			} elseif ($date_fields[0] == strftime("%Y") || $date_fields[0] == strftime("%y")) {
+			} elseif (in_array($date_fields[0], $years)) {
 				$format = "Y";
 			}
 
@@ -74,20 +79,20 @@ function find_date_format() {
 			if ($date_fields[0] == $date_fields[1]) {
 				// month and date the same, then assume MD if the locale used am/pm, or DM otherwise
 				$format = strftime("%p") == "" ? "M" : "D";
-			} elseif ($date_fields[1] == strftime("%d") || $date_fields[1] == strftime("%e")) {
+			} elseif (in_array($date_fields[1], $days)) {
 				$format .= "D";
-			} elseif ($date_fields[1] == strftime("%m") || $date_fields[1] == strftime("%b") || $date_fields[1] == strftime("%B") || $date_fields[1] == strftime("%m")) {
+			} elseif (in_array($date_fields[1], $months)) {
 				$format .= "M";
-			} elseif ($date_fields[1] == strftime("%Y") || $date_fields[1] == strftime("%y")) {
+			} elseif (in_array($date_fields[1], $years)) {
 				$format .= "Y";
 			}
 
 			// part 3
-			if ($date_fields[2] == strftime("%d") || $date_fields[2] == strftime("%e")) {
+			} elseif (in_array($date_fields[2], $days)) {
 				$format .= "D";
-			} elseif ($date_fields[2] == strftime("%m") || $date_fields[2] == strftime("%b") || $date_fields[2] == strftime("%B") || $date_fields[2] == strftime("%m")) {
+			} elseif (in_array($date_fields[2], $months)) {
 				$format .= "M";
-			} elseif ($date_fields[2] == strftime("%Y") || $date_fields[2] == strftime("%y")) {
+			} elseif (in_array($date_fields[2], $years)) {
 				$format .= "Y";
 			}
 		}
