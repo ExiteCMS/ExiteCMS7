@@ -42,7 +42,7 @@ function find_date_format() {
 
 	// for *nix platforms, and PHP > 4.0.7, use nl_langinfo information
 	if (version_compare(phpversion(), "4.0.7") != -1 && function_exists("nl_langinfo") && substr(php_os, 0, 3) != "WIN") {
-    	return strtoupper(preg_replace('/[^a-z]/i', '', nl_langinfo(D_FMT)));
+    	return str_replace(array('E', 'B'), array('D', 'M'), strtoupper(preg_replace('/[^a-z]/i', '', nl_langinfo(D_FMT))));
 	}
 
 	// *** if nl_langinfo is not available, do it the hard way ;-)
@@ -59,8 +59,8 @@ function find_date_format() {
 		if (count($date_fields) == 3) {
 
 			// possible values
-			$months = array(strftime("%d"), strftime("%e"));
-			$days = array(strftime("%m"), strftime("%b"), strftime("%B"));
+			$days = array(strftime("%d"), strftime("%e"));
+			$months = array(strftime("%m"), strftime("%b"), strftime("%B"));
 			$years = array(strftime("%Y"), strftime("%y"));
 
 			// part 1
@@ -97,7 +97,7 @@ function find_date_format() {
 			}
 		}
 	}
-	
+
 	if (isset($format) && strlen($format) == 3) {
 		return $format;
 	} else {
