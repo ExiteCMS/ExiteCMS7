@@ -88,7 +88,7 @@ function find_date_format() {
 			}
 
 			// part 3
-			} elseif (in_array($date_fields[2], $days)) {
+			if (in_array($date_fields[2], $days)) {
 				$format .= "D";
 			} elseif (in_array($date_fields[2], $months)) {
 				$format .= "M";
