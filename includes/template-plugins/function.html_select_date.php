@@ -27,6 +27,7 @@
  *           - 1.3.4 fix behaviour of 0000-00-00 00:00:00 dates to match that
  *             of 0000-00-00 dates (cybot, boots)
  *           - ExiteCMS - WW - fieldorder default based on the current date locale 
+ *           - ExiteCMS - WW - workaround for platforms without nl_langinfo support
  * @link http://smarty.php.net/manual/en/language.function.html.select.date.php {html_select_date}
  *      (Smarty online manual)
  * @version 1.3.4
@@ -36,6 +37,69 @@
  * @param Smarty
  * @return string
  */
+ 
+function find_date_format() {
+
+	// for *nix platforms, and PHP > 4.0.7, use nl_langinfo information
+	if (version_compare(phpversion(), "4.0.7") != -1 && function_exists("nl_langinfo") && substr(php_os, 0, 3) != "WIN") {
+    	return strtoupper(preg_replace('/[^a-z]/i', '', nl_langinfo(D_FMT)));
+	}
+
+	// *** if nl_langinfo is not available, do it the hard way ;-)
+	
+	// find the date separator (use YMD if not found)
+	$date_separator = preg_replace('/[a-zA-Z0-9]/i', '', strftime("%x"));
+
+	// if a separator has been found
+	if (!empty($date_separator)) {
+
+		// get the different fields from the date (use YMD if not found)
+		$date_fields = explode($date_separator{0}, strftime("%x"));
+		// if we found 3 parts in the date string
+		if (count($date_fields) == 3) {
+
+			// part 1
+			if ($date_fields[0] == $date_fields[1]) {
+				// month and date the same, then assume MD if the locale used am/pm, or DM otherwise
+				$format = strftime("%p") == "" ? "D" : "M";
+			} elseif ($date_fields[0] == strftime("%d") || $date_fields[0] == strftime("%e")) {
+				$format = "D";
+			} elseif ($date_fields[0] == strftime("%m") || $date_fields[0] == strftime("%b") || $date_fields[0] == strftime("%B") || $date_fields[0] == strftime("%m")) {
+				$format = "M";
+			} elseif ($date_fields[0] == strftime("%Y") || $date_fields[0] == strftime("%y")) {
+				$format = "Y";
+			}
+
+			// part 2
+			if ($date_fields[0] == $date_fields[1]) {
+				// month and date the same, then assume MD if the locale used am/pm, or DM otherwise
+				$format = strftime("%p") == "" ? "M" : "D";
+			} elseif ($date_fields[1] == strftime("%d") || $date_fields[1] == strftime("%e")) {
+				$format .= "D";
+			} elseif ($date_fields[1] == strftime("%m") || $date_fields[1] == strftime("%b") || $date_fields[1] == strftime("%B") || $date_fields[1] == strftime("%m")) {
+				$format .= "M";
+			} elseif ($date_fields[1] == strftime("%Y") || $date_fields[1] == strftime("%y")) {
+				$format .= "Y";
+			}
+
+			// part 3
+			if ($date_fields[2] == strftime("%d") || $date_fields[2] == strftime("%e")) {
+				$format .= "D";
+			} elseif ($date_fields[2] == strftime("%m") || $date_fields[2] == strftime("%b") || $date_fields[2] == strftime("%B") || $date_fields[2] == strftime("%m")) {
+				$format .= "M";
+			} elseif ($date_fields[2] == strftime("%Y") || $date_fields[2] == strftime("%y")) {
+				$format .= "Y";
+			}
+		}
+	}
+	
+	if (isset($format) && strlen($format) == 3) {
+		return $format;
+	} else {
+		return "YMD";
+	}
+}
+
 function smarty_function_html_select_date($params, &$smarty)
 {
     require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
@@ -73,9 +137,8 @@ function smarty_function_html_select_date($params, &$smarty)
     $day_extra       = null;
     $month_extra     = null;
     $year_extra      = null;
-    /* Order in which to display the fields.
-       default based on the current locale WW */
-    $field_order     = strtoupper(preg_replace('/[^a-z]/i', '', nl_langinfo(D_FMT)));
+    /* Order in which to display the fields. Default based on the current locale */
+	$field_order     = find_date_format();
     /* String printed between the different fields. */
     $field_separator = "\n";
     $time = time();
