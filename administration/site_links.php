@@ -29,6 +29,25 @@ if (isset($link_id) && !isNum($link_id)) fallback(FUSION_SELF.$aidlink);
 if (!isset($link_id)) $link_id = 0;
 if (!isset($action)) $action = "";
 
+// compose the query where clause based on the localisation method choosen
+switch ($settings['localisation_method']) {
+	case "none":
+		$where = "";
+		break;
+	case "single":
+		$where = "";
+		break;
+	case "multiple":
+		if (isset($link_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($link_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($link_locale);
+		}
+		if (!isset($link_locale)) $link_locale = $settings['locale_code'];
+		$variables['link_locale'] = $link_locale;
+		$where = "link_locale = '".$link_locale."' ";
+		break;
+}
+
 /*---------------------------------------------------+
 | Local functions                                    |
 +----------------------------------------------------*/
@@ -36,17 +55,17 @@ if (!isset($action)) $action = "";
 // reorder the links of a menu panel
 function reordermenu($panel) {
 
-	global $db_prefix;
+	global $db_prefix, $where;
 	
 	// renumber all menu items, to get the order back in sequence
-	$result = dbquery("SELECT DISTINCT link_parent FROM ".$db_prefix."site_links WHERE panel_name = '$panel' ORDER BY link_order");
+	$result = dbquery("SELECT DISTINCT link_parent FROM ".$db_prefix."site_links WHERE panel_name = '$panel'".($where==""?"":(" AND ".$where))." ORDER BY link_order");
 	$parents = array();
 	while ($data = dbarray($result)) {
 		$parents[] = $data['link_parent'];
 	}
 	foreach($parents as $parent) {
 		$i = 1;
-		$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE panel_name = '$panel' AND link_parent = '$parent' ORDER BY link_order");
+		$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE panel_name = '$panel' AND link_parent = '$parent'".($where==""?"":(" AND ".$where))." ORDER BY link_order");
 		while ($data = dbarray($result)) {
 			$result2 = dbquery("UPDATE ".$db_prefix."site_links SET link_order='$i' WHERE link_id='".$data['link_id']."'");
 			$i++;
@@ -57,10 +76,10 @@ function reordermenu($panel) {
 // remove a parent record, and all it's children, from the parents list
 function removefromparents($parent) {
 
-	global $db_prefix, $variables;
+	global $db_prefix, $where, $variables;
 
 	// check if this parent has any submenu links
-	$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_parent='$parent' AND link_url = '---'");
+	$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_parent='$parent' AND link_url = '---'".($where==""?"":(" AND ".$where)));
 	while ($data = dbarray($result)) {
 		// if so, remove it
 		removefromparents($data['link_id']);
@@ -79,13 +98,13 @@ function removefromparents($parent) {
 // generate the menu tree array for the given menu panel
 function buildmenutree($parent, $depth, $panel) {
 
-	global $db_prefix, $links;
+	global $db_prefix, $where, $links;
 
 	// make sure the links array exists
 	if (!is_array($links)) $links = array();	
 
 	// get all menu records for this panel and this parent
-	$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE panel_name = '".$panel."' AND link_parent = '$parent' ORDER BY link_order");
+	$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE panel_name = '".$panel."' AND link_parent = '$parent'".($where==""?"":(" AND ".$where))." ORDER BY link_order");
 	// process the results
 	$total = dbrows($result);
 	$current = 1;
@@ -140,7 +159,7 @@ $title = $locale['411'];
 if ($action == "refresh") {
 
 	reordermenu($panel);
-	redirect(FUSION_SELF.$aidlink);
+	redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale".$link_locale)));
 
 } elseif ($action == "move") {
 
@@ -149,8 +168,6 @@ if ($action == "refresh") {
 	$data2 = dbarray(dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_id='$with'"));
 	if (is_array($data1) && is_array($data2)) {
 		// swap the two link_orders
-//		echo "UPDATE ".$db_prefix."site_links SET link_order='".$data2['link_order']."' WHERE link_id='".$data1['link_id']."'<br>";
-//		die("UPDATE ".$db_prefix."site_links SET link_order='".$data1['link_order']."' WHERE link_id='".$data2['link_id']."'");
 		$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order='".$data2['link_order']."' WHERE link_id='".$data1['link_id']."'");
 		$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order='".$data1['link_order']."' WHERE link_id='".$data2['link_id']."'");
 	}
@@ -158,14 +175,15 @@ if ($action == "refresh") {
 } elseif ($action == "delete") {
 
 	$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."site_links WHERE panel_name = '$panel' AND link_id='$link_id'"));
-	$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order-1 WHERE panel_name = '$panel' AND link_order>'".$data['link_order']."'");
+	$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order-1 WHERE panel_name = '$panel' AND link_order>'".$data['link_order']."'".($where==""?"":(" AND ".$where))."");
 	$result = dbquery("DELETE FROM ".$db_prefix."site_links WHERE panel_name = '$panel' AND link_id='$link_id'");
-	redirect(FUSION_SELF.$aidlink."&status=del");
+	redirect(FUSION_SELF.$aidlink."&status=del".($link_locale==""?"":("&link_locale".$link_locale)));
 
 } else {
 
 	if (isset($_POST['savelink'])) {
 		$link_name = stripinput($_POST['link_name']);
+		$link_locale = stripinput($_POST['link_locale']);
 		$link_url = stripinput($_POST['link_url']);
 		$link_visibility = isNum($_POST['link_visibility']) ? $_POST['link_visibility'] : "0";
 		$link_position = isset($_POST['link_position']) ? $_POST['link_position'] : "0";
@@ -192,24 +210,24 @@ if ($action == "refresh") {
 			}
 			// if the parent has changed, calculate a new link order
 			if ($data['link_parent'] != $link_parent) {
-				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'"),0)+1;
+				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'".($where==""?"":(" AND ".$where)).""),0)+1;
 			} else {
 				// link changed?
 				if ($link_order != $data['link_order']) {
-					$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'");
+					$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'".($where==""?"":(" AND ".$where))."");
 				}
 			}
 			// and update the link itself as well...
-			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_name='$link_name', link_url='$link_url', panel_name='$panel_filename', link_visibility='$link_visibility', link_position='$link_position', link_parent='$link_parent', link_window='$link_window', link_aid='$link_aid', link_order='$link_order' WHERE link_id='$link_id'");
-			redirect(FUSION_SELF.$aidlink);
+			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_name='$link_name', link_locale='$link_locale', link_url='$link_url', panel_name='$panel_filename', link_visibility='$link_visibility', link_position='$link_position', link_parent='$link_parent', link_window='$link_window', link_aid='$link_aid', link_order='$link_order' WHERE link_id='$link_id'");
+			redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale".$link_locale)));
 		} else {
 			// get a linkorder if none given
 			if (!$link_order) {
-				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'"),0)+1;
+				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'".($where==""?"":(" AND ".$where)).""),0)+1;
 			}
-			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'");	
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, panel_name, link_visibility, link_position, link_parent, link_window, link_aid, link_order) VALUES ('$link_name', '$link_url', '$panel_filename', '$link_visibility', '$link_position', '$link_parent', '$link_window', '$link_aid', '$link_order')");
-			redirect(FUSION_SELF.$aidlink);
+			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'".($where==""?"":(" AND ".$where))."");	
+			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, panel_name, link_visibility, link_position, link_parent, link_window, link_aid, link_order) VALUES ('$link_name', '$link_locale', '$link_url', '$panel_filename', '$link_visibility', '$link_position', '$link_parent', '$link_window', '$link_aid', '$link_order')");
+			redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale".$link_locale)));
 		}
 	}
 
@@ -217,10 +235,10 @@ if ($action == "refresh") {
 
 // create the list of available menu panels, and possible submenu records to be used as parent's
 $variables['parents'] = array();
-$result = dbquery("SELECT DISTINCT panel_name from ".$db_prefix."site_links");
+$result = dbquery("SELECT DISTINCT panel_name from ".$db_prefix."site_links".($where==""?"":(" WHERE ".$where))."");
 while ($data = dbarray($result)) {
 	$parents = array('panel' => $data['panel_name'], 'parent_ids' => array());
-	$result2 = dbquery("SELECT link_id, link_name from ".$db_prefix."site_links WHERE panel_name = '".$data['panel_name']."' AND link_url = '---'");
+	$result2 = dbquery("SELECT link_id, link_name from ".$db_prefix."site_links WHERE panel_name = '".$data['panel_name']."' AND link_url = '---'".($where==""?"":(" AND ".$where))."");
 	while ($data2 = dbarray($result2)) {
 		$parents['parent_ids'][] = $data2;
 	}
@@ -321,6 +339,13 @@ foreach ($panel_list as $panel) {
 
 	// and create an entry in the panels array for this menu panel
 	$variables['panels'][] = array('panel' => $panel, 'panel_count' => count($links), 'links' => $links, 'title' => $locale['412'].": <b>".ucwords(str_replace('_', ' ', $panel))."</b>");
+}
+
+// get the installed locales
+$variables['locales'] = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
+while ($data = dbarray($result)) {
+	$variables['locales'][$data['locale_code']] = $data['locale_name'];
 }
 
 // define the admin body panel

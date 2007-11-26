@@ -641,7 +641,7 @@ function install_language_pack() {
 	$localestrings['423'] = "Enable Comments";
 	$localestrings['424'] = "Enable Ratings";
 	$localestrings['425'] = "- None -";
-	$localestrings['426'] = "x-426";
+	$localestrings['426'] = "Category Locale:";
 	$localestrings['427'] = "Post date:";
 	$localestrings['430'] = "Delete News Category";
 	$localestrings['431'] = "News Category Cannot be Deleted";
@@ -712,6 +712,8 @@ function install_language_pack() {
 	$localestrings['550'] = "Please specify a subject";
 	$localestrings['551'] = "Delete this News?";
 	$localestrings['552'] = "Delete this Article?";
+	$localestrings['553'] = "Select a language:";
+	$localestrings['554'] = "for the locale";
 	load_localestrings($localestrings, "admin.news-articles");
 
 	$localestrings = array();
@@ -780,6 +782,8 @@ function install_language_pack() {
 	$localestrings['485'] = "New Panel Added";
 	$localestrings['486'] = "Return to Panel Management";
 	$localestrings['487'] = "Return to Admin Index";
+	$localestrings['488'] = "Select a language:";
+	$localestrings['489'] = "for the locale";
 	load_localestrings($localestrings, "admin.panels");
 
 	$localestrings = array();
@@ -879,6 +883,10 @@ function install_language_pack() {
 	$localestrings['555'] = "Image";
 	$localestrings['556'] = "Text";
 	$localestrings['557'] = "New members activated by admin?";
+	$localestrings['558'] = "Site localisation method:";
+	$localestrings['559'] = "No localisation (fixed layout)";
+	$localestrings['560'] = "Single tree content (symmetric layout)";
+	$localestrings['561'] = "Multiple tree content (a-symmetic layout)";
 	$localestrings['600'] = "Image";
 	$localestrings['601'] = "Thumb size:";
 	$localestrings['602'] = "Photo size:";
@@ -977,6 +985,8 @@ function install_language_pack() {
 	$localestrings['448'] = "None";
 	$localestrings['449'] = "If this menu item has sub items, these will be deleted as well. Are you sure?";
 	$localestrings['450'] = "Add administration AID to this Link URL";
+	$localestrings['451'] = "Select a language:";
+	$localestrings['452'] = "for the locale";
 	load_localestrings($localestrings, "admin.sitelinks");
 
 	$localestrings = array();

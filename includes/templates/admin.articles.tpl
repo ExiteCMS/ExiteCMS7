@@ -18,6 +18,15 @@
 {include file="_opentable.tpl" name=$_name title=$locale.508 state=$_state style=$_style}
 <form name='selectform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<center>
+		{if $settings.localisation_method == "multiple"}
+			{assign var="url_locale" value="&amp;article_locale="|cat:$article_locale}
+			<br />
+			{$locale.553} {html_options name=article_locale options=$locales selected=$article_locale class="textbox" onchange="location = '"|cat:$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;article_locale=' + this.options[this.selectedIndex].value;"}
+			<br />
+		{else}
+			{assign var="article_locale" value=""}
+		{/if}
+		<br />
 		<select name='article_id' class='textbox' style='width:400px;'>
 		{section name=id loop=$articles}
 			<option value='{$articles[id].article_id}{if $articles[id].selected} selected{/if}'>{$articles[id].article_subject}</option>
@@ -29,13 +38,20 @@
 	</center>
 </form>
 {include file="_closetable.tpl"}
-{include file="_opentable.tpl" name=$_name title=$title state=$_state style=$_style}
+{if $settings.localisation_method == "multiple"}
+	{assign var="tabletitle" value=$title|cat:" "|cat:$locale.554|cat:" '<b>"|cat:$article_locale|cat:"</b>'"}
+{else}
+	{assign var="tabletitle" value=$title}
+{/if}
+{include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
 <form name='inputform' method='post' action='{$action}' onSubmit='return ValidateForm(this)'>
 	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
 		<tr>
 			<td align='center' class='tbl'>
-				{$locale.511} <input type='text' name='subject' value='{$subject}' class='textbox' style='width: 225px'>&nbsp;&nbsp;&nbsp;{$locale.511}
-				<select name='article_cat' class='textbox' style='width: 225px'>
+				{$locale.512}
+				<input type='text' name='subject' value='{$subject}' class='textbox' style='width: 200px'>&nbsp;&nbsp;&nbsp;
+				{$locale.511}
+				<select name='article_cat' class='textbox' style='width: 200px'>
 					{section name=id loop=$catlist}
 						<option value='{$catlist[id].article_cat_id}{if $catlist[id].selected} selected{/if}'>{$catlist[id].article_cat_name}</option>
 					{/section}
@@ -93,7 +109,7 @@
 		<tr>
 			<td class='tbl'>
 				<br />
-				{$locale.413}
+				{$locale.514}
 				<br /><br />
 				<textarea name='body2' cols='95' rows='10' class='{if $settings.tinymce_enabled != 1}textbox{/if}' style='width:100%; height:{math equation='x/2' format="%u" x=$smarty.const.BROWSER_HEIGHT}px'>{$body2}</textarea>
 			</td>
@@ -150,6 +166,7 @@
 		</tr>
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
+				<input type='hidden' name='article_locale' value='{$article_locale}' />
 				<br />
 				<input type='submit' name='preview' value='{$locale.515}' class='button' />
 				<input type='submit' name='save' value='{$locale.516}' class='button' />

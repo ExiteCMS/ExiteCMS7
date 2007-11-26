@@ -78,7 +78,7 @@ if (!isset($settings['locales'])) $settings['locales'] = "en_US|en_GB|english|en
 // set the locale for strfime()
 setlocale(LC_TIME, explode("|", $settings['locales']));
 
-// set the locale for tinyMCE
+// set the locale for tinyMCE, default to 'en' if not found
 if (file_exists(PATH_INCLUDES."jscripts/tiny_mce/langs".$settings['locale_code'].".js")) {
 	$settings['tinyMCE_locale'] = $settings['locale_code'];
 } else {

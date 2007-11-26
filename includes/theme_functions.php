@@ -328,6 +328,13 @@ function load_panels($column) {
 			// invalid parameter. Generate a notice
 			trigger_error("theme_functions: getpanels(): invalid 'column' parameter passed", E_USER_NOTICE);
 			return false;
+	}
+	// 
+	switch ($settings['localisation_method']) {
+		case "multiple":
+			$where .= " AND panel_locale = '".$settings['locale_code']."'";
+			break;
+		default:
 	}	
 
 	$p_res = dbquery("SELECT * FROM ".$db_prefix."panels WHERE ".$where." AND panel_status='1' ORDER BY panel_order");

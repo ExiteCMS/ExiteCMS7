@@ -47,24 +47,30 @@ if (eregi("menu_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) 
 |          default = 0, which is usually what you use|
 |          recursive calls will increase the depth   |
 |          to build the tree                         |
-| $showall - indicates whether security on a link    |
-|          show be checked. If true, the check is    |
+| $no_sec - indicates whether security on a link     |
+|          should be checked. If true, the check is  |
+|          skipped, and all entries are returned     |
+| $no_loc - indicates whether locale information     |
+|          shouldbe checked. If true, the check is   |
 |          skipped, and all entries are returned     |
 +----------------------------------------------------*/
-function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $parent=0, $depth=0, $showall=false) {
+function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $parent=0, $depth=0, $no_sec=false, $no_loc=false) {
 
-	global $db_prefix, $linkinfo, $aidlink;
+	global $settings, $db_prefix, $linkinfo, $aidlink;
 
 	// make sure the linkinfo array exists
 	if (!is_array($linkinfo)) $linkinfo = array();
 
 	// validate the parameters
-	if ((!isNum($parent) && !is_bool($parent)) || !isNum($depth) || !is_string($panel) || !is_array($position) || !is_bool($showall)) return false;
+	if ((!isNum($parent) && !is_bool($parent)) || !isNum($depth) || !is_string($panel) || !is_array($position) || !is_bool($no_sec)) return false;
 
 	$where = "";
 	
 	// build the menu panel selection
 	$where .= ($panel != "" ? ($where == "" ? "" : " AND ")."panel_name = '".$panel."' " : "");
+	if (!$no_loc && $settings['localisation_method'] == "multiple") {
+		$where .= ($where == "" ? "" : " AND ")."link_locale = '".$settings['locale_code']."' ";
+	}
 
 	// build the parent link selection
 	$where .= ($parent !== false ? ($where == "" ? "" : " AND ")."link_parent = '".$parent."' " : "");
@@ -89,7 +95,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 	$current = 1;
 	while($data = dbarray($result)) {
 		// only include records that the user is allowed to see (unless showall is specified)
-		if ($showall || checkgroup($data['link_visibility'])) {
+		if ($no_sec || checkgroup($data['link_visibility'])) {
 			// true if this is the first menu item
 			$data['menu_first'] = $current == 1 ? 1 : 0;
 			// for the first menu item, check if there's a menu_state cookie stored for this menu
@@ -125,7 +131,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 			$submenu = ($data['link_name'] != '---' && $data['link_url'] == '---');
 			if ($submenu) {
 				$submenu_link = count($linkinfo);
-				$linkinfo[$submenu_link-1]['has_submenu'] = menu_generate_tree($panel, $position, $data['link_id'], $depth+1, $showall);
+				$linkinfo[$submenu_link-1]['has_submenu'] = menu_generate_tree($panel, $position, $data['link_id'], $depth+1, $no_sec);
 			}
 		}
 	}

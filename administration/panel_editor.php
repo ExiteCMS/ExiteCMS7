@@ -28,7 +28,28 @@ define('PANEL_SIDE_MOVE', true);
 if (!checkrights("P") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 // make sure the parameters are valid
-if (isset($panel_id) && !isNum($panel_id)) fallback(FUSION_SELF.$aidlink);
+if (isset($panel_id) && !isNum($panel_id)) fallback(ADMIN."panels.php".$aidlink);
+
+// panel_locale
+switch($settings['localisation_method']) {
+	case "multiple":
+		if (!isset($panel_locale)) {
+			$panel_locale = $settings['locale_code'];
+		} else {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$panel_locale."' AND locale_active = '1' LIMIT 1");
+			if (dbrows($result)==0) {
+				$panel_locale = $settings['locale_code'];
+			}
+		}
+		$where = " panel_locale = '".$panel_locale."' ";
+		break;
+	case "none":
+	case "single":
+	default:
+		$panel_locale = "";
+		$where = "";
+		break;
+}
 
 // make a list of all installed module panels
 $panel_list = array();
@@ -42,6 +63,7 @@ if (isset($_POST['save'])) {
 
 	$error = "";
 	$panel_usermod = $_POST['panel_usermod'];
+	$panel_locale = $_POST['panel_locale'];
 	$panel_name = stripinput($_POST['panel_name']);
 	if ($panel_name == "") $error .= $locale['470']."<br>";
 	if ($_POST['panel_filename'] == "none") {
@@ -67,14 +89,14 @@ if (isset($_POST['save'])) {
 	if (isset($panel_id)) {
 		if ($panel_name != "") {
 			$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_id='$panel_id'"));
-			if ($panel_name != $data['panel_name']) {
-				$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_name='$panel_name'");
+			if (strtolower($panel_name) != strtolower($data['panel_name'])) {
+				$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_name='$panel_name'".($where!=""?(" AND ".$where):""));
 				if (dbrows($result) != 0) $error .= $locale['471']."<br>";
 			}
 		}
 		if ($panel_type == "dynamic" && $panel_template == "") $error .= $locale['472']."<br>";
 		if ($error == "") {
-			$result = dbquery("UPDATE ".$db_prefix."panels SET panel_name='$panel_name', panel_filename='$panel_filename', panel_code='$panel_code', panel_template='$panel_template', panel_access='$panel_access', panel_display='$panel_display', panel_side='$panel_side', panel_usermod = '$panel_usermod', panel_state = '$panel_state', panel_datestamp = '".time()."' WHERE panel_id='$panel_id'");
+			$result = dbquery("UPDATE ".$db_prefix."panels SET panel_name='$panel_name', panel_locale='$panel_locale', panel_filename='$panel_filename', panel_code='$panel_code', panel_template='$panel_template', panel_access='$panel_access', panel_display='$panel_display', panel_side='$panel_side', panel_usermod = '$panel_usermod', panel_state = '$panel_state', panel_datestamp = '".time()."' WHERE panel_id='$panel_id'");
 		}
 		// define the message panel variables
 		if ($error != "") {
@@ -83,7 +105,7 @@ if (isset($_POST['save'])) {
 			$variables['message'] = $locale['482'];
 		}
 		$variables['bold'] = true;
-		$variables['link'] = "panels.php".$aidlink;
+		$variables['link'] = "panels.php".$aidlink.($panel_locale!=""?("&panel_locale=".$panel_locale):"");
 		$variables['linktext'] = $locale['486'];
 		$template_panels[] = array('type' => 'body', 'name' => 'admin.panel_editor.status', 'title' => $locale['480'], 'template' => '_message_table_panel.tpl');
 		$template_variables['admin.panel_editor.status'] = $variables;
@@ -92,15 +114,15 @@ if (isset($_POST['save'])) {
 	} else {
 
 		if ($panel_name != "") {
-			$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_name='$panel_name'");
+			$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_name='$panel_name'".($where!=""?(" AND ".$where):""));
 			if (dbrows($result) != 0) $error .= $locale['471']."<br>";
 		}
 		if ($panel_type == "dynamic" && $panel_template == "") $error .= $locale['472']."<br>";
 		if ($panel_type == "file" && $panel_filename == "none") $error .= $locale['473']."<br>";
 		if ($error == "") {
-			$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='$panel_side' ORDER BY panel_order DESC LIMIT 1");
+			$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='$panel_side'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order DESC LIMIT 1");
 			if (dbrows($result) != 0) { $data = dbarray($result); $neworder = $data['panel_order'] + 1; } else { $neworder = 1; }
-			$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_filename, panel_code, panel_template, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status, panel_usermod, panel_state, panel_datestamp) VALUES ('$panel_name', '$panel_filename', '$panel_code', '$panel_template', '$panel_side', '$neworder', '$panel_type', '$panel_access', '$panel_display', '0', '$panel_usermod', '$panel_state', '".time()."')");
+			$result = dbquery("INSERT INTO ".$db_prefix."panels (panel_name, panel_locale, panel_filename, panel_code, panel_template, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status, panel_usermod, panel_state, panel_datestamp) VALUES ('$panel_name', '$panel_locale', '$panel_filename', '$panel_code', '$panel_template', '$panel_side', '$neworder', '$panel_type', '$panel_access', '$panel_display', '0', '$panel_usermod', '$panel_state', '".time()."')");
 		}
 		// define the message panel variables
 		if ($error != "") {
@@ -109,7 +131,7 @@ if (isset($_POST['save'])) {
 			$variables['message'] = $locale['485'];
 		}
 		$variables['bold'] = true;
-		$variables['link'] = "panels.php".$aidlink;
+		$variables['link'] = "panels.php".$aidlink.($panel_locale!=""?("&panel_locale=".$panel_locale):"");
 		$variables['linktext'] = $locale['486'];
 		$template_panels[] = array('type' => 'body', 'name' => 'admin.panel_editor.status', 'title' => $locale['483'], 'template' => '_message_table_panel.tpl');
 		$template_variables['admin.panel_editor.status'] = $variables;
@@ -208,6 +230,7 @@ if (isset($panel_id)) {
 $variables['action'] = $action;
 $variables['panel_id'] = isset($panel_id) ? $panel_id : 0;
 $variables['panel_name'] = $panel_name;
+$variables['panel_locale'] = $panel_locale;
 $variables['panel_type'] = $panel_type;
 $variables['panel_list'] = $panel_list;
 $variables['panel_state'] = $panel_state;

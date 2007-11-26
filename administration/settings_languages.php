@@ -30,12 +30,14 @@ if (!checkrights("S8") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['savesettings'])) {
 	$settings['locale'] = stripinput($_POST['localeset']);
 	$old_localeset = stripinput($_POST['old_localeset']);
+	$localisation_method = stripinput($_POST['localisation_method']);
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$settings['locale']."' WHERE cfg_name = 'locale'");
 	if (empty($_POST['old_country'])) {
 		$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_name, cfg_value) VALUES ('country', '".$_POST['country']."')");
 	} else {
 		$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['country']."' WHERE cfg_name = 'country'");
 	}
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$localisation_method."' WHERE cfg_name = 'localisation_method'");
 	redirect(FUSION_SELF.$aidlink);
 }
 

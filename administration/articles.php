@@ -45,6 +45,29 @@ if (isset($status)) {
 	$variables = array();
 }
 
+// compose the query where clause based on the localisation method choosen
+switch ($settings['localisation_method']) {
+	case "none":
+		$where = "";
+		$where_cat = "";
+		break;
+	case "single":
+		$where = "";
+		$where_cat = "";
+		break;
+	case "multiple":
+		if (isset($_POST['article_locale'])) $article_locale = stripinput($_POST['article_locale']);
+		if (isset($article_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($article_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($article_locale);
+		}
+		if (!isset($article_locale)) $article_locale = $settings['locale_code'];
+		$variables['article_locale'] = $article_locale;
+		$where = "article_locale = '".$article_locale."' ";
+		$where_cat = "article_cat_locale = '".$article_locale."' ";
+		break;
+}
+
 // check if there are any article categories defined
 $result = dbquery("SELECT * FROM ".$db_prefix."article_cats");
 if (dbrows($result) == 0) {
@@ -72,7 +95,7 @@ if (dbrows($result) == 0) {
 			$result = dbquery("UPDATE ".$db_prefix."articles SET article_cat='".$_POST['article_cat']."', article_subject='$subject', article_snippet='$body', article_article='$body2', article_breaks='".($breaks?"y":"n")."', article_allow_comments='$comments', article_allow_ratings='$ratings' WHERE article_id='$article_id'");
 			redirect(FUSION_SELF.$aidlink."&status=su");
 		} else {
-			$result = dbquery("INSERT INTO ".$db_prefix."articles (article_cat, article_subject, article_snippet, article_article, article_breaks, article_name, article_datestamp, article_reads, article_allow_comments, article_allow_ratings) VALUES ('".$_POST['article_cat']."', '$subject', '$body', '$body2', '".($breaks?"y":"n")."', '".$userdata['user_id']."', '".time()."', '0', '$comments', '$ratings')");
+			$result = dbquery("INSERT INTO ".$db_prefix."articles (article_cat, article_subject, article_snippet, article_article, article_breaks, article_name, article_locale, article_datestamp, article_reads, article_allow_comments, article_allow_ratings) VALUES ('".$_POST['article_cat']."', '$subject', '$body', '$body2', '".($breaks?"y":"n")."', '".$userdata['user_id']."', '$article_locale', '".time()."', '0', '$comments', '$ratings')");
 			redirect(FUSION_SELF.$aidlink."&status=sn");
 		}
 
@@ -106,14 +129,24 @@ if (dbrows($result) == 0) {
 			$template_panels[] = array('type' => 'body', 'name' => 'admin.article.preview2', 'title' => $subject, 'template' => '_message_table_panel.simple.tpl', 'locale' => "admin.news-articles");
 			$template_variables['admin.article.preview2'] = $variables;
 			$variables = array();
+			// we've wiped this out, but we'll need it later!
+			if (isset($article_locale)) $variables['article_locale'] = $article_locale;
 		}
 
 		$variables['articles'] = array();
-		$result = dbquery("SELECT * FROM ".$db_prefix."articles ORDER BY article_datestamp DESC");
+		$result = dbquery("SELECT * FROM ".$db_prefix."articles ".($where==""?"":("WHERE ".$where))." ORDER BY article_datestamp DESC");
 		while ($data = dbarray($result)) {
 			$data['selected'] = (isset($article_id) && $article_id == $data['article_id']);
 			$variables['articles'][] = $data;
-		}	
+		}
+
+		// get the installed locales
+		$variables['locales'] = array();
+		$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
+		while ($data = dbarray($result)) {
+			$variables['locales'][$data['locale_code']] = $data['locale_name'];
+		}
+
 		if (isset($_POST['edit'])) {
 			$result = dbquery("SELECT * FROM ".$db_prefix."articles WHERE article_id='$article_id'");
 			if (dbrows($result) != 0) {
@@ -143,7 +176,7 @@ if (dbrows($result) == 0) {
 			$title = $locale['504'];
 		}
 		$variables['catlist'] = array();
-		$result = dbquery("SELECT * FROM ".$db_prefix."article_cats ORDER BY article_cat_name DESC");
+		$result = dbquery("SELECT * FROM ".$db_prefix."article_cats ".($where_cat==""?"":("WHERE ".$where_cat))." ORDER BY article_cat_name DESC");
 		while ($data = dbarray($result)) {
 			$data['selected'] = (isset($article_cat) && $article_cat == $data['article_cat_id']);
 			$variables['catlist'][] = $data;

@@ -14,7 +14,12 @@
 {* Template for the edit panel of the admin configuration module 'panels'  *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
+{if $settings.localisation_method == "multiple"}
+	{assign var="tabletitle" value=$_title|cat:" "|cat:$locale.489|cat:" '<b>"|cat:$panel_locale|cat:"</b>'"}
+{else}
+	{assign var="tabletitle" value=$_title}
+{/if}
+{include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
 <form name='editform' method='post' action='{$action}'>
 	<table align='center' cellpadding='0' cellspacing='0'>
 		<tr>
@@ -107,6 +112,21 @@
 				</select>
 			</td>
 		</tr>
+		{if $settings.localisation_method == "single"}
+			<tr>
+				<td align='center' colspan='2' class='tbl'>
+				</td>
+			</tr>
+			<tr>
+				<td align='center' colspan='2' class='tbl2'>
+				Localisatie
+				</td>
+			</tr>
+			{if $settings.localisation_method != "single"}
+			{/if}
+			{if $settings.localisation_method != "multiple"}
+			{/if}
+		{/if}
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<div id='panelopts' {$panelopts}>
@@ -122,6 +142,7 @@
 				{if !$smarty.const.PANEL_SIDE_MOVE}
 					<input type='hidden' name='panel_side' value='{$panel_side}'>
 				{/if}
+				<input type='hidden' name='panel_locale' value='{$panel_locale}'>
 				<input type='submit' name='preview' value='{$locale.458}' class='button' />
 				<input type='submit' name='save' value='{$locale.459}' class='button' />
 			</td>

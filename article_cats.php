@@ -27,6 +27,19 @@ if (isset($cat_id) && !isNum($cat_id)) fallback(FUSION_SELF);
 $variables = array();
 $article_cats = array();
 
+// compose the query where clause based on the localisation method choosen
+switch ($settings['localisation_method']) {
+	case "none":
+		$where = "";
+		break;
+	case "single":
+		$where = "";
+		break;
+	case "multiple":
+		$where = "article_cat_locale = '".$settings['locale_code']."' ";
+		break;
+}
+
 // make the selection based on the presence of cat_id 
 if (isset($cat_id)) {
 	$sql = " AND article_cat_id='".$cat_id."'";
@@ -46,9 +59,9 @@ if (isset($cat_id)) {
 		$data['more'] = (!isset($cat_id) && $data['itemcount'] > AC_OVERVIEW_LIMIT);
 		$data['article_cat_image'] = "";
 		$data['article_cat_name'] = $locale['403'];
-		// get none categorised article first
+		// get not categorised article first
 		if ($data['itemcount']) {
-			$result = dbquery("SELECT * FROM ".$db_prefix."articles WHERE article_cat='0' ORDER BY article_datestamp DESC ".$sql2);
+			$result = dbquery("SELECT * FROM ".$db_prefix."articles WHERE article_cat='0'".($where==""?"":(" AND ".$where))." ORDER BY article_datestamp DESC ".$sql2);
 			while ($data2 = dbarray($result2)) {
 				$data2['article_snippet'] = stripslashes($data2['article_snippet']);
 				$data['items'][] = $data2;
@@ -58,7 +71,7 @@ if (isset($cat_id)) {
 	}
 }
 // get the available article_cats
-$result = dbquery("SELECT * FROM ".$db_prefix."article_cats WHERE ".groupaccess('article_cat_access').$sql." ORDER BY article_cat_id");
+$result = dbquery("SELECT * FROM ".$db_prefix."article_cats WHERE ".groupaccess('article_cat_access').$sql.($where==""?"":(" AND ".$where))." ORDER BY article_cat_id");
 while ($data = dbarray($result)) {
 	// total number of items for this news_cat
 	$data['itemcount'] = dbcount("(article_id)", "articles", "article_cat='".$data['article_cat_id']."'");

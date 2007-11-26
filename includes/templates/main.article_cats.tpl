@@ -46,7 +46,12 @@
 				<tr>
 					<td class='tbl1' style='vertical-align:top'>
 					{section name=item loop=$article_cats[cat].items}
-						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='readarticle.php?article_id={$article_cats[cat].items[item].article_id}'>{$article_cats[cat].items[item].article_subject}</a>
+						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+						{if $article_cats[cat].items[item].article_article == ""}
+							{$article_cats[cat].items[item].article_subject}
+						{else}
+							<a href='readarticle.php?article_id={$article_cats[cat].items[item].article_id}'>{$article_cats[cat].items[item].article_subject}</a>
+						{/if}
 						<br />
 						<div style='margin-left:8px;'>{$article_cats[cat].items[item].article_snippet}</div>
 						{if !$smarty.section.item.last}<br />{/if}
