@@ -156,9 +156,14 @@ if (isset($_SERVER['SERVER_SOFTWARE'])) {
 	$PHP_SELF = cleanurl($_SERVER['PHP_SELF']);
 	define("FUSION_REQUEST", isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != "" ? $_SERVER['REQUEST_URI'] : $_SERVER['SCRIPT_NAME']);
 	define("FUSION_QUERY", isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "");
-	define("FUSION_SELF", basename($_SERVER['PHP_SELF']));
+	if (basename($_SERVER['PHP_SELF']) == "404handler.php") {
+		define("FUSION_SELF", basename(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "" ? $_SERVER['REDIRECT_URL'] : $PHP_SELF));
+		define("FUSION_URL", isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "" ? $_SERVER['REDIRECT_URL'] : $PHP_SELF);
+	} else {
+		define("FUSION_SELF", basename($_SERVER['PHP_SELF']));
+		define("FUSION_URL", $PHP_SELF);
+	}
 	define("USER_IP", $_SERVER['REMOTE_ADDR']);
-	define("FUSION_URL", $PHP_SELF);
 } else {
 	// Common definitions - CLI mode
 	define("CMS_CLI", true);
@@ -217,7 +222,10 @@ function _debug($text, $abort=false) {
 // Redirect browser using the header function
 function redirect($location, $type="header") {
 	global $locale;
-	
+
+	// get rid of &amp; in the location
+	$location = str_replace("&amp;", "&", $location);
+		
 	if ($type == "header") {
 		header("Location: ".$location);
 		die();
@@ -229,6 +237,10 @@ function redirect($location, $type="header") {
 
 // Fallback to safe area in event of unauthorised access
 function fallback($location) {
+
+	// get rid of &amp; in the location
+	$location = str_replace("&amp;", "&", $location);
+		
 	redirect($location, "header");
 	exit;
 }
