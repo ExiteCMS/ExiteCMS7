@@ -84,6 +84,9 @@ if (isset($headerparms)) $variables['headparms'] = $headerparms;
 $template_panels[] = array('type' => 'header', 'name' => '_header', 'template' => '_header.tpl');
 $template_variables['_header'] = $variables;
 
+// load any header panels
+load_panels('header');
+
 // load the header templates
 load_templates('header', '');
 
@@ -160,10 +163,14 @@ echo "	</tr>
 // temp storage for template variables
 $variables = array();
 
-// define the footer panel
+// load the footer panels
+load_panels('footer');
+
+// define the footer template
 $template_panels[] = array('type' => 'footer', 'name' => '_footer', 'template' => '_footer.tpl');
 $template_variables['_footer'] = $variables;
 
+// load the footer templates
 load_templates('footer', '');
 
 /*---------------------------------------------------+

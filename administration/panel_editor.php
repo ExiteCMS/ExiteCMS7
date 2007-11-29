@@ -80,7 +80,8 @@ if (isset($_POST['save'])) {
 	$panel_side = isNum($_POST['panel_side']) ? $_POST['panel_side'] : "1";
 	$panel_access = isNum($_POST['panel_access']) ? $_POST['panel_access'] : "0";
 	$panel_state = isNum($_POST['panel_state']) ? $_POST['panel_state'] : "0";
-	if ($panel_side == "1" || $panel_side == "4") {
+	// display-on-all-pages only possible for body panels
+	if ($panel_side != "2" && $panel_side != "3") {
 		$panel_display = "0";
 	} else {
 		$panel_display = isset($_POST['panel_display']) ? "1" : "0";
@@ -158,7 +159,9 @@ if (isset($_POST['save'])) {
 		if ($panel_filename == "none") {
 			$panel_type = "dynamic";
 			eval($panel_code);
-			if ($panel_side == 1) {
+			if ($panel_side == 0) {
+				$template_panels[] = array('type' => 'header', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
+			} elseif ($panel_side == 1) {
 				$template_panels[] = array('type' => 'left', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			} elseif ($panel_side == 2) {
 				$template_panels[] = array('type' => 'upper', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
@@ -166,11 +169,15 @@ if (isset($_POST['save'])) {
 				$template_panels[] = array('type' => 'lower', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			} elseif ($panel_side == 4) {
 				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
+			} elseif ($panel_side == 5) {
+				$template_panels[] = array('type' => 'footer', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			}
 		} else {
 			$panel_type = "file";
 			@include PATH_MODULES.$panel_filename."/".$panel_filename.".php";
-			if ($panel_side == 1) {
+			if ($panel_side == 0) {
+				$template_panels[] = array('type' => 'header', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+			} if ($panel_side == 1) {
 				$template_panels[] = array('type' => 'left', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
 			} elseif ($panel_side == 2) {
 				$template_panels[] = array('type' => 'upper', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
@@ -178,6 +185,8 @@ if (isset($_POST['save'])) {
 				$template_panels[] = array('type' => 'lower', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
 			} elseif ($panel_side == 4) {
 				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+			} elseif ($panel_side == 5) {
+				$template_panels[] = array('type' => 'footer', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
 			}
 		}
 		if (isset($variables) && is_array($variables)) {

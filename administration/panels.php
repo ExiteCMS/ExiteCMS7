@@ -50,6 +50,12 @@ switch ($settings['localisation_method']) {
 
 if ($step == "refresh") {
 	$i = 1;
+	$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='0'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order");
+	while ($data = dbarray($result)) {
+		$result2 = dbquery("UPDATE ".$db_prefix."panels SET panel_order='$i' WHERE panel_id='".$data['panel_id']."'");
+		$i++;
+	}
+	$i = 1;
 	$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='1'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order");
 	while ($data = dbarray($result)) {
 		$result2 = dbquery("UPDATE ".$db_prefix."panels SET panel_order='$i' WHERE panel_id='".$data['panel_id']."'");
@@ -69,6 +75,12 @@ if ($step == "refresh") {
 	}
 	$i = 1;
 	$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='4'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order");
+	while ($data = dbarray($result)) {
+		$result2 = dbquery("UPDATE ".$db_prefix."panels SET panel_order='$i' WHERE panel_id='".$data['panel_id']."'");
+		$i++;
+	}
+	$i = 1;
+	$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='5'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order");
 	while ($data = dbarray($result)) {
 		$result2 = dbquery("UPDATE ".$db_prefix."panels SET panel_order='$i' WHERE panel_id='".$data['panel_id']."'");
 		$i++;
@@ -132,9 +144,24 @@ if ($step == "mlower") {
 	redirect(FUSION_SELF.$aidlink.(isset($panel_locale)?("&panel_locale=".$panel_locale):""));
 }
 
+if ($step == "mheader") {
+	$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='5'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order DESC LIMIT 1");
+	if (dbrows($result) != 0) { $data = dbarray($result); $neworder = $data['panel_order'] + 1; } else { $neworder = 1; }
+	$result = dbquery("UPDATE ".$db_prefix."panels SET panel_side='0', panel_order='$neworder' WHERE panel_id='$panel_id'");
+	$result = dbquery("UPDATE ".$db_prefix."panels SET panel_order=panel_order-1 WHERE panel_side='5' ".($where!=""?(" AND ".$where):"")."AND panel_order>='$order'");
+	redirect(FUSION_SELF.$aidlink.(isset($panel_locale)?("&panel_locale=".$panel_locale):""));
+}
+
+if ($step == "mfooter") {
+	$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='0'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order DESC LIMIT 1");
+	if (dbrows($result) != 0) { $data = dbarray($result); $neworder = $data['panel_order'] + 1; } else { $neworder = 1; }
+	$result = dbquery("UPDATE ".$db_prefix."panels SET panel_side='5', panel_order='$neworder' WHERE panel_id='$panel_id'");
+	$result = dbquery("UPDATE ".$db_prefix."panels SET panel_order=panel_order-1 WHERE panel_side='0' ".($where!=""?(" AND ".$where):"")."AND panel_order>='$order'");
+	redirect(FUSION_SELF.$aidlink.(isset($panel_locale)?("&panel_locale=".$panel_locale):""));
+}
 
 $state = array($locale['463'], $locale['464'], $locale['465']);
-$ps = 0; $i = 0;
+$ps = -1; $i = 0;
 
 $result = dbquery("SELECT * FROM ".$db_prefix."panels ".($where!=""?("WHERE ".$where):"")."ORDER BY panel_side, panel_order");
 $variables['panels'] = array();
@@ -164,10 +191,12 @@ while ($data = dbarray($result)) {
 		$data['order_up'] = 0;
 		$data['order_down'] = 0;
 	}
-	if ($data['panel_side'] == 1) { $data['panel_side_name'] = $locale['420'];
+	if ($data['panel_side'] == 0) { $data['panel_side_name'] = $locale['490'];
+	} elseif ($data['panel_side'] == 1) { $data['panel_side_name'] = $locale['420'];
 	} elseif ($data['panel_side'] == 2) { $data['panel_side_name'] = $locale['421'];
 	} elseif ($data['panel_side'] == 3) { $data['panel_side_name'] = $locale['425'];
 	} elseif ($data['panel_side'] == 4) { $data['panel_side_name'] = $locale['422']; 
+	} elseif ($data['panel_side'] == 5) { $data['panel_side_name'] = $locale['491']; 
 	}
 	$data['panel_state_name'] = $state[$data['panel_state']];
 	$data['panel_type_name'] = ($data['panel_type'] == "file" ? $locale['423'] : $locale['424']);

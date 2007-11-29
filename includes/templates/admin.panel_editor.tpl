@@ -70,10 +70,12 @@
 			</td>
 			<td class='tbl'>
 				<select name='panel_side' class='textbox' style='width:150px;' onchange="showopts(this.options[this.selectedIndex].value);">
+					<option value='0'{if $panel_side == "0"} selected="selected"{/if}>{$locale.492}</option>
 					<option value='1'{if $panel_side == "1"} selected="selected"{/if}>{$locale.466}</option>
 					<option value='2'{if $panel_side == "2"} selected="selected"{/if}>{$locale.467}</option>
 					<option value='3'{if $panel_side == "3"} selected="selected"{/if}>{$locale.469}</option>
 					<option value='4'{if $panel_side == "4"} selected="selected"{/if}>{$locale.468}</option>
+					<option value='5'{if $panel_side == "5"} selected="selected"{/if}>{$locale.493}</option>
 				</select>
 			</td>
 		</tr>

@@ -302,6 +302,10 @@ function load_panels($column) {
 	// parameter validation and processing
 	$column = strtolower(trim($column));
 	switch ($column) {
+		case "header":
+			// get the header panels
+			$where = "panel_side='0'";
+			break;
 		case "left":
 			// get the left-side panels
 			$where = "panel_side='1'";
@@ -323,6 +327,10 @@ function load_panels($column) {
 			if (FUSION_URL != "/".$settings['opening_page']) {
 				$where .= " AND panel_display='1'";
 			}
+			break;
+		case "footer":
+			// get the footer panels
+			$where = "panel_side='5'";
 			break;
 		default:
 			// invalid parameter. Generate a notice
