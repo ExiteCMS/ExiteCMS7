@@ -252,4 +252,22 @@ function locale_load($locale_name) {
 	}
 
 }
+
+function load_localestrings($localestrings, $locales_code, $locales_name, $step="upgrade") {
+	global $db_prefix;
+
+	// remove the old locale strings for this locale name ($step to be compatible with the language pack function!)
+	if ($step == "upgrade") {
+		$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_code = '$locales_code' AND locales_name = '$locales_name'");
+	}
+
+	// proces the imported locale strings
+	foreach ($localestrings as $key => $value) {
+		if (is_array($value)) {
+			$value = "#ARRAY#\n".serialize($value);
+		}
+		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".time()."')");
+	}
+	return true;
+}
 ?>

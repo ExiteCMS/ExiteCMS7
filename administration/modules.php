@@ -95,6 +95,13 @@ if ($action == 'install' && isset($module)) {
 		}
 	}
 
+	// if locale strings are defined, load them into the database
+	if (isset($localestrings) && is_array($localestrings)) {
+		foreach($localestrings as $locales_code => $locales_strings) {
+			load_localestrings($locales_strings, $locales_code, "modules.".$mod_folder);
+		}
+	}
+
 	// process the command defined
 	$mod_errors = array();
 	if (isset($mod_install_cmds) && is_array($mod_install_cmds) && count($mod_install_cmds)) {
@@ -207,6 +214,11 @@ if ($action == 'uninstall' && isset($id)) {
 	// remove the panel from the available panels
 	$result = dbquery("DELETE FROM ".$db_prefix."panels WHERE panel_filename='".$mod_folder."'");
 
+	// if locale strings are defined, remove them
+	if (isset($localestrings) && is_array($localestrings)) {
+		$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_name = 'modules.".$mod_folder."'");
+	}
+
 	// process the command defined
 	$mod_errors = array();
 	if (isset($mod_uninstall_cmds) && is_array($mod_uninstall_cmds) && count($mod_uninstall_cmds)) {
@@ -312,6 +324,13 @@ if ($action == 'upgrade' && isset($id)) {
 			} else {
 				// do nothing
 			}
+		}
+	}
+
+	// if locale strings are defined, load them into the database
+	if (isset($localestrings) && is_array($localestrings)) {
+		foreach($localestrings as $locales_code => $locales_strings) {
+			load_localestrings($locales_strings, $locales_code, "modules.".$mod_folder);
 		}
 	}
 

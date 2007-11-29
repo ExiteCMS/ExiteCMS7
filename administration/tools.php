@@ -27,8 +27,8 @@ $variables = array();
 // flag whether or not to show images or only links
 $variables['admin_images'] = true;
 
-// get the list of available webmaster tools
-$dirlist = makefilelist(PATH_ADMIN."tools", ".|..", true);
+// get the list of available webmaster tools (dot-files only for webmasters!)
+$dirlist = makefilelist(PATH_ADMIN."tools", ".|..", true, "files", iSUPERADMIN);
 
 $modules = array();
 foreach($dirlist as $module) {

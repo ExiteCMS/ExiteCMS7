@@ -96,7 +96,7 @@ if (isset($_POST['save'])) {
 		$page_content = phpentities($page_content);
 	}
 	$variables['pages'] = array();
-	$result = dbquery("SELECT * FROM ".$db_prefix."custom_pages ORDER BY page_title DESC");
+	$result = dbquery("SELECT * FROM ".$db_prefix."custom_pages ORDER BY page_title");
 	while ($data = dbarray($result)) {
 		$data['selected'] = (isset($page_id) && $page_id == $data['page_id']);
 		$variables['pages'][] = $data;

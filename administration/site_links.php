@@ -128,16 +128,14 @@ function buildmenutree($parent, $depth, $panel) {
 +----------------------------------------------------*/
 
 // generate the list of installed menu panels
-$panel_list = array();
-$temp = opendir(PATH_MODULES);
-while ($folder = readdir($temp)) {
-	if (!in_array($folder, array(".","..")) && strstr($folder, "_panel")) {
-		if (is_dir(PATH_MODULES.$folder)) 
-		    if (strpos($folder, '_menu_panel') !== false) $panel_list[] = $folder;
+$variables['panel_list'] = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_folder LIKE '%_panel'");
+if (dbrows($result)) {
+	while ($data = dbarray($result)) {
+		if (strpos($data['mod_folder'], '_menu_panel') !== false) $variables['panel_list'][] = $data['mod_folder'];
 	}
 }
-closedir($temp); sort($panel_list); 
-$variables['panel_list'] = $panel_list;
+sort($variables['panel_list']);
 
 // display a status panel
 if (isset($status)) {
@@ -299,7 +297,7 @@ while(list($key, $user_group) = each($user_groups)){
 $variables['panels'] = array();
 
 // loop through the panels installed
-foreach ($panel_list as $panel) {
+foreach ($variables['panel_list'] as $panel) {
 	
 	// skip empty panel names (happens sometimes ?!)
 	if (empty($panel)) continue;

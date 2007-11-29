@@ -30,15 +30,6 @@ $commands = array();
 
 // database changes
 
-// Need a locale from the setup locale file
-if (isset($locale) && is_array($locale)) {
-	$oldlocale = $locale; $locale = array();
-	locale_load("main.setup");
-	
-	// Add the admin record for the webmaster toolbox to the admin table
-	$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('T',  'tools.gif', '".$locale['495']."', 'tools.php', 3)");
-	
-	$locale = $oldlocale;
-	unset($oldlocale);
-}
+// Add the admin record for the webmaster toolbox to the admin table
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('T',  'tools.gif', 'Webmaster Toolbox', 'tools.php', 3)");
 ?>

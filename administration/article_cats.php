@@ -150,7 +150,7 @@ $result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'"
 while ($data = dbarray($result)) {
 	$variables['locales'][$data['locale_code']] = $data['locale_name'];
 }
-//_debug($variables, true);
+
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.article_cats', 'title' => $title, 'template' => 'admin.article_cats.tpl', 'locale' => "admin.news-articles");
 $template_variables['admin.article_cats'] = $variables;
