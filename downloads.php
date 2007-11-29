@@ -42,6 +42,19 @@ function countdownloads($cat_id) {
 // temp storage for template variables
 $variables = array();
 
+// compose the query where clause based on the localisation method choosen
+switch ($settings['localisation_method']) {
+	case "none":
+		$where = "";
+		break;
+	case "single":
+		$where = "";
+		break;
+	case "multiple":
+		$where = "download_cat_locale = '".$settings['locale_code']."' ";
+		break;
+}
+
 // store the number of columns in the panel
 $variables['columns'] = $settings['download_columns'];
 
@@ -80,7 +93,7 @@ if (isset($download_id)) {
 if (!isset($cat_id)) {
 	// get all root categories
 	$variables['subcats'] = false;
-	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='0' AND ".groupaccess('download_cat_access')." ORDER BY download_datestamp DESC");
+	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='0' AND ".groupaccess('download_cat_access').($where=""?"":(" AND ".$where))." ORDER BY download_datestamp DESC");
 	if ($result) {
 		// any downloads in the 'root' are public, and ordered by download_id DESC, by default!
 		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');	

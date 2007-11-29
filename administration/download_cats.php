@@ -52,16 +52,18 @@ if (isset($status)) {
 if (isset($step) && $step == "delete") {
 	$result = dbquery("SELECT * FROM ".$db_prefix."downloads WHERE download_cat='$cat_id'");
 	if (dbrows($result) != 0) {
-		redirect(FUSION_SELF.$aidlink."&status=deln");
+		redirect(FUSION_SELF.$aidlink."&status=deln&cat_locale".$cat_locale);
 		exit;
 	} else {
 		$result = dbquery("DELETE FROM ".$db_prefix."download_cats WHERE download_cat_id='$cat_id'");
-		redirect(FUSION_SELF.$aidlink."&status=dely");
+		redirect(FUSION_SELF.$aidlink."&status=dely&cat_locale=".$cat_locale);
 		exit;
 	}
 }
 if (isset($_POST['save_cat'])) {
+	$cat_id = isset($cat_id) ? $cat_id : "0";
 	$cat_name = stripinput($_POST['cat_name']);
+	$cat_locale = isset($_POST['cat_locale']) ? $_POST['cat_locale'] : "";
 	$cat_description = stripinput($_POST['cat_description']);
 	$cat_access = isNum($_POST['cat_access']) ? $_POST['cat_access'] : "0";
 	$cat_image = stripinput($_POST['cat_image']);
@@ -86,17 +88,20 @@ if (isset($_POST['save_cat'])) {
 	} else {
 		$cat_cat_sorting = "download_cat_id DESC";
 	}
-	$update_datestamp = isNum($_POST['update_datestamp']) ? true : false;
+	$formaction = FUSION_SELF.$aidlink."&amp;";
+	if (isset($cat_locale) && !empty($cat_locale)) $formaction .= "cat_locale=".$cat_locale;
 	if (cat_not_recursive($cat_id, $cat_sub)) {
+		$update_datestamp = isset($_POST['update_datestamp']) && isNum($_POST['update_datestamp']) ? true : false;
 		if (isset($step) && $step == "edit") {
-			$result = dbquery("UPDATE ".$db_prefix."download_cats SET download_cat_name='$cat_name', download_cat_description='$cat_description', download_cat_sorting='$cat_sorting', download_cat_cat_sorting='$cat_cat_sorting', download_cat_access='$cat_access', download_cat_image='$cat_image', download_parent='$cat_sub' ".($update_datestamp ? (", download_datestamp='".time()."'") : "")." WHERE download_cat_id='$cat_id'");
+			// update
+			$result = dbquery("UPDATE ".$db_prefix."download_cats SET download_cat_name='$cat_name', download_cat_locale='$cat_locale', download_cat_description='$cat_description', download_cat_sorting='$cat_sorting', download_cat_cat_sorting='$cat_cat_sorting', download_cat_access='$cat_access', download_cat_image='$cat_image', download_parent='$cat_sub' ".($update_datestamp ? (", download_datestamp='".time()."'") : "")." WHERE download_cat_id='$cat_id'");
 		} else {
-			$result = dbquery("INSERT INTO ".$db_prefix."download_cats (download_cat_name, download_cat_description, download_cat_sorting, download_cat_cat_sorting, download_cat_access, download_cat_image, download_parent, download_datestamp) VALUES('$cat_name', '$cat_description', '$cat_sorting', '$cat_cat_sorting', '$cat_access', '$cat_image', '$cat_sub', '".time()."')");
+			// insert
+			$result = dbquery("INSERT INTO ".$db_prefix."download_cats (download_cat_name, download_cat_locale, download_cat_description, download_cat_sorting, download_cat_cat_sorting, download_cat_access, download_cat_image, download_parent, download_datestamp) VALUES('$cat_name', '$cat_locale', '$cat_description', '$cat_sorting', '$cat_cat_sorting', '$cat_access', '$cat_image', '$cat_sub', '".time()."')");
 		}
-		redirect(FUSION_SELF.$aidlink);
-		exit;
+		$step = "add";
 	} else {
-		$formaction = FUSION_SELF.$aidlink."&amp;step=edit&amp;cat_id=".$cat_id;
+		$formaction .= "&amp;step=edit";
 		$title = $locale['420'];
 		$variables['bold'] = true;
 		$variables['errormessage'] = $locale['446'];
@@ -108,6 +113,7 @@ if (isset($step) && $step == "edit") {
 	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='$cat_id'");
 	$data = dbarray($result);
 	$cat_name = $data['download_cat_name'];
+	$cat_locale = $data['download_cat_locale'];
 	$cat_description = $data['download_cat_description'];
 	$cat_sorting = explode(" ", $data['download_cat_sorting']);
 	if ($cat_sorting[0] == "download_id") { $cat_sort_by = "1"; }
@@ -130,10 +136,12 @@ if (isset($step) && $step == "edit") {
 	$cat_image = $data['download_cat_image'];
 	$cat_sub = $data['download_parent'];
 	$formaction = FUSION_SELF.$aidlink."&amp;step=edit&amp;cat_id=".$data['download_cat_id'];
+	if (isset($cat_locale) && !empty($cat_locale)) $formaction .= "&amp;cat_locale=".$cat_locale;
 	$title = $locale['420'];
-} elseif (!isset($step)) {
+} else { 
 	$cat_id = 0;
 	$cat_name = "";
+	if (!isset($cat_locale)) $cat_locale = $settings['locale_code'];
 	$cat_description = "";
 	$cat_sort_by = "download_title";
 	$cat_sort_order = "ASC";
@@ -143,8 +151,10 @@ if (isset($step) && $step == "edit") {
 	$cat_access = 101;
 	$cat_image = "";
 	$formaction = FUSION_SELF.$aidlink;
+	if (isset($cat_locale) && !empty($cat_locale)) $formaction .= "&amp;cat_locale=".$cat_locale;
 	$title = $locale['421'];
 }
+
 $variables['groups'] = getusergroups(false, true);
 $variables['images'] = makefilelist(PATH_IMAGES_DC, ".|..|index.php", true);
 $variables['editlist'] = array();
@@ -153,8 +163,28 @@ while ($data2 = dbarray($result_sub)) {
 	$variables['editlist'][] = $data2;
 }
 
+// compose the query where clause based on the localisation method choosen
+switch ($settings['localisation_method']) {
+	case "none":
+		$where = "";
+		$cat_locale = "";
+		break;
+	case "single":
+		$where = "";
+		$cat_locale = "";
+		break;
+	case "multiple":
+		if (isset($cat_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($cat_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($cat_locale);
+		}
+		if (!isset($cat_locale)) $cat_locale = $settings['locale_code'];
+		$where = "download_cat_locale = '".$cat_locale."' ";
+		break;
+}
+
 $variables['cats'] = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ORDER BY download_parent*100000-download_cat_id");
+$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ".($where=""?"":("AND ".$where))." ORDER BY download_parent*100000-download_cat_id");
 while ($data = dbarray($result)) {
 	if ($data['download_parent']) {
 		$result_sub = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id = '" .$data['download_parent']. "' LIMIT 1");
@@ -169,6 +199,7 @@ while ($data = dbarray($result)) {
 // template variables
 $variables['cat_id'] = $cat_id;
 $variables['cat_name'] = $cat_name;
+$variables['cat_locale'] = $cat_locale;
 $variables['cat_description'] = $cat_description;
 $variables['cat_sort_by'] = $cat_sort_by;
 $variables['cat_sort_order'] = $cat_sort_order;
@@ -179,6 +210,13 @@ $variables['cat_access'] = $cat_access;
 $variables['cat_image'] = $cat_image;
 $variables['formaction'] = $formaction;
 $variables['is_edit'] = isset($step);
+
+// get the installed locales
+$variables['locales'] = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
+while ($data = dbarray($result)) {
+	$variables['locales'][$data['locale_code']] = $data['locale_name'];
+}
 
 // panel definitions
 $template_panels[] = array('type' => 'body', 'name' => 'admin.download_cats', 'title' => $title, 'template' => 'admin.download_cats.tpl', 'locale' => "admin.downloads");

@@ -28,6 +28,16 @@
 				<input type='text' name='cat_name' value='{$cat_name}' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
+		{if $settings.localisation_method == "multiple"}
+			<tr>
+				<td width='1%' class='tbl' style='white-space:nowrap'>
+					{$locale.514}
+				</td>
+				<td class='tbl'>
+					{html_options name=cat_locale options=$locales selected=$cat_locale class="textbox"}
+				</td>
+			</tr>
+		{/if}
 		<tr>
 			<td width='1%' class='tbl' style='white-space:nowrap'>
 				{$locale.431}
@@ -125,7 +135,22 @@
 	</table>
 </form>
 {include file="_closetable.tpl"}
-{include file="_opentable.tpl" name=$_name title=$locale.440 state=$_state style=$_style}
+{if $settings.localisation_method == "multiple"}
+	{assign var="tabletitle" value=$locale.440|cat:" "|cat:$locale.513|cat:" '<b>"|cat:$cat_locale|cat:"</b>'"}
+{else}
+	{assign var="tabletitle" value=$locale.440}
+{/if}
+{include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
+{if $settings.localisation_method == "multiple"}
+	{assign var="url_locale" value="&amp;cat_locale="|cat:$cat_locale}
+	<br />
+	<div style='text-align:center;'>
+		{$locale.553} {html_options name=cat_locale options=$locales selected=$cat_locale class="textbox" onchange="location = '"|cat:$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;cat_locale=' + this.options[this.selectedIndex].value;"}
+	</div>
+{else}
+	{assign var="cat_locale" value=""}
+{/if}
+<br />
 <table align='center' width='550' cellspacing='1' cellpadding='0' class='tbl-border'>
 {section name=dc loop=$cats}
 {if $smarty.section.dc.first}
@@ -157,8 +182,8 @@
 			{$cats[dc].group_name}
 		</td>
 		<td align='center' width='1%' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=edit&amp;cat_id={$cats[dc].download_cat_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.503}' title='{$locale.503}' /></a>&nbsp;
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;cat_id={$cats[dc].download_cat_id}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>
+			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=edit&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.503}' title='{$locale.503}' /></a>&nbsp;
+			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>
 		</td>
 </tr>
 {sectionelse}

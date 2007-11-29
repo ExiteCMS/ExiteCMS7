@@ -217,40 +217,6 @@
 	return confirm('{$locale.460}');
 	{rdelim}
 	</script>
-	{include file="_closetable.tpl"}
-	{include file="_opentable.tpl" name=$_name title=$locale.520 state=$_state style=$_style}
-	{if $barmsg|default:"" != ""}
-		<center><b>{$barmsg}</b></center><br />
-	{/if}
-	<form name='barform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=bar'>
-		<table align='center' cellpadding='0' cellspacing='0' width='400'>
-			<tr>
-				<td class='tbl'>
-					{$locale.524}:
-					<br />
-					<input type='text' name='bar_title' value='{$bar_title}' class='textbox' style='width:400px;' />
-				</td>
-			</tr>
-			{section name=bar start=1 loop=`$smarty.const.MAX_BARS+1`}
-			<tr>
-				<td class='tbl'>
-					{$locale.521} {$smarty.section.bar.index}:<br />
-					<select name='download_bar[{$smarty.section.bar.index}]' class='textbox' style='width:400px;'>
-						<option value='0'>&nbsp;</option>
-					{section name=id loop=$barfiles}
-						<option value='{$barfiles[id].download_id}'{if $barfiles[id].download_bar == $smarty.section.bar.index} selected="selected"{/if}>{$barfiles[id].download_cat_name} » {$barfiles[id].download_title}</option>
-					{/section}
-					</select>
-				</td>
-			</tr>
-			{/section}
-			<tr>
-				<td align='center'>
-					<input type='submit' name='save_bars' value='{$locale.522}' class='button' />
-				</td>
-			</tr>
-		</table>
-	</form>
 {/if}
 {include file="_closetable.tpl"}
 {***************************************************************************}
