@@ -333,6 +333,7 @@ function isDec($value) {
 // Parse smiley bbcode into HTML images
 function parsesmileys($message) {
 	$smiley = array(
+		"#\:oops\:#si" => "<img src='".IMAGES."smiley/more/redface.gif' alt='smiley' />",
 		"#\;\)#si" => "<img src='".IMAGES."smiley/wink.gif' alt='smiley' />",
 		"#\:\(#si" => "<img src='".IMAGES."smiley/sad.gif' alt='smiley' />",
 		"#\:\|#si" => "<img src='".IMAGES."smiley/frown.gif' alt='smiley' />",
@@ -364,7 +365,6 @@ function parsesmileys($message) {
 		"#\:\-x#si" => "<img src='".IMAGES."smiley/more/icon_mad.gif' alt='smiley' />",
 		"#\:P#si" => "<img src='".IMAGES."smiley/more/icon_razz.gif' alt='smiley' />",
 		"#\:razz\:#si" => "<img src='".IMAGES."smiley/more/razz.gif' alt='smiley' />",
-		"#\:oops\:#si" => "<img src='".IMAGES."smiley/more/redface.gif' alt='smiley' />",
 		"#\:cry\:#si" => "<img src='".IMAGES."smiley/more/cry.gif' alt='smiley' />",
 		"#\:evil\:#si" => "<img src='".IMAGES."smiley/more/evil.gif' alt='smiley' />",
 		"#\:twisted\:#si" => "<img src='".IMAGES."smiley/more/icon_twisted.gif' alt='smiley' />",
@@ -525,6 +525,8 @@ function parseubb($text) {
 	$text = preg_replace('#\[i\](.*?)\[/i\]#si', '<i>\1</i>', $text);
 	$text = preg_replace('#\[u\](.*?)\[/u\]#si', '<u>\1</u>', $text);
 	$text = preg_replace('#\[center\](.*?)\[/center\]#si', '<center>\1</center>', $text);
+
+	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object width="425" height="355"><param name="movie" value="\1"></param><param name="wmode" value="transparent"></param><embed src="\1" type="application/x-shockwave-flash" wmode="transparent" width="425" height="355"></embed></object>', $text);
 
 	// correct illegal [url=] BBcode
 	$text = str_replace("[url=]", "[url]", $text);
