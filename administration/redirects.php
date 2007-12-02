@@ -40,6 +40,7 @@ if ($action == "delete") {
 $url_from = isset($_POST['url_from']) ? stripinput($_POST['url_from']) : "";
 $url_to = isset($_POST['url_to'])? stripinput($_POST['url_to']) : "";
 $url_redirect = isset($_POST['url_redirect']) ? "1" : "0";
+$url_parms = isset($_POST['url_parms']) ? "1" : "0";
 
 // save requested?
 if (isset($_POST['save'])) {
@@ -69,19 +70,21 @@ if (isset($_POST['save'])) {
 						if (dbrows($result) != 0) {
 							$error = 4;
 						} else {
-							$result = dbquery("INSERT INTO ".$db_prefix."redirects (url_from, url_to, url_redirect) VALUES ('$url_from', '$url_to', '$url_redirect')");
+							$result = dbquery("INSERT INTO ".$db_prefix."redirects (url_from, url_to, url_redirect, url_parms) VALUES ('$url_from', '$url_to', '$url_redirect', '$url_parms')");
 							$error = 1;
 							$url_from = "";
 							$url_to = "";
 							$url_redirect = "0";
+							$url_parms = "1";
 						}
 						break;
 					case "edit":
-						$result = dbquery("UPDATE ".$db_prefix."redirects SET url_from = '$url_from', url_to = '$url_to', url_redirect = '$url_redirect' WHERE url_id = '$url_id'");
+						$result = dbquery("UPDATE ".$db_prefix."redirects SET url_from = '$url_from', url_to = '$url_to', url_redirect = '$url_redirect', url_parms = '$url_parms' WHERE url_id = '$url_id'");
 						$error = 2;
 						$url_from = "";
 						$url_to = "";
 						$url_redirect = "0";
+						$url_parms = "1";
 						$action = "add";
 						break;
 				}
@@ -108,6 +111,7 @@ switch ($action) {
 			$url_from = $data['url_from'];
 			$url_to = $data['url_to'];
 			$url_redirect = $data['url_redirect'];
+			$url_parms = $data['url_parms'];
 		}
 		break;
 	case "delete":
@@ -159,6 +163,7 @@ $variables['url_id'] = isset($url_id) ? $url_id : 0;
 $variables['url_from'] = $url_from;
 $variables['url_to'] = $url_to;
 $variables['url_redirect'] = $url_redirect;
+$variables['url_parms'] = $url_parms;
 
 $result = dbquery("SELECT * FROM ".$db_prefix."redirects ORDER BY url_from");
 $variables['redirects'] = array();
