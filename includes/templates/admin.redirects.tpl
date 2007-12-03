@@ -22,7 +22,7 @@
 				{$locale.420}:
 			</td>
 			<td class='tbl'>
-				<input type='text' name='url_from' value='{$url_from}' class='textbox' style='width:500px' />
+				<input type='text' name='url_from' value='{$url_from}' class='textbox' style='width:425px' />
 			</td>
 		</tr>
 		<tr>
@@ -30,7 +30,7 @@
 				{$locale.421}:
 			</td>
 			<td class='tbl'>
-				<input type='text' name='url_to' value='{$url_to}' class='textbox' style='width:500px;' />
+				<input type='text' name='url_to' value='{$url_to}' class='textbox' style='width:425px;' />
 			</td>
 		</tr>
 {*		<tr>
@@ -46,7 +46,15 @@
 				{$locale.422}:
 			</td>
 			<td class='tbl'>
-				<input type='checkbox' name='url_redirect' value='1'{if $url_redirect} checked{/if} />
+				<input type='checkbox' name='url_redirect' value='1'{if $url_redirect} checked{/if} />&nbsp; <span class='small2'>{$locale.492}</span>
+			</td>
+		</tr>
+		<tr>
+			<td width='175' class='tbl'>
+				{$locale.427}:
+			</td>
+			<td class='tbl'>
+				<input type='checkbox' name='url_parms' value='1'{if $url_parms} checked{/if} />&nbsp; <span class='small2'>{$locale.491}</span>
 			</td>
 		</tr>
 		<tr>
@@ -66,7 +74,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.403 state=$_state style=$_style}
 {section name=id loop=$redirects}
 	{if $smarty.section.id.first}
-	<table align='center' cellpadding='0' cellspacing='1' width='700' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='620' class='tbl-border'>
 		<tr>
 			<td align='left' class='tbl2'>
 				<b>{$locale.420}</b>

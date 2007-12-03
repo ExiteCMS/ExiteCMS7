@@ -32,7 +32,7 @@ if (!empty($url) && dbrows($result)) {
 		if ($data['url_redirect'] == 0) {
 			$redirect = false;
 			// preserve URL parameters (if any)
-			if (!$data['url_parms'] && isset($_SERVER['REDIRECT_QUERY_STRING'])) {
+			if ($data['url_parms'] && isset($_SERVER['REDIRECT_QUERY_STRING'])) {
 				if (strpos($data['url_to'], '?') === false) {
 					$data['url_to'] .= "?" . $_SERVER['REDIRECT_QUERY_STRING'];
 				} else {
@@ -68,6 +68,7 @@ if (!empty($url) && dbrows($result)) {
 	} else {
 		include PATH_ROOT.$url;
 	}
+	exit;
 
 } else {
 
@@ -95,5 +96,6 @@ if (!empty($url) && dbrows($result)) {
 			die("<div style='font-family:Verdana;text-align:center;'><font size=6>404 - PAGE NOT FOUND</font></br /></br /><b>And the '404 page not found' page can not be loaded from the database...</b></div>");
 		}
 	}
+	exit;
 }
 ?>

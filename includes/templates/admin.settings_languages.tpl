@@ -17,7 +17,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
 {include file="admin.settings_links.tpl}
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
+	<table align='center' cellpadding='0' cellspacing='0' width='500'>
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.414}
@@ -32,22 +32,79 @@
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
-				{$locale.558}
+				{$locale.404}
 			</td>
 			<td width='50%' class='tbl'>
-				<select name='localisation_method' class='textbox'>
-					<option value='none'{if $settings2.localisation_method == "none"} selected="selected"{/if}>{$locale.559}</option>
-{*					<option value='single'{if $settings2.localisation_method == "single"} selected="selected"{/if}>{$locale.560}</option> *}
-					<option value='multiple'{if $settings2.localisation_method == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+				{html_options name="country" options=$countries selected=$settings2.country|default:"--" class="textbox"}
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' align='center' colspan='2'>
+		</td>
+		</tr>	
+		<tr>
+			<td class='tbl2' align='center' colspan='2'>
+				{$locale.558}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.570}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='panels_localisation' class='textbox'>
+					<option value='none'{if $settings2.panels_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
+*					<option value='single'{if $settings2.panels_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='multiple'{if $settings2.panels_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
-				{$locale.404}
+				{$locale.571}
 			</td>
 			<td width='50%' class='tbl'>
-				{html_options name="country" options=$countries selected=$settings2.country|default:"--" class="textbox"}
+				<select name='sitelinks_localisation' class='textbox'>
+					<option value='none'{if $settings2.sitelinks_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
+*					<option value='single'{if $settings2.sitelinks_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='multiple'{if $settings2.sitelinks_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.572}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='article_localisation' class='textbox'>
+					<option value='none'{if $settings2.article_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
+*					<option value='single'{if $settings2.article_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='multiple'{if $settings2.article_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.573}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='news_localisation' class='textbox'>
+					<option value='none'{if $settings2.news_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
+*					<option value='single'{if $settings2.news_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='multiple'{if $settings2.news_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.574}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='download_localisation' class='textbox'>
+					<option value='none'{if $settings2.download_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
+*					<option value='single'{if $settings2.download_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='multiple'{if $settings2.download_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+				</select>
 			</td>
 		</tr>
 		<tr>

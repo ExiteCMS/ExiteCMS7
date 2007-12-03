@@ -68,7 +68,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 	
 	// build the menu panel selection
 	$where .= ($panel != "" ? ($where == "" ? "" : " AND ")."panel_name = '".$panel."' " : "");
-	if (!$no_loc && $settings['localisation_method'] == "multiple") {
+	if (!$no_loc && $settings['sitelinks_localisation'] == "multiple") {
 		$where .= ($where == "" ? "" : " AND ")."link_locale = '".$settings['locale_code']."' ";
 	}
 

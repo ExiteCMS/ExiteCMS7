@@ -30,7 +30,7 @@ if (!isset($link_id)) $link_id = 0;
 if (!isset($action)) $action = "";
 
 // compose the query where clause based on the localisation method choosen
-switch ($settings['localisation_method']) {
+switch ($settings['sitelinks_localisation']) {
 	case "none":
 		$where = "";
 		break;

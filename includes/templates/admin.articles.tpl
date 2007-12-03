@@ -18,7 +18,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.508 state=$_state style=$_style}
 <form name='selectform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<center>
-		{if $settings.localisation_method == "multiple"}
+		{if $settings.article_localisation == "multiple"}
 			{assign var="url_locale" value="&amp;article_locale="|cat:$article_locale}
 			<br />
 			{$locale.553} {html_options name=article_locale options=$locales selected=$article_locale class="textbox" onchange="location = '"|cat:$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;article_locale=' + this.options[this.selectedIndex].value;"}
@@ -38,7 +38,7 @@
 	</center>
 </form>
 {include file="_closetable.tpl"}
-{if $settings.localisation_method == "multiple"}
+{if $settings.article_localisation == "multiple"}
 	{assign var="tabletitle" value=$title|cat:" "|cat:$locale.554|cat:" '<b>"|cat:$article_locale|cat:"</b>'"}
 {else}
 	{assign var="tabletitle" value=$title}

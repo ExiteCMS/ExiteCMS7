@@ -14,7 +14,7 @@
 {* Template for the edit panel of the admin configuration module 'panels'  *}
 {*                                                                         *}
 {***************************************************************************}
-{if $settings.localisation_method == "multiple"}
+{if $settings.panels_localisation == "multiple"}
 	{assign var="tabletitle" value=$_title|cat:" "|cat:$locale.489|cat:" '<b>"|cat:$panel_locale|cat:"</b>'"}
 {else}
 	{assign var="tabletitle" value=$_title}
@@ -114,7 +114,7 @@
 				</select>
 			</td>
 		</tr>
-		{if $settings.localisation_method == "single"}
+		{if $settings.panels_localisation == "single"}
 			<tr>
 				<td align='center' colspan='2' class='tbl'>
 				</td>
@@ -124,9 +124,9 @@
 				Localisatie
 				</td>
 			</tr>
-			{if $settings.localisation_method != "single"}
+			{if $settings.panels_localisation != "single"}
 			{/if}
-			{if $settings.localisation_method != "multiple"}
+			{if $settings.panels_localisation != "multiple"}
 			{/if}
 		{/if}
 		<tr>

@@ -43,7 +43,7 @@ function countdownloads($cat_id) {
 $variables = array();
 
 // compose the query where clause based on the localisation method choosen
-switch ($settings['localisation_method']) {
+switch ($settings['download_localisation']) {
 	case "none":
 		$where = "";
 		break;
@@ -90,6 +90,19 @@ if (isset($download_id)) {
 	exit;
 }
 
+if (isset($cat_id)) {
+	// get the selected category, and all sub-categories of the requested download category
+	$variables['subcats'] = true;
+	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='$cat_id'");
+	if (dbrows($result) == 0) {
+		// not found. pretend none was given
+		unset($cat_id);
+	} else {
+		$variables['parent'] = dbarray($result);
+		$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='$cat_id' AND ".groupaccess('download_cat_access')." ORDER BY ".$variables['parent']['download_cat_cat_sorting']);
+	}
+}
+
 if (!isset($cat_id)) {
 	// get all root categories
 	$variables['subcats'] = false;
@@ -98,24 +111,18 @@ if (!isset($cat_id)) {
 		// any downloads in the 'root' are public, and ordered by download_id DESC, by default!
 		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');	
 		$cat_id = 0;
+	} else {
+		die('oops');
 	}
-} else {
-	// get the selected category, and all sub-categories of the requested download category
-	$variables['subcats'] = true;
-	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='$cat_id'");
-	if (dbrows($result) == 0) {
-		redirect("downloads.php");
-		exit;
-	}
-	$variables['parent'] = dbarray($result);
-	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='$cat_id' AND ".groupaccess('download_cat_access')." ORDER BY ".$variables['parent']['download_cat_cat_sorting']);
 }
 // fill the download_cats array with the result
 $variables['cats_count'] = dbrows($result);
 $variables['download_cats'] = array();
-while ($result && $data = dbarray($result)) {
-	$data['download_count'] = countdownloads($data['download_cat_id']);
-	$variables['download_cats'][] = $data;
+if ($variables['cats_count'] != 0) {
+	while ($data = dbarray($result)) {
+		$data['download_count'] = countdownloads($data['download_cat_id']);
+		$variables['download_cats'][] = $data;
+	}
 }
 
 // check if there are files for download in this category

@@ -338,7 +338,7 @@ function load_panels($column) {
 			return false;
 	}
 	// 
-	switch ($settings['localisation_method']) {
+	switch ($settings['panels_localisation']) {
 		case "multiple":
 			$where .= " AND panel_locale = '".$settings['locale_code']."'";
 			break;

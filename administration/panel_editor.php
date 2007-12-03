@@ -31,7 +31,7 @@ if (!checkrights("P") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."i
 if (isset($panel_id) && !isNum($panel_id)) fallback(ADMIN."panels.php".$aidlink);
 
 // panel_locale
-switch($settings['localisation_method']) {
+switch($settings['panels_localisation']) {
 	case "multiple":
 		if (!isset($panel_locale)) {
 			$panel_locale = $settings['locale_code'];

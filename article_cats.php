@@ -28,7 +28,7 @@ $variables = array();
 $article_cats = array();
 
 // compose the query where clause based on the localisation method choosen
-switch ($settings['localisation_method']) {
+switch ($settings['article_localisation']) {
 	case "none":
 		$where = "";
 		break;

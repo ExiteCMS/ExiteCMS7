@@ -818,13 +818,13 @@ if (isset($_POST["cancel"])) {
 			$data = dbarray($result);
 			if ($data['lastpost'] < $pdata['post_datestamp'])
 				$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".$pdata['post_datestamp']."', forum_lastuser='".$pdata['post_author']."' WHERE forum_id='".$forum_id."'");
-	        // get the access group number for the new forum
+			// get the access group number for the new forum
 			$result = dbquery("SELECT forum_access from ".$db_prefix."forums WHERE forum_id = ".$_POST['new_forum_id']);
 		    $data = dbarray($result);
 			$group_id = $data['forum_access'];
-	        // check for group inheritance
-	   	    $groups = array();
-        	getgroupmembers($group_id);
+			// check for group inheritance
+			$groups = array();
+			getgroupmembers($group_id);
 			// update the posts_unread pointers
 			$result = dbquery("SELECT * FROM ".$db_prefix."posts_unread WHERE post_id = '$post_id'");
 			while ($data = dbarray($result)) {
@@ -881,7 +881,7 @@ if (isset($_POST["cancel"])) {
 		$variables['post_id'] = $post_id;
 
 		// get the data for the threads dropdown
-		$result = dbquery("SELECT * FROM ".$db_prefix."threads WHERE forum_id='".$_POST['new_forum_id']."' ORDER BY thread_lastpost DESC");
+		$result = dbquery("SELECT * FROM ".$db_prefix."threads WHERE forum_id='".$_POST['new_forum_id']."' AND thread_id != '$thread_id' ORDER BY thread_lastpost DESC");
 		$variables['threads'] = array();
 		while ($data = dbarray($result)) {
 			$data['thread_ident'] = substr('     '.$data['thread_id'], -5).' » '.$data['thread_subject'];
@@ -927,7 +927,6 @@ if (isset($_POST["cancel"])) {
 			}
 			$variables['forums'][] = $data2;
 		}
-
 		// define the panel
 		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.1', 'template' => 'forum.post.move.tpl', 'locale' => array("forum.main", "forum.post"));
 		$template_variables['forum.movepost.1'] = $variables;

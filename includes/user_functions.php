@@ -236,27 +236,34 @@ function getusergroups($membersonly=false,$namedarray=false) {
 
 	$groups_array= array();
 	if ($namedarray) {
-		if (!$membersonly) $groups_array[] = array("id" => "0", "name" => $locale['user0']);
+		if (!$membersonly) $groups_array[$locale['user0']] = array("id" => "0", "name" => $locale['user0']);
 		$gsql = dbquery("SELECT group_id,group_name FROM ".$db_prefix."user_groups ORDER BY group_id");
 		while ($gdata = dbarray($gsql)) {
-			array_push($groups_array, array("id" => $gdata['group_id'], "name" => $gdata['group_name']));
+			$groups_array[$gdata['group_name']] = array("id" => $gdata['group_id'], "name" => $gdata['group_name']);
 		}
-		if (!$membersonly) $groups_array[] = array("id" => "100", "name" => $locale['usera']);
-		array_push($groups_array, array("id" => "101", "name" => $locale['user1']));
-		array_push($groups_array, array("id" => "102", "name" => $locale['user2']));
-		array_push($groups_array, array("id" => "103", "name" => $locale['user3']));
+		if (!$membersonly) $groups_array[$locale['usera']] = array("id" => "100", "name" => $locale['usera']);
+		$groups_array[$locale['user1']] = array("id" => "101", "name" => $locale['user1']);
+		$groups_array[$locale['user2']] = array("id" => "102", "name" => $locale['user2']);
+		$groups_array[$locale['user3']] = array("id" => "103", "name" => $locale['user3']);
 	} else {
-		if (!$membersonly) $groups_array[] = array("0", $locale['user0']);
+		if (!$membersonly) $groups_array[$locale['user0']] = array("0", $locale['user0']);
 		$gsql = dbquery("SELECT group_id,group_name FROM ".$db_prefix."user_groups ORDER BY group_id");
 		while ($gdata = dbarray($gsql)) {
-			array_push($groups_array, array($gdata['group_id'], $gdata['group_name']));
+			$groups_array[$gdata['group_name']] = array($gdata['group_id'], $gdata['group_name']);
 		}
-		if (!$membersonly) $groups_array[] = array("100", $locale['usera']);
-		array_push($groups_array, array("101", $locale['user1']));
-		array_push($groups_array, array("102", $locale['user2']));
-		array_push($groups_array, array("103", $locale['user3']));
+		if (!$membersonly) $groups_array[$locale['usera']] = array("100", $locale['usera']);
+		$groups_array[$locale['user1']] = array("101", $locale['user1']);
+		$groups_array[$locale['user2']] = array("102", $locale['user2']);
+		$groups_array[$locale['user3']] = array("103", $locale['user3']);
 	}
-	return $groups_array;
+	// sort the array numerically
+	ksort($groups_array);
+	// the array returned needs a numeric index
+	$groups = array();
+	foreach($groups_array as $group) {
+		$groups[] = $group;
+	}
+	return $groups;
 }
 
 // Get the name of the access level or user group

@@ -33,10 +33,8 @@
 									<optgroup label='{$forums[id].forum_cat_name}'>
 									{assign var='hasvalues' value=false}
 								{/if}
-								{if !$forums[id].selected}
-									<option value='{$forums[id].forum_id}'>{$forums[id].forum_name}</option>
-									{assign var='hasvalues' value=true}
-								{/if}
+								<option value='{$forums[id].forum_id}' {if $forums[id].selected}selected='selected'{/if}>{$forums[id].forum_name}</option>
+								{assign var='hasvalues' value=true}
 								{if $smarty.section.id.last && $hasvalues}</optgroup>{/if}
 							{/section}
 							</select>
@@ -44,6 +42,7 @@
 					</tr>
 					<tr>
 						<td colspan='2' class='tbl2' style='text-align:center;'>
+							<input type='submit' name='move_cancel' value='{$locale.417}' class='button' />
 							<input type='submit' name='move_post' value='{$locale.413}' class='button' />
 						</td>
 					</tr>
@@ -81,6 +80,7 @@
 				</tr>
 				<tr>
 					<td colspan='2' class='tbl2' style='text-align:center;'>
+						<input type='submit' name='move_cancel' value='{$locale.417}' class='button' />
 						<input type='submit' name='move_post' value='{$locale.412}' class='button' />
 					</td>
 				</tr>

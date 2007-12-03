@@ -15,7 +15,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
-{if $settings.localisation_method == "multiple"}
+{if $settings.panels_localisation == "multiple"}
 	{assign var="link_locale" value="&amp;panel_locale="|cat:$panel_locale}
 	<br />
 	<div style='text-align:center;'>

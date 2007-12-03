@@ -30,14 +30,22 @@ if (!checkrights("S8") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['savesettings'])) {
 	$settings['locale'] = stripinput($_POST['localeset']);
 	$old_localeset = stripinput($_POST['old_localeset']);
-	$localisation_method = stripinput($_POST['localisation_method']);
+	$panels_localisation = stripinput($_POST['panels_localisation']);
+	$sitelinks_localisation = stripinput($_POST['sitelinks_localisation']);
+	$article_localisation = stripinput($_POST['article_localisation']);
+	$download_localisation = stripinput($_POST['download_localisation']);
+	$news_localisation = stripinput($_POST['news_localisation']);
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$settings['locale']."' WHERE cfg_name = 'locale'");
 	if (empty($_POST['old_country'])) {
 		$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_name, cfg_value) VALUES ('country', '".$_POST['country']."')");
 	} else {
 		$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['country']."' WHERE cfg_name = 'country'");
 	}
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$localisation_method."' WHERE cfg_name = 'localisation_method'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$panels_localisation."' WHERE cfg_name = 'panels_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$sitelinks_localisation."' WHERE cfg_name = 'sitelinks_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$news_localisation."' WHERE cfg_name = 'news_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$download_localisation."' WHERE cfg_name = 'download_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$article_localisation."' WHERE cfg_name = 'article_localisation'");
 	redirect(FUSION_SELF.$aidlink);
 }
 

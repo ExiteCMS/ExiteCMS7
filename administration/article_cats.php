@@ -28,7 +28,7 @@ if (!checkRights("AC") || !defined("iAUTH") || $aid != iAUTH) fallback("../index
 if (isset($cat_id) && !isNum($cat_id)) fallback("index.php");
 
 // compose the query where clause based on the localisation method choosen
-switch ($settings['localisation_method']) {
+switch ($settings['article_localisation']) {
 	case "none":
 		$where = "";
 		$cat_locale = "";

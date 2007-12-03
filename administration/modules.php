@@ -42,6 +42,9 @@ if ($action == 'install' && isset($module)) {
 	// sanitise the information
 	$module = stripinput($_GET['module']);
 
+	// check if it exists, if so, bail out
+	if (dbrows($result)) fallback(FUSION_SELF.$aidlink);
+
 	// load the module installer
 	include PATH_MODULES.$module."/module_installer.php";
 
@@ -82,16 +85,36 @@ if ($action == 'install' && isset($module)) {
 			// determine to which menu panel this link needs to be added
 			$link_panel = ($mod_link['panel'] != "" ? ($mod_link['panel']."_") : "").'menu_panel';
 
-			// if the panel doesn't exist, use the default menu panel
+			// check if this panel is installed
 			$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
-			if (dbrows($result) == 0) $link_panel = "main_menu_panel";
+			if (dbrows($result) == 0) {
+				// if the panel doesn't exist, try to find another menu panel (if multiple are installed, pick the first one in the ordered list)
+				$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel' ORDER BY panel_order LIMIT 1");
+				if (dbrows($result)) {
+					$data = dbarray($result);
+					$link_panel = $data['panel_filename'];
+				} else {
+					// if still not found, fall back to the CMS default
+					$link_panel = "main_menu_panel";
+				}
+			}
 
 			// determine the next order in the menu for this link
 			$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$link_panel'"),0) + 1;
 
 			// add the new link
-			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
-				VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+			switch ($settings['sitelinks_localisation']) {
+				case "multiple":
+					$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
+					while ($data = dbarray($result)) {
+						$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+							VALUES ('".$mod_link['name']."', '".$data['locale_code']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+					}
+					break;
+				default:
+					$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+						VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+			}
 		}
 	}
 
@@ -153,11 +176,8 @@ if ($action == 'uninstall' && isset($id)) {
 	// make sure the ID passed is numeric
 	if (!isNum($id)) fallback(FUSION_SELF.$aidlink);
 	
-	// check if it exists
-	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_id='$id'");
-	if (!$result)  fallback(FUSION_SELF.$aidlink);
-
 	// get the module data
+	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_id='$id'");
 	$data = dbarray($result);
 
 	// load the module installer to start deinstallation
@@ -203,7 +223,7 @@ if ($action == 'uninstall' && isset($id)) {
 			$result2 = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_url='$link_url'");
 
 			// and if so, remove it and adjust the link order
-			if (dbrows($result2) == "1") {
+			if (dbrows($result2)) {
 				$data2 = dbarray($result2);
 				$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order-1 WHERE panel_name = '$link_panel' AND link_order>'".$data2['link_order']."'");
 				$result = dbquery("DELETE FROM ".$db_prefix."site_links WHERE link_id='".$data2['link_id']."'");

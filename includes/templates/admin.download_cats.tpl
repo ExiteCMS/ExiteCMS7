@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* ExiteCMS template: admin.adverts.tpl                                    *}
+{* ExiteCMS template: admin.download_cats.tpl                              *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -11,7 +11,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* Template for the admin content module 'advertising'                     *}
+{* Template for the admin content module 'download_cats'                   *}
 {*                                                                         *}
 {***************************************************************************}
 {if $errormessage|default:"" != ""}
@@ -28,7 +28,7 @@
 				<input type='text' name='cat_name' value='{$cat_name}' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
-		{if $settings.localisation_method == "multiple"}
+		{if $settings.download_localisation == "multiple"}
 			<tr>
 				<td width='1%' class='tbl' style='white-space:nowrap'>
 					{$locale.514}
@@ -135,13 +135,13 @@
 	</table>
 </form>
 {include file="_closetable.tpl"}
-{if $settings.localisation_method == "multiple"}
+{if $settings.download_localisation == "multiple"}
 	{assign var="tabletitle" value=$locale.440|cat:" "|cat:$locale.513|cat:" '<b>"|cat:$cat_locale|cat:"</b>'"}
 {else}
 	{assign var="tabletitle" value=$locale.440}
 {/if}
 {include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
-{if $settings.localisation_method == "multiple"}
+{if $settings.download_localisation == "multiple"}
 	{assign var="url_locale" value="&amp;cat_locale="|cat:$cat_locale}
 	<br />
 	<div style='text-align:center;'>

@@ -15,7 +15,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $action == "add" || $action == "edit"}
-	{if $settings.localisation_method == "multiple"}
+	{if $settings.article_localisation == "multiple"}
 		{assign var="tabletitle" value=$_title|cat:" "|cat:$locale.554|cat:" '<b>"|cat:$cat_locale|cat:"</b>'"}
 	{else}
 		{assign var="tabletitle" value=$_title}
@@ -31,7 +31,7 @@
 					<input type='text' name='cat_name' value='{$cat_name}' class='textbox' style='width:250px;' />
 				</td>
 			</tr>
-			{if $settings.localisation_method == "multiple"}
+			{if $settings.article_localisation == "multiple"}
 				<tr>
 					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.426}
@@ -79,7 +79,7 @@
 			</tr>
 			<tr>
 				<td align='center' colspan='2' class='tbl'>
-					{if $settings.localisation_method != "multiple"}
+					{if $settings.article_localisation != "multiple"}
 						<input type='hidden' name='cat_locale' value=''>
 					{/if}
 					<input type='submit' name='save_cat' value='{$locale.459}' class='button' />
@@ -90,7 +90,7 @@
 	{include file="_closetable.tpl"}
 {/if}
 {include file="_opentable.tpl" name=$_name title=$locale.460 state=$_state style=$_style}
-{if $settings.localisation_method == "multiple"}
+{if $settings.article_localisation == "multiple"}
 	{assign var="url_locale" value="&amp;cat_locale="|cat:$cat_locale}
 	<br />
 	<div style='text-align:center;'>

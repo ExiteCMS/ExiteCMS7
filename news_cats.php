@@ -49,7 +49,7 @@ if (isset($cat_id)) {
 		// get none categorised news first
 		if ($data['itemcount']) {
 			$result = dbquery("SELECT * FROM ".$db_prefix."news WHERE news_cat='0' AND ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().") ORDER BY news_datestamp DESC ".$sql2);
-			while ($data2 = dbarray($result2)) {
+			while ($data2 = dbarray($result)) {
 				$data['items'][] = $data2;
 			}
 		}

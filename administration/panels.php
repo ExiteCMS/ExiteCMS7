@@ -30,7 +30,7 @@ if (isset($panel_side) && !isNum($panel_side)) fallback(FUSION_SELF.$aidlink);
 if (!isset($step)) $step = "";
 
 // compose the query where clause based on the localisation method choosen
-switch ($settings['localisation_method']) {
+switch ($settings['panels_localisation']) {
 	case "none":
 		$where = "";
 		break;

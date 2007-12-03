@@ -164,7 +164,7 @@ while ($data2 = dbarray($result_sub)) {
 }
 
 // compose the query where clause based on the localisation method choosen
-switch ($settings['localisation_method']) {
+switch ($settings['download_localisation']) {
 	case "none":
 		$where = "";
 		$cat_locale = "";

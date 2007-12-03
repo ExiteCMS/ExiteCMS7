@@ -16,7 +16,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $action == "edit" || $action == "add"}
-	{if $settings.localisation_method == "multiple"}
+	{if $settings.sitelinks_localisation == "multiple"}
 		{assign var="tabletitle" value=$_title|cat:" "|cat:$locale.452|cat:" '<b>"|cat:$link_locale|cat:"</b>'"}
 	{else}
 		{assign var="tabletitle" value=$_title}
@@ -125,7 +125,7 @@
 {else}
 	{section name=id loop=$panels}
 		{include file="_opentable.tpl" name=$_name title=$panels[id].title state=$_state style=$_style}
-		{if $settings.localisation_method == "multiple"}
+		{if $settings.sitelinks_localisation == "multiple"}
 			{assign var="url_locale" value="&amp;link_locale="|cat:$link_locale}
 			<br />
 			<div style='text-align:center;'>
