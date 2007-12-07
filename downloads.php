@@ -106,7 +106,7 @@ if (isset($cat_id)) {
 if (!isset($cat_id)) {
 	// get all root categories
 	$variables['subcats'] = false;
-	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='0' AND ".groupaccess('download_cat_access').($where=""?"":(" AND ".$where))." ORDER BY download_datestamp DESC");
+	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='0' AND ".groupaccess('download_cat_access').($where==""?"":(" AND ".$where))." ORDER BY download_datestamp DESC");
 	if ($result) {
 		// any downloads in the 'root' are public, and ordered by download_id DESC, by default!
 		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');	
