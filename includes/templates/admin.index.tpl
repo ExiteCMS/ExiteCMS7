@@ -90,6 +90,7 @@
 			{$locale.251} {$statistics.members_registered}<br />
 			{$locale.252} {$statistics.members_unactive}<br />
 			{$locale.253} {$statistics.members_suspended}<br />
+			{$locale.255} {$statistics.members_deleted}<br />
 		</td>
 		<td valign='top' width='33%' class='small'>
 			{$locale.259} {$statistics.posts}<br />

@@ -181,7 +181,7 @@
 			<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
 				<tr>
 					<td class='tbl2'>
-						<div style='float:right;'><a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=add'><img src='{$smarty.const.THEME}images/page_add.gif' alt='{$locale.403}' title='{$locale.403}' /></a></div>
+						<div style='float:right;'><a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=add'><img src='{$smarty.const.THEME}images/user_add.gif' alt='{$locale.403}' title='{$locale.403}' /></a></div>
 						<b>{$locale.401}</b>
 					</td>
 					{if $userdata.user_level >= 102 || $settings.forum_flags}
@@ -224,7 +224,11 @@
 							<a href='{$smarty.const.BASEDIR}edit_profile.php{$aidlink}&amp;{$aidlink}&amp;user_id={$members[id].user_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.415|escape:"html"}' title='{$locale.415|escape:"html"}' /></a>&nbsp;
 						{/if}
 						{if $members[id].can_delete}
-							<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;sortby={$sortby}&amp;rowstart={$rowstart}&amp;user_id={$members[id].user_id}' onclick='return DeleteMember();'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.418}' title='{$locale.418}' /></a>&nbsp;
+							{if $members[id].user_status == '3'}
+								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=undelete&amp;sortby={$sortby}&amp;rowstart={$rowstart}&amp;user_id={$members[id].user_id}'><img src='{$smarty.const.THEME}images/page_add.gif' alt='{$locale.413}' title='{$locale.413}' /></a>&nbsp;
+							{else}
+								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;sortby={$sortby}&amp;rowstart={$rowstart}&amp;user_id={$members[id].user_id}' onclick='return DeleteMember();'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.418}' title='{$locale.418}' /></a>&nbsp;
+							{/if}
 						{/if}
 						{if $members[id].can_ban}
 							{if $members[id].user_status == 2}

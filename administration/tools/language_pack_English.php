@@ -216,7 +216,8 @@ function install_language_pack($step) {
 	$localestrings['512'] = "Sub Category of";
 	$localestrings['513'] = " for the locale ";
 	$localestrings['514'] = "Category Locale:";
-	$localestrings['515'] = "";
+	$localestrings['515'] = "Select a language:";
+	$localestrings['516'] = "Add a download entry";
 	load_localestrings($localestrings, LP_LOCALE, "admin.downloads", $step);
 
 	$localestrings = array();
@@ -461,7 +462,7 @@ function install_language_pack($step) {
 	$localestrings['251'] = "Registered Members:";
 	$localestrings['252'] = "Unactivated Members:";
 	$localestrings['253'] = "Suspended Members:";
-	$localestrings['255'] = "x";
+	$localestrings['255'] = "Deleted Members:";
 	$localestrings['256'] = "x";
 	$localestrings['257'] = "Comments:";
 	$localestrings['258'] = "Shoutbox Posts:";
@@ -495,6 +496,7 @@ function install_language_pack($step) {
 	$localestrings['410'] = "View User Group";
 	$localestrings['411'] = "%u member";
 	$localestrings['412'] = "%u members";
+	$localestrings['413'] = "Undelete this user";
 	$localestrings['415'] = "Edit this user's profile";
 	$localestrings['416'] = "Activate this account";
 	$localestrings['417'] = "Ban this member";
@@ -2530,6 +2532,7 @@ function install_language_pack($step) {
 	$localestrings['425'] = "Account Deactivated";
 	$localestrings['426'] = "Account Suspended";
 	$localestrings['427'] = "Official translator for the languages";
+	$localestrings['428'] = "Account Deleted";
 	$localestrings['440'] = "Edit Profile";
 	$localestrings['441'] = "Profile successfully updated";
 	$localestrings['442'] = "Unable to update Profile:";

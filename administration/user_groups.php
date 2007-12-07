@@ -114,7 +114,7 @@ if (isset($_POST['update_admin'])) {
 } elseif (isset($_POST['add_all_users'])) {
 
 	$group_id = $_POST['group_id'];
-	$result = dbquery("SELECT user_id,user_name,user_groups FROM ".$db_prefix."users");
+	$result = dbquery("SELECT user_id,user_name,user_groups FROM ".$db_prefix."users WHERE user_status = '0'");
 	while ($data = dbarray($result)) {
   		if (!preg_match("(^\.{$group_id}|\.{$group_id}\.|\.{$group_id}$)", $data['user_groups'])) {
 			$user_groups = $data['user_groups'].".".$group_id;
@@ -266,7 +266,7 @@ if (isset($_POST['update_admin'])) {
 	if (isset($group_id)) {
 		$variables['group1_users'] = array();
 		$variables['group2_users'] = array();
-		$result = dbquery("SELECT user_id,user_name,user_groups FROM ".$db_prefix."users ORDER BY LOWER(user_name)");
+		$result = dbquery("SELECT user_id,user_name,user_groups FROM ".$db_prefix."users WHERE user_status = '0' ORDER BY LOWER(user_name)");
 		while ($data = dbarray($result)) {
   			if (!preg_match("(^\.{$group_id}$|\.{$group_id}\.|\.{$group_id}$)", $data['user_groups'])) {
 				$variables['group1_users'][] = array('id' => $data['user_id'], 'name' => $data['user_name']);

@@ -76,7 +76,7 @@ if (isset($_POST['edit_rights']) || (isset($edit))) {
 }
 
 // get the list of members with administrator or webmaster level
-$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_level>='102' ORDER BY user_level DESC, user_name");
+$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_level>='102' AND user_status = '0' ORDER BY user_level DESC, user_name");
 $variables['admins'] = array();
 while ($data = dbarray($result)) {
 	$data['user_rights'] = $data['user_rights'] ? str_replace(".", " ", $data['user_rights']) : "".$locale['405'];
@@ -95,7 +95,7 @@ while ($data = dbarray($result)) {
 }
 
 // get the list of all members (remove the user himself from the list!)
-$result = dbquery("SELECT * FROM ".$db_prefix."users ORDER BY user_name");
+$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '0' ORDER BY user_name");
 $variables['users'] = array();
 while ($data = dbarray($result)) {
 	if ($data['user_id'] != $userdata['user_id']) $variables['users'][] = $data;

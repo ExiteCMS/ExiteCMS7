@@ -115,21 +115,29 @@ if ($step == "add") {
 	$variables['message'] = isset($message) ? $message : "";
 } elseif ($step == "delete") {
 	if ($user_id != 1) {
-		$result = dbquery("DELETE FROM ".$db_prefix."users WHERE user_id='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."articles WHERE article_name='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."comments WHERE comment_name='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."messages WHERE message_to='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."messages WHERE message_from='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."news WHERE news_name='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."ratings WHERE rating_user='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."shoutbox WHERE shout_name='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."threads WHERE thread_author='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."posts WHERE post_author='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE user_id='$user_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."thread_notify WHERE notify_user='$user_id'");
+		// did this user do anything on this website?
+		$refs  = dbcount("(*)", "articles", "article_name='$user_id'");
+		$refs += dbcount("(*)", "news", "news_name='$user_id'");
+		$refs += dbcount("(*)", "comments", "comment_name='$user_id'");
+		$refs += dbcount("(*)", "ratings", "rating_user='$user_id'");
+		$refs += dbcount("(*)", "posts", "post_author='$user_id'");
+		$refs += dbcount("(*)", "posts", "post_edituser='$user_id'");
+		$refs += dbcount("(*)", "pm_index", "pmindex_user_id='$user_id'");
+		$refs += dbcount("(*)", "pm_index", "pmindex_reply_id='$user_id'");
+		$refs += dbcount("(*)", "pm_index", "pmindex_from_id='$user_id'");
+		$refs = 1;
+		if ($refs) {
+			// if so, mark this user as deleted, but don't delete anything
+			$result = dbquery("UPDATE ".$db_prefix."users SET user_status = '3' WHERE user_id='$user_id'");
+		} else {
+			// it's save to delete this user
+			$result = dbquery("DELETE FROM ".$db_prefix."users WHERE user_id='$user_id'");
+		}
 		$message = $locale['432'];
 	}
 	$variables['message'] = isset($message) ? $message : "";
+} elseif ($step == "undelete") {
+	$result = dbquery("UPDATE ".$db_prefix."users SET user_status = '0' WHERE user_id='$user_id'");
 }
 
 // get the name of the country requested

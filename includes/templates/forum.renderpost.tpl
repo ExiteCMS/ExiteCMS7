@@ -72,7 +72,7 @@
 	<tr>
 		<td valign='top' width='140' class='tbl_left'>
 			{$posts[pid].cc_flag}
-			{if $smarty.const.iMEMBER && $posts[pid].post_author > 0}
+			{if $smarty.const.iMEMBER && $posts[pid].user_status == 0 && $posts[pid].post_author > 0}
 				<a href='{$smarty.const.BASEDIR}profile.php?lookup={$posts[pid].user_id}'>{$posts[pid].user_name}</a>
 			{else}
 				{$posts[pid].user_name}
@@ -205,10 +205,10 @@
 				<br /><br />
 				<span style='color:#666666;'>
 					{$locale.508}
-					{if $smarty.const.iMEMBER}
+					{if $smarty.const.iMEMBER && $posts[pid].edit_status == 0}
 						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$posts[pid].post_edituser}'>{$posts[pid].edit_name}</a>
 					{else}
-						{$posts[pid].user_name}
+						{$posts[pid].edit_name}
 					{/if}
 					{$locale.509}{$posts[pid].post_edittime|date_format:"forumdate"}
 				</span>

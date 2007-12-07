@@ -22,8 +22,14 @@
 				<tr>
 					<td class='tbl2'>
 						<b>{$data.user_name}</b>
-						{if $data.user_status == 1} <span class='small'>({$locale.425})</span>{/if}
-						{if $data.user_status == 2} <span class='small'>({$locale.426})</span>{/if}
+						{if $data.user_status != 0}
+						&middot;
+						<div class='small' style='display:inline;color:red;font-weight:bold;'>
+							{if $data.user_status == 1}{$locale.425}{/if}
+							{if $data.user_status == 2}{$locale.426}{/if}
+							{if $data.user_status == 3}{$locale.428}{/if}
+						</div>
+						{/if}
 					</td>
 					<td align='right' class='tbl2'>{$data.user_level}</td>
 				</tr>

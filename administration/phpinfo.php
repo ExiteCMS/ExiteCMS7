@@ -12,6 +12,9 @@
 require_once dirname(__FILE__)."/../includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
+// show the output full screen
+define('FULL_SCREEN', true);
+
 // temp storage for template variables
 $variables = array();
 

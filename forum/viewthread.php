@@ -209,7 +209,7 @@ $variables['thread_has_poll'] = fpm_view();
 // get the posts for this page of the thread
 if ($rows != 0) {
 	$result = dbquery(
-		"SELECT p.*, u.*, u2.user_name AS edit_name FROM ".$db_prefix."posts p
+		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status FROM ".$db_prefix."posts p
 		LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id
 		LEFT JOIN ".$db_prefix."users u2 ON p.post_edituser = u2.user_id AND post_edituser > '0'
 		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".ITEMS_PER_PAGE
@@ -226,6 +226,7 @@ if ($rows != 0) {
 			$data['user_level'] = 0;
 			$data['user_location'] = "-";
 			$data['user_sig'] = "";
+			$data['user_status'] = "0";
 		}
 
 		// if there's a reply id, get the user_name

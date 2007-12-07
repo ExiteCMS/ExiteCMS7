@@ -193,7 +193,7 @@ if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 			redirect('maintenance.php?reason='.$settings['maintenance']);
 		} else {
 			// force webmasters to the upgrade module
-			redirect(ADMIN.'upgrade.php'.$aidlink);
+//			redirect(ADMIN.'upgrade.php'.$aidlink);
 		}
 	}
 }
@@ -823,7 +823,7 @@ function auth_validate_BasicAuthentication() {
 		} 
 		return $data['user_status'];
 	} else {
-		return 3;	// user_status == 3: not_found
+		return -1;	// user_status == -1: not_found
 	}
 }
 ?>
