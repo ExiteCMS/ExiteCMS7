@@ -49,6 +49,8 @@ if (isset($readmore)) {
 		}
 		// and store it for use in the template
 		$variables['news'][] = $data;
+		// update the read counter
+		$result = dbquery("UPDATE ".$db_prefix."news SET news_reads = news_reads + 1");
 	}
 	// check if the user is allowed to edit
 	$variables['allow_edit'] = checkrights("N");
