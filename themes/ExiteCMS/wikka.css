@@ -540,12 +540,12 @@ input[type=submit], input[type=button] {
 	border-right: 2px solid #336;
 	border-bottom: 2px solid #336;
 }
-*/
 input[type=submit]:hover, input[type=button]:hover {
 	background-color: #66C;
 	border-right: 2px solid #668;
 	border-bottom: 2px solid #668;
 }
+*/
 
 textarea#body{
 	width: 100%;
