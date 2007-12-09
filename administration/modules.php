@@ -289,7 +289,7 @@ if ($action == 'upgrade' && isset($id)) {
 	// get the module data
 	$data = dbarray($result);
 
-	// load the module installer to start deinstallation
+	// load the module installer to start the upgrade
 	include PATH_MODULES.$data['mod_folder']."/module_installer.php";
 
 	// if defined, install the module's admin panel (if it hasn't been installed before)
@@ -302,7 +302,7 @@ if ($action == 'upgrade' && isset($id)) {
 		if (!isset($mod_admin_page) || !isNum($mod_admin_page) || $mod_admin_page < 1 || $mod_admin_page > 4) $mod_admin_page = 4;
 
 		// check if an icon for the admin panel is defined, If not, use the modules and plugins default icon
-		if ($mod_admin_image == "" || !file_exists(PATH_ADMIN."images/".$mod_admin_image)) $mod_admin_image = "modules_panel.gif";
+		if ($mod_admin_image == "" || (!file_exists(PATH_MODULES.$mod_folder."/images/".$mod_admin_image) && !file_exists(PATH_ADMIN."images/".$mod_admin_image))) $mod_admin_image = "modules_panel.gif";
 
 		// check if the admin panel is already defined
 		$result = dbquery("SELECT * FROM ".$db_prefix."admin WHERE admin_link = '".MODULES."$mod_folder/$mod_admin_panel'");
@@ -313,6 +313,13 @@ if ($action == 'upgrade' && isset($id)) {
 			// already defined, update the admin record
 			$result = dbquery("UPDATE ".$db_prefix."admin SET admin_rights = '".$mod_admin_rights."', admin_image = '$mod_admin_image', admin_title = '$mod_title', admin_page = '".$mod_admin_page."' WHERE admin_link = '".MODULES."$mod_folder/$mod_admin_panel'");
 		}
+		// make sure superadmins have rights to all defined admin modules
+		$result2 = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
+		$adminrights = "";
+		while ($data2 = dbarray($result2)) {
+			$adminrights .= ($adminrights == "" ? "" : ".") . $data2['admin_rights'];
+		}
+		$result2 = dbquery("UPDATE ".$db_prefix."users SET user_rights = '".$adminrights."' WHERE user_level = 103");
 	}
 
 	// if defined, install the menu links for this module

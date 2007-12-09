@@ -276,15 +276,23 @@ if (isset($_POST['update_admin'])) {
 		}
 		$variables['group1_groups'] = array();
 		$variables['group2_groups'] = array();
-		$result = dbquery("SELECT group_id,group_name,group_groups FROM ".$db_prefix."user_groups WHERE group_id != '$group_id' ORDER BY LOWER(group_name)");
-		while ($data = dbarray($result)) {
-  			if (!preg_match("(^\.{$group_id}$|\.{$group_id}\.|\.{$group_id}$)", $data['group_groups'])) {
-				$variables['group1_groups'][] = array('id' => $data['group_id'], 'name' => $data['group_name']);
+		$groups = getusergroups();
+		foreach($groups as $group) {
+			// skip the selected group
+			if ($group[0] == $group_id) continue;
+			// get the group groupmemberships
+			$result = dbquery("SELECT group_groups FROM ".$db_prefix."user_groups WHERE group_id = '".$group[0]."'");
+			if (dbrows($result)) {
+				$data = dbarray($result);
+	  			if (!preg_match("(^\.{$group_id}$|\.{$group_id}\.|\.{$group_id}$)", $data['group_groups'])) {
+					$variables['group1_groups'][] = array('id' => $group[0], 'name' => $group[1]);
+				} else {
+					$variables['group2_groups'][] = array('id' => $group[0], 'name' => $group[1]);
+				}
 			} else {
-				$variables['group2_groups'][] = array('id' => $data['group_id'], 'name' => $data['group_name']);
+				$variables['group1_groups'][] = array('id' => $group[0], 'name' => $group[1]);
 			}
 		}
-
 	}
 
 	// get information for the edit admin panel
