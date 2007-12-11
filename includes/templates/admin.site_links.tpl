@@ -181,17 +181,17 @@
 				<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
 				{if $panels[id].panel_count != 1}
 					{if !$panels[id].links[id2].menu_first}
-						{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=move&amp;swap="|cat:$panels[id].links[id2].up|cat:"&amp;with="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel image="up.gif" alt=$locale.440 title=$locale.440}
+						{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=move&amp;swap="|cat:$panels[id].links[id2].up|cat:"&amp;with="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel|cat:$url_locale image="up.gif" alt=$locale.440 title=$locale.440}
 					{/if}
 					{if !$panels[id].links[id2].menu_last}
-						{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=move&amp;swap="|cat:$panels[id].links[id2].down|cat:"&amp;with="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel image="down.gif" alt=$locale.443 title=$locale.443}
+						{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=move&amp;swap="|cat:$panels[id].links[id2].down|cat:"&amp;with="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel|cat:$url_locale image="down.gif" alt=$locale.443 title=$locale.443}
 					{/if}
 				{/if}
 				</td>
 				<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
-					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=edit&amp;link_id="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel image="page_edit.gif" alt=$locale.434 title=$locale.434}
+					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=edit&amp;link_id="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel|cat:$url_locale image="page_edit.gif" alt=$locale.434 title=$locale.434}
 					&nbsp;
-					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=delete&amp;link_id="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel image="page_delete.gif" alt=$locale.435 title=$locale.435}
+					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=delete&amp;link_id="|cat:$panels[id].links[id2].link_id|cat:"&amp;panel="|cat:$panels[id].panel|cat:$url_locale image="page_delete.gif" alt=$locale.435 title=$locale.435}
 				</td>
 			</tr>
 			{sectionelse}

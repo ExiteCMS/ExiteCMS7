@@ -62,21 +62,21 @@ if (!dbrows($result)) {
 $data = dbarray($result);
 $variables['forum'] = $data;
 
-// if a forum rules custompage is given, check if it exists
-$result2 = dbquery("SELECT page_title FROM ".$db_prefix."custom_pages WHERE page_id = '".$data['forum_rulespage']."'");
-if (!$result2) {
-	$data['rulespage_defined'] = false;
-} else {
-	$data['rulespage_defined'] = true;
-	$data2 = dbarray($result2);
-	$data['forum_rulestitle'] = $data2['page_title'];
-}
-
 // bail out if the user doesn't have access to this forum, or requested a forum category ID
 if (!checkgroup($data['forum_access']) || !$data['forum_cat']) {
 	fallback("index.php");
 }
 
+// if a forum rules custompage is given, check if it exists
+$variables['rulespage_defined'] = false;
+if ($data['forum_rulespage']) {
+	$result2 = dbquery("SELECT page_title FROM ".$db_prefix."custom_pages WHERE page_id = '".$data['forum_rulespage']."'");
+	if (dbrows($result2)) {
+		$variables['rulespage_defined'] = true;
+		$data2 = dbarray($result2);
+		$variables['forum_rulestitle'] = $data2['page_title'];
+	}
+}
 // check if the user is allowed to post in this forum
 $can_post = checkgroup($data['forum_posting']);
 $variables['user_can_post'] = $can_post;
