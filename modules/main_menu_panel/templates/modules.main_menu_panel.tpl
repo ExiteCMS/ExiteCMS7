@@ -19,7 +19,7 @@
 	{if $smarty.section.link.first}
 		{include file="_openside.tpl" name=$_name title=$_title state=$_state style=$_style}
 	{/if}
-	{if $linkinfo[link].menu_first && $linkinfo[link].link_parent != 0}
+	{if $linkinfo[link].menu_first && $linkinfo[link].menu_depth != 0}
 		{if $linkinfo[link].div_state == 0}
 		<div id='box_menu{$linkinfo[link].link_parent}' style='display:block;'>
 		{else}
