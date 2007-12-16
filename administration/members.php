@@ -125,7 +125,6 @@ if ($step == "add") {
 		$refs += dbcount("(*)", "pm_index", "pmindex_user_id='$user_id'");
 		$refs += dbcount("(*)", "pm_index", "pmindex_reply_id='$user_id'");
 		$refs += dbcount("(*)", "pm_index", "pmindex_from_id='$user_id'");
-		$refs = 1;
 		if ($refs) {
 			// if so, mark this user as deleted, but don't delete anything
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_status = '3' WHERE user_id='$user_id'");

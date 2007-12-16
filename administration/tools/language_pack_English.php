@@ -23,6 +23,17 @@ function install_language_pack($step) {
 	load_localestrings($localestrings, LP_LOCALE, "404page", $step);
 
 	$localestrings = array();
+	$localestrings['400'] = "New User Activation";
+	$localestrings['401'] = "There are no user registrations present to activate";
+	$localestrings['402'] = "User Name";
+	$localestrings['403'] = "Email";
+	$localestrings['404'] = "Registered";
+	$localestrings['405'] = "Options";
+	$localestrings['406'] = "Manually activate this user";
+	$localestrings['407'] = "Delete this registration";
+	load_localestrings($localestrings, LP_LOCALE, "admin.activation", $step);
+
+	$localestrings = array();
 	$localestrings['400'] = "Administrators";
 	$localestrings['401'] = "User Name";
 	$localestrings['402'] = "Admin Level";
@@ -441,7 +452,7 @@ function install_language_pack($step) {
 	$localestrings['218'] = "URL redirects";
 	$localestrings['219'] = "PHP Info";
 	$localestrings['220'] = "Polls";
-	$localestrings['221'] = "x";
+	$localestrings['221'] = "User Activation";
 	$localestrings['222'] = "Menu System";
 	$localestrings['223'] = "Webmaster Toolbox";
 	$localestrings['224'] = "Upgrade";

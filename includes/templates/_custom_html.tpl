@@ -17,9 +17,9 @@
 {* of PLi-Fusion's panel definition.                                        *}
 {*                                                                          *}
 {****************************************************************************}
-{include file="_openside.tpl" name=$_name title=$_title state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
 {$html}
-{include file="_closeside.tpl"}
+{include file="_closetable.tpl"}
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}
