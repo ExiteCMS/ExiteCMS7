@@ -17,10 +17,10 @@ if (strpos($_SERVER["SERVER_SOFTWARE"], "IIS")) {
 }
 
 // requested url
-$url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : "";
+$url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'];
 
 // check if we have a redirect for this URL
-$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".$_SERVER['REDIRECT_URL']."'");
+$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".((isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "") ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'])."'");
 
 // if we had a URL, and found a redirect, compose the URL to redirect to
 if (!empty($url) && dbrows($result)) {
@@ -72,8 +72,9 @@ if (!empty($url) && dbrows($result)) {
 		redirect($url);
 	} else {
 		// check for post variables
-		$rawpostvars = explode("&", file_get_contents("php://input"));
-		if (is_array($rawpostvars)) {
+		$rawpostvars = file_get_contents("php://input");
+		if (!empty($rawpostvars)) {
+			$rawpostvars = explode("&", $rawpostvars);
 			foreach($rawpostvars as $postvar) {
 				$postvar = explode("=", $postvar);
 				// define the variable
