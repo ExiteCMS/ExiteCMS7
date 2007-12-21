@@ -11,6 +11,11 @@
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 
+// Check if we use IIS. If so, some $_SERVER variables are not available
+if (strpos($_SERVER["SERVER_SOFTWARE"], "IIS")) {
+	$_SERVER['REDIRECT_URL'] = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/'), strlen($_SERVER['REQUEST_URI']));
+}
+
 // requested url
 $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : "";
 
@@ -66,6 +71,15 @@ if (!empty($url) && dbrows($result)) {
 	if ($redirect) {
 		redirect($url);
 	} else {
+		// check for post variables
+		$rawpostvars = explode("&", file_get_contents("php://input"));
+		if (is_array($rawpostvars)) {
+			foreach($rawpostvars as $postvar) {
+				$postvar = explode("=", $postvar);
+				// define the variable
+				eval("\$$postvar[0] = \"$postvar[1]\";");
+			}
+		}
 		include PATH_ROOT.$url;
 	}
 	exit;
