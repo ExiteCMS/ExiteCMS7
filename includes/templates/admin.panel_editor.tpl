@@ -27,7 +27,7 @@
 				{$locale.452}
 			</td>
 			<td class='tbl'>
-				<input type='text' name='panel_name' value='{$panel_name}' class='textbox' style='width:200px;' />
+				<input type='text' name='panel_name' value='{$panel_name}' class='textbox' style='width:300px;' />
 			</td>
 		</tr>
 		{if $panel_id == 0 || $panel_type == "file"}
@@ -36,12 +36,19 @@
 				{$locale.453}
 			</td>
 			<td class='tbl'>
-				<select name='panel_filename' class='textbox' style='width:200px;'>
-				{foreach from=$panel_list item=panel_file}
-					<option{if $panel_filename == $panel_file} selected="selected"{/if}>{$panel_file}</option>				
-				{/foreach}
+				<select name='panel_filename' class='textbox' style='width:250px;'>
+				{section name=id loop=$panel_list}
+					{if $panel_list[id].new_module}
+						{if !$smarty.section.id.first}</optgroup>{/if}
+						<optgroup label='{if $panel_list[id].mod_folder != ""}{$locale.474} {$panel_list[id].mod_folder}{/if}'>
+						{assign var='hasvalues' value=false}
+					{/if}
+						<option value='{$panel_list[id].panel_filename}' {if $panel_list[id].selected}selected='selected'{/if}>{$panel_list[id].panel_name}</option>
+						{assign var='hasvalues' value=true}
+					{if $smarty.section.id.last && $hasvalues}</optgroup>{/if}
+				{/section}
 				</select>
-				{if $panel_id == 0}&nbsp;&nbsp;<span class='small2'>{$locale.454}</span>{/if}
+				{if $panel_id == 0}<br /><span class='small2'>{$locale.454}</span>{/if}
 			</td>
 		</tr>
 		{/if}
@@ -51,7 +58,7 @@
 				{$locale.455}
 			</td>
 			<td class='tbl'>
-				<textarea name='panel_code' cols='80' rows='15' class='textbox'>{$panel_code}</textarea>
+				<textarea name='panel_code' cols='80' rows='15' class='textbox' style='width:450px;'>{$panel_code}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -59,7 +66,7 @@
 				{$locale.465}
 			</td>
 			<td class='tbl'>
-				<textarea name='panel_template' cols='80' rows='15' class='textbox'>{$panel_template}</textarea>
+				<textarea name='panel_template' cols='80' rows='15' class='textbox' style='width:450px;'>{$panel_template}</textarea>
 			</td>
 		</tr>
 		{/if}
@@ -82,23 +89,23 @@
 		{/if}
 		<tr>
 			<td class='tbl'>
-				{$locale.461}
-			</td>
-			<td class='tbl'>
-				<select name='panel_usermod' class='textbox' style='width:150px;'>
-					<option value='0'{if $panel_usermod == "0"} selected="selected"{/if}>{$locale.447}</option>
-					<option value='1'{if $panel_usermod == "1"} selected="selected"{/if}>{$locale.448}</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class='tbl'>
 				{$locale.462}
 			</td>
 			<td class='tbl'>
 				<select name='panel_state' class='textbox' style='width:150px;'>
 					<option value='0'{if $panel_state == "0"} selected="selected"{/if}>{$locale.463}</option>
 					<option value='1'{if $panel_state == "1"} selected="selected"{/if}>{$locale.464}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl'>
+				{$locale.461}
+			</td>
+			<td class='tbl'>
+				<select name='panel_usermod' class='textbox' style='width:150px;'>
+					<option value='0'{if $panel_usermod == "0"} selected="selected"{/if}>{$locale.447}</option>
+					<option value='1'{if $panel_usermod == "1"} selected="selected"{/if}>{$locale.448}</option>
 				</select>
 			</td>
 		</tr>
@@ -155,10 +162,10 @@
 {literal}
 <script type='text/javascript'>
 	function showopts(panelside) {
-		if (panelside == 1 || panelside == 4) {
-			document.getElementById('panelopts').style.display = 'none';
-		} else {
+		if (panelside == 2 || panelside == 3) {
 			document.getElementById('panelopts').style.display = 'block';
+		} else {
+			document.getElementById('panelopts').style.display = 'none';
 		}
 	}
 </script>

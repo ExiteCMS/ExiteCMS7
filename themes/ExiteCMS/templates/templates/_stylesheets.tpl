@@ -36,6 +36,9 @@ a img					{ border:none; }
 						/* horizontal lines */
 hr						{ border:none; color:#bbb; background-color:#bbb; height:1px; }
 
+						/* dropdowns with options */
+optgroup				{ padding-bottom:5px; font-style:normal; }
+
 /* --- HTML form settings ---------------------------------- */
 
 						/* general form definition */
@@ -76,7 +79,7 @@ body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 20px 
 .smallalt				{ font-weight:normal; color:#888; }
 
 						/* title bars within a panel */
-.infobar 				{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#333; background-color:#eee; padding:3px 4px 3px 4px; }
+.infobar 				{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#333; background-color:#ddd; padding:3px 4px 3px 4px; }
 
 /* --- Browser window centered div ------------------------- */
 
@@ -109,10 +112,10 @@ body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 20px 
 .sub-cap-main			{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#ffffff; background-color:#666666; padding:0px 2px 0px 2px; }
 
 						/* labels and separators in side panels */
-.side-label				{ color:#333; background-color:#eee; margin:2px 0px 2px 0px; padding:1px 0px 1px 8px; white-space:nowrap;overflow:hidden; }
+.side-label				{ color:#333; background-color:#ddd; margin:2px 0px 2px 0px; padding:1px 0px 1px 8px; white-space:nowrap;overflow:hidden; }
 
 						/* labels and separators in body panels */
-.main-label				{ color:#333; background-color:#eee; padding:4px 4px 4px 4px; margin:0px 0px 5px 0px; white-space:nowrap;overflow:hidden; }
+.main-label				{ color:#333; background-color:#ddd; padding:4px 4px 4px 4px; margin:0px 0px 5px 0px; white-space:nowrap;overflow:hidden; }
 
 						/* links in side panels */
 .side-label-link		{ white-space:nowrap;overflow:hidden;}

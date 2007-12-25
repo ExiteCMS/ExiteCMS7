@@ -11,7 +11,7 @@
 +----------------------------------------------------*/
 
 // upgrade for revision
-$_revision = '1172';
+$_revision = '1176';
 
 if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
@@ -21,16 +21,30 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,12,16,2007), 
+					'date' => mktime(14,00,0,12,18,2007), 
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
-					'description' => "Added User Activation admin module.");
+					'description' => "Modified the panel code to allow multiple panels per module.");
 
 // array to store the commands of this update
 $commands = array();
 
 // database changes
 
-// add the new admin module "user activation"
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UA', 'activation.gif', '221', 'activation.php', '2')");
+// update the contents of the panels table
+$commands[] = array('type' => 'function', 'value' => "update_panels");
 
+/*---------------------------------------------------+
+| functions required for part of the upgrade process |
++----------------------------------------------------*/
+function update_panels() {
+	
+	global $db_prefix;
+
+	$result = dbquery("SELECT * FROM ".$db_prefix."panels");
+	while ($data = dbarray($result)) {
+		if (substr($data['panel_filename'],-4) != ".php") {
+			$result2 = dbquery("UPDATE ".$db_prefix."panels SET panel_filename = '".$data['panel_filename']."/".$data['panel_filename'].".php' WHERE panel_id = '".$data['panel_id']."'");
+		}
+	}
+}
 ?>

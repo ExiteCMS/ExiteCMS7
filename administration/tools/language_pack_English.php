@@ -745,6 +745,7 @@ function install_language_pack($step) {
 	$localestrings['471'] = "Panel name in use";
 	$localestrings['472'] = "Panel content not defined";
 	$localestrings['473'] = "Panel filename not defined";
+	$localestrings['474'] = "Module:";
 	$localestrings['480'] = "Update Panel";
 	$localestrings['481'] = "Could not update Panel";
 	$localestrings['482'] = "Panel updated";
@@ -2413,6 +2414,7 @@ function install_language_pack($step) {
 	$localestrings['038'] = "No forum messages have been posted that are available for viewing.";
 	$localestrings['039'] = "There are %u unread posts in %u threads.";
 	$localestrings['039a'] = "There is 1 unread post in 1 thread.";
+	$localestrings['039b'] = "There are %u unread posts in 1 thread.";
 	$localestrings['040'] = "Posted by ";
 	$localestrings['041'] = "on ";
 	$localestrings['042'] = "Read More";

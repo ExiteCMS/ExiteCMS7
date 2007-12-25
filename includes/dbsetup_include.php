@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `11/11/2007 12:53`
+// Date generated  : `25/12/2007 15:32`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '1091');
+define('CMS_REVISION', '1182');
 
 if ($step == 1) {
 
@@ -18,7 +18,7 @@ $failed = array();
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."CMSconfig");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."CMSconfig (
   `cfg_id` smallint(5) unsigned NOT NULL auto_increment,
-  `cfg_name` varchar(25) NOT NULL default '',
+  `cfg_name` varchar(50) NOT NULL default '',
   `cfg_value` text NOT NULL,
   PRIMARY KEY  (`cfg_id`)
 ) ENGINE=MYISAM;");
@@ -82,6 +82,7 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."article_cats");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."article_cats (
   `article_cat_id` smallint(5) unsigned NOT NULL auto_increment,
   `article_cat_name` varchar(100) NOT NULL default '',
+  `article_cat_locale` varchar(8) NOT NULL default '',
   `article_cat_description` varchar(200) NOT NULL default '',
   `article_cat_image` varchar(100) NOT NULL default '',
   `article_cat_sorting` varchar(50) NOT NULL default 'article_subject ASC',
@@ -105,6 +106,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."articles (
   `article_article` text NOT NULL,
   `article_breaks` char(1) NOT NULL default '',
   `article_name` smallint(5) unsigned NOT NULL default '1',
+  `article_locale` varchar(8) NOT NULL default '',
   `article_datestamp` int(10) unsigned NOT NULL default '0',
   `article_reads` smallint(5) unsigned NOT NULL default '0',
   `article_allow_comments` tinyint(1) unsigned NOT NULL default '1',
@@ -190,7 +192,6 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."custom_pages");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."custom_pages (
   `page_id` smallint(5) NOT NULL auto_increment,
   `page_title` varchar(200) NOT NULL default '',
-  `page_seo_url` varchar(255) NOT NULL default '',
   `page_access` tinyint(3) unsigned NOT NULL default '0',
   `page_content` text NOT NULL,
   `page_allow_comments` tinyint(1) unsigned NOT NULL default '0',
@@ -209,6 +210,7 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."download_cats");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."download_cats (
   `download_cat_id` smallint(5) unsigned NOT NULL auto_increment,
   `download_cat_name` varchar(100) NOT NULL default '',
+  `download_cat_locale` varchar(8) NOT NULL default '',
   `download_cat_description` text NOT NULL,
   `download_cat_sorting` varchar(50) NOT NULL default 'download_title ASC',
   `download_cat_cat_sorting` varchar(50) NOT NULL default 'download_cat_id DESC',
@@ -551,6 +553,7 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."panels");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."panels (
   `panel_id` smallint(5) unsigned NOT NULL auto_increment,
   `panel_name` varchar(100) NOT NULL default '',
+  `panel_locale` varchar(8) NOT NULL default '',
   `panel_filename` varchar(100) NOT NULL default '',
   `panel_code` text NOT NULL,
   `panel_template` text NOT NULL,
@@ -741,6 +744,7 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."site_links");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."site_links (
   `link_id` smallint(5) unsigned NOT NULL auto_increment,
   `link_name` varchar(100) NOT NULL default '',
+  `link_locale` varchar(8) NOT NULL default '',
   `link_url` varchar(200) NOT NULL default '',
   `panel_name` varchar(200) NOT NULL default '',
   `link_visibility` tinyint(3) unsigned NOT NULL default '0',

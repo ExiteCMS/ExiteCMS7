@@ -20,7 +20,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td width='140' class='tbl_top_left'>
+		<td width='140' class='tbl_top_left' style='white-space:nowrap'>
 			{$posts[pid].post_datestamp|date_format:"forumdate"}
 		</td>
 		<td class='tbl_top_mid'>

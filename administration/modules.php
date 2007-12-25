@@ -83,20 +83,26 @@ if ($action == 'install' && isset($module)) {
 			if ($link_url{0} == "/") $link_url = substr($link_url,1);
 
 			// determine to which menu panel this link needs to be added
-			$link_panel = ($mod_link['panel'] != "" ? ($mod_link['panel']."_") : "").'menu_panel';
-
-			// check if this panel is installed
-			$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
-			if (dbrows($result) == 0) {
-				// if the panel doesn't exist, try to find another menu panel (if multiple are installed, pick the first one in the ordered list)
-				$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel' ORDER BY panel_order LIMIT 1");
-				if (dbrows($result)) {
-					$data = dbarray($result);
-					$link_panel = $data['panel_filename'];
-				} else {
-					// if still not found, fall back to the CMS default
-					$link_panel = "main_menu_panel";
+			if (isset($mod_link['panel']) && $mod_link['panel'] != "") {
+				if (substr($mod_link['panel'],-4) != ".php") {
+					$link_panel = $mod_link['panel']."/".$mod_link['panel'].".php";
 				}
+				// check if this panel is installed
+				$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
+				if (dbrows($result) == 0) {
+					// if the panel doesn't exist, try to find another menu panel (if multiple are installed, pick the first one in the ordered list)
+					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
+					if (dbrows($result)) {
+						$data = dbarray($result);
+						$link_panel = $data['panel_filename'];
+					} else {
+						// if still not found, fall back to the CMS default
+						$link_panel = "main_menu_panel/main_menu_panel.php";
+					}
+				}
+			} else {
+				// use the CMS default
+				$link_panel = "main_menu_panel/main_menu_panel.php";
 			}
 
 			// determine the next order in the menu for this link
@@ -212,12 +218,32 @@ if ($action == 'uninstall' && isset($id)) {
 			$link_url = str_replace("../","",MODULES).$mod_folder."/".$mod_link['url'];
 			if ($link_url{0} == "/") $link_url = substr($link_url,1);
 			
-			// determine to which menu panel this link has been added
-			$link_panel = ($mod_link['panel'] != "" ? ($mod_link['panel']."_") : "").'menu_panel';
+			// determine to which menu panel this link needs to be added
+			if (isset($mod_link['panel']) && $mod_link['panel'] != "") {
+				if (substr($mod_link['panel'],-4) != ".php") {
+					$link_panel = $mod_link['panel']."/".$mod_link['panel'].".php";
+				}
+				// check if this panel is installed
+				$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
+				if (dbrows($result) == 0) {
+					// if the panel doesn't exist, try to find another menu panel (if multiple are installed, pick the first one in the ordered list)
+					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
+					if (dbrows($result)) {
+						$data = dbarray($result);
+						$link_panel = $data['panel_filename'];
+					} else {
+						// if still not found, fall back to the CMS default
+						$link_panel = "main_menu_panel/main_menu_panel.php";
+					}
+				}
+			} else {
+				// use the CMS default
+				$link_panel = "main_menu_panel/main_menu_panel.php";
+			}
 
 			// if this panel doesn't exist (anymore), use the default menu panel
 			$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
-			if (dbrows($result) == 0) $link_panel = "main_menu_panel";
+			if (dbrows($result) == 0) $link_panel = "main_menu_panel/main_menu_panel.php";
 
 			// check if we have a menu entry for this link
 			$result2 = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_url='$link_url'");
@@ -333,11 +359,31 @@ if ($action == 'upgrade' && isset($id)) {
 			if ($link_url{0} == "/") $link_url = substr($link_url,1);
 
 			// determine to which menu panel this link needs to be added
-			$link_panel = ($mod_link['panel'] != "" ? ($mod_link['panel']."_") : "").'menu_panel';
+			if (isset($mod_link['panel']) && $mod_link['panel'] != "") {
+				if (substr($mod_link['panel'],-4) != ".php") {
+					$link_panel = $mod_link['panel']."/".$mod_link['panel'].".php";
+				}
+				// check if this panel is installed
+				$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
+				if (dbrows($result) == 0) {
+					// if the panel doesn't exist, try to find another menu panel (if multiple are installed, pick the first one in the ordered list)
+					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
+					if (dbrows($result)) {
+						$data = dbarray($result);
+						$link_panel = $data['panel_filename'];
+					} else {
+						// if still not found, fall back to the CMS default
+						$link_panel = "main_menu_panel/main_menu_panel.php";
+					}
+				}
+			} else {
+				// use the CMS default
+				$link_panel = "main_menu_panel/main_menu_panel.php";
+			}
 
 			// if the panel doesn't exist, use the default menu panel
 			$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
-			if (dbrows($result) == 0) $link_panel = "main_menu_panel";
+			if (dbrows($result) == 0) $link_panel = "main_menu_panel/main_menu_panel.php";
 
 			// check if the menu link is already defined
 			$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_url = '".$link_url."'");

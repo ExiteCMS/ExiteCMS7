@@ -51,22 +51,34 @@ switch($settings['panels_localisation']) {
 		break;
 }
 
-// make a list of all installed module panels
+// scan all installed modules and make a list of available panels
 $panel_list = array();
-$result = dbquery("SELECT mod_folder FROM ".$db_prefix."modules WHERE mod_folder like '%_panel'");
+$current_folder = "";
+$result = dbquery("SELECT mod_folder FROM ".$db_prefix."modules ORDER BY mod_folder");
 while ($data = dbarray($result)) {
-	$panel_list[] = $data['mod_folder'];
+	// get the list of panel php files in the module directory
+	foreach(glob(PATH_MODULES.$data['mod_folder']."/*_panel.php") as $panelname) {
+		if ($data['mod_folder'] != $current_folder) {
+			$data['new_module'] = true;
+			$current_folder = $data['mod_folder'];
+		} else {
+			$data['new_module'] = false;
+		}
+		$data['selected'] = false;
+		$data['panel_name'] = basename($panelname, ".php");
+		$data['panel_filename'] = $data['mod_folder']."/".$data['panel_name'].".php";
+		$panel_list[] = $data;
+	}
 }
-sort($panel_list); array_unshift($panel_list, "none");
+array_unshift($panel_list, array('mod_folder' => "", 'new_module' => true, 'panel_name' => "", 'panel_filename' => "", 'selected' => false));
 
 if (isset($_POST['save'])) {
-
 	$error = "";
 	$panel_usermod = $_POST['panel_usermod'];
 	$panel_locale = $_POST['panel_locale'];
 	$panel_name = stripinput($_POST['panel_name']);
 	if ($panel_name == "") $error .= $locale['470']."<br>";
-	if ($_POST['panel_filename'] == "none") {
+	if ($_POST['panel_filename'] == "") {
 		$panel_filename = "";
 		$panel_code = addslash($_POST['panel_code']);
 		$panel_template = addslash($_POST['panel_template']);
@@ -119,7 +131,7 @@ if (isset($_POST['save'])) {
 			if (dbrows($result) != 0) $error .= $locale['471']."<br>";
 		}
 		if ($panel_type == "dynamic" && $panel_template == "") $error .= $locale['472']."<br>";
-		if ($panel_type == "file" && $panel_filename == "none") $error .= $locale['473']."<br>";
+		if ($panel_type == "file" && $panel_filename == "") $error .= $locale['473']."<br>";
 		if ($error == "") {
 			$result = dbquery("SELECT * FROM ".$db_prefix."panels WHERE panel_side='$panel_side'".($where!=""?(" AND ".$where):"")." ORDER BY panel_order DESC LIMIT 1");
 			if (dbrows($result) != 0) { $data = dbarray($result); $neworder = $data['panel_order'] + 1; } else { $neworder = 1; }
@@ -145,7 +157,7 @@ if (isset($_POST['save'])) {
 
 	if (isset($_POST['preview'])) {
 		$panel_name = stripinput($_POST['panel_name']);
-		$panel_filename = $_POST['panel_filename'];
+		$panel_filename = stripinput($_POST['panel_filename']);
 		$panel_code = isset($_POST['panel_code']) ? $_POST['panel_code'] : "";
 		$panel_template = isset($_POST['panel_template']) ? $_POST['panel_template'] : "";
 		$panel_access = $_POST['panel_access'];
@@ -156,7 +168,7 @@ if (isset($_POST['save'])) {
 		$panel_state = $_POST['panel_state'];
 		$panel_code = stripslash($panel_code);
 		$panel_template = stripslash($panel_template);
-		if ($panel_filename == "none") {
+		if ($panel_filename == "") {
 			$panel_type = "dynamic";
 			eval($panel_code);
 			if ($panel_side == 0) {
@@ -174,19 +186,19 @@ if (isset($_POST['save'])) {
 			}
 		} else {
 			$panel_type = "file";
-			@include PATH_MODULES.$panel_filename."/".$panel_filename.".php";
+			@include PATH_MODULES.$panel_filename;
 			if ($panel_side == 0) {
-				$template_panels[] = array('type' => 'header', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+				$template_panels[] = array('type' => 'header', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			} if ($panel_side == 1) {
-				$template_panels[] = array('type' => 'left', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+				$template_panels[] = array('type' => 'left', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			} elseif ($panel_side == 2) {
-				$template_panels[] = array('type' => 'upper', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+				$template_panels[] = array('type' => 'upper', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			} elseif ($panel_side == 3) {
-				$template_panels[] = array('type' => 'lower', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+				$template_panels[] = array('type' => 'lower', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			} elseif ($panel_side == 4) {
-				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			} elseif ($panel_side == 5) {
-				$template_panels[] = array('type' => 'footer', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".$panel_filename.".tpl");
+				$template_panels[] = array('type' => 'footer', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			}
 		}
 		if (isset($variables) && is_array($variables)) {
@@ -200,10 +212,13 @@ if (isset($_POST['save'])) {
 		if (dbrows($result) != 0) {
 			$data = dbarray($result);
 			$panel_name = $data['panel_name'];
+			$panel_type = $data['panel_type'];
 			$panel_filename = $data['panel_filename'];
+			if ($panel_type == "file" && @is_dir(PATH_MODULES.$panel_filename)) {
+				$panel_filename = $panel_filename."/".$panel_filename;
+			}
 			$panel_code = phpentities(stripslashes($data['panel_code']));
 			$panel_template = phpentities(stripslashes($data['panel_template']));
-			$panel_type = $data['panel_type'];
 			$panel_access = $data['panel_access'];
 			$panel_side = $data['panel_side'];
 			$panel_usermod = $data['panel_usermod'];
@@ -217,8 +232,8 @@ if (isset($_POST['save'])) {
 if (isset($panel_id)) {
 	$action = FUSION_SELF.$aidlink."&amp;panel_id=$panel_id";
 	$title = $locale['450'];
-	$panelon = "";
-	$panelopts = "";
+//	$panelon = "";
+//	$panelopts = "";
 } else {
 	$action = FUSION_SELF.$aidlink;
 	$title = $locale['451'];
@@ -236,6 +251,14 @@ if (isset($panel_id)) {
 		$panelopts = " style='display:none'";
 	}
 }
+
+//
+foreach ($panel_list as $key => $value) {
+	if ($value['panel_filename'] == $panel_filename) {
+		$panel_list[$key]['selected'] = true;
+		break;
+	}
+} 
 $variables['action'] = $action;
 $variables['panel_id'] = isset($panel_id) ? $panel_id : 0;
 $variables['panel_name'] = $panel_name;
@@ -250,7 +273,7 @@ $variables['panel_side'] = $panel_side;
 $variables['panel_usermod'] = $panel_usermod;
 $variables['panelopts'] = $panelopts;
 $variables['panelon'] = $panelon;
-
+// 
 $user_groups = getusergroups();
 $variables['user_groups'] = array();
 while(list($key, $user_group) = each($user_groups)){

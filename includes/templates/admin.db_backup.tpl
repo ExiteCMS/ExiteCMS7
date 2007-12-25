@@ -46,8 +46,10 @@
 	{literal}<script type='text/javascript'>
 	<!--
 	function tableSelectAll(){for(i=0;i<document.restoreform.elements['list_tbl[]'].length;i++){document.restoreform.elements['list_tbl[]'].options[i].selected=true;}}
+	function tableSelectCore(){for(i=0;i<document.restoreform.elements['list_tbl[]'].length;i++){document.restoreform.elements['list_tbl[]'].options[i].selected=(document.restoreform.elements['list_tbl[]'].options[i].text).match(/^{/literal}{$db_prefix}{literal}/);}}
 	function tableSelectNone(){for(i=0;i<document.restoreform.elements['list_tbl[]'].length;i++){document.restoreform.elements['list_tbl[]'].options[i].selected=false;}}
 	function populateSelectAll(){for(i=0;i<document.restoreform.elements['list_ins[]'].length;i++){document.restoreform.elements['list_ins[]'].options[i].selected=true;}}
+	function populateSelectCore(){for(i=0;i<document.restoreform.elements['list_ins[]'].length;i++){document.restoreform.elements['list_ins[]'].options[i].selected=(document.restoreform.elements['list_ins[]'].options[i].text).match(/^{/literal}{$db_prefix}{literal}/);}}
 	function populateSelectNone(){for(i=0;i<document.restoreform.elements['list_ins[]'].length;i++){document.restoreform.elements['list_ins[]'].options[i].selected=false;}}
 	//-->
 	</script>{/literal}
@@ -56,7 +58,7 @@
 		<table align='center' cellspacing='0' cellpadding='0'>
 			<tr>
 				<td colspan='2' class='tbl2'>
-					{$locale.430}
+					<b>{$locale.430}</b>
 				</td>
 			</tr>
 			<tr>
@@ -81,31 +83,33 @@
 				</td>
 			</tr>
 			<tr>
-				<td valign='top' class='tbl'>
+				<td valign='top' align='center' class='tbl'>
 					{$locale.433}
 					<br />
-					<select style='width:180px;' class='textbox' id='list_tbl' name='list_tbl[]' size='{$maxrows}' multiple="multiple">
+					<select style='width:250px;' class='textbox' id='list_tbl' name='list_tbl[]' size='{$maxrows}' multiple="multiple">
 					{foreach from=$info_tables item=table}
 						<option value='{$table}' selected="selected">{$table}</option>
 					{/foreach}
 					</select>
-					<br />{$locale.435}&nbsp;
-					<div style='display:inline;'>
+					<br /><br />{$locale.435}&nbsp;
+					<div style='display:inline;text-align:center;vertical-align:top;'>
 					<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onclick="javascript:tableSelectAll()" />
+					<input type='button' class='button' name='{$locale.458}' value='{$locale.458}' onclick="javascript:tableSelectCore()" />
 					<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onclick="javascript:tableSelectNone()" />
 					</div>
 				</td>
-				<td valign='top' class='tbl'>
+				<td valign='top' align='center' class='tbl'>
 					{$locale.434}
 					<br />
-					<select style='width:180px;' class='textbox' id='list_ins' name='list_ins[]' size='{$maxrows}' multiple="multiple">
+					<select style='width:250px;' class='textbox' id='list_ins' name='list_ins[]' size='{$maxrows}' multiple="multiple">
 					{section name=id loop=$info_inserts}
 						<option value='{$info_inserts[id].id}'{if $info_inserts[id].selected} selected="selected"{/if}>{$info_inserts[id].name}</option>
 					{/section}
 					</select>
-					<br />{$locale.435}&nbsp;
-					<div style='display:inline;'>
+					<br /><br />{$locale.435}&nbsp;
+					<div style='display:inline;text-align:center;vertical-align:top;'>
 						<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onclick="javascript:populateSelectAll()" />
+						<input type='button' class='button' name='{$locale.458}' value='{$locale.458}' onclick="javascript:populateSelectCore()" />
 						<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onclick="javascript:populateSelectNone()" />
 					</div>
 				</td>
@@ -115,8 +119,8 @@
 				</td>
 			</tr>
 			<tr>
-				<td align='left' colspan='2' class='tbl2'>
-					{$locale.406}
+				<td align='center' colspan='2' class='tbl2'>
+					<b>{$locale.406}</b>
 				</td>
 			</tr>
 			<tr>
@@ -153,8 +157,8 @@
 				<td valign='top'>
 					<table align='center' cellspacing='0' cellpadding='0'>
 						<tr>
-							<td colspan='2' class='tbl2' align='left'>
-								{$locale.451}
+							<td colspan='2' class='tbl2' align='center'>
+								<b>{$locale.451}</b>
 							</td>
 						</tr>
 					<tr>
@@ -193,8 +197,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td align='left' colspan='2' class='tbl2'>
-							{$locale.454}
+						<td colspan='2' class='tbl2' align='center'>
+							<b>{$locale.454}</b>
 						</td>
 					</tr>
 					<tr>
@@ -243,8 +247,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td align='left' colspan='2' class='tbl2'>
-							{$locale.406}
+						<td colspan='2' class='tbl2' align='center'>
+							<b>{$locale.406}</b>
 						</td>
 					</tr>
 					<tr>
@@ -261,7 +265,7 @@
 				<table border='0' cellpadding='0' cellspacing='0'>
 					<tr>
 						<td class='tbl2'>
-							{$locale.457}
+							<b>{$locale.457}</b>
 						</td>
 					</tr>
 					<tr>
@@ -272,7 +276,7 @@
 							{/section}
 							</select>
 							<br />{$locale.435}&nbsp;
-							<div style='display:inline;text-align:center;vertical-align:middle;'>
+							<div style='display:inline;text-align:center;vertical-align:top;'>
 								<input type='button' class='button' name='{$locale.458}' value='{$locale.458}' onclick="javascript:backupSelectCore()" />
 								<input type='button' class='button' name='{$locale.436}' value='{$locale.436}' onclick="javascript:backupSelectAll()" />
 								<input type='button' class='button' name='{$locale.437}' value='{$locale.437}' onclick="javascript:backupSelectNone()" />

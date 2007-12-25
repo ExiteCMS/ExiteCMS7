@@ -48,9 +48,9 @@ class ExiteCMS_Smarty extends Smarty {
 		
 		// set the compile ID for this website/theme (themes can have different templates!)
 		if (isset($userdata['user_theme']) && $userdata['user_theme'] != "Default") {
-			$this->compile_id = $_SERVER['SERVER_NAME'].".".$userdata['user_theme'];
+			$this->compile_id = $_SERVER['SERVER_NAME']."~".$userdata['user_theme'];
 		} else {
-			$this->compile_id = $_SERVER['SERVER_NAME'].".".$settings['theme'];
+			$this->compile_id = $_SERVER['SERVER_NAME']."~".$settings['theme'];
 		}
 		
 		// caching required?
@@ -83,24 +83,23 @@ class ExiteCMS_Smarty extends Smarty {
         $_compile_dir_sep =  $this->use_sub_dirs ? DIRECTORY_SEPARATOR : '^';
         $_return = $auto_base . DIRECTORY_SEPARATOR;
 
-        if(isset($auto_id)) {
-            // make auto_id safe for directory names
-            $auto_id = str_replace('%7C',$_compile_dir_sep,(urlencode($auto_id)));
-        }
-
         if(isset($auto_source)) {
             // make source name safe for filename
             $auto_source = urlencode(basename($auto_source));
 			if (preg_match("%[\\\/:;*?\"\[\]\%]%", $auto_source)) {
 				$auto_source = md5($auto_source);
 			}
-            $_crc32 = sprintf('%08X', crc32($auto_source));
-            // prepend %% to avoid name conflicts with
-            // with $params['auto_id'] names
-            $_crc32 = substr($_crc32, 0, 2) . $_compile_dir_sep .
-                      substr($_crc32, 0, 3) . $_compile_dir_sep . $_crc32;
+			$_return .= $auto_source."~";
         }
-        return $_return.(isset($auto_source)?($auto_source."."):"").(isset($auto_id)?($auto_id."."):"").(isset($_crc32)?$_crc32:"");
+
+        if(isset($auto_id)) {
+            // make auto_id safe for directory names
+            $auto_id = str_replace('%7C',$_compile_dir_sep,(urlencode($auto_id)));
+            $auto_id = str_replace('%7E','~',$auto_id);
+			$_return .= $auto_id;
+        }
+
+        return $_return;
     }
 
     /**
@@ -356,12 +355,19 @@ function load_panels($column) {
 				$_panel['id'] = $p_data['panel_id'];
 				$_panel['type'] = $column;
 				$_panel['title'] = $p_data['panel_name'];
-				$_panel['name'] = 'modules.'.$p_data['panel_filename'];
 				$_panel['panel_type'] = $p_data['panel_type'];
 				switch($p_data['panel_type']) {
 					case "file":
-						$_panel['template'] = 'modules.'.$p_data['panel_filename'].".tpl";
-						$_panel['panel_code'] = PATH_MODULES.$p_data['panel_filename']."/".$p_data['panel_filename'].".php";
+						// check for module directory for backward compatibility
+						if (@is_dir(PATH_MODULES.$p_data['panel_filename'])) {
+							$_panel['name'] = 'modules.'.$p_data['panel_filename'];
+							$_panel['template'] = 'modules.'.$p_data['panel_filename'].".tpl";
+							$_panel['panel_code'] = PATH_MODULES.$p_data['panel_filename']."/".$p_data['panel_filename'].".php";
+						} else {
+							$_panel['template'] = 'modules.'.substr(basename($p_data['panel_filename']),0,-4).".tpl";
+							$_panel['name'] = 'modules.'.substr(basename($p_data['panel_filename']),0,-4);
+							$_panel['panel_code'] = PATH_MODULES.$p_data['panel_filename'];
+						}
 						break;
 					case "dynamic":
 						$_panel['panel_code'] = $p_data['panel_code'];

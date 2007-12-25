@@ -101,6 +101,10 @@ if (isset($_COOKIE['userinfo'])) {
 			} else {
 				define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
 				define("THEME", THEMES.$settings['theme']."/");
+				// make sure the default theme exists!
+				if (!file_exists(PATH_THEMES.$settings['theme']."/theme.php")) {
+					die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>FATAL ERROR: Unable to load the default theme</b></div>");
+				}
 			}
 			if ($userdata['user_offset'] <> 0) {
 				$settings['timeoffset'] = $settings['timeoffset'] + $userdata['user_offset'];
