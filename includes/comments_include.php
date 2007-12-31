@@ -24,8 +24,11 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		$template_panels, $template_variables;
 
 	$variables = array();
-	
+
 	if ((iMEMBER || $settings['guestposts'] == "1") && isset($_POST['post_comment'])) {
+
+		$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_datestamp<'".(time()-900)."'");
+
 		$flood = false;
 		if (dbrows(dbquery("SELECT $ccol FROM ".$db_prefix."$cdb WHERE $ccol='$comment_id'"))==0) {
 			fallback(BASEDIR."index.php");
@@ -37,9 +40,13 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 			$comment_name = preg_replace("(^[0-9]*)", "", $comment_name);
 			if (isNum($comment_name)) $comment_name="";
 		}
+		
+		// captcha check for guest posts
+		$cic = (iGUEST && !check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) ? "&cic=1" : "";
+
 		$comment_message = trim(stripinput(censorwords($_POST['comment_message'])));
 		$comment_smileys = isset($_POST['disable_smileys']) ? "0" : "1";
-		if ($comment_name != "" && $comment_message != "") {
+		if ($comment_name != "" && $comment_message != "" && $cic == "") {
 			$result = dbquery("SELECT MAX(comment_datestamp) AS last_comment FROM ".$db_prefix."comments WHERE comment_ip='".USER_IP."'");
 			if (!iSUPERADMIN || dbrows($result) > 0) {
 				$data = dbarray($result);
@@ -53,7 +60,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 			}
 			if (!$flood) $result = dbquery("INSERT INTO ".$db_prefix."comments (comment_item_id, comment_type, comment_name, comment_message, comment_smileys, comment_datestamp, comment_ip) VALUES ('$comment_id', '$comment_type', '$comment_name', '$comment_message', '$comment_smileys', '".time()."', '".USER_IP."')");
 		}
-		redirect($clink);
+		if ($cic != "") redirect($clink.$cic);
 	}
 
 	$result = dbquery(
@@ -76,6 +83,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 	$variables['comment_type'] = $comment_type;
 	$variables['comment_id'] = $comment_id;
 	$variables['post_link'] = $clink;
+	$variables['cic'] = (isset($_GET['cic']) && !empty($_GET['cic'])) ? $_GET['cic'] : "";
 
 	// define the body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => "main.comments");

@@ -2314,12 +2314,16 @@ function install_language_pack($step) {
 	$localestrings['c100'] = "Comments";
 	$localestrings['c101'] = "No Comments have been Posted.";
 	$localestrings['c102'] = "Post Comment";
-	$localestrings['c103'] = "Name:";
+	$localestrings['c103'] = "Your Name:";
 	$localestrings['c104'] = "Message:";
 	$localestrings['c105'] = "Please Login to Post a Comment.";
 	$localestrings['c106'] = "Manage Comments";
 	$localestrings['c107'] = " Disable smileys in this comment";
 	$localestrings['c108'] = "Toggle smileys";
+	$localestrings['c110'] = "Incorrect Validation Code";
+	$localestrings['c111'] = "The validation code below must be entered, it expires 15 minutes after page generation.";
+	$localestrings['c112'] = "Validation Code:";
+	$localestrings['c113'] = "Enter Validation Code:";
 	load_localestrings($localestrings, LP_LOCALE, "main.comments", $step);
 
 	$localestrings = array();

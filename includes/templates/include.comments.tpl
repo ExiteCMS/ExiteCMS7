@@ -23,10 +23,10 @@
 	<tr>
 		<td class='tbl2'>
 			<b>
-				{if $smarty.const.iMEMBER && $comments[item].user_name|default:false}
+				{if $smarty.const.iMEMBER && $comments[item].user_name != ""}
 					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$comments[item].comment_name}'>{$comments[item].user_name}</a>
 				{else}
-					{$comments[item].user_name}
+					{$comments[item].comment_name}
 				{/if}
 			</b>
 			<span class='small'>{$locale.041}{$comments[item].comment_datestamp|date_format:"longdate"}</span>
@@ -58,18 +58,15 @@
 		<table align='center' cellspacing='0' cellpadding='0' class='tbl'>
 		{if $smarty.const.iGUEST}
 			<tr>
-				<td>
-					{$locale.c103}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type='text' name='comment_name' maxlength='30' class='textbox' style='width:100%;' />
+				<td colspan='2' align='center'>
+					{$locale.c103} <input type='text' name='comment_name' maxlength='30' class='textbox' style='width:200px;' />
+					<span style='color:#CC0000;font-weight:bold;'>*</span>
+					<br /><br />
 				</td>
 			</tr>
 		{/if}
 		<tr>
-			<td align='center'>
+			<td colspan='2' align='center'>
 				<textarea name='comment_message' rows='6' cols='80' class='textbox' style='width:400px'></textarea><br />
 				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('comment_message', '[b]', '[/b]');" />
 				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('comment_message', '[i]', '[/i]');" />
@@ -86,9 +83,48 @@
 			</td>
 		</tr>
 		<tr>
-			<td align='center'>
-				<input type='submit' name='toggle' value='{$locale.c108}' class='button' onclick='javascript:flipDiv("smileys");return false;' /><br /><br />
+			<td colspan=2' align='center'>
+				<input type='submit' name='toggle' value='{$locale.c108}' class='button' onclick='javascript:flipDiv("smileys");return false;' />
 				<input type='checkbox' name='disable_smileys' value='1' />{$locale.c107}<br /><br />
+			</td>
+		</tr>
+		{if $smarty.const.iGUEST}
+			{if $cic != ""}
+				<tr>
+					<td colspan='2' align='center'>
+						<span style='color:#CC0000;font-weight:bold;'>{$locale.c110}<br /><br /></span>
+					</td>
+				</tr>
+			{/if}
+			<tr>
+				<td colspan='2' class='tbl2'>
+					{$locale.c111}
+				</td>
+			</tr>
+			<tr>
+				<td align='right' width='50%' class='tbl1'>
+					{$locale.c112}
+				</td>
+				<td align='left' width='50%' class='tbl1'>
+					{make_captcha}
+				</td>
+			</tr>
+			<tr>
+				<td align='right' width='50%' class='tbl1'>
+					{$locale.c113}
+				</td>
+				<td align='left' width='50%' class='tbl1'>
+					<input type='text' name='captcha_code' class='textbox' style='vertical-align:middle;width:100px' />
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2' class='tbl1'>
+					&nbsp;
+				</td>
+			</tr>
+		{/if}
+		<tr>
+			<td colspan=2' align='center'>
 				<input type='submit' name='post_comment' value='{$locale.c102}' class='button' />
 			</td>
 		</tr>
