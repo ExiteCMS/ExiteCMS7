@@ -32,12 +32,27 @@ if (isset($target) && isset($tc)) {
 // load the locale for this module
 locale_load("main.contact");
 
+// captcha check
+$cic = (isset($_POST['captcha_encode']) && !check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) ? "&cic=1" : "";
+$variables['cic'] = $cic;
+
+// get variables from the post, or initialize them
 if (isset($_POST['sendmessage'])) {
-	$errors = array();
 	$mailname = substr(stripinput(trim($_POST['mailname'])),0,50);
 	$email = substr(stripinput(trim($_POST['email'])),0,100);
 	$subject = substr(str_replace(array("\r","\n","@"), "", descript(stripslash(trim($_POST['subject'])))),0,50);
 	$message = descript(stripslash(trim($_POST['message'])));
+} else {
+	$mailname = "";
+	$email = "";
+	$subject = "";
+	$message = "";
+}
+
+// captcha check ok and message posted?
+if ($cic == "" && isset($_POST['sendmessage'])) {
+	$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_datestamp<'".(time()-900)."'");
+	$errors = array();
 	if ($mailname == "") {
 		$errors[] = $locale['420'];
 	}
@@ -56,11 +71,17 @@ if (isset($_POST['sendmessage'])) {
 		sendemail($settings['siteusername'],$target,$mailname,$email,$subject,$message);
 	}
 	// define the body panel variables
+	$variables['target'] = $target;
 	$variables['error'] = $error;
 	$variables['errors'] = $errors;
-	$template_panels[] = array('type' => 'body', 'name' => 'main.contact.message', 'template' => 'main.contact.message.tpl');
+	$template_panels[] = array('type' => 'body', 'name' => 'main.contact.message', 'template' => 'main.contact.message.tpl', 'locale' => "main.contact");
 	$template_variables['main.contact.message'] = $variables;
 } else {
+	// form variables
+	$variables['mailname'] = $mailname;
+	$variables['email'] = $email;
+	$variables['subject'] = $subject;
+	$variables['message'] = $message;
 	// define the body panel variables
 	$variables['target'] = $target;
 	$template_panels[] = array('type' => 'body', 'name' => 'main.contact', 'template' => 'main.contact.tpl', 'locale' => "main.contact");

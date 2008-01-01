@@ -15,17 +15,17 @@
 {* contact, which is displayed after the user has sent a message           *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title=$locale.400|cat:" "|cat:$settings.siteusername state=$_state style=$_style}
-{if $error|default:0 = 0}
-	<center>
+{include file="_opentable.tpl" name=$_name title=$locale.400|cat:" "|cat:$target state=$_state style=$_style}
+{if $error|default:0 == 0}
+	<div style='text-align:center;font-weight:bold;'>
 		<br />
 		{$locale.440}
 		<br /><br />
 		{$locale.441}
-	</center>
-	<br />
+		<br /><br />
+	</div>
 {else}
-	<center>
+	<div style='text-align:center;font-weight:bold;'>
 		<br />
 		{$locale.442}
 		<br /><br />
@@ -35,8 +35,8 @@
 		    {$errmsg}<br />
 		{/foreach}
 		{$locale.443}
-	</center>
-	<br />
+		<br /><br />
+	</div>
 {/if}
 {include file="_closetable.tpl"}
 {***************************************************************************}

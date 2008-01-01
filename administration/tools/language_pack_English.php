@@ -2335,6 +2335,10 @@ function install_language_pack($step) {
 	$localestrings['404'] = "Subject:";
 	$localestrings['405'] = "Message:";
 	$localestrings['406'] = "Send Message";
+	$localestrings['410'] = "Incorrect Validation Code";
+	$localestrings['411'] = "The validation code below must be entered, it expires 15 minutes after page generation.";
+	$localestrings['412'] = "Validation Code:";
+	$localestrings['413'] = "Enter Validation Code:";
 	$localestrings['420'] = "You must specify a Name";
 	$localestrings['421'] = "You must specify an Email Address";
 	$localestrings['422'] = "You must specify a Subject";
