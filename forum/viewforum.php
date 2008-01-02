@@ -61,6 +61,7 @@ if (!dbrows($result)) {
 }
 $data = dbarray($result);
 $variables['forum'] = $data;
+define('PAGETITLE', $locale['401'].": ".$data['forum_name']);
 
 // bail out if the user doesn't have access to this forum, or requested a forum category ID
 if (!checkgroup($data['forum_access']) || !$data['forum_cat']) {

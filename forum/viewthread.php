@@ -132,6 +132,7 @@ if (!dbrows($result)) {
 // store the thread information
 $tdata = dbarray($result);
 $variables['thread'] = $tdata;
+define('PAGETITLE', $locale['402'].": ".$tdata['thread_subject']);
 
 // update the view counter for this thread
 $result = dbquery("UPDATE ".$db_prefix."threads SET thread_views=thread_views+1 WHERE thread_id='$thread_id'");

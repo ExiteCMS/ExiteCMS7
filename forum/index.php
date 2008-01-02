@@ -36,6 +36,8 @@ if (file_exists(PATH_MODULES."advertising/get_ad.php")) {
 // when is a folder hot?
 define('FOLDER_HOT', 20);
 
+define('PAGETITLE', $locale['400']);
+
 // init some variables
 $forum_list = ""; $current_cat = "";
 
