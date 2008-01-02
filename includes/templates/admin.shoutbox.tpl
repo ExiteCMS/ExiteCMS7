@@ -102,7 +102,7 @@
 {/section}
 {include file="_closetable.tpl"}
 {if $rows > $items_per_page}
-	{makepagenav start=$rowstart count=$items_per_page total=$rows range=3 link=$pagenavurl}
+	{makepagenav start=$rowstart count=$items_per_page total=$rows range=$settings.navbar_range link=$pagenavurl}
 {/if}
 {***************************************************************************}
 {* End of template                                                         *}

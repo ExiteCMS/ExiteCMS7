@@ -26,7 +26,7 @@
 	{include file="_closetable.tpl"}
 {/if}
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
-	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
+	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 	<table width='100%' cellspacing='0' cellpadding='0'>
 		<tr>
 			<td height='5'></td>
@@ -259,7 +259,7 @@
 </form>
 {include file="_closetable.tpl"}
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
-	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
+	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 {/if}
 {literal}<script type='text/javascript'>
 	function setChecked(frmName,chkName,val) {

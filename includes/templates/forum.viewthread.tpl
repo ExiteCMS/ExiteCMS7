@@ -74,7 +74,7 @@
 {/if}
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
 <div align='center' style='margin-top:5px;margin-bottom:5px;'>
-	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
+	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 </div>
 {/if}
 {if $thread_has_poll}
@@ -87,7 +87,7 @@
 </table>
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
 <div align='center' style='margin-top:5px;margin-bottom:5px;'>
-	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
+	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 </div>
 {/if}
 <table cellspacing='0' cellpadding='0' width='100%'>

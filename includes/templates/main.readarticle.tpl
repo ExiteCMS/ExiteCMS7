@@ -49,7 +49,7 @@
 			</div>
 			{if $article[item].pagecount > 1}
 				<br />
-				{makepagenav start=$rowstart count=1 total=$article[item].pagecount range=3 link=$smarty.const.FUSION_SELF|cat:"?article_id="|cat:$article[item].$article_id|cat:"&amp;"}
+				{makepagenav start=$rowstart count=1 total=$article[item].pagecount range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?article_id="|cat:$article[item].$article_id|cat:"&amp;"}
 			{/if}
 			{if $smarty.section.item.last}{else}<hr />{/if}
 		{/section}

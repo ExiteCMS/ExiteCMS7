@@ -47,7 +47,7 @@ function smarty_function_makepagenav($params, &$smarty)
 		$total = $params['total'];
 	}
     if (!isset($params['range'])) {
-        $range = 0;
+        $range = 3;
 	} else {
 		if (!isNum($params['range'])) $smarty->trigger_error("makepagenav: 'range' parameter is not numeric");
 		$range = $params['range'];

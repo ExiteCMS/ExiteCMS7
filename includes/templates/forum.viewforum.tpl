@@ -35,7 +35,7 @@
 </table>
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
 <div align='center' style='margin-top:5px;margin-bottom:5px;'>
-	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
+	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 </div>
 {/if}
 <table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
@@ -187,7 +187,7 @@
 		<td align='center' class='tbl'>
 			{if $rows > $smarty.const.ITEMS_PER_PAGE}
 			<div align='center' style='margin-top:5px;margin-bottom:5px;'>
-				{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=3 link=$pagenav_url}
+				{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 			</div>
 			{/if}
 		</td>

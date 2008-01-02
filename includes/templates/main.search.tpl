@@ -131,7 +131,7 @@
 {/section}
 {include file="_closetable.tpl"}
 {if $result_count > $items_per_page}
-	{makepagenav start=$rowstart count=$items_per_page total=$result_count range=4 link=$smarty.const.FUSION_SELF|cat:"?stype="|cat:$stype|cat:"&amp;stext="|cat:$searchtext|cat:"&amp;"}
+	{makepagenav start=$rowstart count=$items_per_page total=$result_count range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?stype="|cat:$stype|cat:"&amp;stext="|cat:$searchtext|cat:"&amp;"}
 {/if}
 {/if}
 {***************************************************************************}
