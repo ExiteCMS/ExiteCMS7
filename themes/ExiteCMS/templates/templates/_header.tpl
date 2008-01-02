@@ -20,7 +20,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-	<title>{$settings.sitename}</title>
+	<title>{$settings.sitename}{if defined('PAGETITLE')} - {$smarty.const.PAGETITLE}{/if}</title>
 	<meta http-equiv='Content-Type' content='text/html; charset={$settings.charset}' />
 	<meta name='description' content='{$settings.description}' />
 	<meta name='keywords' content='{$settings.keywords}' />
