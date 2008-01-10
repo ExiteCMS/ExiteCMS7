@@ -856,6 +856,8 @@ function install_language_pack($step) {
 	$localestrings['520'] = "Show members location:";
 	$localestrings['521'] = "Maximum size for an attached image:";
 	$localestrings['522'] = "Larger images will be converted to thumbnails";
+	$localestrings['523'] = "Track thread unread status for maximum:";
+	$localestrings['524'] = "(lots of posts = less days)";
 	$localestrings['550'] = "Registration";
 	$localestrings['551'] = "Enable registration system?";
 	$localestrings['552'] = "Use email verification for registration?";

@@ -21,15 +21,15 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,1,2,2008), 
+					'date' => mktime(18,00,0,1,8,2008), 
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
-					'description' => "Added a config value to control the width of the table pager block");
+					'description' => "Switched from post tracking to thread tracking for unread post status, to make the forums more performant and more scalable");
 
 // array to store the commands of this update
 $commands = array();
 
-// range for the navbars
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('navbar_range', '5')");
+// add the posts unread threshold value to the config table
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('unread_threshold', '90')");
 
 // database changes
 ?>

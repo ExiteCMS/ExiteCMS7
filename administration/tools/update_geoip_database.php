@@ -36,6 +36,10 @@ function display($text) {
 | main code                                          |
 +----------------------------------------------------*/
 
+// give this module some memory and execution time
+ini_set('memory_limit', '64M');
+ini_set('max_execution_time', '0');
+
 // load the theme functions when not in CLI mode
 if (!CMS_CLI) require_once PATH_INCLUDES."theme_functions.php";
 

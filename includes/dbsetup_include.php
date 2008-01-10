@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `25/12/2007 15:32`
+// Date generated  : `07/01/2008 22:12`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.00');
-define('CMS_REVISION', '1182');
+define('CMS_REVISION', '1190');
 
 if ($step == 1) {
 
@@ -62,7 +62,7 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."admin");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."admin (
-  `admin_id` tinyint(2) unsigned NOT NULL auto_increment,
+  `admin_id` smallint(5) unsigned NOT NULL auto_increment,
   `admin_rights` char(2) NOT NULL default '',
   `admin_image` varchar(50) NOT NULL default '',
   `admin_title` varchar(50) NOT NULL default '',
@@ -105,10 +105,10 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."articles (
   `article_snippet` text NOT NULL,
   `article_article` text NOT NULL,
   `article_breaks` char(1) NOT NULL default '',
-  `article_name` smallint(5) unsigned NOT NULL default '1',
+  `article_name` mediumint(8) unsigned NOT NULL default '1',
   `article_locale` varchar(8) NOT NULL default '',
   `article_datestamp` int(10) unsigned NOT NULL default '0',
-  `article_reads` smallint(5) unsigned NOT NULL default '0',
+  `article_reads` mediumint(8) unsigned NOT NULL default '0',
   `article_allow_comments` tinyint(1) unsigned NOT NULL default '1',
   `article_allow_ratings` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`article_id`)
@@ -298,9 +298,9 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."forum_attachments");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_attachments (
-  `attach_id` smallint(5) unsigned NOT NULL auto_increment,
-  `thread_id` smallint(5) unsigned NOT NULL default '0',
-  `post_id` smallint(5) unsigned NOT NULL default '0',
+  `attach_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `thread_id` mediumint(8) unsigned NOT NULL default '0',
+  `post_id` mediumint(8) unsigned NOT NULL default '0',
   `attach_name` varchar(100) NOT NULL default '',
   `attach_realname` varchar(100) NOT NULL default '',
   `attach_comment` varchar(255) NOT NULL default '',
@@ -320,8 +320,8 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."forum_poll_options");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_options (
-  `option_id` int(8) unsigned NOT NULL auto_increment,
-  `poll_id` int(8) unsigned NOT NULL default '0',
+  `option_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `poll_id` mediumint(8) unsigned NOT NULL default '0',
   `option_order` tinyint(2) unsigned NOT NULL default '0',
   `option_text` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`option_id`),
@@ -362,8 +362,8 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."forum_poll_votes");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_votes (
-  `poll_id` int(8) unsigned NOT NULL default '0',
-  `user_id` int(8) unsigned NOT NULL default '0',
+  `poll_id` mediumint(8) unsigned NOT NULL default '0',
+  `user_id` mediumint(8) unsigned NOT NULL default '0',
   `vote_selection` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`poll_id`,`user_id`)
 ) ENGINE=MYISAM;");
@@ -377,9 +377,9 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."forum_polls");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_polls (
-  `poll_id` int(8) unsigned NOT NULL auto_increment,
-  `thread_id` int(8) unsigned NOT NULL default '0',
-  `post_id` int(8) unsigned NOT NULL default '0',
+  `poll_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `thread_id` mediumint(8) unsigned NOT NULL default '0',
+  `post_id` mediumint(8) unsigned NOT NULL default '0',
   `poll_question` varchar(200) NOT NULL default '',
   `poll_start` int(10) unsigned NOT NULL default '0',
   `poll_end` int(10) unsigned NOT NULL default '0',
@@ -410,7 +410,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forums (
   `forum_attach` tinyint(1) unsigned NOT NULL default '0',
   `forum_attachtypes` varchar(150) NOT NULL default '',
   `forum_lastpost` int(10) unsigned NOT NULL default '0',
-  `forum_lastuser` smallint(5) unsigned NOT NULL default '0',
+  `forum_lastuser` mediumint(8) unsigned NOT NULL default '0',
   `forum_rulespage` smallint(5) unsigned NOT NULL default '0',
   `forum_banners` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`forum_id`)
@@ -500,7 +500,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news (
   `news_news` text NOT NULL,
   `news_extended` text NOT NULL,
   `news_breaks` char(1) NOT NULL default '',
-  `news_name` smallint(5) unsigned NOT NULL default '1',
+  `news_name` mediumint(8) unsigned NOT NULL default '1',
   `news_datestamp` int(10) unsigned NOT NULL default '0',
   `news_start` int(10) unsigned NOT NULL default '0',
   `news_end` int(10) unsigned NOT NULL default '0',
@@ -578,12 +578,12 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."pm");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm (
-  `pm_id` smallint(5) unsigned NOT NULL auto_increment,
+  `pm_id` mediumint(8) unsigned NOT NULL auto_increment,
   `pm_subject` varchar(100) NOT NULL default '',
   `pm_message` text NOT NULL,
   `pm_recipients` text NOT NULL,
   `pm_smileys` tinyint(1) unsigned NOT NULL default '1',
-  `pm_size` smallint(5) unsigned NOT NULL default '0',
+  `pm_size` mediumint(8) unsigned NOT NULL default '0',
   `pm_datestamp` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`pm_id`)
 ) ENGINE=MYISAM;");
@@ -597,8 +597,8 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."pm_attachments");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_attachments (
-  `pmattach_id` smallint(5) unsigned NOT NULL auto_increment,
-  `pm_id` smallint(5) unsigned NOT NULL default '0',
+  `pmattach_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `pm_id` mediumint(8) unsigned NOT NULL default '0',
   `pmattach_name` varchar(100) NOT NULL default '',
   `pmattach_realname` varchar(100) NOT NULL default '',
   `pmattach_comment` varchar(255) NOT NULL default '',
@@ -616,8 +616,8 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."pm_config");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_config (
-  `pmconfig_id` smallint(5) unsigned NOT NULL auto_increment,
-  `user_id` smallint(5) unsigned NOT NULL default '0',
+  `pmconfig_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `user_id` mediumint(8) unsigned NOT NULL default '0',
   `pmconfig_save_sent` tinyint(1) unsigned NOT NULL default '1',
   `pmconfig_read_notify` tinyint(1) unsigned NOT NULL default '1',
   `pmconfig_email_notify` tinyint(1) unsigned NOT NULL default '0',
@@ -635,13 +635,13 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."pm_index");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_index (
-  `pmindex_id` smallint(5) unsigned NOT NULL auto_increment,
-  `pm_id` smallint(5) unsigned NOT NULL default '0',
-  `pmindex_user_id` smallint(5) unsigned NOT NULL default '0',
-  `pmindex_reply_id` smallint(5) unsigned NOT NULL default '0',
-  `pmindex_from_id` smallint(5) unsigned NOT NULL default '0',
+  `pmindex_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `pm_id` mediumint(8) unsigned NOT NULL default '0',
+  `pmindex_user_id` mediumint(8) unsigned NOT NULL default '0',
+  `pmindex_reply_id` mediumint(8) unsigned NOT NULL default '0',
+  `pmindex_from_id` mediumint(8) unsigned NOT NULL default '0',
   `pmindex_from_email` varchar(100) NOT NULL default '',
-  `pmindex_to_id` smallint(5) unsigned NOT NULL default '0',
+  `pmindex_to_id` mediumint(8) unsigned NOT NULL default '0',
   `pmindex_to_email` varchar(100) NOT NULL default '',
   `pmindex_to_group` tinyint(1) unsigned NOT NULL default '0',
   `pmindex_read_datestamp` int(10) unsigned NOT NULL default '0',
@@ -661,18 +661,18 @@ if (!$result) {
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."posts");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."posts (
   `forum_id` smallint(5) unsigned NOT NULL default '0',
-  `thread_id` smallint(5) unsigned NOT NULL default '0',
-  `post_id` smallint(5) unsigned NOT NULL auto_increment,
-  `post_reply_id` smallint(5) unsigned NOT NULL default '0',
+  `thread_id` mediumint(8) unsigned NOT NULL default '0',
+  `post_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `post_reply_id` mediumint(8) unsigned NOT NULL default '0',
   `post_subject` varchar(100) NOT NULL default '',
   `post_message` text NOT NULL,
   `post_showsig` tinyint(1) unsigned NOT NULL default '0',
   `post_smileys` tinyint(1) unsigned NOT NULL default '1',
   `post_sticky` tinyint(1) NOT NULL default '0',
-  `post_author` smallint(5) unsigned NOT NULL default '0',
+  `post_author` mediumint(8) unsigned NOT NULL default '0',
   `post_datestamp` int(10) unsigned NOT NULL default '0',
   `post_ip` varchar(20) NOT NULL default '0.0.0.0',
-  `post_edituser` smallint(5) unsigned NOT NULL default '0',
+  `post_edituser` mediumint(8) unsigned NOT NULL default '0',
   `post_edittime` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`post_id`),
   KEY `thread_id` (`thread_id`),
@@ -709,7 +709,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."ratings (
   `rating_id` smallint(5) unsigned NOT NULL auto_increment,
   `rating_item_id` smallint(5) unsigned NOT NULL default '0',
   `rating_type` char(1) NOT NULL default '',
-  `rating_user` smallint(5) unsigned NOT NULL default '0',
+  `rating_user` mediumint(8) unsigned NOT NULL default '0',
   `rating_vote` tinyint(1) unsigned NOT NULL default '0',
   `rating_datestamp` int(10) unsigned NOT NULL default '0',
   `rating_ip` varchar(20) NOT NULL default '0.0.0.0',
@@ -765,9 +765,9 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."thread_notify");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."thread_notify (
-  `thread_id` smallint(5) unsigned NOT NULL default '0',
+  `thread_id` mediumint(8) unsigned NOT NULL default '0',
   `notify_datestamp` int(10) unsigned NOT NULL default '0',
-  `notify_user` smallint(5) unsigned NOT NULL default '0',
+  `notify_user` mediumint(8) unsigned NOT NULL default '0',
   `notify_status` tinyint(1) unsigned NOT NULL default '1'
 ) ENGINE=MYISAM;");
 if (!$result) {
@@ -781,12 +781,12 @@ if (!$result) {
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."threads");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads (
   `forum_id` smallint(5) unsigned NOT NULL default '0',
-  `thread_id` smallint(5) unsigned NOT NULL auto_increment,
+  `thread_id` mediumint(8) unsigned NOT NULL auto_increment,
   `thread_subject` varchar(100) NOT NULL default '',
-  `thread_author` smallint(5) unsigned NOT NULL default '0',
-  `thread_views` smallint(5) unsigned NOT NULL default '0',
+  `thread_author` mediumint(8) unsigned NOT NULL default '0',
+  `thread_views` mediumint(8) unsigned NOT NULL default '0',
   `thread_lastpost` int(10) unsigned NOT NULL default '0',
-  `thread_lastuser` smallint(5) unsigned NOT NULL default '0',
+  `thread_lastuser` mediumint(8) unsigned NOT NULL default '0',
   `thread_sticky` tinyint(1) unsigned NOT NULL default '0',
   `thread_locked` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`thread_id`)
@@ -822,7 +822,7 @@ if (!$result) {
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."users");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
-  `user_id` smallint(5) unsigned NOT NULL auto_increment,
+  `user_id` mediumint(8) unsigned NOT NULL auto_increment,
   `user_md5id` varchar(32) NOT NULL default '',
   `user_name` varchar(30) NOT NULL default '',
   `user_fullname` varchar(50) NOT NULL default '',
@@ -844,7 +844,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
   `user_offset` varchar(6) NOT NULL default '',
   `user_avatar` varchar(100) NOT NULL default '',
   `user_sig` text NOT NULL,
-  `user_posts` smallint(5) unsigned NOT NULL default '0',
+  `user_posts` mediumint(8) unsigned NOT NULL default '0',
   `user_joined` int(10) unsigned NOT NULL default '0',
   `user_lastvisit` int(10) unsigned NOT NULL default '0',
   `user_ip` varchar(20) NOT NULL default '0.0.0.0',
@@ -854,7 +854,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
   `user_status` tinyint(1) unsigned NOT NULL default '0',
   `user_ban_reason` varchar(100) NOT NULL default '',
   `user_ban_expire` int(10) unsigned NOT NULL default '0',
-  `user_newsletters` smallint(5) unsigned NOT NULL default '1',
+  `user_newsletters` tinyint(1) unsigned NOT NULL default '1',
   `user_sponsor` tinyint(1) unsigned NOT NULL default '0',
   `user_cc_code` char(2) NOT NULL default '',
   PRIMARY KEY  (`user_id`)
