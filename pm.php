@@ -114,7 +114,7 @@ function gathermsginfo($msgrec, $preview = false) {
 				if ($settings['forum_flags']) {
 					// fix the webmaster to the site's country code
 					if ($recipient == 1) {
-						$data2['cc_flag'] = GeoIP_Code2Flag($locale['country']);
+						$data2['cc_flag'] = GeoIP_Code2Flag($settings['country']);
 					} else {
 						$data2['cc_flag'] = GeoIP_IP2Flag($data2['user_ip']);
 					}

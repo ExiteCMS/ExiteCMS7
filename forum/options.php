@@ -55,18 +55,8 @@ if ($step == "renew") {
 	while ($data = dbarray($result)) {
 		$post_ids[] = $data['post_id'];
 	}
-	// remove all unread flags for this thread
-	$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE forum_id = '".$forum_id."' AND thread_id = '".$thread_id."'");
-	// Get a list of all users
-	$result = dbquery("SELECT user_id, user_level, user_groups FROM ".$db_prefix."users");
-	while ($data = dbarray($result)) {
-		// if this user has access to the forum this thread belongs to, mark all posts in this thread unread
-		if ($group_id == 0 or ($group_id > 100 and $data['user_level'] >= $group_id) or preg_match("(^\.{$group_id}|\.{$group_id}\.|\.{$group_id}$)", $data['user_groups'])) {
-			foreach ($post_ids as $key => $value) {
-				$result2 = dbquery("INSERT INTO ".$db_prefix."posts_unread (user_id, forum_id, thread_id, post_id, post_time) VALUES (".$data['user_id'].", ".$forum_id.", ".$thread_id.", ".$value.", ".time().")");
-			}
-		}
-	}
+	// reset all threads_read pointers for this thread
+	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '0' WHERE thread_id = '".$thread_id."'");
 	// define the body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'forum.options.renew', 'title' => $locale['458'], 'template' => 'forum.options.tpl', 'locale' => "forum.options");
 	$template_variables['forum.options.renew'] = $variables;
@@ -80,8 +70,8 @@ if ($step == "delete") {
 
 		$threads_count = dbcount("(forum_id)", "threads", "forum_id='$forum_id'") - 1;
 		$result = dbquery("DELETE FROM ".$db_prefix."posts WHERE thread_id='$thread_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE thread_id='$thread_id'");
 		$result = dbquery("DELETE FROM ".$db_prefix."threads WHERE thread_id='$thread_id'");
+		$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_id='$thread_id'");
 		$result = dbquery("DELETE FROM ".$db_prefix."thread_notify WHERE thread_id='$thread_id'");
 		$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE thread_id='$thread_id'");
 		if (dbrows($result) != 0) {
@@ -158,33 +148,33 @@ if ($step == "move") {
 		
 		$result = dbquery("UPDATE ".$db_prefix."threads SET forum_id='$new_forum_id' WHERE thread_id='$thread_id'");
 		$result = dbquery("UPDATE ".$db_prefix."posts SET forum_id='$new_forum_id' WHERE thread_id='$thread_id'");
-		$result = dbquery("UPDATE ".$db_prefix."posts_unread SET forum_id='$new_forum_id' WHERE thread_id='$thread_id'");
-		// HV - remove users from posts_unread that don't have read access to the new forum!
-		$unread = dbcount("(thread_id)", "posts_unread", "thread_id = ".$thread_id);
-		if ($unread) {
-			// get the access group number for the new forum
-			$result = dbquery("SELECT forum_access from ".$db_prefix."forums WHERE forum_id = '".$new_forum_id."'");
-			$udata = dbarray($result);
-			$group_id = $udata['forum_access'];
-			// we only need to do this if the new forum is not public
-			if ($group_id > 0) {
-				// get the list of all users with unread messages in this thread
-				$result = dbquery("SELECT user_id FROM ".$db_prefix."posts_unread WHERE thread_id = '".$thread_id."'");
-				while ($udata = dbarray($result)) {
-					// get the user_level and group membership for this user
-					$uresult2 = dbquery("SELECT user_id, user_groups, user_level from ".$db_prefix."users WHERE user_id = '".$udata['user_id']."'");
-					$udata2 = dbarray($uresult2);
-					// check if the user is a member of the forum group
-					if (($group_id > 100 and $data['user_level'] >= $group_id) or preg_match("(^\.{$group_id}|\.{$group_id}\.|\.{$group_id}$)", $udata2['user_groups'])) {
-						// ok, user can still access this thread
-					} else {
-						// user doesn't have access to the new forum. Remove the thread for this user from posts_unread
-						$uresult2 = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE user_id = '".$udata['user_id']."' AND thread_id = '".$thread_id."'");
-					}
+		$result = dbquery("UPDATE ".$db_prefix."threads_read SET forum_id='$new_forum_id' WHERE thread_id='$thread_id'");
+
+		// get the access group number for the new forum
+		$result = dbquery("SELECT forum_access from ".$db_prefix."forums WHERE forum_id = '".$new_forum_id."'");
+		$udata = dbarray($result);
+		$group_id = $udata['forum_access'];
+
+		// we only need to do this if the new forum is not public
+		if ($group_id > 0) {
+			// remove users from threads_read that don't have read access to the new forum!
+			$result = dbquery("
+				SELECT DISTINCT u.user_id, u.user_level, u.user_groups 
+				FROM ".$db_prefix"threads_read tr
+				LEFT JOIN ".$db_prefix."users u ON u.user_id = tr.user_id
+				WHERE tr.thread_id = '".$thread_id."'
+				");
+			while ($udata2 = dbarray($result)) {
+				if (($group_id > 100 and $udata2['user_level'] >= $group_id) or preg_match("(^\.{$group_id}|\.{$group_id}\.|\.{$group_id}$)", $udata2['user_groups'])) {
+					// ok, user can still access this thread
+				} else {
+					// user doesn't have access to the new forum. Remove the thread for this user from threads_read
+					$result2 = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE user_id = '".$udata['user_id']."' AND thread_id = '".$thread_id."'");
 				}
 			}
-		}
-		// HV - end of change
+		}		
+
+		// update the forum record
 		if ($threads_count_old > 0) {
 			$result = dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_id='$forum_id' AND forum_lastpost='".$tdata2['thread_lastpost']."' AND forum_lastuser='".$tdata2['thread_lastuser']."'");
 			if (dbrows($result)) {
@@ -247,9 +237,14 @@ if ($step == "merge") {
 		if ($tdata1['thread_lastpost'] > $tdata2['thread_lastpost'])
 			$result = dbquery("UPDATE ".$db_prefix."threads SET thread_lastpost='".$tdata1['thread_lastpost']."', thread_lastuser='".$tdata1['thread_lastuser']."' WHERE thread_id='$new_thread_id'");
 		$result = dbquery("UPDATE ".$db_prefix."posts SET thread_id='$new_thread_id' WHERE thread_id='$thread_id'");
-		$result = dbquery("UPDATE ".$db_prefix."posts_unread SET thread_id='$new_thread_id' WHERE thread_id='$thread_id'");
 		$result = dbquery("UPDATE ".$db_prefix."thread_notify SET thread_id='$new_thread_id' WHERE thread_id='$thread_id'");
 		$result = dbquery("DELETE FROM ".$db_prefix."threads WHERE thread_id='$thread_id'");
+		// merge the last_read pointers
+		$result = dbquery("SELECT user_id, thread_last_read FROM ".$db_prefix."threads_read WHERE thread_id = '".$thread_id."'");
+		while ($data = dbarray($result)) {
+			$result2 = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$data['thread_last_read']."' WHERE user_id = '".$data['user_id']."' AND thread_id = '".$new_thread_id."' AND thread_last_read < '".$data['thread_last_read']."'");
+		}
+		$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_id='$thread_id'");
 	} else {
 		// get the data for the threads dropdown
 		$result = dbquery("SELECT * FROM ".$db_prefix."threads WHERE forum_id='$forum_id' ORDER BY thread_lastpost DESC");

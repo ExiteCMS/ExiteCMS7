@@ -215,24 +215,21 @@ if (isset($_POST['save_cat'])) {
 		$result = dbquery("SELECT forum_access FROM ".$db_prefix."forums WHERE forum_id = '".$forum_id."'");
 		$data = dbarray($result);
 		$group_id = $data['forum_access'];
-		// if the forum access is changed, remove the unread posts flag from users that don't have access anymore
+		// if the forum access is changed, and it's not public, correct the threads_read pointers
 		if ($group_id <> $forum_access && $forum_access != 0) {
-			// get all users with unread posts in this forum
-			$result = dbquery("SELECT DISTINCT user_id FROM ".$db_prefix."posts_unread WHERE forum_id = '".$forum_id."'");
-			// for every user, check if the user is member of the new group. If not, remove the unread markers
-			while ($data = dbarray($result)) {
-				// get the users group memberships
-				$result2 = dbquery("SELECT user_groups FROM ".$db_prefix."users WHERE user_id = '".$data['user_id']."'");
-				if ($data2 = dbarray($result2)) {
-					$groups = (strpos($data2['user_groups'], ".") == 0 ? explode(".", substr($data2['user_groups'], 1)) : explode(".", $data2['user_groups']));
-					foreach ($groups as $group) {
-						// check if this groups has subgroups. If so, add them to the array
-						getsubgroups($group);
-					}
-					// check if the user is member of the new group
-					if (!in_array($forum_access, $groups)) 
-						// if not, delete the unread markers for this user and forum
-						$result2 = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE forum_id = '".$forum_id."' AND user_id = '".$data['user_id']."'");
+			// remove users from threads_read that don't have read access to the forum anymore!
+			$result = dbquery("
+				SELECT DISTINCT u.user_id, u.user_level, u.user_groups 
+				FROM ".$db_prefix"threads_read tr
+				LEFT JOIN ".$db_prefix."users u ON u.user_id = tr.user_id
+				WHERE tr.thread_id = '".$thread_id."'
+				");
+			while ($udata2 = dbarray($result)) {
+				if (($forum_access > 100 and $udata2['user_level'] >= $forum_access) or preg_match("(^\.{$forum_access}|\.{$forum_access}\.|\.{$forum_access}$)", $udata2['user_groups'])) {
+					// ok, user can still access this thread
+				} else {
+					// user doesn't have access to the new forum. Remove the thread for this user from threads_read
+					$result2 = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE user_id = '".$udata['user_id']."' AND thread_id = '".$thread_id."'");
 				}
 			}
 		}

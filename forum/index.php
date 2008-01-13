@@ -76,13 +76,17 @@ while ($data = dbarray($result)) {
 		}
 	}
 	$data['moderators'] = $moderators;
+	
 	// get the unread posts count for this forum
-	if (!isset($userdata['user_id']))
+	if (iMEMBER) {
+		$result2 = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE tr.user_id = '".$userdata['user_id']."' AND tr.forum_id = '".$data['forum_id']."' AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
+		$data['unread_posts'] = ($result2 ? mysql_result($result2, 0) : 0);
+	} else {
 		$data['unread_posts'] = 0;
-	else
-		$data['unread_posts'] = dbcount("(*)", "posts_unread", "user_id = ".$userdata['user_id']." AND forum_id = ".$data['forum_id']);
+	}
+	
 	// get the total post count for this forum
-	$data['total_posts'] =dbcount("(post_id)", "posts", "forum_id='".$data['forum_id']."'");
+	$data['total_posts'] = dbcount("(post_id)", "posts", "forum_id='".$data['forum_id']."'");
 
 	// store this record for use in the template
 	$variables['forums'][] = $data;

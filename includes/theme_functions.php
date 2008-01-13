@@ -438,9 +438,9 @@ function theme_cleanup() {
 
 	global $db_prefix, $userdata, $_db_logs, $template, $settings;
 
-	// clean-up tasks, will be executed by all admins and super-admins
+	// clean-up tasks, will be executed by all super-admins
 	// WANWIZARD - 20070716 - THIS NEEDS TO BE MOVED TO A CRON JOB !!!
-	if ($userdata['user_level'] >= 102) {
+	if ($userdata['user_level'] >= 103) {
 		$minute = 60; $hour = $minute * 60; $day = $hour * 24;
 		// flood control: set to 5 minutes
 		$result = dbquery("DELETE FROM ".$db_prefix."flood_control WHERE flood_timestamp < '".(time() - $minute * 5)."'");
@@ -450,11 +450,13 @@ function theme_cleanup() {
 		$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_datestamp < '".(time() - $minute * 6)."'");
 		// new registered users: set to 3 days
 		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_datestamp < '".(time() - $day * 3)."'");
-		// unread posts indicators: set to 30 days
-		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE post_time < '".(time() - $day * 30)."'", false);
 		// deactivate accounts with a bad email address after 90 days (available since v7.0 rev.1060)
 		if ($settings['revision'] >= 1060) {
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_status = 1, user_ban_reason = '', user_ban_expire = '".time()."' WHERE user_bad_email > 0 AND user_bad_email < '".(time() - $day * 90)."'");
+		}
+		// read threads indicators: use the defined threshold (available since v7.0 rev.1190)
+		if ($settings['revision'] >= 1190) {
+			$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_last_read < '".$settings['unread_threshold']."'", false);
 		}
 	}
 	

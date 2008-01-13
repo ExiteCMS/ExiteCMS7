@@ -192,8 +192,32 @@ $rows = dbcount("(thread_id)", "posts", "thread_id='$thread_id'");
 $variables['rows'] = $rows;
 
 // number of unread posts in this thread
-$unread_posts = iMEMBER ? dbcount("(*)", "posts_unread", "user_id = '".$userdata['user_id']."' AND forum_id = '".$forum_id."' AND thread_id = '".$thread_id."'") : 0;
-$variables['unread_posts'] = $unread_posts;
+if (iMEMBER) {
+	$result = dbquery("
+		SELECT count(*) as unread, tr.thread_last_read, tr.thread_page
+			FROM ".$db_prefix."posts p
+			LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+			WHERE tr.user_id = '".$userdata['user_id']."' 
+				AND tr.thread_id = '".$thread_id."' 
+				AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
+				AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+			GROUP BY tr.thread_id
+		");
+	if (dbrows($result)) {
+		$data = dbarray($result);
+		$variables['unread_posts'] = $data['unread'];
+		$thread_last_read = $data['thread_last_read'];
+		$thread_page = $data['thread_page'];
+	} else {
+		$variables['unread_posts'] = 0;
+		$thread_last_read = time();
+		$thread_page = 0;
+	}
+} else {
+	$variables['unread_posts'] = 0;
+	$thread_last_read = time();
+	$thread_page = 0;
+}
 
 //if a specific post is requested, find out on which page it is, and set rowstart accordingly
 if (isset($pid) && isNum($pid)) {
@@ -239,7 +263,7 @@ if ($rows != 0) {
 				$data['post_reply_username'] = "";
 		}
 		// check if this post is read or unread
-		$data['unread'] = (isset($userdata['user_id'])) ? dbcount("(*)", "posts_unread", "user_id = ".$userdata['user_id']." AND thread_id = ".$data['thread_id']." AND post_id = ".$data['post_id']) : 0;
+		$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read;
 
 		// if unread, remove the unread marker for this post
 		if ($data['unread']) {
@@ -352,6 +376,11 @@ if ($rows != 0) {
 		// store this record for use in the template
 		$variables['posts'][] = $data;
 	}
+}
+
+// update the threads_read record for this user and thread
+if (iMEMBER) {
+	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".time()."', thread_page = '".min($rowstart, $thread_page)."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."'");
 }
 
 // generate a list of forums, for the forum switch dropdown

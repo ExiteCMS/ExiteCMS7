@@ -145,49 +145,6 @@ function storeupload() {
 	}
 }
 
-// function to update the unread flags
-function update_unread($forum_id, $thread_id, $post_id) {
-
-        global $db_prefix, $userdata;
-
-        // make sure we have all required info
-        if ($forum_id == 0 || $thread_id == 0 || $post_id == 0) return false;
-
-        // flag the post as unread for all users that have read access to this forum
-        // get the access group number for this forum
-        $result = dbquery("SELECT forum_access from ".$db_prefix."forums WHERE forum_id = ".$forum_id);
-        $data = dbarray($result);
-        $group_id = $data['forum_access'];
-        // check for group inheritance
-        global $groups; $groups = array();
-        getgroupmembers($group_id);
-        // select all users that are a member of this forum access group except the poster
-        $result = dbquery("SELECT user_id, user_name, user_groups, user_level from ".$db_prefix."users WHERE user_id != '".$userdata['user_id']."'");
-        if (dbrows($result)) {
-                while ($data = dbarray($result)) {
-                        $insert = false;
-                        // if the group is public, or it is a builtin group and user has higher-or-equal system rights, insert an unread record
-                        if ($group_id == 0 or ($group_id > 100 and $data['user_level'] >= $group_id)) {
-                                $insert = true;
-                        } else {
-                                // otherwise, check for group membership for this user
-                                foreach ($groups as $group) {
-                                        if (preg_match("(^\.{$group}|\.{$group}\.|\.{$group}$)", $data['user_groups'])) {
-                                                $insert = true;
-                                                break;
-                                        }
-                                }
-                        }
-                        // if the user has access to this post, flag it as unread for this user
-                        if ($insert) {
-                                $result2 = dbquery("INSERT IGNORE INTO ".$db_prefix."posts_unread (user_id, forum_id, thread_id, post_id, post_time) VALUES(".$data['user_id'].", ".$forum_id.", ".$thread_id.", ".$post_id.", ".time().")", false);
-                        }
-
-                }
-        }
-        return true;
-}
-
 /*---------------------------------------------------+
 | main                                               |
 +----------------------------------------------------*/
@@ -608,7 +565,6 @@ if (isset($_POST["cancel"])) {
 							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='$subject', post_smileys='$smileys' WHERE post_id='$post_id'");
 						else {
 							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='$subject', post_message='$message', post_smileys='$smileys', post_edituser='".$userdata['user_id']."', post_edittime='".time()."' WHERE post_id='$post_id'");
-							update_unread($forum_id, $thread_id, $post_id);
 						}
 						$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."posts WHERE thread_id='$thread_id' ORDER BY post_datestamp ASC LIMIT 1"));
 						if ($data['post_id'] == $post_id) {
@@ -662,7 +618,6 @@ if (isset($_POST["cancel"])) {
 								if ($settings['thread_notify'] && isset($_POST['notify_me']))
 									$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
 								fpm_save($post_id);
-								update_unread($forum_id, $thread_id, $post_id);
 							}
 						}
 					}
@@ -751,7 +706,6 @@ if (isset($_POST["cancel"])) {
 } elseif (isset($_POST['delete_post'])) {
 		fpm_delete();
 		$result = dbquery("DELETE FROM ".$db_prefix."posts WHERE post_id='$post_id' AND thread_id='$thread_id'");
-		$result = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE post_id='$post_id' AND thread_id='$thread_id'");
 		$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE post_id='$post_id'");
 		if (dbrows($result) != 0) {
 			while ($attach = dbarray($result)) {
@@ -799,7 +753,6 @@ if (isset($_POST["cancel"])) {
 		} else {
 			// move the post to the new thread
 			$result = dbquery("UPDATE ".$db_prefix."posts SET thread_id='".$_POST['new_thread_id']."', forum_id='".$_POST['new_forum_id']."' WHERE post_id='$post_id'");
-			$result = dbquery("UPDATE ".$db_prefix."posts_unread SET thread_id='".$_POST['new_thread_id']."', forum_id='".$_POST['new_forum_id']."' WHERE post_id='$post_id'");
 			// update the forum record of the new thread
 			$result = dbquery("SELECT MAX(forum_lastpost) as lastpost FROM ".$db_prefix."forums WHERE forum_id='".$_POST['new_forum_id']."'");
 			if (dbrows($result) == 0) fallback("index.php");
@@ -818,44 +771,12 @@ if (isset($_POST["cancel"])) {
 			$data = dbarray($result);
 			if ($data['lastpost'] < $pdata['post_datestamp'])
 				$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".$pdata['post_datestamp']."', forum_lastuser='".$pdata['post_author']."' WHERE forum_id='".$forum_id."'");
-			// get the access group number for the new forum
-			$result = dbquery("SELECT forum_access from ".$db_prefix."forums WHERE forum_id = ".$_POST['new_forum_id']);
-		    $data = dbarray($result);
-			$group_id = $data['forum_access'];
-			// check for group inheritance
-			$groups = array();
-			getgroupmembers($group_id);
-			// update the posts_unread pointers
-			$result = dbquery("SELECT * FROM ".$db_prefix."posts_unread WHERE post_id = '$post_id'");
-			while ($data = dbarray($result)) {
-				// get the group memberships of this user
-        		$result2 = dbquery("SELECT user_id, user_groups, user_level from ".$db_prefix."users WHERE user_id = '".$data['user_id']."'");
-		        if ($data2 = dbarray($result2)) {
-                    // if the group is public, or it is a builtin group and user has higher-or-equal system rights, insert an unread record
-                    if ($group_id == 0 or ($group_id > 100 and $data2['user_level'] >= $group_id)) {
-                    	$result2 = dbquery("UPDATE ".$db_prefix."posts_unread SET forum_id = '".$_POST['new_forum_id']."', thread_id = '".$_POST['new_thread_id']."' WHERE post_id = '$post_id' AND user_id = '".$data['user_id']."'");
-                    } else {
-                    	// otherwise, check for correct group membership for this user
-                 	    $updated = false;
-                        foreach ($groups as $group) {
-                           if (preg_match("(^\.{$group}|\.{$group}\.|\.{$group}$)", $data2['user_groups'])) {
-		                    	$result2 = dbquery("UPDATE ".$db_prefix."posts_unread SET forum_id = '".$_POST['new_forum_id']."', thread_id = '".$_POST['new_thread_id']."' WHERE post_id = '$post_id' AND user_id = '".$data['user_id']."'");
-                        	    $updated = true;
-                                break;
-                            }
-                        }
-						if (!$updated) {
-							// user doesn't have access to the new forum, delete the unread pointer
-                    		$result2 = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE post_id = '$post_id' AND user_id = '".$data['user_id']."'");
-						}
-                    }
-                }
-			}
 			// check if there are posts left in the old thread
 			$posts = dbcount("(post_id)", "posts", "thread_id='$thread_id'");
 			if ($posts == 0) {
 				// delete the old thread
 				$result = dbquery("DELETE FROM ".$db_prefix."threads WHERE thread_id='$thread_id' AND forum_id='$forum_id'");
+				$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_id='$thread_id'");
 				$result = dbquery("DELETE FROM ".$db_prefix."thread_notify WHERE thread_id='$thread_id'");
 			} else {
 				// update the old thread
@@ -1113,7 +1034,6 @@ if (isset($_POST["cancel"])) {
 					resultdialog($locale['403'], $locale['458'], false);
 					break;
 				default:
-					update_unread($forum_id, $thread_id, $post_id);
 					resultdialog($locale['403'], $locale['443'], true);
 			}
 			break;

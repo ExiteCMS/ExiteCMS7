@@ -123,10 +123,13 @@ define ("BASEDIR", $settings['siteurl']);
 // now make the siteurl fully qualified using the current server host info
 $settings['siteurl'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on") ? "https://" : "http://").$_SERVER['HTTP_HOST'].$settings['siteurl'];
 
+// calculate the correct forum_unread_threshold for this session
+$settings['unread_threshold'] = time() - 60*60*24*$settings['unread_threshold'];
+
 // include the locale functions
 require_once PATH_INCLUDES."locale_functions.php";
 
-// Load the global language file
+// load the global language file
 locale_load("main.global");
 
 // URL path definitions relative to BASEDIR
@@ -177,6 +180,17 @@ define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
+
+// update the threads_read table for the current user
+if (iMEMBER) {
+	// get all new threads for this user since we've last checked
+	$result = dbquery("SELECT t.forum_id, t.thread_id FROM ".$db_prefix."threads t, ".$db_prefix."forums f WHERE f.forum_id = t.forum_id AND ".groupaccess('f.forum_access')." AND thread_lastpost > '".$userdata['user_forum_datestamp']."'");
+	$result2 = dbquery("UPDATE ".$db_prefix."users SET user_forum_datestamp = '".time()."' WHERE user_id = '".$userdata['user_id']."'");
+	// insert a new threads_read record for these threads, to indicate we haven't read them yet
+	while ($data = dbarray($result)) {
+		$result2 = dbquery("INSERT IGNORE INTO ".$db_prefix."threads_read (user_id, forum_id, thread_id, thread_last_read) VALUES ('".$userdata['user_id']."', '".$data['forum_id']."', '".$data['thread_id']."', '".$userdata['user_forum_datestamp']."')");
+	}	
+}
 
 // check for upgrades in progress.
 if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {

@@ -11,7 +11,7 @@
 +----------------------------------------------------*/
 
 // upgrade for revision
-$_revision = '1185';
+$_revision = '1191';
 
 if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
@@ -23,7 +23,7 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 $revisions[] = array('revision' => $_revision, 
 					'date' => mktime(18,00,0,1,8,2008), 
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
-					'description' => "Switched from post tracking to thread tracking for unread post status, to make the forums more performant and more scalable");
+					'description' => "Switched from post tracking to thread tracking for unread post status, to make the forums more performant and more scalable<br /><br /><b>Note: This can run for hours if you have millions of posts_unread records.</b>!!!");
 
 // array to store the commands of this update
 $commands = array();
@@ -31,5 +31,4 @@ $commands = array();
 // add the posts unread threshold value to the config table
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('unread_threshold', '90')");
 
-// database changes
 ?>
