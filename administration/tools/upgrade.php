@@ -48,7 +48,7 @@ function checkrights($right) {
 | main code                                          |
 +----------------------------------------------------*/
 
-define("PATH_ROOT", realpath(dirname(__FILE__)).'/');
+define("PATH_ROOT", realpath(dirname(__FILE__)).'/../../');
 define("PATH_ADMIN", PATH_ROOT."administration/");
 define("PATH_INCLUDES", PATH_ROOT."includes/");
 define("PATH_MODULES", PATH_ROOT."modules/");
