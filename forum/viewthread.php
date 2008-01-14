@@ -34,9 +34,6 @@ define('FULL_SCREEN', (iMEMBER && $userdata['user_forum_fullscreen']));
 // temp storage for template variables
 $variables = array();
 
-// define how many posts per page we want
-define('ITEMS_PER_PAGE', 20);
-
 // render_post defines
 define('SHOW_QUOTE_BUTTON', true);		// show the reply-using-a-quote button
 define('SHOW_REPLY_BUTTON', true);		// show the reply-using-a-blank-message button
@@ -222,7 +219,7 @@ if (iMEMBER) {
 //if a specific post is requested, find out on which page it is, and set rowstart accordingly
 if (isset($pid) && isNum($pid)) {
 	$reply_count = dbcount("(post_id)", "posts", "thread_id='".$tdata['thread_id']."' AND post_id<'".$pid."'");
-	$rowstart = ($reply_count - ($reply_count % ITEMS_PER_PAGE));
+	$rowstart = ($reply_count - ($reply_count % $settings['numofthreads']));
 }
 // initialise our rowstart pointer if still needed
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
@@ -231,13 +228,16 @@ $variables['rowstart'] = $rowstart;
 // check if there's a poll attached to this thread
 $variables['thread_has_poll'] = fpm_view();
 
+// last_post_datestamp, needed to update threads_read later
+$last_post_datestamp = 0;
+
 // get the posts for this page of the thread
 if ($rows != 0) {
 	$result = dbquery(
 		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status FROM ".$db_prefix."posts p
 		LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id
 		LEFT JOIN ".$db_prefix."users u2 ON p.post_edituser = u2.user_id AND post_edituser > '0'
-		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".ITEMS_PER_PAGE
+		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".$settings['numofthreads']
 	);
 	$variables['posts'] = array();
 	while ($data = dbarray($result)) {
@@ -265,11 +265,9 @@ if ($rows != 0) {
 		// check if this post is read or unread
 		$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read;
 
-		// if unread, remove the unread marker for this post
-		if ($data['unread']) {
-			$result2 = dbquery("DELETE FROM ".$db_prefix."posts_unread WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$data['thread_id']."' AND post_id = '".$data['post_id']."'");
-		}
-	
+		// update last_post_datestamp
+		$last_post_datestamp = max($data['post_datestamp'], $data['post_edittime'], $last_post_datestamp);
+
 		// check what options to show for this post
 		$data['user_can_edit'] = iMEMBER && $data['post_author'] != 0 && (iMOD || iSUPERADMIN || (!$tdata['thread_locked'] && $userdata['user_id'] == $data['post_author']));
 		$data['show_ip'] = (iMOD || iSUPERADMIN && ($data['post_ip'] != "0.0.0.0" && file_exists(PATH_THEME."images/ip.gif")));
@@ -379,8 +377,8 @@ if ($rows != 0) {
 }
 
 // update the threads_read record for this user and thread
-if (iMEMBER) {
-	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".time()."', thread_page = '".min($rowstart, $thread_page)."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."'");
+if (iMEMBER && $last_post_datestamp) {
+	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."', thread_page = '".min($rowstart, $thread_page)."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."'");
 }
 
 // generate a list of forums, for the forum switch dropdown

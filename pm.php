@@ -472,10 +472,10 @@ $variables['user_options'] = $user_options;
 // define how many messages per page we want
 switch ($variables['user_options']['pmconfig_view']) {
 	case "0":
-		define('ITEMS_PER_PAGE', 20);
+		define('ITEMS_PER_PAGE', $settings['numofthreads']);
 		break;
 	case "1":
-		define('ITEMS_PER_PAGE', 10);
+		define('ITEMS_PER_PAGE', intval($settings['numofthreads']/2));
 		break;
 }
 

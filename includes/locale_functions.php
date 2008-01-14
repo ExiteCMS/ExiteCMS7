@@ -61,7 +61,7 @@ if (!defined('LOCALESET')) define("LOCALESET", $settings['locale']."/");
 if (!isset($settings['country'])) $settings['country'] = "??";
 
 // get locales information, we need this in several places
-if (dbtable_exists($db_prefix."locale")) {
+if ($settings['revision'] > 1070) {
 	$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_name = '".$settings['locale']."'");
 	if (dbrows($result)) {
 		$data = dbarray($result);
@@ -70,6 +70,7 @@ if (dbtable_exists($db_prefix."locale")) {
 		if (isset($data['locale_locale'])) $settings['locales'] = $data['locale_locale'];
 	}
 }
+
 // if we couldn't find it, use some default values
 if (!isset($settings['locale_code'])) $settings['locale_code'] = "en";
 if (!isset($settings['charset'])) $settings['charset'] = "iso-8859-1";
@@ -99,7 +100,7 @@ function locale_load($locale_name) {
 	$locales_file = PATH_ROOT."files/locales/".$settings['locale_code'].".".$locale_name.".php";
 
 	// check if we need to recompile from the database
-	if (dbtable_exists($db_prefix."locales")) {
+	if ($settings['revision'] > 1070) {
 
 		// get the last update date from the locale strings table
 		$result = dbquery("SELECT MAX(locales_datestamp) as last_update FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = '".$locale_name."'");

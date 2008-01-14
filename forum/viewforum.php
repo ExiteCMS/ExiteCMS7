@@ -42,11 +42,8 @@ if (file_exists(PATH_MODULES."advertising/get_ad.php")) {
 	$variables['advert'] = "";
 }
 
-// define how many threads per page we want
-define('ITEMS_PER_PAGE', 20);
-
 // when is a folder hot?
-define('FOLDER_HOT', 20);
+define('FOLDER_HOT', $settings['folderhotlevel']);
 
 // get information about this forum
 $result = dbquery(
@@ -139,7 +136,7 @@ $result = dbquery(
 		WHERE t.forum_id = '".$forum_id."'
 		GROUP BY thread_id
 		ORDER BY thread_sticky DESC, thread_lastpost DESC
-		LIMIT ".$rowstart.", ".ITEMS_PER_PAGE
+		LIMIT ".$rowstart.", ".$settings['numofthreads']
 );
 $variables['threads'] = array();
 while ($data = dbarray($result)) {
@@ -178,7 +175,7 @@ while ($data = dbarray($result)) {
 		$data['first_unread_post'] = 0;
 	}
 	// number of pages of posts in this thread
-	$data['thread_pages'] = ceil($data['thread_replies'] / ITEMS_PER_PAGE) + 1;
+	$data['thread_pages'] = ceil($data['thread_replies'] / $settings['numofthreads']) + 1;
 	// correct the number of replies
 	$data['thread_replies'] = max(0, $data['thread_replies'] - 1);
 	// check if there is a poll attached to this thread

@@ -19,9 +19,6 @@ require_once PATH_ROOT."/includes/theme_functions.php";
 if (!isset($cat_id)) $cat_id = 0;
 if (isset($cat_id) && !isNum($cat_id)) fallback("index.php");
 
-// number of items per page
-define('ITEMS_PER_PAGE', 15);
-
 // load this module's locales
 locale_load("main.faq");
 
@@ -46,16 +43,14 @@ if (!$cat_id) {
 	$variables['rows'] = $rows;
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 	$variables['rowstart'] = $rowstart;
-	$variables['items_per_page'] = ITEMS_PER_PAGE;
+	$variables['items_per_page'] = $settings['numofthreads'];
 	if ($rows != 0) {
 		$variables['faqs'] = array();
-		$result = dbquery("SELECT * FROM ".$db_prefix."faqs WHERE faq_cat_id='$cat_id' ORDER BY faq_id LIMIT $rowstart,".ITEMS_PER_PAGE);
+		$result = dbquery("SELECT * FROM ".$db_prefix."faqs WHERE faq_cat_id='$cat_id' ORDER BY faq_id LIMIT $rowstart,".$settings['numofthreads']);
 		while ($data = dbarray($result)) {
 			$data['faq_answer'] = nl2br(stripslashes($data['faq_answer']));
 			$variables['faqs'][] = $data;
-//			echo "<b>".$data['faq_question']."</b><br>\n".nl2br(stripslashes($data['faq_answer']));
 		}
-//		if ($rows != 0) echo "<div align='center' style='margin-top:5px;'>".makePageNav($rowstart,15,$rows,3,FUSION_SELF."?cat_id=$cat_id&amp;")."\n</div>\n";
 	}
 }
 

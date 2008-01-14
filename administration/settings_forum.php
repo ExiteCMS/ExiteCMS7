@@ -30,7 +30,6 @@ if (!checkrights("S3") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['prune'])) require_once PATH_ADMIN."forums_prune.php";
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['numofthreads']) ? $_POST['numofthreads'] : "5")."' WHERE cfg_name = 'numofthreads'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['attachments']) ? $_POST['attachments'] : "0")."' WHERE cfg_name = 'attachments'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['attachmax']) ? $_POST['attachmax'] : "150000")."' WHERE cfg_name = 'attachmax'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_max_w']) ? $_POST['forum_max_w'] : "400")."' WHERE cfg_name = 'forum_max_w'");

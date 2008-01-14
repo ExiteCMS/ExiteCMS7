@@ -838,8 +838,8 @@ function install_language_pack($step) {
 	$localestrings['501'] = "Latest active forum threads panel:";
 	$localestrings['502'] = "On";
 	$localestrings['503'] = "Off";
-	$localestrings['505'] = "Number of forum threads to show:";
-	$localestrings['506'] = "(Latest active forum threads panel)";
+	$localestrings['505'] = "Number of lines in table views:";
+	$localestrings['506'] = "(affects most panels with tables)";
 	$localestrings['507'] = "Attachments enabled?";
 	$localestrings['508'] = "Yes";
 	$localestrings['509'] = "No";
@@ -858,6 +858,7 @@ function install_language_pack($step) {
 	$localestrings['522'] = "Larger images will be converted to thumbnails";
 	$localestrings['523'] = "Track thread unread status for maximum:";
 	$localestrings['524'] = "(lots of posts = less days)";
+	$localestrings['525'] = "Number of new posts to mark a thread as 'Hot':";
 	$localestrings['550'] = "Registration";
 	$localestrings['551'] = "Enable registration system?";
 	$localestrings['552'] = "Use email verification for registration?";
@@ -907,6 +908,8 @@ function install_language_pack($step) {
 	$localestrings['668'] = "Use external download statistics:";
 	$localestrings['669'] = "Maintenance mode background color:";
 	$localestrings['670'] = "If yes, an external program has to update the download counters.";
+	$localestrings['671'] = "Activate SQL query debugging for:";
+	$localestrings['672'] = "disabled";
 	$localestrings['700'] = "Private Messages";
 	$localestrings['701'] = "Inbox message limit:";
 	$localestrings['702'] = "Outbox message limit:";

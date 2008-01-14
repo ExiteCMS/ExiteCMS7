@@ -95,20 +95,10 @@ if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the docume
 require_once PATH_INCLUDES."db_functions.php";
 
 // fetch the CMSconfig from the database and store them in the $settings variable
-if (dbtable_exists($db_prefix."CMSconfig")) {
-	// get the settings from the CMSconfig table (introduced in revision 909)
-	$settings = array();
-	$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
-	while ($data = dbarray($result)) {
-		$settings[$data['cfg_name']] = $data['cfg_value'];
-	}
-	// and drop the settings table if it exists
-	if (dbtable_exists($db_prefix."settings")) {
-		$result = dbquery("DROP TABLE ".$db_prefix."settings");
-	}
-} else {
-	// use the settings table
-	$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+$settings = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+while ($data = dbarray($result)) {
+	$settings[$data['cfg_name']] = $data['cfg_value'];
 }
 
 // define the default sitebanner
@@ -180,6 +170,11 @@ define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
+
+// activate query log debugging if set
+if ($settings['debug_querylog'] != "") {
+	$_db_log = checkgroup($settings['debug_querylog']);
+}
 
 // update the threads_read table for the current user
 if (iMEMBER) {

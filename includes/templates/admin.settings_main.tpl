@@ -149,6 +149,20 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='60%' class='tbl'>
+				{$locale.505}
+				<br />
+				<span class='small2'>{$locale.506}</span>
+			</td>
+			<td width='40%' class='tbl'>
+				<select name='numofthreads' class='textbox'>
+					{section name=lines start=5 loop=55 step=5}
+						<option{if $settings2.numofthreads == $smarty.section.lines.index} selected="selected"{/if}>{$smarty.section.lines.index}</option>
+					{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.426}
 			</td>

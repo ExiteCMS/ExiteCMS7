@@ -173,6 +173,24 @@
 			</td>
 		</tr>
 		<tr>
+			<td class='tbl' colspan='2'>
+				<hr />
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' width='50%'>
+				{$locale.671}
+			</td>
+			<td class='tbl' width='50%'>
+				<select name='debug_querylog' class='textbox'>
+				<option value=''{if $settings2.debug_querylog == ""} selected="selected"{/if}>-{$locale.672}-</option>
+				{section name=id loop=$usergroups}
+					<option value='{$usergroups[id].0}'{if $usergroups[id].0 == $settings2.debug_querylog} selected="selected"{/if}>{$usergroups[id].1}</option>
+				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='submit' name='savesettings' value='{$locale.750}' class='button' />

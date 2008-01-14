@@ -34,8 +34,6 @@ if (!isset($sortby) || strlen($sortby) != 1) $sortby = "all";
 if (!isset($step)) $step = "";
 if (!isset($user_id)) $user_id= 0;
 
-define('ITEMS_PER_PAGE', 20);
-
 if (isset($_POST['cancel_delete'])) fallback(FUSION_SELF.$aidlink."&sortby=$sortby&rowstart=$rowstart");
 
 if ($step == "add") {
@@ -162,7 +160,7 @@ if (iMEMBER) {
 	// get the list of members
 	$variables['members'] = array();
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
-	$result = dbquery("SELECT * FROM ".$db_prefix."users".($orderby==""?"":" WHERE").$orderby." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".ITEMS_PER_PAGE);
+	$result = dbquery("SELECT * FROM ".$db_prefix."users".($orderby==""?"":" WHERE").$orderby." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".$settings['numofthreads']);
 	$rows = dbrows($result);
 	$variables['members'] = array();
 	if ($rows != 0) {
@@ -207,7 +205,7 @@ if (iMEMBER) {
 	$variables['sortby'] = $sortby;
 	$variables['rows'] = dbcount("(*)", "users", $orderby);
 	$variables['rowstart'] = $rowstart;
-	$variables['items_per_page'] = ITEMS_PER_PAGE;
+	$variables['items_per_page'] = $settings['numofthreads'];
 	$variables['pagenav_url'] = FUSION_SELF.$aidlink."&amp;sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
 }
 

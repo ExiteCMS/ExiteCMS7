@@ -19,7 +19,7 @@ if (!FUSION_QUERY || !isset($type)) fallback("index.php");
 locale_load("main.feeds");
 
 // define how many items we want per RSS feed
-define('ITEMS_PER_FEED', 50);
+define('ITEMS_PER_FEED', $settings['numofthreads']*2);
 
 // check if authentication is valid. If not, reset it
 if (isset($_SERVER['PHP_AUTH_USER'])) {

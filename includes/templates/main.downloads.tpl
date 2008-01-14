@@ -125,6 +125,9 @@
 {else}
 	</table>
 	{include file="_closetable.tpl"}
+	{if $download_count > $download_limit}
+		{makepagenav start=$rowstart count=$download_limit total=$download_count range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?cat_id="|cat:$parent.download_cat_id|cat:"&amp;"}
+	{/if}
 {/if}
 {sectionelse}
 	{if !$have_cats}

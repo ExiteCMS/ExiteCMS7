@@ -58,8 +58,7 @@ switch ($settings['download_localisation']) {
 // store the number of columns in the panel
 $variables['columns'] = $settings['download_columns'];
 
-define('DOWNLOAD_LIMIT', 10);
-$variables['download__limit'] = DOWNLOAD_LIMIT;
+$variables['download_limit'] = intval($settings['numofthreads']/3);
 
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 $variables['rowstart'] = $rowstart;
@@ -129,7 +128,7 @@ if ($variables['cats_count'] != 0) {
 if (isset($cat_id)) {
 	if (checkgroup($variables['parent']['download_cat_access'])) {
 		$variables['download_count'] = dbcount("(*)", "downloads", "download_cat='$cat_id'");
-		$result = dbquery("SELECT * FROM ".$db_prefix."downloads WHERE download_cat='$cat_id' ORDER BY ".$variables['parent']['download_cat_sorting']." LIMIT $rowstart,".DOWNLOAD_LIMIT);
+		$result = dbquery("SELECT * FROM ".$db_prefix."downloads WHERE download_cat='$cat_id' ORDER BY ".$variables['parent']['download_cat_sorting']." LIMIT $rowstart,".$variables['download_limit']);
 		$variables['downloads'] = array();
 		while ($data = dbarray($result)) {
 			$data['now'] = showdate("", time());

@@ -42,7 +42,8 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_flags']) ? $_POST['forum_flags'] : "0")."' WHERE cfg_name = 'forum_flags'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['maintenance']) ? $_POST['maintenance'] : "0")."' WHERE cfg_name = 'maintenance'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".addslash(descript($_POST['maintenance_message']))."' WHERE cfg_name = 'maintenance_message'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['maintenance_color']."' WHERE cfg_name = 'maintenance_color'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['maintenance_color'])."' WHERE cfg_name = 'maintenance_color'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['debug_querylog'])."' WHERE cfg_name = 'debug_querylog'");
 }
 
 $settings2 = array();
@@ -52,6 +53,8 @@ while ($data = dbarray($result)) {
 }
 $settings2['maintenance_message'] = stripslashes($settings2['maintenance_message']);
 $variables['settings2'] = $settings2;
+
+$variables['usergroups'] = getusergroups(true);
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.settings_misc', 'template' => 'admin.settings_misc.tpl', 'locale' => "admin.settings");

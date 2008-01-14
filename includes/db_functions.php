@@ -21,11 +21,11 @@ if ($db_host != $user_db_host && $db_name != $user_db_name) {
 	$_user_db_link = dbconnect($user_db_host, $user_db_user, $user_db_pass, $user_db_name);
 }
 
-// MySQL global variables
-$_db_last_function = "";
+// database global variables
 $_db_debug = false;
-$_db_log = false; //$_SERVER['SERVER_NAME'] != "www.pli-images.org";
+$_db_log = false;
 $_db_logs = array();
+$_db_last_function = "";
 
 // Check if this is a query on user tables
 function ModUserTables(&$query) {
@@ -38,9 +38,9 @@ function ModUserTables(&$query) {
 	
 	// check if this is a query on a user table
 	foreach($usertables as $usertable) {
-		if(strpos($query, $db_prefix.$usertable)) {
+		if(strpos($query, " ".$db_prefix.$usertable)) {
 			$isUserQuery = true;
-			$query = str_replace($db_prefix.$usertable, $user_db_name.".".$user_db_prefix.$usertable, $query);
+			$query = str_replace(" ".$db_prefix.$usertable, " ".$user_db_name.".".$user_db_prefix.$usertable, $query);
 		}
 	}
 	// prefix all other tables with the database name as well

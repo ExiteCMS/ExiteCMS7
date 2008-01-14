@@ -15,24 +15,9 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
-{include file="admin.settings_links.tpl}
+{include file="admin.settings_links.tpl"}
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='500'>
-		<tr>
-			<td width='60%' class='tbl'>
-				{$locale.505}
-				<br />
-				<span class='small2'>{$locale.506}</span>
-			</td>
-			<td width='40%' class='tbl'>
-				<select name='numofthreads' class='textbox'>
-					<option{if $settings2.numofthreads == 5} selected="selected"{/if}>5</option>
-					<option{if $settings2.numofthreads == 10} selected="selected"{/if}>10</option>
-					<option{if $settings2.numofthreads == 15} selected="selected"{/if}>15</option>
-					<option{if $settings2.numofthreads == 20} selected="selected"{/if}>20</option>
-				</select>
-			</td>
-		</tr>
+<table align='center' cellpadding='0' cellspacing='0' width='500'>
 		<tr>
 			<td width='60%' class='tbl'>
 				{$locale.507}
@@ -98,6 +83,18 @@
 				{section name=days start=0 loop=361 step=30}
 				<option value='{$smarty.section.days.index}' {if $smarty.section.days.index == $settings2.unread_threshold|default:0}selected='selected'{/if}>{if $smarty.section.days.index == 0}{$locale.714}{else}{$smarty.section.days.index} {$locale.518}{/if}</option>
 				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='60%' class='tbl'>
+				{$locale.525}
+			</td>
+			<td width='40%' class='tbl'>
+				<select name='folderhotlevel' class='textbox'>
+					{section name=lines start=5 loop=55 step=5}
+						<option{if $settings2.folderhotlevel == $smarty.section.lines.index} selected="selected"{/if}>{$smarty.section.lines.index}</option>
+					{/section}
 				</select>
 			</td>
 		</tr>

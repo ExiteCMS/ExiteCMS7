@@ -28,8 +28,6 @@ require_once PATH_INCLUDES."geoip_include.php";
 if (!isset($country) || strlen($country) != 2) $country = "";
 if (!isset($sortby) || strlen($sortby) != 1) $sortby = "all";
 
-define('ITEMS_PER_PAGE', 20);
-
 // get the name of the country requested
 $variables['country_name'] = GeoIP_Code2Name($country);
 $variables['country'] = $country;
@@ -52,7 +50,7 @@ if (iMEMBER) {
 	// get the list of members
 	$variables['members'] = array();
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
-	$result = dbquery("SELECT * FROM ".$db_prefix."users ".($filter==""?"":("WHERE ".$filter))." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".ITEMS_PER_PAGE);
+	$result = dbquery("SELECT * FROM ".$db_prefix."users ".($filter==""?"":("WHERE ".$filter))." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".$settings['numofthreads']);
 	$rows = dbrows($result);
 	$variables['members'] = array();
 	if ($rows != 0) {
@@ -93,7 +91,7 @@ if (iMEMBER) {
 	$variables['sortby'] = $sortby;
 	$variables['rows'] = dbcount("(*)", "users", $filter);
 	$variables['rowstart'] = $rowstart;
-	$variables['items_per_page'] = ITEMS_PER_PAGE;
+	$variables['items_per_page'] = $settings['numofthreads'];
 	$variables['pagenav_url'] = FUSION_SELF."?sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
 }
 
