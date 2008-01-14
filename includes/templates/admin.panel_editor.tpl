@@ -145,7 +145,7 @@
 				<br />
 				{if $panel_id != 0}
 					{if $panel_type == "dynamic"}
-						<input type='hidden' name='panel_filename' value='none'>
+						<input type='hidden' name='panel_filename' value=''>
 					{/if}
 				{/if}
 				{if !$smarty.const.PANEL_SIDE_MOVE}
