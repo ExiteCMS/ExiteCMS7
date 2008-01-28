@@ -35,6 +35,12 @@ hr 		{ height:1px;color:#ccc; }
 	<span class='small'>{$locale.400}{$data.user_name}{$locale.401}{$data.article_datestamp|date_format:"longdate"}</span>
 	<hr />
 	{$data.article}
+{elseif $type == "B"}
+	<b>{$data.blog_subject}</b>
+	<br />
+	<span class='small'>{$locale.400}{$data.user_name}{$locale.401}{$data.blog_datestamp|date_format:"longdate"}</span>
+	<hr />
+	{$data.blog_text}
 {elseif $type == "N"}
 	<b>{$data.news_subject}</b>
 	<br />

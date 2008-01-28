@@ -35,6 +35,17 @@ if ($type == "A") {
 		$data['article'] = str_replace("<--PAGEBREAK-->", "", stripslashes($data['article_article']));
 		if ($data['article_breaks'] == "y") $data['article'] = nl2br($data['article']);
 	}
+} elseif ($type == "B") {
+	$res = dbquery(
+		"SELECT b.*, u.user_name FROM ".$db_prefix."blogs b
+		LEFT JOIN ".$db_prefix."users u ON b.blog_author=u.user_id
+		WHERE blog_id='$item_id'"
+	);
+	if (dbrows($res) != 0) {
+		$data = dbarray($res);
+		$data['blog_text'] = stripslashes($data['blog_text']);
+		if ($data['blog_breaks'] == "y") $data['blog_text'] = nl2br($data['blog_text']);
+	}
 } elseif ($type == "N") {
 	$res = dbquery(
 		"SELECT tn.*, user_id, user_name FROM ".$db_prefix."news tn
