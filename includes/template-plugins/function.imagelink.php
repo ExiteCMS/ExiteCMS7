@@ -16,6 +16,7 @@
  *         - link: URL to link to
  *         - title: optional title text
  *         - alt: optional alternative name
+ *         - style: optional image style
  *         - onclick: optional javascript to execute when clicked
  *         - new: if "yes", URL opens in new window
  *         - script: if "yes", URL is javascript code
@@ -33,43 +34,52 @@
 function smarty_function_imagelink($params, &$smarty)
 {
 	// parameter validation and initialisation
-    if (!isset($params['image'])) {
-        $smarty->trigger_error("buttonlink: missing 'image' parameter");
+	if (!isset($params['image'])) {
+		$smarty->trigger_error("buttonlink: missing 'image' parameter");
 	} else {
 		$image = $params['image'];
 	}
-    if (!isset($params['link'])) {
-        $smarty->trigger_error("buttonlink: missing 'link' parameter");
+	if (!isset($params['link'])) {
+		$smarty->trigger_error("buttonlink: missing 'link' parameter");
 	} else {
 		$link = $params['link'];
 	}
-    if (!isset($params['title'])) {
-        $title = false;
-	} else {
-		$title = $params['title'];
-	}
-    if (!isset($params['alt'])) {
-        $alt = false;
-	} else {
-		$alt = $params['alt'];
-	}
-    if (!isset($params['onclick'])) {
-        $onclick = false;
-	} else {
-		$onclick = $params['onclick'];
-	}
-    if (!isset($params['new'])) {
-        $new = false;
-	} else {
-		$new = strtolower($params['new']) == "yes";
-	}
-    if (!isset($params['script'])) {
-        $script = false;
+	if (!isset($params['script'])) {
+		$script = false;
 	} else {
 		$script = strtolower($params['script']) == "yes";
 	}
+	if (!isset($params['title'])) {
+		$title = false;
+	} else {
+		$title = $params['title'];
+	}
+	if (!isset($params['alt'])) {
+		$alt = false;
+	} else {
+		$alt = $params['alt'];
+	}
+	if (!isset($params['style'])) {
+		$style = false;
+	} else {
+		$style = $params['style'];
+	}
+	if (!isset($params['onclick'])) {
+		if ($script) {
+			$onclick = $link;
+		} else {
+			$onclick = false;
+		}
+	} else {
+		$onclick = $params['onclick'];
+	}
+	if (!isset($params['new'])) {
+		$new = false;
+	} else {
+		$new = strtolower($params['new']) == "yes";
+	}
 
-	return "<a href='".($script ? "#" : $link )."' ".($new ? "target='_blank'" : "" )." ".($onclick ? ("onclick='".$onclick."'") : "" )."><img src='".THEME."images/".$image."' ".($alt ? ("alt='".$alt."'") : "")." ".($title ? ("title='".$title."'") : "")." /></a>";
+	return "<a href='".($script ? "#" : $link )."' ".($new ? "target='_blank'" : "" )." ".($onclick ? ("onclick='".$onclick."'") : "" )."><img src='".THEME."images/".$image."' ".($alt ? ("alt='".$alt."'") : "")." ".($title ? ("title='".$title."'") : "")." ".($style ? ("style='".$style."'") : "")." /></a>";
 }
 
 /* vim: set expandtab: */
