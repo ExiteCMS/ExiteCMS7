@@ -45,24 +45,13 @@ $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##threads_r
 $commands[] = array('type' => 'function', 'value' => "make_threads_read");
 
 // drop the posts_unread table
-//$commands[] = array('type' => 'db', 'value' => "DROP TABLE ##PREFIX##posts_unread");
-
-function checkforumaccess($forum, $userlevel, $usergroups) {
-
-	if ($userlevel == 103 && $forum != "100") { return true; }
-	elseif ($userlevel == 102 && ($forum == "0" || $forum == "101" || $forum == "102")) { return true; }
-	elseif ($forum == "0" || $forum == "101") { return true;
-	} else {
-		$groups = explode(".", substr($usergroups,1));
-		return in_array($forum, $groups);
-	}
-}
+$commands[] = array('type' => 'db', 'value' => "DROP TABLE ##PREFIX##posts_unread");
 
 function make_threads_read() {
 	global $db_prefix;
 
 	// give this function some memory and execution time
-	ini_set('memory_limit', '64M');
+	ini_set('memory_limit', '32M');
 	ini_set('max_execution_time', '0');
 
 	$threshold = time() - 60*60*24*90; // 90 days
@@ -83,7 +72,7 @@ function make_threads_read() {
 	while ($tdata = dbarray($tresult)) {
 		$threads[] = $tdata;
 	}
-	
+
 	// now process all threads...
 	foreach ($threads as $tdata) {
 		// only process if the last post of this thread is after the threshold
@@ -91,9 +80,22 @@ function make_threads_read() {
 			// loop through the users
 			foreach ($users as $udata) {
 				// check if this user has access to this forum
-				if (checkforumaccess($tdata['forum_access'], $udata['user_level'], $udata['user_groups'])) {
+				$access = false;
+				if ($udata['user_level'] == 103 && $tdata['forum_access'] != "100") { 
+					$access = true; 
+				} elseif ($udata['user_level'] == 102 && ($tdata['forum_access'] == "0" || $tdata['forum_access'] == "101" || $tdata['forum_access'] == "102")) { 
+					$access = true; 
+				} elseif ($tdata['forum_access'] == "0" || $tdata['forum_access'] == "101") { 
+					$access = true;
+				} else {
+					$groups = explode(".", substr($udata['user_groups'],1));
+					$access = in_array($tdata['forum_access'], $groups);
+				}
+				if ($access == true) {
 					// for every user_id / thread_id combination, check the posts_unread for the oldest unread record
-					$pdata = dbarray(dbquery("SELECT MIN(post_time) AS post_time FROM ".$db_prefix."posts_unread WHERE forum_id = '".$tdata['forum_id']."' AND thread_id = '".$tdata['thread_id']."' AND user_id = '".$udata['user_id']."'"));
+					$result = mysql_query("SELECT MIN(post_time) AS post_time FROM ".$db_prefix."posts_unread WHERE forum_id = '".$tdata['forum_id']."' AND thread_id = '".$tdata['thread_id']."' AND user_id = '".$udata['user_id']."'");
+					$pdata = mysql_fetch_assoc($result);
+					$lastpost = 0;
 					if (is_null($pdata['post_time'])) {
 						// mark the thread as completely read
 						$lastpost = $tdata['thread_lastpost'];
@@ -101,11 +103,12 @@ function make_threads_read() {
 						// an unread record found, mark the thread as read up until this post
 						$lastpost = $pdata['post_time'] - 1;
 					}
-					if ($lastpost > $threshold) $result = dbquery("INSERT INTO ".$db_prefix."threads_read (user_id, forum_id, thread_id, thread_last_read) VALUES ('".$udata['user_id']."', '".$tdata['forum_id']."', '".$tdata['thread_id']."', '".$lastpost."')");
+					if ($lastpost > $threshold) {
+						$result = mysql_query("INSERT INTO ".$db_prefix."threads_read (user_id, forum_id, thread_id, thread_last_read) VALUES ('".$udata['user_id']."', '".$tdata['forum_id']."', '".$tdata['thread_id']."', '".$lastpost."')");
+					}
 				}
 			}
 		}
 	}
-
 }
 ?>

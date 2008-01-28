@@ -23,7 +23,7 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 $revisions[] = array('revision' => $_revision, 
 					'date' => mktime(18,00,0,1,8,2008), 
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
-					'description' => "Switched from post tracking to thread tracking for unread post status, to make the forums more performant and more scalable<br /><br /><b>Note: This can run for hours if you have millions of posts_unread records.</b>!!!");
+					'description' => "Added a config flag to determine how long we keep unread posts information");
 
 // array to store the commands of this update
 $commands = array();

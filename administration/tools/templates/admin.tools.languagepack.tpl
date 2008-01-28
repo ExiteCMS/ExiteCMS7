@@ -30,7 +30,7 @@
 			<tr>
 				<td class='tbl' align='center'>
 					<br />
-					<b>{ssprintf format=$locale.301 var1=$smarty.const.LP_LANGUAGE var2=$smarty.const.LP_LOCALE var3=$smarty.const.LP_VERSION}</b>
+					<b>{ssprintf format=$locale.301 var1=$smarty.const.LP_LANGUAGE var2=$smarty.const.LP_LOCALE var3=$smarty.const.LP_VERSION var4=$smarty.const.LP_DATE|date_format:"%Y%m%d-%$"}</b>
 				</td>
 			</tr>
 			{if $smarty.const.LP_VERSION != $settings.version}

@@ -33,6 +33,7 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['sitename'])."' WHERE cfg_name = 'sitename'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['siteurl']).(strrchr($_POST['siteurl'],"/") != "/" ? "/" : "")."' WHERE cfg_name = 'siteurl'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['siteemail'])."' WHERE cfg_name = 'siteemail'");
+	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['hide_webmaster']) ? $_POST['hide_webmaster'] : "0")."' WHERE cfg_name = 'hide_webmaster'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['newsletter_email'])."' WHERE cfg_name = 'newsletter_email'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['username'])."' WHERE cfg_name = 'siteusername'");
 	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".addslashes(addslashes($siteintro))."' WHERE cfg_name = 'siteintro'");

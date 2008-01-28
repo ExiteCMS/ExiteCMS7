@@ -45,6 +45,17 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='60%' class='tbl'>
+				{$locale.526}
+			</td>
+			<td width='40%' class='tbl'>
+				<select name='hide_webmaster' class='textbox'>
+					<option value='1'{if $settings2.hide_webmaster == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.hide_webmaster == "0"} selected="selected"{/if}>{$locale.509}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.419}
 			</td>

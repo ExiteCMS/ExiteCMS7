@@ -140,6 +140,7 @@ if (UPGRADES) {
 	$results = array();
 	// loop through the available revision updates
 	foreach ($upgrades as $revfile) {
+#		display("\n".$revfile);
 		// init the commands array before loading the upgrade code
 		$commands = array();
 		// load the upgrade code
@@ -153,6 +154,7 @@ if (UPGRADES) {
 				case "db":
 					// put the correct prefix in place
 					$dbcmd = str_replace('##PREFIX##', $db_prefix, $cmd['value']);
+#					display('cmd -> '.$dbcmd);
 					// execute the command
 					$result = dbquery($dbcmd, false);
 					if (!$result) {
@@ -165,6 +167,7 @@ if (UPGRADES) {
 					$errtype = "Function";
 					$function = $cmd['value'];
 					if (function_exists($function)) {
+#						display('function -> '.$function.'()');
 						$result = $function();
 						if ($result) $errors[] = $result;
 					} else {
@@ -179,15 +182,12 @@ if (UPGRADES) {
 		// if no errors occurred, update the revision number
 		if (count($errors) == 0) {
 			$new_revision = $_revision;
+			$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
 		} else {
 			// errors in this upgrade. Break the process loop
 			$found_error = true;
 			break;
 		}
-	}
-	// if (some) upgrades succeeded, update the revision number
-	if ($settings['revision'] != $new_revision) {
-		$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
 	}
 } else {
 	// nothing to upgrade

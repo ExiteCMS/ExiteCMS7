@@ -247,7 +247,7 @@ function locale_load($locale_name) {
 				$settings['locale_code'] = $current_locale_code;
 				$settings['locale'] = $current_locale;
 			} else {
-				trigger_error("ExiteCMS locales error: unable to locate a locale for ".$locale_name."!", E_USER_ERROR);
+				trigger_error("ExiteCMS locales error: unable to locate a locale for ".$locale_name."!", E_USER_NOTICE);
 			}
 		}
 	}

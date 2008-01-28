@@ -55,6 +55,11 @@ $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##articles A
 // and initialise the field with the system locale
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##articles SET article_locale = '".$settings['locale_code']."'");
 
+// add the article_cats_locale field to the articles_cats table
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##article_cats ADD article_cat_locale VARCHAR(8) NOT NULL AFTER article_cat_name");
+// and initialise the field with the system locale
+$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##articles SET article_cat_locale = '".$settings['locale_code']."'");
+
 // get the 404 error custom page, move it to the locales table
 $commands[] = array('type' => 'function', 'value' => "move_404_page");
 // and drop the page_seo_url field

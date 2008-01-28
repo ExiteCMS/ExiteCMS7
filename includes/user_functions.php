@@ -188,7 +188,7 @@ if (isset($userdata) && is_array($userdata)) {
 
 // if logged in, update the users lastvisit time and country
 if (iMEMBER) {
-	$cc_code = $userdata['user_id'] == 1 ? $settings['country'] : GeoIP_IP2Code(USER_IP, true);
+	$cc_code = (iSUPERADMIN && $settings['hide_webmaster']) ? $settings['country'] : GeoIP_IP2Code(USER_IP, true);
 	$result = dbquery("UPDATE ".$db_prefix."users SET user_lastvisit='".time()."', user_ip='".USER_IP."', user_cc_code='".$cc_code."' WHERE user_id='".$userdata['user_id']."'");
 }
 
@@ -296,7 +296,7 @@ function getgroupname($group, $visible="", $type='n') {
 			}
 			return "";
 		} else {
-			return "N/A";
+			return false;
 		}
 	}
 }
