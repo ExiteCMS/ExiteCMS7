@@ -73,6 +73,9 @@ function smarty_modifier_date_format($string, $format = '%b %e, %Y', $default_da
         }
         $format = str_replace($_win_from, $_win_to, $format);
     }
+    // check for custom %$, and replace it by swatch time
+    $format = str_replace("%$", date("B", $timestamp), $format);
+
     return strftime($format, $timestamp);
 }
 
