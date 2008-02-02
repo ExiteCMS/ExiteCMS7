@@ -352,6 +352,7 @@ function load_panels($column) {
 			if (checkgroup($p_data['panel_access'])) {
 				// initialize the panel array
 				$_panel = array();
+				$_panel['name'] = "";
 				$_panel['id'] = $p_data['panel_id'];
 				$_panel['type'] = $column;
 				$_panel['title'] = $p_data['panel_name'];
@@ -374,8 +375,11 @@ function load_panels($column) {
 						break;
 				}
 				$_panel['state'] = $p_data['panel_state'];
-				// check if there's a cookie, if so, restore the previous panel state
-				if (isset($_COOKIE['box_modules_'.$p_data['panel_filename']])) $_panel['state'] = $_COOKIE['box_modules_'.$p_data['panel_filename']];
+				// check if there's a session variable, if so, restore the previous panel state
+				$session_var = "box_".str_replace(".", "_", $_panel['name']);
+				if (isset($_SESSION[$session_var])) {
+					$_panel['state'] = $_SESSION[$session_var];
+				}
 				// if this panel is not defined as hidden, add it to the template array
 				if ($_panel['state'] < 2) {
 					$template_panels[] = $_panel;

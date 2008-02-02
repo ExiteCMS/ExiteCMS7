@@ -14,12 +14,6 @@
 +----------------------------------------------------*/
 if (eregi("session_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-// **TODO** need to move these to CMSconfig!
-$settings['session_gc_maxlifetime'] = 60*24*30;		// 30 days!
-$settings['session_name'] = "ExiteCMSid";
-$settings['session_gc_probability'] = 1;			// 1 in 100, or 1% probability
-$settings['session_gc_divisor'] = 100;
-
 // update the PHP session settings with the info from CMSconfig
 ini_set('session.name', $settings['session_name']);
 ini_set('session.gc_maxlifetime', $settings['session_gc_maxlifetime']);
@@ -36,14 +30,14 @@ session_set_cookie_params($settings['session_gc_maxlifetime'], "/", "", false);
 // start the session
 session_start();
 
-// if the user changed the state of a panel, a cookie has been created to record the state
-// get these cookies, and store them in the users session record to be reused
+// if the user changed the state of a panel, a cookie has been created to record the new state
+// get these cookies, and store them in the users session record to be reused, and delete the cookie
 foreach($_COOKIE as $cookiename => $cookievalue) {
 	if (substr($cookiename,0,4) == "box_" && isNum($cookievalue) && ($cookievalue == 0 || $cookievalue == 1)) {
 		// store the value
 		$_SESSION[$cookiename] = $cookievalue;
 		// and delete the cookie
-		setcookie ($cookiename, "", time() - 3600);
+		setcookie ($cookiename, "", 1);
 	}
 }
 
@@ -125,7 +119,7 @@ function _read_session($session_id) {
 // custom write() function
 function _write_session($session_id,$session_data) {
 
-	global $db_prefix;
+	global $db_prefix, $settings, $userdata;
 
 	// only if any session data is passed
 	if (!$session_data) {
@@ -134,8 +128,8 @@ function _write_session($session_id,$session_data) {
 		// define the expiration time of this session
 		$session_expire = time() + $settings['session_gc_maxlifetime'];
 		// insert or update the session information
-		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_data) 
-						VALUES ('$session_id', '".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."', '".time()."', '$session_expire', '".USER_IP."', '$session_data')
+		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data) 
+						VALUES ('$session_id', '".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."', '".time()."', '$session_expire', '".USER_IP."', '".(iMEMBER ? $userdata['user_id'] : 0)."', '$session_data')
 						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_expire = '$session_expire'"
 					);
 		return true;

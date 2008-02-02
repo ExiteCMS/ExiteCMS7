@@ -64,6 +64,7 @@ if (isset($_POST['login'])) {
 			// set the 'remember me' status value 
 			$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "1" : "0";
 			$_SESSION['userinfo'] = $data['user_id'].".".$user_pass;
+			$_SESSION['login_expire'] = isset($_POST['remember_me']) ? (time() + 60*60*24*30) : (time() + 60*60);
 			redirect(BASEDIR."setuser.php?user=".$data['user_name'], "script");
 			exit;
 		} elseif ($data['user_status'] == 1) {
@@ -77,6 +78,14 @@ if (isset($_POST['login'])) {
 		redirect(BASEDIR."setuser.php?error=3");
 		exit;
 	}
+}
+
+// login session expired?
+if (!empty($_SESSION['login_expire']) && $_SESSION['login_expire'] < time()) {
+	// clear the login info from the session
+	unset($_SESSION['user']);
+	unset($_SESSION['userinfo']);
+	unset($_SESSION['login_expire']);
 }
 
 // Are we logged in?
@@ -114,6 +123,7 @@ if (isset($_SESSION['userinfo'])) {
 			// make sure the user info is erased from the session
 			unset($_SESSION['user']);
 			unset($_SESSION['userinfo']);
+			unset($_SESSION['login_expire']);
 			unset($_SESSION['lastvisit']);
 			redirect(BASEDIR."index.php", "script");
 			exit;
@@ -123,6 +133,7 @@ if (isset($_SESSION['userinfo'])) {
 		// make sure the user info is erased from the session
 		unset($_SESSION['user']);
 		unset($_SESSION['userinfo']);
+		unset($_SESSION['login_expire']);
 		unset($_SESSION['lastvisit']);
 		redirect(BASEDIR."index.php", "script");
 		exit;

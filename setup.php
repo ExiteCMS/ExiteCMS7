@@ -288,85 +288,13 @@ switch($step) {
 
 		if ($error == "") {
 
-			// add records to the CMSconfig table
-			$commands = array();		
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('sitename', 'ExiteCMS Powered Website')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('siteurl', '/')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('siteemail', 'webmaster@yourdomain.com')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('siteusername', '$username')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('siteintro', '<center>ExiteCMS v7.0 &copy;2007 Exite BV.<br />See http://exitecms.exite.eu for more information</center>')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('description', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('keywords', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('footer', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('opening_page', 'news.php')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('news_headline', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('news_columns', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('news_items', '3')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('news_latest', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('locale', 'English')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('theme', 'ExiteCMS')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('shortdate', '%d/%m/%Y %H:%M')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('longdate', '%B %d %Y %H:%M:%S')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('forumdate', '%d-%m-%Y %H:%M')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('subheaderdate', '%B %d %Y %H:%M:%S')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('timeoffset', '+0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('numofthreads', '10')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('attachments', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('attachmax', '10485760')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.esml,.psd,.mvi')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('thread_notify', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('enable_registration', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('email_verification', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('admin_activation', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('display_validation', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('validation_method', 'image')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('thumb_w', '150')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('thumb_h', '150')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('photo_w', '400')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('photo_h', '300')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('photo_max_w', '1800')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('photo_max_h', '1600')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('photo_max_b', '150000')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('thumb_compression', 'gd2')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('thumbs_per_row', '4')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('thumbs_per_page', '12')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('tinymce_enabled', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('smtp_host', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('smtp_username', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('smtp_password', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('bad_words_enabled', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('bad_words', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('bad_word_replace', '[censored]')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('guestposts', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('numofshouts', '5')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('flood_interval', '15')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('counter', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('max_users', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('max_users_datestamp', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('version', '7.00')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('revision', '955')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('remote_stats', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('maintenance', '0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('maintenance_message', '')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('maintenance_color', '#9C0204')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('forum_flags', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('forum_max_w', '600')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('forum_max_h', '600')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('newsletter_email', 'noreply@yourdomain.com')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('pm_inbox', '100')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('pm_sentbox', '100')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('pm_savebox', '200')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('pm_send2group', '103')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('pm_hide_rcpts', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig (cfg_name, cfg_value) VALUES ('download_columns', '1')");
-			$result = dbcommands($commands, $db_prefix);
-
 			// add records to the admin table
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A',  'articles.gif', '".$locale['462']."', 'articles.php', 1)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".$locale['461']."', 'article_cats.php', 1)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AD', 'admins.gif', '".$locale['460']."', 'administrators.php', 2)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('B',  'blacklist.gif', '".$locale['463']."', 'blacklist.php', 2)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('BG',  'blogs.gif', '".$locale['473']."', 'blogs.php', 1)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('C',  '', '".$locale['464']."', 'reserved', 2)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('CP', 'c-pages.gif', '".$locale['465']."', 'custom_pages.php', 1)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('D',  'dl.gif', '".$locale['468']."', 'downloads.php', 1)");
@@ -397,9 +325,10 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UR', 'submissions.gif', '".$locale['496']."', 'redirects.php', 1)");
 			$result = dbcommands($commands, $db_prefix);
 
-			// add records to the custom pages table
+			// add the default 404 page to the custom pages table
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##custom_pages (page_id, page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES (0, '404 Error Page', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['560']."<br /></div><br /><div align=\"center\">".$locale['561']."<br /></div><br /><div align=\"center\">".$locale['562']."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['563']."<br /></div><br /><div align=\"center\">".$locale['564']."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##custom_pages (page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES ('404 Error Page', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['560']."<br /></div><br /><div align=\"center\">".$locale['561']."<br /></div><br /><div align=\"center\">".$locale['562']."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['563']."<br /></div><br /><div align=\"center\">".$locale['564']."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
+			$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##custom_pages SET page_id = 0");
 			$result = dbcommands($commands, $db_prefix);
 
 			// create the admin rights field for the webmaster, based on all admin modules just inserted
@@ -460,9 +389,10 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['503']."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['504']."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['505']."', 'news_cats.php', '0', '1', '0', '6', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['506']."', 'contact.php', '0', '1', '0', '7', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'search.php', '0', '1', '0', '8', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['508']."', 'register.php', '100', '2', '0', '9', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['473']."', 'blogs.php', '0', '1', '0', '7', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['506']."', 'contact.php', '0', '1', '0', '8', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'search.php', '0', '1', '0', '9', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['508']."', 'register.php', '100', '2', '0', '10', 'main_menu_panel')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the default forum poll settings

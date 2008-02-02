@@ -85,6 +85,9 @@ $variables['refresh'] = $error==0 ? 1 : 10;
 $template_panels[] = array('type' => 'body', 'name' => 'setuser', 'template' => 'main.setuser.tpl');
 $template_variables['setuser'] = $variables;
 
+// make sure updates to session variables are written
+session_write_close();
+
 load_templates('body', '');
 
 // close the database connection
