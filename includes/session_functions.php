@@ -12,12 +12,12 @@
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
-if (eregi("session_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (eregi("session_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // **TODO** need to move these to CMSconfig!
-$settings['session_gc_maxlifetime'] = 60*24*30;
+$settings['session_gc_maxlifetime'] = 60*24*30;		// 30 days!
 $settings['session_name'] = "ExiteCMSid";
-$settings['session_gc_probability'] = 1;
+$settings['session_gc_probability'] = 1;			// 1 in 100, or 1% probability
 $settings['session_gc_divisor'] = 100;
 
 // update the PHP session settings with the info from CMSconfig
@@ -25,6 +25,7 @@ ini_set('session.name', $settings['session_name']);
 ini_set('session.gc_maxlifetime', $settings['session_gc_maxlifetime']);
 ini_set('session.gc_probability', $settings['session_gc_probability']);
 ini_set('session.gc_divisor', $settings['session_gc_divisor']);
+ini_set('session.use_only_cookies', true);
 
 // register our custom session handler
 session_set_save_handler ("_open_session", "_close_session", "_read_session", "_write_session", "_destroy_session", "_gc_session");
@@ -35,12 +36,23 @@ session_set_cookie_params($settings['session_gc_maxlifetime'], "/", "", false);
 // start the session
 session_start();
 
+// if the user changed the state of a panel, a cookie has been created to record the state
+// get these cookies, and store them in the users session record to be reused
+foreach($_COOKIE as $cookiename => $cookievalue) {
+	if (substr($cookiename,0,4) == "box_" && isNum($cookievalue) && ($cookievalue == 0 || $cookievalue == 1)) {
+		// store the value
+		$_SESSION[$cookiename] = $cookievalue;
+		// and delete the cookie
+		setcookie ($cookiename, "", time() - 3600);
+	}
+}
+
 /*---------------------------------------------------+
 | Session related global functions                   |
 +---------------------------------------------------*/
 
 // regenerates the session id. 
-// Call this EVERY time the users priveledge level changes!
+// Call this EVERY time the users privilege level changes!
 function regenerate_session() {
 	
 	// saves the old session's id
@@ -96,7 +108,7 @@ function _read_session($session_id) {
 	// get the session 
 	$result = dbquery("SELECT * FROM ".$db_prefix."sessions 
 						WHERE session_id='$session_id' 
-							AND session_ua='".mysql_real_escape_string(md5($_SERVER["HTTP_USER_AGENT"] .( iMEMBER ? md5($userdata['username']) : md5("SeCuRiTyCoDe"))))."'
+							AND session_ua='".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."'
 							AND session_expire >= ".time()
 					);
 
@@ -123,7 +135,7 @@ function _write_session($session_id,$session_data) {
 		$session_expire = time() + $settings['session_gc_maxlifetime'];
 		// insert or update the session information
 		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_data) 
-						VALUES ('$session_id', '".mysql_real_escape_string(md5($_SERVER["HTTP_USER_AGENT"] .( iMEMBER ? md5($userdata['username']) : md5("SeCuRiTyCoDe"))))."', '".time()."', '$session_expire', '".USER_IP."', '$session_data')
+						VALUES ('$session_id', '".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."', '".time()."', '$session_expire', '".USER_IP."', '$session_data')
 						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_expire = '$session_expire'"
 					);
 		return true;

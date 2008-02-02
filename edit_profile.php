@@ -48,11 +48,9 @@ if (isset($_POST['update_profile'])) {
 	$error = ""; $set_avatar = "";
 	$variables['update_profile'] = true;
 
-	if ($_POST['user_locale'] != $settings['locale']) {
-		setcookie("locale", $_POST['user_locale'], time() + 31536000, "/", "", "0");
-	} else {
-		setcookie("locale", $_POST['user_locale'], time() - 3600, "/");
-	}
+	// store the selected locale 
+	$_SESSION['locale'] = stripinput($_POST['user_locale']);
+
 	$username = trim(eregi_replace(" +", " ", $_POST['user_name']));
 	if ($username == "" || $_POST['user_email'] == "" || $_POST['user_fullname'] == "" ) {
 		$error .= $locale['480']."<br>\n";

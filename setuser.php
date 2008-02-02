@@ -19,8 +19,8 @@ require_once dirname(__FILE__)."/includes/theme_functions.php";
 $variables = array();
 
 // set the redirect url (set in theme_cleanup)
-if (isset($_COOKIE['last_url'])) {
-	$variables['url'] = $_COOKIE['last_url'];
+if (isset($_SESSION['last_url'])) {
+	$variables['url'] = $_SESSION['last_url'];
 } elseif (empty($_SERVER['HTTP_REFERER'])) {
 	$variables['url'] = BASEDIR."index.php";
 } else {
@@ -35,9 +35,10 @@ if (!isset($error) || !isNum($error)) $error = 0;
 
 if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 	header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-	setcookie("user", "", time() - 7200, "/", "", "0");
-	setcookie("userinfo", "", time() - 7200, "/", "", "0");
-	setcookie("lastvisit", "", time() - 7200, "/", "", "0");
+	// make sure the user info is erased from the session
+	unset($_SESSION['user']);
+	unset($_SESSION['userinfo']);
+	unset($_SESSION['lastvisit']);
 	$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_ip='".USER_IP."'");
 	if (isset($userdata['user_name'])) {
 		$message['line2'] =  "<b>".$locale['192'].$userdata['user_name']."</b>";
@@ -55,9 +56,9 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 	} elseif ($error == 3) {
 		$message['line2'] =  "<b>".$locale['196']."</b>";
 	} else {
-		if (isset($_COOKIE['userinfo'])) {
-			$cookie_vars = explode(".", $_COOKIE['userinfo']);
-			$user_pass = (preg_match("/^[0-9a-z]{32}$/", $cookie_vars['1']) ? $cookie_vars['1'] : "");
+		if (isset($_SESSION['userinfo'])) {
+			$userinfo_vars = explode(".", $_SESSION['userinfo']);
+			$user_pass = (preg_match("/^[0-9a-z]{32}$/", $userinfo_vars['1']) ? $userinfo_vars['1'] : "");
 			$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($user));
 			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='".$user_name."' AND user_password='".$user_pass."'");
 			if ($data = dbarray($result)) {

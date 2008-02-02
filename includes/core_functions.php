@@ -168,24 +168,16 @@ define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
 define("BROWSER_WIDTH", isset($_COOKIE['width']) ? $_COOKIE['width'] : 1024);
 define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
 
-// load the user functions
-require_once PATH_INCLUDES."user_functions.php";
-
 // activate query log debugging if set
 if ($settings['debug_querylog'] != "") {
 	$_db_log = checkgroup($settings['debug_querylog']);
 }
 
-// update the threads_read table for the current user
-if (iMEMBER) {
-	// get all new threads for this user since we've last checked
-	$result = dbquery("SELECT t.forum_id, t.thread_id FROM ".$db_prefix."threads t, ".$db_prefix."forums f WHERE f.forum_id = t.forum_id AND ".groupaccess('f.forum_access')." AND thread_lastpost > '".$userdata['user_forum_datestamp']."'");
-	$result2 = dbquery("UPDATE ".$db_prefix."users SET user_forum_datestamp = '".time()."' WHERE user_id = '".$userdata['user_id']."'");
-	// insert a new threads_read record for these threads, to indicate we haven't read them yet
-	while ($data = dbarray($result)) {
-		$result2 = dbquery("INSERT IGNORE INTO ".$db_prefix."threads_read (user_id, forum_id, thread_id, thread_last_read) VALUES ('".$userdata['user_id']."', '".$data['forum_id']."', '".$data['thread_id']."', '".$userdata['user_forum_datestamp']."')");
-	}	
-}
+// start session management
+require_once PATH_INCLUDES."session_functions.php";
+
+// load the user functions
+require_once PATH_INCLUDES."user_functions.php";
 
 // check for upgrades in progress.
 if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
@@ -234,7 +226,10 @@ function redirect($location, $type="header") {
 
 	// get rid of &amp; in the location
 	$location = str_replace("&amp;", "&", $location);
-		
+
+	// make sure the session is properly closed before redirecting
+	session_write_close();
+
 	if ($type == "header") {
 		header("Location: ".$location);
 		die();

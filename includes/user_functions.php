@@ -25,13 +25,22 @@ if (dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$su
 }
 
 // Set the users site_visited cookie if this is the first visit, and update the unique visit counter
+// save the random site_visited value, we need that later in session management!
 if (!isset($_COOKIE['site_visited'])) {
 	$result=dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
-	setcookie("site_visited", "yes", time() + 31536000, "/", "", "0");
+	$site_visited = md5(uniqid(rand(), true));
+	setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
+} else {
+	// replace the pre v7.1 cookie if needed
+	if ($_COOKIE['site_visited'] == "yes") {
+		$site_visited = md5(uniqid(rand(), true));
+		setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
+	} else {
+		$site_visited = $_COOKIE['site_visited'];
+	}
 }
 
 // Login code 
-// TODO - WANWIZARD - 20070701 - DOESN'T BELONG HERE, NEEDS TO BE MOVED ELSEWHERE
 if (isset($_POST['login'])) {
 	$user_pass = md5($_POST['user_pass']);
 	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_POST['user_name']));
@@ -51,18 +60,10 @@ if (isset($_POST['login'])) {
 			$data['user_status'] = 0;
 		}
 		if ($data['user_status'] == 0) {	
-			// HV - set the 'remember me' status value into a cookie
-			if (isset($_POST['remember_me'])) {
-				setcookie("remember_me", "yes", time() + 31536000, "/", "", "0");
-				$cookie_exp = time() + 3600*24*30;
-			} else {
-				setcookie("remember_me", "yes", time() - 7200, "/", "", "0");
-				$cookie_exp = time() + 60*30;
-			}
-			// HV - end of code change
 			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-			$cookie_value = $data['user_id'].".".$user_pass;
-			setcookie("userinfo", $cookie_value, $cookie_exp, "/", "", "0");
+			// set the 'remember me' status value 
+			$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "1" : "0";
+			$_SESSION['userinfo'] = $data['user_id'].".".$user_pass;
 			redirect(BASEDIR."setuser.php?user=".$data['user_name'], "script");
 			exit;
 		} elseif ($data['user_status'] == 1) {
@@ -78,21 +79,14 @@ if (isset($_POST['login'])) {
 	}
 }
 
-// This cookie expires in 30 minutes. When it does, the user will be logged out.
-if (isset($_COOKIE['userinfo'])) {
-	$cookie_vars = explode(".", $_COOKIE['userinfo']);
-	$cookie_1 = isNum($cookie_vars['0']) ? $cookie_vars['0'] : "0";
-	$cookie_2 = (preg_match("/^[0-9a-z]{32}$/", $cookie_vars['1']) ? $cookie_vars['1'] : "");
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$cookie_1' AND user_password='".$cookie_2."'");
+// Are we logged in?
+if (isset($_SESSION['userinfo'])) {
+	$userinfo_vars = explode(".", $_SESSION['userinfo']);
+	$userinfo_1 = isNum($userinfo_vars['0']) ? $userinfo_vars['0'] : "0";
+	$userinfo_2 = (preg_match("/^[0-9a-z]{32}$/", $userinfo_vars['1']) ? $userinfo_vars['1'] : "");
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$userinfo_1' AND user_password='$userinfo_2'");
+	unset($userinfo_vars,$userinfo_1,$userinfo_2);
 	if (dbrows($result) != 0) {
-		// HV - update the userinfo cookie, so it doesn't expire while the user is busy on the site
-		if (isset($_COOKIE['remember_me'])) {
-			setcookie("userinfo", $_COOKIE['userinfo'], time() + 3600*24*30, "/", "", "0");
-		} else {
-			setcookie("userinfo", $_COOKIE['userinfo'], time() + 60*30, "/", "", "0");
-		}
-		// HV - end of changed code
-		unset($cookie_vars,$cookie_1,$cookie_2);
 		$userdata = dbarray($result);
 		if ($userdata['user_status'] == 0) {
 			if ($userdata['user_theme'] != "Default" && file_exists(PATH_THEMES.$userdata['user_theme']."/theme.php")) {
@@ -109,28 +103,27 @@ if (isset($_COOKIE['userinfo'])) {
 			if ($userdata['user_offset'] <> 0) {
 				$settings['timeoffset'] = $settings['timeoffset'] + $userdata['user_offset'];
 			}
-			if (empty($_COOKIE['lastvisit'])) {
-				setcookie("lastvisit", $userdata['user_lastvisit'], time(), "/", "", "0");
+			if (empty($_SESSION['lastvisit'])) {
+				$_SESSION['lastvisit'] = $userdata['user_lastvisit'];
 				$lastvisited = $userdata['user_lastvisit'];
 			} else {
-				$lastvisited = $_COOKIE['lastvisit'];
+				$lastvisited = $_SESSION['lastvisit'];
 			}
 		} else {
 			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-			// make sure the old user cookie is erased
-			setcookie("user", "", time() - 7200, "/", "", "0");
-			setcookie("userinfo", "", time() - 7200, "/", "", "0");
-			setcookie("lastvisit", "", time() - 7200, "/", "", "0");
+			// make sure the user info is erased from the session
+			unset($_SESSION['user']);
+			unset($_SESSION['userinfo']);
+			unset($_SESSION['lastvisit']);
 			redirect(BASEDIR."index.php", "script");
 			exit;
 		}
 	} else {
-		unset($cookie_vars,$cookie_1,$cookie_2);
 		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-		// make sure the old user cookie is erased
-		setcookie("user", "", time() - 7200, "/", "", "0");
-		setcookie("userinfo", "", time() - 7200, "/", "", "0");
-		setcookie("lastvisit", "", time() - 7200, "/", "", "0");
+		// make sure the user info is erased from the session
+		unset($_SESSION['user']);
+		unset($_SESSION['userinfo']);
+		unset($_SESSION['lastvisit']);
 		redirect(BASEDIR."index.php", "script");
 		exit;
 	}
@@ -140,6 +133,7 @@ if (isset($_COOKIE['userinfo'])) {
 	$userdata = array(); $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = "";
 }
 
+// if logged in, extract info from the userdata record
 if (isset($userdata) && is_array($userdata)) {
 	// if group memberships are defined, get the users own group memberships into an array
 	if (!empty($userdata['user_groups'])) {
@@ -190,6 +184,17 @@ if (isset($userdata) && is_array($userdata)) {
 if (iMEMBER) {
 	$cc_code = (iSUPERADMIN && $settings['hide_webmaster']) ? $settings['country'] : GeoIP_IP2Code(USER_IP, true);
 	$result = dbquery("UPDATE ".$db_prefix."users SET user_lastvisit='".time()."', user_ip='".USER_IP."', user_cc_code='".$cc_code."' WHERE user_id='".$userdata['user_id']."'");
+}
+
+// update the threads_read table for the current user
+if (iMEMBER) {
+	// get all new threads for this user since we've last checked
+	$result = dbquery("SELECT t.forum_id, t.thread_id FROM ".$db_prefix."threads t, ".$db_prefix."forums f WHERE f.forum_id = t.forum_id AND ".groupaccess('f.forum_access')." AND thread_lastpost > '".$userdata['user_forum_datestamp']."'");
+	$result2 = dbquery("UPDATE ".$db_prefix."users SET user_forum_datestamp = '".time()."' WHERE user_id = '".$userdata['user_id']."'");
+	// insert a new threads_read record for these threads, to indicate we haven't read them yet
+	while ($data = dbarray($result)) {
+		$result2 = dbquery("INSERT IGNORE INTO ".$db_prefix."threads_read (user_id, forum_id, thread_id, thread_last_read) VALUES ('".$userdata['user_id']."', '".$data['forum_id']."', '".$data['thread_id']."', '".$userdata['user_forum_datestamp']."')");
+	}	
 }
 
 // if the user is an administrator, generate the security aidlink
