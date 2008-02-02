@@ -463,7 +463,10 @@ function theme_cleanup() {
 			$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_last_read < '".$settings['unread_threshold']."'", false);
 		}
 	}
-	
+
+	// flush any session info
+	session_write_close();
+		
 	// close the database connection
 	mysql_close();
 	
