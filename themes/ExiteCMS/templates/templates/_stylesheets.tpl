@@ -194,10 +194,6 @@ a.thumbnail				{ color: #ddd; }
 						/* revision description text */
 .rev_desc				{ }
 
-/* --- TinyMCE overrides ----------------------------------- */
-
-body.mceContentBody 	{ background-color:#fff; }
-
 /* ========================================================= */
 /* Add your own custom CSS tags below this line!             */
 /* ========================================================= */

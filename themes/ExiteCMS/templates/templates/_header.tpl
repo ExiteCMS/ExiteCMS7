@@ -54,7 +54,7 @@
 			theme_advanced_toolbar_align:'center',
 			theme_advanced_path_location:'none',
 			theme_advanced_toolbar_location:'top',
-			content_css:'{/literal}{$smarty.const.THEME}{literal}styles.css',
+			content_css:'{/literal}{$smarty.const.THEME}{literal}editor_content.css',
 			external_image_list_url:'{/literal}{$smarty.const.IMAGES}{literal}imagelist.js',
 			plugin_insertdate_dateFormat:'%d-%m-%Y',
 			plugin_insertdate_timeFormat:'%H:%M:%S',
