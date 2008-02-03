@@ -38,7 +38,7 @@ if (isset($userdata['user_id'])) {
 	$variables['new_posts_panel'] = dbrows($result);
 }
 $variables['loginerror'] = isset($loginerror) ? $loginerror : "";
-$variables['remember_me'] = isset($_COOKIE['remember_me'])?$_COOKIE['remember_me']:"no";
+$variables['remember_me'] = isset($_SESSION['remember_me']) ? $_SESSION['remember_me'] : "no";
 
 $template_variables['modules.user_info_panel'] = $variables;
 ?>
