@@ -21,11 +21,21 @@ $variables = array();
 // check for the proper admin access rights
 if (!checkrights("BG") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
-$variables['message'] = "There are no admin operations for the blogs module at the moment";
-$variables['bold'] = true;
+if (isset($_POST['saveoptions'])) {
+	$variables['blogs_indexsize'] = stripinput($_POST['blogs_indexsize']);
+	if (!isNum($variables['blogs_indexsize'])) $variables['blogs_indexsize'] = 5;
+	$variables['blogs_indexage'] = stripinput($_POST['blogs_indexage']);
+	if (!isNum($variables['blogs_indexage'])) $variables['blogs_indexage'] = 90;
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$variables['blogs_indexsize']."' WHERE cfg_name = 'blogs_indexsize'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$variables['blogs_indexage']."' WHERE cfg_name = 'blogs_indexage'");
+} else {
+	$variables['blogs_indexsize'] = $settings['blogs_indexsize'];
+	$variables['blogs_indexage'] = $settings['blogs_indexage'];
+}
+
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'blogs.message', 'title' => $locale['400'], 'template' => '_message_table_panel.tpl', 'locale' => "admin.blogs");
-$template_variables['blogs.message'] = $variables;
+$template_panels[] = array('type' => 'body', 'name' => 'admin.blogs', 'template' => 'admin.blogs.tpl', 'locale' => "admin.blogs");
+$template_variables['admin.blogs'] = $variables;
 
 // Call the theme code to generate the output for this webpage
 require_once PATH_THEME."/theme.php";

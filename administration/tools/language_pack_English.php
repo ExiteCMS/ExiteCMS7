@@ -79,6 +79,11 @@ if (!function_exists('install_language_pack')) {
 
 		$localestrings = array();
 		$localestrings['400'] = "Blogs administration";
+		$localestrings['401'] = "Number of blog entries on the blog index page:";
+		$localestrings['402'] = "How many days of blog entries to show in the index:";
+		$localestrings['403'] = "Days";
+		$localestrings['404'] = "No limit";
+		$localestrings['405'] = "Update";
 		load_localestrings($localestrings, LP_LOCALE, "admin.blogs", $step);
 
 		$localestrings = array();

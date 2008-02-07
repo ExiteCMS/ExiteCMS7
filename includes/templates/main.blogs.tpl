@@ -21,12 +21,12 @@
 	{elseif $step == "edit"}
 		{include file="_opentable.tpl" name=$_name title=$locale.403 state=$_state style=$_style}
 	{/if}
-	<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}' onSubmit='return ValidateForm(this);'>
+	<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}' onsubmit='return ValidateForm(this);'>
 		<table align='center' cellpadding='0' cellspacing='0' width='90%'>
 			<tr>
 				<td align='center' class='tbl'>
 					<br />
-					{$locale.411} <input type='text' name='blog_subject' value='{$blog_subject}' class='textbox' style='width: 350px'>
+					{$locale.411} <input type='text' name='blog_subject' value='{$blog_subject}' class='textbox' style='width: 350px' />
 				</td>
 			</tr>
 			<tr>
@@ -43,36 +43,23 @@
 			{if $settings.tinymce_enabled != 1}
 			<tr>
 				<td class='tbl'>
-					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('blog_text', '<b>', '</b>');">
-					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('blog_text', '<i>', '</i>');">
-					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('blog_text', '<u>', '</u>');">
-					<input type='button' value='link' class='button' style='width:35px;' onClick="addText('blog_text', '<a href=\'', '\' target=\'_blank\'>Link</a>');">
-					<input type='button' value='img' class='button' style='width:35px;' onClick="addText('blog_text', '<img src=\'{$img_src}\' style=\'margin:5px;\' align=\'left\' />');">
-					<input type='button' value='center' class='button' style='width:45px;' onClick="addText('blog_text', '<center>', '</center>');">
-					<input type='button' value='small' class='button' style='width:40px;' onClick="addText('blog_text', '<span class=\'small\'>', '</span>');">
-					<input type='button' value='small2' class='button' style='width:45px;' onClick="addText('blog_text', '<span class=\'small2\'>', '</span>');">
-					<input type='button' value='alt' class='button' style='width:25px;' onClick="addText('blog_text', '<span class=\'alt\'>', '</span>');"><br>
-					<select name='setcolor' class='textbox' style='margin-top:5px;' onChange="addText('blog_text', '<span style=\'color:' + this.options[this.selectedIndex].value + ';\'>', '</span>');this.selectedIndex=0;">
+					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('blog_text', '<b>', '</b>');" />
+					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('blog_text', '<i>', '</i>');" />
+					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('blog_text', '<u>', '</u>');" />
+					<input type='button' value='link' class='button' style='width:35px;' onclick="addText('blog_text', '<a href=\'', '\' target=\'_blank\'>Link</a>');" />
+					<input type='button' value='img' class='button' style='width:35px;' onclick="addText('blog_text', '<img src=\'{$img_src}\' style=\'margin:5px;\' align=\'left\' />');" />
+					<input type='button' value='center' class='button' style='width:45px;' onclick="addText('blog_text', '<center>', '</center>');" />
+					<input type='button' value='small' class='button' style='width:40px;' onclick="addText('blog_text', '<span class=\'small\'>', '</span>');" />
+					<input type='button' value='small2' class='button' style='width:45px;' onclick="addText('blog_text', '<span class=\'small2\'>', '</span>');" />
+					<input type='button' value='alt' class='button' style='width:25px;' onclick="addText('blog_text', '<span class=\'alt\'>', '</span>');" />
+					<br />
+					<select name='setcolor' class='textbox' style='width:90px;' onchange="addText('blog_text', '<span style=\'color=' + this.options[this.selectedIndex].value + ']', '</span>');this.selectedIndex=0;">
 						<option value=''>{$locale.413}</option>
-						<option value='maroon' style='color:maroon;'>Maroon</option>
-						<option value='red' style='color:red;'>Red</option>
-						<option value='orange' style='color:orange;'>Orange</option>
-						<option value='brown' style='color:brown;'>Brown</option>
-						<option value='yellow' style='color:yellow;'>Yellow</option>
-						<option value='green' style='color:green;'>Green</option>
-						<option value='lime' style='color:lime;'>Lime</option>
-						<option value='olive' style='color:olive;'>Olive</option>
-						<option value='cyan' style='color:cyan;'>Cyan</option>
-						<option value='blue' style='color:blue;'>Blue</option>
-						<option value='navy' style='color:navy;'>Navy Blue</option>
-						<option value='purple' style='color:purple;'>Purple</option>
-						<option value='violet' style='color:violet;'>Violet</option>
-						<option value='black' style='color:black;'>Black</option>
-						<option value='gray' style='color:gray;'>Gray</option>
-						<option value='silver' style='color:silver;'>Silver</option>
-						<option value='white' style='color:white;'>White</option>
+						{section name=id loop=$fontcolors}
+							<option value='{$fontcolors[id].color}' style='color:{$fontcolors[id].color};'>{$fontcolors[id].name|capitalize}</option>
+						{/section}
 					</select>
-					<select name='insertimage' class='textbox' style='margin-top:5px;' onChange="insertText('blog_text', '<img src=\'{$img_src}' + this.options[this.selectedIndex].value + '\' style=\'margin:5px;\' align=\'left\'>');this.selectedIndex=0;">
+					<select name='insertimage' class='textbox' style='margin-top:5px;' onchange="insertText('blog_text', '<img src=\'{$img_src}' + this.options[this.selectedIndex].value + '\' style=\'margin:5px;\' align=\'left\'>');this.selectedIndex=0;">
 						<option value=''>{$locale.414}</option>
 						{foreach from=$image_files item=file}
 							<option value='{$file}'>{$file}</option>
@@ -94,32 +81,32 @@
 								<select name='blog_datestamp[mday]' class='textbox'>
 									<option>--</option>
 									{section name=day start=1 loop=32}
-										<option {if $blog_datestamp.mday == $smarty.section.day.index}selected{/if}>{$smarty.section.day.index}</option>
+										<option {if $blog_datestamp.mday == $smarty.section.day.index}selected="selected"{/if}>{$smarty.section.day.index}</option>
 									{/section}
 								</select>
 								<select name='blog_datestamp[mon]' class='textbox'>
 									<option>--</option>
 									{section name=month start=1 loop=13}
-										<option {if $blog_datestamp.mon == $smarty.section.month.index}selected{/if}>{$smarty.section.month.index}</option>
+										<option {if $blog_datestamp.mon == $smarty.section.month.index}selected="selected"{/if}>{$smarty.section.month.index}</option>
 									{/section}
 								</select>
 								<select name='blog_datestamp[year]' class='textbox'>
 									<option>--</option>
 									{assign var='year' value=$smarty.now|date_format:"%Y"}
 									{section name=year start=2000 loop=$year+2}
-										<option {if $blog_datestamp.year == $smarty.section.year.index}selected{/if}>{$smarty.section.year.index}</option>
+										<option {if $blog_datestamp.year == $smarty.section.year.index}selected="selected"{/if}>{$smarty.section.year.index}</option>
 									{/section}
 								</select>
 								<select name='blog_datestamp[hours]' class='textbox'>
 									<option>--</option>
 									{section name=hours start=1 loop=25}
-										<option {if $blog_datestamp.hours == $smarty.section.hours.index}selected{/if}>{$smarty.section.hours.index}</option>
+										<option {if $blog_datestamp.hours == $smarty.section.hours.index}selected="selected"{/if}>{$smarty.section.hours.index}</option>
 									{/section}
 								</select>
 								<select name='blog_datestamp[minutes]' class='textbox'>
 									<option>--</option>
 									{section name=minutes start=0 loop=61}
-										<option {if $blog_datestamp.minutes === $smarty.section.minutes.index}selected{/if}>{$smarty.section.minutes.index}</option>
+										<option {if $blog_datestamp.minutes === $smarty.section.minutes.index}selected="selected"{/if}>{$smarty.section.minutes.index}</option>
 									{/section}
 								</select> : 00
 							</td>
@@ -131,16 +118,16 @@
 							</td>
 							<td align='left' class='tbl'>
 								{if $settings.tinymce_enabled != 1}
-									<input type='checkbox' name='blog_breaks' value='yes'{if $blog_breaks} checked{/if}/> {$locale.416}<br />
+									<input type='checkbox' name='blog_breaks' value='yes'{if $blog_breaks} checked="checked"{/if} /> {$locale.416}<br />
 								{/if}
-								<input type='checkbox' name='blog_comments' value='yes' onClick='SetRatings();' {if $blog_comments} checked{/if}> {$locale.417}<br />
-								<input type='checkbox' name='blog_ratings' value='yes' {if $blog_ratings} checked{/if}/> {$locale.418}
+								<input type='checkbox' name='blog_comments' value='yes' onclick='SetRatings();' {if $blog_comments} checked="checked"{/if} /> {$locale.417}<br />
+								<input type='checkbox' name='blog_ratings' value='yes' {if $blog_ratings} checked="checked"{/if} /> {$locale.418}
 							</td>
 						</tr>
 						<tr>
 							<td colspan='2' align='center' class='tbl'>
 								<br />
-								<input type='hidden' name='blog_id' value='{$blog_id}'/>
+								<input type='hidden' name='blog_id' value='{$blog_id}' />
 								<input type='submit' name='save' value='{if $blog_id}{$locale.428}{else}{$locale.419}{/if}' class='button' />
 							</td>
 						</tr>
@@ -182,8 +169,11 @@
 								{if $smarty.const.iMEMBER}<a href='profile.php?lookup={$bloglist[id].blog_author}'>{/if}
 								{$bloglist[id].user_name}{if $smarty.const.iMEMBER}</a>{/if}
 								{$locale.421} {$bloglist[id].blog_datestamp|date_format:"longdate"}
-								&middot; <a href='blogs.php?blog_id={$bloglist[id].blog_id}'>{$locale.422}</a> &middot;
-								{if $bloglist[id].comments}
+								&middot; <a href='blogs.php?blog_id={$bloglist[id].blog_id}'>{$locale.422}</a>
+								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
+								<br />
+								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+								{if $bloglist[id].blog_comments && $bloglist[id].comments > 0}
 									<a href='blogs.php?blog_id={$bloglist[id].blog_id}#comments'>{$bloglist[id].comments} {$locale.423}</a> &middot;
 								{/if}
 								 {$bloglist[id].blog_reads} {$locale.424} &middot;
@@ -223,59 +213,74 @@
 					</table>
 				{/section}
 			</td>
-			<td align='center' valign='top' class='tbl1' width='145'>
-			{if $is_author}
+			<td align='center' valign='top' class='tbl1' width='130'>
 				<table cellpadding='0' cellspacing='0' width='100%'>
 					<tr>
-						<td align='center' class='infobar'>
-							&nbsp;
+						<td align='left' class='infobar'>
+							<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+							<a href='{$smarty.const.FUSION_SELF}'>{$locale.429}</a>
 						</td>
 					</tr>
+					{if $is_author}
 					<tr>
-						<td align='center' class='tbl1'>
-							{buttonlink name=$locale.402 link="blogs.php"|cat:"?step=add"}
+						<td align='left' class='infobar'>
+							<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+							<a href='{$smarty.const.FUSION_SELF}?step=add'>{$locale.402}</a>
 						</td>
 					</tr>
+					{/if}
 				</table>
-			{/if}
-			<table cellpadding='0' cellspacing='0' width='100%'>
-				<tr>
-					<td align='center' class='infobar'>
-						{$locale.427}
-					</td>
-				</tr>
-			</table>
-			{section name=id loop=$list}
-				<table cellpadding='0' cellspacing='0' width='100%'>
-					<tr>
-						<td align='left' class='tbl2'>
-							<b><a href='{$smarty.const.FUSION_SELF}?author_id={$list[id].blog_author}'>{$list[id].user_name} ({$list[id].count})</a></b>
-						</td>
-						<td align='right' class='tbl2' width='1%'>
-							{if $list[id].blog_author == $author_id}
-								<img src='{$smarty.const.THEME}images/panel_off.gif' alt='' name='b_blog{$list[id].blog_author}' onclick="javascript:flipBox('blog{$list[id].blog_author}')" />
-							{else}
-								<img src='{$smarty.const.THEME}images/panel_on.gif' alt='' name='b_blog{$list[id].blog_author}' onclick="javascript:flipBox('blog{$list[id].blog_author}')" />
-							{/if}
-						</td>
-					</tr>
-				</table>
-				<div id='box_blog{$list[id].blog_author}' {if $list[id].blog_author == $author_id}{else}style='display:none'{/if}>
-					<table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
-						{section name=id2 loop=$list[id].blogs}
+				<hr />
+				{if !$author_filter}
+					<table cellpadding='0' cellspacing='0' width='100%'>
 						<tr>
-							<td align='left' class='tbl1'>
-								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.FUSION_SELF}?blog_id={$list[id].blogs[id2].blog_id}'>{$list[id].blogs[id2].blog_subject}</a>
+							<td align='center' class='infobar'>
+								{$locale.427}
+	
 							</td>
 						</tr>
-						{sectionelse}
-						{/section}
 					</table>
-				</div>
-			{sectionelse}
-			{/section}
+				{/if}
+				{section name=id loop=$list}
+					<table cellpadding='0' cellspacing='1' width='100%' class='{if $author_filter}infobar{else}tbl-border{/if}'>
+						<tr>
+							<td align='left' class='{if !$author_filter}tbl2{/if}'>
+								<div style='width:100px;margin-left:-1px;white-space:nowrap;overflow:hidden;'>
+									<a href='{$smarty.const.FUSION_SELF}?author_id={$list[id].blog_author}'>
+										{$list[id].user_name} ({$list[id].count})
+									</a>
+								</div>
+							</td>
+							{if $author_id == 0}
+								<td align='right' class='tbl2' width='1%'>
+									{if $list[id].blog_author == $author_id}
+										<img src='{$smarty.const.THEME}images/panel_off.gif' alt='' name='b_blog{$list[id].blog_author}' onclick="javascript:flipBox('blog{$list[id].blog_author}')" />
+									{else}
+										<img src='{$smarty.const.THEME}images/panel_on.gif' alt='' name='b_blog{$list[id].blog_author}' onclick="javascript:flipBox('blog{$list[id].blog_author}')" />
+									{/if}
+								</td>
+							{/if}
+						</tr>
+					</table>
+					<div id='box_blog{$list[id].blog_author}' {if $list[id].blog_author == $author_id}{else}style='display:none'{/if}>
+						<table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
+							{section name=id2 loop=$list[id].blogs}
+							<tr>
+								<td align='left' class='tbl1'>
+									<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+									<a href='{$smarty.const.FUSION_SELF}?author_id={$author_id}&amp;blog_id={$list[id].blogs[id2].blog_id}' title='{$list[id].blogs[id2].blog_subject}'>
+										{$list[id].blogs[id2].blog_subject|truncate:20:"...":true}
+									</a>
+								</td>
+							</tr>
+							{sectionelse}
+							{/section}
+						</table>
+					</div>
+				{sectionelse}
+				{/section}
 			</td>
-		<tr>
+		</tr>
 	</table>
 {/if}
 {include file="_closetable.tpl"}
@@ -286,10 +291,6 @@ function DeleteBlog() {ldelim}
 function ValidateForm(frm) {ldelim}
 	if(frm.blog_subject.value=='') {ldelim}
 		alert('{$locale.498}');
-		return false;
-	{rdelim}
-	if(frm.blog_text.value=='') {ldelim}
-		alert('{$locale.497}');
 		return false;
 	{rdelim}
 {rdelim}

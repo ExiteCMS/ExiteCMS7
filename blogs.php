@@ -29,6 +29,12 @@ if (isset($status)) {
 	} elseif ($status == "sn") {
 		$title = $locale['402'];
 		$message = $locale['496'];
+	} elseif ($status == "eu") {
+		$title = $locale['403'];
+		$message = $locale['497'];
+	} elseif ($status == "en") {
+		$title = $locale['402'];
+		$message = $locale['497'];
 	} elseif ($status == "del") {
 		$title = $locale['412'];
 		$message = $locale['494'];
@@ -64,8 +70,12 @@ if (dbrows($result)) {
 // save requested?
 if (isset($_POST['save'])) {
 	// save the blog entry
-	$blog_subject = stripinput($_POST['blog_subject']);
 	$blog_text = addslash($_POST['blog_text']);
+	// check if the blog isn't empty
+	if (empty($blog_text)) {
+		redirect(FUSION_SELF."?status=".($blog_id?"eu":"en"));
+	}
+	$blog_subject = stripinput($_POST['blog_subject']);
 	if ($settings['tinymce_enabled'] != 1) { $blog_breaks = isset($_POST['blog_breaks']) ? "y" : "n"; } else { $blog_breaks = "n"; }
 	$blog_datestamp = 0;
 	if ($blog_id) {
@@ -94,7 +104,8 @@ $variables['blog_id'] = $blog_id;
 // check the author_id passed
 if (!isset($author_id) || !isNum($author_id)) $author_id = 0;
 $variables['author_id'] = $author_id;
-		
+$variables['author_filter'] = $author_id != 0;
+
 // check the step variable passed
 if (!isset($step)) $step = "";
 $variables['step'] = $step;
@@ -184,11 +195,13 @@ switch ($step) {
 			$result = dbquery("SELECT b.*, u.user_name, u2.user_name AS edit_name FROM ".$db_prefix."blogs b
 					LEFT JOIN ".$db_prefix."users u ON u.user_id = b.blog_author
 					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor
-					ORDER BY blog_datestamp DESC LIMIT ".intval($settings['numofthreads']/2));
+					ORDER BY blog_datestamp DESC LIMIT ".$settings['blogs_indexsize']);
 		}
 		while ($data = dbarray($result)) {
 			// store the blog entry(s)
 			$data['blog_text'] = stripslashes($data['blog_text']);
+			// count comments for this blog entry
+			$data['comments'] = $data['blog_comments'] ? dbcount("(comment_id)", "comments", "comment_type='B' AND comment_item_id='".$data['blog_id']."'") : 0;
 			$variables['bloglist'][] = $data;
 		}
 		// check if we need to display comments and/or ratings
@@ -199,12 +212,22 @@ switch ($step) {
 		}
 		
 		// retrieve the full author list
+		if ($author_id != 0) {
+			// no limit
+			$bloglimit = 0;
+			// only this author
+			$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = '".$author_id."' AND b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
+		} else {
+			// use the limit defined in the admin page
+			$bloglimit = time() - $settings['blogs_indexage'] * 86400;
+			// select all authors
+			$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id AND (blog_datestamp > '".$bloglimit."' OR blog_edittime > '".$bloglimit."') GROUP BY blog_author ORDER BY count DESC, user_name ASC");
+		}
 		$variables['list'] = array();
-		$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
 		while ($data = dbarray($result)) {
 			$data['blogs'] = array();
 			// get all blog entries of this author, newest first
-			$result2 = dbquery("SELECT b.blog_id, b.blog_subject FROM ".$db_prefix."blogs b WHERE b.blog_author = '".$data['blog_author']."' ORDER BY GREATEST(blog_datestamp, blog_edittime) DESC");
+			$result2 = dbquery("SELECT b.blog_id, b.blog_subject FROM ".$db_prefix."blogs b WHERE b.blog_author = '".$data['blog_author']."' AND (blog_datestamp > '".$bloglimit."' OR blog_edittime > '".$bloglimit."') ORDER BY GREATEST(blog_datestamp, blog_edittime) DESC");
 			while ($data2 = dbarray($result2)) {
 				$data['blogs'][] = $data2;
 			}
@@ -212,6 +235,13 @@ switch ($step) {
 		}
 
 		break;		
+}
+
+// colors for the color dropdown
+$variables['fontcolors'] = array();
+$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'colors'");
+while ($data = dbarray($result)) {
+	$variables['fontcolors'][] = array('color' => $data['locales_key'], 'name' => $data['locales_value']);
 }
 
 // define the body panel variables
