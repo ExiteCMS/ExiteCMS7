@@ -237,7 +237,7 @@
 						{/if}
 					{/if}
 					{if $action == "edit"}
-						{if $post_sticky}
+						{if $is_sticky}
 							<input type='submit' name='sticky_off' value='{$locale.410}' class='button' />
 						{else}
 							<input type='submit' name='sticky_on' value='{$locale.411}' class='button' />
