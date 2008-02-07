@@ -91,7 +91,7 @@ require_once PATH_INCLUDES."db_functions.php";
 
 // fetch the configuration from the database and store them in the $settings variable
 if (dbtable_exists($db_prefix."configuration")) {
-	// get the settings from the configuration table (introduced in revision 909)
+	// get the settings from the configuration table (introduced in revision 1222)
 	$settings = array();
 	$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 	while ($data = dbarray($result)) {
@@ -102,8 +102,21 @@ if (dbtable_exists($db_prefix."configuration")) {
 		$result = dbquery("DROP TABLE ".$db_prefix."settings");
 	}
 } else {
-	// use the settings table
-	$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+	if (dbtable_exists($db_prefix."CMSconfig")) {
+		// get the settings from the configuration table (introduced in revision 909)
+		$settings = array();
+		$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+		while ($data = dbarray($result)) {
+			$settings[$data['cfg_name']] = $data['cfg_value'];
+		}
+		// and drop the settings table if it exists
+		if (dbtable_exists($db_prefix."settings")) {
+			$result = dbquery("DROP TABLE ".$db_prefix."settings");
+		}
+	} else {
+		// use the old version 6 settings table
+		$settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."settings"));
+	}
 }
 
 // load the locale functions
@@ -182,7 +195,15 @@ if (UPGRADES) {
 		// if no errors occurred, update the revision number
 		if (count($errors) == 0) {
 			$new_revision = $_revision;
-			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
+			if (dbtable_exists($db_prefix."configuration")) {
+				$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
+			} else {
+				if (dbtable_exists($db_prefix."CMSconfig")) {
+					$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
+				} else {
+					die('no more support for older config tables!');
+				}
+			}
 		} else {
 			// errors in this upgrade. Break the process loop
 			$found_error = true;

@@ -3127,8 +3127,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.00");
-if (!defined('LP_DATE')) define('LP_DATE', "1201552119");
-$lp_date = "1201552119";
+if (!defined('LP_DATE')) define('LP_DATE', "1202426711");
+$lp_date = "1202426711";
 
 /*---------------------------------------------------+
 | main code                                          |
