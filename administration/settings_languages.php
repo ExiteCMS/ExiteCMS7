@@ -35,22 +35,22 @@ if (isset($_POST['savesettings'])) {
 	$article_localisation = stripinput($_POST['article_localisation']);
 	$download_localisation = stripinput($_POST['download_localisation']);
 	$news_localisation = stripinput($_POST['news_localisation']);
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$settings['locale']."' WHERE cfg_name = 'locale'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings['locale']."' WHERE cfg_name = 'locale'");
 	if (empty($_POST['old_country'])) {
-		$result = dbquery("INSERT INTO ".$db_prefix."CMSconfig (cfg_name, cfg_value) VALUES ('country', '".$_POST['country']."')");
+		$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES ('country', '".$_POST['country']."')");
 	} else {
-		$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['country']."' WHERE cfg_name = 'country'");
+		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['country']."' WHERE cfg_name = 'country'");
 	}
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$panels_localisation."' WHERE cfg_name = 'panels_localisation'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$sitelinks_localisation."' WHERE cfg_name = 'sitelinks_localisation'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$news_localisation."' WHERE cfg_name = 'news_localisation'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$download_localisation."' WHERE cfg_name = 'download_localisation'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$article_localisation."' WHERE cfg_name = 'article_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$panels_localisation."' WHERE cfg_name = 'panels_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$sitelinks_localisation."' WHERE cfg_name = 'sitelinks_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$news_localisation."' WHERE cfg_name = 'news_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$download_localisation."' WHERE cfg_name = 'download_localisation'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$article_localisation."' WHERE cfg_name = 'article_localisation'");
 	redirect(FUSION_SELF.$aidlink);
 }
 
 $settings2 = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 while ($data = dbarray($result)) {
 	$settings2[$data['cfg_name']] = $data['cfg_value'];
 }

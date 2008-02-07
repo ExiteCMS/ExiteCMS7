@@ -94,9 +94,9 @@ if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the docume
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
 
-// fetch the CMSconfig from the database and store them in the $settings variable
+// fetch the configuration from the database and store them in the $settings variable
 $settings = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 while ($data = dbarray($result)) {
 	$settings[$data['cfg_name']] = $data['cfg_value'];
 }
@@ -168,16 +168,16 @@ define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
 define("BROWSER_WIDTH", isset($_COOKIE['width']) ? $_COOKIE['width'] : 1024);
 define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
 
-// activate query log debugging if set
-if ($settings['debug_querylog'] != "") {
-	$_db_log = checkgroup($settings['debug_querylog']);
-}
-
 // start session management
 require_once PATH_INCLUDES."session_functions.php";
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
+
+// activate query log debugging if set
+if ($settings['debug_querylog'] != "") {
+	$_db_log = checkgroup($settings['debug_querylog']);
+}
 
 // check for upgrades in progress.
 if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {

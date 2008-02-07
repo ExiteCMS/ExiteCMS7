@@ -27,6 +27,9 @@ if (isset($reason) && $reason == "2") {
 $template_panels[] = array('type' => 'body', 'name' => 'maintenance', 'template' => 'main.maintenance.tpl');
 $template_variables['maintenance'] = $variables;
 
+// make sure the session is closed
+session_write_close();
+
 load_templates('body', '');
 
 // close the database connection

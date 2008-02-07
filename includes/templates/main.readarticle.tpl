@@ -14,7 +14,7 @@
 {* Template for the main module 'readarticle', to display a full article   *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title=$locale.029 state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title=$locale.023 state=$_state style=$_style}
 		{section name=item loop=$article}	
 			<table width='100%' cellpadding='0' cellspacing='0'>
 				<tr>

@@ -28,20 +28,20 @@ $variables['this_module'] = FUSION_SELF;
 if (!checkrights("S5") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['thumb_w']) ? $_POST['thumb_w'] : "100")."' WHERE cfg_name = 'thumb_w'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['thumb_h']) ? $_POST['thumb_h'] : "100")."' WHERE cfg_name = 'thumb_h'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['photo_w']) ? $_POST['photo_w'] : "400")."' WHERE cfg_name = 'photo_w'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['photo_h']) ? $_POST['photo_h'] : "300")."' WHERE cfg_name = 'photo_h'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['photo_max_w']) ? $_POST['photo_max_w'] : "1800")."' WHERE cfg_name = 'photo_max_w'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['photo_max_h']) ? $_POST['photo_max_h'] : "1600")."' WHERE cfg_name = 'photo_max_h'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['photo_max_b']) ? $_POST['photo_max_b'] : "150000")."' WHERE cfg_name = 'photo_max_b'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['thumb_compression']."' WHERE cfg_name = 'thumb_compression'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['thumbs_per_row']) ? $_POST['thumbs_per_row'] : "4")."' WHERE cfg_name = 'thumb_per_row'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['thumbs_per_page']) ? $_POST['thumbs_per_page'] : "12")."' WHERE cfg_name = 'thumb_per_page'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thumb_w']) ? $_POST['thumb_w'] : "100")."' WHERE cfg_name = 'thumb_w'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thumb_h']) ? $_POST['thumb_h'] : "100")."' WHERE cfg_name = 'thumb_h'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['photo_w']) ? $_POST['photo_w'] : "400")."' WHERE cfg_name = 'photo_w'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['photo_h']) ? $_POST['photo_h'] : "300")."' WHERE cfg_name = 'photo_h'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['photo_max_w']) ? $_POST['photo_max_w'] : "1800")."' WHERE cfg_name = 'photo_max_w'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['photo_max_h']) ? $_POST['photo_max_h'] : "1600")."' WHERE cfg_name = 'photo_max_h'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['photo_max_b']) ? $_POST['photo_max_b'] : "150000")."' WHERE cfg_name = 'photo_max_b'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['thumb_compression']."' WHERE cfg_name = 'thumb_compression'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thumbs_per_row']) ? $_POST['thumbs_per_row'] : "4")."' WHERE cfg_name = 'thumb_per_row'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thumbs_per_page']) ? $_POST['thumbs_per_page'] : "12")."' WHERE cfg_name = 'thumb_per_page'");
 }
 
 $settings2 = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 while ($data = dbarray($result)) {
 	$settings2[$data['cfg_name']] = $data['cfg_value'];
 }

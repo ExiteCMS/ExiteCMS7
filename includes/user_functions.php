@@ -27,7 +27,7 @@ if (dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$su
 // Set the users site_visited cookie if this is the first visit, and update the unique visit counter
 // save the random site_visited value, we need that later in session management!
 if (!isset($_COOKIE['site_visited'])) {
-	$result=dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
+	$result=dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
 	$site_visited = md5(uniqid(rand(), true));
 	setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
 } else {
@@ -62,9 +62,9 @@ if (isset($_POST['login'])) {
 		if ($data['user_status'] == 0) {	
 			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 			// set the 'remember me' status value 
-			$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "1" : "0";
+			$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
 			$_SESSION['userinfo'] = $data['user_id'].".".$user_pass;
-			$_SESSION['login_expire'] = isset($_POST['remember_me']) ? (time() + 60*60*24*30) : (time() + 60*60);
+			$_SESSION['login_expire'] = isset($_POST['remember_me']) ? (time() + $settings['session_gc_maxlifetime']) : (time() + 60*60);
 			redirect(BASEDIR."setuser.php?user=".$data['user_name'], "script");
 			exit;
 		} elseif ($data['user_status'] == 1) {

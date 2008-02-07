@@ -59,7 +59,8 @@ if ($pageon == false) redirect("index.php".$aidlink."&pagenum=$default");
 
 // get the available admin modules for this page
 $modules = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."admin WHERE admin_page='$pagenum' ORDER BY admin_title");
+$moduleindex = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."admin WHERE admin_page='$pagenum'");
 $rows = dbrows($result);
 if ($rows != 0) {
 	while ($data = dbarray($result)) {
@@ -84,13 +85,20 @@ if ($rows != 0) {
 					$data['admin_title'] = $data2['locales_value'];
 				}
 			}
-			// store the record
+			// store the module record and the index record
 			$modules[] = $data;
+			$moduleindex[] = $data['admin_title']."_>_".(count($modules)-1);
 		}
 	}
 }
 $variables['rows'] = $rows;
-$variables['modules'] = $modules;
+
+//make sure the modules are properly sorted
+sort($moduleindex);
+$variables['modules'] = array();
+foreach($moduleindex as $index) {
+	$variables['modules'][] = $modules[substr(strstr($index,"_>_"),3)];
+}
 
 // gather some website statistics
 $variables['statistics'] = array();

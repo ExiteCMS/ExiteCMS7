@@ -89,11 +89,11 @@ unset($_loadtime);
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
 
-// fetch the CMSconfig from the database and store them in the $settings variable
-if (dbtable_exists($db_prefix."CMSconfig")) {
-	// get the settings from the CMSconfig table (introduced in revision 909)
+// fetch the configuration from the database and store them in the $settings variable
+if (dbtable_exists($db_prefix."configuration")) {
+	// get the settings from the configuration table (introduced in revision 909)
 	$settings = array();
-	$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+	$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 	while ($data = dbarray($result)) {
 		$settings[$data['cfg_name']] = $data['cfg_value'];
 	}
@@ -182,7 +182,7 @@ if (UPGRADES) {
 		// if no errors occurred, update the revision number
 		if (count($errors) == 0) {
 			$new_revision = $_revision;
-			$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$new_revision."' WHERE cfg_name = 'revision'");
 		} else {
 			// errors in this upgrade. Break the process loop
 			$found_error = true;

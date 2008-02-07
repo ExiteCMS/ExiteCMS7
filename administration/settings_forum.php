@@ -30,17 +30,17 @@ if (!checkrights("S3") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['prune'])) require_once PATH_ADMIN."forums_prune.php";
 
 if (isset($_POST['savesettings'])) {
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['attachments']) ? $_POST['attachments'] : "0")."' WHERE cfg_name = 'attachments'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['attachmax']) ? $_POST['attachmax'] : "150000")."' WHERE cfg_name = 'attachmax'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_max_w']) ? $_POST['forum_max_w'] : "400")."' WHERE cfg_name = 'forum_max_w'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['forum_max_h']) ? $_POST['forum_max_h'] : "200")."' WHERE cfg_name = 'forum_max_h'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".$_POST['attachtypes']."' WHERE cfg_name = 'attachtypes'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['thread_notify']) ? $_POST['thread_notify'] : "0")."' WHERE cfg_name = 'thread_notify'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['unread_threshold']) ? $_POST['unread_threshold'] : "0")."' WHERE cfg_name = 'unread_threshold'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['attachments']) ? $_POST['attachments'] : "0")."' WHERE cfg_name = 'attachments'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['attachmax']) ? $_POST['attachmax'] : "150000")."' WHERE cfg_name = 'attachmax'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_max_w']) ? $_POST['forum_max_w'] : "400")."' WHERE cfg_name = 'forum_max_w'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_max_h']) ? $_POST['forum_max_h'] : "200")."' WHERE cfg_name = 'forum_max_h'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['attachtypes']."' WHERE cfg_name = 'attachtypes'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thread_notify']) ? $_POST['thread_notify'] : "0")."' WHERE cfg_name = 'thread_notify'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['unread_threshold']) ? $_POST['unread_threshold'] : "0")."' WHERE cfg_name = 'unread_threshold'");
 }
 
 $settings2 = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 while ($data = dbarray($result)) {
 	$settings2[$data['cfg_name']] = $data['cfg_value'];
 }

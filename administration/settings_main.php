@@ -30,26 +30,26 @@ if (!checkrights("S1") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 if (isset($_POST['savesettings'])) {
 	$siteintro = descript(stripslash($_POST['intro']));
 	$sitefooter = descript(stripslash($_POST['footer']));
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['sitename'])."' WHERE cfg_name = 'sitename'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['siteurl']).(strrchr($_POST['siteurl'],"/") != "/" ? "/" : "")."' WHERE cfg_name = 'siteurl'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['siteemail'])."' WHERE cfg_name = 'siteemail'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['hide_webmaster']) ? $_POST['hide_webmaster'] : "0")."' WHERE cfg_name = 'hide_webmaster'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['newsletter_email'])."' WHERE cfg_name = 'newsletter_email'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['username'])."' WHERE cfg_name = 'siteusername'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".addslashes(addslashes($siteintro))."' WHERE cfg_name = 'siteintro'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['description'])."' WHERE cfg_name = 'description'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['keywords'])."' WHERE cfg_name = 'keywords'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['opening_page'])."' WHERE cfg_name = 'opening_page'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['news_columns']) ? $_POST['news_columns'] : "1")."' WHERE cfg_name = 'news_columns'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['news_items']) ? $_POST['news_items'] : "4")."' WHERE cfg_name = 'news_items'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['news_headline']) ? $_POST['news_headline'] : "0")."' WHERE cfg_name = 'news_headline'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['numofthreads']) ? $_POST['numofthreads'] : "5")."' WHERE cfg_name = 'numofthreads'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".(isNum($_POST['download_columns']) ? $_POST['download_columns'] : "1")."' WHERE cfg_name = 'download_columns'");
-	$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = '".stripinput($_POST['theme'])."' WHERE cfg_name = 'theme'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['sitename'])."' WHERE cfg_name = 'sitename'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['siteurl']).(strrchr($_POST['siteurl'],"/") != "/" ? "/" : "")."' WHERE cfg_name = 'siteurl'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['siteemail'])."' WHERE cfg_name = 'siteemail'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['hide_webmaster']) ? $_POST['hide_webmaster'] : "0")."' WHERE cfg_name = 'hide_webmaster'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['newsletter_email'])."' WHERE cfg_name = 'newsletter_email'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['username'])."' WHERE cfg_name = 'siteusername'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".addslashes(addslashes($siteintro))."' WHERE cfg_name = 'siteintro'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['description'])."' WHERE cfg_name = 'description'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['keywords'])."' WHERE cfg_name = 'keywords'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['opening_page'])."' WHERE cfg_name = 'opening_page'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['news_columns']) ? $_POST['news_columns'] : "1")."' WHERE cfg_name = 'news_columns'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['news_items']) ? $_POST['news_items'] : "4")."' WHERE cfg_name = 'news_items'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['news_headline']) ? $_POST['news_headline'] : "0")."' WHERE cfg_name = 'news_headline'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['numofthreads']) ? $_POST['numofthreads'] : "5")."' WHERE cfg_name = 'numofthreads'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['download_columns']) ? $_POST['download_columns'] : "1")."' WHERE cfg_name = 'download_columns'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['theme'])."' WHERE cfg_name = 'theme'");
 }
 
 $settings2 = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."CMSconfig");
+$result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 while ($data = dbarray($result)) {
 	$settings2[$data['cfg_name']] = $data['cfg_value'];
 }

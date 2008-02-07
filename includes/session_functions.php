@@ -14,7 +14,7 @@
 +----------------------------------------------------*/
 if (eregi("session_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-// update the PHP session settings with the info from CMSconfig
+// update the PHP session settings with the info from the CMS configuration table
 ini_set('session.name', $settings['session_name']);
 ini_set('session.gc_maxlifetime', $settings['session_gc_maxlifetime']);
 ini_set('session.gc_probability', $settings['session_gc_probability']);
@@ -130,7 +130,7 @@ function _write_session($session_id,$session_data) {
 		// insert or update the session information
 		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data) 
 						VALUES ('$session_id', '".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."', '".time()."', '$session_expire', '".USER_IP."', '".(iMEMBER ? $userdata['user_id'] : 0)."', '$session_data')
-						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_expire = '$session_expire'"
+						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".(iMEMBER ? $userdata['user_id'] : 0)."'"
 					);
 		return true;
 	}

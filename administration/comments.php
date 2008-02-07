@@ -24,7 +24,7 @@ $variables = array();
 // check for the proper admin access rights
 if (!checkrights("C") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
-// make sure the parameter is valid (and nobody is trying to edit the webmaster himself)
+// make sure the parameters are valid
 if (isset($comment_id) && !isNum($comment_id)) fallback("index.php");
 if (!isset($ctype) || !preg_match("/^[0-9A-Z]+$/i", $ctype)) fallback(BASEDIR."index.php");
 if (!isset($cid) || !isNum($cid)) fallback("../index.php");

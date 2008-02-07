@@ -2344,6 +2344,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['426'] = "Modified by";
 		$localestrings['427'] = "Blog Authors";
 		$localestrings['428'] = "Update Blog";
+		$localestrings['429'] = "Blog index";
 		$localestrings['493'] = "Are you sure you want to delete this blog entry?";
 		$localestrings['494'] = "The blog entry has been succesfully deleted";
 		$localestrings['495'] = "The blog update has been succesfully saved";
@@ -3169,7 +3170,7 @@ if (!defined('LP_SKIP_MAIN')) {
 			$result = dbquery("DELETE FROM ".$db_prefix."locale WHERE locale_code = '".LP_LOCALE."'");
 			if ($step == "remove") {
 				// update the site default locale
-				$result = dbquery("UPDATE ".$db_prefix."CMSconfig SET cfg_value = 'en' WHERE cfg_name = 'locale' AND cfg_value = '".LP_LOCALE."'");
+				$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'en' WHERE cfg_name = 'locale' AND cfg_value = '".LP_LOCALE."'");
 				// update the members default locale
 				$result = dbquery("UPDATE ".$db_prefix."users SET user_locale = 'en' WHERE user_locale = '".LP_LOCALE."'");
 				// report the save succesfully, and go back to the overview table
