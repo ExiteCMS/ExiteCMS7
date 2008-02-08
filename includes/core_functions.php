@@ -141,7 +141,9 @@ define("THEMES", BASEDIR."themes/");
 
 // extract server settings information
 if (isset($_SERVER['SERVER_SOFTWARE'])) {
+
 	// Common definitions - CGI mode
+
 	define("CMS_CLI", false);
 	$_SERVER['QUERY_STRING'] = isset($_SERVER['QUERY_STRING']) ? cleanurl($_SERVER['QUERY_STRING']) : "";
 	$_SERVER['REQUEST_URI'] = isset($_SERVER['REQUEST_URI']) ? cleanurl($_SERVER['REQUEST_URI']) : "";
@@ -157,8 +159,14 @@ if (isset($_SERVER['SERVER_SOFTWARE'])) {
 		define("FUSION_URL", $PHP_SELF);
 	}
 	define("USER_IP", $_SERVER['REMOTE_ADDR']);
+
+	// start session management
+	require_once PATH_INCLUDES."session_functions.php";
+
 } else {
+
 	// Common definitions - CLI mode
+
 	define("CMS_CLI", true);
 	define("USER_IP", '0.0.0.0');
 }
@@ -167,9 +175,6 @@ define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
 // Browser window dimensions (assume 1024x768 if no cookies found)
 define("BROWSER_WIDTH", isset($_COOKIE['width']) ? $_COOKIE['width'] : 1024);
 define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
-
-// start session management
-require_once PATH_INCLUDES."session_functions.php";
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
