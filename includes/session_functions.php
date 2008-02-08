@@ -103,9 +103,10 @@ function _read_session($session_id) {
 	if (!isset($_COOKIE['site_visited'])) return false;
 
 	// get the session 
+	$session_ua = md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited']);
 	$result = dbquery("SELECT * FROM ".$db_prefix."sessions 
 						WHERE session_id='$session_id' 
-							AND session_ua='".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."'
+							AND session_ua='$session_ua'
 							AND session_expire >= ".time()
 					);
 
@@ -136,10 +137,11 @@ function _write_session($session_id,$session_data) {
 		} else {
 			$session_user_id = $userdata['user_id'];
 		}
+		$session_ua = md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited']);
 		// insert or update the session information
 		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data) 
-						VALUES ('$session_id', '".md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited'])."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '$session_data')
-						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
+						VALUES ('$session_id', '".$session_ua."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '$session_data')
+						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_ua = '$session_ua', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
 					);
 		return true;
 	}
