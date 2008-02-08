@@ -153,7 +153,7 @@ function _gc_session() {
 	global $db_prefix;
 
 	// delete all expired records
-	$result = dbquery("DELETE FROM ".$db_prefix."sessions WHERE session_expire >= ".time());
+	$result = dbquery("DELETE FROM ".$db_prefix."sessions WHERE session_expire < ".time());
 
 	return true;
 }
