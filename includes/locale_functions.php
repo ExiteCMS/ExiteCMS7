@@ -86,6 +86,13 @@ if (file_exists(PATH_INCLUDES."jscripts/tiny_mce/langs".$settings['locale_code']
 	$settings['tinyMCE_locale'] = 'en';
 }
 
+// set the locale for PHPmailer, default to 'en' if not found
+if (file_exists(PATH_INCLUDES."languages/phpmailer.lang-".$settings['locale_code'].".php")) {
+	$settings['PHPmailer_locale'] = $settings['locale_code'];
+} else {
+	$settings['PHPmailer_locale'] = 'en';
+}
+
 // Initialise the $locale array
 $locale = array();
 
