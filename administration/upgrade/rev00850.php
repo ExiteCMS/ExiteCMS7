@@ -40,7 +40,7 @@ $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##panels ADD
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##panels SET panel_datestamp = '".time()."'");
 
 // add the language settings admin module to the admin table and give all webmasters access
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_lang.gif', 'Language Setiings', 'settings_language.php', '3')");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_lang.gif', 'Language Setiings', 'settings_languages.php', '3')");
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##users SET user_rights = CONCAT(user_rights, '.S7') WHERE user_level = 103");
 
 // add module identification to user_groups, so they can be removed when uninstalling a module
