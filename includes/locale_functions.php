@@ -11,8 +11,18 @@
 +----------------------------------------------------*/
 if (eregi("locale_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-// locale detection - step 1 - check if there's a locale cookie set
-if (isset($_COOKIE['locale'])) {
+// locale detection - step 1 - check if there's a users preference available
+if (iMEMBER) {
+	// check if we (still) support this language. If so, update the locale setting
+	$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$userdata['user_locale']."' AND locale_active = '1'");
+	if ($data = dbarray($result)) {
+		$settings['locale'] = $data['locale_name'];
+		define("LOCALESET", $settings['locale']."/");
+	}
+}
+
+// locale detection - step 2 - check if there's a locale cookie set
+if (!defined('LOCALESET') && isset($_COOKIE['locale'])) {
 	// check if we (still) support this language. If so, update the locale setting
 	$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$_COOKIE['locale']."' AND locale_active = '1'");
 	if ($data = dbarray($result)) {
@@ -21,7 +31,7 @@ if (isset($_COOKIE['locale'])) {
 	}
 }
 
-// locale detection - step 2 - check the browsers accepted languages
+// locale detection - step 3 - check the browsers accepted languages
 if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	// check which languages are supported by the users browser
 	$temp = explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -53,7 +63,7 @@ if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($
 	}
 }
 
-// legacy locale defines
+// legacy locale defines (for v7.0 style locale files)
 define("PATH_LOCALE", PATH_ROOT."locale/");
 if (!defined('LOCALESET')) define("LOCALESET", $settings['locale']."/");
 

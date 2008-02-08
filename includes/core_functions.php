@@ -116,12 +116,6 @@ $settings['siteurl'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=="on") ? 
 // calculate the correct forum_unread_threshold for this session
 $settings['unread_threshold'] = time() - 60*60*24*$settings['unread_threshold'];
 
-// include the locale functions
-require_once PATH_INCLUDES."locale_functions.php";
-
-// load the global language file
-locale_load("main.global");
-
 // URL path definitions relative to BASEDIR
 define("ADMIN", BASEDIR."administration/");
 define("IMAGES", BASEDIR."images/");
@@ -183,6 +177,12 @@ require_once PATH_INCLUDES."user_functions.php";
 if ($settings['debug_querylog'] != "") {
 	$_db_log = checkgroup($settings['debug_querylog']);
 }
+
+// load the locale functions
+require_once PATH_INCLUDES."locale_functions.php";
+
+// load the CMS global locale strings
+locale_load("main.global");
 
 // check for upgrades in progress.
 if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {

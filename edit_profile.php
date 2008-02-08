@@ -83,7 +83,7 @@ if (isset($_POST['update_profile'])) {
 					// found the mailserver for this email address. Check if the address exists
 					require_once PATH_INCLUDES.'smtp_include.php';
 					$mail = new SMTP();
-					if (!$mail->Connect($mailhost_ip)) {
+					if (!$mail->Connect($mailhost_ip,0,60)) {	// default SMTP port, 60sec timeout
 						// mail server doesn't respond
 						$error .= sprintf($locale['489'], $email_domain)."<br><br>\n";
 					} else {
