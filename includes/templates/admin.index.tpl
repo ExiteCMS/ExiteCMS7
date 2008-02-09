@@ -94,7 +94,6 @@
 		</td>
 		<td valign='top' width='33%' class='small'>
 			{$locale.259} {$statistics.posts}<br />
-			{$locale.262} {$statistics.messages_unread}<br />
 		</td>
 		<td valign='top' width='33%' class='small'>
 			{$locale.257} {$statistics.comments}<br />

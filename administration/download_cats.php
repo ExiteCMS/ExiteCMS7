@@ -184,7 +184,7 @@ switch ($settings['download_localisation']) {
 }
 
 $variables['cats'] = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ".($where=""?"":("AND ".$where))." ORDER BY download_parent*100000-download_cat_id");
+$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ".($where==""?"":("AND ".$where))." ORDER BY download_parent*100000-download_cat_id");
 while ($data = dbarray($result)) {
 	if ($data['download_parent']) {
 		$result_sub = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id = '" .$data['download_parent']. "' LIMIT 1");

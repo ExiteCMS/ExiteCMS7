@@ -107,8 +107,6 @@ $variables['statistics']['members_registered'] = dbcount("(user_id)", "users", "
 $variables['statistics']['members_unactive'] = dbcount("(user_id)", "users", "user_status='2'");
 $variables['statistics']['members_suspended'] = dbcount("(user_id)", "users", "user_status='1'");
 $variables['statistics']['members_deleted'] = dbcount("(user_id)", "users", "user_status='3'");
-$result = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
-$variables['statistics']['messages_unread'] = ($result ? mysql_result($result, 0) : 0);
 $variables['statistics']['comments'] = dbcount("(comment_id)", "comments");
 $variables['statistics']['shouts'] = dbcount("(shout_id)", "shoutbox");
 $variables['statistics']['posts'] = dbcount("(post_id)", "posts");

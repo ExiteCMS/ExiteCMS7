@@ -21,9 +21,9 @@
  *         - new: if "yes", URL opens in new window
  *         - script: if "yes", URL is javascript code
  *
- * Examples: {imagelink name="google.jpg" link="http://www.google.com" new="yes"}
+ * Examples: {imagelink image="google.jpg" link="http://www.google.com" new="yes"}
  * Output:   <a href='http://www.google.com' target='_blank'><img src='[THEME]/images/google.jpg' /></a>
- * Examples: {imagelink name="edit.gif" link="javascript: history.go(-1);" script="yes"}
+ * Examples: {imagelink image="edit.gif" link="javascript: history.go(-1);" script="yes"}
  * Output:   <a href='#' onclick='javascript: history.go(-1);'><img src='[THEME]/images/edit.jpg' /></a>
  * @author WanWizard <wanwizard at gmail dot com>
  * @param array parameters
