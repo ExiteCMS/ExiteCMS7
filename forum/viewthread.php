@@ -158,7 +158,7 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 			redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=0&errorcode=3");
 		} else {
 			if (!$flood) {
-				setcookie("post_".$random_id, "posted", time() + 60*60*12, "/", "", "0");
+				setcookie("post_".$random_id, "posted", time() + 60*60, "/", "", "0");
 				$sig = ($userdata['user_sig'] ? '1' :'0');
 				$smileys = isset($_POST['disable_smileys']) ? "0" : "1";
 				$subject = "RE: ".stripinput(censorwords($tdata['thread_subject']));
