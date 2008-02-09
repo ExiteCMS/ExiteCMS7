@@ -93,7 +93,7 @@ if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 		");
 	// update the last_read datestamp of all threads found
 	while ($data = dbarray($result)) {
-		$result2 = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".time()." WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$data['thread_id']."'");
+		$result2 = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".time()."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$data['thread_id']."'");
 	}
 }
 
