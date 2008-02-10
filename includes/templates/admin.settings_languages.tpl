@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* ExiteCMS template: admin.settings.main.tpl                              *}
+{* ExiteCMS template: admin.settings.languages.tpl                         *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -11,7 +11,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* Template for the admin configuration module 'settings_main'             *}
+{* Template for the admin configuration module 'settings_languages'        *}
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
@@ -40,7 +40,7 @@
 		</tr>
 		<tr>
 			<td class='tbl' align='center' colspan='2'>
-		</td>
+			</td>
 		</tr>	
 		<tr>
 			<td class='tbl2' align='center' colspan='2'>
@@ -54,7 +54,7 @@
 			<td width='50%' class='tbl'>
 				<select name='panels_localisation' class='textbox'>
 					<option value='none'{if $settings2.panels_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-*					<option value='single'{if $settings2.panels_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.panels_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
 					<option value='multiple'{if $settings2.panels_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -66,7 +66,7 @@
 			<td width='50%' class='tbl'>
 				<select name='sitelinks_localisation' class='textbox'>
 					<option value='none'{if $settings2.sitelinks_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-*					<option value='single'{if $settings2.sitelinks_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.sitelinks_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
 					<option value='multiple'{if $settings2.sitelinks_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -78,7 +78,7 @@
 			<td width='50%' class='tbl'>
 				<select name='article_localisation' class='textbox'>
 					<option value='none'{if $settings2.article_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-*					<option value='single'{if $settings2.article_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.article_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
 					<option value='multiple'{if $settings2.article_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -90,7 +90,7 @@
 			<td width='50%' class='tbl'>
 				<select name='news_localisation' class='textbox'>
 					<option value='none'{if $settings2.news_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-*					<option value='single'{if $settings2.news_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.news_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
 					<option value='multiple'{if $settings2.news_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -102,11 +102,152 @@
 			<td width='50%' class='tbl'>
 				<select name='download_localisation' class='textbox'>
 					<option value='none'{if $settings2.download_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-*					<option value='single'{if $settings2.download_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.download_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
 					<option value='multiple'{if $settings2.download_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
 		</tr>
+		<tr>
+			<td class='tbl' align='center' colspan='2'>
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl2' align='center' colspan='2'>
+				{$locale.562}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.563}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.559}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.564}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.560}
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl1' align='left' colspan='2'>
+				<span class='small2'>{$locale.569a}</span>
+				<hr />
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.563}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.559}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.564}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.561}
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl1' align='left' colspan='2'>
+				<span class='small2'>{$locale.569b}</span>
+				<hr />
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.563}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.560}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.564}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.559}
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl1' align='left' colspan='2'>
+				<span class='small2'>{$locale.569c}</span>
+				<hr />
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.563}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.560}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.564}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.561}
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl1' align='left' colspan='2'>
+				<span class='small2'>{$locale.569d}</span>
+				<hr />
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.563}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.561}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.564}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.559}
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl1' align='left' colspan='2'>
+				<span class='small2'>{$locale.569e}</span>
+				<hr />
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.563}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.561}
+			</td>
+		</tr>	
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.564}
+			</td>
+			<td width='50%' class='tbl'>
+				{$locale.560}
+			</td>
+		</tr>	
+		<tr>
+			<td class='tbl1' align='left' colspan='2'>
+				<span class='small2'>{$locale.569f}</span>
+				<br />
+			</td>
+		</tr>	
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />

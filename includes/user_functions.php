@@ -128,6 +128,8 @@ if (isset($_SESSION['userinfo'])) {
 			redirect(BASEDIR."index.php", "script");
 			exit;
 		}
+		// update the login expiration timestamp
+		$_SESSION['login_expire'] = isset($_SESSION['remember_me']) ? (time() + $settings['session_gc_maxlifetime']) : (time() + 60*60);
 	} else {
 		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 		// make sure the user info is erased from the session

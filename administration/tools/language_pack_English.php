@@ -882,6 +882,15 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['559'] = "No localisation, all text is hardcoded";
 		$localestrings['560'] = "Assign multiple languages to a single item";
 		$localestrings['561'] = "Assign multiple items to a single language";
+		$localestrings['562'] = "Migration strategies";
+		$localestrings['563'] = "From:";
+		$localestrings['564'] = "To:";
+		$localestrings['569a'] = "The current text for the selected item will be copied for all active locales.";
+		$localestrings['569b'] = "The current text for the selected item will be duplicated for all active locales.";
+		$localestrings['569c'] = "Only the translation for the system locale will be kept, all others will be deleted.";
+		$localestrings['569d'] = "Current translations will be linked to individual locales, and can be deleted or modified as a single entity.";
+		$localestrings['569e'] = "Only the translation for the system locale will be kept, all others will be deleted.";
+		$localestrings['569f'] = "Current translations will be merged into a single entity. Items that don't exist for every locale will be merged as well. This may lead to duplicates.";
 		$localestrings['570'] = "Panels:";
 		$localestrings['571'] = "Menu sytem:";
 		$localestrings['572'] = "Articles:";

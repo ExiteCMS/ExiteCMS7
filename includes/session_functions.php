@@ -27,6 +27,9 @@ session_set_save_handler ("_open_session", "_close_session", "_read_session", "_
 // make sure the session cookie times out at the same time as the session record
 session_set_cookie_params($settings['session_gc_maxlifetime'], "/", "", false);
 
+// disable the default session caching. very annoying
+session_cache_limiter("none");
+
 // start the session
 session_start();
 
