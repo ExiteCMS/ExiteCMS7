@@ -535,7 +535,11 @@ function parseubb($text) {
 	$text = preg_replace('#\[u\](.*?)\[/u\]#si', '<u>\1</u>', $text);
 	$text = preg_replace('#\[center\](.*?)\[/center\]#si', '<center>\1</center>', $text);
 
+	// new youtube bbcode
 	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
+
+	// new wiki bbcode
+	$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" alt="">\1</a>', $text);
 
 	// correct illegal [url=] BBcode
 	$text = str_replace("[url=]", "[url]", $text);
