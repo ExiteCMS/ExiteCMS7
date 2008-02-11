@@ -376,9 +376,9 @@ if ($rows != 0) {
 	}
 }
 
-// update the threads_read record for this user and thread
+// update the threads_read record for this user and thread when the last_post_datestamp is newer
 if (iMEMBER && $last_post_datestamp) {
-	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."', thread_page = '".min($rowstart, $thread_page)."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."'");
+	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."', thread_page = '".min($rowstart, $thread_page)."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."' AND thread_last_read < '".$last_post_datestamp."'");
 }
 
 // generate a list of forums, for the forum switch dropdown
