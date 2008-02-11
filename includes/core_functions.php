@@ -541,7 +541,7 @@ function parseubb($text) {
 	// new wiki bbcode
 	if (isset($settings['wiki_forum_links']) && $settings['wiki_forum_links']) {
 		// add the link to the wiki page
-		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link">\1</a>', $text);
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="ExiteCMS Wiki">\1</a>', $text);
 	} else {
 		// strip the wiki bbcode
 		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '\1', $text);
