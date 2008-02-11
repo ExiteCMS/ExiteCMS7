@@ -33,9 +33,6 @@ a:hover.side			{ color:#333333; text-decoration:underline; }
 						/* image anchors */
 a img					{ border:none; }
 
-						/* wiki anchors */
-a.wiki_link				{ color:#333333; text-decoration:none; border-bottom:1px dotted color #9c0204; }
-
 						/* horizontal lines */
 hr						{ border:none; color:#bbb; background-color:#bbb; height:1px; }
 
@@ -186,6 +183,9 @@ a.thumbnail				{ color: #ddd; }
 
 						/* horizontal pollbar definition */
 .poll 					{ height:12px; border:1px #000 solid; }
+
+						/* wiki links */
+.wiki_link				{ color:#333333; text-decoration:none; border-bottom:1px dotted color #9c0204; }
 
 /* --- Upgrade admin module -------------------------------- */
 
