@@ -1258,6 +1258,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['ma'] = "Morocco";
 		$localestrings['mc'] = "Monaco";
 		$localestrings['md'] = "Republic Of Moldova";
+		$localestrings['me'] = "Montenegro";
 		$localestrings['mg'] = "Madagascar";
 		$localestrings['mh'] = "Marshall Islands";
 		$localestrings['mk'] = "Macedonia";
@@ -1302,6 +1303,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['py'] = "Paraguay";
 		$localestrings['qa'] = "Qatar";
 		$localestrings['ro'] = "Romania";
+		$localestrings['rs'] = "Republic of Serbia";
 		$localestrings['ru'] = "Russian Federation";
 		$localestrings['rw'] = "Rwanda";
 		$localestrings['sa'] = "Saudi Arabia";
@@ -1360,7 +1362,7 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "countrycode", $step);
 
 		$localestrings = array();
-		$localestrings['abu dhabi'] = "ae";
+		$localestrings['Abu Dhabi'] = "ae";
 		$localestrings['Afghanistan'] = "af";
 		$localestrings['Albania'] = "al";
 		$localestrings['Algeria'] = "dz";
@@ -1388,7 +1390,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Bhutan'] = "bt";
 		$localestrings['Bolivia'] = "bo";
 		$localestrings['Bosnia And Herzegovina'] = "ba";
-		$localestrings['bosnia herzegovina'] = "ba";
+		$localestrings['Bosnia Herzegovina'] = "ba";
 		$localestrings['Botswana'] = "bw";
 		$localestrings['Bouvet Island'] = "bv";
 		$localestrings['Brazil'] = "br";
@@ -1512,7 +1514,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Mexico'] = "mx";
 		$localestrings['Monaco'] = "mc";
 		$localestrings['Mongolia'] = "mn";
-		$localestrings['montenegro'] = "cs";
+		$localestrings['montenegro'] = "me";
 		$localestrings['Montserrat'] = "ms";
 		$localestrings['Morocco'] = "ma";
 		$localestrings['Mozambique'] = "mz";
@@ -1557,7 +1559,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['San Marino'] = "sm";
 		$localestrings['Saudi Arabia'] = "sa";
 		$localestrings['Senegal'] = "sn";
-		$localestrings['serbia'] = "cs";
+		$localestrings['serbia'] = "rs";
 		$localestrings['Serbia And Montenegro'] = "cs";
 		$localestrings['Seychelles'] = "sc";
 		$localestrings['sharjah emirate'] = "ae";
