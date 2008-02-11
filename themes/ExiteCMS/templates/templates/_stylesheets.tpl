@@ -185,7 +185,7 @@ a.thumbnail				{ color: #ddd; }
 .poll 					{ height:12px; border:1px #000 solid; }
 
 						/* wiki links */
-.wiki_link				{ color:#333333; text-decoration:none; border-bottom:1px dotted color #9c0204; }
+.wiki_link				{ color:#9c0204; text-decoration:none; border-bottom:1px dotted color #333333; }
 
 /* --- Upgrade admin module -------------------------------- */
 

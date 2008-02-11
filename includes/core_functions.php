@@ -525,7 +525,7 @@ function parsesmileys($message) {
 
 // Parse bbcode into HTML code
 function parseubb($text) {
-	global $locale;
+	global $settings, $locale;
 	
 	$text = preg_replace('#\[li\](.*?)\[/li\]#si', '<li>\1</li>', $text);
 	$text = preg_replace('#\[ul\](.*?)\[/ul\]#si', '<ul>\1</ul>', $text);
@@ -539,7 +539,13 @@ function parseubb($text) {
 	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
 
 	// new wiki bbcode
-	$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" alt="">\1</a>', $text);
+	if (isset($settings['wiki_forum_links']) && $settings['wiki_forum_links']) {
+		// add the link to the wiki page
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link">\1</a>', $text);
+	} else {
+		// strip the wiki bbcode
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '\1', $text);
+	}
 
 	// correct illegal [url=] BBcode
 	$text = str_replace("[url=]", "[url]", $text);
