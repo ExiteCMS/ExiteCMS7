@@ -315,6 +315,8 @@ function stripmessageinput($text) {
 // parse the [code] sections in a post
 function parsemessage($rawmsg, $smileys=true) {
 
+	global $settings, $db_prefix;
+	
 	// temp message storage
 	$message = "";
 	$codeblocks = array();
@@ -390,9 +392,23 @@ function parsemessage($rawmsg, $smileys=true) {
 		$message = substr($message, 0, $i).$urlblock.substr($message, $i+8);
 	}
 
-	// parse the message, and convert all BBcode found
+	// detect and convert wikitags to wiki bbcodes if needed
+	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
+		// build the search and replace arrays
+		$search = array();
+		$replace = array();
+		$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
+		while ($data = dbarray($result)) {
+			$search[] = "\/b(".$data['tag'].")\b/is";
+			$replace[] = "[wiki]\\1[/wiki]";
+		}
+		$message = preg_replace($search, $replace, $message);
+	}
+	// parse the smileys in the message
 	if ($smileys) $message = parsesmileys($message);
+	// page all ubbcode
 	$message = parseubb($message);
+	// convert any newlines to html <br>
 	$message = nl2br($message);
 
 	// re-insert the saved code blocks
