@@ -34,7 +34,8 @@ a:hover.side			{ color:#333333; text-decoration:underline; }
 a img					{ border:none; }
 
 						/* wiki links */
-a:link.wiki_link		{ text-decoration:none; border-width:0px 0px 1px 0px; border-style:dotted; border-color:#9c0204; }
+a.wiki_link:link, a.wiki_link:visited
+						{ text-decoration:none; border-width:0px 0px 2px 0px; border-style:dotted; border-color:#9c0204; }
 
 						/* horizontal lines */
 hr						{ border:none; color:#bbb; background-color:#bbb; height:1px; }

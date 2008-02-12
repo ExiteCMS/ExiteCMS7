@@ -399,8 +399,8 @@ function parsemessage($rawmsg, $smileys=true) {
 		$replace = array();
 		$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
 		while ($data = dbarray($result)) {
-			$search[] = "/(\b".$data['tag']."\b)/is";
-			$replace[] = " [wiki]\\1[/wiki] ";
+			$search[] = "/(\s)(".$data['tag'].")(\s)/is";
+			$replace[] = "\\1[wiki]\\2[/wiki]\\3";
 		}
 		$message = preg_replace($search, $replace, $message);
 	}
