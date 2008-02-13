@@ -83,6 +83,11 @@ if ($data['forum_rulespage']) {
 $can_post = checkgroup($data['forum_posting']);
 $variables['user_can_post'] = $can_post;
 
+// this forums caption
+$variables['forum_cat_id'] = $data['forum_cat_id'];
+$variables['forum_cat_name'] = $data['forum_cat_name'];
+$variables['forum_name'] = $data['forum_name'];
+
 // if a mark-all-read, was requested, check if it's possible, then do it before continuing
 if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 	$result = dbquery("
@@ -100,11 +105,6 @@ if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 		$result2 = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".time()."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$data['thread_id']."'");
 	}
 }
-
-// this forums caption
-$variables['forum_cat_id'] = $data['forum_cat_id'];
-$variables['forum_cat_name'] = $data['forum_cat_name'];
-$variables['forum_name'] = $data['forum_name'];
 
 // check for unread posts in this forum
 if (iMEMBER) {
