@@ -105,6 +105,15 @@
 		</tr>
 		<tr>
 			<td class='tbl'>
+				{$locale.u035}
+			</td>
+			<td class='tbl'>
+				<input type='radio' name='user_posts_unread' value='1' {if $this_userdata.user_posts_unread == "1"}checked="checked"{/if} />{$locale.u007}
+				<input type='radio' name='user_posts_unread' value='0' {if $this_userdata.user_posts_unread == "0"}checked="checked"{/if} />{$locale.u008}
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl'>
 				{$locale.u009}
 			</td>
 			<td class='tbl'>

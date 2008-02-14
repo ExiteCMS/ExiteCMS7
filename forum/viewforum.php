@@ -65,10 +65,6 @@ if (!checkgroup($data['forum_access']) || !$data['forum_cat']) {
 	fallback("index.php");
 }
 
-// get the number of unread posts in this forum
-$result = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE tr.user_id = '".$userdata['user_id']."' AND tr.forum_id = '".$forum_id."' AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
-$variables['unread_posts'] = ($result ? mysql_result($result, 0) : 0);
-
 // if a forum rules custompage is given, check if it exists
 $variables['rulespage_defined'] = false;
 if ($data['forum_rulespage']) {
@@ -106,20 +102,18 @@ if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 	}
 }
 
-// check for unread posts in this forum
+// get the number of unread posts in this forum
 if (iMEMBER) {
-	$result = dbquery("
-		SELECT count(*) as unread, sum(tr.thread_page) AS pages 
-			FROM ".$db_prefix."posts p 
-			LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-			WHERE tr.user_id = '".$userdata['user_id']."' 
-				AND tr.forum_id = '".$forum_id."'
-				AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
-				AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
-		", false);
-	$data['unread_count'] = ($result ? mysql_result($result, 0) : 0);
+	if ($userdata['user_posts_unread']) {
+		// include the users own posts
+		$result = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE tr.user_id = '".$userdata['user_id']."' AND tr.forum_id = '".$forum_id."' AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
+	} else {
+		// filter the users own posts
+		$result = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE tr.user_id = '".$userdata['user_id']."' AND tr.forum_id = '".$forum_id."' AND p.post_author != '".$userdata['user_id']."' AND p.post_edituser != '".$userdata['user_id']."' AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
+	}
+	$variables['unread_posts'] = ($result ? mysql_result($result, 0) : 0);
 } else {
-	$data['unread_count'] = 0;
+	$variables['unread_posts'] = 0;
 }
 
 // get the number of threads in this forum
