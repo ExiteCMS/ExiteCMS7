@@ -3076,7 +3076,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u032'] = "Hidden";
 		$localestrings['u033'] = "Open";
 		$localestrings['u034'] = "Closed";
-		$localestrings['u035'] = "Show your own posts as unread";
+		$localestrings['u035'] = "Show your own posts as unread:";
 		$localestrings['u036'] = "";
 		$localestrings['u037'] = "Html";
 		$localestrings['u038'] = "Text";

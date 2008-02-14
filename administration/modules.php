@@ -43,7 +43,8 @@ if ($action == 'install' && isset($module)) {
 	$module = stripinput($_GET['module']);
 
 	// check if it exists, if so, bail out
-	if (dbrows($result)) fallback(FUSION_SELF.$aidlink);
+	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_folder='$module'");
+	if (dbrows($result) || !is_dir(PATH_MODULES.$module)) fallback(FUSION_SELF.$aidlink);
 
 	// load the module installer
 	include PATH_MODULES.$module."/module_installer.php";
@@ -94,15 +95,17 @@ if ($action == 'install' && isset($module)) {
 					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
 					if (dbrows($result)) {
 						$data = dbarray($result);
-						$link_panel = $data['panel_filename'];
+						$link_panel = substr($data['panel_filename'],0,strpos($data['panel_filename'], "/"));
 					} else {
 						// if still not found, fall back to the CMS default
-						$link_panel = "main_menu_panel/main_menu_panel.php";
+						$link_panel = "main_menu_panel";
 					}
+				} else {
+					$link_panel = $mod_link['panel'];
 				}
 			} else {
 				// use the CMS default
-				$link_panel = "main_menu_panel/main_menu_panel.php";
+				$link_panel = "main_menu_panel";
 			}
 
 			// determine the next order in the menu for this link
@@ -217,7 +220,7 @@ if ($action == 'uninstall' && isset($id)) {
 			// create the correct URL for this panel
 			$link_url = str_replace("../","",MODULES).$mod_folder."/".$mod_link['url'];
 			if ($link_url{0} == "/") $link_url = substr($link_url,1);
-			
+
 			// determine to which menu panel this link needs to be added
 			if (isset($mod_link['panel']) && $mod_link['panel'] != "") {
 				if (substr($mod_link['panel'],-4) != ".php") {
@@ -230,20 +233,18 @@ if ($action == 'uninstall' && isset($id)) {
 					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
 					if (dbrows($result)) {
 						$data = dbarray($result);
-						$link_panel = $data['panel_filename'];
+						$link_panel = substr($data['panel_filename'],0,strpos($data['panel_filename'], "/"));
 					} else {
 						// if still not found, fall back to the CMS default
-						$link_panel = "main_menu_panel/main_menu_panel.php";
+						$link_panel = "main_menu_panel";
 					}
+				} else {
+					$link_panel = $mod_link['panel'];
 				}
 			} else {
 				// use the CMS default
-				$link_panel = "main_menu_panel/main_menu_panel.php";
+				$link_panel = "main_menu_panel";
 			}
-
-			// if this panel doesn't exist (anymore), use the default menu panel
-			$result = dbquery("SELECT panel_id FROM ".$db_prefix."panels WHERE panel_filename = '$link_panel'");
-			if (dbrows($result) == 0) $link_panel = "main_menu_panel/main_menu_panel.php";
 
 			// check if we have a menu entry for this link
 			$result2 = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_url='$link_url'");
@@ -370,15 +371,17 @@ if ($action == 'upgrade' && isset($id)) {
 					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
 					if (dbrows($result)) {
 						$data = dbarray($result);
-						$link_panel = $data['panel_filename'];
+						$link_panel = substr($data['panel_filename'],0,strpos($data['panel_filename'], "/"));
 					} else {
 						// if still not found, fall back to the CMS default
-						$link_panel = "main_menu_panel/main_menu_panel.php";
+						$link_panel = "main_menu_panel";
 					}
+				} else {
+					$link_panel = $mod_link['panel'];
 				}
 			} else {
 				// use the CMS default
-				$link_panel = "main_menu_panel/main_menu_panel.php";
+				$link_panel = "main_menu_panel";
 			}
 
 			// if the panel doesn't exist, use the default menu panel
@@ -390,10 +393,21 @@ if ($action == 'upgrade' && isset($id)) {
 			if (dbrows($result) == 0) {
 				// determine the next order in the menu for this link
 				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$link_panel'"),0) + 1;
-	
+
 				// add the new link
-				$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
-					VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+				switch ($settings['sitelinks_localisation']) {
+					case "multiple":
+						$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
+						while ($data = dbarray($result)) {
+							$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+								VALUES ('".$mod_link['name']."', '".$data['locale_code']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+						}
+						break;
+					default:
+						$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+							VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+				}
+
 			} else {
 				// do nothing
 			}
