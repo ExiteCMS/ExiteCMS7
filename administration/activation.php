@@ -34,7 +34,7 @@ if ($step == "activate") {
 	if (dbrows($result)) {
 		$data = dbarray($result);
 		$data = array_merge($data, unserialize($data['user_info']));
-		$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_offset, user_posts, user_joined, user_level, user_status) VALUES('".$data['user_name']."', '".$data['user_fullname']."', md5(md5('".$data['user_password']."')), '".$data['user_email']."', '".$data['user_hide_email']."', '".$data['user_offset']."', '0', '".time()."', '101', '0')");
+		$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_offset, user_posts, user_joined, user_level, user_ip, user_status) VALUES('".$data['user_name']."', '".$data['user_fullname']."', md5(md5('".$data['user_password']."')), '".$data['user_email']."', '".$data['user_hide_email']."', '".$data['user_offset']."', '0', '".time()."', '101', '".$data['user_ip']."', '0')");
 		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
 	}
 }
