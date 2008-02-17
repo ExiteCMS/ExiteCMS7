@@ -109,8 +109,8 @@ function dbcount($field,$table,$conditions="") {
 	global $db_prefix, $_db_last_function, $_db_debug, $_db_log, $_db_logs;
 
 	$cond = ($conditions ? " WHERE ".$conditions : "");
-	$sql = "SELECT Count".$field." FROM ".$db_prefix.$table.$cond;
-	
+	$sql = "SELECT Count".$field." FROM ".(strpos($table, ".") ? $table : $db_prefix.$table).$cond;
+
 	$result = dbquery($sql, false);
 	if (!$result) {
 		echo mysql_error();
@@ -182,12 +182,16 @@ function dbtable_exists($tbl, $db='') {
 	$_s_loadtime = $_s_loadtime[1] + $_s_loadtime[0];
 	$_loadstats['querytime'] -= $_s_loadtime;
 
-	$db_select = @mysql_select_db( ($db != "" && $db != $db_name) ? $db :$db_name );
+	if (!empty($db) && $db != $db_name) {
+		$db_select = @mysql_select_db($db);
+		if (!$db_select) return false;
+	}
 	$result = @mysql_query("SHOW TABLES");
 	while ($data = @mysql_fetch_array($result)) { 
 		$tables[] = $data[0]; 
 	}
 	@mysql_free_result($result);
+	$db_select = @mysql_select_db($db_name );
 	
 	$_loadstats['queries']++;
 	$_loadstats['others']++;
