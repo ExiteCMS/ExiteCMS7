@@ -369,6 +369,10 @@ function load_panels($column) {
 							$_panel['name'] = 'modules.'.substr(basename($p_data['panel_filename']),0,-4);
 							$_panel['panel_code'] = PATH_MODULES.$p_data['panel_filename'];
 						}
+						// check if there is a locale for this panel
+						$_panel['locale'] = 'modules.'.dirname($p_data['panel_filename']);
+						$result = dbquery("SELECT * FROM ".$db_prefix."locales WHERE locales_name = '".$_panel['locale']."' LIMIT 1");
+						if (dbrows($result)==0) unset($_panel['locale']);
 						break;
 					case "dynamic":
 						$_panel['panel_code'] = $p_data['panel_code'];
