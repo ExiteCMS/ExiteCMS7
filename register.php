@@ -175,6 +175,7 @@ if ($settings['enable_registration'] == 1) {
 						"user_password" => $password1,
 						"user_email" => $email,
 						"user_offset" => $user_offset,
+						"user_ip" => USER_IP,
 						"user_hide_email" => isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1"
 					));
 					$result = dbquery("INSERT INTO ".$db_prefix."new_users (user_code, user_email, user_datestamp, user_info) VALUES('$user_code', '".$email."', '".time()."', '$user_info')");

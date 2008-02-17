@@ -91,7 +91,7 @@ if (isset($lookup)) {
 	$data['comment_count'] = number_format(dbcount("(comment_id)", "comments", "comment_name='".$data['user_id']."'"));
 	$data['user_posts'] = number_format($data['user_posts']);
 	$data['show_viewposts_button'] = ($data['user_posts'] > 0 and file_exists(PATH_MODULES."forum_threads_list_panel/my_posts.php"));
-	$result = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE tr.user_id = '".$userdata['user_id']."' AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
+	$result = dbquery("SELECT count(*) as unread, sum(tr.thread_page) AS pages FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id WHERE tr.user_id = '".$data['user_id']."' AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)", false);
 	$data['unread_count'] = ($result ? mysql_result($result, 0) : 0);
 	$data['user_email'] = str_replace("@","&#64;",$data['user_email']);
 
