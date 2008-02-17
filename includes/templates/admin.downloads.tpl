@@ -14,7 +14,7 @@
 {* Template for the admin content module 'downloads'                       *}
 {*                                                                         *}
 {***************************************************************************}
-{if $step == "add"}
+{if $step == "add" || $step == "edit"}
 	{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
 		<form name='inputform' method='post' action='{$formaction}'>
 			<table align='center' cellpadding='0' cellspacing='0' width='460'>
