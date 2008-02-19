@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Thu Feb 14 2008, 15:05:23 CET
+// generated on : Mon Feb 18 2008, 14:35:18 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -64,6 +64,16 @@ $locale['063'] = "Enable extended expiration";
 $locale['064'] = "Login";
 $locale['065'] = "Not a member yet?<br /><a href='%sregister.php' class='side'>Click here</a> to register.";
 $locale['066'] = "Forgotten your password?<br />Request a new one <a href='%slostpassword.php' class='side'>here</a>.";
+$locale['070'] = "Online";
+$locale['071'] = "< 5 mins";
+$locale['072'] = "week";
+$locale['073'] = "weeks";
+$locale['074'] = "day";
+$locale['075'] = "days";
+$locale['076'] = "month";
+$locale['077'] = "months";
+$locale['078'] = "year";
+$locale['079'] = "years";
 $locale['080'] = "Edit Profile";
 $locale['081'] = "Private Messages";
 $locale['082'] = "Members List";

@@ -2506,6 +2506,16 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['064'] = "Login";
 		$localestrings['065'] = "Not a member yet?<br /><a href='%sregister.php' class='side'>Click here</a> to register.";
 		$localestrings['066'] = "Forgotten your password?<br />Request a new one <a href='%slostpassword.php' class='side'>here</a>.";
+		$localestrings['070'] = "Online";
+		$localestrings['071'] = "< 5 mins";
+		$localestrings['072'] = "week";
+		$localestrings['073'] = "weeks";
+		$localestrings['074'] = "day";
+		$localestrings['075'] = "days";
+		$localestrings['076'] = "month";
+		$localestrings['077'] = "months";
+		$localestrings['078'] = "year";
+		$localestrings['079'] = "years";
 		$localestrings['080'] = "Edit Profile";
 		$localestrings['081'] = "Private Messages";
 		$localestrings['082'] = "Members List";

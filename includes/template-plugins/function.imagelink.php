@@ -59,10 +59,9 @@ function smarty_function_imagelink($params, &$smarty)
 	} else {
 		$alt = $params['alt'];
 	}
-	if (!isset($params['style'])) {
-		$style = false;
-	} else {
-		$style = $params['style'];
+	$style = "vertical-align:text-top;";
+	if (isset($params['style'])) {
+		$style .= $params['style'];
 	}
 	if (!isset($params['onclick'])) {
 		if ($script) {

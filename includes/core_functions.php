@@ -745,7 +745,99 @@ function time_local2system($val) {
 	return $val - ($localtime * 3600);
 }
 
-// Translate bytes into kb, mb, gb or tb by CrappoMan
+
+// translate a timestamp into a date relative to now
+function datediff($datefrom,$dateto=-1)
+{
+	global $locale;
+	
+	// validate parameters
+	if ($datefrom == 0) { return ""; }
+	if ($dateto == -1) { $dateto = time(); }
+
+	// calculate the difference in seconds betweeen the two timestamps
+	$difference = $dateto - $datefrom;
+
+	// determine the interface
+	if ($difference < 60) {
+		// if difference is less than 60 seconds, seconds is a good interval of choice
+		$interval = "h";
+	} elseif ($difference >= 60 && $difference<60*60) {
+		// if difference is between 60 seconds and 60 minutes, minutes is a good interval
+      $interval = "h";
+	} elseif ($difference >= 60*60 && $difference<60*60*24) {
+		// if difference is between 1 hour and 24 hours, hours is a good interval
+		$interval = "h";
+	} elseif ($difference >= 60*60*24 && $difference<60*60*24*7) {
+		// if difference is between 1 day and 7 days, days is a good interval
+		$interval = "d";
+	} elseif ($difference >= 60*60*24*7 && $difference < 60*60*24*30) {
+		// if difference is between 1 week and 30 days, weeks is a good interval
+		$interval = "w";
+	} elseif ($difference >= 60*60*24*30 && $difference < 60*60*24*365) {
+		// if difference is between 30 days and 365 days, months is a good interval, again, the same thing
+		// applies, if the 29th February happens to exist between your 2 dates, the function will return
+		// the 'incorrect' value for a day
+		$interval = "m";
+	} elseif ($difference >= 60*60*24*365) {
+		// if difference is greater than or equal to 365 days, return year. This will be incorrect if
+		// for example, you call the function on the 28th April 2008 passing in 29th April 2007. It will
+		// return 1 year ago when in actual fact (yawn!) not quite a year has gone by
+		$interval = "y";
+	}
+
+	// based on the interval, determine the number of units between the two dates
+	// from this point on, you would be hard pushed telling the difference between
+    // this function and DateDiff. If the $datediff returned is 1, be sure to return
+	// the singular of the unit, e.g. 'day' rather 'days'
+	$res = "";
+	switch($interval) {
+		case "w":
+			$datediff = floor($difference / 60 / 60 / 24 / 7);
+			$res = $datediff . " " . (($datediff==1) ? $locale['072'] : $locale['073']);
+			break;
+
+		case "y":
+			$datediff = floor($difference / 60 / 60 / 24 / 365);
+			$res = $datediff . " " . (($datediff==1) ? $locale['078'] : $locale['079']);
+			break;
+
+		case "m":
+			$months_difference = floor($difference / 60 / 60 / 24 / 29);
+			while (mktime(date("H", $datefrom), date("i", $datefrom), date("s", $datefrom), date("n", $datefrom)+($months_difference), date("j", $dateto), date("Y", $datefrom)) < $dateto) {
+				$months_difference++;
+			}
+			$datediff = $months_difference;
+			// we need this in here because it is possible to have an 'm' interval and a months
+			// difference of 12 because we are using 29 days in a month
+			if ($datediff==12) {
+				$datediff--;
+			}
+			$res .= $datediff . " " . (($datediff==1) ? $locale['076'] : $locale['077']);
+			break;
+
+		case "d":
+			$datediff = floor($difference / 60 / 60 / 24);
+			$res .= $datediff . " " . (($datediff==1) ? $locale['074'] : $locale['075']);
+			break;
+
+		case "h":
+			$datediff = floor($difference / 60 / 60);
+			$res .= sprintf("%02d:", $datediff);
+
+		case "n":
+			$datediff = floor($difference / 60);
+			$res .= sprintf("%02d:", $datediff);
+
+		case "s":
+			$datediff = $difference;
+			$res .= sprintf("%02d", $datediff);
+			break;
+	}
+	return $res;
+}
+
+// translate bytes into kb, mb, gb or tb by CrappoMan
 function parsebytesize($size,$digits=2,$dir=false) {
 	$kb=1024; $mb=1024*$kb; $gb=1024*$mb; $tb=1024*$gb;
 	if (($size==0)&&($dir)) { return "Empty"; }
