@@ -157,7 +157,7 @@ $title = $locale['411'];
 if ($action == "refresh") {
 
 	reordermenu($panel);
-	redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale".$link_locale)));
+	redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale=".$link_locale)));
 
 } elseif ($action == "move") {
 
@@ -175,7 +175,7 @@ if ($action == "refresh") {
 	$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."site_links WHERE panel_name = '$panel' AND link_id='$link_id'"));
 	$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order-1 WHERE panel_name = '$panel' AND link_order>'".$data['link_order']."'".($where==""?"":(" AND ".$where))."");
 	$result = dbquery("DELETE FROM ".$db_prefix."site_links WHERE panel_name = '$panel' AND link_id='$link_id'");
-	redirect(FUSION_SELF.$aidlink."&status=del".($link_locale==""?"":("&link_locale".$link_locale)));
+	redirect(FUSION_SELF.$aidlink."&status=del".($link_locale==""?"":("&link_locale=".$link_locale)));
 
 } else {
 
@@ -217,7 +217,7 @@ if ($action == "refresh") {
 			}
 			// and update the link itself as well...
 			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_name='$link_name', link_locale='$link_locale', link_url='$link_url', panel_name='$panel_filename', link_visibility='$link_visibility', link_position='$link_position', link_parent='$link_parent', link_window='$link_window', link_aid='$link_aid', link_order='$link_order' WHERE link_id='$link_id'");
-			redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale".$link_locale)));
+			redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale=".$link_locale)));
 		} else {
 			// get a linkorder if none given
 			if (!$link_order) {
@@ -225,7 +225,7 @@ if ($action == "refresh") {
 			}
 			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'".($where==""?"":(" AND ".$where))."");	
 			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, panel_name, link_visibility, link_position, link_parent, link_window, link_aid, link_order) VALUES ('$link_name', '$link_locale', '$link_url', '$panel_filename', '$link_visibility', '$link_position', '$link_parent', '$link_window', '$link_aid', '$link_order')");
-			redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale".$link_locale)));
+			redirect(FUSION_SELF.$aidlink.($link_locale==""?"":("&link_locale=".$link_locale)));
 		}
 	}
 
