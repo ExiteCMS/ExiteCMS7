@@ -291,7 +291,8 @@ if ($rows != 0) {
 	
 		// country flag
 		if ($settings['forum_flags']) {
-			if ($settings['hide_webmaster'] && iSUPERADMIN) {
+			// swap flags if we're hiding the webmasters true country of origin
+			if ($settings['hide_webmaster'] && $post['user_level'] == 103) {
 				$data['cc_flag'] = GeoIP_Code2Flag($settings['country']);
 			} else {
 				$data['cc_flag'] = GeoIP_IP2Flag($data['post_ip']);

@@ -20,7 +20,7 @@
 	<center>
 		<select name='page_id' class='textbox' style='width:250px;'>
 		{section name=id loop=$pages}
-			<option value='{$pages[id].page_id}{if $pages[id].selected} selected{/if}'>{$pages[id].page_title}</option>
+			<option value='{$pages[id].page_id}'{if $pages[id].selected} selected='selected'{/if}>{$pages[id].page_title}</option>
 		{/section}
 		</select>
 		<input type='submit' name='edit' value='{$locale.421}' class='button' />

@@ -24,6 +24,17 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "404page", $step);
 
 		$localestrings = array();
+		$localestrings['400'] = "Edit 404 Page";
+		$localestrings['401'] = "404 page for the locale '%s' is updated";
+		$localestrings['402'] = "Error saving the 404 Page";
+		$localestrings['403'] = "Current 404 Pages";
+		$localestrings['404'] = "Edit";
+		$localestrings['405'] = "Page Content:";
+		$localestrings['406'] = "Preview Page";
+		$localestrings['407'] = "Save Page";
+		load_localestrings($localestrings, LP_LOCALE, "admin.404pages", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "New User Activation";
 		$localestrings['401'] = "There are no user registrations present to activate";
 		$localestrings['402'] = "User Name";
@@ -468,7 +479,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['224'] = "Upgrade";
 		$localestrings['225'] = "User Groups";
 		$localestrings['226'] = "Blogs";
-		$localestrings['227'] = "x";
+		$localestrings['227'] = "404 Pages";
 		$localestrings['228'] = "Main Settings";
 		$localestrings['229'] = "Time and Date Settings";
 		$localestrings['230'] = "Forum Settings";

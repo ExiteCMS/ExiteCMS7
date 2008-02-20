@@ -761,7 +761,7 @@ function datediff($datefrom,$dateto=-1)
 	// determine the interface
 	if ($difference < 60) {
 		// if difference is less than 60 seconds, seconds is a good interval of choice
-		$interval = "h";
+		$interval = "s";
 	} elseif ($difference >= 60 && $difference<60*60) {
 		// if difference is between 60 seconds and 60 minutes, minutes is a good interval
       $interval = "h";
@@ -823,10 +823,12 @@ function datediff($datefrom,$dateto=-1)
 
 		case "h":
 			$datediff = floor($difference / 60 / 60);
+			$difference =  $difference - $datediff * 60 * 60;
 			$res .= sprintf("%02d:", $datediff);
 
 		case "n":
 			$datediff = floor($difference / 60);
+			$difference =  $difference - $datediff * 60;
 			$res .= sprintf("%02d:", $datediff);
 
 		case "s":
