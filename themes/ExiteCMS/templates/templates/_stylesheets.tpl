@@ -34,7 +34,7 @@ a:hover.side			{ color:#333333; text-decoration:underline; }
 a img					{ border:none; }
 
 						/* wiki links */
-a.wiki_link:link,a.wiki_link:visited { color:#9c0204; text-decoration:none; border-width:0px 0px 1px 0px; border-style:dotted; border-color:#9c0204; }
+a.wiki_link:link,a.wiki_link:visited { color:#34329C; text-decoration:none; border-width:0px 0px 1px 0px; border-style:dotted; border-color:#34329C; }
 
 						/* horizontal lines */
 hr						{ border:none; color:#bbb; background-color:#bbb; height:1px; }
@@ -192,7 +192,7 @@ a.thumbnail				{ color: #ddd; }
 						/* revision title */
 .rev_title				{ color:#333; font-weight:bold; }
 						/* revision title for major revisions */
-.rev_major				{ color:#9c0204; font-weight:bold; }
+.rev_major				{ color:#34329C; font-weight:bold; }
 
 						/* revision description text */
 .rev_desc				{ }

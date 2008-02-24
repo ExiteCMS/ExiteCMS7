@@ -44,12 +44,12 @@ input.highlight {
 }
 
 .page a {
-	color: #9c0204;
+	color: #34329C;
 	text-decoration: none;
 }
 
 .page a:hover {
-	color: #9c0204;
+	color: #34329C;
 	text-decoration: underline;
 }
 
@@ -356,7 +356,7 @@ h1 {
 }
 
 .notes {
-	color: #9c0204;
+	color: #34329C;
 }
 
 .centre {text-align: center;}
@@ -403,7 +403,7 @@ blockquote {
 
 
 .code_header {
-	color: #9c0204;
+	color: #34329C;
 	background: #ddd;
 	border-top: 1px solid #CCC;
 	border-right: 1px solid #CCC;
@@ -496,11 +496,11 @@ form, h1, h2, h3, h4, h5 {
 }
 
 a.ext {
-	color: #9c0204;
+	color: #34329C;
 }
 
 a.ext:hover {
-	color: #9c0204;
+	color: #34329C;
 }
 
 .exttail {
