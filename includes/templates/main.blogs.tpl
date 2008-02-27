@@ -169,7 +169,7 @@
 								{if $smarty.const.iMEMBER}<a href='profile.php?lookup={$bloglist[id].blog_author}'>{/if}
 								{$bloglist[id].user_name}{if $smarty.const.iMEMBER}</a>{/if}
 								{$locale.421} {$bloglist[id].blog_datestamp|date_format:"longdate"}
-								&middot; <a href='blogs.php?blog_id={$bloglist[id].blog_id}'>{$locale.422}</a>
+								{if !$blog_id}&middot; <a href='blogs.php?blog_id={$bloglist[id].blog_id}'>{$locale.422}</a>{/if}
 								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
 								<br />
 								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
