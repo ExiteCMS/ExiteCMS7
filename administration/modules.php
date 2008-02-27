@@ -479,7 +479,15 @@ while ($folder = readdir($temp)) {
 					$data = dbarray($result);
 					$this_module['id'] = $data['mod_id'];
 					$this_module['version'] = $data['mod_version'];
-					if ($mod_version > $data['mod_version']) {
+					// convert the versions to a number
+					$new = explode(".", $mod_version);
+					while (count($new) < 4) { array_unshift($new, 0); }
+					$new = 1 * $new[3] + 100 * $new[2] + 10000 * $new[1] + 1000000 * $new[0]; 
+					$cur = explode(".", $data['mod_version']);
+					while (count($cur) < 4) { array_unshift($cur, 0); }
+					$cur = 1 * $cur[3] + 100 * $cur[2] + 10000 * $cur[1] + 1000000 * $cur[0]; 
+					// now compare the numeric version numbers
+					if ($new > $cur) {
 						if ($filter && $filter != 2) continue;
 						$this_module['status'] = 2;
 						$this_module['status_text'] = $locale['416'];
