@@ -580,7 +580,7 @@ if (isset($_POST["cancel"])) {
 						// insert a new post record
 						$flood = false;
 						$result = dbquery("SELECT MAX(post_datestamp) AS last_post FROM ".$db_prefix."posts WHERE post_author='".$userdata['user_id']."'");
-						if (!iSUPERADMIN || dbrows($result) > 0) {
+						if (!iSUPERADMIN && dbrows($result) > 0) {
 							$data = dbarray($result);
 							if ((time() - $data['last_post']) < $settings['flood_interval']) {
 								$flood = true;
