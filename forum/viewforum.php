@@ -93,7 +93,8 @@ if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 			WHERE tr.user_id = '".$userdata['user_id']."'
 				AND tr.forum_id = '".$forum_id."'
 				AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
-				AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+				AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+					OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))
 			GROUP BY p.thread_id
 		");
 	// update the last_read datestamp of all threads found

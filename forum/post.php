@@ -579,18 +579,21 @@ if (isset($_POST["cancel"])) {
 					} else {
 						// insert a new post record
 						$flood = false;
-						$result = dbquery("SELECT MAX(post_datestamp) AS last_post FROM ".$db_prefix."posts WHERE post_author='".$userdata['user_id']."'");
-						if (!iSUPERADMIN && dbrows($result) > 0) {
-							$data = dbarray($result);
-							if ((time() - $data['last_post']) < $settings['flood_interval']) {
-								$flood = true;
-								$error = $locale['431'];
-								$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_timestamp) VALUES ('".USER_IP."', '".time()."')");
-								if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."'") > 4) {
-									$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['434']."' WHERE user_id='".$userdata['user_id']."'");
-									$error .= "<br />".$locale['432'];
-								} else {
-									$error .= "<br />".sprintf($locale['433'], $settings['flood_interval']);
+						if (!iSUPERADMIN) {
+							// for non-webmasters, check for post flooding
+							$result = dbquery("SELECT MAX(post_datestamp) AS last_post FROM ".$db_prefix."posts WHERE post_author='".$userdata['user_id']."'");
+							if (dbrows($result) > 0) {
+								$data = dbarray($result);
+								if ((time() - $data['last_post']) < $settings['flood_interval']) {
+									$flood = true;
+									$error = $locale['431'];
+									$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_timestamp) VALUES ('".USER_IP."', '".time()."')");
+									if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."'") > 4) {
+										$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['434']."' WHERE user_id='".$userdata['user_id']."'");
+										$error .= "<br />".$locale['432'];
+									} else {
+										$error .= "<br />".sprintf($locale['433'], $settings['flood_interval']);
+									}
 								}
 							}
 						}

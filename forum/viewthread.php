@@ -139,17 +139,20 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 	$flood = false;
 	$message = stripmessageinput(censorwords($_POST['message']));
 	if ($message != "") {
-		$result = dbquery("SELECT MAX(post_datestamp) AS last_post FROM ".$db_prefix."posts WHERE post_author='".$userdata['user_id']."'");
-		if (!iSUPERADMIN || dbrows($result) > 0) {
-			$data = dbarray($result);
-			if ((time() - $data['last_post']) < $settings['flood_interval']) {
-				$flood = true;
-				$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_timestamp) VALUES ('".USER_IP."', '".time()."')");
-				if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."'") > 4) {
-					$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['530']."' WHERE user_id='".$userdata['user_id']."'");
-					redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=0&errorcode=2");
-				} else {
-					redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=0&errorcode=1");
+		if (!iSUPERADMIN) {
+			// for non-webmasters, check for post flooding
+			$result = dbquery("SELECT MAX(post_datestamp) AS last_post FROM ".$db_prefix."posts WHERE post_author='".$userdata['user_id']."'");
+			if (dbrows($result) > 0) {
+				$data = dbarray($result);
+				if ((time() - $data['last_post']) < $settings['flood_interval']) {
+					$flood = true;
+					$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_timestamp) VALUES ('".USER_IP."', '".time()."')");
+					if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."'") > 4) {
+						$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['530']."' WHERE user_id='".$userdata['user_id']."'");
+						redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=0&errorcode=2");
+					} else {
+						redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=0&errorcode=1");
+					}
 				}
 			}
 		}
