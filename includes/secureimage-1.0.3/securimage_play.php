@@ -1,6 +1,6 @@
 <?php
-
-include 'securimage.php';
+require_once '../core_functions.php';
+require_once include 'securimage.php';
 
 $img = new Securimage();
 

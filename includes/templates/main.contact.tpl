@@ -59,8 +59,18 @@
 				{/if}
 				{$locale.411}
 				<br /><br />
-				{$locale.412} <img id="captcha" src="{$smarty.const.INCLUDES}securimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
+				{$locale.412} 
+				{if $settings.validation_method == "text"}
+					<span style='font-size:125%;font-weight:bold;'>{$validation_code|upper}</span>
+				{else}
+					<img id="captcha" src="{$smarty.const.INCLUDES}secureimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" style='vertical-align:middle;'/>
+				{/if}
+				<br /><br />
 				{$locale.413} <input type='text' name='captcha_code' class='textbox' style='vertical-align:top;width:100px' />
+				{if $settings.validation_method == "image"}
+					&nbsp;
+					{buttonlink name=$locale.415 link="document.getElementById(\"captcha\").src=\""|cat:$smarty.const.INCLUDES|cat:"secureimage-1.0.3/securimage_show.php?\"+Math.random(); return false;" script="yes"}
+				{/if}
 				<br /><br />
 				<input type='submit' name='sendmessage' value='{$locale.406}' class='button' />
 				</center>

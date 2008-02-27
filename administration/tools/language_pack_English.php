@@ -2395,6 +2395,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['c111'] = "The validation code below must be entered, it expires 15 minutes after page generation.";
 		$localestrings['c112'] = "Validation Code:";
 		$localestrings['c113'] = "Enter Validation Code:";
+		$localestrings['c114'] = "New Code";
 		load_localestrings($localestrings, LP_LOCALE, "main.comments", $step);
 
 		$localestrings = array();
@@ -2410,8 +2411,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['411'] = "The validation code below must be entered, it expires 15 minutes after page generation.";
 		$localestrings['412'] = "Validation Code:";
 		$localestrings['413'] = "Enter Validation Code:";
+		$localestrings['414'] = "Validation code entered was not correct";
+		$localestrings['415'] = "New Code";
 		$localestrings['420'] = "You must specify a Name";
-		$localestrings['421'] = "You must specify an Email Address";
+		$localestrings['421'] = "You must specify a valid Email Address";
 		$localestrings['422'] = "You must specify a Subject";
 		$localestrings['423'] = "You must specify a Message";
 		$localestrings['440'] = "Your Message has been sent";
@@ -2867,13 +2870,14 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['458'] = "Registration failed for the following reason(s):";
 		$localestrings['459'] = "Please Try Again";
 		$localestrings['500'] = "Please enter your details below. ";
-		$localestrings['501'] = "A verification email will be sent to your specified email address. ";
+		$localestrings['501'] = "A verification email will be sent to this email address to confirm your registration. ";
 		$localestrings['502'] = "Fields marked <span style='color:#ff0000;'>*</span> must be completed.\nYour user name and password is case-sensitive. Your full name is used in email communication only.";
 		$localestrings['503'] = " You can enter additional information by going to Edit Profile once you are logged in.";
 		$localestrings['504'] = "Validation Code:";
 		$localestrings['505'] = "Enter Validation Code:";
 		$localestrings['506'] = "Register";
 		$localestrings['507'] = "The registration system is currently disabled.";
+		$localestrings['508'] = "New code";
 		$localestrings['550'] = "Please specify a user name.";
 		$localestrings['551'] = "Please specify a password.";
 		$localestrings['552'] = "Please specify an email address.";

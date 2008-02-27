@@ -11,20 +11,6 @@
 +----------------------------------------------------*/
 if (eregi("dns_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-function CMS_getOS () {
-	if (substr(PHP_OS, 0, 3) == 'WIN') {
-		return "Windows";
-	} elseif ( stristr(PHP_OS, "linux")) {
-		return "Linux";
-	} elseif ( stristr(PHP_OS, "SunOS")) {
-		return "SunOS";
-	} elseif ( stristr(PHP_OS, "Solaris")) {
-		return "Solaris";
-	} else {
-		return "Other";
-	}
-}
-
 // internal replacement for checkdnsrr, which works cross-platform
 function CMS_checkdnsrr($host, $type = '' ) {
 

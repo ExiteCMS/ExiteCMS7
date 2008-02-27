@@ -40,7 +40,7 @@
 	{if $allow_post && $smarty.section.item.last}
 	<tr>
 		<td align='right' class='tbl2'>
-			<a href='{$smarty.const.ADMIN}comments.php{$aidlink}&amp;ctype={$comment_type}&amp;cid={$comment_id}'>{$locale.c106}</a>
+			{buttonlink name=$locale.c106 link=$smarty.const.ADMIN|cat:"comments.php"|cat:$aidlink|cat:"&amp;ctype="|cat:$comment_type|cat:"&amp;cid="|cat:$comment_id}
 		</td>
 	</tr>
 	{/if}
@@ -106,7 +106,11 @@
 					{$locale.c112}
 				</td>
 				<td align='left' width='50%' class='tbl1'>
-					<img id="captcha" src="{$smarty.const.INCLUDES}securimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
+					{if $settings.validation_method == "text"}
+						<span style='font-size:125%;font-weight:bold;'>{$validation_code|upper}</span>
+					{else}
+						<img id="captcha" src="{$smarty.const.INCLUDES}secureimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
+					{/if}
 				</td>
 			</tr>
 			<tr>
@@ -115,6 +119,10 @@
 				</td>
 				<td align='left' width='50%' class='tbl1'>
 					<input type='text' name='captcha_code' class='textbox' style='vertical-align:middle;width:100px' />
+					{if $settings.validation_method == "image"}
+						&nbsp;
+						{buttonlink name=$locale.c114 link="document.getElementById(\"captcha\").src=\""|cat:$smarty.const.INCLUDES|cat:"secureimage-1.0.3/securimage_show.php?\"+Math.random(); return false;" script="yes"}
+					{/if}
 				</td>
 			</tr>
 			<tr>

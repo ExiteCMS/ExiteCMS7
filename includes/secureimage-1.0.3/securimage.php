@@ -83,14 +83,14 @@ class Securimage {
    *
    * @var int
    */
-  var $image_width = 175;
+  var $image_width = 200;
 
   /**
    * The desired width of the CAPTCHA image.
    *
    * @var int
    */
-  var $image_height = 45;
+  var $image_height = 40;
 
   /**
    * The image format for output.<br />
@@ -105,7 +105,7 @@ class Securimage {
    *
    * @var int
    */
-  var $code_length = 4;
+  var $code_length = 6;
 
   /**
    * The character set for individual characters in the image.<br />
@@ -122,14 +122,14 @@ class Securimage {
    *
    * @var string  The path to the word list to use for creating CAPTCHA codes
    */
-  var $wordlist_file = 'words/words.txt';
+  var $wordlist_file = '';
   
   /**
    * True to use a word list file instead of a random code
    *
    * @var bool
    */
-  var $use_wordlist  = true;
+  var $use_wordlist  = false;
 
   /**
    * Whether to use a GD font instead of a TTF font.<br />
@@ -172,7 +172,7 @@ class Securimage {
    *
    * @var int
    */
-  var $font_size = 24;
+  var $font_size = 22;
 
   /**
    * The minimum angle in degrees, with 0 degrees being left-to-right reading text.<br />
@@ -181,7 +181,7 @@ class Securimage {
    *
    * @var int
    */
-  var $text_angle_minimum = -20;
+  var $text_angle_minimum = -45;
 
   /**
    * The minimum angle in degrees, with 0 degrees being left-to-right reading text.<br />
@@ -190,7 +190,7 @@ class Securimage {
    *
    * @var int
    */
-  var $text_angle_maximum = 20;
+  var $text_angle_maximum = 45;
 
   /**
    * The X-Position on the image where letter drawing will begin.<br />
@@ -198,7 +198,7 @@ class Securimage {
    *
    * @var int
    */
-  var $text_x_start = 8;
+  var $text_x_start = 12;
 
   /**
    * Letters can be spaced apart at random distances.<br />
@@ -320,7 +320,7 @@ class Securimage {
    * @see Securimage::$draw_lines
    * @var boolean
    */
-  var $draw_angled_lines = false;
+  var $draw_angled_lines = true;
 
   /**
    * Draw the lines over the text.<br />
@@ -416,7 +416,7 @@ class Securimage {
   function Securimage()
   {
     if ( session_id() == '' ) { // no session has been started yet, which is needed for validation
-      session_start();
+	  die('no session available!');
     }
   }
 

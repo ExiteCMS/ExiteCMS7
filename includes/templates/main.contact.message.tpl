@@ -29,11 +29,10 @@
 		<br />
 		{$locale.442}
 		<br /><br />
-		<span class='small'>{$locale.423}</span>
-		<br />
 		{foreach from=$errors item=errmsg}
 		    {$errmsg}<br />
 		{/foreach}
+		<br />
 		{$locale.443}
 		<br /><br />
 	</div>

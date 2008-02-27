@@ -21,9 +21,6 @@ $variables = array();
 // no point registering when you're already a member
 if (iMEMBER) fallback(BASEDIR."index.php");
 
-// include the DNS functions include
-require_once PATH_INCLUDES."dns_functions.php";
-
 // load the locales for this module
 locale_load("main.register");
 locale_load("main.user_fields");
@@ -220,6 +217,12 @@ if ($settings['enable_registration'] == 1) {
 			array_unshift($theme_files, "Default");
 		} else {
 			$theme_files = array();
+		}
+		if ($settings['display_validation'] == "1" && $settings['validation_method'] == "text") {
+			require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
+			$securimage = new Securimage();
+			$securimage->createCode();
+			$variables['validation_code'] = $_SESSION['securimage_code_value'];
 		}
 		$variables['theme_files'] = $theme_files;
 		// define the body panel variables

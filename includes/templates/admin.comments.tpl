@@ -58,26 +58,24 @@
 				<span class='small'>
 					{$locale.041}{$comments[id].comment_datestamp|date_format:"longdate"}
 				</span>
-			<td>
+			</td>
 		</tr>
 		<tr>
 			<td class='tbl1'>
 				{$comments[id].comment_message}
-			<td>
+			</td>
 		</tr>
 		<tr>
 			<td align='right' class='tbl2'>
-				<span class='small'>
-					<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=edit&amp;comment_id={$comments[id].comment_id}&amp;ctype={$ctype}&amp;cid={$cid}'>{$locale.411}</a> |
-					<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;comment_id={$comments[id].comment_id}&amp;ctype={$ctype}&amp;cid={$cid}' onClick='return DeleteItem()'>{$locale.412}</a> |
-					<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;ip={$comments[id].comment_ip}&amp;reason=470'>{$locale.413}</a>
-				</span>
+				{buttonlink name=$locale.411 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=edit&amp;comment_id="|cat:$comments[id].comment_id|cat:"&amp;ctype="|cat:$ctype|cat:"&amp;cid="|cat:$cid}
+				{buttonlink name=$locale.412 link="if (DeleteItem()) window.location=\""|cat:$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=delete&amp;comment_id="|cat:$comments[id].comment_id|cat:"&amp;ctype="|cat:$ctype|cat:"&amp;cid="|cat:$cid|cat:"\";" script="yes"}
+				{buttonlink name=$locale.413 link=$smarty.const.ADMIN|cat:"blacklist.php"|cat:$aidlink|cat:"&amp;ip="|cat:$comments[id].comment_ip|cat:"&amp;reason=470"}
 			</td>
 		</tr>
 	</table>
 	<table align='center' cellpadding='0' cellspacing='0'>
 		<tr>
-			<td height='5px'>
+			<td style='height:5px;'>
 			</td>
 		</tr>
 	</table>
@@ -89,7 +87,7 @@
 	</center>
 {/section}
 {include file="_closetable.tpl"}
-<script>
+<script type="text/javascript">
 function DeleteItem() {ldelim}
 	return confirm("{$locale.414}");
 {rdelim}

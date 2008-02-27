@@ -90,6 +90,12 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 	$variables['comment_id'] = $comment_id;
 	$variables['post_link'] = $clink;
 	$variables['cic'] = (isset($_GET['cic']) && !empty($_GET['cic'])) ? $_GET['cic'] : "";
+	if ($settings['display_validation'] == "1" && $settings['validation_method'] == "text") {
+		require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
+		$securimage = new Securimage();
+		$securimage->createCode();
+		$variables['validation_code'] = $_SESSION['securimage_code_value'];
+	}
 
 	// define the body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => "main.comments");

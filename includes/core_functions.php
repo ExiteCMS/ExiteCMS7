@@ -922,4 +922,19 @@ function auth_validate_BasicAuthentication() {
 		return -1;	// user_status == -1: not_found
 	}
 }
+
+// get the OS type
+function CMS_getOS () {
+	if (substr(PHP_OS, 0, 3) == 'WIN') {
+		return "Windows";
+	} elseif ( stristr(PHP_OS, "linux")) {
+		return "Linux";
+	} elseif ( stristr(PHP_OS, "SunOS")) {
+		return "SunOS";
+	} elseif ( stristr(PHP_OS, "Solaris")) {
+		return "Solaris";
+	} else {
+		return "Other";
+	}
+}
 ?>

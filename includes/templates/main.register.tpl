@@ -16,21 +16,19 @@
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 <center>
-	{$locale.500}
-	{if $settings.email_verification == "1"}{$locale.501}{/if}
-	{$locale.502}
-	{if $settings.email_verification == "1"}{$locale.503}{/if}
+	{$locale.500}<br />
+	{$locale.502}<br />
 </center>
 <br />
-<table align='center' cellpadding='0' cellspacing='0'>
-	<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}' onSubmit='return ValidateForm(this)'>
+<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}' onsubmit='return ValidateForm(this)'>
+	<table align='center' cellpadding='0' cellspacing='0'>
 		<tr>
 			<td class='tbl'>
 				{$locale.u001}
 				<span style='color:#ff0000'>*</span>
 			</td>
 			<td class='tbl'>
-				<input type='text' name='username' maxlength='30' class='textbox' style='width:200px;'>
+				<input type='text' name='username' maxlength='30' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
 		<tr>
@@ -39,7 +37,7 @@
 				<span style='color:#ff0000'>*</span>
 			</td>
 			<td class='tbl'>
-				<input type='text' name='fullname' maxlength='50' class='textbox' style='width:200px;'>
+				<input type='text' name='fullname' maxlength='50' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
 		<tr>
@@ -48,7 +46,7 @@
 				<span style='color:#ff0000'>*</span>
 			</td>
 			<td class='tbl'>
-				<input type='password' name='password1' maxlength='20' class='textbox' style='width:200px;'>
+				<input type='password' name='password1' maxlength='20' class='textbox' style='width:150px;' />
 			</td>
 		</tr>
 		<tr>
@@ -57,7 +55,7 @@
 				<span style='color:#ff0000'>*</span>
 			</td>
 			<td class='tbl'>
-				<input type='password' name='password2' maxlength='20' class='textbox' style='width:200px;'>
+				<input type='password' name='password2' maxlength='20' class='textbox' style='width:150px;' />
 			</td>
 		</tr>
 		<tr>
@@ -66,16 +64,25 @@
 				<span style='color:#ff0000'>*</span>
 			</td>
 			<td class='tbl'>
-				<input type='text' name='email' maxlength='100' class='textbox' style='width:200px;'>
+				<input type='text' name='email' maxlength='100' class='textbox' style='width:250px;' />
 			</td>
 		</tr>
+		{if $settings.email_verification == "1"}
+			<tr>
+				<td class='tbl' colspan='2'>
+					{$locale.501}
+				</td>
+			</tr>
+		{/if}
 		<tr>
 			<td class='tbl'>
 				{$locale.u006}
 			</td>
 			<td class='tbl'>
-				<input type='radio' name='user_hide_email' value='1'>{$locale.u007}
-				<input type='radio' name='user_hide_email' value='0' checked>{$locale.u008}
+				<select name='user_hide_email' class='textbox'>
+					<option value='1'>{$locale.u007}</option>
+					<option value='0' checked="checked">{$locale.u008}</option>
+				</select>
 			</td>
 		</tr>
 		<tr>
@@ -102,7 +109,11 @@
 					{$locale.504}
 				</td>
 				<td class='tbl'>
-					<img id="captcha" src="{$smarty.const.INCLUDES}secureimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
+					{if $settings.validation_method == "text"}
+						<span style='font-size:125%;font-weight:bold;'>{$validation_code|upper}</span>
+					{else}
+						<img id="captcha" src="{$smarty.const.INCLUDES}secureimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
+					{/if}
 				</td>
 			</tr>
 			<tr>
@@ -110,16 +121,21 @@
 					{$locale.505}<span style='color:#ff0000'>*</span>
 				</td>
 				<td class='tbl'>
-					<input type='text' name='captcha_code' class='textbox' style='width:100px'>
+					<input type='text' name='captcha_code' class='textbox' style='width:100px' />
+					{if $settings.validation_method == "image"}
+						&nbsp;
+						{buttonlink name=$locale.508 link="document.getElementById(\"captcha\").src=\""|cat:$smarty.const.INCLUDES|cat:"secureimage-1.0.3/securimage_show.php?\"+Math.random(); return false;" script="yes"}
+					{/if}
 				</td>
 			</tr>
 		{/if}
 		{if $settings.email_verification == "0"}
 			<tr>
 				<td class='tbl'>
-					{$locale.u009}</td>
+					{$locale.u009}
+				</td>
 				<td class='tbl'>
-					<input type='text' name='user_location' maxlength='50' class='textbox' style='width:200px;'>
+					<input type='text' name='user_location' maxlength='50' class='textbox' style='width:200px;' />
 				</td>
 			</tr>
 			<tr>
@@ -135,7 +151,7 @@
 					{$locale.u021}
 				</td>
 				<td class='tbl'>
-					<input type='text' name='user_aim' maxlength='16' class='textbox' style='width:200px;'>
+					<input type='text' name='user_aim' maxlength='16' class='textbox' style='width:200px;' />
 				</td>
 			</tr>
 			<tr>
@@ -143,7 +159,7 @@
 					{$locale.u011}
 				</td>
 				<td class='tbl'>
-					<input type='text' name='user_icq' maxlength='15' class='textbox' style='width:200px;'>
+					<input type='text' name='user_icq' maxlength='15' class='textbox' style='width:200px;' />
 				</td>
 			</tr>
 			<tr>
@@ -151,7 +167,7 @@
 					{$locale.u012}
 				</td>
 				<td class='tbl'>
-					<input type='text' name='user_msn' maxlength='100' class='textbox' style='width:200px;'>
+					<input type='text' name='user_msn' maxlength='100' class='textbox' style='width:200px;' />
 				</td>
 			</tr>
 			<tr>
@@ -159,7 +175,7 @@
 					{$locale.u013}
 				</td>
 				<td class='tbl'>
-					<input type='text' name='user_yahoo' maxlength='100' class='textbox' style='width:200px;'>
+					<input type='text' name='user_yahoo' maxlength='100' class='textbox' style='width:200px;' />
 				</td>
 			</tr>
 			<tr>
@@ -167,7 +183,7 @@
 					{$locale.u014}
 				</td>
 				<td class='tbl'>
-					<input type='text' name='user_web' maxlength='100' class='textbox' style='width:200px;'>
+					<input type='text' name='user_web' maxlength='100' class='textbox' style='width:200px;' />
 				</td>
 			</tr>
 			<tr>
@@ -187,28 +203,31 @@
 					{$locale.u020}
 				</td>
 				<td class='tbl'>
-					<textarea name='user_sig' rows='5' class='textbox' style='width:295px'>{$userdata.user_sig}</textarea><br>
-					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('user_sig', '[b]', '[/b]');">
-					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('user_sig', '[i]', '[/i]');">
-					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('user_sig', '[u]', '[/u]');">
-					<input type='button' value='url' class='button' style='width:30px;' onClick="addText('user_sig', '[url]', '[/url]');">
-					<input type='button' value='mail' class='button' style='width:35px;' onClick="addText('user_sig', '[mail]', '[/mail]');">
-					<input type='button' value='img' class='button' style='width:30px;' onClick="addText('user_sig', '[img]', '[/img]');">
-					<input type='button' value='center' class='button' style='width:45px;' onClick="addText('user_sig', '[center]', '[/center]');">
-					<input type='button' value='small' class='button' style='width:40px;' onClick="addText('user_sig', '[small]', '[/small]');">
+					<textarea name='user_sig' rows='5' class='textbox' style='width:295px'>{$userdata.user_sig}</textarea><br />
+					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('user_sig', '[b]', '[/b]');" />
+					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('user_sig', '[i]', '[/i]');" />
+					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('user_sig', '[u]', '[/u]');" />
+					<input type='button' value='url' class='button' style='width:30px;' onClick="addText('user_sig', '[url]', '[/url]');" />
+					<input type='button' value='mail' class='button' style='width:35px;' onClick="addText('user_sig', '[mail]', '[/mail]');" />
+					<input type='button' value='img' class='button' style='width:30px;' onClick="addText('user_sig', '[img]', '[/img]');" />
+					<input type='button' value='center' class='button' style='width:45px;' onClick="addText('user_sig', '[center]', '[/center]');" />
+					<input type='button' value='small' class='button' style='width:40px;' onClick="addText('user_sig', '[small]', '[/small]');" />
 				</td>
 			</tr>
 		{/if}
 		<tr>
 			<td align='center' colspan='2'>
 				<br />
-				<input type='submit' name='register' value='{$locale.506}' class='button'>
+				<input type='submit' name='register' value='{$locale.506}' class='button' />
 			</td>
 		</tr>
-	</form>
-</table>
+	</table>
+	<center>
+		{if $settings.email_verification == "1"}<br />{$locale.503}<br />{/if}
+	</center>
+</form>
 {include file="_closetable.tpl"}
-{literal}<script language='JavaScript'>
+{literal}<script type='text/javascript' language='javascript'>
 //
 // calculate the offset between browser and server time
 //

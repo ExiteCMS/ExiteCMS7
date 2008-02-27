@@ -35,30 +35,19 @@ if (isset($target) && isset($tc)) {
 // load the locale for this module
 locale_load("main.contact");
 
-// captcha check
-$cic = "";
-$securimage = new Securimage();
-if ($securimage->check($_POST['captcha_code']) == false) {
-	$cic = "&cic=1";
-}
-$variables['cic'] = $cic;
-
-// get variables from the post, or initialize them
+// captcha check ok and message posted?
 if (isset($_POST['sendmessage'])) {
 	$mailname = substr(stripinput(trim($_POST['mailname'])),0,50);
 	$email = substr(stripinput(trim($_POST['email'])),0,100);
 	$subject = substr(str_replace(array("\r","\n","@"), "", descript(stripslash(trim($_POST['subject'])))),0,50);
 	$message = descript(stripslash(trim($_POST['message'])));
-} else {
-	$mailname = "";
-	$email = "";
-	$subject = "";
-	$message = "";
-}
-
-// captcha check ok and message posted?
-if ($cic == "" && isset($_POST['sendmessage'])) {
+	// error initialisation
 	$errors = array();
+	// captcha check
+	$securimage = new Securimage();
+	if ($securimage->check($_POST['captcha_code']) == false) {
+		$errors[] = $locale['414'];
+	}
 	if ($mailname == "") {
 		$errors[] = $locale['420'];
 	}
@@ -83,11 +72,13 @@ if ($cic == "" && isset($_POST['sendmessage'])) {
 	$template_panels[] = array('type' => 'body', 'name' => 'main.contact.message', 'template' => 'main.contact.message.tpl', 'locale' => "main.contact");
 	$template_variables['main.contact.message'] = $variables;
 } else {
-	// form variables
-	$variables['mailname'] = $mailname;
-	$variables['email'] = $email;
-	$variables['subject'] = $subject;
-	$variables['message'] = $message;
+	// generate captcha text if needed
+	if ($settings['display_validation'] == "1" && $settings['validation_method'] == "text") {
+		require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
+		$securimage = new Securimage();
+		$securimage->createCode();
+		$variables['validation_code'] = $_SESSION['securimage_code_value'];
+	}
 	// define the body panel variables
 	$variables['target'] = $target;
 	$template_panels[] = array('type' => 'body', 'name' => 'main.contact', 'template' => 'main.contact.tpl', 'locale' => "main.contact");
