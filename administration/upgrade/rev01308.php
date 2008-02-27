@@ -30,6 +30,6 @@ $commands = array();
 
 // update the threads_read table
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ".$db_prefix."threads_read CHANGE thread_page thread_first_read INT(10) UNSIGNED NOT NULL DEFAULT '9999999999'");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ".$db_prefix."threads_read CHANGE thread_last_read thread_least_read INT(10) UNSIGNED NOT NULL DEFAULT '0'");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ".$db_prefix."threads_read CHANGE thread_last_read thread_last_read INT(10) UNSIGNED NOT NULL DEFAULT '0'");
 
 ?>
