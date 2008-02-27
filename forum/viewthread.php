@@ -193,19 +193,20 @@ if (iMEMBER) {
 	if ($userdata['user_posts_unread']) {
 		// include the users own posts
 		$result = dbquery("
-			SELECT count(*) as unread, tr.thread_last_read
+			SELECT count(*) as unread, tr.thread_first_read, tr.thread_last_read
 				FROM ".$db_prefix."posts p
 				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE tr.user_id = '".$userdata['user_id']."' 
 					AND tr.thread_id = '".$thread_id."' 
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
-					AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))
 				GROUP BY tr.thread_id
 			");
 	} else {
 		// filter the users own posts
 		$result = dbquery("
-			SELECT count(*) as unread, tr.thread_last_read
+			SELECT count(*) as unread, tr.thread_first_read, tr.thread_last_read
 				FROM ".$db_prefix."posts p
 				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE tr.user_id = '".$userdata['user_id']."'
@@ -213,20 +214,24 @@ if (iMEMBER) {
 					AND p.post_edituser != '".$userdata['user_id']."'
 					AND tr.thread_id = '".$thread_id."' 
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
-					AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))
 				GROUP BY tr.thread_id
 			");
 	}
 	if (dbrows($result)) {
 		$data = dbarray($result);
 		$variables['unread_posts'] = $data['unread'];
+		$thread_first_read = $data['thread_first_read'];
 		$thread_last_read = $data['thread_last_read'];
 	} else {
 		$variables['unread_posts'] = 0;
+		$thread_first_read = 0;
 		$thread_last_read = time();
 	}
 } else {
 	$variables['unread_posts'] = 0;
+	$thread_first_read = 0;
 	$thread_last_read = time();
 }
 
@@ -242,7 +247,10 @@ $variables['rowstart'] = $rowstart;
 // check if there's a poll attached to this thread
 $variables['thread_has_poll'] = fpm_view();
 
-// last_post_datestamp, needed to update threads_read later
+// init first_post_datestamp, needed to update threads_read later
+$first_post_datestamp = 4294967295;
+
+// init last_post_datestamp, needed to update threads_read later
 $last_post_datestamp = 0;
 
 // get the posts for this page of the thread
@@ -277,7 +285,14 @@ if ($rows != 0) {
 				$data['post_reply_username'] = "";
 		}
 		// check if this post is read or unread
-		$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read;
+		$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read || $data['post_datestamp'] < $thread_first_read || ($data['post_edittime'] != 0 && $data['post_edittime'] < $thread_first_read) ;
+
+		// update first_post_datestamp
+		if ($data['post_edittime'] == 0) {
+			$first_post_datestamp = min($data['post_datestamp'], $first_post_datestamp);
+		} else {
+			$first_post_datestamp = min($data['post_datestamp'], $data['post_edittime'], $first_post_datestamp);
+		}
 
 		// update last_post_datestamp
 		$last_post_datestamp = max($data['post_datestamp'], $data['post_edittime'], $last_post_datestamp);
@@ -391,9 +406,15 @@ if ($rows != 0) {
 	}
 }
 
-// update the threads_read record for this user and thread when the last_post_datestamp is newer
-if (iMEMBER && $last_post_datestamp) {
-	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."' AND thread_last_read < '".$last_post_datestamp."'");
+if (iMEMBER) {
+	// update the threads_read record for this user and thread when the first_post_datestamp is older
+	if ($first_post_datestamp) {
+		$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_first_read = '".$first_post_datestamp."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."' AND thread_first_read > '".$first_post_datestamp."'");
+	}
+	// update the threads_read record for this user and thread when the last_post_datestamp is newer
+	if ($last_post_datestamp) {
+		$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."' AND thread_last_read < '".$last_post_datestamp."'");
+	}
 }
 
 // generate a list of forums, for the forum switch dropdown
