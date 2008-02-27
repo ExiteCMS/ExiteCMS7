@@ -15,6 +15,9 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
+// include the secureimage class
+require_once PATH_INCLUDES."secureimage-1.0.3/secureimage.php";
+
 // temp storage for template variables
 $variables = array();
 
@@ -33,7 +36,11 @@ if (isset($target) && isset($tc)) {
 locale_load("main.contact");
 
 // captcha check
-$cic = (isset($_POST['captcha_encode']) && !check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) ? "&cic=1" : "";
+$cic = "";
+$securimage = new Securimage();
+if ($securimage->check($_POST['captcha_code']) == false) {
+	$cic = "&cic=1";
+}
 $variables['cic'] = $cic;
 
 // get variables from the post, or initialize them
@@ -51,7 +58,6 @@ if (isset($_POST['sendmessage'])) {
 
 // captcha check ok and message posted?
 if ($cic == "" && isset($_POST['sendmessage'])) {
-	$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_datestamp<'".(time()-900)."'");
 	$errors = array();
 	if ($mailname == "") {
 		$errors[] = $locale['420'];

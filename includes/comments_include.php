@@ -27,8 +27,6 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 
 	if ((iMEMBER || $settings['guestposts'] == "1") && isset($_POST['post_comment'])) {
 
-		$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_datestamp<'".(time()-900)."'");
-
 		$flood = false;
 		if (dbrows(dbquery("SELECT $ccol FROM ".$db_prefix."$cdb WHERE $ccol='$comment_id'"))==0) {
 			fallback(BASEDIR."index.php");
@@ -42,7 +40,15 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		}
 		
 		// captcha check for guest posts
-		$cic = (iGUEST && !check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) ? "&cic=1" : "";
+		$cic = "";
+		if (iGUEST) {
+			// load the secureimage include
+			require_once PATH_INCLUDES."secureimage-1.0.3/secureimage.php";
+			$securimage = new Securimage();
+			if ($securimage->check($_POST['captcha_code']) == false) {
+				$cic = "&cic=1";
+			}
+		}
 
 		$comment_message = trim(stripinput(censorwords($_POST['comment_message'])));
 		$comment_smileys = isset($_POST['disable_smileys']) ? "0" : "1";

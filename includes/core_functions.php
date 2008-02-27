@@ -630,23 +630,6 @@ function verify_image($file) {
 	return $image_safe;
 }
 
-// check captcha
-function check_captcha($captchs_encode, $captcha_string) {
-	global $db_prefix;
-
-	if (preg_match("/^[0-9a-z]+$/", $captchs_encode) && preg_match("/^[0-9a-z]+$/", $captcha_string)) {
-		$result = dbquery("SELECT * FROM ".$db_prefix."captcha WHERE captcha_ip='".USER_IP."' AND captcha_encode='".$captchs_encode."' AND captcha_string='".$captcha_string."'");
-		if (dbrows($result)) {
-			$result = dbquery("DELETE FROM ".$db_prefix."captcha WHERE captcha_ip='".USER_IP."' AND captcha_encode='".$captchs_encode."' AND captcha_string='".$captcha_string."'");
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
-	}
-}
-
 // Replace offensive words with the defined replacement word
 function censorwords($text) {
 	global $settings;

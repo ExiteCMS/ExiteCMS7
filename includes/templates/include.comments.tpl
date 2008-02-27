@@ -106,7 +106,7 @@
 					{$locale.c112}
 				</td>
 				<td align='left' width='50%' class='tbl1'>
-					{make_captcha}
+					<img id="captcha" src="{$smarty.const.INCLUDES}securimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
 				</td>
 			</tr>
 			<tr>

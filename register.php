@@ -22,7 +22,7 @@ $variables = array();
 if (iMEMBER) fallback(BASEDIR."index.php");
 
 // include the DNS functions include
-include PATH_INCLUDES."dns_functions.php";
+require_once PATH_INCLUDES."dns_functions.php";
 
 // load the locales for this module
 locale_load("main.register");
@@ -133,9 +133,13 @@ if ($settings['enable_registration'] == 1) {
 		}
 
 		if ($settings['display_validation'] == "1") {
-			if (!isset($_POST['captcha_encode']) || !isset($_POST['captcha_code']) || !check_captcha($_POST['captcha_encode'], $_POST['captcha_code'])) {
+			// include the secureimage class
+			require_once PATH_INCLUDES."secureimage-1.0.3/secureimage.php";
+			$securimage = new Securimage();
+			if ($securimage->check($_POST['captcha_code']) == false) {
+				// the code was incorrect
 				$error .= $locale['410']."<br />\n";
-			}
+			}			
 		}
 		
 		$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";

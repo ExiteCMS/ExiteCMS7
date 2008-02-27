@@ -59,7 +59,7 @@
 				{/if}
 				{$locale.411}
 				<br /><br />
-				{$locale.412} {make_captcha}
+				{$locale.412} <img id="captcha" src="{$smarty.const.INCLUDES}securimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" />
 				{$locale.413} <input type='text' name='captcha_code' class='textbox' style='vertical-align:top;width:100px' />
 				<br /><br />
 				<input type='submit' name='sendmessage' value='{$locale.406}' class='button' />
