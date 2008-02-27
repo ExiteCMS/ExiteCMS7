@@ -242,6 +242,7 @@ if ($step == "merge") {
 		// merge the last_read pointers
 		$result = dbquery("SELECT user_id, thread_last_read FROM ".$db_prefix."threads_read WHERE thread_id = '".$thread_id."'");
 		while ($data = dbarray($result)) {
+			$result2 = dbquery("UPDATE ".$db_prefix."threads_read SET thread_first_read = '".$data['thread_first_read']."' WHERE user_id = '".$data['user_id']."' AND thread_id = '".$new_thread_id."' AND thread_first_read > '".$data['thread_first_read']."'");
 			$result2 = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$data['thread_last_read']."' WHERE user_id = '".$data['user_id']."' AND thread_id = '".$new_thread_id."' AND thread_last_read < '".$data['thread_last_read']."'");
 		}
 		$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_id='$thread_id'");
