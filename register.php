@@ -134,7 +134,7 @@ if ($settings['enable_registration'] == 1) {
 
 		if ($settings['display_validation'] == "1") {
 			// include the secureimage class
-			require_once PATH_INCLUDES."secureimage-1.0.3/secureimage.php";
+			require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
 			$securimage = new Securimage();
 			if ($securimage->check($_POST['captcha_code']) == false) {
 				// the code was incorrect

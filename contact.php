@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
 // include the secureimage class
-require_once PATH_INCLUDES."secureimage-1.0.3/secureimage.php";
+require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
 
 // temp storage for template variables
 $variables = array();

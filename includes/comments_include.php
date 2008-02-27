@@ -43,7 +43,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		$cic = "";
 		if (iGUEST) {
 			// load the secureimage include
-			require_once PATH_INCLUDES."secureimage-1.0.3/secureimage.php";
+			require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
 			$securimage = new Securimage();
 			if ($securimage->check($_POST['captcha_code']) == false) {
 				$cic = "&cic=1";
