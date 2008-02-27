@@ -193,7 +193,7 @@ if (iMEMBER) {
 	if ($userdata['user_posts_unread']) {
 		// include the users own posts
 		$result = dbquery("
-			SELECT count(*) as unread, tr.thread_last_read, tr.thread_page
+			SELECT count(*) as unread, tr.thread_last_read
 				FROM ".$db_prefix."posts p
 				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE tr.user_id = '".$userdata['user_id']."' 
@@ -205,7 +205,7 @@ if (iMEMBER) {
 	} else {
 		// filter the users own posts
 		$result = dbquery("
-			SELECT count(*) as unread, tr.thread_last_read, tr.thread_page
+			SELECT count(*) as unread, tr.thread_last_read
 				FROM ".$db_prefix."posts p
 				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE tr.user_id = '".$userdata['user_id']."'
@@ -221,16 +221,13 @@ if (iMEMBER) {
 		$data = dbarray($result);
 		$variables['unread_posts'] = $data['unread'];
 		$thread_last_read = $data['thread_last_read'];
-		$thread_page = $data['thread_page'];
 	} else {
 		$variables['unread_posts'] = 0;
 		$thread_last_read = time();
-		$thread_page = 0;
 	}
 } else {
 	$variables['unread_posts'] = 0;
 	$thread_last_read = time();
-	$thread_page = 0;
 }
 
 //if a specific post is requested, find out on which page it is, and set rowstart accordingly
@@ -396,7 +393,7 @@ if ($rows != 0) {
 
 // update the threads_read record for this user and thread when the last_post_datestamp is newer
 if (iMEMBER && $last_post_datestamp) {
-	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."', thread_page = '".min($rowstart, $thread_page)."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."' AND thread_last_read < '".$last_post_datestamp."'");
+	$result = dbquery("UPDATE ".$db_prefix."threads_read SET thread_last_read = '".$last_post_datestamp."' WHERE user_id = '".$userdata['user_id']."' AND thread_id = '".$thread_id."' AND thread_last_read < '".$last_post_datestamp."'");
 }
 
 // generate a list of forums, for the forum switch dropdown
