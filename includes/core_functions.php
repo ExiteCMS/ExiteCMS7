@@ -739,7 +739,7 @@ function datediff($datefrom,$dateto=-1)
 	if ($dateto == -1) { $dateto = time(); }
 
 	// calculate the difference in seconds betweeen the two timestamps
-	$difference = $dateto - $datefrom;
+	$difference = abs($dateto - $datefrom);
 
 	// determine the interface
 	if ($difference < 60) {
