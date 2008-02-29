@@ -55,7 +55,11 @@ function smarty_function_imagelink($params, &$smarty)
 		$title = $params['title'];
 	}
 	if (!isset($params['alt'])) {
-		$alt = false;
+		if ($title) {
+			$alt = $title;
+		} else {
+			$alt = false;
+		}
 	} else {
 		$alt = $params['alt'];
 	}

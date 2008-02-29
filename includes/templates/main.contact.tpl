@@ -66,7 +66,7 @@
 					<img id="captcha" src="{$smarty.const.INCLUDES}secureimage-1.0.3/securimage_show.php" alt="CAPTCHA Image" style='vertical-align:middle;'/>
 				{/if}
 				<br /><br />
-				{$locale.413} <input type='text' name='captcha_code' class='textbox' style='vertical-align:top;width:100px' />
+				{$locale.413} <input type='text' name='captcha_code' class='textbox' style='width:100px' />
 				{if $settings.validation_method == "image"}
 					&nbsp;
 					{buttonlink name=$locale.415 link="document.getElementById(\"captcha\").src=\""|cat:$smarty.const.INCLUDES|cat:"secureimage-1.0.3/securimage_show.php?\"+Math.random(); return false;" script="yes"}

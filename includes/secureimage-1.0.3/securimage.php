@@ -37,6 +37,10 @@
 /**
   ChangeLog
 
+  1.0.3 - HV - 20080228
+  - Added getHexColor() to generate random colors. Default colors are randomized in Securimage() when the class
+    is instantiated
+
   1.0.3
   - Removed shadow_text from code which could cause an undefined property error due to removal from previous version
 
@@ -198,7 +202,7 @@ class Securimage {
    *
    * @var int
    */
-  var $text_x_start = 12;
+  var $text_x_start = 10;
 
   /**
    * Letters can be spaced apart at random distances.<br />
@@ -255,7 +259,7 @@ class Securimage {
    *
    * @var string
    */
-  var $multi_text_color = "#0a68dd,#f65c47,#8d32fd";
+  var $multi_text_color = "#777777,#bbbbbb,#eeeeee"; //"#0a68dd,#f65c47,#8d32fd";
 
   /**
    * Set to true to make the characters appear transparent.
@@ -294,7 +298,7 @@ class Securimage {
    * @see Securimage::$draw_lines
    * @var string
    */
-  var $line_color = "#80BFFF";
+  var $line_color = "#000000"; //"#80BFFF";
 
   /**
    * How far apart to space the lines from eachother in pixels.
@@ -347,7 +351,7 @@ class Securimage {
    *
    * @var string
    */
-  var $arc_line_colors = "#8080ff";
+  var $arc_line_colors = "#eeeeee"; //"#8080ff";
 
   /**
    * Full path to the WAV files to use to make the audio files, include trailing /.<br />
@@ -418,8 +422,29 @@ class Securimage {
     if ( session_id() == '' ) { // no session has been started yet, which is needed for validation
 	  die('no session available!');
     }
+    
+	// we use random colors to make it even more difficult
+	$this->image_bg_color = $this->getHexColor();
+    $this->line_color = $this->getHexColor();
+    $this->multi_text_color = $this->getHexColor() . "," . $this->getHexColor() . "," . $this->getHexColor();
+    $this->arc_line_colors = $this->getHexColor();
   }
 
+  /**
+   * Generate a random html color code
+   *
+   * @access private
+   */
+  function getHexColor()
+  {
+    $clr = "#";
+	for ($i = 0; $i < 6; $i++)
+	{
+		$clr .= substr("0123456789ABCDEF", rand(0,15), 1);
+	}
+	return $clr;
+  }
+   
   /**
    * Generate a code and output the image to the browser.
    *

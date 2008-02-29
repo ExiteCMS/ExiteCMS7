@@ -42,7 +42,7 @@
 			<td class='tbl' align='center' colspan='2'>
 			</td>
 		</tr>	
-		<tr>
+{*		<tr>
 			<td class='tbl2' align='center' colspan='2'>
 				{$locale.558}
 			</td>
@@ -54,7 +54,7 @@
 			<td width='50%' class='tbl'>
 				<select name='panels_localisation' class='textbox'>
 					<option value='none'{if $settings2.panels_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-					<option value='single'{if $settings2.panels_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.panels_localisation == "single"} selected="selected"{/if}>{$locale.560}</option> 
 					<option value='multiple'{if $settings2.panels_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -66,7 +66,7 @@
 			<td width='50%' class='tbl'>
 				<select name='sitelinks_localisation' class='textbox'>
 					<option value='none'{if $settings2.sitelinks_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-					<option value='single'{if $settings2.sitelinks_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.sitelinks_localisation == "single"} selected="selected"{/if}>{$locale.560}</option> 
 					<option value='multiple'{if $settings2.sitelinks_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -78,7 +78,7 @@
 			<td width='50%' class='tbl'>
 				<select name='article_localisation' class='textbox'>
 					<option value='none'{if $settings2.article_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-					<option value='single'{if $settings2.article_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
+					<option value='single'{if $settings2.article_localisation == "single"} selected="selected"{/if}>{$locale.560}</option> 
 					<option value='multiple'{if $settings2.article_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
 				</select>
 			</td>
@@ -90,8 +90,8 @@
 			<td width='50%' class='tbl'>
 				<select name='news_localisation' class='textbox'>
 					<option value='none'{if $settings2.news_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-					<option value='single'{if $settings2.news_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
-					<option value='multiple'{if $settings2.news_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+					<option value='single'{if $settings2.news_localisation == "single"} selected="selected"{/if}>{$locale.560}</option> 
+					<option value='multiple'{if $settings2.news_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option> 
 				</select>
 			</td>
 		</tr>
@@ -102,8 +102,8 @@
 			<td width='50%' class='tbl'>
 				<select name='download_localisation' class='textbox'>
 					<option value='none'{if $settings2.download_localisation == "none"} selected="selected"{/if}>{$locale.559}</option>
-					<option value='single'{if $settings2.download_localisation == "single"} selected="selected"{/if}>{$locale.560}</option>
-					<option value='multiple'{if $settings2.download_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option>
+					<option value='single'{if $settings2.download_localisation == "single"} selected="selected"{/if}>{$locale.560}</option> 
+					<option value='multiple'{if $settings2.download_localisation == "multiple"} selected="selected"{/if}>{$locale.561}</option> 
 				</select>
 			</td>
 		</tr>
@@ -248,7 +248,7 @@
 				<br />
 			</td>
 		</tr>	
-		<tr>
+*}		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='hidden' name='old_localeset' value='{$settings2.locale}' />
