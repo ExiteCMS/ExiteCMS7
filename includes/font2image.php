@@ -8,6 +8,7 @@
     usage: $image_resource = font2image($f2i_array);
 
     $f2i_array = array();
+    $f2i_array['image'] = "png";	                   // Type of image to generate. If not specified, defaults to PNG
     $f2i_array['font_text'] = "Text to convert";       // Text to convert to an image. Required.
     $f2i_array['font_file'] = "font2use.ttf";          // FQN of the TTF font file to use. Required.
     $f2i_array['font_size'] = 10;                      // Font size. Optional. Valid values are 4 to 96. Default = 10.
@@ -46,6 +47,7 @@ function font2image($font2image) {
 	}
 
 	// validate parameters : required fields
+	if (empty($font2image['image']) || !in_array($font2image['image'], array('png', 'gif', 'jpg'))) $font2image['image'] = "png";
 	if (empty($font2image['font_text'])) fatal_error('No text specified.'); 
 	if(get_magic_quotes_gpc()) {
 		$font2image['font_text'] = stripslashes($font2image['font_text']) ;
@@ -130,14 +132,24 @@ function font2image($font2image) {
 		} else {
 			$hash = str_replace(' ', '_', $font2image['font_text']);
 		}
-		$cache_filename = $font2image['cache_folder'] . '/' . $font2image['cache_prefix'] . $hash . '.png' ;
+		$cache_filename = $font2image['cache_folder'] . '/' . $font2image['cache_prefix'] . $hash . '.' . $font2image['image'] ;
 		if($font2image['cache_images'] && is_readable($cache_filename)) {
 			// convert the file to a resource
 			$imagefile = @getimagesize($cache_filename);
-			if (!is_array($imagefile) || $imagefile[2] != 3) {
-				fatal_error("Cached image file '".$cache_filename."' is not a valid PNG image!");
+			if (!is_array($imagefile)) {
+				fatal_error("Cached image file '".$cache_filename."' is not a valid ".strtoupper($font2image['image'])." image!");
 			}
-			$image = imagecreatefrompng($cache_filename);
+			switch ($font2image['image']) {
+				case "png":
+					$image = imagecreatefrompng($cache_filename);
+					break;
+				case "jpg":
+					$image = imagecreatefromjpeg($cache_filename);
+					break;
+				case "gif":
+					$image = imagecreatefromgif($cache_filename);
+					break;
+			}
 			return $image;
 		}
 	}
@@ -244,7 +256,17 @@ function font2image($font2image) {
 
 	// write it to the cache directory if needed
 	if ($font2image['cache_images']) {
-		imagePNG($image, $cache_filename);
+		switch($font2image['image']) {
+			case "png":
+				imagePNG($image, $cache_filename);
+				break;
+			case "jpg":
+				imageJPEG($image, $cache_filename);
+				break;
+			case "gif":
+				imageGIF($image, $cache_filename);
+				break;
+		}
 	}
 //	imagePNG($image);die();
 	return $image;
