@@ -33,7 +33,7 @@
 	{if $login_expiry}
 		<hr />
 		<div id='countdown' style='text-align:center'>
-			Login session ends on {$login_expiry|date_format:"subheaderdate"}
+			Login session ends on<br />{$login_expiry|date_format:"subheaderdate"}
 		</div>
 	{/if}
 	{if $new_pm_msg != 0}
