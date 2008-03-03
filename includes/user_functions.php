@@ -64,7 +64,16 @@ if (isset($_POST['login'])) {
 			// set the 'remember me' status value 
 			$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
 			$_SESSION['userinfo'] = $data['user_id'].".".$user_pass;
-			$_SESSION['login_expire'] = isset($_POST['remember_me']) ? (time() + $settings['session_gc_maxlifetime']) : (time() + 60*60);
+			// login expiry defined?
+			if ($settings['login_expire']) {
+				if (isset($_POST['remember_me']) && $_POST['remember_me'] == "yes") {
+					$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
+				} else {
+					$_SESSION['login_expire'] = time() + $settings['login_expire'];
+				}
+			} else {
+				$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
+			}
 			redirect(BASEDIR."setuser.php?user=".$data['user_name'], "script");
 			exit;
 		} elseif ($data['user_status'] == 1) {
@@ -124,19 +133,25 @@ if (isset($_SESSION['userinfo'])) {
 			unset($_SESSION['user']);
 			unset($_SESSION['userinfo']);
 			unset($_SESSION['login_expire']);
-			unset($_SESSION['lastvisit']);
 			redirect(BASEDIR."index.php", "script");
 			exit;
 		}
 		// update the login expiration timestamp
-		$_SESSION['login_expire'] = isset($_SESSION['remember_me']) ? (time() + $settings['session_gc_maxlifetime']) : (time() + 60*60);
+		if ($settings['login_expire']) {
+			if (isset($_SESSION['remember_me']) && $_SESSION['remember_me'] == "yes") {
+				$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
+			} else {
+				$_SESSION['login_expire'] = time() + $settings['login_expire'];
+			}
+		} else {
+			$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
+		}
 	} else {
 		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 		// make sure the user info is erased from the session
 		unset($_SESSION['user']);
 		unset($_SESSION['userinfo']);
 		unset($_SESSION['login_expire']);
-		unset($_SESSION['lastvisit']);
 		redirect(BASEDIR."index.php", "script");
 		exit;
 	}

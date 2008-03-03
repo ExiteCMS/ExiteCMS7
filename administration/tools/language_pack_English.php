@@ -483,7 +483,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['228'] = "Main Settings";
 		$localestrings['229'] = "Time and Date Settings";
 		$localestrings['230'] = "Forum Settings";
-		$localestrings['231'] = "Registration Settings";
+		$localestrings['231'] = "Security Settings";
 		$localestrings['232'] = "Photo Gallery Settings";
 		$localestrings['233'] = "Miscellaneous Settings";
 		$localestrings['234'] = "Private Message Options";
@@ -881,7 +881,14 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['524'] = "(lots of posts = less days)";
 		$localestrings['525'] = "Number of new posts to mark a thread as 'Hot':";
 		$localestrings['526'] = "Hide the status of the webmaster account?";
-		$localestrings['550'] = "Registration";
+		$localestrings['527'] = "Day";
+		$localestrings['528'] = "Session expiration time:";
+		$localestrings['529'] = "Login expiration time:";
+		$localestrings['530'] = "Extended login expiration time:";
+		$localestrings['531'] = "Minutes";
+		$localestrings['532'] = "Error: The session timeout value should be greater than the extended login timeout!";
+		$localestrings['533'] = "Error: The extended login timeout should be greater than the standard login timeout!";
+		$localestrings['550'] = "Security";
 		$localestrings['551'] = "Enable registration system?";
 		$localestrings['552'] = "Use email verification for registration?";
 		$localestrings['553'] = "Display validation code?";
@@ -3162,9 +3169,9 @@ if (!defined('LP_LOCALE')) define('LP_LOCALE', "en");
 if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
-if (!defined('LP_VERSION')) define('LP_VERSION', "7.00");
-if (!defined('LP_DATE')) define('LP_DATE', "1204219703");
-$lp_date = "1204219703";
+if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
+if (!defined('LP_DATE')) define('LP_DATE', "1204579858");
+$lp_date = "1204579858";
 
 /*---------------------------------------------------+
 | main code                                          |

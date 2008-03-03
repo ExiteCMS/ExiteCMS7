@@ -38,7 +38,7 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 	// make sure the user info is erased from the session
 	unset($_SESSION['user']);
 	unset($_SESSION['userinfo']);
-	unset($_SESSION['lastvisit']);
+	unset($_SESSION['login_expire']);
 	$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_ip='".USER_IP."'");
 	if (isset($userdata['user_name'])) {
 		$message['line2'] =  "<b>".$locale['192'].$userdata['user_name']."</b>";

@@ -32,9 +32,9 @@
 				<a href='settings_forum.php{$aidlink}'>{$locale.500}</a>
 			</span>
 		</td>
-		<td class='{if $this_module == "settings_registration.php"}tbl1{else}tbl2{/if}' style='padding-left:10px;padding-right:10px;'>
+		<td class='{if $this_module == "settings_security.php"}tbl1{else}tbl2{/if}' style='padding-left:10px;padding-right:10px;'>
 			<span class='small'>
-				<a href='settings_registration.php{$aidlink}'>{$locale.550}</a>
+				<a href='settings_security.php{$aidlink}'>{$locale.550}</a>
 			</span>
 		</td>
 		<td class='{if $this_module == "settings_image.php"}tbl1{else}tbl2{/if}' style='padding-left:10px;padding-right:10px;'>

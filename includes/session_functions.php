@@ -16,10 +16,12 @@ if (eregi("session_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_O
 
 // update the PHP session settings with the info from the CMS configuration table
 ini_set('session.name', $settings['session_name']);
-ini_set('session.gc_maxlifetime', $settings['session_gc_maxlifetime']);
 ini_set('session.gc_probability', $settings['session_gc_probability']);
 ini_set('session.gc_divisor', $settings['session_gc_divisor']);
 ini_set('session.use_only_cookies', true);
+if ($settings['session_gc_maxlifetime']) {
+	ini_set('session.gc_maxlifetime', $settings['session_gc_maxlifetime']);
+}
 
 // register our custom session handler
 session_set_save_handler ("_open_session", "_close_session", "_read_session", "_write_session", "_destroy_session", "_gc_session");
@@ -133,7 +135,12 @@ function _write_session($session_id,$session_data) {
 		return false;
 	} else {
 		// define the expiration time of this session
-		$session_expire = time() + $settings['session_gc_maxlifetime'];
+		if ($settings['session_gc_maxlifetime']) {
+			$session_expire = time() + $settings['session_gc_maxlifetime'];
+		} else {
+			// expiration is set to 1/1/2038 (equals NEVER ;-)
+			$session_expire = mktime(0,0,0,1,1,2038);
+		}
 		// determine the userid
 		if (!defined('iMEMBER') || !iMEMBER) {
 			$session_user_id = 0;
