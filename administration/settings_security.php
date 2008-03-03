@@ -33,7 +33,7 @@ if (isset($_POST['savesettings'])) {
 	$session_timeout = is_numeric($_POST['session_timeout']) ? ($_POST['session_timeout'] * 86400) : 86400;
 	$login_expire = isNum($_POST['login_expire']) ? ($_POST['login_expire'] * 60) : 3600;
 	$login_extended_expire = isNum($_POST['login_extended_expire']) ? ($_POST['login_extended_expire'] * 86400) : 43200;
-	if ($login_extended_expire < $session_timeout) {
+	if ($login_extended_expire > $session_timeout) {
 		$variables['errormessage'] = $locale['532'];
 	} elseif ($login_expire > $login_extended_expire) {
 		$variables['errormessage'] = $locale['533'];
