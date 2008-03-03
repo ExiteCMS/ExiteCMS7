@@ -30,6 +30,12 @@
 		{if $adminpage4|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=4' class='side'>{$locale.ac04}</a></div>{/if}
 		{if $adminpage5|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}tools.php{$aidlink}' class='side'>{$locale.ac05}</a></div>{/if}
 	{/if}
+	{if $login_expiry}
+		<hr />
+		<div id='countdown' style='text-align:center'>
+			Login session ends on {$login_expiry|date_format:"subheaderdate"}
+		</div>
+	{/if}
 	{if $new_pm_msg != 0}
 		<hr />
 		<div style='text-align:center'>
@@ -55,7 +61,7 @@
 		<form name='loginform' method='post' action='{$smarty.const.FUSION_SELF}'>
 			{$locale.061}<br /><input type='text' name='user_name' class='textbox' style='width:100px' /><br />
 			{$locale.062}<br /><input type='password' name='user_pass' class='textbox' style='width:100px' /><br />
-			<br /><input type='checkbox' name='remember_me' value='y' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/>
+			<br /><input type='checkbox' name='remember_me' value='yes' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/>
 			<input type='submit' name='login' value='{$locale.064}' class='button' /><br />
 			<input type='hidden' name='javascript_check' value='n' />
 		</form>
