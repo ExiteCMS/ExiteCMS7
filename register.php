@@ -14,6 +14,7 @@
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_INCLUDES."theme_functions.php";
+require_once PATH_INCLUDES."dns_functions.php";
 
 // temp storage for template variables
 $variables = array();
