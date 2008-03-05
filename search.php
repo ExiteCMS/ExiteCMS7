@@ -45,8 +45,27 @@ $variables['searchtext'] = str_replace(',', ' ', $stext);
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 $variables['rowstart'] = $rowstart;
 
+// do we have a localized menu? If so, select only the current locale
+switch ($settings['sitelinks_localisation']) {
+	case "none":
+		$where = "";
+		break;
+	case "single":
+		$where = "";
+		break;
+	case "multiple":
+		if (isset($link_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($link_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($link_locale);
+		}
+		if (!isset($link_locale)) $link_locale = $settings['locale_code'];
+		$variables['link_locale'] = $link_locale;
+		$where = "AND link_locale = '".$link_locale."' ";
+		break;
+}
+
 // get the available options from the database
-$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_position<='2' ORDER BY link_order");
+$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_position<='2' ".$where."ORDER BY link_order");
 $variables['links'] = array();
 if (dbrows($result) != 0) {
 	while($data = dbarray($result)) {
@@ -90,12 +109,13 @@ if ($stext != "" && strlen($stext) >= "3") {
 			break;
 		case "f":	// forums
 			$result = dbquery(
-				"SELECT tp.*, tf.*, tu.user_id,user_name,
-				MATCH(post_subject, post_message) AGAINST ('$stext' IN BOOLEAN MODE) AS score
+				"SELECT tp.*, tf.*, tu.user_id,user_name, fa.attach_id,
+				MATCH(tp.post_subject, tp.post_message, fa.attach_name, fa.attach_realname, fa.attach_comment) AGAINST ('$stext' IN BOOLEAN MODE) AS score
 				FROM ".$db_prefix."posts tp
 				INNER JOIN ".$db_prefix."forums tf USING(forum_id)
 				INNER JOIN ".$db_prefix."users tu ON tp.post_author=tu.user_id
-				WHERE ".groupaccess('forum_access')." AND MATCH(post_subject, post_message) AGAINST ('$stext' IN BOOLEAN MODE)
+				LEFT JOIN ".$db_prefix."forum_attachments fa ON tp.post_id=fa.post_id
+				WHERE ".groupaccess('forum_access')." AND MATCH(tp.post_subject, tp.post_message, fa.attach_name, fa.attach_realname, fa.attach_comment) AGAINST ('$stext' IN BOOLEAN MODE)
 				ORDER BY score DESC, post_datestamp DESC"
 			);
 			define('RESULTS_PER_PAGE', 15);
