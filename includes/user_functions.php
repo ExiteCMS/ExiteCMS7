@@ -41,7 +41,7 @@ if (!isset($_COOKIE['site_visited'])) {
 }
 
 // Login code 
-if (isset($_POST['login'])) {
+if (isset($_POST['login']) && isset($_POST['user_name']) && isset($_POST['user_pass'])) {
 	$user_pass = md5($_POST['user_pass']);
 	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_POST['user_name']));
 	// double hashed passwords as of revision 954

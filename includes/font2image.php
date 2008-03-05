@@ -1,43 +1,44 @@
 <?php
 /*
-    Dynamic Heading Generator
-    Original code by Stewart Rosenberger, http://www.stewartspeak.com/headings/
-
-    Converted by WanWizard to work in am ExiteCMS environment
-
-    usage: $image_resource = font2image($f2i_array);
-
-    $f2i_array = array();
-    $f2i_array['image'] = "png";	                   // Type of image to generate. If not specified, defaults to PNG
-    $f2i_array['font_text'] = "Text to convert";       // Text to convert to an image. Required.
-    $f2i_array['font_file'] = "font2use.ttf";          // FQN of the TTF font file to use. Required.
-    $f2i_array['font_size'] = 10;                      // Font size. Optional. Valid values are 4 to 96. Default = 10.
-    $f2i_array['font_color'] = "#000000";              // Font color (html style). Default = black.
-    $f2i_array['font_spacing'] = false;                // Use the standard font spacing. Default = false. 
-                                                       // Disables kerning, outline and shadows!!
-    $f2i_array['font_kerning'] = 0;                    // Additional space between characters in pixels. Default = 0, Max = 20.
-    $f2i_array['background_color'] = "#FFFFFF";        // Image background color (html style). Default = white.
-    $f2i_array['background_shadow_color'] = "#000000"; // Image shadow background color for a 3D look (html style). Default black.
-    $f2i_array['background_shadow_width'] = 0;         // Width of the background shadow of the image. Default = 0, Max = 10.
-    $f2i_array['outline_color'] = "";                  // Outline color (html style). If not specified, width is set to 0.
-    $f2i_array['outline_width'] = 0;                   // Width of the outline of the character in pixels. Default = 0, Max = 10.
-    $f2i_array['shadow_color'] = "";                   // Shadow color (html style). If not specified, width is set to 0.
-    $f2i_array['shadow_width'] = 0;                    // Width of the shadow of the character in pixels. Default = 0, Max = 10.
-    $f2i_array['background_transparent'] = false;      // Should the background color be marked transparent? Boolean, default = false;
-    $f2i_array['background_transparent_color'] = "";   // Optional. If defined, this color will be used for transparancy instead of 
-                                                       // the specified background color. Required if a background shadow is defined
-    $f2i_array['cache_images'] = false;                // Cache the image after generation? Boolean, default = false.
-    $f2i_array['cache_folder'] = "";                   // Directory to store the cached images in.
-                                                       // If not defined or not valid, cache_images will be set to false.
-    $f2i_array['cache_prefix'] = false;                // If defined, this will be prepended to the filename of the cached file    
-    $f2i_array['cache_hash'] = false;                  // Boolean. If false, the text will be used as filename, otherwise a hash is calculated    
-
-    Notes:
-    * if the background has a shadow, background transparency is used to create the 3D effect. The text background
-      itself can therefore not be transparent.
+	Original code by Stewart Rosenberger, http://www.stewartspeak.com/headings/
+	
+	Converted and extended by WanWizard to work in am ExiteCMS environment
+	
+	usage: $image_resource = font2image($f2i_array);
+	
+	$f2i_array = array();
+	$f2i_array['image'] = "png";	                   // Type of image to generate. If not specified, defaults to PNG
+	$f2i_array['font_text'] = "Text to convert";       // Text to convert to an image. Required.
+	$f2i_array['font_file'] = "font2use.ttf";          // FQN of the TTF font file to use. Required.
+	$f2i_array['font_size'] = 10;                      // Font size. Optional. Valid values are 4 to 96. Default = 10.
+	$f2i_array['font_color'] = "#000000";              // Font color (html style). Default = black.
+	$f2i_array['font_spacing'] = false;                // Use the standard font spacing. Default = false. 
+	                                                   // Disables kerning, outline and shadows!!
+	$f2i_array['font_kerning'] = 0;                    // Additional space between characters in pixels. Default = 0, Max = 20.
+	$f2i_array['background_color'] = "#FFFFFF";        // Image background color (html style). Default = white.
+	$f2i_array['background_shadow_color'] = "#000000"; // Image shadow background color for a 3D look (html style). Default black.
+	$f2i_array['background_shadow_width'] = 0;         // Width of the background shadow of the image. Default = 0, Max = 10.
+	$f2i_array['outline_color'] = "";                  // Outline color (html style). If not specified, width is set to 0.
+	$f2i_array['outline_width'] = 0;                   // Width of the outline of the character in pixels. Default = 0, Max = 10.
+	$f2i_array['shadow_color'] = "";                   // Shadow color (html style). If not specified, width is set to 0.
+	$f2i_array['shadow_width'] = 0;                    // Width of the shadow of the character in pixels. Default = 0, Max = 10.
+	$f2i_array['background_transparent'] = false;      // Should the background color be marked transparent? Boolean, default = false;
+	$f2i_array['background_transparent_color'] = "";   // Optional. If defined, this color will be used for transparancy instead of 
+	                                                   // the specified background color. Required if a background shadow is defined
+	$f2i_array['cache_images'] = false;                // Cache the image after generation? Boolean, default = false.
+	$f2i_array['cache_folder'] = "";                   // Directory to store the cached images in.
+	                                                   // If not defined or not valid, cache_images will be set to false.
+	$f2i_array['cache_prefix'] = false;                // If defined, this will be prepended to the filename of the cached file    
+	$f2i_array['cache_hash'] = false;                  // Boolean. If false, the text will be used as filename, otherwise a hash is calculated    
+	$f2i_array['return_link'] = false;                 // If true, the function returns a relative link to the cached image instead of the
+	                                                   // image itself. If true, cache_images MUST be set to true as well!!!
+	
+	Notes:
+	* if the background has a shadow, background transparency is used to create the 3D effect. The text background
+	  itself can therefore not be transparent.
 
 */
-if (!defined("INIT_CMS_OK")) { header("Location: ../index.php"); exit; } 
+if (eregi("font2image.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 function font2image($font2image) {
 
@@ -92,10 +93,12 @@ function font2image($font2image) {
 
 	if (!isset($font2image['background_transparent'])) $font2image['background_transparent'] = false;
 	if (!isset($font2image['cache_images'])) $font2image['cache_images'] = false;
+	if (!isset($font2image['return_link'])) $font2image['return_link'] = false;
 	if (!isset($font2image['cache_folder'])) $font2image['cache_images'] = false;
-	if ($font2image['cache_folder'] !="" && !is_dir($font2image['cache_folder'])) fatal_error('Cache folder does not exist.');
+	if ($font2image['cache_folder'] !="" && !is_dir($font2image['cache_folder'])) fatal_error("Cache folder does not exist.");
 	if (!isset($font2image['cache_prefix']) || $font2image['cache_prefix'] == false) $font2image['cache_prefix'] = "";
 	if (!isset($font2image['cache_hash'])) $font2image['cache_hash'] = false;
+	if ($font2image['return_link'] && !$font2image['cache_images']) fatal_error("Can't link without cache.");
 
 	if (!isset($font2image['font_spacing'])) $font2image['font_spacing'] = false;
 	if ($font2image['font_spacing']) {
@@ -120,37 +123,48 @@ function font2image($font2image) {
 		}
 	}
 
+	// Create the filename for this image, use hash if requested
+	if ($font2image['cache_hash']) {
+		$hash = "";
+		foreach ($font2image as $element) {
+			$hash .= $element;
+		}
+		$hash = md5($hash);
+	} else {
+		$hash = str_replace(' ', '_', $font2image['font_text']);
+	}
+	$cache_filename = $font2image['cache_folder'] . '/' . $font2image['cache_prefix'] . $hash . '.' . $font2image['image'] ;
+	
 	// Do we have caching enabled for this image?
 	if ($font2image['cache_images']) {
 		// look for cached copy, if it exists, convert it to a resource and return it
-		if ($font2image['cache_hash']) {
-			$hash = "";
-			foreach ($font2image as $element) {
-				$hash .= $element;
-			}
-			$hash = md5($hash);
-		} else {
-			$hash = str_replace(' ', '_', $font2image['font_text']);
-		}
-		$cache_filename = $font2image['cache_folder'] . '/' . $font2image['cache_prefix'] . $hash . '.' . $font2image['image'] ;
 		if($font2image['cache_images'] && is_readable($cache_filename)) {
 			// convert the file to a resource
 			$imagefile = @getimagesize($cache_filename);
 			if (!is_array($imagefile)) {
 				fatal_error("Cached image file '".$cache_filename."' is not a valid ".strtoupper($font2image['image'])." image!");
 			}
-			switch ($font2image['image']) {
-				case "png":
-					$image = imagecreatefrompng($cache_filename);
-					break;
-				case "jpg":
-					$image = imagecreatefromjpeg($cache_filename);
-					break;
-				case "gif":
-					$image = imagecreatefromgif($cache_filename);
-					break;
+			if ($font2image['return_link']) {
+				// check if the cache path is inside the webroot
+				if (substr($cache_filename,0,strlen(PATH_ROOT)) != PATH_ROOT) {
+					fatal_error("Cached image is not inside the webroot!");
+				} else {
+					return substr($cache_filename, strlen(PATH_ROOT)-1);
+				}
+			} else {
+				switch ($font2image['image']) {
+					case "png":
+						$image = imagecreatefrompng($cache_filename);
+						break;
+					case "jpg":
+						$image = imagecreatefromjpeg($cache_filename);
+						break;
+					case "gif":
+						$image = imagecreatefromgif($cache_filename);
+						break;
+				}
+				return $image;
 			}
-			return $image;
 		}
 	}
 
@@ -181,7 +195,6 @@ function font2image($font2image) {
 	if(!$image) {
 	    fatal_error('The server could not create this image.') ;
 	}
-
 	// give the image a background color
 	if (isset($font2image['background_transparent_color'])) {
 		$background_rgb = hex_to_rgb($font2image['background_transparent_color']) ;
@@ -190,6 +203,11 @@ function font2image($font2image) {
 	}
 	$font2image['background_transparent_color'] = @ImageColorAllocate($image, $background_rgb['red'], $background_rgb['green'], $background_rgb['blue']) ;
 	imagefill($image, 0,0, $font2image['background_transparent_color']);
+	// set transparency
+	if ($font2image['background_transparent']) {
+		ImageColorTransparent($image, $font2image['background_transparent_color']) ;
+	}
+	// background color and background shadow color
 	$background_rgb = hex_to_rgb($font2image['background_shadow_color']) ;
 	$font2image['background_shadow_color'] = @ImageColorAllocate($image, $background_rgb['red'], $background_rgb['green'], $background_rgb['blue']) ;
 	$background_rgb = hex_to_rgb($font2image['background_color']) ;
@@ -249,11 +267,6 @@ function font2image($font2image) {
 		}
 	}
 
-	// set transparency
-	if ($font2image['background_transparent']) {
-		ImageColorTransparent($image, $font2image['background_transparent_color']) ;
-	}
-
 	// write it to the cache directory if needed
 	if ($font2image['cache_images']) {
 		switch($font2image['image']) {
@@ -268,8 +281,16 @@ function font2image($font2image) {
 				break;
 		}
 	}
-//	imagePNG($image);die();
-	return $image;
+	if ($font2image['return_link']) {
+		// check if the cache path is inside the webroot
+		if (substr($cache_filename,0,strlen(PATH_ROOT)) != PATH_ROOT) {
+			fatal_error("Cached image is not inside the webroot!");
+		} else {
+			return substr($cache_filename, strlen(PATH_ROOT)-1);
+		}
+	} else {
+		return $image;
+	}
 }
 
 /* ****************************************************************************/
