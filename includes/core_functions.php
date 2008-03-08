@@ -523,6 +523,38 @@ function parsesmileys($message) {
 	return $message;
 }
 
+// internal function: preg_replace_callback for parseubb, to validate the URL found in [url]
+function _parseubb_checkurl($matches) {
+
+	// if it's a old-style bbcode (not [url=][/url] but [url][/url]), convert it before checking
+	if (empty($matches[2])) {
+		$matches[2] = $matches[3];
+	}
+
+	// Build the regex to check the URL
+	$scheme = "(https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/";			// SCHEMES supported
+	$urlregex = "^(".$scheme.")?";												// make the scheme optional
+	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
+	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
+	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
+	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";									// PATH (optional)
+	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
+	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
+
+	// validate the URL (in $matches[1])
+	if (eregi($urlregex, $matches[2])) {
+		// check if the URL is prefixed. If not, assume http://
+		if (!eregi("^(".$scheme."){1}", $matches[2])) {
+			$matches[2] = "http://".$matches[2];
+		}
+		// return the html for the URL bbcode
+		return "<a href='".$matches[2]."' alt='' target='_blank'>".$matches[3]."</a>";
+	} else {
+		// make the bbcode passed harmless
+		return stripinput($matches[0]);
+	}
+}
+
 // Parse bbcode into HTML code
 function parseubb($text) {
 	global $settings, $locale;
@@ -549,12 +581,11 @@ function parseubb($text) {
 
 	// correct illegal [url=] BBcode
 	$text = str_replace("[url=]", "[url]", $text);
-		
-	$text = preg_replace('#\[url\]([\r\n]*)(http://|ftp://|https://|ftps://)([^\s\'\";\+]*?)([\r\n]*)\[/url\]#si', '<a href=\'\2\3\' target=\'_blank\'>\2\3</a>', $text);
-	$text = preg_replace('#\[url\]([\r\n]*)([^\s\'\";\+]*?)([\r\n]*)\[/url\]#si', '<a href=\'http://\2\' target=\'_blank\'>\2</a>', $text);
-	$text = preg_replace('#\[url=([\r\n]*)(http://|ftp://|https://|ftps://)([^\'\";]*?)\](.*?)([\r\n]*)\[/url\]#si', '<a href=\'\2\3\' target=\'_blank\'>\4</a>', $text);
-	$text = preg_replace('#\[url=([\r\n]*)([^\s\'\";\+]*?)\](.*?)([\r\n]*)\[/url\]#si', '<a href=\'http://\2\' target=\'_blank\'>\3</a>', $text);
 
+	// convert URL bbcode, strip non-valid URL's
+	$text = preg_replace_callback('#\[url(=)?(.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_checkurl', $text);
+
+	// convert mail bbcode
 	$text = preg_replace('#\[mail\]([\r\n]*)([^\s\'\";:\+]*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\2</a>', $text);
 	$text = preg_replace('#\[mail=([\r\n]*)([^\s\'\";:\+]*?)\](.*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\3</a>', $text);
 	
