@@ -40,15 +40,15 @@
 	</tr>
 </table>
 <form name='options_form' method='post' action='{$smarty.const.FUSION_SELF}?folder=options'>
-	<table align='center' cellpadding='0' cellspacing='1' class='tbl' width='500px'>
+	<table align='center' cellpadding='0' cellspacing='1' class='tbl' width='500'>
 		<tr>
 			<td align='right' class='tbl1' width='70%'>
 				{$locale.621}
 			</td>
 			<td class='tbl1' width='30%'>
 				<select name='pm_email_notify' class='textbox'>
-					<option value='1'{if $user_options.pmconfig_email_notify == "1"} selected{/if}>{$locale.631}</option>
-					<option value='0'{if $user_options.pmconfig_email_notify == "0"} selected{/if}>{$locale.632}</option>
+					<option value='1'{if $user_options.pmconfig_email_notify == "1"} selected='selected'{/if}>{$locale.631}</option>
+					<option value='0'{if $user_options.pmconfig_email_notify == "0"} selected='selected'{/if}>{$locale.632}</option>
 				</select>
 			</td>
 		</tr>
@@ -58,8 +58,8 @@
 			</td>
 			<td class='tbl1' width='30%'>
 				<select name='pm_read_notify' class='textbox'>
-					<option value='1'{if $user_options.pmconfig_read_notify == "1"} selected{/if}>{$locale.631}</option>
-					<option value='0'{if $user_options.pmconfig_read_notify == "0"} selected{/if}>{$locale.632}</option>
+					<option value='1'{if $user_options.pmconfig_read_notify == "1"} selected='selected'{/if}>{$locale.631}</option>
+					<option value='0'{if $user_options.pmconfig_read_notify == "0"} selected='selected'{/if}>{$locale.632}</option>
 				</select>
 			</td>
 		</tr>
@@ -69,8 +69,8 @@
 			</td>
 			<td class='tbl1' width='30%'>
 				<select name='pm_save_sent' class='textbox'>
-					<option value='1'{if $user_options.pmconfig_save_sent == "1"} selected{/if}>{$locale.631}</option>
-					<option value='0'{if $user_options.pmconfig_save_sent == "0"} selected{/if}>{$locale.632}</option>
+					<option value='1'{if $user_options.pmconfig_save_sent == "1"} selected='selected'{/if}>{$locale.631}</option>
+					<option value='0'{if $user_options.pmconfig_save_sent == "0"} selected='selected'{/if}>{$locale.632}</option>
 				</select>
 			</td>
 		</tr>
@@ -106,16 +106,16 @@
 			</td>
 			<td class='tbl1' width='30%'>
 				<select name='pm_view' class='textbox'>
-					<option value='0'{if $user_options.pmconfig_view == "0"} selected{/if}>{$locale.639}</option>
-					<option value='1'{if $user_options.pmconfig_view == "1"} selected{/if}>{$locale.640}</option>
+					<option value='0'{if $user_options.pmconfig_view == "0"} selected='selected'{/if}>{$locale.639}</option>
+					<option value='1'{if $user_options.pmconfig_view == "1"} selected='selected'{/if}>{$locale.640}</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td align='center' colspan='2' class='tbl1'>
 				<br />
-				<input type='hidden' name='update_type' value='{$update_type}'>
-				<input type='submit' name='save_options' value='{$locale.623}' class='button'>
+				<input type='hidden' name='update_type' value='{$update_type}' />
+				<input type='submit' name='save_options' value='{$locale.623}' class='button' />
 			</td>
 		</tr>
 	</table>

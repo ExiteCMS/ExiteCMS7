@@ -14,7 +14,6 @@
 {* Template to render a single private message                             *}
 {*                                                                         *}
 {***************************************************************************}
-	<a name='view_{$messages[id].pmindex_id}'></a>
 	{if !$smarty.section.id.first && !$is_inline}
 	<tr>
 		<td class='tbl1' colspan='4' height='5'>
@@ -23,6 +22,7 @@
 	{/if}
 	<tr>
 		<td width='140' class='tbl_top_left'>
+			<a name='view_{$messages[id].pmindex_id}'></a>
 			<b>{$locale.422}
 			{if $is_preview || $messages[id].pmindex_user_id != $messages[id].pmindex_to_id}
 				{$locale.421}:
@@ -60,7 +60,7 @@
 		</td>
 		<td align='center' width='10' class='tbl_top_right'>		
 			{if !$is_preview}
-			<input type='checkbox' name='check_mark[]' value='{$messages[id].pmindex_id}'>
+			<input type='checkbox' name='check_mark[]' value='{$messages[id].pmindex_id}' />
 			{/if}
 		</td>
 	</tr>

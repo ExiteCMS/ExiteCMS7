@@ -42,12 +42,8 @@ if (!isset($_COOKIE['site_visited'])) {
 
 // Login code 
 if (isset($_POST['login']) && isset($_POST['user_name']) && isset($_POST['user_pass'])) {
-	$user_pass = md5($_POST['user_pass']);
+	$user_pass = md5(md5($_POST['user_pass']));
 	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_POST['user_name']));
-	// double hashed passwords as of revision 954
-	if ($settings['revision'] >= 954) {
-		$user_pass = md5($user_pass);
-	}
 	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
 	if (dbrows($result) != 0) {
 		$data = dbarray($result);
@@ -84,7 +80,7 @@ if (isset($_POST['login']) && isset($_POST['user_name']) && isset($_POST['user_p
 			exit;
 		}
 	} else {
-		redirect(BASEDIR."setuser.php?error=3");
+		redirect(BASEDIR."setuser.php?error=3", "script");
 		exit;
 	}
 }

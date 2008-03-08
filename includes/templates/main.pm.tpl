@@ -50,17 +50,25 @@
 		</td>
 	</tr>
 </table>
-{if $totals.inbox == $global_options.pm_inbox || $totals.outbox == $global_options.pm_sentbox || $totals.archive == $global_options.pm_savebox}
+{assign var=hadbreak value=0}
+{if !$global_options.pm_inbox_group && $totals.inbox == $global_options.pm_inbox}
 	<br />
-	{if $totals.inbox == $global_options.pm_inbox}
-		<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.488}</div>
+	{assign var=hadbreak value=1}
+	<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.488}</div>
+{/if}
+{if !$global_options.pm_sentbox_group && $totals.outbox == $global_options.pm_sentbox && $user_options.pmconfig_save_sent}
+	{if !$hadbreak}
+		<br />
+		{assign var=hadbreak value=1}
 	{/if}
-	{if $totals.outbox == $global_options.pm_sentbox && $user_options.pmconfig_save_sent}
-		<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.489}</div>
+	<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.489}</div>
+{/if}
+{if !$global_options.pm_savebox_group && $totals.archive == $global_options.pm_savebox}
+	{if !$hadbreak}
+		<br />
+		{assign var=hadbreak value=1}
 	{/if}
-	{if $totals.archive == $global_options.pm_savebox}
-		<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.490}</div>
-	{/if}
+	<div class='infobar' style='font-weight:bold;color:red;text-align:center;'>{$locale.490}</div>
 {/if}
 <form name='pm_form' method='post' action='{$smarty.const.FUSION_SELF}?folder={$folder}'>
 {section name=id loop=$messages}
@@ -79,11 +87,11 @@
 						<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
 						<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 					{/if}
-					{if $folder != $locale.404 && $global_options.pm_savebox > $totals.archive}
+					{if $folder != $locale.404 && ($global_options.pm_savebox > $totals.archive || $global_options.pm_savebox_group)}
 						<input type='submit' name='multi_archive' value='{$locale.448}' class='button' />
 					{/if}
 					{if $folder == $locale.404}
-						{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
+						{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && ($global_options.pm_inbox > $totals.inbox || $global_options.pm_inbox_group)) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && ($global_options.pm_sentbox > $totals.outbox || $global_options.pm_sentbox_group))}
 							<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
 						{/if}
 					{/if}
@@ -134,7 +142,7 @@
 	{/if}
 	{if $messages[id].pmindex_id == $view_id}
 	<tr>
-		<td colspan='4' class='tbl2'>
+		<td colspan='5' class='tbl2'>
 			<table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 				{assign var='is_inline' value=true}
 				{include file="main.pm.renderpm.tpl"}
@@ -224,11 +232,11 @@
 					<input type='submit' name='multi_read' value='{$locale.414}' class='button' />
 					<input type='submit' name='multi_unread' value='{$locale.415}' class='button' />
 				{/if}
-				{if $folder != $locale.404 && $global_options.pm_savebox > $totals.archive}
+				{if $folder != $locale.404 && ($global_options.pm_savebox > $totals.archive || $global_options.pm_savebox_group)}
 					<input type='submit' name='multi_archive' value='{$locale.448}' class='button' />
 				{/if}
 				{if $folder == $locale.404}
-					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && $global_options.pm_inbox > $totals.inbox) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && $global_options.pm_sentbox > $totals.outbox)}
+					{if ($messages[id].pmindex_user_id == $messages[id].pmindex_to_id && ($global_options.pm_inbox > $totals.inbox || $global_options.pm_inbox_group)) || ($messages[id].pmindex_user_id != $messages[id].pmindex_to_id && ($global_options.pm_sentbox > $totals.outbox || $global_options.pm_sentbox_group))}
 						<input type='submit' name='multi_restore' value='{$locale.412}' class='button' />
 					{/if}
 				{/if}

@@ -968,6 +968,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['719'] = "Message details";
 		$localestrings['720'] = "Enable group messages for:";
 		$localestrings['721'] = "Show all recipients of a message:";
+		$localestrings['722'] = "No Inbox message limit for:";
+		$localestrings['723'] = "No Outbox message limit for:";
+		$localestrings['724'] = "No Archive message limit for:";
+		$localestrings['725'] = "- no one -";
 		$localestrings['750'] = "Save Settings";
 		$localestrings['751'] = "<< Prev";
 		$localestrings['752'] = "Next >>";

@@ -35,6 +35,19 @@
 		</tr>
 		<tr>
 			<td class='tbl' width='50%'>
+				{$locale.722}
+			</td>
+			<td class='tbl' width='50%'>
+				<select name='pm_inbox_group' class='textbox'>
+				<option value='0'{if $pm_inbox_group == 0} selected="selected"{/if}>{$locale.725}</option>
+				{section name=id loop=$usergroups}
+					<option value='{$usergroups[id].0}'{if $usergroups[id].0 == $pm_inbox_group} selected="selected"{/if}>{$usergroups[id].1}</option>
+				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' width='50%'>
 				{$locale.702}
 				<br />
 				<span class='small2'>{$locale.704}</span>
@@ -45,12 +58,38 @@
 		</tr>
 		<tr>
 			<td class='tbl' width='50%'>
+				{$locale.723}
+			</td>
+			<td class='tbl' width='50%'>
+				<select name='pm_sentbox_group' class='textbox'>
+				<option value='0'{if $pm_sentbox_group == 0} selected="selected"{/if}>{$locale.725}</option>
+				{section name=id loop=$usergroups}
+					<option value='{$usergroups[id].0}'{if $usergroups[id].0 == $pm_sentbox_group} selected="selected"{/if}>{$usergroups[id].1}</option>
+				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' width='50%'>
 				{$locale.703}
 				<br />
 				<span class='small2'>{$locale.704}</span>
 			</td>
 			<td class='tbl' width='50%'>
 				<input type='text' name='pm_savebox' maxlength='4' class='textbox' style='width:40px;' value='{$pm_savebox}' />
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' width='50%'>
+				{$locale.724}
+			</td>
+			<td class='tbl' width='50%'>
+				<select name='pm_savebox_group' class='textbox'>
+				<option value='0'{if $pm_savebox_group == 0} selected="selected"{/if}>{$locale.725}</option>
+				{section name=id loop=$usergroups}
+					<option value='{$usergroups[id].0}'{if $usergroups[id].0 == $pm_savebox_group} selected="selected"{/if}>{$usergroups[id].1}</option>
+				{/section}
+				</select>
 			</td>
 		</tr>
 		<tr>
@@ -71,17 +110,6 @@
 				<select name='pm_hide_rcpts' class='textbox'>
 					<option value='1' {if $pm_hide_rcpts == "1"} selected="selected"{/if}>{$locale.509}</option>
 					<option value='0' {if $pm_hide_rcpts == "0"} selected="selected"{/if}>{$locale.508}</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class='tbl' width='50%'>
-				{$locale.715}
-			</td>
-			<td class='tbl' width='50%'>
-				<select name='pm_read_notify' class='textbox'>
-					<option value='0' {if $pm_read_notify == "0"} selected="selected"{/if}>{$locale.509}</option>
-					<option value='1' {if $pm_read_notify == "1"} selected="selected"{/if}>{$locale.508}</option>
 				</select>
 			</td>
 		</tr>
@@ -109,17 +137,6 @@
 		</tr>
 		<tr>
 			<td class='tbl' width='50%'>
-				{$locale.717}
-			</td>
-			<td class='tbl' width='50%'>
-				<select name='pm_view' class='textbox'>
-					<option value='0' {if $pm_view == "0"} selected="selected"{/if}>{$locale.718}</option>
-					<option value='1' {if $pm_view == "1"} selected="selected"{/if}>{$locale.719}</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class='tbl' width='50%'>
 				{$locale.720}
 			</td>
 			<td class='tbl' width='50%'>
@@ -142,6 +159,17 @@
 		</tr>
 		<tr>
 			<td class='tbl' width='50%'>
+				{$locale.715}
+			</td>
+			<td class='tbl' width='50%'>
+				<select name='pm_read_notify' class='textbox'>
+					<option value='0' {if $pm_read_notify == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1' {if $pm_read_notify == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' width='50%'>
 				{$locale.709}
 			</td>
 			<td class='tbl' width='50%'>
@@ -159,6 +187,17 @@
 				<select name='pm_save_sent' class='textbox'>
 					<option value='0' {if $pm_save_sent == "0"} selected="selected"{/if}>{$locale.509}</option>
 					<option value='1' {if $pm_save_sent == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl' width='50%'>
+				{$locale.717}
+			</td>
+			<td class='tbl' width='50%'>
+				<select name='pm_view' class='textbox'>
+					<option value='0' {if $pm_view == "0"} selected="selected"{/if}>{$locale.718}</option>
+					<option value='1' {if $pm_view == "1"} selected="selected"{/if}>{$locale.719}</option>
 				</select>
 			</td>
 		</tr>

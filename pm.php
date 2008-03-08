@@ -299,15 +299,17 @@ function storemessage($message, $old_pm_id) {
 	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $user_options, $totals;
 
 	// check if we need to make room in the outbox of the sender
-	if ($totals['outbox'] >= $global_options['pm_sentbox']) {
-		$limit = $totals['outbox'] - $global_options['pm_sentbox'] + 1;
-		$result = dbquery(
-			"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
-			WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
-			ORDER BY m.pm_datestamp LIMIT ".$limit
-			);
-		while ($data = dbarray($result)) {
-			deletemessage($data['pmindex_id'], $userdata['user_id']);
+	if (!$global_options['pm_sentbox_group']) {
+		if ($totals['outbox'] >= $global_options['pm_sentbox']) {
+			$limit = $totals['outbox'] - $global_options['pm_sentbox'] + 1;
+			$result = dbquery(
+				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
+				ORDER BY m.pm_datestamp LIMIT ".$limit
+				);
+			while ($data = dbarray($result)) {
+				deletemessage($data['pmindex_id'], $userdata['user_id']);
+			}
 		}
 	}
 
@@ -382,16 +384,18 @@ function storemessage($message, $old_pm_id) {
 	// loop through the users
 	foreach($message['user_ids'] as $user) {
 		// check if this recipient has room in his inbox. If not, create it
-		$inbox_total = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$user['user_id']."' AND pmindex_folder = '0'");
-		if ($inbox_total >= $global_options['pm_inbox']) {
-			$limit = $inbox_total - $global_options['pm_inbox'] + 1;
-			$result = dbquery(
-				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
-				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$user['user_id']."' AND i.pmindex_folder = '0'
-				ORDER BY m.pm_datestamp LIMIT ".$limit
-				);
-			while ($data = dbarray($result)) {
-				deletemessage($data['pmindex_id'], $user['user_id']);
+		if (!$global_options['pm_inbox_group']) {
+			$inbox_total = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$user['user_id']."' AND pmindex_folder = '0'");
+			if ($inbox_total >= $global_options['pm_inbox']) {
+				$limit = $inbox_total - $global_options['pm_inbox'] + 1;
+				$result = dbquery(
+					"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$user['user_id']."' AND i.pmindex_folder = '0'
+					ORDER BY m.pm_datestamp LIMIT ".$limit
+					);
+				while ($data = dbarray($result)) {
+					deletemessage($data['pmindex_id'], $user['user_id']);
+				}
 			}
 		}
 		// create an index record for the inbox of the recipient
@@ -454,6 +458,9 @@ $global_options = dbarray($result);
 $global_options['pm_inbox'] = $settings['pm_inbox'];
 $global_options['pm_sentbox'] = $settings['pm_sentbox'];
 $global_options['pm_savebox'] = $settings['pm_savebox'];
+$global_options['pm_inbox_group'] = ($settings['pm_inbox_group'] && checkgroup($settings['pm_inbox_group']));
+$global_options['pm_sentbox_group'] = ($settings['pm_sentbox_group'] && checkgroup($settings['pm_sentbox_group']));
+$global_options['pm_savebox_group'] = ($settings['pm_savebox_group'] && checkgroup($settings['pm_savebox_group']));
 $global_options['pm_send2group'] = $settings['pm_send2group'];
 $global_options['pm_hide_rcpts'] = $settings['pm_hide_rcpts'];
 $variables['global_options'] = $global_options;
@@ -608,7 +615,7 @@ if (isset($_POST['close'])) {
 
 	// move the selected messages to the arhive folder
 	if ($msg_ids && $check_count > 0) {
-		if ($global_options['pm_savebox'] == "0" || ($totals['archive'] + $check_count) <= $global_options['pm_savebox']) {
+		if ($global_options['pm_savebox'] == "0" || ($totals['archive'] + $check_count) <= $global_options['pm_savebox'] || $global_options['pm_savebox_group']) {
 			$result = dbquery("UPDATE ".$db_prefix."pm_index SET pmindex_folder='2' WHERE pmindex_id IN(".$msg_ids.") AND pmindex_user_id='".$userdata['user_id']."' AND pmindex_read_datestamp != '0'");
 		} else {
 			$variables['errormessage'] = $locale['629'];
@@ -627,7 +634,7 @@ if (isset($_POST['close'])) {
 				$data = dbarray($result);
 				if ($data['pmindex_user_id'] == $data['pmindex_to_id']) {
 					// restore to inbox
-					if ($global_options['pm_inbox'] == "0" || $totals['inbox'] < $global_options['pm_inbox']) {
+					if ($global_options['pm_inbox'] == "0" || $totals['inbox'] < $global_options['pm_inbox'] || $global_options['pm_inbox_group']) {
 						$result = dbquery("UPDATE ".$db_prefix."pm_index SET pmindex_folder='0' WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
 						$totals['inbox'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$userdata['user_id']."' AND pmindex_folder = '0'");
 					} else {
@@ -636,7 +643,7 @@ if (isset($_POST['close'])) {
 					}
 				} else {
 					// restore to outbox
-					if ($global_options['pm_sentbox'] == "0" || $totals['outbox'] < $global_options['pm_sentbox']) {
+					if ($global_options['pm_sentbox'] == "0" || $totals['outbox'] < $global_options['pm_sentbox'] || $global_options['pm_sentbox_group']) {
 						$result = dbquery("UPDATE ".$db_prefix."pm_index SET pmindex_folder='1' WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
 						$totals['outbox'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$userdata['user_id']."' AND pmindex_folder = '1'");
 					} else {
@@ -698,7 +705,7 @@ if (isset($_POST['close'])) {
 
 } elseif ($action == "archive") {
 
-	if ($global_options['pm_savebox'] == "0" || $totals['archive'] < $global_options['pm_savebox']) {
+	if ($global_options['pm_savebox'] == "0" || $totals['archive'] < $global_options['pm_savebox'] || $global_options['pm_savebox_group']) {
 		$result = dbquery("UPDATE ".$db_prefix."pm_index SET pmindex_folder='2' WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
 	} else {
 		$variables['errormessage'] = $locale['629'];
@@ -712,14 +719,14 @@ if (isset($_POST['close'])) {
 		$data = dbarray($result);
 		if ($data['pmindex_user_id'] == $data['pmindex_to_id']) {
 			// restore to inbox
-			if ($global_options['pm_inbox'] == "0" || $totals['inbox'] < $global_options['pm_inbox']) {
+			if ($global_options['pm_inbox'] == "0" || $totals['inbox'] < $global_options['pm_inbox'] || $global_options['pm_inbox_group']) {
 				$result = dbquery("UPDATE ".$db_prefix."pm_index SET pmindex_folder='0' WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
 			} else {
 				$variables['errormessage'] = $locale['629'];
 			}
 		} else {
 			// restore to outbox
-			if ($global_options['pm_sentbox'] == "0" || $totals['outbox'] < $global_options['pm_sentbox']) {
+			if ($global_options['pm_sentbox'] == "0" || $totals['outbox'] < $global_options['pm_sentbox'] || $global_options['pm_sentbox_group']) {
 				$result = dbquery("UPDATE ".$db_prefix."pm_index SET pmindex_folder='1' WHERE pmindex_id = '".$msg_id."' AND pmindex_user_id='".$userdata['user_id']."'");
 			} else {
 				$variables['errormessage'] = $locale['629'];

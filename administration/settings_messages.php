@@ -31,12 +31,24 @@ $count = 0;
 
 
 if (isset($_POST['saveoptions'])) {
+	// validate the input
+	$pm_inbox = (isset($_POST['pm_inbox']) && isNum($_POST['pm_inbox'])) ? $_POST['pm_inbox'] : 25;
+	$pm_sentbox = (isset($_POST['pm_sentbox']) && isNum($_POST['pm_sentbox'])) ? $_POST['pm_sentbox'] : 25;
+	$pm_savebox = (isset($_POST['pm_savebox']) && isNum($_POST['pm_savebox'])) ? $_POST['pm_savebox'] : 100;
+	$pm_inbox_group = (isset($_POST['pm_inbox_group']) && isNum($_POST['pm_inbox_group'])) ? $_POST['pm_inbox_group'] : 101;
+	$pm_sentbox_group = (isset($_POST['pm_sentbox_group']) && isNum($_POST['pm_sentbox_group'])) ? $_POST['pm_sentbox_group'] : 101;
+	$pm_savebox_group = (isset($_POST['pm_savebox_group']) && isNum($_POST['pm_savebox_group'])) ? $_POST['pm_savebox_group'] : 101;
+	$pm_send2group = (isset($_POST['pm_send2group']) && isNum($_POST['pm_send2group'])) ? $_POST['pm_send2group'] : 103;
+	$pm_hide_rcpts = (isset($_POST['pm_hide_rcpts']) && isNum($_POST['pm_hide_rcpts'])) ? $_POST['pm_hide_rcpts'] : 0;
 	// update the mailbox sizes
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['pm_inbox']."' WHERE cfg_name = 'pm_inbox'");
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['pm_sentbox']."' WHERE cfg_name = 'pm_sentbox'");
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['pm_savebox']."' WHERE cfg_name = 'pm_savebox'");
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['pm_send2group']."' WHERE cfg_name = 'pm_send2group'");
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['pm_hide_rcpts']."' WHERE cfg_name = 'pm_hide_rcpts'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_inbox."' WHERE cfg_name = 'pm_inbox'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_sentbox."' WHERE cfg_name = 'pm_sentbox'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_savebox."' WHERE cfg_name = 'pm_savebox'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_inbox_group."' WHERE cfg_name = 'pm_inbox_group'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_sentbox_group."' WHERE cfg_name = 'pm_sentbox_group'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_savebox_group."' WHERE cfg_name = 'pm_savebox_group'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_send2group."' WHERE cfg_name = 'pm_send2group'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$pm_hide_rcpts."' WHERE cfg_name = 'pm_hide_rcpts'");
 	// update the global pm settings
 	dbquery("UPDATE ".$db_prefix."pm_config SET pmconfig_email_notify = '".$_POST['pm_email_notify']."', pmconfig_read_notify = '".$_POST['pm_read_notify']."', pmconfig_save_sent = '".$_POST['pm_save_sent']."', pmconfig_auto_archive = '".$_POST['pm_auto_archive']."', pmconfig_view = '".$_POST['pm_view']."' WHERE user_id='0'");
 	// adjust the auto_archive user settings if needed
@@ -49,6 +61,12 @@ $data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_nam
 $variables['pm_sentbox'] = $data['cfg_value'];
 $data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_name = 'pm_savebox'"));
 $variables['pm_savebox'] = $data['cfg_value'];
+$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_name = 'pm_inbox_group'"));
+$variables['pm_inbox_group'] = $data['cfg_value'];
+$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_name = 'pm_sentbox_group'"));
+$variables['pm_sentbox_group'] = $data['cfg_value'];
+$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_name = 'pm_savebox_group'"));
+$variables['pm_savebox_group'] = $data['cfg_value'];
 $data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_name = 'pm_send2group'"));
 $variables['pm_send2group'] = $data['cfg_value'];
 $data = dbarray(dbquery("SELECT * FROM ".$db_prefix."configuration WHERE cfg_name = 'pm_hide_rcpts'"));
