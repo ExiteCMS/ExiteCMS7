@@ -17,7 +17,10 @@ if (eregi("photo_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT
 function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
 	
 	global $settings;
-	
+
+	// give this process plenty of memory to handle large images
+	ini_set('memory_limit', '64M');
+		
 	if ($filetype == 1) { $origimage = imagecreatefromgif($origfile); }
 	elseif ($filetype == 2) { $origimage = imagecreatefromjpeg($origfile); }
 	elseif ($filetype == 3) { $origimage = imagecreatefrompng($origfile); }
