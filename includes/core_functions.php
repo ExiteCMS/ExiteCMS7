@@ -48,11 +48,23 @@ if (ini_get('register_globals') != 1) {
 
 // prevent any possible XSS attacks via $_GET.
 foreach ($_GET as $check_url) {
-	if ((eregi("<[^>]*script*\"?[^>]*>", $check_url)) || (eregi("<[^>]*object*\"?[^>]*>", $check_url)) ||
-		(eregi("<[^>]*iframe*\"?[^>]*>", $check_url)) || (eregi("<[^>]*applet*\"?[^>]*>", $check_url)) ||
-		(eregi("<[^>]*meta*\"?[^>]*>", $check_url)) || (eregi("<[^>]*style*\"?[^>]*>", $check_url)) ||
-		(eregi("<[^>]*form*\"?[^>]*>", $check_url)) || (eregi("\([^>]*\"?[^)]*\)", $check_url))) {
-	die ();
+	// deal with array's in GET parameters
+	if (is_array($check_url)) {
+		foreach ($check_url as $url_parts) {
+			if ((eregi("<[^>]*script*\"?[^>]*>", $url_parts)) || (eregi("<[^>]*object*\"?[^>]*>", $url_parts)) ||
+					(eregi("<[^>]*iframe*\"?[^>]*>", $url_parts)) || (eregi("<[^>]*applet*\"?[^>]*>", $url_parts)) ||
+					(eregi("<[^>]*meta*\"?[^>]*>", $url_parts)) || (eregi("<[^>]*style*\"?[^>]*>", $url_parts)) ||
+					(eregi("<[^>]*form*\"?[^>]*>", $url_parts)) || (eregi("\([^>]*\"?[^)]*\)", $url_parts))) {
+				die ();
+			}
+		}
+	} else {
+		if ((eregi("<[^>]*script*\"?[^>]*>", $check_url)) || (eregi("<[^>]*object*\"?[^>]*>", $check_url)) ||
+				(eregi("<[^>]*iframe*\"?[^>]*>", $check_url)) || (eregi("<[^>]*applet*\"?[^>]*>", $check_url)) ||
+				(eregi("<[^>]*meta*\"?[^>]*>", $check_url)) || (eregi("<[^>]*style*\"?[^>]*>", $check_url)) ||
+				(eregi("<[^>]*form*\"?[^>]*>", $check_url)) || (eregi("\([^>]*\"?[^)]*\)", $check_url))) {
+			die ();
+		}
 	}
 }
 unset($check_url);
