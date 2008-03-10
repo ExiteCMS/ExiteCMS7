@@ -185,7 +185,7 @@
 			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=edit&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.503}' title='{$locale.503}' /></a>&nbsp;
 			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>
 		</td>
-</tr>
+	</tr>
 {sectionelse}
 	<tr>
 		<td align='center' class='tbl1'>

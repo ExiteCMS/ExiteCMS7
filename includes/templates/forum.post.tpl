@@ -137,7 +137,6 @@
 							{/if}
 						{/section}
 						<td class='tbl1'>
-							<input type='submit' name='upload' value='{$locale.471}' class='button' />
 							<input type='file' name='attach' class='textbox' style='width:200px;' />
 							<br /><br />
 							<span class='small2'>{ssprintf format=$locale.466 var1=$attachmax var2=$attachtypes}</span>
@@ -145,6 +144,8 @@
 							{$locale.473}
 							<br />
 							<textarea name='attach_comment' cols='50' rows='2' class='textbox'>{$comments}</textarea>
+							<br />
+							<input type='submit' name='upload' value='{$locale.471}' class='button' />
 						</td>
 					</tr>
 					{/if}

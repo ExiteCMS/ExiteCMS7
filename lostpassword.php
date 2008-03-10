@@ -40,7 +40,7 @@ if (isset($email) && isset($account)) {
 			$data = dbarray($result); $new_pass = "";
 			for ($i=0;$i<=7;$i++) { $new_pass .= chr(rand(97, 122)); }
 			$mailbody = str_replace("[NEW_PASS]", $new_pass, $locale['411']);
-			$mailbody = str_replace("[USER_NAME]", $data['user_name'], $mailbody);
+			$mailbody = str_replace("[USERNAME]", $data['user_name'], $mailbody);
 			$mailbody = str_replace("[SITENAME]", $settings['sitename'], $mailbody);
 			$mailbody = str_replace("[SITEUSERNAME]", $settings['siteusername'], $mailbody);
 			sendemail($data['user_name'],$email,$settings['siteusername'],$settings['siteemail'],$locale['409'].$settings['sitename'],$mailbody);

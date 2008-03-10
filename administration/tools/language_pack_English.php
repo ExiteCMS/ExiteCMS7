@@ -2623,8 +2623,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['407'] = "Please enter the email address your account is registered with below.<br /><br />\nWe will first send you a verification email. Click on the link in that email to validate your request.<br />\nWe will then email you a new password. When logged in again, choose 'Edit Profile' to change your password.";
 		$localestrings['408'] = "Send me a new password";
 		$localestrings['409'] = "New password for ";
-		$localestrings['410'] = "Hello [USER_NAME],\n\nYou have or someone has requested a new password to access your [SITENAME] account.\n\nTo change your password please click the following link:\n\n[NEW_PASS_LINK]\n\nRegards,\n[SITEUSERNAME]";
-		$localestrings['411'] = "Hello [USER_NAME],\n\nYour new password to access your [SITENAME] account is:\n\n[NEW_PASS]\n\nRegards,\n[SITEUSERNAME]";
+		$localestrings['410'] = "Hello [USERNAME],\n\nYou have or someone has requested a new password to access your [SITENAME] account.\n\nTo change your password please click the following link:\n\n[NEW_PASS_LINK]\n\nRegards,\n[SITEUSERNAME]";
+		$localestrings['411'] = "Hello [USERNAME],\n\nYour new password to access your [SITENAME] account is:\n\n[NEW_PASS]\n\nRegards,\n[SITEUSERNAME]";
 		load_localestrings($localestrings, LP_LOCALE, "main.lostpassword", $step);
 
 		$localestrings = array();
@@ -2870,7 +2870,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['413'] = "Mailserver for domain %s doesn't accept email messages.";
 		$localestrings['414'] = "Email address %s does not exist<br>(according to the mailserver %s).";
 		$localestrings['449'] = "Welcome to %s";
-		$localestrings['450'] = "Hello [USER_NAME],\n\nWelcome to [SITENAME]. Here are your login details:\n\nUsername: [USERNAME]\nFullname: [FULLNAME]\nPassword: [PASSWORD]\n\nPlease activate your account via the following link:\n";
+		$localestrings['450'] = "Hello [USERNAME],\n\nWelcome to [SITENAME]. Here are your login details:\n\nUsername: [USERNAME]\nFullname: [FULLNAME]\nPassword: [PASSWORD]\n\nPlease activate your account via the following link:\n";
 		$localestrings['451'] = "Registration complete";
 		$localestrings['452'] = "You can now log in.";
 		$localestrings['453'] = "An administrator will activate your account shortly.";
@@ -3174,8 +3174,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1204579858");
-$lp_date = "1204579858";
+if (!defined('LP_DATE')) define('LP_DATE', "1205073303");
+$lp_date = "1205073303";
 
 /*---------------------------------------------------+
 | main code                                          |

@@ -134,7 +134,7 @@ if ($settings['enable_registration'] == 1) {
 			// include the secureimage class
 			require_once PATH_INCLUDES."secureimage-1.0.3/securimage.php";
 			$securimage = new Securimage();
-			if ($securimage->check($_POST['captcha_code']) == false) {
+			if (!isset($_POST['captcha_code']) || $securimage->check($_POST['captcha_code']) == false) {
 				// the code was incorrect
 				$error .= $locale['410']."<br />\n";
 			}			
