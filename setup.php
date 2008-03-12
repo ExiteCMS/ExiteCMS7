@@ -290,44 +290,44 @@ switch($step) {
 
 			// add records to the admin table
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A',  'articles.gif', '".$locale['462']."', 'articles.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".$locale['461']."', 'article_cats.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AD', 'admins.gif', '".$locale['460']."', 'administrators.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('B',  'blacklist.gif', '".$locale['463']."', 'blacklist.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('BG',  'blogs.gif', '".$locale['473']."', 'blogs.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('C',  '', '".$locale['464']."', 'reserved', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('CP', 'c-pages.gif', '".$locale['465']."', 'custom_pages.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('D',  'dl.gif', '".$locale['468']."', 'downloads.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('DB', 'db_backup.gif', '".$locale['466']."', 'db_backup.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('DC', 'dl_cats.gif', '".$locale['467']."', 'download_cats.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('F',  'forums.gif', '".$locale['470']."', 'forums.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('FQ', 'faq.gif', '".$locale['469']."', 'faq.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('I',  'modules.gif', '".$locale['472']."', 'modules.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('IM', 'images.gif', '".$locale['471']."', 'images.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('IP', '', '".$locale['473']."', 'reserved', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('M',  'members.gif', '".$locale['474']."', 'members.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('N',  'news.gif', '".$locale['475']."', 'news.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('NC', 'news_cats.gif', '".$locale['494']."', 'news_cats.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('P',  'panels.gif', '".$locale['476']."', 'panels.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('PI', 'phpinfo.gif', '".$locale['478']."', 'phpinfo.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('PO', 'polls.gif', '".$locale['479']."', 'forum_polls.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S1', 'settings.gif', '".$locale['487']."', 'settings_main.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S2', 'settings_time.gif', '".$locale['488']."', 'settings_time.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S3', 'settings_forum.gif', '".$locale['489']."', 'settings_forum.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S4', 'registration.gif', '".$locale['490']."', 'settings_registration.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S6', 'settings_misc.gif', '".$locale['492']."', 'settings_misc.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_pm.gif', '".$locale['493']."', 'settings_messages.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S8', 'settings_lang.gif', '".$locale['459']."', 'settings_languages.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('SL', 'site_links.gif', '".$locale['481']."', 'site_links.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('T',  'tools.gif', '".$locale['495']."', 'tools.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('U',  'upgrade.gif', '".$locale['483']."', 'upgrade.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UG', 'user_groups.gif', '".$locale['484']."', 'user_groups.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UR', 'submissions.gif', '".$locale['496']."', 'redirects.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A',  'articles.gif', '".addslashes($locale['462'])."', 'articles.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".addslashes($locale['461'])."', 'article_cats.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AD', 'admins.gif', '".addslashes($locale['460'])."', 'administrators.php', 2)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('B',  'blacklist.gif', '".addslashes($locale['463'])."', 'blacklist.php', 2)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('BG',  'blogs.gif', '".addslashes($locale['473'])."', 'blogs.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('C',  '', '".addslashes($locale['464'])."', 'reserved', 2)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('CP', 'c-pages.gif', '".addslashes($locale['465'])."', 'custom_pages.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('D',  'dl.gif', '".addslashes($locale['468'])."', 'downloads.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('DB', 'db_backup.gif', '".addslashes($locale['466'])."', 'db_backup.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('DC', 'dl_cats.gif', '".addslashes($locale['467'])."', 'download_cats.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('F',  'forums.gif', '".addslashes($locale['470'])."', 'forums.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('FQ', 'faq.gif', '".addslashes($locale['469'])."', 'faq.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('I',  'modules.gif', '".addslashes($locale['472'])."', 'modules.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('IM', 'images.gif', '".addslashes($locale['471'])."', 'images.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('IP', '', '".addslashes($locale['473'])."', 'reserved', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('M',  'members.gif', '".addslashes($locale['474'])."', 'members.php', 2)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('N',  'news.gif', '".addslashes($locale['475'])."', 'news.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('NC', 'news_cats.gif', '".addslashes($locale['494'])."', 'news_cats.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('P',  'panels.gif', '".addslashes($locale['476'])."', 'panels.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('PI', 'phpinfo.gif', '".addslashes($locale['478'])."', 'phpinfo.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('PO', 'polls.gif', '".addslashes($locale['479'])."', 'forum_polls.php', 1)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S1', 'settings.gif', '".addslashes($locale['487'])."', 'settings_main.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S2', 'settings_time.gif', '".addslashes($locale['488'])."', 'settings_time.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S3', 'settings_forum.gif', '".addslashes($locale['489'])."', 'settings_forum.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S4', 'registration.gif', '".addslashes($locale['490'])."', 'settings_registration.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S6', 'settings_misc.gif', '".addslashes($locale['492'])."', 'settings_misc.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_pm.gif', '".addslashes($locale['493'])."', 'settings_messages.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S8', 'settings_lang.gif', '".addslashes($locale['459'])."', 'settings_languages.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('SL', 'site_links.gif', '".addslashes($locale['481'])."', 'site_links.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('T',  'tools.gif', '".addslashes($locale['495'])."', 'tools.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('U',  'upgrade.gif', '".addslashes($locale['483'])."', 'upgrade.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UG', 'user_groups.gif', '".addslashes($locale['484'])."', 'user_groups.php', 2)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UR', 'submissions.gif', '".addslashes($locale['496'])."', 'redirects.php', 1)");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the default 404 page to the custom pages table
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##custom_pages (page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES ('404 Error Page', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['560']."<br /></div><br /><div align=\"center\">".$locale['561']."<br /></div><br /><div align=\"center\">".$locale['562']."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".$locale['563']."<br /></div><br /><div align=\"center\">".$locale['564']."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##custom_pages (page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES ('404 Error Page', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".addslashes($locale['560'])."<br /></div><br /><div align=\"center\">".addslashes($locale['561'])."<br /></div><br /><div align=\"center\">".addslashes($locale['562'])."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".addslashes($locale['563'])."<br /></div><br /><div align=\"center\">".addslashes($locale['564'])."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
 			$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##custom_pages SET page_id = 0");
 			$result = dbcommands($commands, $db_prefix);
 
@@ -350,21 +350,21 @@ switch($step) {
 		
 			// add the default news categories 
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['540']."', 'bugs.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['541']."', 'downloads.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['542']."', 'games.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['543']."', 'graphics.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['544']."', 'hardware.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['545']."', 'journal.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['546']."', 'members.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['547']."', 'mods.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['548']."', 'movies.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['549']."', 'network.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['550']."', 'news.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['552']."', 'security.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['553']."', 'software.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['554']."', 'themes.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".$locale['555']."', 'windows.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['540'])."', 'bugs.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['541'])."', 'downloads.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['542'])."', 'games.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['543'])."', 'graphics.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['544'])."', 'hardware.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['545'])."', 'journal.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['546'])."', 'members.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['547'])."', 'mods.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['548'])."', 'movies.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['549'])."', 'network.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['550'])."', 'news.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['552'])."', 'security.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['553'])."', 'software.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['554'])."', 'themes.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['555'])."', 'windows.gif')");
 			$result = dbcommands($commands, $db_prefix);
 	
 			// add the standard modules to make them pre-installed
@@ -376,23 +376,23 @@ switch($step) {
 
 			// and activate the panels of these modules
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['520']."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['524']."', 'welcome_message_panel', '2', '1', 'file', '0', '0', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".$locale['526']."', 'user_info_panel', '4', 1, 'file', '0', '0', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".addslashes($locale['520'])."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".addslashes($locale['524'])."', 'welcome_message_panel', '2', '1', 'file', '0', '0', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".addslashes($locale['526'])."', 'user_info_panel', '4', 1, 'file', '0', '0', '1')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the default menu links 
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['500']."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['501']."', 'article_cats.php', '0', '1', '0', '2', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['502']."', 'downloads.php', '0', '1', '0', '3', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['503']."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['504']."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['505']."', 'news_cats.php', '0', '1', '0', '6', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['473']."', 'blogs.php', '0', '1', '0', '7', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['506']."', 'contact.php', '0', '1', '0', '8', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['507']."', 'search.php', '0', '1', '0', '9', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".$locale['508']."', 'register.php', '100', '2', '0', '10', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['500'])."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['501'])."', 'article_cats.php', '0', '1', '0', '2', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['502'])."', 'downloads.php', '0', '1', '0', '3', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['503'])."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['504'])."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['505'])."', 'news_cats.php', '0', '1', '0', '6', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['473'])."', 'blogs.php', '0', '1', '0', '7', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['506'])."', 'contact.php', '0', '1', '0', '8', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['507'])."', 'search.php', '0', '1', '0', '9', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['508'])."', 'register.php', '100', '2', '0', '10', 'main_menu_panel')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the default forum poll settings

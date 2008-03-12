@@ -22,7 +22,7 @@
 			<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 				<tr>
 					<td>
-						v.{$settings.version} <a href='http://exitecms.exite.eu' target='_blank'><img src='{$smarty.const.IMAGES}cms-logo-small.png' alt='' /></a> rev.{$settings.revision}<br />
+						v.{$settings.version} <a href='http://exitecms.exite.eu' target='_blank' title='ExiteCMS v7.1 ©2008 Exite BV'><img src='{$smarty.const.IMAGES}cms-logo-small.png' alt='' /></a> rev.{$settings.revision}<br />
 						{$settings.counter} {if $settings.counter == 1}{$locale.140}{else}{$locale.141}{/if}
 					</td>
 				</tr>
