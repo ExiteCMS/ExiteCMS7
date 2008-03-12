@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Wed Nov 28 2007, 19:16:14 CET
+// generated on : Wed Mar 12 2008, 21:46:53 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";
@@ -48,7 +48,7 @@ $locale['469'] = "FAQs";
 $locale['470'] = "Forums";
 $locale['471'] = "Images";
 $locale['472'] = "Modules & Plugins";
-$locale['473'] = "x";
+$locale['473'] = "Blogs";
 $locale['474'] = "Members";
 $locale['475'] = "News";
 $locale['476'] = "Panels";
