@@ -220,7 +220,7 @@ if (isset($_POST['save_cat'])) {
 			// remove users from threads_read that don't have read access to the forum anymore!
 			$result = dbquery("
 				SELECT DISTINCT u.user_id, u.user_level, u.user_groups 
-				FROM ".$db_prefix"threads_read tr
+				FROM ".$db_prefix."threads_read tr
 				LEFT JOIN ".$db_prefix."users u ON u.user_id = tr.user_id
 				WHERE tr.thread_id = '".$thread_id."'
 				");
