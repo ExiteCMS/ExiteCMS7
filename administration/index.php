@@ -108,7 +108,11 @@ $variables['statistics']['members_unactive'] = dbcount("(user_id)", "users", "us
 $variables['statistics']['members_suspended'] = dbcount("(user_id)", "users", "user_status='1'");
 $variables['statistics']['members_deleted'] = dbcount("(user_id)", "users", "user_status='3'");
 $variables['statistics']['comments'] = dbcount("(comment_id)", "comments");
-$variables['statistics']['shouts'] = dbcount("(shout_id)", "shoutbox");
+if (dbtable_exists($db_prefix."shoutbox")) {
+	$variables['statistics']['shouts'] = dbcount("(shout_id)", "shoutbox");
+} else {
+	$variables['statistics']['shouts'] = 0;
+}
 $variables['statistics']['posts'] = dbcount("(post_id)", "posts");
 
 // define the body panel variables
