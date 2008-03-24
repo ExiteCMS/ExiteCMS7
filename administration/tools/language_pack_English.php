@@ -3174,8 +3174,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1205356921");
-$lp_date = "1205356921";
+if (!defined('LP_DATE')) define('LP_DATE', "1206357171");
+$lp_date = "1206357171";
 
 /*---------------------------------------------------+
 | main code                                          |
@@ -3233,7 +3233,7 @@ if (!defined('LP_SKIP_MAIN')) {
 	
 	// install the language pack
 	if ($step == "install" || $step == "upgrade") {
-		if ($step == "install") {
+		if ($step == "install" || defined('CMS_SETUP_LOAD')) {
 			$result = dbquery("INSERT INTO ".$db_prefix."locale (locale_code, locale_name, locale_locale, locale_charset, locale_active) VALUES ('".LP_LOCALE."', '".LP_LANGUAGE."', '".LP_LOCALES."', '".LP_CHARSET."', 1)");
 		}
 		if ($error = install_language_pack($step)) {
