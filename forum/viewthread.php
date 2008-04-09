@@ -324,11 +324,19 @@ if ($rows != 0) {
 		// user & group memberships
 		$data['group_names'] = array();
 		$data['group_names'][] = array('type' => 'U', 'level' => $data['user_level'], 'name' => getuserlevel($data['user_level']));
-		if ($data['user_groups'] != "") {
-			$gresult = dbquery("SELECT group_name, group_forumname, group_color FROM ".$db_prefix."user_groups WHERE group_id IN (".str_replace('.', ',', substr($data['user_groups'],1)).") AND group_visible & 2");
-			$grecs = dbrows($gresult);
-			while ($gdata = dbarray($gresult)) {
-				$data['group_names'][] = array('type' => 'G', 'color' => $gdata['group_color'], 'name' => $gdata['group_forumname']==""?$gdata['group_name']:$gdata['group_forumname']);
+
+		if ($data['user_groups']) {
+			$groups = (strpos($data['user_groups'], ".") == 0 ? explode(".", substr($data['user_groups'], 1)) : explode(".", $data['user_groups']));
+			foreach ($groups as $group) {
+				// check if this groups has subgroups. If so, add them to the array
+				getsubgroups($group);
+			}
+			for ($i = 0;$i < count($groups);$i++) {
+				$gresult = dbquery("SELECT group_name, group_forumname, group_color FROM ".$db_prefix."user_groups WHERE group_id='".$groups[$i]."' AND group_visible & 2");
+				if(dbrows($gresult)) {
+					$gdata = dbarray($gresult);
+					$data['group_names'][] = array('type' => 'G', 'color' => $gdata['group_color'], 'name' => $gdata['group_forumname']==""?$gdata['group_name']:$gdata['group_forumname']);
+				}
 			}
 		}
 
