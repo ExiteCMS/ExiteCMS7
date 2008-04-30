@@ -41,6 +41,7 @@ function ModUserTables(&$query) {
 		if(strpos($query, " ".$db_prefix.$usertable)) {
 			$isUserQuery = true;
 			$query = str_replace(" ".$db_prefix.$usertable, " ".$user_db_name.".".$user_db_prefix.$usertable, $query);
+			$query = str_replace("=".$db_prefix.$usertable, "=".$user_db_name.".".$user_db_prefix.$usertable, $query);
 		}
 	}
 	// prefix all other tables with the database name as well
