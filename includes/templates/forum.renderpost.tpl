@@ -45,14 +45,14 @@
 			{if $posts[pid].user_can_edit}
 				{buttonlink name=$locale.568 link="post.php?action=edit&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;post_id="|cat:$posts[pid].post_id}
 			{/if}
-			{if $smarty.const.SHOW_REPLY_BUTTON && !$thread.thread_locked}
+			{if $smarty.const.SHOW_REPLY_BUTTON && (!$thread.thread_locked || $smarty.const.iMOD)}
 				{if $smarty.const.REPLY_AS_QUOTE}
 					{buttonlink name=$locale.575 link="post.php?action=quote&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 				{else}
 					{buttonlink name=$locale.575 link="post.php?action=postreply&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 				{/if}
 			{/if}
-			{if $smarty.const.SHOW_QUOTE_BUTTON && !$thread.thread_locked}
+			{if $smarty.const.SHOW_QUOTE_BUTTON && (!$thread.thread_locked || $smarty.const.iMOD)}
 				{buttonlink name=$locale.569 link="post.php?action=quote&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$posts[pid].thread_id|cat:"&amp;reply_id="|cat:$posts[pid].post_id}
 			{/if}
 		{/if}
