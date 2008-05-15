@@ -54,7 +54,7 @@ switch (strtolower($type)) {
 //		$channel['pubDate'] = "";
 //		$channel['lastBuildDate'] = "";
 		$channel['generator'] = "ExiteCMS RSS Feed Generator v1.0";
-		$channel['webMaster'] = $settings['siteemail'];
+		$channel['webMaster'] = $settings['siteemail']." (Feed Manager)";
 		$channels[] = $channel;
 		$channel_count = count($channels);
 		// create the feed resource
@@ -71,7 +71,7 @@ switch (strtolower($type)) {
 			$item['link'] = $settings['siteurl']."forum/viewthread.php?forum_id=".$data['forum_id']."&amp;thread_id=".$data['thread_id']."&amp;pid=".$data['post_id']."#post_".$data['post_id'];
 			$item['description'] = "<![CDATA[ ".(strlen($data['post_message']) > 500 ? (substr($data['post_message'],0,496)." ...") : $data['post_message'])." ]]>";
 			$item['pubDate'] = strftime("%a, %d %b %G %T %z", $data['post_datestamp']);
-//			$item['guid'] = "";
+			$item['guid'] = $item['link'];	// make the guid equal to the link, we don't have a need for permalinks
 			$feed[] = $item;
 		}
 		$feeds[] = $feed;
@@ -88,12 +88,14 @@ if (!isset($feeds) || !is_array($feeds) || !isset($feed_count) || $feed_count ==
 // start building the XML file
 header("Content-type: text/xml; charset=".$settings['charset']);
 echo "<?xml version=\"1.0\" encoding=\"".$settings['charset']."\"?>\n";
-echo "<rss version=\"2.0\">\n";
+echo "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 
 // loop through the channels
 foreach ($channels as $index => $channel) {
 	// opening: channel information
 	echo "\t<channel>\n";
+	// atom backlink to the channel
+	echo "\t\t<atom:link href=\"".$settings['siteurl'].FUSION_SELF."?".FUSION_QUERY."\" rel=\"self\" type=\"application/rss+xml\" />\n";
 	foreach ($channel as $tag => $value) {
 		echo "\t\t<".$tag.">".$value."</".$tag.">\n";
 	}
