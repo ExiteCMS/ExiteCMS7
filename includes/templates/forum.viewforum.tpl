@@ -191,14 +191,15 @@
 			</div>
 			{/if}
 		</td>
-		{if $smarty.const.iMEMBER && $user_can_post}
-			<td align='right'>
-			{if $unread_posts}
-				{buttonlink name=$locale.573 link="viewforum.php?action=markallread&amp;forum_id="|cat:$forum_id}
+		<td align='right'>
+			{buttonlink name=$locale.414 link="viewposts.php?forum_id="|cat:$forum_id}
+			{if $smarty.const.iMEMBER && $user_can_post}
+				{if $unread_posts}
+					{buttonlink name=$locale.573 link="viewforum.php?action=markallread&amp;forum_id="|cat:$forum_id}
+				{/if}
+				{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
 			{/if}
-			{buttonlink name=$locale.566 link="post.php?action=newthread&amp;forum_id="|cat:$forum_id}
-			</td>
-		{/if}
+		</td>
 	</tr>
 </table>
 <table cellpadding='0' cellspacing='0' width='100%'>

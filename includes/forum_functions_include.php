@@ -382,16 +382,6 @@ function parsemessage($rawmsg, $smileys=true) {
 	// any text left?
 	if (strlen($rawmsg)) $message .= $rawmsg;
 
-	// find remaining URL's in the text, and convert them to a href as well
-	$pattern = '#(^|[^\"=]{1})(https?://|ftp://|mailto:|news:)([^(,\s<>\[\]\)]+)([,\s\n<>\)]|$)#sme';
-	$message = preg_replace($pattern,"'$1<a href=\'$2$3\' target=\'_blank\'>'.shortenlink('$2$3',83).'</a>$4'",$message);
-	// re-insert the saved url blocks
-	foreach($urlblocks as $urlblock) {
-		// find the first placeholder
-		$i = strpos($message, "{@@**@@}");
-		$message = substr($message, 0, $i).$urlblock.substr($message, $i+8);
-	}
-
 	// detect and convert wikitags to wiki bbcodes if needed
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
 		// build the search and replace arrays
@@ -404,6 +394,17 @@ function parsemessage($rawmsg, $smileys=true) {
 		}
 		$message = preg_replace($search, $replace, $message);
 	}
+
+	// find remaining URL's in the text, and convert them to a href as well
+	$pattern = '#(^|[^\"=]{1})(https?://|ftp://|mailto:|news:)([^(,\s<>\[\]\)]+)([,\s\n<>\)]|$)#sme';
+	$message = preg_replace($pattern,"'$1<a href=\'$2$3\' target=\'_blank\'>'.shortenlink('$2$3',83).'</a>$4'",$message);
+	// re-insert the saved url blocks
+	foreach($urlblocks as $urlblock) {
+		// find the first placeholder
+		$i = strpos($message, "{@@**@@}");
+		$message = substr($message, 0, $i).$urlblock.substr($message, $i+8);
+	}
+
 	// parse the smileys in the message
 	if ($smileys) $message = parsesmileys($message);
 	// page all ubbcode

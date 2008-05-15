@@ -130,6 +130,9 @@
 			<br />
 			<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' style='vertical-align:middle;' /> - {$locale.410}
 		</td>
+		<td class='forum' style='vertical-align:bottom;'>
+			{buttonlink name=$locale.414 link="viewposts.php"}
+		</td>
 		<td align='right' valign='bottom' class='forum'>
 			<form name='searchform' method='post' action='{$smarty.const.BASEDIR}search.php?stype=f'>
 				<input type='text' name='stext' class='textbox' style='width:150px' />

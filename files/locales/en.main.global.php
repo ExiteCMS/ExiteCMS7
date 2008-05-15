@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Wed Mar 12 2008, 22:22:12 CET
+// generated on : Thu May 15 2008, 14:39:50 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -27,6 +27,7 @@ $locale['024'] = "Welcome";
 $locale['025'] = "Latest Active Forum Threads";
 $locale['026'] = "My Recent Threads";
 $locale['027'] = "My Recent Posts";
+$locale['027a'] = "All Posts";
 $locale['028'] = "New Posts";
 $locale['029'] = "Latest News";
 $locale['030'] = "Forum";
@@ -79,12 +80,12 @@ $locale['081'] = "Private Messages";
 $locale['082'] = "Members List";
 $locale['083'] = "CMS Administration";
 $locale['084'] = "Logout";
-$locale['085'] = "%u private ";
-$locale['086'] = "message";
-$locale['087'] = "messages";
-$locale['088'] = "post";
-$locale['089'] = "posts";
-$locale['090'] = "%u new forum ";
+$locale['085'] = "%u private message";
+$locale['086'] = "%u private messages";
+$locale['087'] = "?";
+$locale['088'] = "%u new forum post";
+$locale['089'] = "%u new forum posts";
+$locale['090'] = "Posts";
 $locale['091'] = "Mark all read";
 $locale['100'] = "Member Poll";
 $locale['101'] = "Submit Vote";

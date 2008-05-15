@@ -360,7 +360,8 @@ function groupaccess($field) {
 	$res = ($hidden == false?"$field !='255'":"");
 
 	if (iSUPERADMIN) { 
-		$res .= ($hidden == false?" AND ":"")."($field != '100'";
+		$res .= ($res != ""?" AND ":"")."$field != '100'";
+		return $res;
 	} elseif ($userdata['user_level'] >= 102) { 
 		$res .= ($hidden == false?" AND ":"")."($field='0' OR $field='101' OR $field='102'";
 	} elseif (iMEMBER) { 
