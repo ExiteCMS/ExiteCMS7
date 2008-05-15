@@ -2550,7 +2550,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['084'] = "Logout";
 		$localestrings['085'] = "%u private message";
 		$localestrings['086'] = "%u private messages";
-		$localestrings['087'] = "?";
+		$localestrings['087'] = "Downloads";
 		$localestrings['088'] = "%u new forum post";
 		$localestrings['089'] = "%u new forum posts";
 		$localestrings['090'] = "Posts";
