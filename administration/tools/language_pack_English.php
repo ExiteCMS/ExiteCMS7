@@ -2128,6 +2128,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['411'] = "Moderated by ";
 		$localestrings['412'] = "Page: ";
 		$localestrings['413'] = "RSS Feed";
+		$localestrings['414'] = "View all posts";
 		$localestrings['430'] = "download(s)";
 		$localestrings['450'] = "View Forum";
 		$localestrings['451'] = "Subject";
@@ -2318,7 +2319,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['472']['11'] = "purple";
 		$localestrings['472']['12'] = "violet";
 		$localestrings['472']['13'] = "black";
-		$localestrings['472']['14'] = "gray";
+		$localestrings['472']['14'] = "grey";
 		$localestrings['472']['15'] = "silver";
 		$localestrings['472']['16'] = "white";
 		$localestrings['473'] = "Comments (Max.length: 255 characters):";
@@ -2494,6 +2495,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['025'] = "Latest Active Forum Threads";
 		$localestrings['026'] = "My Recent Threads";
 		$localestrings['027'] = "My Recent Posts";
+		$localestrings['027a'] = "All Posts";
 		$localestrings['028'] = "New Posts";
 		$localestrings['029'] = "Latest News";
 		$localestrings['030'] = "Forum";
@@ -2546,12 +2548,12 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['082'] = "Members List";
 		$localestrings['083'] = "CMS Administration";
 		$localestrings['084'] = "Logout";
-		$localestrings['085'] = "%u private ";
-		$localestrings['086'] = "message";
-		$localestrings['087'] = "messages";
-		$localestrings['088'] = "post";
-		$localestrings['089'] = "posts";
-		$localestrings['090'] = "%u new forum ";
+		$localestrings['085'] = "%u private message";
+		$localestrings['086'] = "%u private messages";
+		$localestrings['087'] = "?";
+		$localestrings['088'] = "%u new forum post";
+		$localestrings['089'] = "%u new forum posts";
+		$localestrings['090'] = "Posts";
 		$localestrings['091'] = "Mark all read";
 		$localestrings['100'] = "Member Poll";
 		$localestrings['101'] = "Submit Vote";
@@ -3174,8 +3176,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1206357171");
-$lp_date = "1206357171";
+if (!defined('LP_DATE')) define('LP_DATE', "1210855263");
+$lp_date = "1210855263";
 
 /*---------------------------------------------------+
 | main code                                          |

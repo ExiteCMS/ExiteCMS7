@@ -39,18 +39,18 @@
 	{if $new_pm_msg != 0}
 		<hr />
 		<div style='text-align:center'>
-			<b><a href='{$smarty.const.BASEDIR}pm.php?action=show_new' class='side'>{$new_pm_msg|string_format:$locale.085}{if $new_pm_msg == 1}{$locale.086}{else}{$locale.087}{/if}</a></b>
+			<b><a href='{$smarty.const.BASEDIR}pm.php?action=show_new' class='side'>{if $new_pm_msg == 1}{$new_pm_msg|string_format:$locale.085}{else}{$new_pm_msg|string_format:$locale.086}{/if}</a></b>
 		</div>
 	{/if}
 	{if $new_post_msg != 0}
 		<hr />
 		<div style='text-align:center'>
 			{if $new_posts_panel}
-				<a href='{$smarty.const.MODULES}forum_threads_list_panel/new_posts.php' class='side'><b>{$new_post_msg|string_format:$locale.090}{if $new_post_msg == 1}{$locale.088}{else}{$locale.089}{/if}</b></a>
+				<a href='{$smarty.const.MODULES}forum_threads_list_panel/new_posts.php' class='side'><b>{if $new_post_msg == 1}{$new_post_msg|string_format:$locale.088}{else}{$new_post_msg|string_format:$locale.089}{/if}</b></a>
 				<hr />
 				{buttonlink name=$locale.091 link=$smarty.const.MODULES|cat:"forum_threads_list_panel/new_posts.php?markasread="|cat:$user_id}
 			{else}
-				<b>{$new_post_msg|string_format:$locale.090}{if $new_post_msg == 1}{$locale.088}{else}{$locale.089}{/if}</b>
+				<b>{if $new_post_msg == 1}{$new_post_msg|string_format:$locale.088}{else}{$new_post_msg|string_format:$locale.089}{/if}</b>
 			{/if}
 		</div>
 	{/if}
