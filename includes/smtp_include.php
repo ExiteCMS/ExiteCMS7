@@ -713,7 +713,7 @@ class SMTP
      *
      * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
      *
-     * SMTP CODE SUCCESS: 250,251,450("greylisted")
+     * SMTP CODE SUCCESS: 250,251
      * SMTP CODE FAILURE: 550,551,552,553,450,451,452
      * SMTP CODE ERROR  : 500,501,503,421
      * @access public
@@ -737,7 +737,7 @@ class SMTP
             echo "SMTP -> FROM SERVER:" . $this->CRLF . $rply;
         }
 
-        if($code != 250 && $code != 251 && ($code == 450 && strpos(strtolower($reply), "greylist")===false)) {
+        if($code != 250 && $code != 251) {
             $this->error =
                 array("error" => "RCPT not accepted from server",
                       "smtp_code" => $code,
@@ -749,6 +749,60 @@ class SMTP
             return false;
         }
         return true;
+    }
+
+    /**
+     * Sends the command RCPT to the SMTP server with the TO: argument of $to.
+     * Returns true if the recipient was accepted false if it was rejected.
+     *
+     * Implements some extra SUCCESS codes, based on the reply text
+     *
+     * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
+     *
+     * SMTP CODE SUCCESS: 250,251
+     * SMTP CODE SUCCESS: 450 ("%greylist%")
+     * SMTP CODE FAILURE: 550,551,552,553,450,451,452
+     * SMTP CODE ERROR  : 500,501,503,421
+     * @access public
+     * @return bool
+     */
+    function CheckRecipient($to) {
+        $this->error = null; # so no confusion is caused
+
+        if(!$this->connected()) {
+            $this->error = array(
+                    "error" => "Called Recipient() without being connected");
+            return false;
+        }
+
+        fputs($this->smtp_conn,"RCPT TO:<" . $to . ">" . $this->CRLF);
+
+        $rply = $this->get_lines();
+        $code = substr($rply,0,3);
+
+        if($this->do_debug >= 2) {
+            echo "SMTP -> FROM SERVER:" . $this->CRLF . $rply;
+        }
+
+		// standard success codes
+        if($code == 250 || $code == 251) {
+            return true;
+        }
+
+		// ESMTP Postfix greylist filter
+        if($code == 450 && strpos(strtolower($reply), "greylisted")===false) {
+            return true;
+        }
+
+        $this->error =
+            array("error" => "RCPT not accepted from server",
+                  "smtp_code" => $code,
+                  "smtp_msg" => substr($rply,4));
+        if($this->do_debug >= 1) {
+            echo "SMTP -> ERROR: " . $this->error["error"] .
+                     ": " . $rply . $this->CRLF;
+        }
+        return false;
     }
 
     /**

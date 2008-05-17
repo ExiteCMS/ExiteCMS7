@@ -95,7 +95,7 @@ if (isset($_POST['update_profile'])) {
 								// mail server doesn't respond to MAIL FROM message
 								$error .= sprintf($locale['489'], $email_domain)."<br><br>\n";
 							} else {
-								if (!$mail->Recipient($email)) {
+								if (!$mail->CheckRecipient($email)) {
 									// mail server doesn't respond to RCPT TO message
 									$error .= sprintf($locale['490'], $email, $mailhost)."<br><br>\n";
 								} else {

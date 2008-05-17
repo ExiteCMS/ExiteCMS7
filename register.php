@@ -98,7 +98,7 @@ if ($settings['enable_registration'] == 1) {
 						// mail server doesn't respond to MAIL FROM message
 						$error .= sprintf($locale['413'], $email_domain)."<br /><br />\n";
 					} else {
-						if (!$mail->Recipient($email)) {
+						if (!$mail->CheckRecipient($email)) {
 							// mail server doesn't respond to RCPT TO message
 							$error .= sprintf($locale['414'], $email, $mailhost)."<br /><br />\n";
 						} else {
