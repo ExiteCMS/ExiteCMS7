@@ -713,7 +713,7 @@ class SMTP
      *
      * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
      *
-     * SMTP CODE SUCCESS: 250,251
+     * SMTP CODE SUCCESS: 250,251,450("greylisted")
      * SMTP CODE FAILURE: 550,551,552,553,450,451,452
      * SMTP CODE ERROR  : 500,501,503,421
      * @access public
@@ -737,7 +737,7 @@ class SMTP
             echo "SMTP -> FROM SERVER:" . $this->CRLF . $rply;
         }
 
-        if($code != 250 && $code != 251) {
+        if($code != 250 && $code != 251 && ($code == 450 && strpos(strtolower($reply), "greylist")===false)) {
             $this->error =
                 array("error" => "RCPT not accepted from server",
                       "smtp_code" => $code,
