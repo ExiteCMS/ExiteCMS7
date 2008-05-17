@@ -63,7 +63,7 @@ function CMS_getmxrr($hostname, &$mxhosts) {
 		while ( list( $k, $line ) = each( $output ) ) {
 
 			# Valid records begin with hostname:
-			if (ereg( "^$hostnametMX preference = ([0-9]+), mail exchanger = (.*)$", $line, $parts ) ) {
+			if (ereg( "^$hostname\tMX preference = ([0-9]+), mail exchanger = (.*)$", $line, $parts ) ) {
 				$mxhosts[ $parts[1] ] = $parts[2];
 			}
 		}
