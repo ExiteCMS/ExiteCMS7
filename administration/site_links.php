@@ -127,16 +127,6 @@ function buildmenutree($parent, $depth, $panel) {
 | Main                                               |
 +----------------------------------------------------*/
 
-// generate the list of installed menu panels
-$variables['panel_list'] = array();
-$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_folder LIKE '%_panel'");
-if (dbrows($result)) {
-	while ($data = dbarray($result)) {
-		if (strpos($data['mod_folder'], '_menu_panel') !== false) $variables['panel_list'][] = $data['mod_folder'];
-	}
-}
-sort($variables['panel_list']);
-
 // display a status panel
 if (isset($status)) {
 	if ($status == "del") {
@@ -150,6 +140,16 @@ if (isset($status)) {
 	$template_variables['admin.site_links.status'] = $variables;
 	$variables = array();
 }
+
+// generate the list of installed menu panels
+$variables['panel_list'] = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_folder LIKE '%_panel'");
+if (dbrows($result)) {
+	while ($data = dbarray($result)) {
+		if (strpos($data['mod_folder'], '_menu_panel') !== false) $variables['panel_list'][] = $data['mod_folder'];
+	}
+}
+sort($variables['panel_list']);
 
 // default panel title
 $title = $locale['411'];
