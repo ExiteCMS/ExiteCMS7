@@ -354,183 +354,185 @@ function isDec($value) {
 // Parse smiley bbcode into HTML images
 function parsesmileys($message) {
 	$smiley = array(
-		"#\:oops\:#si" => "<img src='".IMAGES."smiley/more/redface.gif' alt='smiley' />",
-		"#\;\)#si" => "<img src='".IMAGES."smiley/wink.gif' alt='smiley' />",
-		"#\:\(#si" => "<img src='".IMAGES."smiley/sad.gif' alt='smiley' />",
-		"#\:\|#si" => "<img src='".IMAGES."smiley/frown.gif' alt='smiley' />",
-		"#\:o#si" => "<img src='".IMAGES."smiley/shock.gif' alt='smiley' />",
-		"#\:p#si" => "<img src='".IMAGES."smiley/pfft.gif' alt='smiley' />",
-		"#b\)#si" => "<img src='".IMAGES."smiley/cool.gif' alt='smiley' />",
-		"#\:d#si" => "<img src='".IMAGES."smiley/grin.gif' alt='smiley' />",
-		"#\:@#si" => "<img src='".IMAGES."smiley/angry.gif' alt='smiley' />",
-		"#\:thumbleft#si" => "<img src='".IMAGES."smiley/more/icon_thumleft.gif' alt='smiley' />",
-		"#\:thumbright#si" => "<img src='".IMAGES."smiley/more/icon_thumright.gif' alt='smiley' />",
-		"#=D&gt;#si" => "<img src='".IMAGES."smiley/more/eusa_clap.gif' alt='smiley' />",
-		"#\\\:D/#si" => "<img src='".IMAGES."smiley/more/eusa_dance.gif' alt='smiley' />",
-		"#\:D#si" => "<img src='".IMAGES."smiley/more/biggrin.gif' alt='smiley' />",
-		"#\:smt014#si" => "<img src='".IMAGES."smiley/more/014.gif' alt='smiley' />",
-		"#\:boring#si" => "<img src='".IMAGES."smiley/more/015.gif' alt='smiley' />",
-		"#\:smt018#si" => "<img src='".IMAGES."smiley/more/018.gif' alt='smiley' />",
-		"#\:smt022#si" => "<img src='".IMAGES."smiley/more/022.gif' alt='smiley' />",
-		"#\:smt071#si" => "<img src='".IMAGES."smiley/more/071.gif' alt='smiley' />",
-		"#\:smt102#si" => "<img src='".IMAGES."smiley/more/102.gif' alt='smiley' />",
-		"#\:smt100#si" => "<img src='".IMAGES."smiley/more/100.gif' alt='smiley' />",
-		"#\:\-D#si" => "<img src='".IMAGES."smiley/more/003.gif' alt='smiley' />",
-		"#\:\-\)#si" => "<img src='".IMAGES."smiley/more/001.gif' alt='smiley' />",
-		"#\:\(#si" => "<img src='".IMAGES."smiley/more/sad.gif' alt='smiley' />",
-		"#\:o#si" => "<img src='".IMAGES."smiley/more/surprised.gif' alt='smiley' />",
-		"#\:shock\:#si" => "<img src='".IMAGES."smiley/more/shock.gif' alt='smiley' />",
-		"#8\)#si" => "<img src='".IMAGES."smiley/more/cool.gif' alt='smiley' />",
-		"#\:lol\:#si" => "<img src='".IMAGES."smiley/more/lol.gif' alt='smiley' />",
-		"#\:x#si" => "<img src='".IMAGES."smiley/more/mad.gif' alt='smiley' />",
-		"#\:\-x#si" => "<img src='".IMAGES."smiley/more/icon_mad.gif' alt='smiley' />",
-		"#\:P#si" => "<img src='".IMAGES."smiley/more/icon_razz.gif' alt='smiley' />",
-		"#\:razz\:#si" => "<img src='".IMAGES."smiley/more/razz.gif' alt='smiley' />",
-		"#\:cry\:#si" => "<img src='".IMAGES."smiley/more/cry.gif' alt='smiley' />",
-		"#\:evil\:#si" => "<img src='".IMAGES."smiley/more/evil.gif' alt='smiley' />",
-		"#\:twisted\:#si" => "<img src='".IMAGES."smiley/more/icon_twisted.gif' alt='smiley' />",
-		"#\:roll\:#si" => "<img src='".IMAGES."smiley/more/rolleyes.gif' alt='smiley' />",
-		"#\:wink\:#si" => "<img src='".IMAGES."smiley/more/wink.gif' alt='smiley' />",
-		"#\;\-\)#si" => "<img src='".IMAGES."smiley/more/002.gif' alt='smiley' />",
-		"#\:\!\:#si" => "<img src='".IMAGES."smiley/more/exclaim.gif' alt='smiley' />",
-		"#\:\?\:#si" => "<img src='".IMAGES."smiley/more/question.gif' alt='smiley' />",
-		"#\:\?#si" => "<img src='".IMAGES."smiley/more/confused.gif' alt='smiley' />",
-		"#\:idea\:#si" => "<img src='".IMAGES."smiley/more/idea.gif' alt='smiley' />",
-		"#\:arrow\:#si" => "<img src='".IMAGES."smiley/more/arrow.gif' alt='smiley' />",
-		"#\:\|#si" => "<img src='".IMAGES."smiley/more/neutral.gif' alt='smiley' />",
-		"#\:mrgreen\:#si" => "<img src='".IMAGES."smiley/more/icon_mrgreen.gif' alt='smiley' />",
-		"#\:badgrin\:#si" => "<img src='".IMAGES."smiley/more/badgrin.gif' alt='smiley' />",
-		"#\:doubt\:#si" => "<img src='".IMAGES."smiley/more/doubt.gif' alt='smiley' />",
-		"#\#\-o#si" => "<img src='".IMAGES."smiley/more/eusa_doh.gif' alt='smiley' />",
-		"#\=P\~#si" => "<img src='".IMAGES."smiley/more/eusa_drool.gif' alt='smiley' />",
-		"#\:\^o#si" => "<img src='".IMAGES."smiley/more/eusa_liar.gif' alt='smiley' />",
-		"#\[\-X#si" => "<img src='".IMAGES."smiley/more/eusa_naughty.gif' alt='smiley' />",
-		"#\[\-o\<\;#si" => "<img src='".IMAGES."smiley/more/eusa_pray.gif' alt='smiley' />",
-		"#8\-\[#si" => "<img src='".IMAGES."smiley/more/eusa_shifty.gif' alt='smiley' />",
-		"#\[\-\(#si" => "<img src='".IMAGES."smiley/more/eusa_snooty.gif' alt='smiley' />",
-		"#\:\-k#si" => "<img src='".IMAGES."smiley/more/eusa_think.gif' alt='smiley' />",
-		"#\]\(\*\,\)#si" => "<img src='".IMAGES."smiley/more/eusa_wall.gif' alt='smiley' />",
-//		"#\:\-\"#si" => "<img src='".IMAGES."smiley/more/eusa_whistle.gif' alt='smiley' />",
-		"#O\:\)#si" => "<img src='".IMAGES."smiley/more/eusa_angel.gif' alt='smiley' />",
-		"#\=\;#si" => "<img src='".IMAGES."smiley/more/eusa_hand.gif' alt='smiley' />",
-		"#\:\-\&#si" => "<img src='".IMAGES."smiley/more/eusa_sick.gif' alt='smiley' />",
-		"#\:\-\(\{\|\=#si" => "<img src='".IMAGES."smiley/more/eusa_boohoo.gif' alt='smiley' />",
-		"#\:\-\$#si" => "<img src='".IMAGES."smiley/more/eusa_shhh.gif' alt='smiley' />",
-		"#\:\-s#si" => "<img src='".IMAGES."smiley/more/eusa_eh.gif' alt='smiley' />",
-		"#\:\-\##si" => "<img src='".IMAGES."smiley/more/eusa_silenced.gif' alt='smiley' />",
-		"#\:smt004#si" => "<img src='".IMAGES."smiley/more/004.gif' alt='smiley' />",
-		"#\:smt005#si" => "<img src='".IMAGES."smiley/more/005.gif' alt='smiley' />",
-		"#\:smt006#si" => "<img src='".IMAGES."smiley/more/006.gif' alt='smiley' />",
-		"#\:smt007#si" => "<img src='".IMAGES."smiley/more/007.gif' alt='smiley' />",
-		"#\:smt008#si" => "<img src='".IMAGES."smiley/more/008.gif' alt='smiley' />",
-		"#\:smt009#si" => "<img src='".IMAGES."smiley/more/009.gif' alt='smiley' />",
-		"#\:smt010#si" => "<img src='".IMAGES."smiley/more/010.gif' alt='smiley' />",
-		"#\:smt011#si" => "<img src='".IMAGES."smiley/more/011.gif' alt='smiley' />",
-		"#\:smt012#si" => "<img src='".IMAGES."smiley/more/012.gif' alt='smiley' />",
-		"#\:smt013#si" => "<img src='".IMAGES."smiley/more/013.gif' alt='smiley' />",
-		"#\:smt016#si" => "<img src='".IMAGES."smiley/more/016.gif' alt='smiley' />",
-		"#\:smt017#si" => "<img src='".IMAGES."smiley/more/017.gif' alt='smiley' />",
-		"#\:smt019#si" => "<img src='".IMAGES."smiley/more/019.gif' alt='smiley' />",
-		"#\:smt020#si" => "<img src='".IMAGES."smiley/more/020.gif' alt='smiley' />",
-		"#\:smt021#si" => "<img src='".IMAGES."smiley/more/021.gif' alt='smiley' />",
-		"#\:smt023#si" => "<img src='".IMAGES."smiley/more/023.gif' alt='smiley' />",
-		"#\:smt024#si" => "<img src='".IMAGES."smiley/more/024.gif' alt='smiley' />",
-		"#\:smt025#si" => "<img src='".IMAGES."smiley/more/025.gif' alt='smiley' />",
-		"#\:smt026#si" => "<img src='".IMAGES."smiley/more/026.gif' alt='smiley' />",
-		"#\:smt027#si" => "<img src='".IMAGES."smiley/more/027.gif' alt='smiley' />",
-		"#\:smt028#si" => "<img src='".IMAGES."smiley/more/028.gif' alt='smiley' />",
-		"#\:smt029#si" => "<img src='".IMAGES."smiley/more/029.gif' alt='smiley' />",
-		"#\:smt030#si" => "<img src='".IMAGES."smiley/more/030.gif' alt='smiley' />",
-		"#\:smt031#si" => "<img src='".IMAGES."smiley/more/031.gif' alt='smiley' />",
-		"#\:smt032#si" => "<img src='".IMAGES."smiley/more/032.gif' alt='smiley' />",
-		"#\:smt033#si" => "<img src='".IMAGES."smiley/more/033.gif' alt='smiley' />",
-		"#\:smt034#si" => "<img src='".IMAGES."smiley/more/034.gif' alt='smiley' />",
-		"#\:smt035#si" => "<img src='".IMAGES."smiley/more/035.gif' alt='smiley' />",
-		"#\:smt036#si" => "<img src='".IMAGES."smiley/more/036.gif' alt='smiley' />",
-		"#\:smt037#si" => "<img src='".IMAGES."smiley/more/037.gif' alt='smiley' />",
-		"#\:smt038#si" => "<img src='".IMAGES."smiley/more/038.gif' alt='smiley' />",
-		"#\:smt039#si" => "<img src='".IMAGES."smiley/more/039.gif' alt='smiley' />",
-		"#\:smt040#si" => "<img src='".IMAGES."smiley/more/040.gif' alt='smiley' />",
-		"#\:smt041#si" => "<img src='".IMAGES."smiley/more/041.gif' alt='smiley' />",
-		"#\:smt042#si" => "<img src='".IMAGES."smiley/more/042.gif' alt='smiley' />",
-		"#\:smt043#si" => "<img src='".IMAGES."smiley/more/043.gif' alt='smiley' />",
-		"#\:smt044#si" => "<img src='".IMAGES."smiley/more/044.gif' alt='smiley' />",
-		"#\:smt045#si" => "<img src='".IMAGES."smiley/more/045.gif' alt='smiley' />",
-		"#\:smt046#si" => "<img src='".IMAGES."smiley/more/046.gif' alt='smiley' />",
-		"#\:smt047#si" => "<img src='".IMAGES."smiley/more/047.gif' alt='smiley' />",
-		"#\:smt048#si" => "<img src='".IMAGES."smiley/more/048.gif' alt='smiley' />",
-		"#\:smt049#si" => "<img src='".IMAGES."smiley/more/049.gif' alt='smiley' />",
-		"#\:smt050#si" => "<img src='".IMAGES."smiley/more/050.gif' alt='smiley' />",
-		"#\:smt051#si" => "<img src='".IMAGES."smiley/more/051.gif' alt='smiley' />",
-		"#\:smt052#si" => "<img src='".IMAGES."smiley/more/052.gif' alt='smiley' />",
-		"#\:smt053#si" => "<img src='".IMAGES."smiley/more/053.gif' alt='smiley' />",
-		"#\:smt054#si" => "<img src='".IMAGES."smiley/more/054.gif' alt='smiley' />",
-		"#\:smt055#si" => "<img src='".IMAGES."smiley/more/055.gif' alt='smiley' />",
-		"#\:smt056#si" => "<img src='".IMAGES."smiley/more/056.gif' alt='smiley' />",
-		"#\:smt057#si" => "<img src='".IMAGES."smiley/more/057.gif' alt='smiley' />",
-		"#\:smt058#si" => "<img src='".IMAGES."smiley/more/058.gif' alt='smiley' />",
-		"#\:smt059#si" => "<img src='".IMAGES."smiley/more/059.gif' alt='smiley' />",
-		"#\:smt060#si" => "<img src='".IMAGES."smiley/more/060.gif' alt='smiley' />",
-		"#\:smt061#si" => "<img src='".IMAGES."smiley/more/061.gif' alt='smiley' />",
-		"#\:smt062#si" => "<img src='".IMAGES."smiley/more/062.gif' alt='smiley' />",
-		"#\:smt063#si" => "<img src='".IMAGES."smiley/more/063.gif' alt='smiley' />",
-		"#\:smt064#si" => "<img src='".IMAGES."smiley/more/064.gif' alt='smiley' />",
-		"#\:smt065#si" => "<img src='".IMAGES."smiley/more/065.gif' alt='smiley' />",
-		"#\:smt066#si" => "<img src='".IMAGES."smiley/more/066.gif' alt='smiley' />",
-		"#\:smt067#si" => "<img src='".IMAGES."smiley/more/067.gif' alt='smiley' />",
-		"#\:smt068#si" => "<img src='".IMAGES."smiley/more/068.gif' alt='smiley' />",
-		"#\:smt069#si" => "<img src='".IMAGES."smiley/more/069.gif' alt='smiley' />",
-		"#\:smt070#si" => "<img src='".IMAGES."smiley/more/070.gif' alt='smiley' />",
-		"#\:smt073#si" => "<img src='".IMAGES."smiley/more/073.gif' alt='smiley' />",
-		"#\:smt074#si" => "<img src='".IMAGES."smiley/more/074.gif' alt='smiley' />",
-		"#\:smt075#si" => "<img src='".IMAGES."smiley/more/075.gif' alt='smiley' />",
-		"#\:smt076#si" => "<img src='".IMAGES."smiley/more/076.gif' alt='smiley' />",
-		"#\:smt077#si" => "<img src='".IMAGES."smiley/more/077.gif' alt='smiley' />",
-		"#\:smt078#si" => "<img src='".IMAGES."smiley/more/078.gif' alt='smiley' />",
-		"#\:smt079#si" => "<img src='".IMAGES."smiley/more/079.gif' alt='smiley' />",
-		"#\:smt080#si" => "<img src='".IMAGES."smiley/more/080.gif' alt='smiley' />",
-		"#\:smt081#si" => "<img src='".IMAGES."smiley/more/081.gif' alt='smiley' />",
-		"#\:smt082#si" => "<img src='".IMAGES."smiley/more/082.gif' alt='smiley' />",
-		"#\:smt083#si" => "<img src='".IMAGES."smiley/more/083.gif' alt='smiley' />",
-		"#\:smt084#si" => "<img src='".IMAGES."smiley/more/084.gif' alt='smiley' />",
-		"#\:smt085#si" => "<img src='".IMAGES."smiley/more/085.gif' alt='smiley' />",
-		"#\:smt086#si" => "<img src='".IMAGES."smiley/more/086.gif' alt='smiley' />",
-		"#\:smt087#si" => "<img src='".IMAGES."smiley/more/087.gif' alt='smiley' />",
-		"#\:smt088#si" => "<img src='".IMAGES."smiley/more/088.gif' alt='smiley' />",
-		"#\:smt089#si" => "<img src='".IMAGES."smiley/more/089.gif' alt='smiley' />",
-		"#\:smt090#si" => "<img src='".IMAGES."smiley/more/090.gif' alt='smiley' />",
-		"#\:smt091#si" => "<img src='".IMAGES."smiley/more/091.gif' alt='smiley' />",
-		"#\:smt092#si" => "<img src='".IMAGES."smiley/more/092.gif' alt='smiley' />",
-		"#\:smt093#si" => "<img src='".IMAGES."smiley/more/093.gif' alt='smiley' />",
-		"#\:smt084#si" => "<img src='".IMAGES."smiley/more/094.gif' alt='smiley' />",
-		"#\:smt095#si" => "<img src='".IMAGES."smiley/more/095.gif' alt='smiley' />",
-		"#\:smt096#si" => "<img src='".IMAGES."smiley/more/096.gif' alt='smiley' />",
-		"#\:smt097#si" => "<img src='".IMAGES."smiley/more/097.gif' alt='smiley' />",
-		"#\:smt098#si" => "<img src='".IMAGES."smiley/more/098.gif' alt='smiley' />",
-		"#\:smt099#si" => "<img src='".IMAGES."smiley/more/099.gif' alt='smiley' />",
-		"#\:smt101#si" => "<img src='".IMAGES."smiley/more/101.gif' alt='smiley' />",
-		"#\:smt103#si" => "<img src='".IMAGES."smiley/more/103.gif' alt='smiley' />",
-		"#\:smt104#si" => "<img src='".IMAGES."smiley/more/104.gif' alt='smiley' />",
-		"#\:smt105#si" => "<img src='".IMAGES."smiley/more/105.gif' alt='smiley' />",
-		"#\:smt106#si" => "<img src='".IMAGES."smiley/more/106.gif' alt='smiley' />",
-		"#\:smt107#si" => "<img src='".IMAGES."smiley/more/107.gif' alt='smiley' />",
-		"#\:smt108#si" => "<img src='".IMAGES."smiley/more/108.gif' alt='smiley' />",
-		"#\:smt109#si" => "<img src='".IMAGES."smiley/more/109.gif' alt='smiley' />",
-		"#\:smt110#si" => "<img src='".IMAGES."smiley/more/110.gif' alt='smiley' />",
-		"#\:smt111#si" => "<img src='".IMAGES."smiley/more/111.gif' alt='smiley' />",
-		"#\:smt112#si" => "<img src='".IMAGES."smiley/more/112.gif' alt='smiley' />",
-		"#\:smt113#si" => "<img src='".IMAGES."smiley/more/113.gif' alt='smiley' />",
-		"#\:smt114#si" => "<img src='".IMAGES."smiley/more/114.gif' alt='smiley' />",
-		"#\:smt115#si" => "<img src='".IMAGES."smiley/more/115.gif' alt='smiley' />",
-		"#\:smt116#si" => "<img src='".IMAGES."smiley/more/116.gif' alt='smiley' />",
-		"#\:smt117#si" => "<img src='".IMAGES."smiley/more/117.gif' alt='smiley' />",
-		"#\:smt118#si" => "<img src='".IMAGES."smiley/more/118.gif' alt='smiley' />",
-		"#\:smt119#si" => "<img src='".IMAGES."smiley/more/119.gif' alt='smiley' />",
-		"#\:smt120#si" => "<img src='".IMAGES."smiley/more/120.gif' alt='smiley' />",
-		"#\:\)#si" => "<img src='".IMAGES."smiley/smile.gif' alt='smiley' />"
+		"\:oops\:" => "<img src='".IMAGES."smiley/more/redface.gif' alt='smiley' />",
+		"\:doubt\:" => "<img src='".IMAGES."smiley/more/doubt.gif' alt='smiley' />",
+		"\:thumbleft" => "<img src='".IMAGES."smiley/more/icon_thumleft.gif' alt='smiley' />",
+		"\:thumbright" => "<img src='".IMAGES."smiley/more/icon_thumright.gif' alt='smiley' />",
+		"\:smt004" => "<img src='".IMAGES."smiley/more/004.gif' alt='smiley' />",
+		"\:smt005" => "<img src='".IMAGES."smiley/more/005.gif' alt='smiley' />",
+		"\:smt006" => "<img src='".IMAGES."smiley/more/006.gif' alt='smiley' />",
+		"\:smt007" => "<img src='".IMAGES."smiley/more/007.gif' alt='smiley' />",
+		"\:smt008" => "<img src='".IMAGES."smiley/more/008.gif' alt='smiley' />",
+		"\:smt009" => "<img src='".IMAGES."smiley/more/009.gif' alt='smiley' />",
+		"\:smt010" => "<img src='".IMAGES."smiley/more/010.gif' alt='smiley' />",
+		"\:smt011" => "<img src='".IMAGES."smiley/more/011.gif' alt='smiley' />",
+		"\:smt012" => "<img src='".IMAGES."smiley/more/012.gif' alt='smiley' />",
+		"\:smt013" => "<img src='".IMAGES."smiley/more/013.gif' alt='smiley' />",
+		"\:smt014" => "<img src='".IMAGES."smiley/more/014.gif' alt='smiley' />",
+		"\:smt016" => "<img src='".IMAGES."smiley/more/016.gif' alt='smiley' />",
+		"\:smt017" => "<img src='".IMAGES."smiley/more/017.gif' alt='smiley' />",
+		"\:smt018" => "<img src='".IMAGES."smiley/more/018.gif' alt='smiley' />",
+		"\:smt019" => "<img src='".IMAGES."smiley/more/019.gif' alt='smiley' />",
+		"\:smt020" => "<img src='".IMAGES."smiley/more/020.gif' alt='smiley' />",
+		"\:smt021" => "<img src='".IMAGES."smiley/more/021.gif' alt='smiley' />",
+		"\:smt022" => "<img src='".IMAGES."smiley/more/022.gif' alt='smiley' />",
+		"\:smt023" => "<img src='".IMAGES."smiley/more/023.gif' alt='smiley' />",
+		"\:smt024" => "<img src='".IMAGES."smiley/more/024.gif' alt='smiley' />",
+		"\:smt025" => "<img src='".IMAGES."smiley/more/025.gif' alt='smiley' />",
+		"\:smt026" => "<img src='".IMAGES."smiley/more/026.gif' alt='smiley' />",
+		"\:smt027" => "<img src='".IMAGES."smiley/more/027.gif' alt='smiley' />",
+		"\:smt028" => "<img src='".IMAGES."smiley/more/028.gif' alt='smiley' />",
+		"\:smt029" => "<img src='".IMAGES."smiley/more/029.gif' alt='smiley' />",
+		"\:smt030" => "<img src='".IMAGES."smiley/more/030.gif' alt='smiley' />",
+		"\:smt031" => "<img src='".IMAGES."smiley/more/031.gif' alt='smiley' />",
+		"\:smt032" => "<img src='".IMAGES."smiley/more/032.gif' alt='smiley' />",
+		"\:smt033" => "<img src='".IMAGES."smiley/more/033.gif' alt='smiley' />",
+		"\:smt034" => "<img src='".IMAGES."smiley/more/034.gif' alt='smiley' />",
+		"\:smt035" => "<img src='".IMAGES."smiley/more/035.gif' alt='smiley' />",
+		"\:smt036" => "<img src='".IMAGES."smiley/more/036.gif' alt='smiley' />",
+		"\:smt037" => "<img src='".IMAGES."smiley/more/037.gif' alt='smiley' />",
+		"\:smt038" => "<img src='".IMAGES."smiley/more/038.gif' alt='smiley' />",
+		"\:smt039" => "<img src='".IMAGES."smiley/more/039.gif' alt='smiley' />",
+		"\:smt040" => "<img src='".IMAGES."smiley/more/040.gif' alt='smiley' />",
+		"\:smt041" => "<img src='".IMAGES."smiley/more/041.gif' alt='smiley' />",
+		"\:smt042" => "<img src='".IMAGES."smiley/more/042.gif' alt='smiley' />",
+		"\:smt043" => "<img src='".IMAGES."smiley/more/043.gif' alt='smiley' />",
+		"\:smt044" => "<img src='".IMAGES."smiley/more/044.gif' alt='smiley' />",
+		"\:smt045" => "<img src='".IMAGES."smiley/more/045.gif' alt='smiley' />",
+		"\:smt046" => "<img src='".IMAGES."smiley/more/046.gif' alt='smiley' />",
+		"\:smt047" => "<img src='".IMAGES."smiley/more/047.gif' alt='smiley' />",
+		"\:smt048" => "<img src='".IMAGES."smiley/more/048.gif' alt='smiley' />",
+		"\:smt049" => "<img src='".IMAGES."smiley/more/049.gif' alt='smiley' />",
+		"\:smt050" => "<img src='".IMAGES."smiley/more/050.gif' alt='smiley' />",
+		"\:smt051" => "<img src='".IMAGES."smiley/more/051.gif' alt='smiley' />",
+		"\:smt052" => "<img src='".IMAGES."smiley/more/052.gif' alt='smiley' />",
+		"\:smt053" => "<img src='".IMAGES."smiley/more/053.gif' alt='smiley' />",
+		"\:smt054" => "<img src='".IMAGES."smiley/more/054.gif' alt='smiley' />",
+		"\:smt055" => "<img src='".IMAGES."smiley/more/055.gif' alt='smiley' />",
+		"\:smt056" => "<img src='".IMAGES."smiley/more/056.gif' alt='smiley' />",
+		"\:smt057" => "<img src='".IMAGES."smiley/more/057.gif' alt='smiley' />",
+		"\:smt058" => "<img src='".IMAGES."smiley/more/058.gif' alt='smiley' />",
+		"\:smt059" => "<img src='".IMAGES."smiley/more/059.gif' alt='smiley' />",
+		"\:smt060" => "<img src='".IMAGES."smiley/more/060.gif' alt='smiley' />",
+		"\:smt061" => "<img src='".IMAGES."smiley/more/061.gif' alt='smiley' />",
+		"\:smt062" => "<img src='".IMAGES."smiley/more/062.gif' alt='smiley' />",
+		"\:smt063" => "<img src='".IMAGES."smiley/more/063.gif' alt='smiley' />",
+		"\:smt064" => "<img src='".IMAGES."smiley/more/064.gif' alt='smiley' />",
+		"\:smt065" => "<img src='".IMAGES."smiley/more/065.gif' alt='smiley' />",
+		"\:smt066" => "<img src='".IMAGES."smiley/more/066.gif' alt='smiley' />",
+		"\:smt067" => "<img src='".IMAGES."smiley/more/067.gif' alt='smiley' />",
+		"\:smt068" => "<img src='".IMAGES."smiley/more/068.gif' alt='smiley' />",
+		"\:smt069" => "<img src='".IMAGES."smiley/more/069.gif' alt='smiley' />",
+		"\:smt070" => "<img src='".IMAGES."smiley/more/070.gif' alt='smiley' />",
+		"\:smt073" => "<img src='".IMAGES."smiley/more/073.gif' alt='smiley' />",
+		"\:smt074" => "<img src='".IMAGES."smiley/more/074.gif' alt='smiley' />",
+		"\:smt075" => "<img src='".IMAGES."smiley/more/075.gif' alt='smiley' />",
+		"\:smt076" => "<img src='".IMAGES."smiley/more/076.gif' alt='smiley' />",
+		"\:smt077" => "<img src='".IMAGES."smiley/more/077.gif' alt='smiley' />",
+		"\:smt078" => "<img src='".IMAGES."smiley/more/078.gif' alt='smiley' />",
+		"\:smt079" => "<img src='".IMAGES."smiley/more/079.gif' alt='smiley' />",
+		"\:smt080" => "<img src='".IMAGES."smiley/more/080.gif' alt='smiley' />",
+		"\:smt081" => "<img src='".IMAGES."smiley/more/081.gif' alt='smiley' />",
+		"\:smt082" => "<img src='".IMAGES."smiley/more/082.gif' alt='smiley' />",
+		"\:smt083" => "<img src='".IMAGES."smiley/more/083.gif' alt='smiley' />",
+		"\:smt084" => "<img src='".IMAGES."smiley/more/084.gif' alt='smiley' />",
+		"\:smt085" => "<img src='".IMAGES."smiley/more/085.gif' alt='smiley' />",
+		"\:smt086" => "<img src='".IMAGES."smiley/more/086.gif' alt='smiley' />",
+		"\:smt087" => "<img src='".IMAGES."smiley/more/087.gif' alt='smiley' />",
+		"\:smt088" => "<img src='".IMAGES."smiley/more/088.gif' alt='smiley' />",
+		"\:smt089" => "<img src='".IMAGES."smiley/more/089.gif' alt='smiley' />",
+		"\:smt090" => "<img src='".IMAGES."smiley/more/090.gif' alt='smiley' />",
+		"\:smt091" => "<img src='".IMAGES."smiley/more/091.gif' alt='smiley' />",
+		"\:smt092" => "<img src='".IMAGES."smiley/more/092.gif' alt='smiley' />",
+		"\:smt093" => "<img src='".IMAGES."smiley/more/093.gif' alt='smiley' />",
+		"\:smt084" => "<img src='".IMAGES."smiley/more/094.gif' alt='smiley' />",
+		"\:smt095" => "<img src='".IMAGES."smiley/more/095.gif' alt='smiley' />",
+		"\:smt096" => "<img src='".IMAGES."smiley/more/096.gif' alt='smiley' />",
+		"\:smt097" => "<img src='".IMAGES."smiley/more/097.gif' alt='smiley' />",
+		"\:smt098" => "<img src='".IMAGES."smiley/more/098.gif' alt='smiley' />",
+		"\:smt099" => "<img src='".IMAGES."smiley/more/099.gif' alt='smiley' />",
+		"\:smt101" => "<img src='".IMAGES."smiley/more/101.gif' alt='smiley' />",
+		"\:smt103" => "<img src='".IMAGES."smiley/more/103.gif' alt='smiley' />",
+		"\:smt104" => "<img src='".IMAGES."smiley/more/104.gif' alt='smiley' />",
+		"\:smt105" => "<img src='".IMAGES."smiley/more/105.gif' alt='smiley' />",
+		"\:smt106" => "<img src='".IMAGES."smiley/more/106.gif' alt='smiley' />",
+		"\:smt107" => "<img src='".IMAGES."smiley/more/107.gif' alt='smiley' />",
+		"\:smt108" => "<img src='".IMAGES."smiley/more/108.gif' alt='smiley' />",
+		"\:smt109" => "<img src='".IMAGES."smiley/more/109.gif' alt='smiley' />",
+		"\:smt110" => "<img src='".IMAGES."smiley/more/110.gif' alt='smiley' />",
+		"\:smt111" => "<img src='".IMAGES."smiley/more/111.gif' alt='smiley' />",
+		"\:smt112" => "<img src='".IMAGES."smiley/more/112.gif' alt='smiley' />",
+		"\:smt113" => "<img src='".IMAGES."smiley/more/113.gif' alt='smiley' />",
+		"\:smt114" => "<img src='".IMAGES."smiley/more/114.gif' alt='smiley' />",
+		"\:smt115" => "<img src='".IMAGES."smiley/more/115.gif' alt='smiley' />",
+		"\:smt116" => "<img src='".IMAGES."smiley/more/116.gif' alt='smiley' />",
+		"\:smt117" => "<img src='".IMAGES."smiley/more/117.gif' alt='smiley' />",
+		"\:smt118" => "<img src='".IMAGES."smiley/more/118.gif' alt='smiley' />",
+		"\:smt119" => "<img src='".IMAGES."smiley/more/119.gif' alt='smiley' />",
+		"\:smt120" => "<img src='".IMAGES."smiley/more/120.gif' alt='smiley' />",
+		"\:boring" => "<img src='".IMAGES."smiley/more/015.gif' alt='smiley' />",
+		"\:smt071" => "<img src='".IMAGES."smiley/more/071.gif' alt='smiley' />",
+		"\:smt102" => "<img src='".IMAGES."smiley/more/102.gif' alt='smiley' />",
+		"\:smt100" => "<img src='".IMAGES."smiley/more/100.gif' alt='smiley' />",
+		"\:shock\:" => "<img src='".IMAGES."smiley/more/shock.gif' alt='smiley' />",
+		"\:lol\:" => "<img src='".IMAGES."smiley/more/lol.gif' alt='smiley' />",
+		"\:razz\:" => "<img src='".IMAGES."smiley/more/razz.gif' alt='smiley' />",
+		"\:cry\:" => "<img src='".IMAGES."smiley/more/cry.gif' alt='smiley' />",
+		"\:evil\:" => "<img src='".IMAGES."smiley/more/evil.gif' alt='smiley' />",
+		"\:twisted\:" => "<img src='".IMAGES."smiley/more/icon_twisted.gif' alt='smiley' />",
+		"\:roll\:" => "<img src='".IMAGES."smiley/more/rolleyes.gif' alt='smiley' />",
+		"\:wink\:" => "<img src='".IMAGES."smiley/more/wink.gif' alt='smiley' />",
+		"\:idea\:" => "<img src='".IMAGES."smiley/more/idea.gif' alt='smiley' />",
+		"\:arrow\:" => "<img src='".IMAGES."smiley/more/arrow.gif' alt='smiley' />",
+		"\:mrgreen\:" => "<img src='".IMAGES."smiley/more/icon_mrgreen.gif' alt='smiley' />",
+		"\:badgrin\:" => "<img src='".IMAGES."smiley/more/badgrin.gif' alt='smiley' />",
+		"\;\)" => "<img src='".IMAGES."smiley/wink.gif' alt='smiley' />",
+		"\:\(" => "<img src='".IMAGES."smiley/sad.gif' alt='smiley' />",
+		"\:\|" => "<img src='".IMAGES."smiley/frown.gif' alt='smiley' />",
+		"\:o" => "<img src='".IMAGES."smiley/shock.gif' alt='smiley' />",
+		"\:p" => "<img src='".IMAGES."smiley/pfft.gif' alt='smiley' />",
+		"b\)" => "<img src='".IMAGES."smiley/cool.gif' alt='smiley' />",
+		"\:d" => "<img src='".IMAGES."smiley/grin.gif' alt='smiley' />",
+		"\:@" => "<img src='".IMAGES."smiley/angry.gif' alt='smiley' />",
+		"=D&gt;" => "<img src='".IMAGES."smiley/more/eusa_clap.gif' alt='smiley' />",
+		"\\\:D/" => "<img src='".IMAGES."smiley/more/eusa_dance.gif' alt='smiley' />",
+		"\:D" => "<img src='".IMAGES."smiley/more/biggrin.gif' alt='smiley' />",
+		"\:\-D" => "<img src='".IMAGES."smiley/more/003.gif' alt='smiley' />",
+		"\:\-\)" => "<img src='".IMAGES."smiley/more/001.gif' alt='smiley' />",
+		"\:\(" => "<img src='".IMAGES."smiley/more/sad.gif' alt='smiley' />",
+		"\:o" => "<img src='".IMAGES."smiley/more/surprised.gif' alt='smiley' />",
+		"8\)" => "<img src='".IMAGES."smiley/more/cool.gif' alt='smiley' />",
+		"\:x" => "<img src='".IMAGES."smiley/more/mad.gif' alt='smiley' />",
+		"\:\-x" => "<img src='".IMAGES."smiley/more/icon_mad.gif' alt='smiley' />",
+		"\:P" => "<img src='".IMAGES."smiley/more/icon_razz.gif' alt='smiley' />",
+		"\;\-\)" => "<img src='".IMAGES."smiley/more/002.gif' alt='smiley' />",
+		"\:\!\:" => "<img src='".IMAGES."smiley/more/exclaim.gif' alt='smiley' />",
+		"\:\?\:" => "<img src='".IMAGES."smiley/more/question.gif' alt='smiley' />",
+		"\:\?" => "<img src='".IMAGES."smiley/more/confused.gif' alt='smiley' />",
+		"\:\|" => "<img src='".IMAGES."smiley/more/neutral.gif' alt='smiley' />",
+		"\#\-o" => "<img src='".IMAGES."smiley/more/eusa_doh.gif' alt='smiley' />",
+		"\=P\~" => "<img src='".IMAGES."smiley/more/eusa_drool.gif' alt='smiley' />",
+		"\:\^o" => "<img src='".IMAGES."smiley/more/eusa_liar.gif' alt='smiley' />",
+		"\[\-X" => "<img src='".IMAGES."smiley/more/eusa_naughty.gif' alt='smiley' />",
+		"\[\-o\<\;" => "<img src='".IMAGES."smiley/more/eusa_pray.gif' alt='smiley' />",
+		"8\-\[" => "<img src='".IMAGES."smiley/more/eusa_shifty.gif' alt='smiley' />",
+		"\[\-\(" => "<img src='".IMAGES."smiley/more/eusa_snooty.gif' alt='smiley' />",
+		"\:\-k" => "<img src='".IMAGES."smiley/more/eusa_think.gif' alt='smiley' />",
+		"\]\(\*\,\)" => "<img src='".IMAGES."smiley/more/eusa_wall.gif' alt='smiley' />",
+		"\:\-\"" => "<img src='".IMAGES."smiley/more/eusa_whistle.gif' alt='smiley' />",
+		"O\:\)" => "<img src='".IMAGES."smiley/more/eusa_angel.gif' alt='smiley' />",
+		"\=\;" => "<img src='".IMAGES."smiley/more/eusa_hand.gif' alt='smiley' />",
+		"\:\-\&" => "<img src='".IMAGES."smiley/more/eusa_sick.gif' alt='smiley' />",
+		"\:\-\(\{\|\=" => "<img src='".IMAGES."smiley/more/eusa_boohoo.gif' alt='smiley' />",
+		"\:\-\$" => "<img src='".IMAGES."smiley/more/eusa_shhh.gif' alt='smiley' />",
+		"\:\-s" => "<img src='".IMAGES."smiley/more/eusa_eh.gif' alt='smiley' />",
+		"\:\-\#" => "<img src='".IMAGES."smiley/more/eusa_silenced.gif' alt='smiley' />",
+		"\:\)" => "<img src='".IMAGES."smiley/smile.gif' alt='smiley' />"
 	);
 	foreach($smiley as $key=>$smiley_img) {
-		$message = preg_replace($key, $smiley_img, $message);
+		$search = "#([[:space:]])".$key."([[:space:]])?#si";
+		$replace = "\\1".$smiley_img."\\2";
+		$message = preg_replace($search, $replace, $message);
 	}
 	return $message;
 }
@@ -567,6 +569,30 @@ function _parseubb_checkurl($matches) {
 	}
 }
 
+// internal function: preg_replace_callback for parseubb, to validate the IMG found in [img]
+function _parseubb_checkimg($matches) {
+	global $locale;
+
+	// Build the regex to detect a URL
+	$scheme = "(https?)\:\/\/";													// SCHEMES supported
+	$urlregex = "^(".$scheme.")?";												// make the scheme optional
+	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
+	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
+	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
+	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";									// PATH (optional)
+	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
+	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
+
+	// validate the URL (in $matches[1])
+	if (eregi($urlregex, $matches[1])) {
+		if (verify_image($matches[1])) {
+			return "<img src=\"".$matches[1]."\" style=\"border:0px\" alt=\"\" />";
+		}
+	}
+	// return a sanitized version of the orginal BBcode
+	return stripinput($matches[0]);
+}
+
 // Parse bbcode into HTML code
 function parseubb($text) {
 	global $settings, $locale;
@@ -579,13 +605,10 @@ function parseubb($text) {
 	$text = preg_replace('#\[u\](.*?)\[/u\]#si', '<u>\1</u>', $text);
 	$text = preg_replace('#\[center\](.*?)\[/center\]#si', '<center>\1</center>', $text);
 
-	// new youtube bbcode
-	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
-
 	// new wiki bbcode
 	if (isset($settings['wiki_forum_links']) && $settings['wiki_forum_links']) {
 		// add the link to the wiki page
-		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="ExiteCMS Wiki">\1</a>', $text);
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text);
 	} else {
 		// strip the wiki bbcode
 		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '\1', $text);
@@ -600,15 +623,22 @@ function parseubb($text) {
 	// convert mail bbcode
 	$text = preg_replace('#\[mail\]([\r\n]*)([^\s\'\";:\+]*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\2</a>', $text);
 	$text = preg_replace('#\[mail=([\r\n]*)([^\s\'\";:\+]*?)\](.*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\3</a>', $text);
-	
+	// small	
 	$text = preg_replace('#\[small\](.*?)\[/small\]#si', '<span class=\'small\'>\1</span>', $text);
+	// color
 	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
-	
+	// new youtube bbcode
+	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
+	// flash movies
 	$text = preg_replace('#\[flash width=([0-9]*?) height=([0-9]*?)\]([^\s\'\";:\+]*?)(\.swf)\[/flash\]#si', '<object classid=\'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\' codebase=\'http://active.macromedia.com/flash6/cabs/swflash.cab#version=6,0,0,0\' id=\'\3\4\' width=\'\1\' height=\'\2\'><param name=movie value=\'\3\4\'><param name=\'quality\' value=\'high\'><param name=\'bgcolor\' value=\'#ffffff\'><embed src=\'\3\4\' quality=\'high\' bgcolor=\'#ffffff\' width=\'\1\' height=\'\2\' type=\'application/x-shockwave-flash\' pluginspage=\'http://www.macromedia.com/go/getflashplayer\'></embed></object>', $text);
-	$text = preg_replace("#\[img\]((http|ftp|https|ftps)://)(.*?)(\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG))\[/img\]#sie","'<img src=\'\\1'.str_replace(array('.php','?','&','='),'','\\3').'\\4\' style=\'border:0px\' alt=\'\' />'",$text);
-
+	// images
+	if (ini_get('allow_url_fopen')) {
+		$text = preg_replace_callback('#\[img\](.*?)\[/img\]#si', '_parseubb_checkimg', $text);
+	} else {
+		$text = preg_replace("#\[img\]((http|ftp|https|ftps)://)(.*?)(\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG))\[/img\]#sie","'<img src=\'\\1'.str_replace(array('.php','?','&','='),'','\\3').'\\4\' style=\'border:0px\' alt=\'\' />'",$text);
+	}
+	// quotes
 	$text = preg_replace('#\[quote=([\r\n]*)(.*?)\]#si', '<b>\2 '.$locale['199'].':</b><br />[quote]', $text);
-
 	$qcount = substr_count($text, "[quote]"); $ccount = substr_count($text, "[code]");
 	for ($i=0;$i < $qcount;$i++) $text = preg_replace('#\[quote\](.*?)\[/quote\]#si', '<div class=\'quote\'>\1</div>', $text);
 	for ($i=0;$i < $ccount;$i++) $text = preg_replace('#\[code\](.*?)\[/code\]#si', '<b>code:</b><div class=\'codeblock\'>\1</div>', $text);
@@ -645,7 +675,6 @@ function descript($text,$striptags=true) {
 	$text = preg_replace('#([a-z]*)=([\`\'\"]*)script:#iU', '$1=$2nojscript...', $text);
 	$text = preg_replace('#([a-z]*)=([\`\'\"]*)javascript:#iU', '$1=$2nojavascript...', $text);
 	$text = preg_replace('#([a-z]*)=([\'\"]*)vbscript:#iU', '$1=$2novbscript...', $text);
-		//<span style="width: expression(alert('Ping!'));"></span> (only affects ie...)
 	$text = preg_replace('#(<[^>]+)style=([\`\'\"]*).*expression\([^>]*>#iU', "$1>", $text);
 	$text = preg_replace('#(<[^>]+)style=([\`\'\"]*).*behaviour\([^>]*>#iU', "$1>", $text);
 	if ($striptags) {
@@ -659,9 +688,12 @@ function descript($text,$striptags=true) {
 
 // Scan image files for malicious code
 function verify_image($file) {
-	$txt = file_get_contents($file);
 	$image_safe = true;
-	if (preg_match('#&(quot|lt|gt|nbsp);#i', $txt)) { $image_safe = false; }
+	$er = error_reporting(0);
+	$txt = file_get_contents($file);
+	error_reporting($er);
+	if ($txt === false) { $image_safe = false; }
+	elseif (preg_match('#&(quot|lt|gt|nbsp);#i', $txt)) { $image_safe = false; }
 	elseif (preg_match("#&\#x([0-9a-f]+);#i", $txt)) { $image_safe = false; }
 	elseif (preg_match('#&\#([0-9]+);#i', $txt)) { $image_safe = false; }
 	elseif (preg_match("#([a-z]*)=([\`\'\"]*)script:#iU", $txt)) { $image_safe = false; }

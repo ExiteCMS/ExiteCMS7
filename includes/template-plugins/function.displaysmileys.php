@@ -200,7 +200,7 @@ function smarty_function_displaysmileys($params, &$smarty)
 		":smt120" => "more/120.gif",
 	":)" => "smile.gif"
 	);
-	foreach($smileys as $key=>$smiley) $smiles .= "<img src='".IMAGES."smiley/$smiley' alt='smiley' onclick=\"insertText('$field', '$key');\" />\n";
+	foreach($smileys as $key=>$smiley) $smiles .= "<img src='".IMAGES."smiley/$smiley' alt='smiley' onclick=\"insertText('$field', ' $key ');\" />\n";
 	return $smiles;
 }
 ?>
