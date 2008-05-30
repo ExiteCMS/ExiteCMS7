@@ -157,11 +157,12 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 			}
 		}
 		// check if this isn't a reload, back-post, or double submit
-		if (isset($_COOKIE['post_'.$random_id])) {
+		if (isset($_SESSION['posts'][$random_id])) {
 			redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=0&errorcode=3");
 		} else {
 			if (!$flood) {
-				setcookie("post_".$random_id, "posted", time() + 60*60, "/", "", "0");
+				if (!isset($_SESSION['posts']) || !is_array($_SESSION['posts'])) $_SESSION['posts'] = array();
+				$_SESSION['posts'][$random_id] = time()+60*60*12;
 				$sig = ($userdata['user_sig'] ? '1' :'0');
 				$smileys = isset($_POST['disable_smileys']) ? "0" : "1";
 				$subject = "RE: ".stripinput(censorwords($tdata['thread_subject']));
@@ -267,6 +268,9 @@ if ($rows != 0) {
 	$variables['posts'] = array();
 	while ($data = dbarray($result)) {
 
+		// default, show no ranking information
+		$data['show_ranking'] = false;
+
 		// check for a system-post (author = 0 ), use some of the webmasters details for this
 		if ($data['post_author'] == 0) {
 			$data['user_name'] = $locale['sysusr'];
@@ -277,6 +281,50 @@ if ($rows != 0) {
 			$data['user_location'] = "-";
 			$data['user_sig'] = "";
 			$data['user_status'] = "0";
+		} else {
+			// check if a ranking is defined for this poster
+			$result2 = dbquery("SELECT * FROM ".$db_prefix."forum_ranking WHERE rank_posts_from <= '".$data['user_posts']."' AND rank_posts_to >= '".$data['user_posts']."' ORDER BY rank_order");
+			while ($data2 = dbarray($result2)) {
+				// get the grouplist for this ranking
+				if (strpos($data2['rank_groups'], ",")) {
+					$groups = explode(",", $data2['rank_groups']);
+				} else {
+					if (empty($data2['rank_groups'])) {
+						$groups = "";
+					} else {
+						$groups = array($data2['rank_groups']);
+					}
+				}
+				if (is_array($groups)) {
+					// check for group matching as well, assume a match will be found
+					$ranking_match = true;
+					foreach($groups as $group) {
+						if ($data2['rank_groups_and']) {
+							// all should match
+							if (!checkusergroup($data['post_author'], $group)) {
+								// bail out if a non-match has been found
+								$ranking_match = false;
+								break;
+							}
+						} else {
+							// one match is sufficient
+							if (checkusergroup($data['post_author'], $group)) {
+								$ranking_match = true;
+								break;
+							}
+						}
+					}
+				} else {
+					// no groups to test, must be a match on posts range
+					$ranking_match = true;
+				}
+				// if we had a match, add the ranking information to the post data
+				if ($ranking_match) {
+					$data['ranking'] = $data2;
+					$data['show_ranking'] = true;
+					break;
+				}
+			}
 		}
 
 		// if there's a reply id, get the user_name
@@ -300,8 +348,30 @@ if ($rows != 0) {
 		// update last_post_datestamp
 		$last_post_datestamp = max($data['post_datestamp'], $data['post_edittime'], $last_post_datestamp);
 
-		// check what options to show for this post
-		$data['user_can_edit'] = iMEMBER && $data['post_author'] != 0 && (iMOD || iSUPERADMIN || (!$tdata['thread_locked'] && $userdata['user_id'] == $data['post_author']));
+		// check if the user can edit this post. Assume the user can't
+		$data['user_can_edit'] = false;
+		if (iMEMBER) {
+			// webmasters and forum moderators may always edit
+			if (iSUPERADMIN || iMOD) {
+				$data['user_can_edit'] = true;
+			} else {
+				// check if this is not a system post
+				if ($data['post_author'] != 0) {
+					// check if the thread is not locked
+					if (!$tdata['thread_locked']) {
+						// check if this is the users own post
+						if ($userdata['user_id'] == $data['post_author']) {
+							// check if the edit time is not expired
+							if ($settings['forum_edit_timeout'] == 0 || ($data['post_datestamp'] + $settings['forum_edit_timeout'] * 3600) > time()) {
+								$data['user_can_edit'] = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// check if we can show the poster's IP address
 		$data['show_ip'] = (iMOD || iSUPERADMIN && ($data['post_ip'] != "0.0.0.0" && file_exists(PATH_THEME."images/ip.gif")));
 	
 		// country flag
@@ -323,6 +393,11 @@ if ($rows != 0) {
 
 		// user & group memberships
 		$data['group_names'] = array();
+		// if a ranking is present, and a rank title is defined, display that first
+		if (isset($data['ranking']) && !empty($data['ranking']['rank_title']) && !$data['ranking']['rank_tooltip']) {
+			$data['group_names'][] = array('type' => 'R', 'color' => $data['ranking']['rank_color'], 'name' => $data['ranking']['rank_title']);
+		}
+		// display the standard user level next
 		$data['group_names'][] = array('type' => 'U', 'level' => $data['user_level'], 'name' => getuserlevel($data['user_level']));
 
 		if ($data['user_groups']) {

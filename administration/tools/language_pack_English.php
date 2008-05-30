@@ -490,6 +490,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['235'] = "News Categories";
 		$localestrings['236'] = "Language Settings";
 		$localestrings['237'] = "Webmaster Toolbox for";
+		$localestrings['238'] = "Forum Ranking";
 		$localestrings['250'] = "Website Statistics";
 		$localestrings['251'] = "Registered Members:";
 		$localestrings['252'] = "Unactivated Members:";
@@ -513,6 +514,48 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['308'] = "While processing the language pack for %s (%s), an error occured. The error is:";
 		$localestrings['309'] = "You can not install this language pack. This pack is for ExiteCMS version";
 		load_localestrings($localestrings, LP_LOCALE, "admin.main", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Forum Rankings";
+		$localestrings['401'] = "Add a new ranking";
+		$localestrings['402'] = "Edit a ranking";
+		$localestrings['408'] = "There are no forum rankings defined";
+		$localestrings['409'] = "Note: The rankings are processed in the order shown here. Comparison stops at the first hit. If you use group membership filtering, and you have duplicate post ranges, make sure that the order is correct!";
+		$localestrings['411'] = "Posts range";
+		$localestrings['412'] = "Rank title";
+		$localestrings['413'] = "Rank image";
+		$localestrings['414'] = "Only for members of";
+		$localestrings['415'] = "Order";
+		$localestrings['416'] = "Options";
+		$localestrings['417'] = "Move this rank up";
+		$localestrings['418'] = "Move this rank down";
+		$localestrings['419'] = "Edit this rank";
+		$localestrings['420'] = "Delete this rank";
+		$localestrings['421'] = "Posts selection range:";
+		$localestrings['422'] = "From";
+		$localestrings['423'] = "To";
+		$localestrings['424'] = "Posts";
+		$localestrings['425'] = "Rank title:";
+		$localestrings['426'] = "Rank image:";
+		$localestrings['427'] = "- none -";
+		$localestrings['428'] = "Repeat this image:";
+		$localestrings['429'] = "Times";
+		$localestrings['430'] = "Available groups:";
+		$localestrings['431'] = "Selected groups:";
+		$localestrings['432'] = "Save this ranking";
+		$localestrings['433'] = "Apply this ranking to the following user groups only:";
+		$localestrings['434'] = "Rank order:";
+		$localestrings['435'] = "Rank group comparison using:";
+		$localestrings['436'] = " and ";
+		$localestrings['437'] = " or ";
+		$localestrings['438'] = "Rank title color:";
+		$localestrings['439'] = "Show title as tooltip:";
+		$localestrings['440'] = "No";
+		$localestrings['441'] = "Yes";
+		$localestrings['490'] = "The Post selection range must be filled in, and both values most be positive integers!";
+		$localestrings['491'] = "The Post selection range must be filled in, and From must be lower than To!";
+		$localestrings['492'] = "Ranking succesfully deleted";
+		load_localestrings($localestrings, LP_LOCALE, "admin.ranking", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Members List";
@@ -888,6 +931,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['531'] = "Minutes";
 		$localestrings['532'] = "Error: The session timeout value should be greater than the extended login timeout!";
 		$localestrings['533'] = "Error: The extended login timeout should be greater than the standard login timeout!";
+		$localestrings['534'] = "Forum edit timeout:";
+		$localestrings['535'] = "Hour";
+		$localestrings['536'] = "Hours";
 		$localestrings['550'] = "Security";
 		$localestrings['551'] = "Enable registration system?";
 		$localestrings['552'] = "Use email verification for registration?";
@@ -1211,6 +1257,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['er'] = "Eritrea";
 		$localestrings['es'] = "Spain";
 		$localestrings['et'] = "Ethiopia";
+		$localestrings['eu'] = "European Union";
 		$localestrings['fi'] = "Finland";
 		$localestrings['fj'] = "Fiji";
 		$localestrings['fk'] = "Falkland Islands (Malvinas)";
@@ -1287,6 +1334,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['ml'] = "Mali";
 		$localestrings['mm'] = "Myanmar";
 		$localestrings['mn'] = "Mongolia";
+		$localestrings['mo'] = "Macau";
 		$localestrings['mp'] = "Northern Mariana Islands";
 		$localestrings['mq'] = "Martinique";
 		$localestrings['mr'] = "Mauritania";
@@ -1320,6 +1368,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['pl'] = "Poland";
 		$localestrings['pm'] = "Saint Pierre And Miquelon";
 		$localestrings['pr'] = "Puerto Rico";
+		$localestrings['pr'] = "Palestinian Territories";
 		$localestrings['pt'] = "Portugal";
 		$localestrings['pw'] = "Palau";
 		$localestrings['py'] = "Paraguay";
@@ -1361,6 +1410,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['tt'] = "Trinidad And Tobago";
 		$localestrings['tv'] = "Tuvalu";
 		$localestrings['tw'] = "Taiwan, Province Of China";
+		$localestrings['tz'] = "Tanzania";
 		$localestrings['ua'] = "Ukraine";
 		$localestrings['ug'] = "Uganda";
 		$localestrings['um'] = "United States Minor Outlying Islands";
@@ -2161,6 +2211,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['516'] = "Track this thread by email";
 		$localestrings['517'] = "Toggle smileys";
 		$localestrings['518'] = "pixels";
+		$localestrings['519'] = "";
 		$localestrings['520'] = "Moderator Options:";
 		$localestrings['521'] = "Delete Thread";
 		$localestrings['522'] = "Lock Thread";

@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Thu May 15 2008, 14:39:50 CEST
+// generated on : Fri May 30 2008, 20:06:43 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -82,7 +82,7 @@ $locale['083'] = "CMS Administration";
 $locale['084'] = "Logout";
 $locale['085'] = "%u private message";
 $locale['086'] = "%u private messages";
-$locale['087'] = "?";
+$locale['087'] = "Downloads";
 $locale['088'] = "%u new forum post";
 $locale['089'] = "%u new forum posts";
 $locale['090'] = "Posts";

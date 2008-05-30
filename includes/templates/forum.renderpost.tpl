@@ -78,6 +78,25 @@
 				{$posts[pid].user_name}
 			{/if}
 			<br />
+			{if $posts[pid].show_ranking}
+				{if $posts[pid].ranking.rank_image}
+					{section name=img start=0 loop=$posts[pid].ranking.rank_image_repeat}
+						<img src='{$smarty.const.IMAGES}ranking/{$posts[pid].ranking.rank_image}' alt='' title='{if $posts[pid].ranking.rank_tooltip && $posts[pid].ranking.rank_title != ""}{$posts[pid].ranking.rank_title}{/if}' style='border:0px;' />
+					{/section}
+					<br />
+				{/if}
+			{/if}
+			{* show a ranking title first *}
+			{section name=ug loop=$posts[pid].group_names}
+				{if $posts[pid].group_names[ug].type == "R"}
+					{if $posts[pid].group_names[ug].color|default:"" != ""}
+						<span class='small'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
+					{else}
+						<span class='small'>{$posts[pid].group_names[ug].name}</span>
+					{/if}
+					<br />
+				{/if}
+			{/section}
 			{* show admin/superadmin level first *}
 			{section name=ug loop=$posts[pid].group_names}
 				{if $posts[pid].group_names[ug].type == "U"}

@@ -249,7 +249,7 @@ function checkrights($right) {
 	}
 }
 
-// Check if user is assigned to the specified user group
+// Check if the current user is assigned to the specified user group
 function checkgroup($group) {
 	if (iSUPERADMIN && ($group != "100")) { return true; }
 //	if (iSUPERADMIN && ($group == "0" || $group == "101" || $group == "102" || $group == "103")) { return true; }
@@ -261,6 +261,34 @@ function checkgroup($group) {
 	} else {
 		return false;
 	}
+}
+
+// Check if a user is assigned to the specified user group
+function checkusergroup($user_id, $group_id) {
+	global $db_prefix;
+
+	// every user is a member
+	if ($group_id == "101") { return true; }
+	// get the group rights from the user record
+	$result = dbquery("SELECT user_groups, user_level FROM ".$db_prefix."users WHERE user_id = '".$user_id."'");
+	if ($data = dbarray($result)) {
+		// check if the requested group matches a user level
+		if ($group_id == $data['user_level']) { return true; }
+		// if group memberships are defined, get the users own group memberships into an array
+		if (!empty($data['user_groups'])) {
+			$groups = explode(".", substr($data['user_groups'], 1));
+			foreach ($groups as $group) {
+				// check if this groups has subgroups. If so, add them to the array
+				getsubgroups($group);
+			}
+			// now that we have all groups, check for a match
+			foreach ($groups as $group) {
+				if ($group == $group_id) { return true; }
+			}
+		}
+	}
+	// user not found or no group match
+	return false;
 }
 
 // Compile access levels & user group array
