@@ -466,6 +466,13 @@ function theme_cleanup() {
 		}
 	}
 
+	// remove any expired posts trackers
+	if (isset($_SESSION['posts']) && is_array($_SESSION['posts'])) {
+		foreach($_SESSION['posts'] as $key => $value) {
+			if ($value < time()) unset($_SESSION['posts'][$key]);
+		}
+	}
+
 	// flush any session info
 	session_write_close();
 		

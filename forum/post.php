@@ -598,11 +598,12 @@ if (isset($_POST["cancel"])) {
 							}
 						}
 						// check if this isn't a reload, back-post, or double submit
-						if (isset($_COOKIE['post_'.$random_id])) {
+						if (isset($_SESSION['posts'][$random_id])) {
 							$error = $locale['458'];
 						} else {
 							if (!$flood) {
-								setcookie("post_".$random_id, "posted", time()+60*60, "/", "", "0");
+								if (!isset($_SESSION['posts']) || !is_array($_SESSION['posts'])) $_SESSION['posts'] = array();
+								$_SESSION['posts'][$random_id] = time()+60*60*12;
 								$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".time()."', forum_lastuser='".$userdata['user_id']."' WHERE forum_id='$forum_id'");
 								switch ($action) {
 									case 'reply':
