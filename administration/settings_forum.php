@@ -37,6 +37,7 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$_POST['attachtypes']."' WHERE cfg_name = 'attachtypes'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thread_notify']) ? $_POST['thread_notify'] : "0")."' WHERE cfg_name = 'thread_notify'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['unread_threshold']) ? $_POST['unread_threshold'] : "0")."' WHERE cfg_name = 'unread_threshold'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_edit_timeout']) ? $_POST['forum_edit_timeout'] : "0")."' WHERE cfg_name = 'forum_edit_timeout'");
 }
 
 $settings2 = array();
