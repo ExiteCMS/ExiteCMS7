@@ -38,7 +38,7 @@
 </div>
 {include file="_closetable.tpl"}
 {if $redirect}
-	<script language='javascript'>
+	<script type="text/javascript">
 	<!--
 	function autocontinue() {ldelim}
 	{if $post_id}
