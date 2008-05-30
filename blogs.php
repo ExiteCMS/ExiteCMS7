@@ -221,7 +221,7 @@ switch ($step) {
 			// use the limit defined in the admin page
 			$bloglimit = time() - $settings['blogs_indexage'] * 86400;
 			// select all authors
-			$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id AND (blog_datestamp > '".$bloglimit."' OR blog_edittime > '".$bloglimit."') GROUP BY blog_author ORDER BY count DESC, user_name ASC");
+			$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
 		}
 		$variables['list'] = array();
 		while ($data = dbarray($result)) {
@@ -233,7 +233,6 @@ switch ($step) {
 			}
 			$variables['list'][] = $data;
 		}
-
 		break;		
 }
 
