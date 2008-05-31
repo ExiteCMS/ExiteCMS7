@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `10/03/2008 22:38`
+// Date generated  : `31/05/2008 11:41`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.10');
-define('CMS_REVISION', '1350');
+define('CMS_REVISION', '1426');
 
 if ($step == 1) {
 
@@ -21,11 +21,29 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP (
   `ip_end` varchar(15) NOT NULL default '',
   `ip_start_num` int(10) unsigned NOT NULL default '0',
   `ip_end_num` int(10) unsigned NOT NULL default '0',
-  `ip_code` char(2) NOT NULL default ''
+  `ip_code` char(2) NOT NULL default '',
+  `ip_name` varchar(50) NOT NULL default ''
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "GeoIP : ".mysql_error();
+}
+
+//
+// Code to create table `GeoIP_backup`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."GeoIP_backup");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP_backup (
+  `ip_start` varchar(15) NOT NULL default '',
+  `ip_end` varchar(15) NOT NULL default '',
+  `ip_start_num` int(10) unsigned NOT NULL default '0',
+  `ip_end_num` int(10) unsigned NOT NULL default '0',
+  `ip_code` char(2) NOT NULL default '',
+  `ip_name` varchar(50) NOT NULL default ''
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "GeoIP_backup : ".mysql_error();
 }
 
 //
@@ -194,28 +212,29 @@ if (!$result) {
 	$failed[] = "configuration : ".mysql_error();
 } else {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('admin_activation', '0')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('article_localisation', 'none')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('article_localisation', 'multiple')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachmax', '10485760')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachments', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.esml,.psd,.mvi')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('bad_words', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('bad_words_enabled', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('bad_word_replace', '[censored]')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('blogs_indexage', '90')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('blogs_indexsize', '5')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('counter', '0')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('country', 'gb')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('counter', '533')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('country', 'nl')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_querylog', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('description', 'ExiteCMS, a light-weight CMS system, wriiten in PHP, and using MySQL and the Smarty template engine')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('display_validation', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('download_columns', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('download_localisation', 'none')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('download_localisation', 'multiple')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('email_verification', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('enable_registration', '1')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('enable_registration', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('flood_interval', '15')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('folderhotlevel', '20')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('footer', '')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('forumdate', '%m/%d/%Y %H:%M')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('forumdate', '%d/%m/%Y %H:%M')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('forum_edit_timeout', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('forum_flags', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('forum_max_h', '600')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('forum_max_w', '600')");
@@ -229,10 +248,10 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance_color', '#A19BCF')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance_message', '')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('max_users', '0')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('max_users', '5')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('max_users_datestamp', '1193029685')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('navbar_range', '5')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('newsletter_email', '')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('newsletter_email', 'noreply@exite.eu')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('news_columns', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('news_headline', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('news_items', '3')");
@@ -241,7 +260,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('numofshouts', '5')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('numofthreads', '20')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('opening_page', 'news.php')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('panels_localisation', 'none')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('panels_localisation', 'multiple')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('photo_h', '300')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('photo_max_b', '150000')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('photo_max_h', '1600')");
@@ -256,16 +275,16 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_sentbox', '25')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_sentbox_group', '103')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('remote_stats', '0')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('revision', '1350')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('revision', '1426')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_divisor', '100')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_maxlifetime', '604800')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_probability', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_name', 'ExiteCMSid')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('shortdate', '%m/%d/%Y')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteemail', 'exitecms@exite.eu')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteintro', '<center>\r\n<b>This website is under construction at the moment!</b><br /><br />\r\nExiteCMS v7.1 ©2008 Exite BV.</center>')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('sitelinks_localisation', 'none')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('sitename', 'New ExiteCMS Website')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteintro', '<center>\r\n<b>This website is under construction at the moment!</b><br /><br />We are currently preparing the release of version 7.0. The release date has been set for October 27th, providing no last-minute showstoppers pop up.<br /><br />\r\nExiteCMS v7.0 ©2007 Exite BV.</center>')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('sitelinks_localisation', 'multiple')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('sitename', 'ExiteCMS Support Site')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteurl', '/')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteusername', 'webmaster')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('smtp_host', '')");
@@ -338,7 +357,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."downloads (
   `download_cat` smallint(5) unsigned NOT NULL default '0',
   `download_license` varchar(50) NOT NULL default '',
   `download_os` varchar(50) NOT NULL default '',
-  `download_version` varchar(20) NOT NULL default '',
+  `download_version` varchar(50) NOT NULL default '',
   `download_filesize` varchar(20) NOT NULL default '',
   `download_bar` tinyint(1) unsigned NOT NULL default '0',
   `download_datestamp` int(10) unsigned NOT NULL default '0',
@@ -495,6 +514,29 @@ if (!$result) {
 }
 
 //
+// Code to create table `forum_ranking`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."forum_ranking");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_ranking (
+  `rank_id` smallint(5) unsigned NOT NULL auto_increment,
+  `rank_order` smallint(5) unsigned NOT NULL default '0',
+  `rank_posts_from` mediumint(8) unsigned NOT NULL default '0',
+  `rank_posts_to` mediumint(8) unsigned NOT NULL default '0',
+  `rank_title` varchar(50) NOT NULL default '',
+  `rank_color` varchar(15) NOT NULL default '',
+  `rank_tooltip` tinyint(1) unsigned NOT NULL default '0',
+  `rank_image` varchar(200) NOT NULL default '',
+  `rank_image_repeat` tinyint(3) NOT NULL default '1',
+  `rank_groups` varchar(200) NOT NULL default '',
+  `rank_groups_and` tinyint(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`rank_id`)
+) ENGINE=MYISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "forum_ranking : ".mysql_error();
+}
+
+//
 // Code to create table `forums`
 //
 $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."forums");
@@ -600,7 +642,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news (
   `news_cat` smallint(5) unsigned NOT NULL default '0',
   `news_news` text NOT NULL,
   `news_extended` text NOT NULL,
-  `news_breaks` char(1) NOT NULL default '',
+  `news_breaks` char(1) NOT NULL default 'n',
   `news_name` mediumint(8) unsigned NOT NULL default '1',
   `news_datestamp` int(10) unsigned NOT NULL default '0',
   `news_start` int(10) unsigned NOT NULL default '0',
@@ -792,7 +834,7 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."ratings");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."ratings (
   `rating_id` smallint(5) unsigned NOT NULL auto_increment,
   `rating_item_id` smallint(5) unsigned NOT NULL default '0',
-  `rating_type` char(1) NOT NULL default '',
+  `rating_type` char(1) NOT NULL default '?',
   `rating_user` mediumint(8) unsigned NOT NULL default '0',
   `rating_vote` tinyint(1) unsigned NOT NULL default '0',
   `rating_datestamp` int(10) unsigned NOT NULL default '0',
@@ -962,7 +1004,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
   `user_forum_datestamp` int(10) NOT NULL default '0',
   `user_theme` varchar(100) NOT NULL default 'Default',
   `user_locale` varchar(8) NOT NULL default 'en',
-  `user_offset` varchar(6) NOT NULL default '',
+  `user_offset` varchar(6) NOT NULL default '0',
   `user_avatar` varchar(100) NOT NULL default '',
   `user_sig` text NOT NULL,
   `user_posts` mediumint(8) unsigned NOT NULL default '0',
