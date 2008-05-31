@@ -42,7 +42,7 @@ $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##forum_ran
   rank_image_repeat TINYINT(3) NOT NULL DEFAULT 1,
   rank_groups VARCHAR(200) NOT NULL,
   rank_groups_and TINYINT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY)rank_id)_
+  PRIMARY KEY (rank_id)
 ) ENGINE = MYISAM;");
 
 // add the new admin module "Forum Ranking"
