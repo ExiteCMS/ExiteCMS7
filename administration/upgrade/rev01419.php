@@ -30,7 +30,7 @@ $commands = array();
 
 // database changes - add the forum ranking table
 
-$commands[] = array('type' => 'db', 'value' => "CREATE TABLE ###PREFIX###forum_ranking (
+$commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##forum_ranking (
   rank_id SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   rank_order SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0,
   rank_posts_from MEDIUMINT UNSIGNED NOT NULL DEFAULT 0,
