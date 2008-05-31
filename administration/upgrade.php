@@ -73,6 +73,8 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 		if (isset($_POST['stage']) && $_POST['stage'] == 2) {
 			// stage 2: perform the upgrades
 			$variables['stage'] = 2;
+			// switch to MySQL4 mode to avoid errors
+			$result = dbquery("SET SESSION sql_mode='MYSQL40'");
 			// start with the current revision number
 			$new_revision = $settings['revision'];
 			$results = array();

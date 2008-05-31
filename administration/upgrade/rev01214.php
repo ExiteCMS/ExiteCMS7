@@ -38,11 +38,11 @@ $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig 
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##sessions (
   session_id CHAR(50) NOT NULL default '',
   session_ua CHAR(32) NOT NULL default '',
-  session_started int(10) NOT NULL default '0',
-  session_expire int(10) NOT NULL default '0',
-  session_user_id mediumint(8) NOT NULL default '0',
+  session_started int(10) NOT NULL default 0,
+  session_expire int(10) NOT NULL default 0,
+  session_user_id mediumint(8) NOT NULL default 0,
   session_ip CHAR(15) NOT NULL default '',
-  session_data TEXT NOT NULL default '',
+  session_data TEXT,
   PRIMARY KEY  (session_id)
 ) ENGINE=MyISAM;");
 ?>

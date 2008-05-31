@@ -43,12 +43,12 @@ if (dbrows($result)) {
 }
 
 // added option to disable the display of banners on a per-forum basis
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##forums ADD forum_banners TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##forums ADD forum_banners TINYINT(1) UNSIGNED NOT NULL DEFAULT 1");
 
 // support new homepage news assignments
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##news DROP news_latest_item");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##news CHANGE news_sticky news_headline TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##news ADD news_latest_news TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' AFTER news_headline");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##news CHANGE news_sticky news_headline TINYINT(1) UNSIGNED NOT NULL DEFAULT 0");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##news ADD news_latest_news TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 AFTER news_headline");
 
 // make more room to support timezones at half-hours or quaters
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings CHANGE timeoffset timeoffset VARCHAR(6) NOT NULL DEFAULT '0'");

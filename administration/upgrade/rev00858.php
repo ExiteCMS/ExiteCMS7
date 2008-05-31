@@ -1030,7 +1030,7 @@ $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##locale (
   locale_id smallint(5) unsigned NOT NULL auto_increment,
   locale_code varchar(8) NOT NULL default '',
   locale_name varchar(50) NOT NULL default '',
-  locale_active tinyint(1) NOT NULL default '0',
+  locale_active tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (locale_id)
 ) ENGINE=MyISAM;");
 

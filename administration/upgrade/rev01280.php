@@ -29,5 +29,5 @@ $revisions[] = array('revision' => $_revision,
 $commands = array();
 
 // add an automatic timestamp to the configuration table
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_posts_unread TINYINT(1) NOT NULL DEFAULT '1' AFTER user_sponsor");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_posts_unread TINYINT(1) NOT NULL DEFAULT 1 AFTER user_sponsor");
 ?>

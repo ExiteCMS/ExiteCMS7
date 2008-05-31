@@ -61,7 +61,7 @@ function sponsor_group() {
 		$data = dbarray($result);
 		$result = dbquery("UPDATE ".$db_prefix."user_groups SET group_ident = 'wE01' WHERE group_id = '".$data['group_id']."'");
 	} else {
-		$result = dbquery("INSERT INTO ".$db_prefix."user_groups (group_ident, group_name, group_description, group_visible) VALUES ('wE01', 'Sponsors', 'Website Sponsors', '0'");
+		$result = dbquery("INSERT INTO ".$db_prefix."user_groups (group_ident, group_name, group_groups, group_rights, group_description, group_visible) VALUES ('wE01', 'Sponsors', '', '', 'Website Sponsors', '0'");
 	}
 }
 ?>

@@ -30,7 +30,7 @@ $revisions[] = array('revision' => $_revision,
 $commands = array();
 
 // add the translator user_id to the locales table to track who changed what (we have the datestamp for the when)
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locales ADD locales_translator SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' AFTER locales_value");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locales ADD locales_translator SMALLINT(5) UNSIGNED NOT NULL DEFAULT 0 AFTER locales_value");
 
 // add a locales key index to the locales table
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##locales ADD INDEX localenamekey (locales_locale, locales_name, locales_key)");

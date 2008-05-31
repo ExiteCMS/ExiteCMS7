@@ -35,5 +35,5 @@ $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##modules SET mod
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##modules SET mod_version = '1.0.1' WHERE mod_title = 'Wikka Wiki' AND mod_version = '1.1.6.4'");
 
 // new user field to indicate that this user is a webmaster
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_bad_email INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER user_email");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_bad_email INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER user_email");
 ?>

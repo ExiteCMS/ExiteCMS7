@@ -35,22 +35,22 @@ $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##CMSconfig 
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('BG', 'blogs.gif', '226', 'blogs.php', '1')");
 
 // add the new user groups for the module "blogs"
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##user_groups (group_ident, group_name, group_description, group_forumname, group_visible) VALUES ('BG01', 'Blog Editors', 'Blog Editors', 'Blog Editor', '1')");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##user_groups (group_ident, group_name, group_description, group_forumname, group_visible) VALUES ('BG02', 'Blog Moderators', 'Blog Moderators', 'Blog Moderator', '1')");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##user_groups (group_ident, group_name, group_groups, group_rights, group_description, group_forumname, group_visible) VALUES ('BG01', 'Blog Editors', '', '', 'Blog Editors', 'Blog Editor', '1')");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##user_groups (group_ident, group_name, group_groups, group_rights, group_description, group_forumname, group_visible) VALUES ('BG02', 'Blog Moderators', '', '', 'Blog Moderators', 'Blog Moderator', '1')");
 
 // add the tables for the new module "blogs"
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##blogs (
   blog_id mediumint(8) NOT NULL AUTO_INCREMENT,
-  blog_subject VARCHAR(50) NOT NULL default '',
-  blog_text TEXT NOT NULL default '',
-  blog_reads mediumint(8) NOT NULL default '0',
-  blog_breaks CHAR(1) NOT NULL,
-  blog_comments TINYINT(1) NOT NULL default '0',
-  blog_ratings TINYINT(1) NOT NULL default '0',
-  blog_author mediumint(8) NOT NULL default '0',
-  blog_datestamp int(10) NOT NULL default '0',
-  blog_editor mediumint(8) NOT NULL default '0',
-  blog_edittime int(10) NOT NULL default '0',
+  blog_subject varchar(50) NOT NULL default '',
+  blog_text text NOT NULL,
+  blog_reads mediumint(8) NOT NULL default 0,
+  blog_breaks char(1) NOT NULL default 'n',
+  blog_comments tinyint(1) NOT NULL default 0,
+  blog_ratings tinyint(1) NOT NULL default 0,
+  blog_author mediumint(8) NOT NULL default 0,
+  blog_datestamp int(10) NOT NULL default 0,
+  blog_editor mediumint(8) NOT NULL default 0,
+  blog_edittime int(10) NOT NULL default 0,
   PRIMARY KEY  (blog_id)
 ) ENGINE=MyISAM;");
 

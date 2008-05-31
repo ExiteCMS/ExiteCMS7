@@ -32,7 +32,7 @@ $commands = array();
 
 // create new captcha table
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##captcha (
-  captcha_datestamp INT(10) UNSIGNED NOT NULL default '0',
+  captcha_datestamp INT(10) UNSIGNED NOT NULL default 0,
   captcha_ip VARCHAR(20) NOT NULL,
   captcha_encode VARCHAR(32) NOT NULL default '',
   captcha_string VARCHAR(15) NOT NULL default ''

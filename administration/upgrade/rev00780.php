@@ -38,9 +38,9 @@ $commands[] = array('type' => 'db', 'value' => "DELETE FROM ##PREFIX##admin WHER
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD maintenance_color CHAR(10) NOT NULL DEFAULT '#FFB900' AFTER maintenance_message");
 
 // add seperate max dimensions for images in the forum posts
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD forum_max_w SMALLINT(4) NOT NULL DEFAULT '600' AFTER forum_flags");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD forum_max_h SMALLINT(4) NOT NULL DEFAULT '600' AFTER forum_max_w");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD forum_max_w SMALLINT(4) NOT NULL DEFAULT 600 AFTER forum_flags");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD forum_max_h SMALLINT(4) NOT NULL DEFAULT 600 AFTER forum_max_w");
 
 // new user field to indicate that this user is a webmaster
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_webmaster TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' AFTER user_password");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_webmaster TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT 0 AFTER user_password");
 ?>

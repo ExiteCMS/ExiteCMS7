@@ -35,7 +35,7 @@ $commands = array();
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##CMSconfig (
   cfg_id smallint(5) unsigned NOT NULL auto_increment,
   cfg_name varchar(25) NOT NULL default '',
-  cfg_value TEXT NOT NULL default '',
+  cfg_value TEXT NOT NULL,
   PRIMARY KEY  (cfg_id)
 ) ENGINE=MyISAM;");
 

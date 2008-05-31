@@ -37,11 +37,11 @@ $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##panels SET pane
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##admin SET admin_title = 'Menu System' WHERE admin_rights = 'SL'");
 
 // add the aidlink switch to the site_links table
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links ADD link_aid TINYINT(1) UNSIGNED DEFAULT '0' AFTER link_window");
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links ADD link_parent TINYINT(3) UNSIGNED DEFAULT '0' AFTER link_aid");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links ADD link_aid TINYINT(1) UNSIGNED DEFAULT 0 AFTER link_window");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links ADD link_parent TINYINT(3) UNSIGNED DEFAULT 0 AFTER link_aid");
 
 // add the news_latest switch to the settings table 
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD news_latest TINYINT(1) UNSIGNED DEFAULT '0' AFTER news_items");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD news_latest TINYINT(1) UNSIGNED DEFAULT 0 AFTER news_items");
 
 // drop the panel_state table. Not needed anymore, replaced by cookies
 $commands[] = array('type' => 'db', 'value' => "DROP TABLE ##PREFIX##panel_state");

@@ -29,15 +29,15 @@ $revisions[] = array('revision' => $_revision,
 $commands = array();
 
 // add the user_forum_datestamp field to the users table
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_forum_datestamp INT(10) NOT NULL DEFAULT '0' AFTER user_forum_fullscreen");
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_forum_datestamp INT(10) NOT NULL DEFAULT 0 AFTER user_forum_fullscreen");
 
 // create the threads_read table
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##threads_read (
-  user_id mediumint(8) NOT NULL default '0',
-  forum_id smallint(5) NOT NULL default '0',
-  thread_id mediumint(8) NOT NULL default '0',
-  thread_page smallint(5) NOT NULL default '0',
-  thread_last_read int(10) NOT NULL default '0',
+  user_id mediumint(8) NOT NULL default 0,
+  forum_id smallint(5) NOT NULL default 0,
+  thread_id mediumint(8) NOT NULL default 0,
+  thread_page smallint(5) NOT NULL default 0,
+  thread_last_read int(10) NOT NULL default 0,
   PRIMARY KEY  (user_id,forum_id,thread_id)
 ) ENGINE=MyISAM;");
 
