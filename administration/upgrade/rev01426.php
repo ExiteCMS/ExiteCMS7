@@ -77,8 +77,7 @@ $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##forum_rank
 	CHANGE rank_groups rank_groups VARCHAR(200) NOT NULL DEFAULT '';");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##GeoIP CHANGE ip_start ip_start VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
 	CHANGE ip_end ip_end VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
-	CHANGE ip_code ip_code CHAR(2) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
-	CHANGE ip_name ip_name VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '';");
+	CHANGE ip_code ip_code CHAR(2) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '';");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##GeoIP_exceptions CHANGE ip_number ip_number VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
 	CHANGE ip_code ip_code CHAR(2) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
 	CHANGE ip_name ip_name VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '';");

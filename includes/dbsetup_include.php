@@ -1,7 +1,7 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `31/05/2008 11:41`
+// Date generated  : `31/05/2008 12:03`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.10');
@@ -21,8 +21,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP (
   `ip_end` varchar(15) NOT NULL default '',
   `ip_start_num` int(10) unsigned NOT NULL default '0',
   `ip_end_num` int(10) unsigned NOT NULL default '0',
-  `ip_code` char(2) NOT NULL default '',
-  `ip_name` varchar(50) NOT NULL default ''
+  `ip_code` char(2) NOT NULL default ''
 ) ENGINE=MYISAM;");
 if (!$result) {
 	$fail = "1";
