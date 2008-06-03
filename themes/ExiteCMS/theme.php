@@ -193,6 +193,9 @@ $variables = array();
 // load the footer panels
 load_panels('footer');
 
+// get MySQL host info
+$variables['MySQLinfo'] = mysql_get_server_info();
+
 // define the footer template
 $template_panels[] = array('type' => 'footer', 'name' => '_footer', 'template' => '_footer.tpl');
 $template_variables['_footer'] = $variables;

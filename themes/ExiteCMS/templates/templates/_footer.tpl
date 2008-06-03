@@ -29,7 +29,7 @@
 				<tr>
 					<td>
 						<br />
-						The webserver needed {$_loadstats.time|string_format:"%01.3f"} sec. to process this page. Of that, the database engine needed {$_loadstats.querytime|string_format:"%01.3f"} sec.
+						The webserver needed {$_loadstats.time|string_format:"%01.3f"} sec. to process this page. Of that, the MySQL v{$MySQLinfo} engine needed {$_loadstats.querytime|string_format:"%01.3f"} sec.
 					</td>
 				</tr>
 				<tr>
