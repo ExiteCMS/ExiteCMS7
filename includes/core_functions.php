@@ -14,6 +14,9 @@
 +----------------------------------------------------*/
 if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
 
+// disable error reporting, we don't want to give anything away
+error_reporting(E_USER_ERROR);
+
 // code to calculate the page loading time, this can be used
 // to show statistics in theme.php, p.e. when generating the
 // code for the page footer
@@ -188,6 +191,8 @@ require_once PATH_INCLUDES."user_functions.php";
 // activate query log debugging if set
 if ($settings['debug_querylog'] != "") {
 	$_db_log = checkgroup($settings['debug_querylog']);
+	// if debugging is requested, also activate some other debugging features
+	error_reporting(E_ALL);
 }
 
 // load the locale functions

@@ -193,7 +193,7 @@ if (isset($_POST['save_cat'])) {
 	} else {
 		if ($cat_name != "") {
 			$cat_order = isNum($_POST['cat_order']) ? $_POST['cat_order'] : "";
-			if(!$cat_order) $cat_order=dbresult(dbquery("SELECT MAX(forum_order) FROM ".$db_prefix."forums WHERE forum_cat='0'"),0)+1;
+			if(!$cat_order) $cat_order=dbfunction("MAX(forum_order)", "forums", "forum_cat='0'")+1;
 			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='0' AND forum_order>='$cat_order'");	
 			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_lastpost, forum_lastuser) VALUES ('0', '$cat_name', '$cat_order', '', '', '0', '0', '0', '0')");
 		}
@@ -240,7 +240,7 @@ if (isset($_POST['save_cat'])) {
 		if ($forum_name != "") {
 			$forum_mods = "";
 			$forum_order = isNum($_POST['forum_order']) ? $_POST['forum_order'] : "";
-			if(!$forum_order) $forum_order=dbresult(dbquery("SELECT MAX(forum_order) FROM ".$db_prefix."forums WHERE forum_cat='$forum_cat'"),0)+1;
+			if(!$forum_order) $forum_order=dbfunction("MAX(forum_order)", "forums", "forum_cat='$forum_cat'")+1;
 			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='$forum_cat' AND forum_order>='$forum_order'");	
 			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '$forum_rulespage', '$forum_banners', '0', '0')");
 			redirect(FUSION_SELF.$aidlink."&status=savefu");

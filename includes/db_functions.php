@@ -52,16 +52,12 @@ function ModUserTables(&$query) {
 }
 
 // MySQL database functions
-function dbquery($query, $display=true) {
+function dbquery($query, $display=false) {
 
-	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats;
+	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats, $settings;
 
 	// update the query for relocated user tables
 	ModUserTables($query);
-
-	$_s_loadtime = explode(" ", microtime());
-	$_s_loadtime = $_s_loadtime[1] + $_s_loadtime[0];
-	$_loadstats['querytime'] -= $_s_loadtime;
 
 	if ($_db_debug) {
 		echo "<pre><br />Query: ".$query."<br /></pre>";
@@ -86,18 +82,24 @@ function dbquery($query, $display=true) {
 			$_loadstats['others']++;
 	}
 
-	$result = @mysql_query($query);
+	$_s_loadtime = explode(" ", microtime());
+	$_s_loadtime = (float)$_s_loadtime[1] + (float)$_s_loadtime[0];
+
+	$result = mysql_query($query);
+
 	if (!$result) {
-		if ($display) {
+		if ($display || $settings['debug_querylog']) {
 			echo "<pre><br />Query: ".$query."<br />";
 			echo mysql_error();
 			echo "</pre>";
 		}
-		trigger_error(mysql_error(), E_USER_ERROR);
+		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
 	}
+
 	$_e_loadtime = explode(" ", microtime());
-	$_e_loadtime = $_e_loadtime[1] + $_e_loadtime[0];
-	$_loadstats['querytime'] += $_e_loadtime;
+	$_e_loadtime = (float)$_e_loadtime[1] + (float)$_e_loadtime[0];
+
+	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
 
 	if ($_db_log) {
 		$_db_logs[] = array($query, ($_e_loadtime - $_s_loadtime)*1000);
@@ -106,33 +108,39 @@ function dbquery($query, $display=true) {
 	return $result;
 }
 
+// DEPRECIATED. Function is replaced by the more generic dbfunction(), and will be removed in a later release of ExiteCMS
 function dbcount($field,$table,$conditions="") {
-	global $db_prefix, $_db_last_function, $_db_debug, $_db_log, $_db_logs;
+
+	return dbfunction("COUNT".$field, $table, $conditions);
+}
+
+// perform a function on a table (COUNT, MAX, MIN, etc) and return the value, based on the field and conditions specified
+function dbfunction($field,$table,$conditions="") {
+	global $db_prefix, $_db_last_function, $_db_debug, $_db_log, $_db_logs, $settings;
 
 	$cond = ($conditions ? " WHERE ".$conditions : "");
-	$sql = "SELECT Count".$field." FROM ".(strpos($table, ".") ? $table : $db_prefix.$table).$cond;
+	$sql = "SELECT ".$field." FROM ".(strpos($table, ".") ? $table : $db_prefix.$table).$cond;
 
 	$result = dbquery($sql, false);
 	if (!$result) {
-		echo mysql_error();
-		return false;
+		if ($settings['debug_querylog']) {
+			echo "<pre><br />Query: ".$query."<br />";
+			echo mysql_error();
+			echo "</pre>";
+		}
+		trigger_error("A MySQL error has been detected that is not recoverable.", E_USER_ERROR);
 	} else {
 		$rows = mysql_result($result, 0);
 		return $rows;
 	}
 }
 
+// DEPRECIATED. Function definition left here to capture code that needs to be modified
 function dbresult($resource, $row) {
-
-	$result = @mysql_result($resource, $row);
-	if (!$result) {
-		echo mysql_error();
-		return false;
-	} else {
-		return $result;
-	}
+	die("ExiteCMS: The function 'dbresult' is depreciated starting version 7.2. Please rewrite your code using dbfunction()!");
 }
 
+// return the number of rows affected in the most recent query
 function dbrows($resource) {
 	global $_db_last_function, $_db_debug;
 
@@ -153,26 +161,23 @@ function dbrows($resource) {
 	return $result;
 }
 
+// return a assoc array of the current row
 function dbarray($resource) {
+	global $settings;
+
 	$result = @mysql_fetch_assoc($resource);
-	if (!$result) {
-		echo mysql_error();
-		return false;
-	} else {
-		return $result;
-	}
+	return $result;
 }
 
+// return a numbered array of the current row
 function dbarraynum($resource) {
+	global $settings;
+
 	$result = @mysql_fetch_row($resource);
-	if (!$result) {
-		echo mysql_error();
-		return false;
-	} else {
-		return $result;
-	}
+	return $result;
 }
 
+// check if a table exists, optionally passing the name of a database (if empty, use the currently selected database)
 function dbtable_exists($tbl, $db='') {
 	global $db_name;
 	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats;
@@ -211,20 +216,22 @@ function dbtable_exists($tbl, $db='') {
 	}
 }
 
-
+// connect to the database engine and select the database
 function dbconnect($db_host, $db_user, $db_pass, $db_name) {
 	$db_connect = @mysql_connect($db_host, $db_user, $db_pass, true);
-	$db_select = @mysql_select_db($db_name);
 	if (!$db_connect) {
 		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
-	} elseif (!$db_select) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+	} else {
+		$db_select = @mysql_select_db($db_name);
+		if (!$db_select) {
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+		}
 	}
 	return $db_connect;
 }
 
-// convert MySQL date to a formatted date (use subheaderdate setting) by WanWizard
-function showMySQLdate($date, $empty="", $error="") {
+// convert MySQL date to a formatted date (default format is subheaderdate)
+function showMySQLdate($date, $empty="", $error="", $format="subheaderdate") {
 	global $locale, $settings;
 
 	// test for invalid formats, need regex here!
@@ -236,7 +243,7 @@ function showMySQLdate($date, $empty="", $error="") {
 
 	$year=substr($date,0,4); $month=substr($date,5,2); $day=substr($date,8,2);
 	$hour=substr($date,11,2); $minute=substr($date,14,2); $second=substr($date,17,2);
-	return ucwords(showdate($settings['subheaderdate'], mktime($hour,$minute,$second,$month,$day,$year)));
+	return ucwords(showdate((isset($settings[$format])?$settings[$format]:$settings['subheaderdate']), mktime($hour,$minute,$second,$month,$day,$year)));
 }
 
 ?>

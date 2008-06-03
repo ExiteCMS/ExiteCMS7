@@ -135,7 +135,7 @@
 			{if $settings.attachments}
 			<tr>
 				<td colspan='2' class='tbl'>
-					<input type='checkbox' name='forum_attach' value='1' onchange='togglefields();'{if $forum_attach} checked{/if} /> {$locale.469}
+					<input type='checkbox' name='forum_attach' value='1' onchange='togglefields();'{if $forum_attach} checked="checked"{/if} /> {$locale.469}
 				</td>
 			</tr>
 			{/if}

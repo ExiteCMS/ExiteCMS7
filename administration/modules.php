@@ -109,7 +109,7 @@ if ($action == 'install' && isset($module)) {
 			}
 
 			// determine the next order in the menu for this link
-			$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$link_panel'"),0) + 1;
+			$link_order = dbfunction("MAX(link_order)", "site_links", "panel_name = '$link_panel'") + 1;
 
 			// add the new link
 			switch ($settings['sitelinks_localisation']) {
@@ -392,7 +392,7 @@ if ($action == 'upgrade' && isset($id)) {
 			$result = dbquery("SELECT * FROM ".$db_prefix."site_links WHERE link_url = '".$link_url."'");
 			if (dbrows($result) == 0) {
 				// determine the next order in the menu for this link
-				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$link_panel'"),0) + 1;
+				$link_order = dbfunction("MAX(link_order)", "site_links", "panel_name = '$link_panel'") + 1;
 
 				// add the new link
 				switch ($settings['sitelinks_localisation']) {

@@ -208,7 +208,7 @@ if ($action == "refresh") {
 			}
 			// if the parent has changed, calculate a new link order
 			if ($data['link_parent'] != $link_parent) {
-				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'".($where==""?"":(" AND ".$where)).""),0)+1;
+				$link_order = dbfunction("MAX(link_order)", "site_links", "panel_name = '$panel_filename' AND link_parent='$link_parent'".($where==""?"":(" AND ".$where))."")+1;
 			} else {
 				// link changed?
 				if ($link_order != $data['link_order']) {
@@ -221,7 +221,7 @@ if ($action == "refresh") {
 		} else {
 			// get a linkorder if none given
 			if (!$link_order) {
-				$link_order = dbresult(dbquery("SELECT MAX(link_order) FROM ".$db_prefix."site_links WHERE panel_name = '$panel_filename' AND link_parent='$link_parent'".($where==""?"":(" AND ".$where)).""),0)+1;
+				$link_order = dbfunction("MAX(link_order)","site_links","panel_name = '$panel_filename' AND link_parent='$link_parent'".($where==""?"":(" AND ".$where))."")+1;
 			}
 			$result = dbquery("UPDATE ".$db_prefix."site_links SET link_order=link_order+1 WHERE panel_name = '$panel_filename' AND link_parent='$link_parent' AND link_order >= '$link_order'".($where==""?"":(" AND ".$where))."");	
 			$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, panel_name, link_visibility, link_position, link_parent, link_window, link_aid, link_order) VALUES ('$link_name', '$link_locale', '$link_url', '$panel_filename', '$link_visibility', '$link_position', '$link_parent', '$link_window', '$link_aid', '$link_order')");
