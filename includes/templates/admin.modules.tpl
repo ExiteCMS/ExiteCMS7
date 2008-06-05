@@ -15,7 +15,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $is_error}
-	{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
+	{include file="_opentable.tpl" name=$_name title=$locale.400|escape state=$_state style=$_style}
 	<center>
 	{foreach name=id from=$mod_errors item=error}
 		{$error}<br />
@@ -23,7 +23,7 @@
 	</center>
 	{include file="_closetable.tpl"}
 {/if}
-{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title=$locale.400|escape state=$_state style=$_style}
 <center>
 <form name='filter' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 <br />
@@ -103,6 +103,13 @@
 		{/if}
 		</td>
 	</tr>
+	{if $modules[id].errors}
+	<tr>
+		<td colspan='5' class='tbl1'>
+		<font color='#FF0000'>{$modules[id].errors}</font>
+		</td>
+	</tr>
+	{/if}
 	<tr>
 		<td colspan='5' class='tbl1' height='5'>
 		</td>
