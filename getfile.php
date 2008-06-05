@@ -310,10 +310,10 @@ function setmime($filename) {
 
 // parameter validation
 if (!isset($file_id) || !isNum($file_id)) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid or missing file ID.</b></div>");
+	terminate("<b>Invalid or missing file ID.</b>");
 }
 if (!isset($type)) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Missing file type.</b></div>");
+	terminate("<b>Missing file type.</b>");
 }
 
 // check if authentication is valid. If not, reset it
@@ -329,20 +329,20 @@ switch (strtolower($type)) {
 		// check if the requested attachment exists, if so retrieve the information
 		$attachment = dbarray(dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE attach_id='$file_id'"));
 		if (!is_array($attachment)) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file ID.</b></div>");
+			terminate("<b>Invalid file ID.</b>");
 		}
 		// check if the post this attachment belongs to exists, if so retrieve the information
 		$post = dbarray(dbquery("SELECT * FROM ".$db_prefix."posts WHERE thread_id = '".$attachment['thread_id']."' AND post_id='".$attachment['post_id']."'"));
 		if (!is_array($post)) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file ID.</b></div>");
+			terminate("<b>Invalid file ID.</b>");
 		}
 		$forum = dbarray(dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_id = '".$post['forum_id']."'"));
 		if (!is_array($forum)) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file ID.</b></div>");
+			terminate("<b>Invalid file ID.</b>");
 		}
 		// if logged in, check if the user has access to this file. if not, print an error and give up
 		if (iMEMBER && !getfilegroup($forum['forum_access'], $userdata['user_level'])) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>You don't have access to the requested file ID.</b></div>");
+			terminate("<b>You don't have access to the requested file ID.</b>");
 		}
 		// if not logged in, and authorisation required, check if userid and password is given and valid
 		if (!iMEMBER && $forum['forum_access'] != 0) {
@@ -361,7 +361,7 @@ switch (strtolower($type)) {
 		// check if the requested attachment exists, if so retrieve the information
 		$attachment = dbarray(dbquery("SELECT * FROM ".$db_prefix."pm_attachments WHERE pmattach_id='$file_id'"));
 		if (!is_array($attachment)) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file ID.</b></div>");
+			terminate("<b>Invalid file ID.</b>");
 		}
 		// if not logged in, check if userid and password is given and valid (authorisation is required!)
 		if (!iMEMBER) {
@@ -371,7 +371,7 @@ switch (strtolower($type)) {
 		// check if this attachment belongs to a post addressed to this user
 		$result = dbquery("SELECT * FROM ".$db_prefix."pm_index WHERE pm_id = '".$attachment['pm_id']."' AND pmindex_user_id = '".$userdata['user_id']."'");
 		if (dbrows($result) == 0) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>You don't have access to the requested file ID.</b></div>");
+			terminate("<b>You don't have access to the requested file ID.</b>");
 		}
 		// define the required parameters for the download
 		$filename = $attachment['pmattach_name'];
@@ -380,7 +380,7 @@ switch (strtolower($type)) {
 		break;
 
 	default:
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Invalid file type.</b></div>");
+		die("<b>Invalid file type.</b>");
 }
 
 // get the http download class

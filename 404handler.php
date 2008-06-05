@@ -108,7 +108,7 @@ if (!empty($url) && dbrows($result)) {
 			// and terminate the loop
 			break;
 		} else {
-			die("<div style='font-family:Verdana;text-align:center;'><font size=6>404 - PAGE NOT FOUND</font></br /></br /><b>And the '404 page not found' page can not be loaded from the database...</b></div>");
+			terminate("<font size=6>404 - PAGE NOT FOUND</font></br /></br /><b>And the '404 page not found' page can not be loaded from the database...</b>");
 		}
 	}
 	exit;

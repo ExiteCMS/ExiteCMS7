@@ -232,6 +232,8 @@ function _debug($text, $abort=false) {
 
 	if (is_array($text)) {
 		echo "<br /><hr /><br /><pre>"; print_r($text); echo "</pre><br /><hr /><br />";
+	} elseif (is_object($text)) {
+		echo "<br /><hr /><br /><pre>"; print_r($text); echo "</pre><br /><hr /><br />";
 	} else {
 		echo "<br /><hr /><br /><pre>".$text."</pre><br /><hr /><br />";
 	}
@@ -1016,5 +1018,10 @@ function CMS_getOS () {
 	} else {
 		return "Other";
 	}
+}
+
+// replacement for die()
+function terminate($text) {
+	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'>$text</div>");
 }
 ?>
