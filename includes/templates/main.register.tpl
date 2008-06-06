@@ -142,7 +142,7 @@
 				<td class='tbl'>
 					{$locale.u010}
 				</td>
-				<td class='tbl'>}
+				<td class='tbl'>
 					{html_select_date prefix='user_' time=$this_userdata.user_birthdate start_year="1900" end_year="-1" all_extra="class='textbox'"}
 				</td>
 			</tr>

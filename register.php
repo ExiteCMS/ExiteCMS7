@@ -137,7 +137,7 @@ if ($settings['enable_registration'] == 1) {
 			if (!isset($_POST['captcha_code']) || $securimage->check($_POST['captcha_code']) == false) {
 				// the code was incorrect
 				$error .= $locale['410']."<br />\n";
-			}			
+			}
 		}
 		
 		$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";
