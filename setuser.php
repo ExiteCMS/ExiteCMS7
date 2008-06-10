@@ -59,8 +59,8 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 		if (isset($_SESSION['userinfo'])) {
 			$userinfo_vars = explode(".", $_SESSION['userinfo']);
 			$user_pass = (preg_match("/^[0-9a-z]{32}$/", $userinfo_vars['1']) ? $userinfo_vars['1'] : "");
-			$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($user));
-			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='".$user_name."' AND user_password='".$user_pass."'");
+			$user_id = isNum($userinfo_vars['0']) ? $userinfo_vars['0'] : "0";
+			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$user_id."' AND user_password='".$user_pass."'");
 			if ($data = dbarray($result)) {
 				if ($data['user_bad_email'] != 0) {
 					$variables['url'] = BASEDIR."edit_profile.php?check=email&value=".(90 - intval((time() - $data['user_bad_email']) / 86400));
