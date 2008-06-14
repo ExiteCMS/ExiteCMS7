@@ -225,7 +225,7 @@ if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 $imagetypes = array(".bmp",".gif",".iff",".jpg",".jpeg",".png",".psd",".tiff",".wbmp");
 
 // image types we can generate a thumbnail from
-$thumbtypes = array(".gif",".jpg",".jpeg",".png",);
+$thumbtypes = array(".gif",".jpg",".jpeg",".png",".bmp", ".psd");
 
 // debug function, handy to print a standard debug text
 function _debug($text, $abort=false) {
@@ -696,19 +696,25 @@ function descript($text,$striptags=true) {
 // Scan image files for malicious code
 function verify_image($file) {
 	$image_safe = true;
-	$er = error_reporting(0);
-	$txt = file_get_contents($file);
-	error_reporting($er);
-	if ($txt === false) { $image_safe = false; }
-	elseif (preg_match('#&(quot|lt|gt|nbsp);#i', $txt)) { $image_safe = false; }
-	elseif (preg_match("#&\#x([0-9a-f]+);#i", $txt)) { $image_safe = false; }
-	elseif (preg_match('#&\#([0-9]+);#i', $txt)) { $image_safe = false; }
-	elseif (preg_match("#([a-z]*)=([\`\'\"]*)script:#iU", $txt)) { $image_safe = false; }
-	elseif (preg_match("#([a-z]*)=([\`\'\"]*)javascript:#iU", $txt)) { $image_safe = false; }
-	elseif (preg_match("#([a-z]*)=([\'\"]*)vbscript:#iU", $txt)) { $image_safe = false; }
-	elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*expression\([^>]*>#iU", $txt)) { $image_safe = false; }
-	elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*behaviour\([^>]*>#iU", $txt)) { $image_safe = false; }
-	elseif (preg_match("#</*(applet|link|style|script|iframe|frame|frameset)[^>]*>#i", $txt)) { $image_safe = false; }
+	if (file_exists($file)) {
+		$er = error_reporting(0);
+		// get info about the image
+		$imginfo = @getimagesize($file);
+		// get the file contents
+		$txt = file_get_contents($file);
+		error_reporting($er);
+		if ($imginfo === false) { $image_safe = false; }
+		if ($txt === false) { $image_safe = false; }
+		elseif (preg_match('#&(quot|lt|gt|nbsp);#i', $txt)) { $image_safe = false; }
+		elseif (preg_match("#&\#x([0-9a-f]+);#i", $txt)) { $image_safe = false; }
+		elseif ($imginfo[2] != 5 && preg_match('#&\#([0-9]+);#i', $txt)) { $image_safe = false; }	// skip for psd files
+		elseif (preg_match("#([a-z]*)=([\`\'\"]*)script:#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#([a-z]*)=([\`\'\"]*)javascript:#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#([a-z]*)=([\'\"]*)vbscript:#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*expression\([^>]*>#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*behaviour\([^>]*>#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#</*(applet|link|style|script|iframe|frame|frameset)[^>]*>#i", $txt)) { $image_safe = false; }
+	}
 	return $image_safe;
 }
 

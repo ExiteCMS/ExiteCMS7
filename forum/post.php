@@ -121,7 +121,7 @@ function storeupload() {
 		}
 		// if it's an image, see if we need to make a thumbnail
 		if (in_array($attachext, $imagetypes)) {
-			if (@getimagesize($tmp_name) && @verify_image($tmp_name)) {
+			if (@verify_image($tmp_name)) {
 				// it's a valid image. See if we need to generate a thumbnail
 				$imagefile = @getimagesize($tmp_name);
 				if ($imagefile[0] > $settings['forum_max_w'] || $imagefile[1] > $settings['forum_max_h']) {
