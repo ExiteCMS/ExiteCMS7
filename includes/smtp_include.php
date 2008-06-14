@@ -760,8 +760,8 @@ class SMTP
      * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
      *
      * SMTP CODE SUCCESS: 250,251
-     * SMTP CODE SUCCESS: 450 ("%greylist%")
-     * SMTP CODE FAILURE: 550,551,552,553,450,451,452
+     * SMTP CODE SUCCESS: 451 (try again later, often used by greylisters or spam checkers)
+     * SMTP CODE FAILURE: 550,551,552,553,450,452
      * SMTP CODE ERROR  : 500,501,503,421
      * @access public
      * @return bool
@@ -789,8 +789,8 @@ class SMTP
             return true;
         }
 
-		// ESMTP Postfix greylist filter
-        if($code == 450 && strpos(strtolower($reply), "greylisted")===false) {
+		// accept 451, often used on mailservers with greylisting or spam checks implemented
+        if($code == 451) {
             return true;
         }
 
