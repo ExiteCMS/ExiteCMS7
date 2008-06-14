@@ -41,7 +41,11 @@ ini_set('memory_limit', '64M');
 ini_set('max_execution_time', '0');
 
 // load the theme functions when not in CLI mode
-if (!CMS_CLI) require_once PATH_INCLUDES."theme_functions.php";
+if (!CMS_CLI) {
+	require_once PATH_INCLUDES."theme_functions.php";
+} else {
+	echo "Running in CLI mode...\n";
+}
 
 // load the GeoIP include module
 require_once PATH_INCLUDES."geoip_include.php";
@@ -57,6 +61,10 @@ copy('http://www.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip', '/tmp
 
 // verify if the download succeeded
 if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
+
+	// save the debug log setting, then disable it
+	$db_log = $_db_log;
+	$_db_log = false;
 	
 	// unzip the new file
 	display("* Unzipping the downloaded GeoIP database file.");
@@ -137,6 +145,9 @@ if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
 }
 display(" ");
 display("Update finished!");
+
+// restore the debug log status
+$_db_log = $db_log;
 
 // delete the download and temporary files
 if (file_exists('/tmp/GeoIPCountryWhois.csv')) unlink("/tmp/GeoIPCountryWhois.csv");
