@@ -444,10 +444,21 @@ function theme_init() {
 +-----------------------------------------------------*/
 function theme_cleanup() {
 
-	global $db_prefix, $userdata, $_db_logs, $template, $settings;
+	global $db_prefix, $userdata, $_db_log, $_db_logs, $template, $settings;
 
+	// remove any expired posts trackers
+	if (isset($_SESSION['posts']) && is_array($_SESSION['posts'])) {
+		foreach($_SESSION['posts'] as $key => $value) {
+			if ($value < time()) unset($_SESSION['posts'][$key]);
+		}
+	}
+
+	// flush any session info
+	session_write_close();
+		
 	// clean-up tasks, will be executed by all super-admins
 	// WANWIZARD - 20070716 - THIS NEEDS TO BE MOVED TO A CRON JOB !!!
+	$_db_logs[] = array("<b>--- clean up code --- not included in the footer information --- needs to be moved to a cron process</b>", 0);
 	if ($userdata['user_level'] >= 103) {
 		$minute = 60; $hour = $minute * 60; $day = $hour * 24;
 		// flood control: set to 5 minutes
@@ -466,21 +477,11 @@ function theme_cleanup() {
 		}
 	}
 
-	// remove any expired posts trackers
-	if (isset($_SESSION['posts']) && is_array($_SESSION['posts'])) {
-		foreach($_SESSION['posts'] as $key => $value) {
-			if ($value < time()) unset($_SESSION['posts'][$key]);
-		}
-	}
-
-	// flush any session info
-	session_write_close();
-		
 	// close the database connection
 	mysql_close();
 	
 	// check if we have had query debugging active. If so, display the result just before the footer panel(s)
-	if (is_array($_db_logs) && count($_db_logs)) {
+	if ($_db_log && is_array($_db_logs) && count($_db_logs)) {
 		$template->assign('queries', $_db_logs);
 		$template->display('_query_debug.tpl');
 	}

@@ -118,19 +118,6 @@
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
-				{$locale.668}
-				<br />
-				<span class='small2'>{$locale.670}</span>
-			</td>
-			<td width='50%' class='tbl'>
-				<select name='remote_stats' class='textbox'>
-					<option value='1'{if $settings2.remote_stats == "1"} selected="selected"{/if}>{$locale.508}</option>
-					<option value='0'{if $settings2.remote_stats == "0"} selected="selected"{/if}>{$locale.509}</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td width='50%' class='tbl'>
 				{$locale.520}
 			</td>
 			<td width='50%' class='tbl'>

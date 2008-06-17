@@ -586,7 +586,7 @@ function _parseubb_checkimg($matches) {
 	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
 	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
 	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
-	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";									// PATH (optional)
+	$urlregex .= "(\/([a-z0-9+\%\$_-]\.?)+)*\/?";								// PATH (optional)
 	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
 	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
 

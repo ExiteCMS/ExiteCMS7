@@ -36,7 +36,6 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".addslash($_POST['bad_words'])."' WHERE cfg_name = 'bad_words'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['bad_word_replace'])."' WHERE cfg_name = 'bad_words_replace'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['guestposts']) ? $_POST['guestposts'] : "0")."' WHERE cfg_name = 'guestposts'");
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['remote_stats']) ? $_POST['remote_stats'] : "0")."' WHERE cfg_name = 'remote_stats'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['numofshouts']) ? $_POST['numofshouts'] : "10")."' WHERE cfg_name = 'numofshouts'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['flood_interval']) ? $_POST['flood_interval'] : "15")."' WHERE cfg_name = 'flood_interval'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_flags']) ? $_POST['forum_flags'] : "0")."' WHERE cfg_name = 'forum_flags'");

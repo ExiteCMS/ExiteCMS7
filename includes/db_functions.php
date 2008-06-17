@@ -23,7 +23,7 @@ if ($db_host != $user_db_host && $db_name != $user_db_name) {
 
 // database global variables
 $_db_debug = false;
-$_db_log = false;
+$_db_log = true;
 $_db_logs = array();
 $_db_last_function = "";
 
@@ -87,6 +87,11 @@ function dbquery($query, $display=false) {
 
 	$result = mysql_query($query);
 
+	$_e_loadtime = explode(" ", microtime());
+	$_e_loadtime = (float)$_e_loadtime[1] + (float)$_e_loadtime[0];
+
+	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
+
 	if (!$result) {
 		if ($display || $settings['debug_querylog']) {
 			echo "<pre><br />Query: ".$query."<br />";
@@ -95,11 +100,6 @@ function dbquery($query, $display=false) {
 		}
 		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
 	}
-
-	$_e_loadtime = explode(" ", microtime());
-	$_e_loadtime = (float)$_e_loadtime[1] + (float)$_e_loadtime[0];
-
-	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
 
 	if ($_db_log) {
 		$_db_logs[] = array($query, ($_e_loadtime - $_s_loadtime)*1000);
@@ -122,17 +122,8 @@ function dbfunction($field,$table,$conditions="") {
 	$sql = "SELECT ".$field." FROM ".(strpos($table, ".") ? $table : $db_prefix.$table).$cond;
 
 	$result = dbquery($sql, false);
-	if (!$result) {
-		if ($settings['debug_querylog']) {
-			echo "<pre><br />Query: ".$query."<br />";
-			echo mysql_error();
-			echo "</pre>";
-		}
-		trigger_error("A MySQL error has been detected that is not recoverable.", E_USER_ERROR);
-	} else {
-		$rows = mysql_result($result, 0);
-		return $rows;
-	}
+	$rows = mysql_result($result, 0);
+	return $rows;
 }
 
 // DEPRECIATED. Function definition left here to capture code that needs to be modified
@@ -201,12 +192,11 @@ function dbtable_exists($tbl, $db='') {
 	
 	$_loadstats['queries']++;
 	$_loadstats['others']++;
-	$_db_last_function = "SHOW TABLES";
 	$_e_loadtime = explode(" ", microtime());
 	$_e_loadtime = $_e_loadtime[1] + $_e_loadtime[0];
 	$_loadstats['querytime'] += $_e_loadtime;
 	if ($_db_log) {
-		$_db_logs[] = array($_db_last_function, ($_e_loadtime - $_s_loadtime)*1000);
+		$_db_logs[] = array("SHOW TABLES", ($_e_loadtime - $_s_loadtime)*1000);
 	}
 
 	if (in_array($tbl, $tables)) { 
