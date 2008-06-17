@@ -16,8 +16,12 @@
 {***************************************************************************}
 {if $subcats}{assign var="_title" value=$locale.417}{else}{assign var="_title" value=$locale.418}{/if}
 {math equation="(100-x)/x" x=$columns format="%u" assign="colwidth"}							{* width per column  *}
+{if $columns == 1}{assign var="colcount" value="1"}
+{elseif $columns == 2}{assign var="colcount" value="1,2"}
+{elseif $columns == 3}{assign var="colcount" value="1,2,3"}
+{/if}
 {section name=cat loop=$download_cats}
-{cycle name=column values="1,2" assign="column" print=no} 										{* keep track of the current column *}
+{cycle name=column values=$colcount assign="column" print=no} 										{* keep track of the current column *}
 {if $smarty.section.cat.first}
 	{math equation="x - (x%y)" x=$download_cats|@count y=$columns format="%u" assign="fullrows"}
 	{math equation="x - y" x=$download_cats|@count y=$fullrows format="%u" assign="remainder"}
