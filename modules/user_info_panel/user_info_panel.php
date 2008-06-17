@@ -23,11 +23,10 @@ if (iMEMBER) {
 	$variables['user_name'] = isset($userdata['user_name'])?$userdata['user_name']:"";
 	// if an administrator, check to which pages this admin has access to
 	if (iADMIN) {
-		$usr_rghts = " (admin_rights='".str_replace(".", "' OR admin_rights='", $userdata['user_rights'])."')";
-		$variables['adminpage1'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='1'");
-		$variables['adminpage2'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='2'");
-		$variables['adminpage3'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='3'");
-		$variables['adminpage4'] = dbcount("(*)", "admin", $usr_rghts." AND admin_link!='reserved' AND admin_page='4'");
+		$result = dbquery("SELECT admin_page, count(*) AS count FROM ".$db_prefix."admin WHERE"." (admin_rights='".str_replace(".", "' OR admin_rights='", $userdata['user_rights'])."')"." AND admin_link != 'reserved' GROUP BY admin_page");
+		while ($data = dbarray($result)) {
+			$variables['adminpage'.$data['admin_page']] = $data['count'];
+		}
 		$variables['adminpage5'] = checkrights("T");
 	}
 	// new PM messages
