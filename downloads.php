@@ -65,17 +65,21 @@ $variables['rowstart'] = $rowstart;
 
 // if a download ID is given...
 if (isset($download_id)) {
-	$res = 0;
 	// and it exists ...
 	if ($data = dbarray(dbquery("SELECT download_url,download_cat FROM ".$db_prefix."downloads WHERE download_id='$download_id'"))) {
 		$cdata = dbarray(dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='".$data['download_cat']."'"));
 		// and the user has access to it...
 		if (checkgroup($cdata['download_cat_access'])) {
-			$res = 1;
 			// update the download counter (if we're using internal statistics)
-			if (!isset($settings['remote_stats']) || !$settings['remote_stats']) $result = dbquery("UPDATE ".$db_prefix."downloads SET download_count=download_count+1 WHERE download_id='$download_id'");
+			if (!isset($settings['dlstats_remote']) || !$settings['dlstats_remote']) $result = dbquery("UPDATE ".$db_prefix."downloads SET download_count=download_count+1 WHERE download_id='$download_id'");
 			// if a URL is given for the download, redirect to it, else fall back to the download category
 			if ($data['download_url']) {
+				// download statistics plugin installed but no remote stats used? Then update the IP counters
+				if (isset($settings['dlstats_remote']) && !$settings['dlstats_remote']) {
+					if (USER_IP != "0.0.0.0") {
+						$result = dbquery("INSERT INTO ".$db_prefix."dlstats_ips (dlsi_ip, dlsi_ccode, dlsi_counter) VALUES ('".USER_IP."', '".USER_CC."', '1') ON DUPLICATE KEY UPDATE dlsi_counter = dlsi_counter + 1");
+					}
+				}
 				redirect($data['download_url']);
 				exit;
 			} else {
@@ -106,12 +110,10 @@ if (!isset($cat_id)) {
 	// get all root categories
 	$variables['subcats'] = false;
 	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_parent='0' AND ".groupaccess('download_cat_access').($where==""?"":(" AND ".$where))." ORDER BY download_datestamp DESC");
-	if ($result) {
+	if (!$result) {
 		// any downloads in the 'root' are public, and ordered by download_id DESC, by default!
 		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');	
 		$cat_id = 0;
-	} else {
-		die('oops');
 	}
 }
 // fill the download_cats array with the result
@@ -137,6 +139,9 @@ if (isset($cat_id)) {
 		}
 	}
 }
+
+// check if we have categories at all
+$variables['have_cats'] = dbfunction("COUNT(*)", "download_cats");
 
 // define the body panel variables
 $template_panels[] = array('type' => 'body', 'name' => 'downloads', 'template' => 'main.downloads.tpl', 'locale' => "main.downloads");

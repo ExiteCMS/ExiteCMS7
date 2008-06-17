@@ -15,12 +15,10 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $subcats}{assign var="_title" value=$locale.417}{else}{assign var="_title" value=$locale.418}{/if}
-{assign var="have_cats" value=false}
 {math equation="(100-x)/x" x=$columns format="%u" assign="colwidth"}							{* width per column  *}
 {section name=cat loop=$download_cats}
 {cycle name=column values="1,2" assign="column" print=no} 										{* keep track of the current column *}
 {if $smarty.section.cat.first}
-	{assign var="have_cats" value=true}
 	{math equation="x - (x%y)" x=$download_cats|@count y=$columns format="%u" assign="fullrows"}
 	{math equation="x - y" x=$download_cats|@count y=$fullrows format="%u" assign="remainder"}
 	{if $remainder > 0}
@@ -130,7 +128,7 @@
 	{/if}
 {/if}
 {sectionelse}
-	{if !$have_cats}
+	{if $have_cats && $cats_count == 0}
 		{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 		<center>
 			<br />
