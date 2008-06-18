@@ -189,7 +189,7 @@ define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
 require_once PATH_INCLUDES."user_functions.php";
 
 // set the query log debugging switch, enable error reporting if needed
-$_db_log = checkgroup($settings['debug_querylog']);
+$_db_log = checkgroup($settings['debug_querylog'], false);
 // if debugging is requested, also activate some other debugging features
 if ($_db_log) {
 	error_reporting(E_ALL);

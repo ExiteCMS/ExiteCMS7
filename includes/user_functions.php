@@ -251,9 +251,11 @@ function checkrights($right) {
 }
 
 // Check if the current user is assigned to the specified user group
-function checkgroup($group) {
-	if (iSUPERADMIN && ($group != "100")) { return true; }
-//	if (iSUPERADMIN && ($group == "0" || $group == "101" || $group == "102" || $group == "103")) { return true; }
+function checkgroup($group, $all4superadmin = true) {
+	// webmaster is member of everything exept anonymous
+	if (iSUPERADMIN && $all4superadmin && ($group != "100")) { return true; }
+	// check the webmasters try memberships if all4superadmin = false!
+	elseif (iSUPERADMIN && ($group == "0" || $group == "101" || $group == "102" || $group == "103")) { return true; }
 	elseif (iADMIN && ($group == "0" || $group == "101" || $group == "102")) { return true; }
 	elseif (iMEMBER && ($group == "0" || $group == "101")) { return true; }
 	elseif (iGUEST && ($group == "0" || $group == "100")) { return true; }
