@@ -477,15 +477,30 @@ function theme_cleanup() {
 		}
 	}
 
-	// close the database connection
-	mysql_close();
-	
 	// check if we have had query debugging active. If so, display the result just before the footer panel(s)
 	if ($_db_log && is_array($_db_logs) && count($_db_logs)) {
+		// check if we want optimizer output as well
+		if (isset($settings['debug_sql_explain']) && $settings['debug_sql_explain']) {
+			// don't want the explain in the logs as well
+			$_db_log = false;
+			// get all SELECT's, and perform an EXPLAIN to see if they can be optimized
+			foreach($_db_logs as $key => $value) {
+				if (substr($value[0],0,7) == "SELECT ") {
+					$result = dbquery("EXPLAIN ".$value[0]);
+					while ($data = dbarray($result)) {
+						if (!isset($_db_logs[$key]['explain'])) $_db_logs[$key]['explain'] = array();
+						$_db_logs[$key]['explain'][] = $data;
+					}
+				}
+			}
+		}
 		$template->assign('queries', $_db_logs);
 		$template->display('_query_debug.tpl');
 	}
 
+	// close the database connection
+	mysql_close();
+	
 	echo "</body>\n</html>\n";
 
 	// store the current URL in a cookie. We might need to redirect to it later

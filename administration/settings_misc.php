@@ -43,6 +43,7 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".addslash(descript($_POST['maintenance_message']))."' WHERE cfg_name = 'maintenance_message'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['maintenance_color'])."' WHERE cfg_name = 'maintenance_color'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['debug_querylog'])."' WHERE cfg_name = 'debug_querylog'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['debug_sql_explain']) ? $_POST['debug_sql_explain'] : "0")."' WHERE cfg_name = 'debug_sql_explain'");
 }
 
 $settings2 = array();

@@ -516,48 +516,6 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "admin.main", $step);
 
 		$localestrings = array();
-		$localestrings['400'] = "Forum Rankings";
-		$localestrings['401'] = "Add a new ranking";
-		$localestrings['402'] = "Edit a ranking";
-		$localestrings['408'] = "There are no forum rankings defined";
-		$localestrings['409'] = "Note: The rankings are processed in the order shown here. Comparison stops at the first hit. If you use group membership filtering, and you have duplicate post ranges, make sure that the order is correct!";
-		$localestrings['411'] = "Posts range";
-		$localestrings['412'] = "Rank title";
-		$localestrings['413'] = "Rank image";
-		$localestrings['414'] = "Only for members of";
-		$localestrings['415'] = "Order";
-		$localestrings['416'] = "Options";
-		$localestrings['417'] = "Move this rank up";
-		$localestrings['418'] = "Move this rank down";
-		$localestrings['419'] = "Edit this rank";
-		$localestrings['420'] = "Delete this rank";
-		$localestrings['421'] = "Posts selection range:";
-		$localestrings['422'] = "From";
-		$localestrings['423'] = "To";
-		$localestrings['424'] = "Posts";
-		$localestrings['425'] = "Rank title:";
-		$localestrings['426'] = "Rank image:";
-		$localestrings['427'] = "- none -";
-		$localestrings['428'] = "Repeat this image:";
-		$localestrings['429'] = "Times";
-		$localestrings['430'] = "Available groups:";
-		$localestrings['431'] = "Selected groups:";
-		$localestrings['432'] = "Save this ranking";
-		$localestrings['433'] = "Apply this ranking to the following user groups only:";
-		$localestrings['434'] = "Rank order:";
-		$localestrings['435'] = "Rank group comparison using:";
-		$localestrings['436'] = " and ";
-		$localestrings['437'] = " or ";
-		$localestrings['438'] = "Rank title color:";
-		$localestrings['439'] = "Show title as tooltip:";
-		$localestrings['440'] = "No";
-		$localestrings['441'] = "Yes";
-		$localestrings['490'] = "The Post selection range must be filled in, and both values most be positive integers!";
-		$localestrings['491'] = "The Post selection range must be filled in, and From must be lower than To!";
-		$localestrings['492'] = "Ranking succesfully deleted";
-		load_localestrings($localestrings, LP_LOCALE, "admin.ranking", $step);
-
-		$localestrings = array();
 		$localestrings['400'] = "Members List";
 		$localestrings['401'] = "User Name";
 		$localestrings['402'] = "User Type";
@@ -829,6 +787,48 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "admin.panels", $step);
 
 		$localestrings = array();
+		$localestrings['400'] = "Forum Rankings";
+		$localestrings['401'] = "Add a new ranking";
+		$localestrings['402'] = "Edit a ranking";
+		$localestrings['408'] = "There are no forum rankings defined";
+		$localestrings['409'] = "Note: The rankings are processed in the order shown here. Comparison stops at the first hit. If you use group membership filtering, and you have duplicate post ranges, make sure that the order is correct!";
+		$localestrings['411'] = "Posts range";
+		$localestrings['412'] = "Rank title";
+		$localestrings['413'] = "Rank image";
+		$localestrings['414'] = "Only for members of";
+		$localestrings['415'] = "Order";
+		$localestrings['416'] = "Options";
+		$localestrings['417'] = "Move this rank up";
+		$localestrings['418'] = "Move this rank down";
+		$localestrings['419'] = "Edit this rank";
+		$localestrings['420'] = "Delete this rank";
+		$localestrings['421'] = "Posts selection range:";
+		$localestrings['422'] = "From";
+		$localestrings['423'] = "To";
+		$localestrings['424'] = "Posts";
+		$localestrings['425'] = "Rank title:";
+		$localestrings['426'] = "Rank image:";
+		$localestrings['427'] = "- none -";
+		$localestrings['428'] = "Repeat this image:";
+		$localestrings['429'] = "Times";
+		$localestrings['430'] = "Available groups:";
+		$localestrings['431'] = "Selected groups:";
+		$localestrings['432'] = "Save this ranking";
+		$localestrings['433'] = "Apply this ranking to the following user groups only:";
+		$localestrings['434'] = "Rank order:";
+		$localestrings['435'] = "Rank group comparison using:";
+		$localestrings['436'] = " and ";
+		$localestrings['437'] = " or ";
+		$localestrings['438'] = "Rank title color:";
+		$localestrings['439'] = "Show title as tooltip:";
+		$localestrings['440'] = "No";
+		$localestrings['441'] = "Yes";
+		$localestrings['490'] = "The Post selection range must be filled in, and both values most be positive integers!";
+		$localestrings['491'] = "The Post selection range must be filled in, and From must be lower than To!";
+		$localestrings['492'] = "Ranking succesfully deleted";
+		load_localestrings($localestrings, LP_LOCALE, "admin.ranking", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Add new redirect URL";
 		$localestrings['401'] = "Edit redirect URL";
 		$localestrings['402'] = "Delete redirect URL";
@@ -989,9 +989,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['665'] = "Leave empty if sendmail is enabled.";
 		$localestrings['666'] = "SMTP Username and Password:";
 		$localestrings['667'] = "In seconds.Only one post per interval is allowed.";
-		$localestrings['668'] = "Use external download statistics:";
+		$localestrings['668'] = "Show results of the Query Optimizer as well:";
 		$localestrings['669'] = "Maintenance mode background color:";
-		$localestrings['670'] = "If yes, an external program has to update the download counters.";
 		$localestrings['671'] = "Activate SQL query debugging for:";
 		$localestrings['672'] = "disabled";
 		$localestrings['700'] = "Private Messages";
@@ -1367,7 +1366,6 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['pk'] = "Pakistan";
 		$localestrings['pl'] = "Poland";
 		$localestrings['pm'] = "Saint Pierre And Miquelon";
-		$localestrings['pr'] = "Puerto Rico";
 		$localestrings['pr'] = "Palestinian Territories";
 		$localestrings['pt'] = "Portugal";
 		$localestrings['pw'] = "Palau";
@@ -3204,13 +3202,15 @@ if (!defined('CMS_SETUP')) require_once dirname(__FILE__)."/../../includes/core_
 +----------------------------------------------------*/
 if (!function_exists('load_localestrings')) {
 	function load_localestrings($localestrings, $locales_code, $locales_name, $step="") {
-		global $db_prefix;
+		global $db_prefix, $_db_log;
 	
 		// if this is an upgrade, remove the old locale strings first
 		if ($step == "upgrade") {
 			$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_code = '$locales_code' AND locales_name = '$locales_name'");
 		}
-	
+
+		// temporary disable query logging
+		$dblog = $_db_log; $_db_log = false;
 		// proces the imported locale strings
 		foreach ($localestrings as $key => $value) {
 			if (is_array($value)) {
@@ -3218,6 +3218,7 @@ if (!function_exists('load_localestrings')) {
 			}
 			$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".time()."')");
 		}
+		$_db_log = $dblog;
 		return true;
 	}
 }
@@ -3227,8 +3228,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1210855263");
-$lp_date = "1210855263";
+if (!defined('LP_DATE')) define('LP_DATE', "1213786580");
+$lp_date = "1213786580";
 
 /*---------------------------------------------------+
 | main code                                          |

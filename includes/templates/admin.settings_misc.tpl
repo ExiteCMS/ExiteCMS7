@@ -178,6 +178,17 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.668}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='debug_sql_explain' class='textbox'>
+					<option value='1'{if $settings2.debug_sql_explain == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.debug_sql_explain == "0"} selected="selected"{/if}>{$locale.509}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='submit' name='savesettings' value='{$locale.750}' class='button' />
