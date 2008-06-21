@@ -423,7 +423,7 @@ if (isset($_POST['preview'])) {
 				if ($userdata['user_id'] == 1) {
 					$preview['cc_flag'] = GeoIP_Code2Flag($settings['country']);
 				} else {
-					$preview['cc_flag'] = GeoIP_IP2Flag($userdata['user_ip']);
+					$preview['cc_flag'] = !empty($userdata['user_cc']) ? GeoIP_Code2Flag($userdata['user_cc']) : GeoIP_IP2Flag($userdata['user_ip']);
 				}
 			} else {
 				$preview['cc_flag'] = "";
@@ -433,6 +433,7 @@ if (isset($_POST['preview'])) {
 			$preview['post_edittime'] = 0;
 			$preview['post_edituser'] = 0;
 			$preview['post_ip'] = $userdata['user_ip'];
+			$preview['post_cc'] = $userdata['user_cc'];
 			$preview['group_names'] = array();
 			$preview['group_names'][] = array('type' => 'U', 'level' => $userdata['user_level'], 'name' => getuserlevel($userdata['user_level']));
 			if (!empty($userdata['user_groups'])) {
@@ -616,7 +617,7 @@ if (isset($_POST["cancel"])) {
 										$thread_id = mysql_insert_id();
 										break;
 								}
-								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '$subject', '$message', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '0', '0')");
+								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '$subject', '$message', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc']."', '0', '0')");
 								$post_id = mysql_insert_id();
 								$result = dbquery("UPDATE ".$db_prefix."users SET user_posts=user_posts+1 WHERE user_id='".$userdata['user_id']."'");
 								if ($settings['thread_notify'] && isset($_POST['notify_me']))
@@ -931,17 +932,15 @@ if (isset($_POST["cancel"])) {
 				switch ($action) {
 					case "edit":
 						$variables['message'] = $pdata['post_message'];
-						$variables['org_message'] = $pdata['post_message'];
 						break;
 					case "quote":
 						$variables['message'] = $variables['orgauthor'] == "" ? "[quote]" : "[quote=".$variables['orgauthor']."]";
 						$variables['message'] .= $pdata['post_message']."[/quote]";
-						$variables['org_message'] = "";
 						break;
 					default:
 						$variables['message'] = "";
-						$variables['org_message'] = "";
 				}
+				$variables['org_message'] = $pdata['post_message'];
 				$variables['post_author'] = $pdata['post_author'];
 				$variables['is_smiley_disabled'] = ($pdata['post_smileys'] == "0");
 				$variables['is_sticky'] = ($pdata['post_sticky'] == "1");

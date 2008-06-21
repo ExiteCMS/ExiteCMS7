@@ -380,7 +380,7 @@ if ($rows != 0) {
 			if ($settings['hide_webmaster'] && $data['user_level'] == 103) {
 				$data['cc_flag'] = GeoIP_Code2Flag($settings['country']);
 			} else {
-				$data['cc_flag'] = GeoIP_IP2Flag($data['post_ip']);
+				$data['cc_flag'] = !empty($data['post_cc']) ? GeoIP_Code2Flag($data['post_cc']) : GeoIP_IP2Flag($data['post_ip']);
 			}
 		} else {
 			$data['cc_flag'] = "";
