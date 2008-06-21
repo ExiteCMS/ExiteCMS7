@@ -120,6 +120,7 @@ function locale_load($locale_name) {
 // absolute path definitions
 define("PATH_ROOT", dirname(__FILE__).'/');
 define("PATH_ADMIN", PATH_ROOT."administration/");
+define("PATH_FILES", PATH_ROOT."files/");
 define("PATH_THEMES", PATH_ROOT."themes/");
 define("PATH_THEME", PATH_ROOT."themes/ExiteCMS/");
 define("PATH_PHOTOS", PATH_ROOT."images/photoalbum/");
@@ -169,11 +170,11 @@ $step = (isset($_GET['step']) ? $_GET['step'] : "0");
 $variables['step'] = $step;
 
 // check if the cache directories are writeable
-if (!is_writable(PATH_ROOT."files/cache")) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The cache directory is not writeable.</b><br />Please consult the documentation on how to define the proper file rights.</div>");
+if (!is_writable(PATH_FILES."cache")) {
+	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The cache directory is not writeable.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
 }
-if (!is_writable(PATH_ROOT."files/tplcache")) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The template cache directory is not writeable.</b><br />Please consult the documentation on how to define the proper file rights.</div>");
+if (!is_writable(PATH_FILES."tplcache")) {
+	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The template cache directory is not writeable.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
 }
 
 // first part in step1: create config.php. We need it later
@@ -198,8 +199,17 @@ if ($step == "1") {
 "."$"."user_db_name="."\"".$_POST['db_name']."\"".";
 "."$"."user_db_prefix="."\"".$_POST['db_prefix']."\"".";
 ?>";
-	@rename(PATH_ROOT."config.def", PATH_ROOT."config.php");
-	$temp = fopen(PATH_ROOT."config.php","w");
+	// get the location of the config file
+	@include_once PATH_ROOT."config.php";
+	if (!isset($cfg_path)) {
+	}
+	if ($cfg_path{0} != "/") {
+		$cfg_path = PATH_ROOT.$cfg_path;
+	}
+	if (!is_writable($cfg_path."/config.php")) {
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The config file can not be written.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	}
+	$temp = fopen($cfg_path."config.php","w");
 	if (!fwrite($temp, $config)) {
 		$error .= $locale['430']."<br /><br />";
 		fclose($temp);
@@ -216,14 +226,6 @@ locale_load("main.setup");
 // process the different setup steps
 switch($step) {
 	case "0":
-		// if the config file already exists, bail out
-		if (file_exists(PATH_ROOT."config.php") && filesize(PATH_ROOT."config.php")) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: A valid configuration exists.</b><br />Please consult the documentation on how to rerun the setup.</div>");
-		}
-		// check if the config template exists
-		if (!file_exists(PATH_ROOT."config.def")) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The configuration template file is missing.</b><br />Please reinstall ExiteCMS.</div>");
-		}
 		// create a list of available locales
 		$files = makefilelist(PATH_ADMIN."tools/", ".|..", true, "files");
 		$locales = array();
@@ -238,9 +240,7 @@ switch($step) {
 		if (!is_writable(PATH_IMAGES_AV)) $permissions .= PATH_IMAGES_AV . "<br />";
 		if (!is_writable(PATH_IMAGES_N)) $permissions .= PATH_IMAGES_N . "<br />";
 		if (!is_writable(PATH_ATTACHMENTS)) $permissions .= PATH_ATTACHMENTS . "<br />";
-		if (!is_writable("config.def")) {
-			$permissions .= "Configuration Template" . "<br />";
-		}
+		if (!is_writable(PATH_FILES)) $permissions .= PATH_FILES . "<br />";
 		if ($permissions == "") {
 			$variables['write_check'] = true; 
 		} else { 

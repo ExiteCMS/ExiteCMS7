@@ -57,7 +57,7 @@ form					{ margin:0px; }
 /* --- Website template ------------------------------------ */
 
 						/* page body (normal/user mode + maintenance/webmaster mode) */
-body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 20px 5px 20px; }
+body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 10px 5px 10px; }
 .body 					{ color:#444; background-color:#aaa; }
 .body-maint				{ color:#444; background-color:{/literal}{$settings.maintenance_color}{literal}; }
 

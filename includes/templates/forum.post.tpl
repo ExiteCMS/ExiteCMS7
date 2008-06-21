@@ -45,12 +45,22 @@
 							<input type='text' name='subject' value='{$subject}' class='textbox' maxlength='255' style='width: 250px' />
 						</td>
 					</tr>
+					{if $org_message|default:"" != ""}
+					<tr>
+						<td align='right' width='145' class='tbl2' valign='top' style='white-space:nowrap'>
+							<input type='submit' class='button' name='toggle_msg' value='{$locale.474}' onclick='javascript:flipDiv("org_message");return false;' />
+						</td>
+						<td class='tbl1'>
+							<div id='org_message' class='textbox' style='display:none'>{$org_message|nl2br}<br /></div>
+							<input type='hidden' name='org_message' value='{$org_message}' />
+						</td>
+					</tr>
+					{/if}
 					<tr>
 						<td align='right' valign='top' width='145' class='tbl2'>
 							{$locale.461}:
 						</td>
 						<td class='tbl1'>
-							<input type='hidden' name='org_message' value='{$org_message}' />
 							<textarea name='message' cols='80' rows='15' class='textbox' style='width:100%; height:{math equation='x/4' x=$smarty.const.BROWSER_HEIGHT format='%u'}px;'>{$message}</textarea>
 							<br />
 							<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('message', '[b]', '[/b]');" />

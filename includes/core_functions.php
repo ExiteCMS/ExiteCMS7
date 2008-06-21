@@ -82,7 +82,7 @@ ob_start();
 define("PATH_ROOT", realpath(dirname(__FILE__).'/../').'/');
 define("PATH_ADMIN", PATH_ROOT."administration/");
 define("PATH_THEMES", PATH_ROOT."themes/");
-define("PATH_PHOTOS", PATH_ROOT."images/photoalbum/");
+define("PATH_PHOTOS", PATH_ROOT."images/gallery/");
 define("PATH_IMAGES", PATH_ROOT."images/");
 define("PATH_IMAGES_A", PATH_IMAGES."articles/");
 define("PATH_IMAGES_ADS", PATH_IMAGES."advertising/");
@@ -101,10 +101,21 @@ define("INIT_CMS_OK", TRUE);
 // load the config file
 if (file_exists(PATH_ROOT."config.php")) {
 	@include_once PATH_ROOT."config.php";
+	if (defined("CONFIG_PATH")) {
+		if (substr(CONFIG_PATH,0,1) == "/") {
+			if(is_file(CONFIG_PATH."/config.php")) {
+				@include_once CONFIG_PATH."/config.php";
+			}
+		} else {
+			if(is_file(PATH_ROOT.CONFIG_PATH."/config.php")) {
+				@include_once PATH_ROOT.CONFIG_PATH."/config.php";
+			}
+		}
+	}
 }
 
 // if config.php is absent or empty, bail out with an error
-if (!isset($db_name)) die('FATAL ERROR: config file is missing. Check the documentation on how to run the setup');
+if (!isset($db_name)) terminate('FATAL ERROR: config file is missing. Check our Wiki at http://exitecms.exite.eu on how to run the setup');
 
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
@@ -358,6 +369,32 @@ function isDec($value) {
 	return (preg_match("/^[0-9]+\.[0-9][0-9]$/", $value));
 }
 
+// validate an IP address
+function isIP($value){
+    return preg_match("/^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$/", $value);
+}
+
+// validate an URL
+function isURL($value, $onlyhttp=false) {
+
+	// Build the regex to check the URL
+	if ($onlyhttp) {
+		$scheme = "(https?)\:\/\/";												// HTTP SCHEMES supported
+	} else {
+		$scheme = "(https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/";		// ALL SCHEMES supported
+	}
+	$urlregex = "^(".$scheme.")?";												// make the scheme optional
+	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
+	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
+	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
+	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";									// PATH (optional)
+	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
+	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
+
+	// validate the URL
+	return eregi($urlregex, $value);
+}
+
 // Parse smiley bbcode into HTML images
 function parsesmileys($message) {
 	$smiley = array(
@@ -552,20 +589,10 @@ function _parseubb_checkurl($matches) {
 		$matches[2] = $matches[3];
 	}
 
-	// Build the regex to check the URL
-	$scheme = "(https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/";			// SCHEMES supported
-	$urlregex = "^(".$scheme.")?";												// make the scheme optional
-	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
-	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
-	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
-	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";									// PATH (optional)
-	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
-	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
-
 	// validate the URL (in $matches[1])
-	if (eregi($urlregex, $matches[2])) {
+	if (isURL($matches[2])) {
 		// check if the URL is prefixed. If not, assume http://
-		if (!eregi("^(".$scheme."){1}", $matches[2])) {
+		if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $matches[2])) {
 			$matches[2] = "http://".$matches[2];
 		}
 		// return the html for the URL bbcode
@@ -580,18 +607,8 @@ function _parseubb_checkurl($matches) {
 function _parseubb_checkimg($matches) {
 	global $locale;
 
-	// Build the regex to detect a URL
-	$scheme = "(https?)\:\/\/";													// SCHEMES supported
-	$urlregex = "^(".$scheme.")?";												// make the scheme optional
-	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
-	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
-	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
-	$urlregex .= "(\/([a-z0-9+\%\$_-]\.?)+)*\/?";								// PATH (optional)
-	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
-	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
-
 	// validate the URL (in $matches[1])
-	if (eregi($urlregex, $matches[1])) {
+	if (isURL($matches[1], true)) {
 		if (verify_image($matches[1])) {
 			return "<img src=\"".$matches[1]."\" style=\"border:0px\" alt=\"\" />";
 		}
@@ -1025,6 +1042,7 @@ function CMS_getOS () {
 		return "Other";
 	}
 }
+
 
 // replacement for die()
 function terminate($text) {

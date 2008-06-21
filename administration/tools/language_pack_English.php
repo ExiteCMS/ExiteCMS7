@@ -2372,6 +2372,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['472']['15'] = "silver";
 		$localestrings['472']['16'] = "white";
 		$localestrings['473'] = "Comments (Max.length: 255 characters):";
+		$localestrings['474'] = "Toggle Message";
 		$localestrings['480'] = " Make this Thread Sticky";
 		$localestrings['481'] = " Show My Signature in this Post";
 		$localestrings['482'] = " Delete this Post";
@@ -2519,6 +2520,7 @@ if (!function_exists('install_language_pack')) {
 
 		$localestrings = array();
 		$localestrings['400'] = "Forum:";
+		$localestrings['401'] = "writes:";
 		load_localestrings($localestrings, LP_LOCALE, "main.feeds", $step);
 
 		$localestrings = array();

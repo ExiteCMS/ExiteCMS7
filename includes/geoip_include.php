@@ -16,10 +16,13 @@ if (!isset($_GeoIP_result)) $_GeoIP_result = array();
 
 function GeoIP_IP2Num($ip_addr) {
 
-	$octets = explode(".", $ip_addr);
-	if (count($octets) != 4) return false;
-	$ipnum = 16777216*$octets[0] + 65536*$octets[1] + 256*$octets[2] + $octets[3];
-	return $ipnum;
+	if (isIP($ip_addr)) {
+		$octets = explode(".", $ip_addr);
+		$ipnum = 16777216*$octets[0] + 65536*$octets[1] + 256*$octets[2] + $octets[3];
+		return $ipnum;
+	} else {
+		return false;
+	}
 }
 
 function GeoIP_IP2Code($ip_addr) {
