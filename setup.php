@@ -176,6 +176,17 @@ if (!is_writable(PATH_FILES."cache")) {
 if (!is_writable(PATH_FILES."tplcache")) {
 	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The template cache directory is not writeable.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
 }
+// get the location of the config file, check if the config file is writable
+@include_once PATH_ROOT."configpath.php";
+if (substr(CONFIG_PATH,0,1) == "/") {
+	if(!is_writable(CONFIG_PATH."/config.php")) {
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The config file can not be written.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	}
+} else {
+	if(!is_writable(PATH_ROOT.CONFIG_PATH."/config.php")) {
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The config file can not be written.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	}
+}
 
 // first part in step1: create config.php. We need it later
 if ($step == "1") {
@@ -199,15 +210,10 @@ if ($step == "1") {
 "."$"."user_db_name="."\"".$_POST['db_name']."\"".";
 "."$"."user_db_prefix="."\"".$_POST['db_prefix']."\"".";
 ?>";
-	// get the location of the config file
-	@include_once PATH_ROOT."config.php";
-	if (!isset($cfg_path)) {
-	}
-	if ($cfg_path{0} != "/") {
-		$cfg_path = PATH_ROOT.$cfg_path;
-	}
-	if (!is_writable($cfg_path."/config.php")) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The config file can not be written.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	if (substr(CONFIG_PATH,0,1) == "/") {
+		$cfg_path = CONFIG_PATH;
+	} else {
+		$cfg_path = PATH_ROOT.CONFIG_PATH;
 	}
 	$temp = fopen($cfg_path."config.php","w");
 	if (!fwrite($temp, $config)) {
@@ -240,7 +246,6 @@ switch($step) {
 		if (!is_writable(PATH_IMAGES_AV)) $permissions .= PATH_IMAGES_AV . "<br />";
 		if (!is_writable(PATH_IMAGES_N)) $permissions .= PATH_IMAGES_N . "<br />";
 		if (!is_writable(PATH_ATTACHMENTS)) $permissions .= PATH_ATTACHMENTS . "<br />";
-		if (!is_writable(PATH_FILES)) $permissions .= PATH_FILES . "<br />";
 		if ($permissions == "") {
 			$variables['write_check'] = true; 
 		} else { 

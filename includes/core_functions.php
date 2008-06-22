@@ -99,18 +99,14 @@ define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
 define("INIT_CMS_OK", TRUE);
 
 // load the config file
-if (file_exists(PATH_ROOT."config.php")) {
-	@include_once PATH_ROOT."config.php";
-	if (defined("CONFIG_PATH")) {
-		if (substr(CONFIG_PATH,0,1) == "/") {
-			if(is_file(CONFIG_PATH."/config.php")) {
-				@include_once CONFIG_PATH."/config.php";
-			}
-		} else {
-			if(is_file(PATH_ROOT.CONFIG_PATH."/config.php")) {
-				@include_once PATH_ROOT.CONFIG_PATH."/config.php";
-			}
-		}
+@include_once PATH_ROOT."configpath.php";
+if (substr(CONFIG_PATH,0,1) == "/") {
+	if(is_file(CONFIG_PATH."/config.php")) {
+		@include_once CONFIG_PATH."/config.php";
+	}
+} else {
+	if(is_file(PATH_ROOT.CONFIG_PATH."/config.php")) {
+		@include_once PATH_ROOT.CONFIG_PATH."/config.php";
 	}
 }
 
