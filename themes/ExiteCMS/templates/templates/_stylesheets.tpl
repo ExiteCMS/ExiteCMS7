@@ -48,16 +48,16 @@ optgroup				{ padding-bottom:5px; font-style:normal; }
 form					{ margin:0px; }
 
 						/* buttons */
-.button					{ font-size:90%; font-weight:normal; font-family:"trebuchet ms", Tahoma, Arial, Verdana, Sans-Serif; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
+.button					{ font-size:90%; font-weight:normal; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
 .button:hover			{ color:#666; background-color:#ddd; border-top:1px #999 solid; border-left:1px #999 solid; border-bottom:1px #fff solid; border-right:1px #fff solid; }
 
 						/* text entry fields */
-.textbox				{ font-size:1em; font-family:Verdana, Arial,Sans-Serif; color:#444; background-color:#fff; border:1px #444 solid; }
+.textbox				{ font-size:1em; color:#444; background-color:#fff; border:1px #444 solid; }
 
 /* --- Website template ------------------------------------ */
 
 						/* page body (normal/user mode + maintenance/webmaster mode) */
-body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 10px 5px 10px; }
+body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; margin:4px 10px 5px 10px; }
 .body 					{ color:#444; background-color:#aaa; }
 .body-maint				{ color:#444; background-color:{/literal}{$settings.maintenance_color}{literal}; }
 
@@ -82,7 +82,7 @@ body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 10px 
 .smallalt				{ font-weight:normal; color:#888; }
 
 						/* title bars within a panel */
-.infobar 				{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#333; background-color:#ddd; padding:3px 4px 3px 4px; }
+.infobar 				{ font-weight:normal; color:#333; background-color:#ddd; padding:3px 4px 3px 4px; }
 
 /* --- Browser window centered div ------------------------- */
 
@@ -95,7 +95,7 @@ body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 10px 
 .headerbanner			{ color:#333; background-color:#eee; background-image:url(/themes/ExiteCMS/images/exitecms_bg.gif); padding:0px; }
 
 						/* header menu bar */
-.headermenu				{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#ffffff; background-color:#666666; padding:0px 2px 0px 2px; }
+.headermenu				{ font-weight:normal; color:#ffffff; background-color:#666666; padding:0px 2px 0px 2px; }
 
 						/* header menu links */
 .headermenuitem			{ font-weight:normal; color:#fff; }
@@ -109,10 +109,10 @@ body					{ font-size:1em; font-family:Verdana,Arial,Sans-Serif; margin:4px 10px 
 .side-panel				{ padding:0px 0px 0px 0px; margin:0px 0px 5px 0px; border:1px #ddd solid; }
 
 						/* center panel title */
-.cap-main				{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#ffffff; background-color: #666666; font-size:1.2em; padding:0px 0px 0px 2px; }
+.cap-main				{ font-weight:normal; color:#ffffff; background-color: #666666; font-size:1.2em; padding:0px 0px 0px 2px; }
 
 						/* side panel title */
-.sub-cap-main			{ font-weight:normal; font-family:"trebuchet ms", Verdana, Arial, Sans-serif; color:#ffffff; background-color:#666666; padding:0px 2px 0px 2px; }
+.sub-cap-main			{ font-weight:normal; color:#ffffff; background-color:#666666; padding:0px 2px 0px 2px; }
 
 						/* labels and separators in side panels */
 .side-label				{ color:#333; background-color:#ddd; margin:2px 0px 2px 0px; padding:1px 0px 1px 8px; white-space:nowrap;overflow:hidden; }
