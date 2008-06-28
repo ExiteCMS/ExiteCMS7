@@ -17,11 +17,12 @@
 {*                                                                         *}
 {***************************************************************************}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$settings.locale_code|truncate:2:""}" lang="{$settings.locale_code|truncate:2:""}">
 
 <head>
 	<title>{$settings.sitename}{if defined('PAGETITLE')} - {$smarty.const.PAGETITLE}{/if}</title>
 	<meta http-equiv='Content-Type' content='text/html; charset={$settings.charset}' />
+	<meta http-equiv='Content-Language' content='{$settings.locale_code|truncate:2:""}' />
 	<meta name='description' content='{$settings.description}' />
 	<meta name='keywords' content='{$settings.keywords}' />
 	<meta name='verify-v1' content='6uLZe0u5c6hJ3XE0LoGBQRuU7IdJ/B6BIa2Si7b1dkw=' />
@@ -30,7 +31,7 @@
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
 	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions.js'></script>
 	{if $smarty.const.LOAD_TINYMCE}
-		<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/tiny_mce/tiny_mce_gzip.php'></script>
+		<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/tiny_mce-3.1.0.1/tiny_mce.js'></script>
 		{literal}
 		<script type='text/javascript'>
 		function advanced() {
@@ -45,9 +46,9 @@
 			convert_newlines_to_brs:'true',
 			force_br_newlines:'true',
 			force_p_newlines:'false',
-			plugins : "style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
+			plugins : "style,layer,table,save,advhr,advimage,ibrowser,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
 			theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-			theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,forecolor,backcolor",
+			theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,|,image,ibrowser,cleanup,help,code,|,forecolor,backcolor",
 			theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,media,advhr,|,ltr,rtl,|,fullscreen",
 			theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,|,insertdate,inserttime",
 			theme_advanced_toolbar_location:'bottom',
