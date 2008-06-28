@@ -20,7 +20,7 @@
 	<center>
 		<select name='news_id' class='textbox' style='width:400px'>
 			{section name=item loop=$news}
-				<option value='{$news[item].news_id}' {if $news[item].selected}selected{/if}>{$news[item].news_subject}</option>
+				<option value='{$news[item].news_id}' {if $news[item].selected}selected='selected'{/if}>{$news[item].news_subject}</option>
 			{/section}
 		</select>
 		&nbsp;
@@ -108,16 +108,16 @@
 {include file="_closetable.tpl"}
 {else}
 {include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
-<form name='inputform' method='post' action='{$action}' onSubmit='return ValidateForm(this);'>
+<form name='inputform' method='post' action='{$action}' onsubmit='return ValidateForm(this);'>
 	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
 		<tr>
 			<td align='center' class='tbl'>
 				{$locale.411}
-				<input type='text' name='news_subject' value='{$news_subject}' class='textbox' style='width: 225px'>&nbsp;&nbsp;&nbsp;{$locale.511}
+				<input type='text' name='news_subject' value='{$news_subject}' class='textbox' style='width: 225px' />&nbsp;&nbsp;&nbsp;{$locale.511}
 				<select name='news_cat' class='textbox' style='width: 225px'>
 					<option value='0'>{$locale.425}</option>
 					{section name=item loop=$news_cats}
-						<option value='{$news_cats[item].news_cat_id}' {if $news_cats[item].selected}selected{/if}>{$news_cats[item].news_cat_name}</option>
+						<option value='{$news_cats[item].news_cat_id}' {if $news_cats[item].selected}selected='selected'{/if}>{$news_cats[item].news_cat_name}</option>
 					{/section}
 				</select>
 			</td>
@@ -132,16 +132,16 @@
 		{if $settings.tinymce_enabled != 1}
 		<tr>
 			<td class='tbl'>
-				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('body', '<b>', '</b>');">
-				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('body', '<i>', '</i>');">
-				<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('body', '<u>', '</u>');">
-				<input type='button' value='link' class='button' style='width:35px;' onClick="addText('body', '<a href=\'', '\' target=\'_blank\'>Link</a>');">
-				<input type='button' value='img' class='button' style='width:35px;' onClick="addText('body', '<img src=\'{$img_src}\' style=\'margin:5px;\' align=\'left\' />');">
-				<input type='button' value='center' class='button' style='width:45px;' onClick="addText('body', '<center>', '</center>');">
-				<input type='button' value='small' class='button' style='width:40px;' onClick="addText('body', '<span class=\'small\'>', '</span>');">
-				<input type='button' value='small2' class='button' style='width:45px;' onClick="addText('body', '<span class=\'small2\'>', '</span>');">
-				<input type='button' value='alt' class='button' style='width:25px;' onClick="addText('body', '<span class=\'alt\'>', '</span>');"><br>
-				<select name='setcolor' class='textbox' style='margin-top:5px;' onChange="addText('body', '<span style=\'color:' + this.options[this.selectedIndex].value + ';\'>', '</span>');this.selectedIndex=0;">
+				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('body', '<b>', '</b>');">
+				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('body', '<i>', '</i>');">
+				<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('body', '<u>', '</u>');">
+				<input type='button' value='link' class='button' style='width:35px;' onclick="addText('body', '<a href=\'', '\' target=\'_blank\'>Link</a>');">
+				<input type='button' value='img' class='button' style='width:35px;' onclick="addText('body', '<img src=\'{$img_src}\' style=\'margin:5px;\' align=\'left\' />');">
+				<input type='button' value='center' class='button' style='width:45px;' onclick="addText('body', '<center>', '</center>');">
+				<input type='button' value='small' class='button' style='width:40px;' onclick="addText('body', '<span class=\'small\'>', '</span>');">
+				<input type='button' value='small2' class='button' style='width:45px;' onclick="addText('body', '<span class=\'small2\'>', '</span>');">
+				<input type='button' value='alt' class='button' style='width:25px;' onclick="addText('body', '<span class=\'alt\'>', '</span>');"><br>
+				<select name='setcolor' class='textbox' style='margin-top:5px;' onchange="addText('body', '<span style=\'color:' + this.options[this.selectedIndex].value + ';\'>', '</span>');this.selectedIndex=0;">
 					<option value=''>{$locale.420}</option>
 					<option value='maroon' style='color:maroon;'>Maroon</option>
 					<option value='red' style='color:red;'>Red</option>
@@ -181,16 +181,16 @@
 		{if $settings.tinymce_enabled != 1}
 		<tr>
 			<td class='tbl'>
-				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onClick="addText('body2', '<b>', '</b>');">
-				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onClick="addText('body2', '<i>', '</i>');">
-				<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onClick="addText('body2', '<u>', '</u>');">
-				<input type='button' value='link' class='button' style='width:35px;' onClick="addText('body2', '<a href=\'', '\' target=\'_blank\'>Link</a>');">
-				<input type='button' value='img' class='button' style='width:35px;' onClick="addText('body2', '<img src=\'{$img_src}\' style=\'margin:5px;\' align=\'left\' />');">
-				<input type='button' value='center' class='button' style='width:45px;' onClick="addText('body2', '<center>', '</center>');">
-				<input type='button' value='small' class='button' style='width:40px;' onClick="addText('body2', '<span class=\'small\'>', '</span>');">
-				<input type='button' value='small2' class='button' style='width:45px;' onClick="addText('body2', '<span class=\'small2\'>', '</span>');">
-				<input type='button' value='alt' class='button' style='width:25px;' onClick="addText('body2', '<span class=\'alt\'>', '</span>');"><br>
-				<select name='setcolor' class='textbox' style='margin-top:5px;' onChange="addText('body2', '<span style=\'color:' + this.options[this.selectedIndex].value + ';\'>', '</span>');this.selectedIndex=0;">
+				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('body2', '<b>', '</b>');">
+				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('body2', '<i>', '</i>');">
+				<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('body2', '<u>', '</u>');">
+				<input type='button' value='link' class='button' style='width:35px;' onclick="addText('body2', '<a href=\'', '\' target=\'_blank\'>Link</a>');">
+				<input type='button' value='img' class='button' style='width:35px;' onclick="addText('body2', '<img src=\'{$img_src}\' style=\'margin:5px;\' align=\'left\' />');">
+				<input type='button' value='center' class='button' style='width:45px;' onclick="addText('body2', '<center>', '</center>');">
+				<input type='button' value='small' class='button' style='width:40px;' onclick="addText('body2', '<span class=\'small\'>', '</span>');">
+				<input type='button' value='small2' class='button' style='width:45px;' onclick="addText('body2', '<span class=\'small2\'>', '</span>');">
+				<input type='button' value='alt' class='button' style='width:25px;' onclick="addText('body2', '<span class=\'alt\'>', '</span>');"><br>
+				<select name='setcolor' class='textbox' style='margin-top:5px;' onchange="addText('body2', '<span style=\'color:' + this.options[this.selectedIndex].value + ';\'>', '</span>');this.selectedIndex=0;">
 					<option value=''>{$locale.420}</option>
 					<option value='maroon' style='color:maroon;'>Maroon</option>
 					<option value='red' style='color:red;'>Red</option>
@@ -231,32 +231,32 @@
 							<select name='news_start[mday]' class='textbox'>
 								<option>--</option>
 								{section name=day start=1 loop=32}
-									<option {if $news_start.mday == $smarty.section.day.index}selected{/if}>{$smarty.section.day.index}</option>
+									<option {if $news_start.mday == $smarty.section.day.index}selected='selected'{/if}>{$smarty.section.day.index}</option>
 								{/section}
 							</select>
 							<select name='news_start[mon]' class='textbox'>
 								<option>--</option>
 								{section name=month start=1 loop=13}
-									<option {if $news_start.mon == $smarty.section.month.index}selected{/if}>{$smarty.section.month.index}</option>
+									<option {if $news_start.mon == $smarty.section.month.index}selected='selected'{/if}>{$smarty.section.month.index}</option>
 								{/section}
 							</select>
 							<select name='news_start[year]' class='textbox'>
 								<option>--</option>
 								{assign var='year' value=$smarty.now|date_format:"%Y"}
 								{section name=year start=2000 loop=$year+2}
-									<option {if $news_start.year == $smarty.section.year.index}selected{/if}>{$smarty.section.year.index}</option>
+									<option {if $news_start.year == $smarty.section.year.index}selected='selected'{/if}>{$smarty.section.year.index}</option>
 								{/section}
 							</select>
 							<select name='news_start[hours]' class='textbox'>
 								<option>--</option>
 								{section name=hours start=1 loop=25}
-									<option {if $news_start.hours == $smarty.section.hours.index}selected{/if}>{$smarty.section.hours.index}</option>
+									<option {if $news_start.hours == $smarty.section.hours.index}selected='selected'{/if}>{$smarty.section.hours.index}</option>
 								{/section}
 							</select>
 							<select name='news_start[minutes]' class='textbox'>
 								<option>--</option>
 								{section name=minutes start=0 loop=61}
-									<option {if $news_start.minutes === $smarty.section.minutes.index}selected{/if}>{$smarty.section.minutes.index}</option>
+									<option {if $news_start.minutes === $smarty.section.minutes.index}selected='selected'{/if}>{$smarty.section.minutes.index}</option>
 								{/section}
 							</select> : 00 <span class='small'>{$locale.416}</span>
 						</td>
@@ -269,32 +269,32 @@
 							<select name='news_end[mday]' class='textbox'>
 								<option>--</option>
 								{section name=day start=1 loop=32}
-									<option {if $news_end.mday == $smarty.section.day.index}selected{/if}>{$smarty.section.day.index}</option>
+									<option {if $news_end.mday == $smarty.section.day.index}selected='selected'{/if}>{$smarty.section.day.index}</option>
 								{/section}
 							</select>
 							<select name='news_end[mon]' class='textbox'>
 								<option>--</option>
 								{section name=month start=1 loop=13}
-									<option {if $news_end.mon == $smarty.section.month.index}selected{/if}>{$smarty.section.month.index}</option>
+									<option {if $news_end.mon == $smarty.section.month.index}selected='selected'{/if}>{$smarty.section.month.index}</option>
 								{/section}
 							</select>
 							<select name='news_end[year]' class='textbox'>
 								<option>--</option>
 								{assign var='year' value=$smarty.now|date_format:"%Y"}
 								{section name=year start=2000 loop=$year+2}
-									<option {if $news_end.year == $smarty.section.year.index}selected{/if}>{$smarty.section.year.index}</option>
+									<option {if $news_end.year == $smarty.section.year.index}selected='selected'{/if}>{$smarty.section.year.index}</option>
 								{/section}
 							</select>
 							<select name='news_end[hours]' class='textbox'>
 								<option>--</option>
 								{section name=hours start=1 loop=25}
-									<option {if $news_end.hours == $smarty.section.hours.index}selected{/if}>{$smarty.section.hours.index}</option>
+									<option {if $news_end.hours == $smarty.section.hours.index}selected='selected'{/if}>{$smarty.section.hours.index}</option>
 								{/section}
 							</select>
 							<select name='news_end[minutes]' class='textbox'>
 								<option>--</option>
 								{section name=minutes start=0 loop=61}
-									<option {if $news_end.minutes === $smarty.section.minutes.index}selected{/if}>{$smarty.section.minutes.index}</option>
+									<option {if $news_end.minutes === $smarty.section.minutes.index}selected='selected'{/if}>{$smarty.section.minutes.index}</option>
 								{/section}
 							</select> : 00 <span class='small'>{$locale.416}</span>
 						</td>
@@ -308,32 +308,32 @@
 							<select name='news_date[mday]' class='textbox'>
 								<option>--</option>
 								{section name=day start=1 loop=32}
-									<option {if $news_date.mday == $smarty.section.day.index}selected{/if}>{$smarty.section.day.index}</option>
+									<option {if $news_date.mday == $smarty.section.day.index}selected='selected'{/if}>{$smarty.section.day.index}</option>
 								{/section}
 							</select>
 							<select name='news_date[mon]' class='textbox'>
 								<option>--</option>
 								{section name=month start=1 loop=13}
-									<option {if $news_date.mon == $smarty.section.month.index}selected{/if}>{$smarty.section.month.index}</option>
+									<option {if $news_date.mon == $smarty.section.month.index}selected='selected'{/if}>{$smarty.section.month.index}</option>
 								{/section}
 							</select>
 							<select name='news_date[year]' class='textbox'>
 								<option>--</option>
 								{assign var='year' value=$smarty.now|date_format:"%Y"}
 								{section name=year start=2000 loop=$year+2}
-									<option {if $news_date.year == $smarty.section.year.index}selected{/if}>{$smarty.section.year.index}</option>
+									<option {if $news_date.year == $smarty.section.year.index}selected='selected'{/if}>{$smarty.section.year.index}</option>
 								{/section}
 							</select>
 							<select name='news_date[hours]' class='textbox'>
 								<option>--</option>
 								{section name=hours start=1 loop=25}
-									<option {if $news_date.hours == $smarty.section.hours.index}selected{/if}>{$smarty.section.hours.index}</option>
+									<option {if $news_date.hours == $smarty.section.hours.index}selected='selected'{/if}>{$smarty.section.hours.index}</option>
 								{/section}
 							</select>
 							<select name='news_date[minutes]' class='textbox'>
 								<option>--</option>
 								{section name=minutes start=0 loop=61}
-									<option {if $news_date.minutes === $smarty.section.minutes.index}selected{/if}>{$smarty.section.minutes.index}</option>
+									<option {if $news_date.minutes === $smarty.section.minutes.index}selected='selected'{/if}>{$smarty.section.minutes.index}</option>
 								{/section}
 							</select> : 00
 						</td>
@@ -346,7 +346,7 @@
 						<td align='left' class='tbl'>
 							<select name='news_visibility' class='textbox'>
 								{section name=id loop=$usergroups}
-									<option value='{$usergroups[id].id}'{if $news_visibility == $usergroups[id].id} selected{/if}>{$usergroups[id].name}</option>
+									<option value='{$usergroups[id].id}'{if $news_visibility == $usergroups[id].id} selected='selected'{/if}>{$usergroups[id].name}</option>
 								{/section}
 							</select>
 						</td>
@@ -357,10 +357,10 @@
 						</td>
 						<td align='left' class='tbl'>
 							{if $settings.tinymce_enabled != 1}
-								<input type='checkbox' name='line_breaks' value='yes'{if $news_breaks} checked{/if}/> {$locale.417}<br />
+								<input type='checkbox' name='line_breaks' value='yes'{if $news_breaks} checked='checked'{/if}/> {$locale.417}<br />
 							{/if}
-							<input type='checkbox' name='news_comments' value='yes' onClick='SetRatings();' {if $news_comments} checked{/if}> {$locale.423}<br />
-							<input type='checkbox' name='news_ratings' value='yes' {if $news_ratings} checked{/if}/> {$locale.424}
+							<input type='checkbox' name='news_comments' value='yes' onclick='SetRatings();' {if $news_comments} checked='checked'{/if}> {$locale.423}<br />
+							<input type='checkbox' name='news_ratings' value='yes' {if $news_ratings} checked='checked'{/if}/> {$locale.424}
 						</td>
 					</tr>
 					<tr>
