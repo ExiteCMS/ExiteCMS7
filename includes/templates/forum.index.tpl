@@ -19,10 +19,10 @@
 	<tr>
 		<td>
 			<table border='0' cellpadding='0' cellspacing='1' width='100%'>
-			{if $advert|default:"" != ""}
+			{if $ad1|default:"" != ""}
 				<tr>
 					<td colspan='6' class='tbl2' align='center'>
-						{$advert}
+						{$ad1}
 					</td>
 				</tr>
 			{/if}
@@ -118,6 +118,13 @@
 					</td>
 				</tr>
 				{/section}
+			{if $ad2|default:"" != ""}
+				<tr>
+					<td colspan='6' class='tbl2' align='center'>
+						{$ad2}
+					</td>
+				</tr>
+			{/if}
 			</table>
 		</td>
 	</tr>

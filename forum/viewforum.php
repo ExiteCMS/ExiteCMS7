@@ -37,9 +37,11 @@ require_once PATH_INCLUDES."forum_functions_include.php";
 // load the advertisement include module and get an ad for this forum page
 if (file_exists(PATH_MODULES."advertising/get_ad.php")) {
 	require_once PATH_MODULES."advertising/get_ad.php";
-	$variables['advert'] = get_ad(array(1,2));
+	$variables['ad1'] = get_ad(array(1,2,5));
+	$variables['ad1'] = get_ad(array(4,5));
 } else {
-	$variables['advert'] = "";
+	$variables['ad1'] = "";
+	$variables['ad2'] = "";
 }
 
 // when is a folder hot?
