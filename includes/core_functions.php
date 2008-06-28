@@ -386,7 +386,6 @@ function isURL($value, $onlyhttp=false) {
 	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";									// PATH (optional)
 	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
 	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
-
 	// validate the URL
 	return eregi($urlregex, $value);
 }
@@ -1042,6 +1041,6 @@ function CMS_getOS () {
 
 // replacement for die()
 function terminate($text) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'>$text</div>");
+	die("<div style='font-family:Verdana,Sans-serif;font-size:11px;text-align:center;'>$text</div>");
 }
 ?>
