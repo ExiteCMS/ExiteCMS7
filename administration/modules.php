@@ -451,16 +451,14 @@ while ($folder = readdir($temp)) {
 			// verify the required identification of this module
 			$mod_check = (isset($mod_title) && $mod_title != "");
 			$mod_check = $mod_check && (isset($mod_version) && $mod_version!= "");
-			$mod_check = $mod_check && (isset($mod_developer) && $mod_developer!= "");
-			$mod_check = $mod_check && (isset($mod_email) && $mod_email!= "");
 			if (!$mod_check) {
 				$mod_errors .= $locale['mod004'];
 			} else {
 				$this_module['title'] = $mod_title;
 				$this_module['description'] = isset($mod_description) ? $mod_description : "";
 				$this_module['version'] = $mod_version;
-				$this_module['developer'] = $mod_developer;
-				$this_module['email'] = $mod_email;
+				$this_module['developer'] = isset($mod_developer) ? $mod_developer : "";
+				$this_module['email'] = isset($mod_email) ? $mod_email : "";
 				$this_module['url'] = isset($mod_weburl) ? $mod_weburl : "";
 				$this_module['type'] = isset($mod_type) ? $mod_type : "M";
 			}

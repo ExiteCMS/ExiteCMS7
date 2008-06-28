@@ -77,9 +77,8 @@
 			{$modules[id].developer}
 		</td>
 		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
-			{buttonlink name=$locale.409 link="mailto:"|cat:$modules[id].email}
-			&nbsp;
-			{buttonlink name=$locale.410 link=$modules[id].url}
+			{if $modules[id].email != ""}{buttonlink name=$locale.409 link="mailto:"|cat:$modules[id].email}&nbsp;&nbsp;{/if}
+			{if $modules[id].url != ""}{buttonlink name=$locale.410 link=$modules[id].url}{/if}
 		</td>
 		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
 			{if $modules[id].status == 1}<font color='#FF0000'>{/if}	{* not compatible *}
