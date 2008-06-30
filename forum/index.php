@@ -44,9 +44,9 @@ $forum_list = ""; $current_cat = "";
 // get the list of forums the user has access to
 $result = dbquery(
 	"SELECT f.*, COUNT(t.thread_id) AS thread_count, MAX(t.thread_lastpost) AS last_post, f2.forum_name AS forum_cat_name, f2.forum_id as cat_id, u.user_id, u.user_name FROM ".$db_prefix."forums f
-	LEFT JOIN ".$db_prefix."threads t USING(forum_id)
-	LEFT JOIN ".$db_prefix."forums f2 ON f.forum_cat = f2.forum_id
-	LEFT JOIN ".$db_prefix."users u ON f.forum_lastuser = u.user_id
+	INNER JOIN ".$db_prefix."threads t USING(forum_id)
+	INNER JOIN ".$db_prefix."forums f2 ON f.forum_cat = f2.forum_id
+	INNER JOIN ".$db_prefix."users u ON f.forum_lastuser = u.user_id
 	WHERE ".groupaccess('f.forum_access')." AND f.forum_cat != '0' GROUP BY forum_id ORDER BY f2.forum_order ASC, f.forum_order ASC"
 );
 
@@ -83,7 +83,7 @@ while ($data = dbarray($result)) {
 			$result2 = dbquery("
 				SELECT count(*) as unread 
 					FROM ".$db_prefix."posts p 
-						LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+						INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
 					WHERE tr.user_id = '".$userdata['user_id']."' 
 						AND tr.forum_id = '".$data['forum_id']."' 
 						AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
@@ -94,7 +94,7 @@ while ($data = dbarray($result)) {
 			$result2 = dbquery("
 				SELECT count(*) as unread 
 					FROM ".$db_prefix."posts p 
-						LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+						INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
 					WHERE tr.user_id = '".$userdata['user_id']."' 
 						AND tr.forum_id = '".$data['forum_id']."' 
 						AND p.post_author != '".$userdata['user_id']."'

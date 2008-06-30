@@ -166,7 +166,7 @@ function fpm_view() {
 					}
 					$data2['option_votes'] = $option_votes;
 					$data2['vote_results'] = $vote_results;
-					$data2['is_link'] = preg_match("/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i", $data2['option_text']);
+					$data2['is_link'] = isURL($data2['option_text']);
 					// get some extra information based on the poll type
 					switch($data['poll_type']) {
 						case 0:

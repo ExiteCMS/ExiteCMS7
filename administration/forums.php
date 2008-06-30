@@ -221,7 +221,7 @@ if (isset($_POST['save_cat'])) {
 			$result = dbquery("
 				SELECT DISTINCT u.user_id, u.user_level, u.user_groups 
 				FROM ".$db_prefix."threads_read tr
-				LEFT JOIN ".$db_prefix."users u ON u.user_id = tr.user_id
+				INNER JOIN ".$db_prefix."users u ON u.user_id = tr.user_id
 				WHERE tr.thread_id = '".$thread_id."'
 				");
 			while ($udata2 = dbarray($result)) {

@@ -51,7 +51,7 @@ define('FOLDER_HOT', $settings['folderhotlevel']);
 $result = dbquery(
 	"SELECT f.*, f2.forum_name AS forum_cat_name, f2.forum_id as forum_cat_id
 	FROM ".$db_prefix."forums f
-	LEFT JOIN ".$db_prefix."forums f2 ON f.forum_cat=f2.forum_id
+	INNER JOIN ".$db_prefix."forums f2 ON f.forum_cat=f2.forum_id
 	WHERE f.forum_id='".$forum_id."'"
 );
 // bail out if the requested forum does not exist
@@ -91,7 +91,7 @@ if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 	$result = dbquery("
 		SELECT p.thread_id
 			FROM ".$db_prefix."posts p
-			LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+			INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 			WHERE tr.user_id = '".$userdata['user_id']."'
 				AND tr.forum_id = '".$forum_id."'
 				AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
@@ -111,7 +111,7 @@ if (iMEMBER) {
 		$result = dbquery("
 			SELECT count(*) as unread 
 				FROM ".$db_prefix."posts p 
-					LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
 				WHERE tr.user_id = '".$userdata['user_id']."' 
 					AND tr.forum_id = '".$forum_id."'
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
@@ -122,7 +122,7 @@ if (iMEMBER) {
 		$result = dbquery("
 			SELECT count(*) as unread 
 				FROM ".$db_prefix."posts p 
-					LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
 				WHERE tr.user_id = '".$userdata['user_id']."' 
 					AND tr.forum_id = '".$forum_id."'
 					AND p.post_author != '".$userdata['user_id']."'
@@ -149,9 +149,9 @@ $variables['rowstart'] = $rowstart;
 $result = dbquery(
 	"SELECT t.*, MAX(p.post_id) AS last_post, COUNT(p.post_id) AS thread_replies, tu1.user_name AS user_author, tu1.user_ip AS user_ip, 
 			tu2.user_name AS user_lastuser, tu1.user_cc_code AS user_cc_code FROM ".$db_prefix."threads t
-		LEFT JOIN ".$db_prefix."posts p USING ( thread_id )
-		LEFT JOIN ".$db_prefix."users tu1 ON t.thread_author = tu1.user_id
-		LEFT JOIN ".$db_prefix."users tu2 ON t.thread_lastuser = tu2.user_id
+		INNER JOIN ".$db_prefix."posts p USING ( thread_id )
+		INNER JOIN ".$db_prefix."users tu1 ON t.thread_author = tu1.user_id
+		INNER JOIN ".$db_prefix."users tu2 ON t.thread_lastuser = tu2.user_id
 		WHERE t.forum_id = '".$forum_id."'
 		GROUP BY thread_id
 		ORDER BY thread_sticky DESC, thread_lastpost DESC
@@ -174,7 +174,7 @@ while ($data = dbarray($result)) {
 		$result2 = dbquery("
 			SELECT count(*) as unread, MIN(p.post_id) as post_id
 				FROM ".$db_prefix."posts p 
-				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+				INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
 				WHERE tr.user_id = '".$userdata['user_id']."' 
 					AND tr.thread_id = '".$data['thread_id']."'
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 

@@ -496,7 +496,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['252'] = "Unactivated Members:";
 		$localestrings['253'] = "Suspended Members:";
 		$localestrings['255'] = "Deleted Members:";
-		$localestrings['256'] = "x";
+		$localestrings['256'] = "Reporting";
 		$localestrings['257'] = "Comments:";
 		$localestrings['258'] = "Shoutbox Posts:";
 		$localestrings['259'] = "Forum Posts:";
@@ -859,6 +859,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['491'] = "If checked, any parameters given will be appended to the new URL";
 		$localestrings['492'] = "If checked, the site will redirect to the exact URL given";
 		load_localestrings($localestrings, LP_LOCALE, "admin.redirects", $step);
+
+		$localestrings = array();
+		load_localestrings($localestrings, LP_LOCALE, "admin.reporting", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Settings";
@@ -2946,6 +2949,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['551'] = "Please specify a password.";
 		$localestrings['552'] = "Please specify an email address.";
 		load_localestrings($localestrings, LP_LOCALE, "main.register", $step);
+
+		$localestrings = array();
+		load_localestrings($localestrings, LP_LOCALE, "main.reporting", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Search";

@@ -85,7 +85,7 @@ $variables['thread_id'] = $thread_id;
 $result = dbquery(
 	"SELECT f.*, f2.forum_name AS forum_cat_name
 	FROM ".$db_prefix."forums f
-	LEFT JOIN ".$db_prefix."forums f2 ON f.forum_cat=f2.forum_id
+	INNER JOIN ".$db_prefix."forums f2 ON f.forum_cat=f2.forum_id
 	WHERE f.forum_id='".$forum_id."'"
 );
 // bail out if the requested forum does not exist
@@ -199,7 +199,7 @@ if (iMEMBER) {
 		$result = dbquery("
 			SELECT count(*) as unread, tr.thread_first_read, tr.thread_last_read
 				FROM ".$db_prefix."posts p
-				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+				INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE tr.user_id = '".$userdata['user_id']."' 
 					AND tr.thread_id = '".$thread_id."' 
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
@@ -212,7 +212,7 @@ if (iMEMBER) {
 		$result = dbquery("
 			SELECT count(*) as unread, tr.thread_first_read, tr.thread_last_read
 				FROM ".$db_prefix."posts p
-				LEFT JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+				INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE tr.user_id = '".$userdata['user_id']."'
 					AND p.post_author != '".$userdata['user_id']."'
 					AND p.post_edituser != '".$userdata['user_id']."'
@@ -261,7 +261,7 @@ $last_post_datestamp = 0;
 if ($rows != 0) {
 	$result = dbquery(
 		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status FROM ".$db_prefix."posts p
-		LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id
+		INNER JOIN ".$db_prefix."users u ON p.post_author = u.user_id
 		LEFT JOIN ".$db_prefix."users u2 ON p.post_edituser = u2.user_id AND post_edituser > '0'
 		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".$settings['numofthreads']
 	);
