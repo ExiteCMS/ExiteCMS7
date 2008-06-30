@@ -861,9 +861,6 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "admin.redirects", $step);
 
 		$localestrings = array();
-		load_localestrings($localestrings, LP_LOCALE, "admin.reporting", $step);
-
-		$localestrings = array();
 		$localestrings['400'] = "Settings";
 		$localestrings['401'] = "Main";
 		$localestrings['402'] = "Site name:";
@@ -2951,9 +2948,6 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "main.register", $step);
 
 		$localestrings = array();
-		load_localestrings($localestrings, LP_LOCALE, "main.reporting", $step);
-
-		$localestrings = array();
 		$localestrings['400'] = "Search";
 		$localestrings['401'] = "Search for:";
 		$localestrings['402'] = "Articles";
@@ -3236,8 +3230,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1213786580");
-$lp_date = "1213786580";
+if (!defined('LP_DATE')) define('LP_DATE', "1214854709");
+$lp_date = "1214854709";
 
 /*---------------------------------------------------+
 | main code                                          |
