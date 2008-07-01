@@ -28,8 +28,21 @@ $revisions[] = array('revision' => $_revision,
 // array to store the commands of this update
 $commands = array();
 
-// add the new admin module "Reporting"
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('R', 'reporting.gif', '256', 'reporting.php', 3)");
+// add the new admin module "Reports"
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('R', 'reports.gif', '256', 'reports.php', 3)");
+
+// add the new "Reporting" table
+$commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##reports (
+  report_id smallint(5) unsigned NOT NULL auto_increment,
+  report_mod_id smallint(5) unsigned NOT NULL default 0,
+  report_name varchar(100) NOT NULL default '',
+  report_title varchar(100) NOT NULL default '',
+  report_version varchar(10) NOT NULL default 0,
+  report_active tinyint(1) unsigned NOT NULL default 0,
+  report_visibility tinyint(3) NOT NULL default 0,
+  PRIMARY KEY  (report_id)
+) ENGINE=MyISAM");
+
 
 /*---------------------------------------------------+
 | functions required for part of the upgrade process |
