@@ -100,6 +100,9 @@
 		{if $modules[id].status == 4}
 			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=install&amp;module={$modules[id].folder}&amp;filter={$filter}'><img src='{$smarty.const.THEME}images/cog_add.gif' alt='{$locale.401}' title='{$locale.401}' /></a>
 		{/if}
+		{if $settings.sitename == "ExiteCMS Support Site"}
+			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=locales&amp;id={$modules[id].id}&amp;filter={$filter}'><img src='{$smarty.const.THEME}images/page_refresh.gif' alt='{$locale.426}' title='{$locale.426}' /></a>
+		{/if}
 		</td>
 	</tr>
 	{if $modules[id].errors}

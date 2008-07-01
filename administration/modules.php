@@ -170,6 +170,52 @@ if ($action == 'install' && isset($module)) {
 	
 	// register the installation of this module
 	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('$mod_title', '$mod_folder', '$mod_version')");
+	// save the key, we might need it later
+	$mod_id = mysql_insert_id();
+
+	// if a module is installed, and if reports are defined, install the report links for this module
+	if ($mod_id && isset($mod_report_links) && is_array($mod_report_links) && count($mod_report_links)) {
+
+		// loop through the defined reports
+		foreach ($mod_report_links as $mod_report) {
+
+			// check if the code exists for this report
+			if (isset($mod_report['name']) && file_exists(PATH_MODULES.$mod_folder."/report.".$mod_report['name'].".php")) {
+				// check if the template exists for this report
+				if (file_exists(PATH_MODULES.$mod_folder."/templates/modules.".$mod_folder.".report.".$mod_report['name'].".tpl")) {
+					// verify the other fields
+					$mod_report['visibility'] = (isset($mod_report['visibility']) && isNum($mod_report['visibility']) ? $mod_report['visibility'] : 103);
+					$mod_report['title'] = isset($mod_report['title']) ? $mod_report['title'] : ("Report: ".$mod_report['name']);
+					$mod_report['version'] = isset($mod_report['version']) ? $mod_report['version'] : $mod_version;
+					// add it to the report table
+					$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_id, report_name, report_title, report_version, report_visibility) 
+						VALUES ('".$mod_id."', '".$mod_report['name']."', '".$mod_report['title']."', '".$mod_report['version']."', '".$mod_report['visibility']."')");
+				}
+			}
+		}
+	}
+
+	// if a module is installed, and if searches are defined, install the search links for this module
+	if ($mod_id && isset($mod_search_links) && is_array($mod_search_links) && count($mod_search_links)) {
+
+		// loop through the defined reports
+		foreach ($mod_search_links as $mod_search) {
+
+			// check if the code exists for this search
+			if (isset($mod_search['name']) && file_exists(PATH_MODULES.$mod_folder."/search.".$mod_search['name'].".php")) {
+				// check if the template exists for this search
+				if (file_exists(PATH_MODULES.$mod_folder."/templates/modules.".$mod_folder.".search.".$mod_search['name'].".tpl")) {
+					// verify the other fields
+					$mod_search['visibility'] = (isset($mod_search['visibility']) && isNum($mod_search['visibility']) ? $mod_search['visibility'] : 103);
+					$mod_search['title'] = isset($mod_search['title']) ? $mod_search['title'] : ("Search: ".$mod_search['name']);
+					$mod_search['version'] = isset($mod_search['version']) ? $mod_search['version'] : $mod_version;
+					// add it to the search table
+					$result = dbquery("INSERT INTO ".$db_prefix."searches (search_mod_id, search_name, search_title, search_version, search_visibility) 
+						VALUES ('".$mod_id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."', '".$mod_search['visibility']."')");
+				}
+			}
+		}
+	}
 
 	// update the access rights of the site administrators to include this new module
 	$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
@@ -302,6 +348,36 @@ if ($action == 'uninstall' && isset($id)) {
 
 	// remove the module from the installed modules list
 	$result = dbquery("DELETE FROM ".$db_prefix."modules WHERE mod_id='$id'");
+
+	// remove any reports associated with this module
+	$result = dbquery("DELETE FROM ".$db_prefix."reports WHERE report_mod_id='$id'");
+
+	// remove any searches associated with this module
+	$result = dbquery("DELETE FROM ".$db_prefix."searches WHERE search_mod_id='$id'");
+}
+
+if ($action == 'locales' && isset($id)) {
+
+	// make sure the ID passed is numeric
+	if (!isNum($id)) fallback(FUSION_SELF.$aidlink);
+	
+	// check if it exists
+	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_id='$id'");
+	if (!$result)  fallback(FUSION_SELF.$aidlink);
+
+	// get the module data
+	$data = dbarray($result);
+
+	// load the module installer to start the upgrade
+	include PATH_MODULES.$data['mod_folder']."/module_installer.php";
+
+	// if locale strings are defined, load them into the database
+	if (isset($localestrings) && is_array($localestrings)) {
+		foreach($localestrings as $locales_code => $locales_strings) {
+			load_localestrings($locales_strings, $locales_code, "modules.".$mod_folder);
+		}
+	}
+
 }
 
 if ($action == 'upgrade' && isset($id)) {
@@ -418,6 +494,57 @@ if ($action == 'upgrade' && isset($id)) {
 	if (isset($localestrings) && is_array($localestrings)) {
 		foreach($localestrings as $locales_code => $locales_strings) {
 			load_localestrings($locales_strings, $locales_code, "modules.".$mod_folder);
+		}
+	}
+
+	// remove any reports associated with this module
+	$result = dbquery("DELETE FROM ".$db_prefix."reports WHERE report_mod_id='$id'");
+
+	// if a module is installed, and if reports are defined, (re)install the report links for this module
+	if (isset($mod_report_links) && is_array($mod_report_links) && count($mod_report_links)) {
+
+		// loop through the defined reports
+		foreach ($mod_report_links as $mod_report) {
+
+			// check if the code exists for this report
+			if (isset($mod_report['name']) && file_exists(PATH_MODULES.$mod_folder."/report.".$mod_report['name'].".php")) {
+				// check if the template exists for this report
+				if (file_exists(PATH_MODULES.$mod_folder."/templates/modules.".$mod_folder.".report.".$mod_report['name'].".tpl")) {
+					// verify the other fields
+					$mod_report['visibility'] = (isset($mod_report['visibility']) && isNum($mod_report['visibility']) ? $mod_report['visibility'] : 103);
+					$mod_report['title'] = isset($mod_report['title']) ? $mod_report['title'] : ("Report: ".$mod_report['name']);
+					$mod_report['version'] = isset($mod_report['version']) ? $mod_report['version'] : $mod_version;
+					// add it to the report table
+					$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_id, report_name, report_title, report_version, report_visibility) 
+						VALUES ('".$id."', '".$mod_report['name']."', '".$mod_report['title']."', '".$mod_report['version']."', '".$mod_report['visibility']."')");
+				}
+			}
+		}
+
+	}
+
+	// remove any searches associated with this module
+	$result = dbquery("DELETE FROM ".$db_prefix."searches WHERE search_mod_id='$id'");
+
+	// if a module is installed, and if searches are defined, install the search links for this module
+	if (isset($mod_search_links) && is_array($mod_search_links) && count($mod_search_links)) {
+
+		// loop through the defined reports
+		foreach ($mod_search_links as $mod_search) {
+
+			// check if the code exists for this search
+			if (isset($mod_search['name']) && file_exists(PATH_MODULES.$mod_folder."/search.".$mod_search['name'].".php")) {
+				// check if the template exists for this search
+				if (file_exists(PATH_MODULES.$mod_folder."/templates/modules.".$mod_folder.".search.".$mod_search['name'].".tpl")) {
+					// verify the other fields
+					$mod_search['visibility'] = (isset($mod_search['visibility']) && isNum($mod_search['visibility']) ? $mod_search['visibility'] : 103);
+					$mod_search['title'] = isset($mod_search['title']) ? $mod_search['title'] : ("Search: ".$mod_search['name']);
+					$mod_search['version'] = isset($mod_search['version']) ? $mod_search['version'] : $mod_version;
+					// add it to the search table
+					$result = dbquery("INSERT INTO ".$db_prefix."searches (search_mod_id, search_name, search_title, search_version, search_visibility) 
+						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."', '".$mod_search['visibility']."')");
+				}
+			}
 		}
 	}
 

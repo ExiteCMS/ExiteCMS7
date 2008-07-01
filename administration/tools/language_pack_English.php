@@ -496,11 +496,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['252'] = "Unactivated Members:";
 		$localestrings['253'] = "Suspended Members:";
 		$localestrings['255'] = "Deleted Members:";
-		$localestrings['256'] = "Reporting";
+		$localestrings['256'] = "Reports";
 		$localestrings['257'] = "Comments:";
 		$localestrings['258'] = "Shoutbox Posts:";
 		$localestrings['259'] = "Forum Posts:";
-		$localestrings['260'] = "x";
+		$localestrings['260'] = "Searches";
 		$localestrings['261'] = "x";
 		$localestrings['262'] = "Unread Posts:";
 		$localestrings['300'] = "ExiteCMS Language packs";
@@ -600,6 +600,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['423'] = "Go";
 		$localestrings['424'] = "There are no modules and plugins available for installation";
 		$localestrings['425'] = "There are no modules and plugins available that match your filter";
+		$localestrings['426'] = "Refresh the locale strings";
 		$localestrings['mod001'] = "This module requires at least version %s of ExiteCMS.<br />";
 		$localestrings['mod002'] = "This module is written for version %s of ExiteCMS. Please ask the author for an upgrade.<br />";
 		$localestrings['mod003'] = "This module requires a minumum ExiteCMS revision level of %s.<br />";
@@ -859,6 +860,54 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['491'] = "If checked, any parameters given will be appended to the new URL";
 		$localestrings['492'] = "If checked, the site will redirect to the exact URL given";
 		load_localestrings($localestrings, LP_LOCALE, "admin.redirects", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Reporting";
+		$localestrings['401'] = "Install";
+		$localestrings['403'] = "Filter on status";
+		$localestrings['404'] = "x";
+		$localestrings['405'] = "x";
+		$localestrings['406'] = "Version";
+		$localestrings['407'] = "Developer";
+		$localestrings['408'] = "Contact";
+		$localestrings['409'] = "Email";
+		$localestrings['410'] = "Web";
+		$localestrings['411'] = "Uninstall";
+		$localestrings['412'] = "Uninstall this report?";
+		$localestrings['413'] = "x";
+		$localestrings['414'] = "Not Installed";
+		$localestrings['415'] = "Installed";
+		$localestrings['416'] = "Upgrade Available";
+		$localestrings['417'] = "Error executing installation function: ";
+		$localestrings['418'] = "Not compatible";
+		$localestrings['419'] = "Error. Unknown command type: ";
+		$localestrings['420'] = "Status";
+		$localestrings['421'] = "Options";
+		$localestrings['422'] = "Upgrade";
+		$localestrings['423'] = "Go";
+		$localestrings['424'] = "There are no reports available for installation";
+		$localestrings['425'] = "There are no reports available that match your filter";
+		$localestrings['mod001'] = "This report requires at least version %s of ExiteCMS.<br />";
+		$localestrings['mod002'] = "This report is written for version %s of ExiteCMS. Please ask the author for an upgrade.<br />";
+		$localestrings['mod003'] = "This report requires a minumum ExiteCMS revision level of %s.<br />";
+		$localestrings['mod004'] = "This report can not be installed. Required information is missing from the report installer.<br />";
+		$localestrings['mod005'] = "This report does not function beyond ExiteCMS revision level %s.<br />";
+		load_localestrings($localestrings, LP_LOCALE, "admin.reporting", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Reports";
+		$localestrings['401'] = "Report Title";
+		$localestrings['402'] = "Visibility";
+		$localestrings['403'] = "Options";
+		$localestrings['404'] = "Deactivate";
+		$localestrings['405'] = "Activate";
+		$localestrings['406'] = "Modify this report";
+		$localestrings['407'] = "Delete this report";
+		$localestrings['408'] = "Currently there are no reports defined";
+		$localestrings['409'] = "Add a Report";
+		$localestrings['410'] = "from";
+		$localestrings['411'] = "View this report";
+		load_localestrings($localestrings, LP_LOCALE, "admin.reports", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Settings";
@@ -2948,6 +2997,15 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "main.register", $step);
 
 		$localestrings = array();
+		$localestrings['rpt400'] = "Available Reports";
+		$localestrings['rpt401'] = "Report";
+		$localestrings['rpt402'] = "View";
+		$localestrings['rpt403'] = "Currently there are no reports defined";
+		$localestrings['rpt404'] = "Result for the requested report";
+		$localestrings['rpt405'] = "Report List";
+		load_localestrings($localestrings, LP_LOCALE, "main.reports", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Search";
 		$localestrings['401'] = "Search for:";
 		$localestrings['402'] = "Articles";
@@ -3230,8 +3288,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1214854709");
-$lp_date = "1214854709";
+if (!defined('LP_DATE')) define('LP_DATE', "1214934137");
+$lp_date = "1214934137";
 
 /*---------------------------------------------------+
 | main code                                          |

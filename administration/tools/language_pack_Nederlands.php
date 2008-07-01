@@ -496,11 +496,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['252'] = "Niet geactiveerde gebruikers:";
 		$localestrings['253'] = "Geblokeerde gebruikers:";
 		$localestrings['255'] = "Verwijderde gebruikers:";
-		$localestrings['256'] = "Rapportages";
+		$localestrings['256'] = "Rapporten";
 		$localestrings['257'] = "Commentaar:";
 		$localestrings['258'] = "Shoutbox berichten:";
 		$localestrings['259'] = "Forum berichten:";
-		$localestrings['260'] = "x";
+		$localestrings['260'] = "Zoekacties";
 		$localestrings['261'] = "x";
 		$localestrings['262'] = "Ongelezen berichten:";
 		$localestrings['300'] = "ExiteCMS Taal Pakketten";
@@ -600,6 +600,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['423'] = "Ga";
 		$localestrings['424'] = "Er zijn geen modules of plugins beschikbaar voor installatie";
 		$localestrings['425'] = "Er zijn geen modules of plugins aanwezig die voldoen aan het filter";
+		$localestrings['426'] = "Locales opnieuw inladen";
 		$localestrings['mod001'] = "Deze module vereist minstens ExiteCMS versie %s.<br />";
 		$localestrings['mod002'] = "Deze module is gemaakt voor versie %s van ExiteCMS. Neem contact op met de ontwikkelaar voor een nieuwere versie.<br />";
 		$localestrings['mod003'] = "Deze module vereist minimaal ExiteCMS revisie %s.<br />";
@@ -859,6 +860,54 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['491'] = "Indien gemarkeerd worden de parameters aan de URL toegevoegd";
 		$localestrings['492'] = "Indien gemarkeerd wordt de nieuwe URL geladen d.m.v. een redirect";
 		load_localestrings($localestrings, LP_LOCALE, "admin.redirects", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Reporting";
+		$localestrings['401'] = "Install";
+		$localestrings['403'] = "Filter on status";
+		$localestrings['404'] = "x";
+		$localestrings['405'] = "x";
+		$localestrings['406'] = "Version";
+		$localestrings['407'] = "Developer";
+		$localestrings['408'] = "Contact";
+		$localestrings['409'] = "Email";
+		$localestrings['410'] = "Web";
+		$localestrings['411'] = "Uninstall";
+		$localestrings['412'] = "Uninstall this report?";
+		$localestrings['413'] = "x";
+		$localestrings['414'] = "Not Installed";
+		$localestrings['415'] = "Installed";
+		$localestrings['416'] = "Upgrade Available";
+		$localestrings['417'] = "Error executing installation function: ";
+		$localestrings['418'] = "Not compatible";
+		$localestrings['419'] = "Error. Unknown command type: ";
+		$localestrings['420'] = "Status";
+		$localestrings['421'] = "Options";
+		$localestrings['422'] = "Upgrade";
+		$localestrings['423'] = "Go";
+		$localestrings['424'] = "There are no reports available for installation";
+		$localestrings['425'] = "There are no reports available that match your filter";
+		$localestrings['mod001'] = "This report requires at least version %s of ExiteCMS.<br />";
+		$localestrings['mod002'] = "This report is written for version %s of ExiteCMS. Please ask the author for an upgrade.<br />";
+		$localestrings['mod003'] = "This report requires a minumum ExiteCMS revision level of %s.<br />";
+		$localestrings['mod004'] = "This report can not be installed. Required information is missing from the report installer.<br />";
+		$localestrings['mod005'] = "This report does not function beyond ExiteCMS revision level %s.<br />";
+		load_localestrings($localestrings, LP_LOCALE, "admin.reporting", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Rapporten";
+		$localestrings['401'] = "Rapport titel";
+		$localestrings['402'] = "Toegang voor";
+		$localestrings['403'] = "Opties";
+		$localestrings['404'] = "Deactiveer";
+		$localestrings['405'] = "Activeer";
+		$localestrings['406'] = "Wijzig dit rapport";
+		$localestrings['407'] = "Verwijder this report";
+		$localestrings['408'] = "Er zijn momenteel geen rapporten gedefinieerd";
+		$localestrings['409'] = "Rapport toevoegen";
+		$localestrings['410'] = "van";
+		$localestrings['411'] = "Rapport aanmaken";
+		load_localestrings($localestrings, LP_LOCALE, "admin.reports", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Instellingen";
@@ -2948,6 +2997,15 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "main.register", $step);
 
 		$localestrings = array();
+		$localestrings['rpt400'] = "Beschikbare rapporten";
+		$localestrings['rpt401'] = "Rapport";
+		$localestrings['rpt402'] = "Bekijk";
+		$localestrings['rpt403'] = "Er zijn op dit moment geen rapporten beschikbaar";
+		$localestrings['rpt404'] = "Resultaat voor het rapport";
+		$localestrings['rpt405'] = "Rapportenlijst";
+		load_localestrings($localestrings, LP_LOCALE, "main.reports", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Zoeken";
 		$localestrings['401'] = "Zoeken naar:";
 		$localestrings['402'] = "Artikelen";
@@ -3230,8 +3288,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1214854713");
-$lp_date = "1214854713";
+if (!defined('LP_DATE')) define('LP_DATE', "1214934141");
+$lp_date = "1214934141";
 
 /*---------------------------------------------------+
 | main code                                          |
