@@ -28,8 +28,21 @@ $revisions[] = array('revision' => $_revision,
 // array to store the commands of this update
 $commands = array();
 
-// add the new admin module "Reporting"
+// add the new admin module "Searches"
 $commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S', 'searches.gif', '260', 'searches.php', 3)");
+
+// add the new "Searches" table
+$commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##searches (
+  search_id smallint(5) unsigned NOT NULL auto_increment,
+  search_mod_id smallint(5) unsigned NOT NULL default 0,
+  search_name varchar(100) NOT NULL default '',
+  search_title varchar(100) NOT NULL default '',
+  search_version varchar(10) NOT NULL default 0,
+  search_active tinyint(1) unsigned NOT NULL default 0,
+  search_visibility tinyint(3) NOT NULL default 0,
+  PRIMARY KEY  (search_id)
+) ENGINE=MyISAM");
+
 
 /*---------------------------------------------------+
 | functions required for part of the upgrade process |
