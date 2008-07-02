@@ -23,8 +23,6 @@ $sub_ip2 = substr($sub_ip1,0,strlen($sub_ip1)-strlen(strrchr($sub_ip1,".")));
 if (dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$sub_ip1' OR blacklist_ip='$sub_ip2'")) {
 	header("Location: http://en.wikipedia.org/wiki/IP_blocking"); exit;
 }
-// get the country code for this user, override the country code for webmasters if needed
-define('USER_CC', (iSUPERADMIN && $settings['hide_webmaster']) ? $settings['country'] : GeoIP_IP2Code(USER_IP, true));
 
 // Set the users site_visited cookie if this is the first visit, and update the unique visit counter
 // save the random site_visited value, we need that later in session management!
@@ -205,6 +203,9 @@ if (isset($userdata) && is_array($userdata)) {
 	define("iADMIN", 0);
 	define("iSUPERADMIN", 0);
 }
+
+// get the country code for this user, override the country code for webmasters if needed
+define('USER_CC', (iSUPERADMIN && $settings['hide_webmaster']) ? $settings['country'] : GeoIP_IP2Code(USER_IP, true));
 
 // if logged in, update the users lastvisit time and country
 if (iMEMBER) {
