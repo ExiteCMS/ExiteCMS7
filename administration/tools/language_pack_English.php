@@ -3126,10 +3126,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['474'] = "Members";
 		$localestrings['475'] = "News";
 		$localestrings['476'] = "Panels";
-		$localestrings['477'] = "x";
+		$localestrings['477'] = "Reports";
 		$localestrings['478'] = "PHP Info";
 		$localestrings['479'] = "Polls";
-		$localestrings['480'] = "x";
+		$localestrings['480'] = "Searches";
 		$localestrings['481'] = "Menu System";
 		$localestrings['482'] = "x";
 		$localestrings['483'] = "Upgrade";
@@ -3155,6 +3155,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['506'] = "Contact Us";
 		$localestrings['507'] = "Search";
 		$localestrings['508'] = "Register";
+		$localestrings['509'] = "Reports";
 		$localestrings['520'] = "Main Menu";
 		$localestrings['521'] = "Online Users";
 		$localestrings['522'] = "Forum Threads";

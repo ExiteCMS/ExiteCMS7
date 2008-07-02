@@ -328,12 +328,8 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('U',  'upgrade.gif', '".addslashes($locale['483'])."', 'upgrade.php', 3)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UG', 'user_groups.gif', '".addslashes($locale['484'])."', 'user_groups.php', 2)");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UR', 'submissions.gif', '".addslashes($locale['496'])."', 'redirects.php', 1)");
-			$result = dbcommands($commands, $db_prefix);
-
-			// add the default 404 page to the custom pages table
-			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##custom_pages (page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES ('404 Error Page', 0, '".mysql_escape_string("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" align=\"center\"> <tbody><tr><td width=\"10\"> </td><td><div align=\"center\"><font size=\"6\"><span class=\"shoutboxname\"><br />404 - Page Not Found</span><br /></font></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".addslashes($locale['560'])."<br /></div><br /><div align=\"center\">".addslashes($locale['561'])."<br /></div><br /><div align=\"center\">".addslashes($locale['562'])."<br /></div><br /><br /><hr width=\"90%\" size=\"2\" /><br /><br /><div align=\"center\">".addslashes($locale['563'])."<br /></div><br /><div align=\"center\">".addslashes($locale['564'])."</div></td><td width=\"10\"> </td></tr></tbody></table><br />")."', 0, 0)");
-			$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##custom_pages SET page_id = 0");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('R',  'reports.gif', '".addslashes($locale['477'])."', 'reports.php', 3)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S',  'searches.gif', '".addslashes($locale['480'])."', 'searches.php', 3)");
 			$result = dbcommands($commands, $db_prefix);
 
 			// create the admin rights field for the webmaster, based on all admin modules just inserted
@@ -397,7 +393,8 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['473'])."', 'blogs.php', '0', '1', '0', '7', 'main_menu_panel')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['506'])."', 'contact.php', '0', '1', '0', '8', 'main_menu_panel')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['507'])."', 'search.php', '0', '1', '0', '9', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['508'])."', 'register.php', '100', '2', '0', '10', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['509'])."', 'reports.php', '0', '1', '0', '10', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['508'])."', 'register.php', '100', '2', '0', '11', 'main_menu_panel')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the default forum poll settings

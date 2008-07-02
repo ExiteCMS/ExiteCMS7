@@ -3126,10 +3126,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['474'] = "Leden";
 		$localestrings['475'] = "Nieuws";
 		$localestrings['476'] = "Panelen";
-		$localestrings['477'] = "x";
+		$localestrings['477'] = "Rapporten";
 		$localestrings['478'] = "PHP informatie";
 		$localestrings['479'] = "Polls";
-		$localestrings['480'] = "x";
+		$localestrings['480'] = "Zoekacties";
 		$localestrings['481'] = "Menu systeem";
 		$localestrings['482'] = "x";
 		$localestrings['483'] = "Opwaarderen";
@@ -3155,6 +3155,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['506'] = "Neem contact op";
 		$localestrings['507'] = "Zoeken";
 		$localestrings['508'] = "Registreren";
+		$localestrings['509'] = "Rapportages";
 		$localestrings['520'] = "Hoofdmenu";
 		$localestrings['521'] = "Online gebruikers";
 		$localestrings['522'] = "Forum topic";
