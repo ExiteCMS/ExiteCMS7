@@ -261,7 +261,7 @@ $last_post_datestamp = 0;
 if ($rows != 0) {
 	$result = dbquery(
 		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status FROM ".$db_prefix."posts p
-		INNER JOIN ".$db_prefix."users u ON p.post_author = u.user_id
+		LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id
 		LEFT JOIN ".$db_prefix."users u2 ON p.post_edituser = u2.user_id AND post_edituser > '0'
 		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".$settings['numofthreads']
 	);
