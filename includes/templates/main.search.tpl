@@ -29,7 +29,7 @@
 	{if $smarty.section.idx.last}
 		{if $smarty.const.iMEMBER}
 		<input type='radio' name='stype' value='m'{if 'm' == $stype} checked="checked"{/if} /> {$locale.407}
-		{assign var='searched' value=$locale.407}
+		{if $searched|default:"" == ""}{assign var='searched' value=$locale.407}{/if}
 		{/if}
 	</form>
 	{/if}
