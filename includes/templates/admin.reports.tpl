@@ -51,7 +51,7 @@
 				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=delete&amp;report_id="|cat:$reports[id].report_id image="page_delete.gif" alt=$locale.407 title=$locale.407}
 			{/if}
 			&nbsp;
-			{imagelink link=$smarty.const.BASEDIR|cat:"reports.php"|cat:$aidlink|cat:"&amp;action=select&amp;report_id="|cat:$reports[id].report_id image="image_view.gif" alt=$locale.411 title=$locale.411}
+			{imagelink link=$smarty.const.BASEDIR|cat:"reports.php"|cat:$aidlink|cat:"&amp;report_id="|cat:$reports[id].report_id image="image_view.gif" alt=$locale.411 title=$locale.411}
 		</td>
 	</tr>
 	{sectionelse}

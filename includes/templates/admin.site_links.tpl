@@ -165,7 +165,7 @@
 						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> 
 						{if $panels[id].links[id2].external}
 							<a href='{$panels[id].links[id2].link_url}'>{$panels[id].links[id2].link_name}</a>
-							<img src='{$smarty.const.THEME}images/external_link.jpg' alt='' />
+							<img src='{$smarty.const.THEME}images/external_link.gif' alt='' />
 						{else}
 							<a href='{$smarty.const.BASEDIR}{$panels[id].links[id2].link_url}'>{$panels[id].links[id2].link_name}</a>
 						{/if}

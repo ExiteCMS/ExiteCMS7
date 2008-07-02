@@ -53,8 +53,17 @@
 				</form>
 			</td>
 		</tr>
+		{if $message|default:"" != ""}
+		<tr>
+			<td align='left'>
+				<b>{$message}</b>
+			</td>
+		</tr>
+		{/if}
 	</table>
-	{include file=$template}
+	{if $message|default:"" == ""}
+		{include file=$template}
+	{/if}
 {/if}
 {include file="_closetable.tpl"}
 {***************************************************************************}

@@ -462,18 +462,18 @@ function theme_cleanup() {
 	if ($userdata['user_level'] >= 103) {
 		$minute = 60; $hour = $minute * 60; $day = $hour * 24;
 		// flood control: set to 5 minutes
-		$result = dbquery("DELETE FROM ".$db_prefix."flood_control WHERE flood_timestamp < '".(time() - $minute * 5)."'");
+		$result = dbquery("DELETE LOW_PRIORITY FROM ".$db_prefix."flood_control WHERE flood_timestamp < '".(time() - $minute * 5)."'");
 		// thread notifies: set to 14 days
-		$result = dbquery("DELETE FROM ".$db_prefix."thread_notify WHERE notify_datestamp < '".(time() - $day * 14)."'");
+		$result = dbquery("DELETE LOW_PRIORITY FROM ".$db_prefix."thread_notify WHERE notify_datestamp < '".(time() - $day * 14)."'");
 		// new registered users: set to 3 days
-		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_datestamp < '".(time() - $day * 3)."'");
+		$result = dbquery("DELETE LOW_PRIORITY FROM ".$db_prefix."new_users WHERE user_datestamp < '".(time() - $day * 3)."'");
 		// deactivate accounts with a bad email address after 90 days (available since v7.0 rev.1060)
 		if ($settings['revision'] >= 1060) {
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_status = 1, user_ban_reason = '', user_ban_expire = '".time()."' WHERE user_bad_email > 0 AND user_bad_email < '".(time() - $day * 90)."'");
 		}
 		// read threads indicators: use the defined threshold (available since v7.0 rev.1193)
 		if ($settings['revision'] >= 1193) {
-			$result = dbquery("DELETE FROM ".$db_prefix."threads_read WHERE thread_last_read < '".$settings['unread_threshold']."'", false);
+			$result = dbquery("DELETE LOW_PRIORITY FROM ".$db_prefix."threads_read WHERE thread_last_read < '".$settings['unread_threshold']."'", false);
 		}
 	}
 
