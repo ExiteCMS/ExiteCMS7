@@ -119,15 +119,15 @@ if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
 					}
 				}
 			}
-			// update the statistics table (if it exists)
-			if (dbtable_exists($db_prefix."dls_statistics")) {
-				display("* Updating download statistics with an unknown country code.");
-				$result = dbquery("SELECT * FROM ".$db_prefix."dls_statistics WHERE ds_cc = ''");
+			// update the statistics ip table (if it exists)
+			if (dbtable_exists($db_prefix."dlstats_ips")) {
+				display("* Updating ip statistics with an unknown country code.");
+				$result = dbquery("SELECT * FROM ".$db_prefix."dlstats_ips WHERE dlsi_ccode = ''");
 				while ($data = dbarray($result)) {
-					$cc = GeoIP_IP2Code($data['ds_ip']);
+					$cc = GeoIP_IP2Code($data['dlsi_ip']);
 					if ($cc != "") { 
-						display("  * Updating country code for statistics record '".$data['ds_id']."'.");
-						$result2 = dbquery("UPDATE ".$db_prefix."dls_statistics SET ds_cc = '".$cc."' WHERE ds_id = '".$data['ds_id']."'");
+						display("  * Updating country code for statistics record '".$data['dlsi_id']."'.");
+						$result2 = dbquery("UPDATE ".$db_prefix."dlstats_ips SET dlsi_ccode = '".$cc."' WHERE dlsi_id = '".$data['dlsi_id']."'");
 					}
 				}
 			}
