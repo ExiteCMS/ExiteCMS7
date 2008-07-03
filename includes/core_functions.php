@@ -91,6 +91,7 @@ define("PATH_IMAGES_N", PATH_IMAGES."news/");
 define("PATH_IMAGES_NC", PATH_IMAGES."news_cats/");
 define("PATH_IMAGES_DC", PATH_IMAGES."download_cats/");
 define("PATH_INCLUDES", PATH_ROOT."includes/");
+define("PATH_GESHI", PATH_INCLUDES."geshi-1.0.7.22");
 define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
 define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
