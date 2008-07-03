@@ -37,7 +37,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td align='center' width='150' rowspan='6' class='tbl2'>
+		<td align='center' width='150' rowspan='7' class='tbl2'>
 		{if $data.user_avatar|default:"" != ""}
 			<img src='{$smarty.const.IMAGES}avatars/{$data.user_avatar}' alt='{$locale.u017}' />
 		{else}
@@ -77,30 +77,44 @@
 	</tr>
 	<tr>
 		<td width='1%' class='tbl2' style='white-space:nowrap'>
-			<b>{$locale.u011}</b>
+			<b>{$locale.u062}</b>
 		</td>
 		<td class='tbl2'>
-			{$data.user_icq|default:$locale.u048}
+			{if $data.user_gender == "M"}
+				{$locale.u063}
+			{elseif $data.user_gender == "F"}
+				{$locale.u064}
+			{else}
+				{$locale.u065}
+			{/if}
 		</td>
 	</tr>
 	<tr>
 		<td width='1%' class='tbl1' style='white-space:nowrap'>
-			<b>{$locale.u012}</b>
+			<b>{$locale.u011}</b>
 		</td>
 		<td class='tbl1'>
-			{$data.user_msn|default:$locale.u048}
+			{$data.user_icq|default:$locale.u048}
 		</td>
 	</tr>
 	<tr>
 		<td width='1%' class='tbl2' style='white-space:nowrap'>
-			<b>{$locale.u013}</b>
+			<b>{$locale.u012}</b>
 		</td>
 		<td class='tbl2'>
+			{$data.user_msn|default:$locale.u048}
+		</td>
+	</tr>
+	<tr>
+		<td width='1%' class='tbl1' style='white-space:nowrap'>
+			<b>{$locale.u013}</b>
+		</td>
+		<td class='tbl1'>
 			{$data.user_yahoo|default:$locale.u048}
 		</td>
 	</tr>
 	<tr>
-		<td align='center' class='tbl1'>
+		<td align='center' class='tbl2'>
 			{if $smarty.const.iSUPERADMIN || $data.user_hide_email != "1"}
 				{buttonlink name=$locale.u051 link="mailto:"|cat:$data.user_email|strip encode='javascript_charcode'}&nbsp;
 			{/if}
@@ -111,10 +125,10 @@
 				{buttonlink name=$locale.u053 link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;user_id="|cat:$data.user_id|cat:"&amp;msg_id=0"}
 			{/if}
 		</td>
-		<td width='1%' class='tbl1' style='white-space:nowrap'>
+		<td width='1%' class='tbl2' style='white-space:nowrap'>
 			<b>{$locale.u021}</b>
 		</td>
-		<td class='tbl1'>
+		<td class='tbl2'>
 			{$data.user_aim|default:$locale.u048}
 		</td>
 	</tr>

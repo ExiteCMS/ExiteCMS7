@@ -20,6 +20,16 @@
 	<table align='center' cellpadding='0' cellspacing='0' width='500'>
 		<tr>
 			<td width='50%' class='tbl'>
+				{$locale.427}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='browserlang' class='textbox'>
+					<option value='1'{if $settings2.browserlang == 1} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.browserlang == 0} selected="selected"{/if}>{$locale.509}</option>
+				</select>
+			</td>
+		</tr>
+			<td width='50%' class='tbl'>
 				{$locale.414}
 			</td>
 			<td width='50%' class='tbl'>

@@ -937,6 +937,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['424'] = "The number of news items per page can not be smaller than the number of headlines";
 		$localestrings['425'] = "Required when the CMS is installed in a subdirectory of the website document root";
 		$localestrings['426'] = "Download Panel Layout:";
+		$localestrings['427'] = "Use browser language detection:";
 		$localestrings['450'] = "Time and Date";
 		$localestrings['451'] = "Short date format:";
 		$localestrings['452'] = "Long date format:";
@@ -3248,6 +3249,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u056'] = "Unknown";
 		$localestrings['u060'] = "Send Private Message";
 		$localestrings['u061'] = "View all posts of this member";
+		$localestrings['u062'] = "Gender:";
+		$localestrings['u063'] = "Male";
+		$localestrings['u064'] = "Female";
+		$localestrings['u065'] = "Undisclosed";
 		$localestrings['u901'] = "Full Name";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
 		return "";

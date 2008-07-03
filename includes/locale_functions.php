@@ -32,7 +32,7 @@ if (!defined('LOCALESET') && isset($_COOKIE['locale'])) {
 }
 
 // locale detection - step 3 - check the browsers accepted languages
-if (!defined('LOCALESET') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+if (!defined('LOCALESET') && isset($settings['browserlang']) && $settings['browserlang'] && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	// check which languages are supported by the users browser
 	$temp = explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 	foreach($temp as $lng) {

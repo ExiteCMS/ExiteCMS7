@@ -28,6 +28,11 @@ $variables['this_module'] = FUSION_SELF;
 if (!checkrights("S8") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 if (isset($_POST['savesettings'])) {
+	// use browser language
+	$browserlang = (isset($_POST['browserlang']) && IsNum($_POST['browserlang'])) ? $_POST['browserlang'] : 1;
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$browserlang."' WHERE cfg_name = 'browserlang'");
+
+	// selected default locale
 	$settings['locale'] = stripinput($_POST['localeset']);
 	$old_localeset = stripinput($_POST['old_localeset']);
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings['locale']."' WHERE cfg_name = 'locale'");

@@ -130,6 +130,18 @@
 		</tr>
 		<tr>
 			<td class='tbl'>
+				{$locale.u062}
+			</td>
+			<td class='tbl'>
+				<select name='user_gender' class='textbox' style='width:200px;'>
+						<option value='' {if $this_userdata.user_gender == ''}selected="selected"{/if}>{$locale.u065}</option>
+						<option value='F' {if $this_userdata.user_gender == 'F'}selected="selected"{/if}>{$locale.u064}</option>
+						<option value='M' {if $this_userdata.user_gender == 'M'}selected="selected"{/if}>{$locale.u063}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl'>
 				{$locale.u021}
 			</td>
 			<td class='tbl'>

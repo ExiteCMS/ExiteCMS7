@@ -937,6 +937,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['424'] = "Het aantal berichten per pagina kan niet kleiner zijn dan het aantal belangrijke berichten";
 		$localestrings['425'] = "Verplicht indien ExiteCMS is geinstalleerd in een folder van de website document root";
 		$localestrings['426'] = "Download Paneel Layout:";
+		$localestrings['427'] = "Taalinstelling van de browser:";
 		$localestrings['450'] = "Datum en tijd";
 		$localestrings['451'] = "Kort datum formaat:";
 		$localestrings['452'] = "Lang datum formaat:";
@@ -3248,6 +3249,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u056'] = "Onbekend";
 		$localestrings['u060'] = "Verstuur een privé bericht";
 		$localestrings['u061'] = "Bekijk alle berichten van dit lid";
+		$localestrings['u062'] = "Geslacht:";
+		$localestrings['u063'] = "Mannelijk";
+		$localestrings['u064'] = "Vrouwlijk";
+		$localestrings['u065'] = "Geen opgave";
 		$localestrings['u901'] = "Volledige naam";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
 		return "";

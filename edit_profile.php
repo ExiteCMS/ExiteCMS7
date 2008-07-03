@@ -136,6 +136,7 @@ if (isset($_POST['update_profile'])) {
 	} else {
 		$user_birthdate = "0000-00-00";
 	}
+	$user_gender = isset($_POST['user_gender']) ? stripinput(trim($_POST['user_gender'])) : "";
 	$user_aim = isset($_POST['user_aim']) ? stripinput(trim($_POST['user_aim'])) : "";
 	$user_icq = isset($_POST['user_icq']) ? stripinput(trim($_POST['user_icq'])) : "";
 	$user_msn = isset($_POST['user_msn']) ? stripinput(trim($_POST['user_msn'])) : "";
@@ -185,7 +186,7 @@ if (isset($_POST['update_profile'])) {
 			}
 		}
 		if ($user_newpassword != "") { $newpass = " user_password=md5(md5('$user_newpassword')), "; } else { $newpass = " "; }
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_bad_email = '0', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_posts_unread='$user_posts_unread', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig', user_locale='".$_POST['user_locale']."' WHERE user_id='".$this_userdata['user_id']."'");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_name='$username', user_fullname='$user_fullname', ".$newpass."user_email='".$_POST['user_email']."', user_bad_email = '0', user_hide_email='$user_hide_email', user_location='$user_location', user_birthdate='$user_birthdate', user_gender='$user_gender', user_aim='$user_aim', user_icq='$user_icq', user_msn='$user_msn', user_yahoo='$user_yahoo', user_web='$user_web', user_forum_fullscreen='$user_forum_fullscreen', user_posts_unread='$user_posts_unread', user_newsletters='$user_newsletters', user_theme='$user_theme', user_offset='$user_offset', ".$set_avatar."user_sig='$user_sig', user_locale='".$_POST['user_locale']."' WHERE user_id='".$this_userdata['user_id']."'");
 		if ($user_theme != $userdata['user_theme']) redirect(FUSION_SELF."?status=1");
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$this_userdata['user_id']."'");
 		if (dbrows($result) != 0) {
