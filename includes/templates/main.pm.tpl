@@ -151,10 +151,14 @@
 					<span class='small'>
 					{section name=rc loop=$messages[id].readstatus}
 						{if $smarty.section.rc.first}
-							<br />{$locale.542}
+							{$locale.542}:<br />
 						{/if}
-						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].readstatus[rc].user_id}'>{$messages[id].readstatus[rc].user_name}</a>
-						{$locale.543} {$messages[id].readstatus[rc].datestamp|date_format:"forumdate"}
+						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].readstatus[rc].user_id}'>{$messages[id].readstatus[rc].user_name}</a>:
+						{if $messages[id].readstatus[rc].read}
+							{$messages[id].readstatus[rc].datestamp|date_format:"forumdate"}
+						{else}
+							{$locale.543}
+						{/if}
 						{if !$smarty.section.rc.last},{/if}
 					{/section}
 					</span>

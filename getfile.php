@@ -261,6 +261,7 @@ function setmime($filename) {
 		case "txt":
 		case "cc":
 		case "c":
+		case "c++":
 		case "hh":
 		case "php":
 		case "log":
@@ -309,11 +310,19 @@ function setmime($filename) {
 +----------------------------------------------------*/
 
 // parameter validation
-if (!isset($file_id) || !isNum($file_id)) {
-	terminate("<b>Invalid or missing file ID.</b>");
-}
 if (!isset($type)) {
 	terminate("<b>Missing file type.</b>");
+}
+switch ($type) {
+	case "fc":
+		if (!isset($forum_id) || !isNum($forum_id) || !isset($thread_id) || !isNum($thread_id) || !isset($post_id) || !isNum($post_id) || !isset($id) || !isNum($id)) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		break;
+	default:
+		if (!isset($file_id) || !isNum($file_id)) {
+			terminate("<b>Invalid or missing file ID.</b>");
+		}
 }
 
 // check if authentication is valid. If not, reset it
@@ -352,9 +361,45 @@ switch (strtolower($type)) {
 		// everything ok, update the attachment download counter
 		$result = dbquery("UPDATE ".$db_prefix."forum_attachments SET attach_count=attach_count+1 WHERE attach_id='$file_id'");
 		// define the required parameters for the download
+		$source = "file";
 		$filename = $attachment['attach_name'];
 		$filepath = PATH_ATTACHMENTS;
 		$downloadname = $attachment['attach_realname'] == "" ? $attachment['attach_name'] : $attachment['attach_realname'];
+		break;
+
+	case "fc":	// forum code blocks
+		// check if the requester has read access to the forum
+		$forum = dbarray(dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_id = '".$forum_id."'"));
+		if (!is_array($forum)) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		// if logged in, check if the user has access to this file. if not, print an error and give up
+		if (iMEMBER && !getfilegroup($forum['forum_access'], $userdata['user_level'])) {
+			terminate("<b>You don't have access to the requested file ID.</b>");
+		}
+		// if not logged in, and authorisation required, check if userid and password is given and valid
+		if (!iMEMBER && $forum['forum_access'] != 0) {
+			// Not public, authentication is required
+			auth_BasicAuthentication();
+		}
+		// check if the requested message exists, if so retrieve the information
+		$message = dbarray(dbquery("SELECT * FROM ".$db_prefix."posts WHERE forum_id='$forum_id' AND thread_id='$thread_id' AND post_id='$post_id'"));
+		if (!is_array($message)) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		// get the code blocks from the message body
+		require PATH_INCLUDES."forum_functions_include.php";
+		// strip CODE bbcode, optionally perform Geshi color coding
+		$codeblocks = array();
+		$raw_color_blocks = true;
+		$message = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $message['post_message']);
+		// do we have the requested code block?
+		if (!isset($codeblocks[$id])) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		$source = "var";
+		$downloadname = "file.".($codeblocks[$id][1]==""?"txt":$codeblocks[$id][1]);
+		$downloaddata = _unhtmlentities($codeblocks[$id][0]);
 		break;
 
 	case "pa":	// personal message attachments
@@ -374,6 +419,7 @@ switch (strtolower($type)) {
 			terminate("<b>You don't have access to the requested file ID.</b>");
 		}
 		// define the required parameters for the download
+		$source = "file";
 		$filename = $attachment['pmattach_name'];
 		$filepath = PATH_PM_ATTACHMENTS;
 		$downloadname = $attachment['pmattach_realname'] == "" ? $attachment['pmattach_name'] : $attachment['pmattach_realname'];
@@ -394,9 +440,21 @@ ini_set('zlib.output_compression', 'Off');
 
 // define the download parameters and start the download
 $object = new httpdownload;
-$object->set_mime(setmime($filename));
-$object->set_byfile($filepath.$filename);
-$object->set_filename($downloadname);
-$object->use_resume = false;
+
+switch($source) {
+	case "file":
+		$object->set_mime(setmime($filename));
+		$object->set_byfile($filepath.$filename);
+		$object->set_filename($downloadname);
+		$object->use_resume = false;
+		break;
+	case "var":
+		$object->set_mime(setmime($downloadname));
+		$object->set_bydata($downloaddata);
+		$object->set_filename($downloadname);
+		$object->use_resume = false;
+		break;
+}
+
 $object->download();
 ?>

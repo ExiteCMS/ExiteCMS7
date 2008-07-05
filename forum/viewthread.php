@@ -418,7 +418,7 @@ if ($rows != 0) {
 		// check if the users avatar exists
 		if (!file_exists(PATH_IMAGES."avatars/".$data['user_avatar'])) $data['user_avatar'] = "imagenotfound.jpg";
 		// prepare the message text for display
-		$data['post_message'] = parsemessage($data['post_message'], $data['post_smileys']);
+		$data['post_message'] = parsemessage($data);
 
 		// prepare the users signature
 		$data['user_sig'] = nl2br(parseubb(parsesmileys($data['user_sig'])));

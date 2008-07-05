@@ -132,7 +132,11 @@ function gathermsginfo($msgrec, $preview = false) {
 	}
 
 	// parse the messsage body
-	$msgrec['pm_message'] = parsemessage($msgrec['pm_message'], $msgrec['pm_smileys']==0);
+	$_s = $msgrec['pm_smileys'];
+	$msgrec['post_smileys'] = $msgrec['pm_smileys']==0;
+	$msgrec['post_message'] = $msgrec['pm_message'];
+	$msgrec['pm_message'] = parsemessage($msgrec);
+	$msgrec['pm_smileys'] = $_s;
 	
 	// check if the users avatar exists
 	if (!empty($msgrec['user_avatar']) && !file_exists(PATH_IMAGES."avatars/".$msgrec['user_avatar'])) $msgrec['user_avatar'] = "imagenotfound.jpg";

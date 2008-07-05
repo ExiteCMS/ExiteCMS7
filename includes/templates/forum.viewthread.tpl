@@ -14,6 +14,31 @@
 {* Template for the forum module 'index'                                   *}
 {*                                                                         *}
 {***************************************************************************}
+<script type='text/javascript'>
+function jumpForum(forumid) {ldelim}
+	document.location.href='{$smarty.const.FORUM}viewforum.php?forum_id='+forumid;
+{rdelim}
+{literal}
+function flipOverflow(who) {
+	var tmp;
+	var status;
+	if (document.images['b_' + who].src.indexOf('_on') == -1) { 
+		tmp = document.images['b_' + who].src.replace('_off', '_on');
+		document.getElementById('box_' + who).style.overflowX = 'hidden';
+		document.getElementById('box_' + who).style.overflow = 'hidden';
+	} else { 
+		tmp = document.images['b_' + who].src.replace('_on', '_off');
+		var browser = whichBrowser();
+		if (browser == 'IE 6' || browser == 'IE 7') {
+			document.getElementById('box_' + who).style.overflowX = 'scroll';
+		} else {
+			document.getElementById('box_' + who).style.overflow = 'visible';
+		}
+	}
+	document.images['b_' + who].src = tmp;
+	return false;
+}{/literal}
+</script>
 {include file="_opentable.tpl" name=$_name title=$locale.500 state=$_state style=$_style}
 <table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
@@ -220,11 +245,6 @@
 </form>
 {include file="_closetable.tpl"}
 {/if}
-<script type='text/javascript'>
-function jumpForum(forumid) {ldelim}
-	document.location.href='{$smarty.const.FORUM}viewforum.php?forum_id='+forumid;
-{rdelim}
-</script>
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}

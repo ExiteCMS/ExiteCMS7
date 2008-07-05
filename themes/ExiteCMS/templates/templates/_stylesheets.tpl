@@ -48,7 +48,7 @@ optgroup				{ padding-bottom:5px; font-style:normal; }
 form					{ margin:0px; }
 
 						/* buttons */
-.button					{ font-size:90%; font-weight:normal; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
+.button					{ font-size:0.8em; font-weight:normal; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
 .button:hover			{ color:#666; background-color:#ddd; border-top:1px #999 solid; border-left:1px #999 solid; border-bottom:1px #fff solid; border-right:1px #fff solid; }
 
 						/* text entry fields */
@@ -57,7 +57,7 @@ form					{ margin:0px; }
 /* --- Website template ------------------------------------ */
 
 						/* page body (normal/user mode + maintenance/webmaster mode) */
-body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; margin:4px 10px 5px 10px; }
+body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; margin:4px 10px 5px 10px; width:100%; }
 .body 					{ color:#444; background-color:#aaa; }
 .body-maint				{ color:#444; background-color:{/literal}{$settings.maintenance_color}{literal}; }
 
@@ -175,10 +175,10 @@ hr.side-hr				{ height:2px; }
 						/* quotes within the message body */
 .quote					{ color:#333; background-color:#ddd; padding:4px; margin:5px 10px 5px 10px; border:1px #444 solid; }
 
-						/* code sections within the message body */
-.codeblock 				{ font-family: courier, monospace; font-size:110%; margin:5px 20px 5px 20px; overflow-x:auto; white-space: nowrap}
-.code 					{ margin:0px; padding:0 0 0 5px; border:1px #bbb solid; background-color:#fff; overflow-x:hidden}
-.codenr 				{ margin:0px; padding:0px 3px 0px 3px; border:1px #bbb solid; background-color:#ddd; float:left; }
+.codecontainer			{ width:480px; background-color:#ffffef; border:1px #bbb solid; overflow:hidden; position:relative; z-index:1; }
+.codeblock 				{ }
+.codenr 				{ font-family:monospace; font-size:1em; background-color:#fffef; padding: 0px 5px 0px 5px; vertical-align:top; }
+.code 					{ font-family:monospace; background-color:#ffffef; white-space:nowrap; }
 
 						/* thumbnail caption in the message body */
 .thumbnail				{ color:#fff;background-color:#333;text-align:center; }

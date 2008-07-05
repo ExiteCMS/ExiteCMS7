@@ -14,6 +14,12 @@
 +----------------------------------------------------*/
 if (eregi("forum_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
+$current_message = array();
+$codeblocks = array();
+$urlblocks = array();
+$blockcount = 0;
+$raw_color_blocks = false;
+
 // add a poll vote to the database
 function fpm_vote() {
 	global $db_prefix, $userdata, $fpm, $fpm_settings;
@@ -312,75 +318,95 @@ function stripmessageinput($text) {
 	return $message;
 }
 
-// parse the [code] sections in a post
-function parsemessage($rawmsg, $smileys=true) {
+function _unhtmlentities($string) {
 
-	global $settings, $db_prefix;
-	
-	// temp message storage
-	$message = "";
-	$codeblocks = array();
+	$string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
+	$string = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $string);
+	// replace literal entities
+	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
+	$trans_tbl = array_flip($trans_tbl);
+	return strtr($string, $trans_tbl);
+}
 
-	// Split off the [code] blocks to exclude them from BBcode parsing
-	
-	// find the code [code] occurence
-	$i = strpos($rawmsg, "[code]");
+function _parseubb_codeblock($matches) {
+	global $codeblocks, $blockcount, $current_message, $raw_color_blocks;
 
-	// loop through the message until all are found and processed
-	while ($i !== false) {
-		// strip the bit before the [code] BBcode, and add a placeholder
-		$message .= substr($rawmsg, 0, $i+6)."{**@@**}";
-		// strip the processed bit
-		$rawmsg = substr($rawmsg, $i+6);
-		// find the end of the [code] block
-		$j = strpos($rawmsg, "[/code]");
-		// if not found, add the remaining bit, a forced [/code], and stop processing
-		if ($j === false) {
-			$message = str_replace("{**@@**}", $rawmsg, $message);
-			break;
-		}
-		// store this code block (convert the & to prevent entity replacement upon display)
-		$codeblocks[] = substr($rawmsg, 0, $j);
-		// strip the processed bit
-		$rawmsg = substr($rawmsg, $j);
-		// check if there are more code segments
-		$i = strpos($rawmsg, "[code]");
+	// empty code block?
+	if (trim($matches[2]) == "") {
+		// remove the code block entirely
+		return "";
+	}
+	// trim the values passed
+	$matches[1] = trim(substr($matches[1],1));
+
+	if ($raw_color_blocks == false) {
+		require_once PATH_GESHI."/geshi.php";
+		$geshi =& new GeSHi("", "");
+		// colorize the code
+		$geshi->set_language($matches[1]);
+		$geshi->set_header_type(GESHI_HEADER_DIV);
+		$geshi->set_tab_width(4);
+		$geshi->set_source(_unhtmlentities($matches[2]));
+		$matches[2] = $geshi->parse_code();
 	}
 
-	// any text left?
-	if (strlen($rawmsg)) $message .= $rawmsg;
+	if ($raw_color_blocks) {
+		$codeblocks[] = array($matches[2], $matches[1]);
+		return true;
+	}
 
-	// Split off the [url] blocks to exclude them from url parsing
-	$rawmsg = $message;
-	$message = "";
+	// generate the linenumbers
+	$ln = "";
+	$cnt = substr_count($matches[2], "\n")+1;
+	for ($i=1;$i<=$cnt;$i++) {
+		$ln .= $i."<br />";
+	}
+	$id = count($codeblocks);
+	++$blockcount;
+	$link = "<img src='".THEME."images/panel_on.gif' alt='' title='Toggle full code view' name='b_code_".$id."' onclick=\"javascript:flipOverflow('code_".$id."')\" />";
+	$link .= "<div class='side' style='display:inline;'> <a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='download this ".$matches[1]." code'>download</a> </div>";
+	$codeblocks[] = array("
+	<div id='box_code_".$id."' class='codecontainer'>
+	<table class='codeblock' cellpadding='0' cellspacing='0'>
+		<tr style='padding:0px;margin:0px;'>
+			<td class='codenr'>".$ln."</td>
+			<td class='code'>".$matches[2]."</td>
+		</tr>
+	</table>
+	</div>".$link."
+	", $matches[1]);
+	return "{**@".($id)."@**}";
+}
+
+function _parseubb_urlblock($matches) {
+	global $urlblocks;
+
+	$urlblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), $matches[2]);
+	return "{@@*".(count($urlblocks)-1)."*@@}";
+}
+
+// message parser, strip [code] and [url] sections, parse for BBcode and smiley's, then insert the sections again
+function parsemessage($msg_array) {
+	global $settings, $db_prefix, $codeblocks, $urlblocks, $current_message;
+
+	// validate the parameters
+	if (!is_array($msg_array) || !isset($msg_array['post_message']) || !isset($msg_array['post_smileys'])) {
+		return "";
+	}
+
+	$current_message = $msg_array;
+	$rawmsg = $msg_array['post_message'];
+	$smileys = $msg_array['post_smileys'];
+
+	// make sure these are empty!
+	$codeblocks = array();
 	$urlblocks = array();
 
-	// find the code [url] occurence
-	$i = strpos($rawmsg, "[url");
+	// strip CODE bbcode, optionally perform Geshi color coding
+	$rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
 
-	// loop through the message until all are found and processed
-	while ($i !== false) {
-		// strip the bit before the [url] BBcode, and add a placeholder
-		$message .= substr($rawmsg, 0, $i+4)."{@@**@@}";
-		// strip the processed bit
-		$rawmsg = substr($rawmsg, $i+4);
-		// find the end of the [url] block
-		$j = strpos($rawmsg, "[/url]");
-		// if not found, add the remaining bit, a forced [/url], and stop processing
-		if ($j === false) {
-			$message = str_replace("{@@**@@}", $rawmsg, $message);
-			break;
-		}
-		// store this url block
-		$urlblocks[] = substr($rawmsg, 0, $j);
-		// strip the processed bit
-		$rawmsg = substr($rawmsg, $j);
-		// check if there are more code segments
-		$i = strpos($rawmsg, "[url");
-	}
-
-	// any text left?
-	if (strlen($rawmsg)) $message .= $rawmsg;
+	// strip URL bbcode
+	$rawmsg = preg_replace_callback('#\[url(=.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_urlblock', $rawmsg);
 
 	// detect and convert wikitags to wiki bbcodes if needed
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
@@ -392,62 +418,36 @@ function parsemessage($rawmsg, $smileys=true) {
 			$search[] = "/([[:space:]\.\,-])+?(".$data['tag'].")([[:space:]\.\,-]+?|\]|$)/i";
 			$replace[] = "\\1[wiki]\\2[/wiki]\\3";
 		}
-		$message = preg_replace($search, $replace, $message);
-	}
-
-	// find remaining URL's in the text, and convert them to a href as well
-	$pattern = '#(^|[^\"=]{1})(https?://|ftp://|mailto:|news:)([^(,\s<>\[\]\)]+)([,\s\n<>\)]|$)#sme';
-	$message = preg_replace($pattern,"'$1<a href=\'$2$3\' target=\'_blank\'>'.shortenlink('$2$3',83).'</a>$4'",$message);
-	// re-insert the saved url blocks
-	foreach($urlblocks as $urlblock) {
-		// find the first placeholder
-		$i = strpos($message, "{@@**@@}");
-		$message = substr($message, 0, $i).$urlblock.substr($message, $i+8);
+		$rawmsg = preg_replace($search, $replace, $rawmsg);
 	}
 
 	// parse the smileys in the message
-	if ($smileys) $message = parsesmileys($message);
-	// page all ubbcode
-	$message = parseubb($message);
+	if ($smileys) $rawmsg = parsesmileys($rawmsg);
+	// parse all ubbcode
+	$rawmsg = parseubb($rawmsg);
 	// convert any newlines to html <br>
-	$message = nl2br($message);
+	$rawmsg = nl2br($rawmsg);
 
 	// re-insert the saved code blocks
-	foreach($codeblocks as $codeblock) {
-		// split the codeblock to add linenumbers
-		$lines = explode("\n", stripinput($codeblock));
-		// get rid of empty lines at the beginning and the end of the block
-		while (count($lines)>0 && trim($lines[0]) == "") {
-			array_shift($lines);
-		}
-		while (count($lines)>0 && trim($lines[count($lines)-1]) == "") {
-			array_pop($lines);
-		}
-		// only create a code block if there's code to display
-		if (count($lines) > 0) {
-			// check how wide the number column should be
-			$w = strlen(count($lines));
-			// embedded div with the linenumbers
-			$codeblock = "<div><pre class='codenr'>";
-			for($i=0;$i<count($lines);$i++) {
-				$codeblock .= str_replace("*", "&nbsp;", str_pad($i+1, $w, "*", STR_PAD_LEFT))."\n";
+	foreach($codeblocks as $key => $codeblock) {
+		$rawmsg = str_replace("{**@".$key."@**}", $codeblock[0], $rawmsg);
+	}
+
+	// re-insert the saved url blocks
+	foreach($urlblocks as $key => $urlblock) {
+		if (isURL($urlblock[0])) {
+			// check if the URL is prefixed. If not, assume http://
+			if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $urlblock[0])) {
+				$urlblock[0] = "http://".$urlblock[0];
 			}
-			$codeblock .= "</pre></div><pre class='code'>";
-			// add the lines back to the code div
-			foreach($lines as $nr => $line) {
-				$codeblock .= $line;
-			}
-			$codeblock .= "</pre>";
-			// find the first placeholder
-			$i = strpos($message, "{**@@**}");
-			$message = substr($message, 0, $i).$codeblock.substr($message, $i+8);
+			// convert it into a link
+			$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$urlblock[0]."' alt='' target='_blank'>".$urlblock[1]."</a>", $rawmsg);
 		} else {
-			// no code, remove the code block entirely
-			$i = strpos($message, "{**@@**}");
-			$message = substr($message, 0, $i-6).substr($message, $i+15);
+			// make the URL harmless
+			$rawmsg = str_replace("{@@*".$key."*@@}", "[url=".stripinput($urlblock[0])."]".stripinput($urlblock[1])."[/url]", $rawmsg);
 		}
-	}	
-	// return the parsed message body
-	return $message;
+	}
+
+	return $rawmsg;
 }
 ?>

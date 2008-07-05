@@ -2992,6 +2992,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['506'] = "Registreer";
 		$localestrings['507'] = "Het registratie systeem is momenteel uitgeschakeld.";
 		$localestrings['508'] = "Nieuwe code";
+		$localestrings['509'] = "Nieuwe gebruiker wacht op activatie";
+		$localestrings['510'] = "De gebruiker '%s' heeft zich geregistreerd, ga a.u.b. naar de gebruikers administratie en activeer deze nieuwe gebruiker.";
 		$localestrings['550'] = "Voer a.u.b. een gebruikersnaam in.";
 		$localestrings['551'] = "Voer a.u.b. een wachtwoord in.";
 		$localestrings['552'] = "Voer a.u.b. een email adres in.";

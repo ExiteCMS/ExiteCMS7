@@ -29,13 +29,24 @@ if (!isset($step)) $step = "";
 
 // activate a newly registered user
 if ($step == "activate") {
-	$usercode = stripinput($_GET['user_code']);
-	$result = dbquery("SELECT * FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
-	if (dbrows($result)) {
-		$data = dbarray($result);
-		$data = array_merge($data, unserialize($data['user_info']));
-		$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_offset, user_posts, user_joined, user_level, user_ip, user_status) VALUES('".$data['user_name']."', '".$data['user_fullname']."', md5(md5('".$data['user_password']."')), '".$data['user_email']."', '".$data['user_hide_email']."', '".$data['user_offset']."', '0', '".time()."', '101', '".$data['user_ip']."', '0')");
-		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
+	// check which kind of activation is needed
+	if (isset($_GET['user_code'])) {
+		$usercode = stripinput($_GET['user_code']);
+		$result = dbquery("SELECT * FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
+		if (dbrows($result)) {
+			$data = dbarray($result);
+			$data = array_merge($data, unserialize($data['user_info']));
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_offset, user_posts, user_joined, user_level, user_ip, user_status) VALUES('".$data['user_name']."', '".$data['user_fullname']."', md5(md5('".$data['user_password']."')), '".$data['user_email']."', '".$data['user_hide_email']."', '".$data['user_offset']."', '0', '".time()."', '101', '".$data['user_ip']."', '0')");
+			$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
+		}
+	} elseif (isset($_GET['user_id'])) {
+		$user_id = stripinput($_GET['user_id']);
+		if (isNum($user_id)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id = '$user_id'");
+			if (dbrows($result)) {
+				$result = dbquery("UPDATE ".$db_prefix."users SET user_status = '0' WHERE user_id = '$user_id'");
+			}
+		}
 	}
 }
 
@@ -48,9 +59,19 @@ if ($step == "delete") {
 // get the list of new users
 $variables['newusers'] = array();
 
-$result = dbquery("SELECT * FROM ".$db_prefix."new_users ORDER BY user_datestamp");
-while ($data = dbarray($result)) {
-	$variables['newusers'][] = array_merge($data, unserialize($data['user_info']));
+// when using email verification...
+if ($settings['email_verification'] == '1') {
+	// get the users from the new_users table
+	$result = dbquery("SELECT * FROM ".$db_prefix."new_users ORDER BY user_datestamp");
+	while ($data = dbarray($result)) {
+		$variables['newusers'][] = array_merge($data, unserialize($data['user_info']));
+	}
+} else {
+	// otherwise they are in the users tabel with a user_status of 2
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '2' ORDER BY user_joined");
+	while ($data = dbarray($result)) {
+		$variables['newusers'][] = $data;
+	}
 }
 
 // define the admin body panel

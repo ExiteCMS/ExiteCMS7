@@ -16,6 +16,9 @@ require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_INCLUDES."theme_functions.php";
 require_once PATH_INCLUDES."dns_functions.php";
 
+// do we want extensive email checks?
+define('CHECK_EMAIL', true);
+
 // temp storage for template variables
 $variables = array();
 
@@ -37,7 +40,7 @@ if ($settings['enable_registration'] == 1) {
 			$data = dbarray($result);
 			$user_info = unserialize($data['user_info']);
 			$activation = $settings['admin_activation'] == "1" ? "2" : "0";
-			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status, user_newsletters) VALUES('".$user_info['user_name']."', '".$user_info['user_fullname']."', '".md5(md5($user_info['user_password']))."', '".$user_info['user_email']."', '".$user_info['user_hide_email']."', '', '0000-00-00', '', '', '', '', '', 'Default', '".$user_info['user_offset']."', '', '', '0', '".time()."', '".time()."', '".USER_IP."', '', '', '101', '$activation', '1')");
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_locale, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status, user_newsletters) VALUES('".$user_info['user_name']."', '".$user_info['user_fullname']."', '".md5(md5($user_info['user_password']))."', '".$user_info['user_email']."', '".$user_info['user_hide_email']."', '', '0000-00-00', '', '', '', '', '', '".$settings['locale']."', 'Default', '".$user_info['user_offset']."', '', '', '0', '".time()."', '".time()."', '".USER_IP."', '', '', '101', '$activation', '1')");
 			$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code='$activate'");	
 			if ($settings['admin_activation'] == "1") {
 				$variables['message'] = $locale['453'];
@@ -73,45 +76,47 @@ if ($settings['enable_registration'] == 1) {
 			$error .= $locale['406']."<br /><br />\n";
 		}
 		
-		$email_domain = substr(strrchr($email, "@"), 1);
-		if (CMS_getmxrr($email_domain, $mxhosts)) {
-			// Get the hostname the MX record points to
-			$mailhost = $mxhosts[0];
-		} else {
-			// No MX record for this domain. Might be a hostname that accepts email
-			$mailhost = $email_domain;
-		}
-		$mailhost_ip = gethostbyname($mailhost);
-		if ($mailhost != $mailhost_ip) {
-			// found the mailserver for this email address. Check if the address exists
-			require_once PATH_INCLUDES.'smtp_include.php';
-			$mail = new SMTP();
-			if (!$mail->Connect($mailhost_ip, 0, 60)) {		// default SMTP port, 60sec timeout
-				// mail server doesn't respond
-				$error .= sprintf($locale['413'], $email_domain)."<br /><br />\n";
+		if (CHECK_EMAIL) {
+			$email_domain = substr(strrchr($email, "@"), 1);
+			if (CMS_getmxrr($email_domain, $mxhosts)) {
+				// Get the hostname the MX record points to
+				$mailhost = $mxhosts[0];
 			} else {
-				if (!$mail->Hello(substr(strrchr($settings['siteemail'], "@"), 1))) {
-					// mail server doesn't respond to HELLO message
+				// No MX record for this domain. Might be a hostname that accepts email
+				$mailhost = $email_domain;
+			}
+			$mailhost_ip = gethostbyname($mailhost);
+			if ($mailhost != $mailhost_ip) {
+				// found the mailserver for this email address. Check if the address exists
+				require_once PATH_INCLUDES.'smtp_include.php';
+				$mail = new SMTP();
+				if (!$mail->Connect($mailhost_ip, 0, 60)) {		// default SMTP port, 60sec timeout
+					// mail server doesn't respond
 					$error .= sprintf($locale['413'], $email_domain)."<br /><br />\n";
 				} else {
-					if (!$mail->Mail('address-validation'.strrchr($settings['siteemail'], "@"))) {
-						// mail server doesn't respond to MAIL FROM message
+					if (!$mail->Hello(substr(strrchr($settings['siteemail'], "@"), 1))) {
+						// mail server doesn't respond to HELLO message
 						$error .= sprintf($locale['413'], $email_domain)."<br /><br />\n";
 					} else {
-						if (!$mail->CheckRecipient($email)) {
-							// mail server doesn't respond to RCPT TO message
-							$error .= sprintf($locale['414'], $email, $mailhost)."<br /><br />\n";
+						if (!$mail->Mail('address-validation'.strrchr($settings['siteemail'], "@"))) {
+							// mail server doesn't respond to MAIL FROM message
+							$error .= sprintf($locale['413'], $email_domain)."<br /><br />\n";
 						} else {
-							// email address is accepted
+							if (!$mail->CheckRecipient($email)) {
+								// mail server doesn't respond to RCPT TO message
+								$error .= sprintf($locale['414'], $email, $mailhost)."<br /><br />\n";
+							} else {
+								// email address is accepted
+							}
 						}
 					}
+					$mail->Quit();
 				}
-				$mail->Quit();
+			} else {
+				$error .= sprintf($locale['412'], $email_domain)."<br /><br />\n";
 			}
-		} else {
-			$error .= sprintf($locale['412'], $email_domain)."<br /><br />\n";
 		}
-	
+
 		$result = dbquery("SELECT * FROM ".$db_prefix."blacklist WHERE blacklist_email='".$email."' OR blacklist_email='$email_domain'");
 		if (dbrows($result) != 0) $error .= $locale['411']."<br /><br />\n";
 		
@@ -160,6 +165,7 @@ if ($settings['enable_registration'] == 1) {
 			$user_theme = stripinput($_POST['user_theme']);
 			$user_sig = isset($_POST['user_sig']) ? stripinput(trim($_POST['user_sig'])) : "";
 		}
+		error_reporting(E_ALL);
 		if ($error == "") {
 			if ($settings['email_verification'] == "1") {
 				require_once PATH_INCLUDES."sendmail_include.php";
@@ -192,9 +198,15 @@ if ($settings['enable_registration'] == 1) {
 				$template_variables['register.verify'] = $variables;
 			} else {
 				$activation = $settings['admin_activation'] == "1" ? "2" : "0";
-				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES('$username', md5(md5('".$password1."')), '".$email."', '$user_hide_email', '$user_location', '$user_birthdate', '$user_aim', '$user_icq', '$user_msn', '$user_yahoo', '$user_web', '$user_theme', '$user_offset', '', '$user_sig', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation')");
+				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES('$username', md5(md5('".$password1."')), '".$email."', '$user_hide_email', '$user_location', '$user_birthdate', '$user_aim', '$user_icq', '$user_msn', '$user_yahoo', '$user_web', '$user_theme', '".$settings['locale']."', '$user_offset', '', '$user_sig', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation')");
 				if ($settings['admin_activation'] == "1") {
 					$variables['message'] = $locale['453'];
+					// send the webmaster a PM that an account needs to be activated
+					$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_escape_string(sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
+					if ($result) {
+						$pm_id = mysql_insert_id();
+						$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '1', '1', '1', '0')");
+					}
 				} else {
 					$variables['message'] = $locale['452'];
 				}

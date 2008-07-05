@@ -414,7 +414,7 @@ if (isset($_POST['preview'])) {
 			if ($preview['post_message'] == "") {
 				$preview['post_message'] = $locale['421'];
 			}
-			$preview['post_message'] = parsemessage($preview['post_message'], $preview['post_smileys']);
+			$preview['post_message'] = parsemessage($preview);
 			$preview['post_reply_id'] = $reply_id;
 			if ($reply_id != 0) {
 				$preview['post_reply_username'] = $variables['orgauthor'];
@@ -446,7 +446,10 @@ if (isset($_POST['preview'])) {
 			$preview['attachments'] = array();
 			// add information about the current user
 			$preview = array_merge($preview, $userdata);
-			$preview['user_sig'] = parsemessage($preview['user_sig'], $preview['post_smileys']);
+			$_x = $preview['user_message'];
+			$preview['user_message'] = $preview['user_sig'];
+			$preview['user_sig'] = parsemessage($preview);
+			$preview['user_message'] = $_x;
 			// process attachments
 			if ($settings['attachments'] == "1" && $fdata['forum_attach'] == "1") {
 				$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE post_id='$post_id' ORDER BY attach_id");

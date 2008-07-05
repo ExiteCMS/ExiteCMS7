@@ -178,3 +178,46 @@ function incrementalSelect(oSelect, oEvent) {
 		//Not a valid character;
 	}
 }
+
+function whichBrowser() {
+	//test for Firefox/x.x or Firefox x.x (ignoring remaining digits);
+	if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+		var ffversion=new Number(RegExp.$1); // capture x.x portion and store as a number
+		if (ffversion>=3)
+			return "FF 3";
+		else if (ffversion>=2)
+			return "FF 2";
+		else if (ffversion>=1)
+			return "FF 1";
+	} else {
+		//test for MSIE x.x;
+		if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+			var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
+			if (ieversion>=8)
+				return "IE 8";
+			else if (ieversion>=7)
+				return "IE 7";
+			else if (ieversion>=6)
+				return "IE 6";
+			else if (ieversion>=5)
+				return "IE 5";
+		} else {
+			//test for Opera/x.x or Opera x.x (ignoring remaining decimal places);
+			if (/Opera[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+				var oprversion=new Number(RegExp.$1); // capture x.x portion and store as a number
+				if (oprversion>=10)
+					return "OP 10";
+				else if (oprversion>=9)
+					return "OP 9";
+				else if (oprversion>=8)
+					return "OP 8";
+				else if (oprversion>=7)
+					return "OP 7";
+				else
+					document.write("n/a");
+			} else {
+ 				document.write("n/a");
+ 			}
+		}
+	}
+}

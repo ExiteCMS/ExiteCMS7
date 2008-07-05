@@ -39,7 +39,7 @@
 			{if $messages[id].pm_datestamp != 0}{if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}{$locale.408}{else}{$locale.407}{/if}: {$messages[id].pm_datestamp|date_format:"forumdate"}{/if}
 			</span>
 		</td>
-		<td class='tbl_top_mid' style='text-align:right;white-space:nowrap'>
+		<td class='tbl_top_mid' style='text-align:right;'>
 			{if !$is_preview}
 				{buttonlink name=$locale.423 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=forward&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
 				{if $folder == $locale.402 && $messages[id].pmindex_folder == 0}

@@ -2992,6 +2992,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['506'] = "Register";
 		$localestrings['507'] = "The registration system is currently disabled.";
 		$localestrings['508'] = "New code";
+		$localestrings['509'] = "New user awaiting activation";
+		$localestrings['510'] = "The user '%s' has registered, please go the the user administration section to activate the new account";
 		$localestrings['550'] = "Please specify a user name.";
 		$localestrings['551'] = "Please specify a password.";
 		$localestrings['552'] = "Please specify an email address.";
