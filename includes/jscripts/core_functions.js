@@ -214,9 +214,9 @@ function whichBrowser() {
 				else if (oprversion>=7)
 					return "OP 7";
 				else
-					document.write("n/a");
+					return("n/a");
 			} else {
- 				document.write("n/a");
+ 				return("n/a");
  			}
 		}
 	}
