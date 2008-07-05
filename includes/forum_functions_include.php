@@ -363,10 +363,10 @@ function _parseubb_codeblock($matches) {
 	}
 	$id = count($codeblocks);
 	++$blockcount;
-	$link = "<img src='".THEME."images/panel_on.gif' alt='' title='Toggle full code view' name='b_code_".$id."' onclick=\"javascript:flipOverflow('code_".$id."')\" />";
+	$link = "<img src='".THEME."images/panel_on.gif' alt='' title='Toggle full code view' name='b_code_".$blockcount."' onclick=\"javascript:flipOverflow('code_".$blockcount."')\" />";
 	$link .= "<div class='side' style='display:inline;'> <a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='download this ".$matches[1]." code'>download</a> </div>";
 	$codeblocks[] = array("
-	<div id='box_code_".$id."' class='codecontainer'>
+	<div id='box_code_".$blockcount."' class='codecontainer'>
 	<table class='codeblock' cellpadding='0' cellspacing='0'>
 		<tr style='padding:0px;margin:0px;'>
 			<td class='codenr'>".$ln."</td>

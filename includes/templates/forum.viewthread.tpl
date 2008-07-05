@@ -28,8 +28,7 @@ function flipOverflow(who) {
 		document.getElementById('box_' + who).style.overflow = 'hidden';
 	} else { 
 		tmp = document.images['b_' + who].src.replace('_on', '_off');
-		var browser = whichBrowser();
-		if (browser == 'IE 6' || browser == 'IE 7') {
+		if (BrowserDetect.browser == "Explorer") {
 			document.getElementById('box_' + who).style.overflowX = 'scroll';
 		} else {
 			document.getElementById('box_' + who).style.overflow = 'visible';

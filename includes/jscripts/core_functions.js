@@ -1,9 +1,18 @@
-/* 
-------------------------------------------
-	Flipbox written by CrappoMan
-	simonpatterson@dsl.pipex.com
-------------------------------------------
-*/
+/*---------------------------------------------------+
+| ExiteCMS Content Management System                 |
++----------------------------------------------------+
+| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| for support, please visit http://exitecms.exite.eu |
++----------------------------------------------------+
+| Some portions copyright 2002 - 2006 Nick Jones     |
+| http://www.php-fusion.co.uk/                       |
++----------------------------------------------------+
+| Released under the terms & conditions of v2 of the |
+| GNU General Public License. For details refer to   |
+| the included gpl.txt file or visit http://gnu.org  |
++----------------------------------------------------*/
+
+// Flipbox written by CrappoMan, simonpatterson@dsl.pipex.com
 function flipBox(who) {
 	var tmp;
 	var status;
@@ -22,7 +31,7 @@ function flipBox(who) {
 	return false;
 }
 
-// function based on FlipBox, but usable for normal divs
+// Based on FlipBox, but usable for normal divs
 function flipDiv(who) {
 	if (document.getElementById(who).style.display == 'block')
 	    document.getElementById(who).style.display = 'none';
@@ -119,35 +128,6 @@ function insertText(elname, what) {
 	}
 }
 
-function show_hide(msg_id) {
-	msg_id.style.display = msg_id.style.display == 'none' ? 'block' : 'none';
-}
-
-function createCookie(name,value,days) {
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-	}
-	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
-}
-
-function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
-}
-
-function eraseCookie(name) {
-	createCookie(name,"",-1);
-}
-
 function incrementalSelect(oSelect, oEvent) {
 	var sKeyCode = oEvent.keyCode;
 	var sToChar = String.fromCharCode(sKeyCode);
@@ -179,45 +159,137 @@ function incrementalSelect(oSelect, oEvent) {
 	}
 }
 
-function whichBrowser() {
-	//test for Firefox/x.x or Firefox x.x (ignoring remaining digits);
-	if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
-		var ffversion=new Number(RegExp.$1); // capture x.x portion and store as a number
-		if (ffversion>=3)
-			return "FF 3";
-		else if (ffversion>=2)
-			return "FF 2";
-		else if (ffversion>=1)
-			return "FF 1";
-	} else {
-		//test for MSIE x.x;
-		if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
-			var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
-			if (ieversion>=8)
-				return "IE 8";
-			else if (ieversion>=7)
-				return "IE 7";
-			else if (ieversion>=6)
-				return "IE 6";
-			else if (ieversion>=5)
-				return "IE 5";
-		} else {
-			//test for Opera/x.x or Opera x.x (ignoring remaining decimal places);
-			if (/Opera[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
-				var oprversion=new Number(RegExp.$1); // capture x.x portion and store as a number
-				if (oprversion>=10)
-					return "OP 10";
-				else if (oprversion>=9)
-					return "OP 9";
-				else if (oprversion>=8)
-					return "OP 8";
-				else if (oprversion>=7)
-					return "OP 7";
-				else
-					return("n/a");
-			} else {
- 				return("n/a");
- 			}
-		}
+// Cookie functions
+
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
 	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
 }
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+function eraseCookie(name) {
+	createCookie(name,"",-1);
+}
+
+// Browser detection
+
+var BrowserDetect = {
+	init: function () {
+		this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+		this.version = this.searchVersion(navigator.userAgent)
+			|| this.searchVersion(navigator.appVersion)
+			|| "an unknown version";
+		this.OS = this.searchString(this.dataOS) || "an unknown OS";
+	},
+	searchString: function (data) {
+		for (var i=0;i<data.length;i++)	{
+			var dataString = data[i].string;
+			var dataProp = data[i].prop;
+			this.versionSearchString = data[i].versionSearch || data[i].identity;
+			if (dataString) {
+				if (dataString.indexOf(data[i].subString) != -1)
+					return data[i].identity;
+			}
+			else if (dataProp)
+				return data[i].identity;
+		}
+	},
+	searchVersion: function (dataString) {
+		var index = dataString.indexOf(this.versionSearchString);
+		if (index == -1) return;
+		return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+	},
+	dataBrowser: [
+		{ 	string: navigator.userAgent,
+			subString: "OmniWeb",
+			versionSearch: "OmniWeb/",
+			identity: "OmniWeb"
+		},
+		{
+			string: navigator.vendor,
+			subString: "Apple",
+			identity: "Safari"
+		},
+		{
+			prop: window.opera,
+			identity: "Opera"
+		},
+		{
+			string: navigator.vendor,
+			subString: "iCab",
+			identity: "iCab"
+		},
+		{
+			string: navigator.vendor,
+			subString: "KDE",
+			identity: "Konqueror"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "Firefox",
+			identity: "Firefox"
+		},
+		{
+			string: navigator.vendor,
+			subString: "Camino",
+			identity: "Camino"
+		},
+		{		// for newer Netscapes (6+)
+			string: navigator.userAgent,
+			subString: "Netscape",
+			identity: "Netscape"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "MSIE",
+			identity: "Explorer",
+			versionSearch: "MSIE"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "Gecko",
+			identity: "Mozilla",
+			versionSearch: "rv"
+		},
+		{ 		// for older Netscapes (4-)
+			string: navigator.userAgent,
+			subString: "Mozilla",
+			identity: "Netscape",
+			versionSearch: "Mozilla"
+		}
+	],
+	dataOS : [
+		{
+			string: navigator.platform,
+			subString: "Win",
+			identity: "Windows"
+		},
+		{
+			string: navigator.platform,
+			subString: "Mac",
+			identity: "Mac"
+		},
+		{
+			string: navigator.platform,
+			subString: "Linux",
+			identity: "Linux"
+		}
+	]
+
+};
+BrowserDetect.init();
