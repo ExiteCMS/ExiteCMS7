@@ -21,13 +21,12 @@ function jumpForum(forumid) {ldelim}
 {literal}
 function flipOverflow(who) {
 	var tmp;
-	var status;
-	if (document.images['b_' + who].src.indexOf('_on') == -1) { 
-		tmp = document.images['b_' + who].src.replace('_off', '_on');
+	if (document.images['b_' + who].src.indexOf('right.gif') == -1) {
+		tmp = document.images['b_' + who].src.replace('left.gif', 'right.gif');
 		document.getElementById('box_' + who).style.overflowX = 'hidden';
 		document.getElementById('box_' + who).style.overflow = 'hidden';
 	} else { 
-		tmp = document.images['b_' + who].src.replace('_on', '_off');
+		tmp = document.images['b_' + who].src.replace('right.gif', 'left.gif');
 		if (BrowserDetect.browser == "Explorer") {
 			document.getElementById('box_' + who).style.overflowX = 'scroll';
 		} else {

@@ -175,9 +175,9 @@ hr.side-hr				{ height:2px; }
 						/* quotes within the message body */
 .quote					{ color:#333; background-color:#ddd; padding:4px; margin:5px 10px 5px 10px; border:1px #444 solid; }
 
-.codecontainer			{ width:480px; background-color:#ffffef; border:1px #bbb solid; overflow:hidden; position:relative; z-index:1; }
+.codecontainer			{ width:480px; border:1px #bbb solid; overflow:hidden; position:relative; z-index:1; }
 .codeblock 				{ }
-.codenr 				{ font-family:monospace; font-size:1em; background-color:#fffef; padding: 0px 5px 0px 5px; vertical-align:top; }
+.codenr 				{ font-family:monospace; font-size:1em; background-color:#ffffdf; padding: 0px 5px 0px 5px; vertical-align:top; text-align:right;}
 .code 					{ font-family:monospace; background-color:#ffffef; white-space:nowrap; }
 
 						/* thumbnail caption in the message body */

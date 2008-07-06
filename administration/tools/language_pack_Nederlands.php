@@ -2297,6 +2297,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['579'] = "aim";
 		$localestrings['580'] = "skype";
 		$localestrings['581'] = "Naar boven";
+		$localestrings['582'] = "Zichtbare code aanpassen";
+		$localestrings['583'] = "deze %s code downloaden";
+		$localestrings['584'] = "download";
+		$localestrings['585'] = "Code:";
 		load_localestrings($localestrings, LP_LOCALE, "forum.main", $step);
 
 		$localestrings = array();

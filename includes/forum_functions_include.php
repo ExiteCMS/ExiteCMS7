@@ -329,7 +329,7 @@ function _unhtmlentities($string) {
 }
 
 function _parseubb_codeblock($matches) {
-	global $codeblocks, $blockcount, $current_message, $raw_color_blocks;
+	global $codeblocks, $blockcount, $current_message, $raw_color_blocks, $locale;
 
 	// empty code block?
 	if (trim($matches[2]) == "") {
@@ -363,18 +363,8 @@ function _parseubb_codeblock($matches) {
 	}
 	$id = count($codeblocks);
 	++$blockcount;
-	$link = "<img src='".THEME."images/panel_on.gif' alt='' title='Toggle full code view' name='b_code_".$blockcount."' onclick=\"javascript:flipOverflow('code_".$blockcount."')\" />";
-	$link .= "<div class='side' style='display:inline;'> <a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='download this ".$matches[1]." code'>download</a> </div>";
-	$codeblocks[] = array("
-	<div id='box_code_".$blockcount."' class='codecontainer'>
-	<table class='codeblock' cellpadding='0' cellspacing='0'>
-		<tr style='padding:0px;margin:0px;'>
-			<td class='codenr'>".$ln."</td>
-			<td class='code'>".$matches[2]."</td>
-		</tr>
-	</table>
-	</div>".$link."
-	", $matches[1]);
+	$link = "<table class='codecontainer' style='border:0px;'><tr><td align='left'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],$matches[1])."'>".$locale['584']."</a></td><td align='right'><img src='".THEME."images/right.gif' alt='' title='".$locale['582']."' name='b_code_".$blockcount."' onclick=\"javascript:flipOverflow('code_".$blockcount."')\" /></td></tr></table>";
+	$codeblocks[] = array("<div id='box_code_".$blockcount."' class='codecontainer'><table class='codeblock' cellpadding='0' cellspacing='0'><tr style='padding:0px;margin:0px;'><td class='codenr'>".$ln."</td><td class='code'>".$matches[2]."</td></tr></table></div>".$link, $matches[1]);
 	return "{**@".($id)."@**}";
 }
 
@@ -426,7 +416,9 @@ function parsemessage($msg_array) {
 	// parse all ubbcode
 	$rawmsg = parseubb($rawmsg);
 	// convert any newlines to html <br>
+	$rawmsg = str_replace("\r\n\r\n", "\r\n", $rawmsg);
 	$rawmsg = nl2br($rawmsg);
+	
 
 	// re-insert the saved code blocks
 	foreach($codeblocks as $key => $codeblock) {
