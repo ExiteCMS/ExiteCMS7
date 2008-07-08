@@ -3303,8 +3303,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1214934141");
-$lp_date = "1214934141";
+if (!defined('LP_DATE')) define('LP_DATE', "1215543510");
+$lp_date = "1215543510";
 
 /*---------------------------------------------------+
 | main code                                          |
