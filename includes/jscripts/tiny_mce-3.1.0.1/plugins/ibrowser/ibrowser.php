@@ -1263,7 +1263,7 @@
 							$max = isset($cfg['umax']) && $cfg['umax'] >= 1 ? $cfg['umax'] : 1;					
 							for($i=1; $i <= $max; $i++) {; ?>
                       <label for="nfile"> <span class="pad10"> <?php echo $l->m('in_018'); if ($max > 1){ echo ' (' . $i . ')';} ?> </span> </label>
-                      <input name="nfile[]" type="file" class="fldlg" id="nfile[]" size="53" accept="image/*" />
+                      <input name="nfile[]" type="file" class="fldlg" id="nfile[]" size="45" accept="image/*" />
                       <?php }; ?>
                     </div>
                     <div class="rowDiv">
