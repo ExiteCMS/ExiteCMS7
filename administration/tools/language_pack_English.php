@@ -233,6 +233,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['488'] = "Save Download";
 		$localestrings['489'] = "Update Publication Date";
 		$localestrings['490'] = "Attention! All downloads in '%s' are publicly accessable!";
+		$localestrings['491'] = "Count download externally:";
+		$localestrings['492'] = "Yes";
+		$localestrings['493'] = "No";
 		$localestrings['500'] = "Current Downloads";
 		$localestrings['501'] = "Download Item [Click to Test]";
 		$localestrings['502'] = "Options";

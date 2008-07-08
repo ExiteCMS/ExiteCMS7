@@ -19,7 +19,7 @@
 		<form name='inputform' method='post' action='{$formaction}'>
 			<table align='center' cellpadding='0' cellspacing='0' width='460'>
 				<tr>
-					<td width='80' class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.480}
 					</td>
 					<td class='tbl'>
@@ -27,7 +27,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td valign='top' width='80' class='tbl'>
+					<td width='1%' valign='top' class='tbl' style='white-space:nowrap'>
 						{$locale.481}
 					</td>
 					<td class='tbl'>
@@ -35,7 +35,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td class='tbl'></td><td class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
+					</td>
+					<td class='tbl'>
 						<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('download_description', '<b>', '</b>');" />
 						<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('download_description', '<i>', '</i>');" />
 						<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('download_description', '<u>', '</u>');" />
@@ -51,7 +53,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width='80' class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.482}
 					</td>
 					<td class='tbl'>
@@ -59,7 +61,18 @@
 					</td>
 				</tr>
 				<tr>
-					<td width='80' class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
+						{$locale.491}
+					</td>
+					<td class='tbl'>
+						<select name='download_external' class='textbox'>
+							<option value='0'{if $download_external == 0} selected="selected"{/if}>{$locale.493}</option>
+							<option value='1'{if $download_external == 1} selected="selected"{/if}>{$locale.492}</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.483}
 					</td>
 					<td class='tbl'>
@@ -74,7 +87,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width='80' class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.484}
 					</td>
 					<td class='tbl'>
@@ -82,7 +95,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width='80' class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.485}
 					</td>
 					<td class='tbl'>
@@ -98,7 +111,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width='80' class='tbl'>
+					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.487}
 					</td>
 					<td class='tbl'>

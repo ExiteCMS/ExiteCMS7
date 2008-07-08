@@ -70,15 +70,23 @@ if (isset($download_id)) {
 		$cdata = dbarray(dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='".$data['download_cat']."'"));
 		// and the user has access to it...
 		if (checkgroup($cdata['download_cat_access'])) {
-			// update the download counter (if we're using internal statistics)
-			if (!isset($settings['dlstats_remote']) || !$settings['dlstats_remote']) $result = dbquery("UPDATE ".$db_prefix."downloads SET download_count=download_count+1 WHERE download_id='$download_id'");
+			// update download counter 
+			if ($data['download_external']) {
+				// do nothing, an external module will update the counters
+			} else {
+				$result = dbquery("UPDATE ".$db_prefix."downloads SET download_count=download_count+1 WHERE download_id='$download_id'");
+				// download module installed but no external stats collector active?
+				if (isset($settings['dlstats_remote']) && !$settings['dlstats_remote']) {
+					// Then update the IP counters for mapping purposes
+					if (USER_IP != "0.0.0.0") {
+						$result = dbquery("INSERT INTO ".$db_prefix."dlstats_ips (dlsi_ip, dlsi_ccode, dlsi_counter) VALUES ('".USER_IP."', '".USER_CC."', '1') ON DUPLICATE KEY UPDATE dlsi_counter = dlsi_counter + 1");
+					}
+				}
+			}
 			// if a URL is given for the download, redirect to it, else fall back to the download category
 			if ($data['download_url']) {
 				// download statistics plugin installed but no remote stats used? Then update the IP counters
 				if (isset($settings['dlstats_remote']) && !$settings['dlstats_remote']) {
-					if (USER_IP != "0.0.0.0") {
-						$result = dbquery("INSERT INTO ".$db_prefix."dlstats_ips (dlsi_ip, dlsi_ccode, dlsi_counter) VALUES ('".USER_IP."', '".USER_CC."', '1') ON DUPLICATE KEY UPDATE dlsi_counter = dlsi_counter + 1");
-					}
 				}
 				redirect($data['download_url']);
 				exit;

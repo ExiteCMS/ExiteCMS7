@@ -233,6 +233,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['488'] = "Download opslaan";
 		$localestrings['489'] = "Publicatiedatum aanpassen";
 		$localestrings['490'] = "Attentie! Alle downloads in '%s' toegankelijk voor het publiek!";
+		$localestrings['491'] = "Download wordt extern geteld:";
+		$localestrings['492'] = "Ja";
+		$localestrings['493'] = "Nee";
 		$localestrings['500'] = "Huidige Downloads";
 		$localestrings['501'] = "Download Item [Klik om te testen]";
 		$localestrings['502'] = "Opties";

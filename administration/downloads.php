@@ -132,16 +132,17 @@ if (dbrows($result) != 0) {
 		$download_title = stripinput($_POST['download_title']);
 		$download_description = addslash($_POST['download_description']);
 		$download_url = stripinput($_POST['download_url']);
+		$download_external = (isset($_POST['download_external']) && isNum($_POST['download_external'])) ? $_POST['download_external'] : 0;
 		$download_license = stripinput($_POST['download_license']);
 		$download_os = stripinput($_POST['download_os']);
 		$download_version = stripinput($_POST['download_version']);
 		$download_filesize = stripinput($_POST['download_filesize']);
 		if ($step == "edit") {
 			$download_datestamp = isset($_POST['update_datestamp']) ? ", download_datestamp='".time()."'" : "";
-			$result = dbquery("UPDATE ".$db_prefix."downloads SET download_title='$download_title', download_description='$download_description', download_url='$download_url', download_cat='$download_cat', download_license='$download_license', download_os='$download_os', download_version='$download_version', download_filesize='$download_filesize'".$download_datestamp." WHERE download_id='$download_id'");
+			$result = dbquery("UPDATE ".$db_prefix."downloads SET download_title='$download_title', download_description='$download_description', download_url='$download_url', download_cat='$download_cat', download_license='$download_license', download_os='$download_os', download_version='$download_version', download_filesize='$download_filesize'".$download_datestamp.",download_external='".$download_external."' WHERE download_id='$download_id'");
 			redirect(FUSION_SELF.$aidlink."&download_cat_id=$download_cat&cat_locale=$cat_locale");
 		} else {
-			$result = dbquery("INSERT INTO ".$db_prefix."downloads (download_title, download_description, download_url, download_cat, download_license, download_os, download_version, download_filesize, download_datestamp, download_count) VALUES ('$download_title', '$download_description', '$download_url', '$download_cat', '$download_license', '$download_os', '$download_version', '$download_filesize', '".time()."', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."downloads (download_title, download_description, download_url, download_cat, download_license, download_os, download_version, download_filesize, download_datestamp, download_count, download_external) VALUES ('$download_title', '$download_description', '$download_url', '$download_cat', '$download_license', '$download_os', '$download_version', '$download_filesize', '".time()."', '0', '$download_external')");
 			redirect(FUSION_SELF.$aidlink."&download_cat_id=$download_cat&cat_locale=$cat_locale");
 		}
 	}
@@ -155,6 +156,7 @@ if (dbrows($result) != 0) {
 		$download_os = $data['download_os'];
 		$download_version = $data['download_version'];
 		$download_filesize = $data['download_filesize'];
+		$download_external = $data['download_external'];
 		$formaction = FUSION_SELF.$aidlink."&amp;step=edit&amp;download_cat_id=$download_cat_id&amp;download_id=$download_id";
 		$title = $locale['470'];
 	} else {
@@ -165,6 +167,7 @@ if (dbrows($result) != 0) {
 		$download_os = "";
 		$download_version = "";
 		$download_filesize = "";
+		$download_external = 0;
 		$formaction = FUSION_SELF.$aidlink;
 		$title = $locale['471'];
 	}
@@ -222,6 +225,7 @@ if (dbrows($result) != 0) {
 	$variables['download_os'] = $download_os;
 	$variables['download_version'] = $download_version;
 	$variables['download_filesize'] = $download_filesize;
+	$variables['download_external'] = $download_external;
 
 } else {
 	$title = $locale['500'];
