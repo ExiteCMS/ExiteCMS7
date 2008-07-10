@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Tue Jul 1 2008, 19:42:17 CEST
+// generated on : Tue Jul 8 2008, 20:58:24 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";
@@ -52,10 +52,10 @@ $locale['473'] = "Blogs";
 $locale['474'] = "Members";
 $locale['475'] = "News";
 $locale['476'] = "Panels";
-$locale['477'] = "x";
+$locale['477'] = "Reports";
 $locale['478'] = "PHP Info";
 $locale['479'] = "Polls";
-$locale['480'] = "x";
+$locale['480'] = "Searches";
 $locale['481'] = "Menu System";
 $locale['482'] = "x";
 $locale['483'] = "Upgrade";
@@ -81,6 +81,7 @@ $locale['505'] = "News Categories";
 $locale['506'] = "Contact Us";
 $locale['507'] = "Search";
 $locale['508'] = "Register";
+$locale['509'] = "Reports";
 $locale['520'] = "Main Menu";
 $locale['521'] = "Online Users";
 $locale['522'] = "Forum Threads";
