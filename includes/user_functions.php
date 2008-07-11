@@ -269,7 +269,7 @@ function checkgroup($group, $all4superadmin = true) {
 
 // Check if a user is assigned to the specified user group
 function checkusergroup($user_id, $group_id) {
-	global $db_prefix;
+	global $groups, $db_prefix;
 
 	// every user is a member
 	if ($group_id == "101") { return true; }
