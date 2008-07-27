@@ -28,32 +28,31 @@ function GeoIP_IP2Num($ip_addr) {
 function GeoIP_IP2Code($ip_addr) {
 	global $db_prefix, $_GeoIP_result;
 
-	// convert the IP address to a number
-	$ipnum = GeoIP_IP2Num($ip_addr);
-	if (!$ipnum) return false;
-	
 	// not cached?
-	if (!isset($_GeoIP_result[$ipnum])) {
+	if (!isset($_GeoIP_result[$ip_addr])) {
 
 		// check if there is an exception defined
 		$result = dbquery("SELECT * FROM ".$db_prefix."GeoIP_exceptions WHERE ip_number = '".$ip_addr."' LIMIT 1");
 		if ($data = dbarray($result)) {
 			// add it to the cache
-			$_GeoIP_result[$ipnum] = $data['ip_code'];
+			$_GeoIP_result[$ip_addr] = $data['ip_code'];
 		} else {
+			// convert the IP address to a number
+			$ipnum = GeoIP_IP2Num($ip_addr);
+			if (!$ipnum) return false;			
 			// look this IP address up
 			$result = dbquery("SELECT * FROM ".$db_prefix."GeoIP WHERE '".sprintf("%u", $ipnum)."' BETWEEN ip_start_num AND ip_end_num LIMIT 1");
 			if ($data = dbarray($result)) {
 				// add it to the cache
-				$_GeoIP_result[$ipnum] = $data['ip_code'];
+				$_GeoIP_result[$ip_addr] = $data['ip_code'];
 			} else {
-				$_GeoIP_result[$ipnum] = false;
+				$_GeoIP_result[$ip_addr] = false;
 			}
 		}
 
 	}
 
-	return $_GeoIP_result[$ipnum];
+	return $_GeoIP_result[$ip_addr];
 }
 
 function GeoIP_IP2Name($ip_addr) {
@@ -70,16 +69,23 @@ function GeoIP_IP2Name($ip_addr) {
 function GeoIP_Code2Name($ip_code) {
 	global $db_prefix, $settings;
 
-	$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
-	if (!dbrows($result)) {
-		// no translated country names found, load the english set instead
-		$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = 'en' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+	// not cached?
+	if (!isset($_GeoIP_result[$ip_code])) {
+
+		$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+		if (!dbrows($result)) {
+			// no translated country names found, load the english set instead
+			$result = dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = 'en' AND locales_name = 'countrycode' AND locales_key = '".$ip_code."' LIMIT 1");
+		}
+		if (dbrows($result) == 0) {
+			$_GeoIP_result[$ip_code] = "";
+		} else {
+			$data = dbarray($result);
+			$_GeoIP_result[$ip_code] = $data['locales_value'];
+		}
 	}
-	if (dbrows($result) == 0) {
-		return "";
-	}
-	$data = dbarray($result);
-	return $data['locales_value'];
+
+	return $_GeoIP_result[$ip_code];
 }
 
 function GeoIP_IP2Flag($ip_addr, $tag=true, $width=false, $height=false) {

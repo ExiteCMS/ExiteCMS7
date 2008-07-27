@@ -17,6 +17,7 @@ if (eregi("forum_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT
 $current_message = array();
 $codeblocks = array();
 $urlblocks = array();
+$imgblocks = array();
 $blockcount = 0;
 $raw_color_blocks = false;
 
@@ -336,13 +337,19 @@ function _parseubb_codeblock($matches) {
 		// remove the code block entirely
 		return "";
 	}
-	// trim the values passed
+
+	// remove leading CRLF
+	if (substr($matches[2],0,2) == "\r\n") {
+		$matches[2] = substr($matches[2],2);
+	}
+
+	// remove the leading '=' from the file type
 	$matches[1] = trim(substr($matches[1],1));
 
+	// colorize the code if requested
 	if ($raw_color_blocks == false) {
 		require_once PATH_GESHI."/geshi.php";
 		$geshi =& new GeSHi("", "");
-		// colorize the code
 		$geshi->set_language($matches[1]);
 		$geshi->set_header_type(GESHI_HEADER_DIV);
 		$geshi->set_tab_width(4);
@@ -350,6 +357,7 @@ function _parseubb_codeblock($matches) {
 		$matches[2] = $geshi->parse_code();
 	}
 
+	// if a raw block was requested, bail out here
 	if ($raw_color_blocks) {
 		$codeblocks[] = array($matches[2], $matches[1]);
 		return true;
@@ -375,7 +383,14 @@ function _parseubb_urlblock($matches) {
 	return "{@@*".(count($urlblocks)-1)."*@@}";
 }
 
-// message parser, strip [code] and [url] sections, parse for BBcode and smiley's, then insert the sections again
+function _parseubb_imgblock($matches) {
+	global $imgblocks;
+
+	$imgblocks[] = array($matches[1], $matches[1]);
+	return "{@*@".(count($imgblocks)-1)."@*@}";
+}
+
+// message parser, strip [code], [img] and [url] sections, parse for BBcode, smiley's, then insert the sections again
 function parsemessage($msg_array) {
 	global $settings, $db_prefix, $codeblocks, $urlblocks, $current_message;
 
@@ -391,12 +406,23 @@ function parsemessage($msg_array) {
 	// make sure these are empty!
 	$codeblocks = array();
 	$urlblocks = array();
+	$imgblocks = array();
+
+	// convert any newlines to html <br>
+	$rawmsg = nl2br($rawmsg);
 
 	// strip CODE bbcode, optionally perform Geshi color coding
 	$rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
 
+    // find URL's in the text, and convert them to a [url] BBcode
+	$rawmsg = preg_replace("#(^|\s)(www|WWW)\.([^\s<>\/]+)\/([^\s\r\n<>\)\,\:\;\[]+)#sm", "\\1[url=http://\\2.\\3/\\4]http://\\2.\\3[/url]", $rawmsg);
+	$rawmsg = preg_replace("#(^|[^\"=\]]{1})(http|HTTP|ftp)(s|S)?://([^\s<>\/]+)\/([^\s\r\n<>\,\[]+)#sm", "\\1[url=\\2\\3://\\4/\\5]\\2\\3://\\4\\5[/url]", $rawmsg);
+
 	// strip URL bbcode
 	$rawmsg = preg_replace_callback('#\[url(=.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_urlblock', $rawmsg);
+
+	// strip IMG bbcode
+//	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_imgblock', $rawmsg);
 
 	// detect and convert wikitags to wiki bbcodes if needed
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
@@ -405,21 +431,25 @@ function parsemessage($msg_array) {
 		$replace = array();
 		$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
 		while ($data = dbarray($result)) {
-			$search[] = "/([[:space:]\.\,-])+?(".$data['tag'].")([[:space:]\.\,-]+?|\]|$)/i";
-			$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+			if (!empty($data['tag'])) {
+				$search[] = "/(\b)(".$data['tag'].")(\b)/i";
+				$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+			}
 		}
 		$rawmsg = preg_replace($search, $replace, $rawmsg);
 	}
 
+	// re-insert the saved img blocks
+	foreach($imgblocks as $key => $imgblock) {
+		$rawmsg = str_replace("{*@*".$key."*@*}", $imgblock[0], $rawmsg);
+	}
+
 	// parse the smileys in the message
 	if ($smileys) $rawmsg = parsesmileys($rawmsg);
+
 	// parse all ubbcode
 	$rawmsg = parseubb($rawmsg);
-	// convert any newlines to html <br>
-	$rawmsg = str_replace("\r\n\r\n", "\r\n", $rawmsg);
-	$rawmsg = nl2br($rawmsg);
 	
-
 	// re-insert the saved code blocks
 	foreach($codeblocks as $key => $codeblock) {
 		$rawmsg = str_replace("{**@".$key."@**}", $codeblock[0], $rawmsg);
