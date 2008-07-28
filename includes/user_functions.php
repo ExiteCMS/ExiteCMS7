@@ -24,9 +24,22 @@ if (dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$su
 	header("Location: http://en.wikipedia.org/wiki/IP_blocking"); exit;
 }
 
+// check for bot users
+$_bot_list = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi","looksmart", "URL_Spider_SQL", "Firefly", "NationalDirectory","Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot","crawler", "www.galaxy.com", "Googlebot", "Scooter", "Slurp","msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz","Baiduspider", "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot","Mediapartners-Google", "Sogou web spider", "WebAlta Crawler");
+foreach($_bot_list as $bot) {
+	if(ereg($bot, $_SERVER['HTTP_USER_AGENT'])) {
+		define("CMS_IS_BOT", true);
+		break;
+	}
+}
+if (!defined("CMS_IS_BOT")) {
+	define("CMS_IS_BOT", false);
+}
+unset($_bot_list);
+
 // Set the users site_visited cookie if this is the first visit, and update the unique visit counter
 // save the random site_visited value, we need that later in session management!
-if (!isset($_COOKIE['site_visited'])) {
+if (!CMS_IS_BOT && !isset($_COOKIE['site_visited'])) {
 	$result=dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
 	$site_visited = md5(uniqid(rand(), true));
 	setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
