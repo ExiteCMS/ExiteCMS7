@@ -446,10 +446,13 @@ if (isset($_POST['preview'])) {
 			$preview['attachments'] = array();
 			// add information about the current user
 			$preview = array_merge($preview, $userdata);
-			$_x = $preview['user_message'];
-			$preview['user_message'] = $preview['user_sig'];
+			// save the parsed message
+			$_x = $preview['post_message'];
+			// store the signature in the message to be parsed
+			$preview['post_message'] = $preview['user_sig'];
 			$preview['user_sig'] = parsemessage($preview);
-			$preview['user_message'] = $_x;
+			// restore the user message
+			$preview['post_message'] = $_x;
 			// process attachments
 			if ($settings['attachments'] == "1" && $fdata['forum_attach'] == "1") {
 				$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE post_id='$post_id' ORDER BY attach_id");
