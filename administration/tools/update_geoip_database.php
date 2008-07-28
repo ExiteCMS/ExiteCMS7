@@ -116,9 +116,27 @@ if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
 					if ($cc != "") { 
 						display("  * Updating country code for user '".$data['user_name']."'.");
 						$result2 = dbquery("UPDATE ".$db_prefix."users SET user_cc_code = '".$cc."' WHERE user_id = '".$data['user_id']."'");
+					} else {
+						display("  * No country code found for user '".$data['user_name']."'.");
 					}
 				}
 			}
+
+			// update the posts table
+			display("* Updating posts with an unknown country code.");
+			$result = dbquery("SELECT * FROM ".$db_prefix."posts WHERE post_cc = ''");
+			while ($data = dbarray($result)) {
+				if ($data['post_ip'] != "X") {
+					$cc = GeoIP_IP2Code($data['post_ip']);
+					if ($cc != "") { 
+						display("  * Updating country code for post '".$data['post_id']."'.");
+						$result2 = dbquery("UPDATE ".$db_prefix."posts SET post_cc = '".$cc."' WHERE post_id = '".$data['post_id']."'");
+					} else {
+						display("  * No country code for found  post '".$data['post_id']."'.");
+					}
+				}
+			}
+
 			// update the statistics ip table (if it exists)
 			if (dbtable_exists($db_prefix."dlstats_ips")) {
 				display("* Updating ip statistics with an unknown country code.");
@@ -128,6 +146,8 @@ if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
 					if ($cc != "") { 
 						display("  * Updating country code for statistics record '".$data['dlsi_id']."'.");
 						$result2 = dbquery("UPDATE ".$db_prefix."dlstats_ips SET dlsi_ccode = '".$cc."' WHERE dlsi_id = '".$data['dlsi_id']."'");
+					} else {
+						display("  * No country code found for statistics record '".$data['dlsi_id']."'.");
 					}
 				}
 			}
