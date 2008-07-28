@@ -392,7 +392,7 @@ function _parseubb_imgblock($matches) {
 
 // message parser, strip [code], [img] and [url] sections, parse for BBcode, smiley's, then insert the sections again
 function parsemessage($msg_array) {
-	global $settings, $db_prefix, $codeblocks, $urlblocks, $current_message;
+	global $settings, $db_prefix, $codeblocks, $urlblocks, $imgblocks, $current_message;
 
 	// validate the parameters
 	if (!is_array($msg_array) || !isset($msg_array['post_message']) || !isset($msg_array['post_smileys'])) {
@@ -408,9 +408,6 @@ function parsemessage($msg_array) {
 	$urlblocks = array();
 	$imgblocks = array();
 
-	// convert any newlines to html <br>
-	$rawmsg = nl2br($rawmsg);
-
 	// strip CODE bbcode, optionally perform Geshi color coding
 	$rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
 
@@ -421,8 +418,11 @@ function parsemessage($msg_array) {
 	// strip URL bbcode
 	$rawmsg = preg_replace_callback('#\[url(=.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_urlblock', $rawmsg);
 
+	// convert any newlines to html <br>
+	$rawmsg = nl2br($rawmsg);
+
 	// strip IMG bbcode
-//	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_imgblock', $rawmsg);
+	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_imgblock', $rawmsg);
 
 	// detect and convert wikitags to wiki bbcodes if needed
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
@@ -441,7 +441,7 @@ function parsemessage($msg_array) {
 
 	// re-insert the saved img blocks
 	foreach($imgblocks as $key => $imgblock) {
-		$rawmsg = str_replace("{*@*".$key."*@*}", $imgblock[0], $rawmsg);
+		$rawmsg = str_replace("{@*@".$key."@*@}", "[img]".$imgblock[0]."[/img]", $rawmsg);
 	}
 
 	// parse the smileys in the message
