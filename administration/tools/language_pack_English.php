@@ -2664,8 +2664,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['065'] = "Not a member yet?<br /><a href='%sregister.php' class='side'>Click here</a> to register.";
 		$localestrings['066'] = "Forgotten your password?<br />Request a new one <a href='%slostpassword.php' class='side'>here</a>.";
 		$localestrings['067'] = "OpenID URL";
-		$localestrings['068'] = "Get an OpenID";
-		$localestrings['069'] = "Info";
+		$localestrings['068'] = "What is an OpenID?";
+		$localestrings['069'] = "with";
 		$localestrings['070'] = "Online";
 		$localestrings['071'] = "< 5 mins";
 		$localestrings['072'] = "week";

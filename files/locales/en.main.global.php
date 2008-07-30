@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Wed Jul 30 2008, 0:23:10 CEST
+// generated on : Wed Jul 30 2008, 17:51:24 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -66,8 +66,8 @@ $locale['064'] = "Login";
 $locale['065'] = "Not a member yet?<br /><a href='%sregister.php' class='side'>Click here</a> to register.";
 $locale['066'] = "Forgotten your password?<br />Request a new one <a href='%slostpassword.php' class='side'>here</a>.";
 $locale['067'] = "OpenID URL";
-$locale['068'] = "Get an OpenID";
-$locale['069'] = "Info";
+$locale['068'] = "What is an OpenID?";
+$locale['069'] = "with";
 $locale['070'] = "Online";
 $locale['071'] = "< 5 mins";
 $locale['072'] = "week";

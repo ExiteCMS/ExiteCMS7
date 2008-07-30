@@ -43,6 +43,9 @@ if (isset($_POST['savesettings'])) {
 		$auth_method = $_POST['auth_method']{0};
 		$auth_local = $_POST['auth_method']{1} == "+" ? "1" : "0";
 		switch ($auth_method) {
+			case "0": 	// Local only
+				$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'local' WHERE cfg_name = 'auth_type'");
+				break;
 			case "1": 	// LDAP
 				if ($auth_local) {
 					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ldap,local' WHERE cfg_name = 'auth_type'");
@@ -59,7 +62,7 @@ if (isset($_POST['savesettings'])) {
 				break;
 			case "3":	// OpenID
 				if ($auth_local) {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'openid,local' WHERE cfg_name = 'auth_type'");
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'local,openid' WHERE cfg_name = 'auth_type'");
 				} else {
 					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'openid' WHERE cfg_name = 'auth_type'");
 				}
@@ -105,27 +108,29 @@ if (isset($login_extended_expire)) {
 }
 
 // determine the auth_method defined
-$auth_methods = explode(",",$settings2['auth_type'].",");
-switch($auth_methods[0]) {
-	case "ldap":
-		$auth_method = 1;
-		break;
-	case "ad":
-		$auth_method = 2;
-		break;
-	case "openid":
-		$auth_method = 3;
-	case "local":
-		break;
-	default:
-		$auth_method = 0;
+$auth_methods = explode(",",$settings2['auth_type']);
+$auth_method = 0;
+$auth_local = false;
+foreach($auth_methods as $auth_method) {
+	switch($auth_method) {
+		case "ldap":
+			$auth_method = 1;
+			break;
+		case "ad":
+			$auth_method = 2;
+			break;
+		case "openid":
+			$auth_method = 3;
+		case "local":
+			$auth_local = true;
+			break;
+		default:
+			$auth_method = 0;
+	}
 }
-$variables['auth_method'] = $auth_method;
 
 // check if a local fallback is defined
-if ($auth_method && $auth_methods[1] == "local") {
-	$variables['auth_method'] .= "+";
-}
+$variables['auth_method'] .= $auth_method . ($auth_local ? "+" : " ");
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.settings_security', 'template' => 'admin.settings_security.tpl', 'locale' => "admin.settings");
