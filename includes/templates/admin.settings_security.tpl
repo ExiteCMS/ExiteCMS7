@@ -87,6 +87,26 @@
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
+				{$locale.537}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='auth_method' class='textbox'>
+					<option value='0'{if $auth_method == "0"} selected="selected"{/if}>{$locale.538}</option>
+					<option value='1'{if $auth_method == "1"} selected="selected"{/if}>{$locale.539}</option>
+					<option value='1+'{if $auth_method == "1+"} selected="selected"{/if}>{$locale.539}{$locale.541}{$locale.538}</option>
+					<option value='2'{if $auth_method == "2"} selected="selected"{/if}>{$locale.540}</option>
+					<option value='2+'{if $auth_method == "2+"} selected="selected"{/if}>{$locale.540}{$locale.541}{$locale.538}</option>
+					<option value='3+'{if $auth_method == "3+"} selected="selected"{/if}>{$locale.538}{$locale.542}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align='center' colspan='2' class='tbl'>
+				<hr />
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
 				{$locale.528}
 			</td>
 			<td width='50%' class='tbl'>

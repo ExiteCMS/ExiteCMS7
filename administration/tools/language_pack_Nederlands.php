@@ -987,6 +987,12 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['534'] = "Berichten aanpassen onmogelijk na:";
 		$localestrings['535'] = "Uur";
 		$localestrings['536'] = "Uren";
+		$localestrings['537'] = "Authenticatie methode:";
+		$localestrings['538'] = "Lokale database";
+		$localestrings['539'] = "LDAP Server";
+		$localestrings['540'] = "Active Directory Server";
+		$localestrings['541'] = ", daarna ";
+		$localestrings['542'] = ", met OpenID";
 		$localestrings['550'] = "Beveiliging";
 		$localestrings['551'] = "Activeer registratie systeem?";
 		$localestrings['552'] = "Gebruik extra verificatie van gebruikers via email?";
@@ -1420,6 +1426,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['pl'] = "Polen";
 		$localestrings['pm'] = "Sint Pierre en Miquelon";
 		$localestrings['pr'] = "Puerto Rico";
+		$localestrings['ps'] = "Palestina";
 		$localestrings['pt'] = "Portugal";
 		$localestrings['pw'] = "Palau";
 		$localestrings['py'] = "Paraguay";
@@ -1666,6 +1673,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Poland'] = "pl";
 		$localestrings['Portugal'] = "pt";
 		$localestrings['Puerto Rico'] = "pr";
+		$localestrings['Palestina'] = "ps";
 		$localestrings['Qatar'] = "qa";
 		$localestrings['Republic Of Korea'] = "kr";
 		$localestrings['Republic Of Moldova'] = "md";
@@ -2641,6 +2649,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['064'] = "Aanmelden";
 		$localestrings['065'] = "Nog geen lid?<br /><a href='%sregister.php' class='side'>Klik hier</a> om te registeren.";
 		$localestrings['066'] = "Wachtwoord vergeten?<br />Vraag <a href='%slostpassword.php' class='side'>hier</a> een nieuwe aan.";
+		$localestrings['067'] = "OpenID URL";
+		$localestrings['068'] = "OpenID aanmaken";
+		$localestrings['069'] = "Info";
 		$localestrings['070'] = "Online";
 		$localestrings['071'] = "< 5 mins";
 		$localestrings['072'] = "week";
@@ -3262,6 +3273,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u063'] = "Mannelijk";
 		$localestrings['u064'] = "Vrouwlijk";
 		$localestrings['u065'] = "Geen opgave";
+		$localestrings['u066'] = "OpenID URL:";
 		$localestrings['u901'] = "Volledige naam";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
 		return "";

@@ -14,7 +14,7 @@
 +----------------------------------------------------*/
 if (eregi("user_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-// need to GeoIP functions to determine the users country of origin
+// need the GeoIP functions to determine the users country of origin
 require_once "geoip_include.php";
 
 // Check if users full or partial ip is blacklisted
@@ -39,62 +39,60 @@ unset($_bot_list);
 
 // Set the users site_visited cookie if this is the first visit, and update the unique visit counter
 // save the random site_visited value, we need that later in session management!
-if (!CMS_IS_BOT && !isset($_COOKIE['site_visited'])) {
-	$result=dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
-	$site_visited = md5(uniqid(rand(), true));
-	setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
-} else {
-	// replace the pre v7.1 cookie if needed
-	if ($_COOKIE['site_visited'] == "yes") {
+if (!CMS_IS_BOT) {
+	if (!isset($_COOKIE['site_visited'])) {
+		$result=dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = cfg_value+1 WHERE cfg_name = 'counter'");
 		$site_visited = md5(uniqid(rand(), true));
 		setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
 	} else {
-		$site_visited = $_COOKIE['site_visited'];
+		// replace the pre v7.1 cookie if needed
+		if ($_COOKIE['site_visited'] == "yes") {
+			$site_visited = md5(uniqid(rand(), true));
+			setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
+		} else {
+			$site_visited = $_COOKIE['site_visited'];
+		}
 	}
 }
 
-// Login code 
-if (isset($_POST['login']) && isset($_POST['user_name']) && isset($_POST['user_pass'])) {
-	$user_pass = md5(md5($_POST['user_pass']));
-	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_POST['user_name']));
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
-	if (dbrows($result) != 0) {
-		$data = dbarray($result);
-		// if the account is suspended, check for an expiry date
-		if ($data['user_status'] == 1 && $data['user_ban_expire'] > 0 && $data['user_ban_expire'] < time() ) {
-			// if this user's email address is marked as bad, reset the countdown counter
-			$data['user_bad_email'] = $data['user_bad_email'] == 0 ? 0 : time();
-			// reset the user status and the expiry date
-			$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0', user_bad_email = '".$data['user_bad_email']."' WHERE user_id='".$data['user_id']."'");
-			$data['user_status'] = 0;
-		}
-		if ($data['user_status'] == 0) {	
-			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-			// set the 'remember me' status value 
-			$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
-			$_SESSION['userinfo'] = $data['user_id'].".".$user_pass;
-			// login expiry defined?
-			if ($settings['login_expire']) {
-				if (isset($_POST['remember_me']) && $_POST['remember_me'] == "yes") {
-					$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
-				} else {
-					$_SESSION['login_expire'] = time() + $settings['login_expire'];
+// Check if a user is logging in
+if (isset($_POST['login'])) {
+	$auth_result = false;
+	$auth_methods = explode(",",$settings['auth_type'].",");
+	foreach($auth_methods as $auth_method) {
+		switch($auth_method) {
+			case "local":
+				// authentication against the local user database
+				if (!empty($_POST['user_name']) && !empty($_POST['user_pass'])) {
+					$auth_result = auth_local($_POST['user_name'], $_POST['user_pass']);
 				}
-			} else {
-				$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
-			}
-			redirect(BASEDIR."setuser.php?user=".$data['user_name'], "script");
-			exit;
-		} elseif ($data['user_status'] == 1) {
-			redirect(BASEDIR."setuser.php?user_id=".$data['user_id']."&error=1", "script");
-			exit;
-		} elseif ($data['user_status'] == 2) {
-			redirect(BASEDIR."setuser.php?error=2", "script");
-			exit;
+				break;
+			case "ldap":
+				break;
+			case "ad":
+				break;
+			case "openid":
+				// authentication against an openid provider
+				if (!empty($_POST['user_openid_url'])) {
+					$auth_result = auth_openid($_POST['user_openid_url']);
+				}
+				break;
+			case "default":
+				// empty or unknown entry, ignore
+				break;
 		}
-	} else {
-		redirect(BASEDIR."setuser.php?error=3", "script");
-		exit;
+	}
+	// check the result of the authentication attempt, and process it
+	if (is_array($auth_result)) {
+		switch($auth_result[0]) {
+			case "redirect":
+				redirect($auth_result[1], $auth_result[2]);
+				exit; 
+			default:
+				// unknown result code
+				_debug($auth_result);
+				terminate("unknown result code from an authentication module!");
+		}
 	}
 }
 
@@ -225,6 +223,27 @@ if (iMEMBER) {
 	$result = dbquery("UPDATE ".$db_prefix."users SET user_lastvisit='".time()."', user_ip='".USER_IP."', user_cc_code='".USER_CC."' WHERE user_id='".$userdata['user_id']."'");
 }
 
+// update the last users online information for guests
+if (iGUEST) {
+	$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");
+	if (dbrows($result) != 0) {
+		$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='0' AND online_ip='".USER_IP."'");
+	} else {
+		$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('0', '".USER_IP."', '".time()."')");
+	}
+}
+// update the last users online information for members
+if (iMEMBER) {
+	$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='".$userdata['user_id']."'");
+	if (dbrows($result) != 0) {
+		$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='0' AND online_ip='".USER_IP."'");
+	} else {
+		$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('".$userdata['user_id']."', '".USER_IP."', '".time()."')");
+	}
+}
+// users inactive for more than 180 seconds are not considered to be online
+$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_lastactive<".(time()-180)."");
+
 // update the threads_read table for the current user
 if (iMEMBER) {
 	// get all new threads for this user since we've last checked
@@ -240,6 +259,95 @@ if (iMEMBER) {
 if (iADMIN) {
 	define("iAUTH", substr(md5($userdata['user_password']),16,32));
 	$aidlink = "?aid=".iAUTH;
+}
+
+/*---------------------------------------------------+
+| User authentication functions                      |
++----------------------------------------------------*/
+
+// authentication against the local user database
+function auth_local($userid, $password) {
+	global $db_prefix;
+	
+	// check and validate the given userid and pasword
+	$user_pass = md5(md5($password));
+	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($userid));
+
+	// check if we have a user record for this userid and password
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
+	if (dbrows($result) == 0) {
+		// not found, display an error message
+		return array("redirect", BASEDIR."setuser.php?error=3", "script");
+	} else {
+		// found, get the record and do some more validation
+		$ret = auth_user_validate(dbarray($result));
+		return $ret;
+	}
+}
+
+// authentication against an LDAP server
+function auth_ldap($userid, $password) {
+	return array('auth_ldap not defined yet!');
+}
+
+// authentication against an Active Directory server
+function auth_ad($userid, $password) {
+	return array('auth_ad not defined yet!');
+}
+
+// authentication using an OpenID
+function auth_openid($openid_url) {
+	global $settings;
+
+	// check if the URL is valid
+	if (isURL($openid_url)) {
+		require_once(PATH_INCLUDES."class.openid.php");
+		$openid = new SimpleOpenID;
+		$openid->SetIdentity($openid_url);
+		$openid->SetApprovedURL($settings['siteurl']."setuser.php");
+		$openid->SetTrustRoot($settings['siteurl']);
+		$server_url = $openid->GetOpenIDServer();
+		if ($server_url) {
+			return array("redirect", $openid->GetRedirectURL() , "script");
+		}
+	} else {
+		// for now...
+		return false;
+	}
+}
+
+// further validation on the userid found
+function auth_user_validate($userrecord) {
+
+	// if the account is suspended, check for an expiry date
+	if ($userrecord['user_status'] == 1 && $userrecord['user_ban_expire'] > 0 && $userrecord['user_ban_expire'] < time() ) {
+		// if this user's email address is marked as bad, reset the countdown counter
+		$userrecord['user_bad_email'] = $userrecord['user_bad_email'] == 0 ? 0 : time();
+		// reset the user status and the expiry date
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0', user_bad_email = '".$userrecord['user_bad_email']."' WHERE user_id='".$userrecord['user_id']."'");
+		$userrecord['user_status'] = 0;
+	}
+	if ($userrecord['user_status'] == 0) {	
+		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
+		// set the 'remember me' status value 
+		$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
+		$_SESSION['userinfo'] = $userrecord['user_id'].".".$userrecord['user_password'];
+		// login expiry defined?
+		if ($settings['login_expire']) {
+			if (isset($_POST['remember_me']) && $_POST['remember_me'] == "yes") {
+				$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
+			} else {
+				$_SESSION['login_expire'] = time() + $settings['login_expire'];
+			}
+		} else {
+			$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
+		}
+		return array("redirect", BASEDIR."setuser.php?user=".$userrecord['user_name'], "script");
+	} elseif ($userrecord['user_status'] == 1) {
+		return array("redirect", BASEDIR."setuser.php?user_id=".$userrecord['user_id']."&error=1", "script");
+	} elseif ($userrecord['user_status'] == 2) {
+		return array("redirect", BASEDIR."setuser.php?error=2", "script");
+	}
 }
 
 /*---------------------------------------------------+

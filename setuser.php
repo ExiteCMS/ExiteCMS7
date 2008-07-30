@@ -14,7 +14,6 @@
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once dirname(__FILE__)."/includes/theme_functions.php";
-
 // temp storage for template variables
 $variables = array();
 
@@ -56,7 +55,28 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 	} elseif ($error == 3) {
 		$message['line2'] =  "<b>".$locale['196']."</b>";
 	} else {
+		if (isset($_GET['openid_mode'])) {
+			// handle openid login
+			require_once(PATH_INCLUDES."class.openid.php");
+			$openid = new SimpleOpenID;
+			$openid->SetIdentity(urldecode($_GET['openid_identity']));
+			if ($openid->ValidateWithServer()) {
+				$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_openid_url='".strtolower($_GET['openid_identity'])."'");
+				if (dbrows($result) != 0) {
+					// found, get the record and do some more validation
+					$res = auth_user_validate(dbarray($result));
+					if (!is_array($res)) {
+						die('invalid res');
+					}
+				} else {
+					die('user not found');
+				}
+			} else {
+				_debug($openid->GetError(), true);
+			}
+		}
 		if (isset($_SESSION['userinfo'])) {
+			// handle local login
 			$userinfo_vars = explode(".", $_SESSION['userinfo']);
 			$user_pass = (preg_match("/^[0-9a-z]{32}$/", $userinfo_vars['1']) ? $userinfo_vars['1'] : "");
 			$user_id = isNum($userinfo_vars['0']) ? $userinfo_vars['0'] : "0";
@@ -66,7 +86,7 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 					$variables['url'] = BASEDIR."edit_profile.php?check=email&value=".(90 - intval((time() - $data['user_bad_email']) / 86400));
 				}
 				$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");
-				$message['line2'] =  "<b>".$locale['193'].$user."</b>";
+				$message['line2'] =  "<b>".$locale['193'].$data['user_name']."</b>";
 			} else {
 				$message['line2'] =  "<b>".$locale['196']."</b>";
 			}

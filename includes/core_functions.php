@@ -264,11 +264,11 @@ function redirect($location, $type="header") {
 
 	if ($type == "header") {
 		header("Location: ".$location);
-		die();
 	} else {
 		echo "<script type='text/javascript'>document.location.href='".$location."'</script>\n";
 		echo sprintf($locale['182'], $location);
 	}
+	exit;
 }
 
 // Fallback to safe area in event of unauthorised access

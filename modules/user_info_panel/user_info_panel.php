@@ -68,5 +68,35 @@ $variables['loginerror'] = isset($loginerror) ? $loginerror : "";
 $variables['remember_me'] = isset($_SESSION['remember_me']) ? $_SESSION['remember_me'] : "no";
 $variables['login_expiry']  = (iADMIN && isset($_SESSION['login_expire'])) ? time_system2local($_SESSION['login_expire']) : "";
 
+// check which authentication to show
+$auth_methods = explode(",",$settings['auth_type'].",");
+switch($auth_methods[0]) {
+	case "local":
+	case "ldap":
+	case "ad":
+		$variables['auth_userpass'] = 1;
+		break;
+	default:
+		$variables['auth_userpass'] = 0;
+}
+switch($auth_methods[0]) {
+	case "openid":
+		$variables['auth_openid'] = 1;
+		break;
+	default:
+		$variables['auth_openid'] = 0;
+}
+switch($auth_methods[1]) {
+	case "local":
+		$variables['auth_userpass'] = 1;
+		break;
+	default:
+		break;
+}
+
+// check if we need to display links
+$variables['show_reglink'] = $settings['enable_registration'];
+$variables['show_passlink'] = 1;
+
 $template_variables['modules.user_info_panel'] = $variables;
 ?>

@@ -59,14 +59,21 @@
 	<div style='text-align:center'>
 		{$loginerror|default:""}
 		<form name='loginform' method='post' action='{$smarty.const.FUSION_SELF}'>
-			{$locale.061}<br /><input type='text' name='user_name' class='textbox' style='width:100px' /><br />
-			{$locale.062}<br /><input type='password' name='user_pass' class='textbox' style='width:100px' /><br />
-			<br /><input type='checkbox' name='remember_me' value='yes' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/>
-			<input type='submit' name='login' value='{$locale.064}' class='button' /><br />
+			{if $auth_userpass}
+				{$locale.061}<br /><input type='text' name='user_name' class='textbox' style='width:125px' /><br />
+				{$locale.062}<br /><input type='password' name='user_pass' class='textbox' style='width:125px' /><br />
+			{/if}
+			{if $auth_openid}
+				{$locale.067}<br /><input type='text' name='user_openid_url' class='textbox' style='width:108px;background: url({$smarty.const.IMAGES}openid_small_logo.png) no-repeat; padding-left: 18px;' /><br />
+				<span class='small' style='font-size:90%;'>  <a href="http://openid.net/get/"  target="_blank">{$locale.068}</a> &middot; <a href="http://openid.net/what" target="_blank">{$locale.069}</a></span><br />
+			{/if}
+			<br />
+			<input type='submit' name='login' value='{$locale.064}' class='button' />
+			<input type='checkbox' name='remember_me' value='yes' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/><br />
 			<input type='hidden' name='javascript_check' value='n' />
 		</form>
 	</div>
-	{literal}
+{literal}
 <script type='text/javascript'>
 /* <![CDATA[ */
 	if (document.loginform.javascript_check.value == 'n')
@@ -75,10 +82,12 @@
 	}
 	/* ]]> */
 </script>
-	{/literal}
-	<br />
-	{if $settings.enable_registration}{$settings.siteurl|string_format:$locale.065}<br /><br />{/if}
-	{$settings.siteurl|string_format:$locale.066}
+{/literal}
+	{if $show_reglink || $show_passlink}
+		<hr />
+	{/if}
+	{if $show_reglink}{$settings.siteurl|string_format:$locale.065}<br /><br />{/if}
+	{if $show_passlink}{$settings.siteurl|string_format:$locale.066}{/if}
 {/if}
 {if $smarty.const.iMEMBER|default:false}
 	{include file="_closeside_x.tpl"}

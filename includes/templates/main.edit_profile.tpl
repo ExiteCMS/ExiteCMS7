@@ -36,6 +36,7 @@
 			</tr>
 			{/if}
 		{/if}
+		{if $auth_userpass}
 		<tr>
 			<td class='tbl'>
 				{$locale.u001}<span style='color:#ff0000'>*</span>
@@ -44,6 +45,7 @@
 				<input type='text' name='user_name' value='{$this_userdata.user_name}' maxlength='30' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
+		{/if}
 		<tr>
 			<td class='tbl'>
 				{$locale.u901}<span style='color:#ff0000'>*</span>
@@ -52,6 +54,7 @@
 				<input type='text' name='user_fullname' value='{$this_userdata.user_fullname}' maxlength='50' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
+		{if $auth_userpass}
 		<tr>
 			<td class='tbl'>
 				{$locale.u003}
@@ -67,6 +70,16 @@
 				<input type='password' name='user_newpassword2' maxlength='20' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
+		{/if}
+		{if $auth_openid}
+		<tr>
+			<td class='tbl'>
+				{$locale.u066}</td>
+			<td class='tbl'>
+				<input type='text' name='user_openid_url' value='{$this_userdata.user_openid_url}' maxlength='200' class='textbox' style='width:275px;background: url({$smarty.const.IMAGES}openid_small_logo.png) no-repeat; padding-left: 18px;' />
+			</td>
+		</tr>
+		{/if}
 		<tr>
 			<td class='tbl'>
 				{$locale.u005}<span style='color:#ff0000'>*</span>

@@ -39,14 +39,44 @@ if (isset($_POST['savesettings'])) {
 		$variables['errormessage'] = $locale['533'];
 	}
 	if ($variables['errormessage'] == "") {
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['enable_registration']) ? $_POST['enable_registration'] : "1")."' WHERE cfg_name = 'enable_registration'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['email_verification']) ? $_POST['email_verification'] : "1")."' WHERE cfg_name = 'email_verification'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['admin_activation']) ? $_POST['admin_activation'] : "0")."' WHERE cfg_name = 'admin_activation'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['display_validation']) ? $_POST['display_validation'] : "1")."' WHERE cfg_name = 'display_validation'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['validation_method'])."' WHERE cfg_name = 'validation_method'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$session_timeout' WHERE cfg_name = 'session_gc_maxlifetime'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$login_expire' WHERE cfg_name = 'login_expire'");
-		$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$login_extended_expire' WHERE cfg_name = 'login_extended_expire'");
+		// authentication method check
+		$auth_method = $_POST['auth_method']{0};
+		$auth_local = $_POST['auth_method']{1} == "+" ? "1" : "0";
+		switch ($auth_method) {
+			case "1": 	// LDAP
+				if ($auth_local) {
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ldap,local' WHERE cfg_name = 'auth_type'");
+				} else {
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ldap' WHERE cfg_name = 'auth_type'");
+				}
+				break;
+			case "2":	// AD
+				if ($auth_local) {
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ad,local' WHERE cfg_name = 'auth_type'");
+				} else {
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ad' WHERE cfg_name = 'auth_type'");
+				}
+				break;
+			case "3":	// OpenID
+				if ($auth_local) {
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'openid,local' WHERE cfg_name = 'auth_type'");
+				} else {
+					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'openid' WHERE cfg_name = 'auth_type'");
+				}
+				break;
+			default:
+				$variables['errormessage'] = "Invalid authentication method. This may never happen!";
+		}
+		if ($variables['errormessage'] == "") {
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['enable_registration']) ? $_POST['enable_registration'] : "1")."' WHERE cfg_name = 'enable_registration'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['email_verification']) ? $_POST['email_verification'] : "1")."' WHERE cfg_name = 'email_verification'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['admin_activation']) ? $_POST['admin_activation'] : "0")."' WHERE cfg_name = 'admin_activation'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['display_validation']) ? $_POST['display_validation'] : "1")."' WHERE cfg_name = 'display_validation'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['validation_method'])."' WHERE cfg_name = 'validation_method'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$session_timeout' WHERE cfg_name = 'session_gc_maxlifetime'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$login_expire' WHERE cfg_name = 'login_expire'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$login_extended_expire' WHERE cfg_name = 'login_extended_expire'");
+		}
 	}
 }
 
@@ -72,6 +102,29 @@ if (isset($login_extended_expire)) {
 	$variables['login_extended_expire'] = $login_extended_expire / 86400;
 } else {
 	$variables['login_extended_expire'] = $settings2['login_extended_expire'] / 86400;	// in days
+}
+
+// determine the auth_method defined
+$auth_methods = explode(",",$settings2['auth_type'].",");
+switch($auth_methods[0]) {
+	case "ldap":
+		$auth_method = 1;
+		break;
+	case "ad":
+		$auth_method = 2;
+		break;
+	case "openid":
+		$auth_method = 3;
+	case "local":
+		break;
+	default:
+		$auth_method = 0;
+}
+$variables['auth_method'] = $auth_method;
+
+// check if a local fallback is defined
+if ($auth_method && $auth_methods[1] == "local") {
+	$variables['auth_method'] .= "+";
 }
 
 // define the admin body panel
