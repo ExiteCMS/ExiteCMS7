@@ -48,11 +48,11 @@ optgroup				{ padding-bottom:5px; font-style:normal; }
 form					{ margin:0px; }
 
 						/* buttons */
-.button					{ font-size:0.8em; font-weight:normal; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
+.button					{ font-size:0.8em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; font-weight:normal; width:auto; overflow:visible; font-weight: bold; color:#ffffff; background-color:#666; border-top:1px #bbb solid; border-left:1px #bbb solid; border-bottom:1px #000 solid; border-right:1px #000 solid; cursor:pointer; margin:2px 0px 2px 0px; padding:0px; }
 .button:hover			{ color:#666; background-color:#ddd; border-top:1px #999 solid; border-left:1px #999 solid; border-bottom:1px #fff solid; border-right:1px #fff solid; }
 
 						/* text entry fields */
-.textbox				{ font-size:1em; color:#444; background-color:#fff; border:1px #444 solid; }
+.textbox				{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; color:#444; background-color:#fff; border:1px #444 solid; }
 
 /* --- Website template ------------------------------------ */
 
