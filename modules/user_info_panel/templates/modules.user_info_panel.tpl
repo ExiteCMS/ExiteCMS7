@@ -107,7 +107,7 @@
 				{$locale.061}:<br /><input type='text' name='user_name' class='textbox' style='width:145px' /><br />
 				{$locale.062}:<br /><input type='password' name='user_pass' class='textbox' style='width:145px' /><br />
 			{elseif $method == "openid"}
-				<input type='text' name='user_openid_url' class='textbox' style='width:128px;background: url({$smarty.const.IMAGES}openid_small_logo.png) no-repeat; padding-left: 18px;' /><br />
+				<input type='text' name='user_openid_url' class='textbox' style='width:128px;background: url({$smarty.const.IMAGES}openid_small_logo.gif) no-repeat; padding-left: 18px;' /><br />
 				<span class='small' style='font-size:90%;'>  <a href="http://{$settings.locale_code}.wikipedia.org/wiki/OpenID"  target="_blank">{$locale.068}</a></span><br />
 			{/if}
 			</div>
