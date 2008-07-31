@@ -73,7 +73,11 @@ $variables['auth_methods'] = explode(",",$settings['auth_type']);
 $variables['method_count'] = count($variables['auth_methods']);
 $variables['auth_state'] = array();
 foreach($variables['auth_methods'] as $key => $method) {
-	$variables['auth_state'][] = isset($_SESSION['box_login'.$key]) && $_SESSION['box_login'.$key] == 0;
+	if (isset($_SESSION['box_login'.$key])) {
+		$variables['auth_state'][] = $_SESSION['box_login'.$key] == 0 ? 1 : 0;
+	} else {
+		$variables['auth_state'][] = 1;
+	}
 }
 
 // check if we need to display links
