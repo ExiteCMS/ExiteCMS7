@@ -4,3 +4,4 @@ User-agent: *
 Disallow: /files
 Disallow: /images
 Disallow: /statistics
+Disallow: /modules/wiki/*history
