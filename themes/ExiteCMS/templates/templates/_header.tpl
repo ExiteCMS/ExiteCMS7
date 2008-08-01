@@ -25,7 +25,7 @@
 	<meta http-equiv='Content-Language' content='{$settings.locale_code|truncate:2:""}' />
 	<meta name='description' content='{$settings.description}' />
 	<meta name='keywords' content='{$settings.keywords}' />
-	<meta name='verify-v1' content='6uLZe0u5c6hJ3XE0LoGBQRuU7IdJ/B6BIa2Si7b1dkw=' />
+	<meta name='verify-v1' content='6URjaWmjS+WG0wxCe+MGVabKZdmqB3KAUHhGnkUc6DM=' />
 	{if $headparms|default:false != false}{$headparms}{/if}
 	{include file='_stylesheets.tpl'}
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
