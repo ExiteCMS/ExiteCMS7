@@ -26,7 +26,7 @@ function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
 		case  IMAGETYPE_GIF:
 			if (!$origimage = imagecreatefromgif($origfile)) return false;
 			break;
-		case  IMAGETYPE_JEPG:
+		case  IMAGETYPE_JPEG:
 			if (!$origimage = imagecreatefromjpeg($origfile)) return false;
 			break;
 		case  IMAGETYPE_PNG:
