@@ -371,8 +371,8 @@ function _parseubb_codeblock($matches) {
 	}
 	$id = count($codeblocks);
 	++$blockcount;
-	$link = "<table class='codeblock' style='border:0px;'><tr><td align='left'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],$matches[1])."'>".$locale['584']."</a></td><td align='right'><img src='".THEME."images/right.gif' alt='' title='".$locale['582']."' name='b_code_".$blockcount."' onclick=\"javascript:flipOverflow('code_".$blockcount."')\" /></td></tr></table>";
-	$codeblocks[] = array("<div id='box_code_".$blockcount."' class='codecontainer'><table class='codeblock' cellpadding='0' cellspacing='0'><tr style='padding:0px;margin:0px;'><td class='codenr'>".$ln."</td><td class='code'>".$matches[2]."</td></tr></table></div>".$link, $matches[1]);
+	$link = "<table width='100%' style='border:0px;'><tr><td align='left'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."'>".$locale['584']."</a></td><td align='right'><img src='".THEME."images/right.gif' alt='' title='".$locale['582']."' name='b_code_".$blockcount."' onclick=\"javascript:flipOverflow('code_".$blockcount."')\" /></td></tr></table>";
+	$codeblocks[] = array("<div id='box_code_".$blockcount."' class='codecontainer'><table class='codeblock' cellpadding='0' cellspacing='0'><tr style='padding:0px;margin:0px;'><td class='codenr'>".$ln."</td><td class='code'>".$matches[2]."</td></tr></table>".$link."</div>", $matches[1]);
 	return "{**@".($id)."@**}";
 }
 

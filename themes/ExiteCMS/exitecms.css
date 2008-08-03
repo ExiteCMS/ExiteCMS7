@@ -156,10 +156,11 @@ hr.side-hr				{ height:2px; }
 						/* quotes within the message body */
 .quote					{ color:#333; background-color:#ddd; padding:4px; margin:5px 10px 5px 10px; border:1px #444 solid; }
 
-.codecontainer			{ width:480px; border:1px #bbb solid; overflow:hidden; position:relative; z-index:1; }
-.codeblock 				{ }
-.codenr 				{ font-family:monospace; font-size:1em; background-color:#ffffdf; padding: 0px 5px 0px 5px; vertical-align:top; text-align:right;}
-.code 					{ font-family:monospace; background-color:#ffffef; white-space:nowrap; }
+						/* code sections within the message body */
+.codecontainer			{ width:480px; overflow:hidden; position:relative; z-index:1; }
+.codeblock 				{ width:480px; background-color:#ffffef; }
+.codenr 				{ font-family:monospace; font-size:1em; border:1px #bbb solid; border-right:0px; background-color:#ffffdf; padding: 0px 5px 0px 5px; vertical-align:top; text-align:right; width:1px; white-space:nowrap; }
+.code 					{ font-family:monospace; background-color:#ffffef; border: 1px #bbb solid; padding: 0px 5px 0px 5px; white-space:nowrap; }
 
 						/* thumbnail caption in the message body */
 .thumbnail				{ color:#fff;background-color:#333;text-align:center; }
