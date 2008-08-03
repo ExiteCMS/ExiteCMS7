@@ -22,7 +22,11 @@ $variables = array();
 if (!iMEMBER) fallback(BASEDIR."index.php");
 
 // load the DNS functions include
-include PATH_INCLUDES."dns_functions.php";
+require_once PATH_INCLUDES."dns_functions.php";
+
+// load the OpenID class
+require_once PATH_INCLUDES."class.openid.php";
+$openid = new SimpleOpenID;
 
 // load the locates for this module
 locale_load("main.members-profile");
@@ -128,6 +132,7 @@ if (isset($_POST['update_profile'])) {
 	
 	$user_fullname = stripinput($_POST['user_fullname']);
 	$user_openid_url = isURL(stripinput($_POST['user_openid_url'])) ? stripinput($_POST['user_openid_url']) : "";
+	$user_openid_url = strtolower($openid->OpenID_Standarize($user_openid_url));
 	$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";
 	$user_location = isset($_POST['user_location']) ? stripinput(trim($_POST['user_location'])) : "";
 	if ($_POST['user_Month'] != "--" && $_POST['user_Day'] != "--" && $_POST['user_Year'] != "----") {
@@ -253,28 +258,19 @@ while ($data = dbarray($result)) {
 
 // check which authentication to show
 $auth_methods = explode(",",$settings['auth_type'].",");
-switch($auth_methods[0]) {
-	case "local":
-	case "ldap":
-	case "ad":
-		$variables['auth_userpass'] = 1;
-		break;
-	default:
-		$variables['auth_userpass'] = 0;
-}
-switch($auth_methods[0]) {
-	case "openid":
-		$variables['auth_openid'] = 1;
-		break;
-	default:
-		$variables['auth_openid'] = 0;
-}
-switch($auth_methods[1]) {
-	case "local":
-		$variables['auth_userpass'] = 1;
-		break;
-	default:
-		break;
+$variables['auth_userpass'] = 0;
+$variables['auth_openid'] = 0;
+foreach($auth_methods as $auth_method) {
+	switch($auth_method) {
+		case "local":
+		case "ldap":
+		case "ad":
+			$variables['auth_userpass'] = 1;
+			break;
+		case "openid":
+			$variables['auth_openid'] = 1;
+			break;
+	}
 }
 
 // define the search body panel variables

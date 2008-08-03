@@ -76,7 +76,7 @@
 			<td class='tbl'>
 				{$locale.u066}</td>
 			<td class='tbl'>
-				<input type='text' name='user_openid_url' value='{$this_userdata.user_openid_url}' maxlength='200' class='textbox' style='width:275px;background: url({$smarty.const.IMAGES}openid_small_logo.png) no-repeat; padding-left: 18px;' />
+				<input type='text' name='user_openid_url' value='{$this_userdata.user_openid_url}' maxlength='200' class='textbox' style='width:275px;background: url({$smarty.const.IMAGES}openid_small_logo.gif) no-repeat; padding-left: 18px;' />
 			</td>
 		</tr>
 		{/if}

@@ -2729,7 +2729,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['193'] = "Logging in as ";
 		$localestrings['194'] = "This account is currently suspended.";
 		$localestrings['195'] = "This account has not been activated.";
-		$localestrings['196'] = "Invalid username or password.";
+		$localestrings['196'] = "Login credentials used are not correct.";
 		$localestrings['197'] = "Page last updated";
 		$localestrings['198'] = "<font color='red'><b>Warning:</b></font> setup.php detected, please delete it immediately";
 		$localestrings['199'] = "wrote";

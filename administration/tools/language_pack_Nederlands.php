@@ -2715,7 +2715,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['193'] = "Aanmelden als ";
 		$localestrings['194'] = "Deze gebruikersnaam is momenteel geblokeerd.";
 		$localestrings['195'] = "Deze gebruikersnaam is nog niet geactiveerd.";
-		$localestrings['196'] = "Foutieve gebruikersnaam of wachtwoord.";
+		$localestrings['196'] = "Ingevoerde gebruikersgegevens niet correct.";
 		$localestrings['197'] = "pagina laatst aangepast";
 		$localestrings['198'] = "<font color='red'><b>PAS OP:</b></font> setup.php is gevonden. a.u.b. onmiddelijk verwijderen";
 		$localestrings['199'] = "schreef";

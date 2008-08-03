@@ -61,18 +61,20 @@ if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "yes") {
 			$openid = new SimpleOpenID;
 			$openid->SetIdentity(urldecode($_GET['openid_identity']));
 			if ($openid->ValidateWithServer()) {
-				$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_openid_url='".strtolower($_GET['openid_identity'])."'");
+				$openid_url = strtolower($openid->OpenID_Standarize($_GET['openid_identity']));
+				$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_openid_url='".$openid_url."'");
 				if (dbrows($result) != 0) {
 					// found, get the record and do some more validation
 					$res = auth_user_validate(dbarray($result));
 					if (!is_array($res)) {
-						die('invalid res');
+						$message['line2'] =  "<b>Internal error: Invalid auth_user_validate() return code!</b>";
 					}
 				} else {
-					die('user not found');
+					$message['line2'] =  "<b>".$locale['196']."</b>";
 				}
 			} else {
-				_debug($openid->GetError(), true);
+				trigger_error($openid->GetError());
+				exit;
 			}
 		}
 		if (isset($_SESSION['userinfo'])) {
