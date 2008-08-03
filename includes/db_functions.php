@@ -99,6 +99,7 @@ function dbquery($query, $display=false) {
 			echo "</pre>";
 		}
 		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
+		error_log($query);
 	}
 
 	if ($_db_log) {

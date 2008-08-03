@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Wed Jul 30 2008, 17:51:24 CEST
+// generated on : Sun Aug 3 2008, 18:00:29 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -131,7 +131,7 @@ $locale['192'] = "Logging out as ";
 $locale['193'] = "Logging in as ";
 $locale['194'] = "This account is currently suspended.";
 $locale['195'] = "This account has not been activated.";
-$locale['196'] = "Invalid username or password.";
+$locale['196'] = "Login credentials used are not correct.";
 $locale['197'] = "Page last updated";
 $locale['198'] = "<font color='red'><b>Warning:</b></font> setup.php detected, please delete it immediately";
 $locale['199'] = "wrote";
