@@ -46,6 +46,11 @@ foreach($_COOKIE as $cookiename => $cookievalue) {
 	}
 }
 
+// remove any rubbish from the session record
+if (isset($_SESSION['locale']) && is_array($_SESSION['locale'])) {
+	unset($_SESSION['locale']);
+}
+
 /*---------------------------------------------------+
 | Session related global functions                   |
 +---------------------------------------------------*/
@@ -150,8 +155,8 @@ function _write_session($session_id,$session_data) {
 		$session_ua = md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited']);
 		// insert or update the session information
 		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data) 
-						VALUES ('$session_id', '".$session_ua."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '$session_data')
-						ON DUPLICATE KEY UPDATE session_data = '$session_data', session_ua = '$session_ua', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
+						VALUES ('$session_id', '".$session_ua."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '".mysql_escape_string($session_data)."')
+						ON DUPLICATE KEY UPDATE session_data = '".mysql_escape_string($session_data)."', session_ua = '$session_ua', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
 					);
 		return true;
 	}
