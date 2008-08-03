@@ -27,7 +27,7 @@
 	<meta name='keywords' content='{$settings.keywords}' />
 	<meta name='verify-v1' content='6URjaWmjS+WG0wxCe+MGVabKZdmqB3KAUHhGnkUc6DM=' />
 	{if $headparms|default:false != false}{$headparms}{/if}
-	{include file='_stylesheets.tpl'}
+	<link href="{$smarty.const.THEME}exitecms-0001.css" rel="stylesheet" type="text/css" />
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
 	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions.js'></script>
 	{if $smarty.const.LOAD_TINYMCE}
