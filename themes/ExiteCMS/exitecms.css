@@ -41,7 +41,6 @@ form					{ margin:0px; }
 						/* page body (normal/user mode + maintenance/webmaster mode) */
 body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; margin:4px 10px 5px 10px; width:100%; }
 .body 					{ color:#444; background-color:#aaa; }
-.body-maint				{ color:#444; background-color:{/literal}{$settings.maintenance_color}{literal}; }
 
 						/* content body, can be different from the body when centered */
 .content				{ }
