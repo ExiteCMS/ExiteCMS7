@@ -51,7 +51,7 @@
 							<input type='submit' class='button' name='toggle_msg' value='{$locale.474}' onclick='javascript:flipDiv("org_message");return false;' />
 						</td>
 						<td class='tbl1'>
-							<div id='org_message' class='textbox' style='display:none'>{$org_message|nl2br}<br /></div>
+							<div id='org_message' class='textbox' style='display:none'>{$org_message|stripinput|nl2br}<br /></div>
 							<input type='hidden' name='org_message' value='{$org_message}' />
 						</td>
 					</tr>
