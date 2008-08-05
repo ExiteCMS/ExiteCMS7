@@ -191,7 +191,7 @@
 							{if $smarty.const.DOWNLOAD_IMAGES}
 								<a href='{$smarty.const.BASEDIR}getfile.php?type=a&amp;file_id={$posts[pid].attachments[id].attach_id}' title='{$posts[pid].attachments[id].attach_comment}'>{$posts[pid].attachments[id].attach_realname}</a> ({$posts[pid].attachments[id].imagesize.x} x {$posts[pid].attachments[id].imagesize.y} {$locale.518})
 							{else}
-								<a href='{$posts[pid].attachments[id].link}' alt='{$posts[pid].attachments[id].attach_comment}' target='_blank'>{$posts[pid].attachments[id].attach_realname}</a> ({$posts[pid].attachments[id].imagesize.x} x {$posts[pid].attachments[id].imagesize.y} {$locale.518})
+								<a href='{$posts[pid].attachments[id].link}' title='{$posts[pid].attachments[id].attach_comment}' target='_blank'>{$posts[pid].attachments[id].attach_realname}</a> ({$posts[pid].attachments[id].imagesize.x} x {$posts[pid].attachments[id].imagesize.y} {$locale.518})
 							{/if}
 						{/if}
 					{/if}
