@@ -335,8 +335,12 @@ if ($rows != 0) {
 			else
 				$data['post_reply_username'] = "";
 		}
-		// check if this post is read or unread
-		$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read || $data['post_datestamp'] < $thread_first_read || ($data['post_edittime'] != 0 && $data['post_edittime'] < $thread_first_read) ;
+		// check if this post is read or unread (respect the users unread posts profile setting)
+		if (iMEMBER && $userdata['user_posts_unread'] == false && ( $data['post_author'] == $userdata['user_id'] ||  $data['post_edituser'] == $userdata['user_id'])) {
+			$data['unread'] = false;
+		} else {
+			$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read || $data['post_datestamp'] < $thread_first_read || ($data['post_edittime'] != 0 && $data['post_edittime'] < $thread_first_read) ;
+		}
 
 		// update first_post_datestamp
 		if ($data['post_edittime'] == 0) {
