@@ -337,9 +337,18 @@ if ($rows != 0) {
 		}
 		// check if this post is read or unread (respect the users unread posts profile setting)
 		if (iMEMBER && $userdata['user_posts_unread'] == false && ( $data['post_author'] == $userdata['user_id'] ||  $data['post_edituser'] == $userdata['user_id'])) {
+			// own posts are never marked read if this is set in the user profile
 			$data['unread'] = false;
 		} else {
-			$data['unread'] = $data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read || $data['post_datestamp'] < $thread_first_read || ($data['post_edittime'] != 0 && $data['post_edittime'] < $thread_first_read) ;
+			// check if the post timestamp within the set unread threshold
+			if ($data['post_datestamp'] > $settings['unread_threshold'] || $data['post_editttime'] > $settings['unread_threshold']) {
+				// check if it is newer that the first and last marker in the threads_read record
+				if ($data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read || $data['post_datestamp'] < $thread_first_read || ($data['post_edittime'] != 0 && $data['post_edittime'] < $thread_first_read))  {
+					$data['unread'] = true;
+				} else {
+					$data['unread'] = false;
+				}
+			}
 		}
 
 		// update first_post_datestamp

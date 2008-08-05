@@ -18,27 +18,9 @@
 function jumpForum(forumid) {ldelim}
 	document.location.href='{$smarty.const.FORUM}viewforum.php?forum_id='+forumid;
 {rdelim}
-{literal}
-function flipOverflow(who) {
-	var tmp;
-	if (document.images['b_' + who].src.indexOf('right.gif') == -1) {
-		tmp = document.images['b_' + who].src.replace('left.gif', 'right.gif');
-		document.getElementById('box_' + who).style.overflowX = 'hidden';
-		document.getElementById('box_' + who).style.overflow = 'hidden';
-	} else { 
-		tmp = document.images['b_' + who].src.replace('right.gif', 'left.gif');
-		if (BrowserDetect.browser == "Explorer") {
-			document.getElementById('box_' + who).style.overflowX = 'scroll';
-		} else {
-			document.getElementById('box_' + who).style.overflow = 'visible';
-		}
-	}
-	document.images['b_' + who].src = tmp;
-	return false;
-}{/literal}
 </script>
 {include file="_opentable.tpl" name=$_name title=$locale.500 state=$_state style=$_style}
-<table cellspacing='0' cellpadding='0' width='100%'>
+<table id='width_check' cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
 		<td class='smallalt'>
 			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
@@ -203,6 +185,73 @@ function flipOverflow(who) {
 	</tr>
 </table>
 {include file="_closetable.tpl"}
+<script type='text/javascript'>
+{literal}
+// Dean Edwards/Matthias Miller/John Resig
+function init() {
+	// quit if this function has already been called
+	if (arguments.callee.done) return;
+
+	// flag this function so we don't do the same thing twice
+	arguments.callee.done = true;
+
+	// kill the timer
+	if (_timer) clearInterval(_timer);
+
+	// calculate the width of a code block
+	var blockwidth = document.getElementById("width_check").offsetWidth-141;
+	var block_a = 0;
+	var block_b = 0;
+
+	// loop through all blocks found, and set the width correctly
+	var i = 1;
+	while (document.getElementById("codeblock"+i+"a") != null && document.getElementById("codeblock"+i+"b") != null) {
+		// need to check and do something dynamic with margins and padding here...
+		block_a = blockwidth - 40 + "px";
+		block_b = blockwidth - 50 + "px";
+		document.getElementById("codeblock"+i+"a").style.width = block_a;
+		document.getElementById("codeblock"+i+"b").style.width = block_b;
+		i++;
+	}
+};
+
+/* for Mozilla/Opera9 */
+if (document.addEventListener) {
+	document.addEventListener("DOMContentLoaded", init, false);
+}
+
+/* for Internet Explorer */
+/*@cc_on @*/
+/*@if (@_win32)
+	document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
+	var script = document.getElementById("__ie_onload");
+	script.onreadystatechange = function() {
+		if (this.readyState == "complete") {
+			init(); // call the onload handler
+		}
+	};
+/*@end @*/
+
+/* for Safari and Konqueror */
+if (/KHTML|WebKit/i.test(navigator.userAgent)) { // sniff
+	var _timer = setInterval(function() {
+		if (/loaded|complete/.test(document.readyState)) {
+			init(); // call the onload handler
+		}
+	}, 10);
+}
+
+/* other alternatives */
+if (window.attachEvent) {
+	window.attachEvent('onload', init);
+} else if (window.addEventListener) {
+	window.addEventListener('load', init, false);
+}
+
+/* if all else fails try this */
+window.onload = init;
+{/literal}
+</script>
 {if $smarty.const.iMEMBER && $user_can_post && !$thread.thread_locked}
 {include file="_opentable.tpl" name=$_name title=$locale.512 state=$_state style=$_style}
 <form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}?forum_id={$forum_id}&amp;thread_id={$thread_id}'>
@@ -244,5 +293,7 @@ function flipOverflow(who) {
 {include file="_closetable.tpl"}
 {/if}
 {***************************************************************************}
+
 {* End of template                                                         *}
 {***************************************************************************}
+

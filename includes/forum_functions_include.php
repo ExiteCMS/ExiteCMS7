@@ -14,6 +14,10 @@
 +----------------------------------------------------*/
 if (eregi("forum_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
+// show code block with line wrapping (true) or scrollbar (false)
+define('WRAP_CODE_IN_CODEBLOCK', false);
+
+// these arrays need to be global
 $current_message = array();
 $codeblocks = array();
 $urlblocks = array();
@@ -353,8 +357,22 @@ function _parseubb_codeblock($matches) {
 		$geshi->set_language($matches[1]);
 		$geshi->set_header_type(GESHI_HEADER_DIV);
 		$geshi->set_tab_width(4);
+		$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS,1);
 		$geshi->set_source(_unhtmlentities($matches[2]));
+		$geshi->set_code_style('font-weight:bold;', true);
+		$geshi->enable_classes();
 		$matches[2] = $geshi->parse_code();
+		// did we already add the css code for this type
+		$add_css = true;
+		foreach($codeblocks as $codeblock) {
+			if ($codeblock[1] == $matches[1]) {
+				$add_css = true;
+				break;
+			}
+		}
+		if ($add_css = true) {
+			$matches[2] = '<style type="text/css"><!--'.$geshi->get_stylesheet().'--></style>'.$matches[2];
+		}
 	}
 
 	// if a raw block was requested, bail out here
@@ -371,8 +389,11 @@ function _parseubb_codeblock($matches) {
 	}
 	$id = count($codeblocks);
 	++$blockcount;
-	$link = "<table width='100%' style='border:0px;'><tr><td align='left'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."'>".$locale['584']."</a></td><td align='right'><img src='".THEME."images/right.gif' alt='' title='".$locale['582']."' name='b_code_".$blockcount."' onclick=\"javascript:flipOverflow('code_".$blockcount."')\" /></td></tr></table>";
-	$codeblocks[] = array("<div id='box_code_".$blockcount."' class='codecontainer'><table class='codeblock' cellpadding='0' cellspacing='0'><tr style='padding:0px;margin:0px;'><td class='codenr'>".$ln."</td><td class='code'>".$matches[2]."</td></tr></table>".$link."</div>", $matches[1]);
+	if (WRAP_CODE_IN_CODEBLOCK) {
+		$codeblocks[] = array("<div class='codeblock'>".$matches[2]."</div><div class='codeblock' style='border-top:0px; text-align:right;'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."'>".$locale['584']."</a></div>", $matches[1]);
+	} else {
+		$codeblocks[] = array("<div class='codeblock_source' id='codeblock".$blockcount."a'>".$matches[2]."</div><div class='codeblock_cmds' id='codeblock".$blockcount."b'><input type='button' class='button' name='download' value='".$locale['584']."' onclick='window.open(\"".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."\");return false;' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."' /></div>", $matches[1]);
+	}
 	return "{**@".($id)."@**}";
 }
 
@@ -390,6 +411,18 @@ function _parseubb_imgblock($matches) {
 	return "{@*@".(count($imgblocks)-1)."@*@}";
 }
 
+function _parseubb_texturls($matches) {
+	global $urlblocks;
+
+	// validate the URL before converting it
+	if (isURL($matches[0])) {
+		$urlblocks[] = array($matches[0], shortenlink($matches[0], 50));
+		return "{@@*".(count($urlblocks)-1)."*@@}";
+	} else {
+		return $matches[0];
+	}
+}
+
 // message parser, strip [code], [img] and [url] sections, parse for BBcode, smiley's, then insert the sections again
 function parsemessage($msg_array) {
 	global $settings, $db_prefix, $codeblocks, $urlblocks, $imgblocks, $current_message;
@@ -398,7 +431,6 @@ function parsemessage($msg_array) {
 	if (!is_array($msg_array) || !isset($msg_array['post_message']) || !isset($msg_array['post_smileys'])) {
 		return "";
 	}
-
 	$current_message = $msg_array;
 	$rawmsg = $msg_array['post_message'];
 	$smileys = $msg_array['post_smileys'];
@@ -411,12 +443,11 @@ function parsemessage($msg_array) {
 	// strip CODE bbcode, optionally perform Geshi color coding
 	$rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
 
-    // find URL's in the text, and convert them to a [url] BBcode
-	$rawmsg = preg_replace("#(^|\s)(www|WWW)\.([^\s<>\/]+)\/([^\s\r\n<>\)\,\:\;\[]+)#sm", "\\1[url=http://\\2.\\3/\\4]http://\\2.\\3[/url]", $rawmsg);
-	$rawmsg = preg_replace("#(^|[^\"=\]]{1})(http|HTTP|ftp)(s|S)?://([^\s<>\/]+)\/([^\s\r\n<>\,\[]+)#sm", "\\1[url=\\2\\3://\\4/\\5]\\2\\3://\\4\\5[/url]", $rawmsg);
-
 	// strip URL bbcode
 	$rawmsg = preg_replace_callback('#\[url(=.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_urlblock', $rawmsg);
+
+    // find other URL's in the text, strip them and add them to $urlblocks for conversion to [URL] bbcodes
+	$rawmsg = preg_replace_callback('#(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(localhost)|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?(/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$\#\:\*\=~_\-@]*)*#si', '_parseubb_texturls', $rawmsg);
 
 	// convert any newlines to html <br>
 	$rawmsg = nl2br($rawmsg);
