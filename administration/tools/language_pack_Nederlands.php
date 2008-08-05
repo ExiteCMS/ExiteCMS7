@@ -1496,6 +1496,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Afghanistan'] = "af";
 		$localestrings['Albania'] = "al";
 		$localestrings['Algeria'] = "dz";
+		$localestrings['america'] = "us";
 		$localestrings['American Samoa'] = "as";
 		$localestrings['Andorra'] = "ad";
 		$localestrings['Angola'] = "ao";
@@ -1526,6 +1527,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Brazil'] = "br";
 		$localestrings['British Indian Ocean Terr'] = "io";
 		$localestrings['British Virgin Islands'] = "vg";
+		$localestrings['brunei'] = "bn";
 		$localestrings['Brunei Darussalam'] = "bn";
 		$localestrings['Bulgaria'] = "bg";
 		$localestrings['Burkina Faso'] = "bf";
@@ -1541,6 +1543,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['China'] = "cn";
 		$localestrings['Christmas Island'] = "cx";
 		$localestrings['Cocos (Keeling) Islands'] = "cc";
+		$localestrings['cocos islands'] = "cc";
 		$localestrings['Colombia'] = "co";
 		$localestrings['Comoros'] = "km";
 		$localestrings['Congo'] = "cg";
@@ -1567,7 +1570,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Eritrea'] = "er";
 		$localestrings['Estonia'] = "ee";
 		$localestrings['Ethiopia'] = "et";
-		$localestrings['Falkland Islands (Malvina'] = "fk";
+		$localestrings['falkland islands'] = "fk";
 		$localestrings['Faroe Islands'] = "fo";
 		$localestrings['Federated States Of Micro'] = "fm";
 		$localestrings['Fiji'] = "fj";
@@ -1582,6 +1585,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Germany'] = "de";
 		$localestrings['Ghana'] = "gh";
 		$localestrings['Gibraltar'] = "gi";
+		$localestrings['great britain'] = "gb";
 		$localestrings['Greece'] = "gr";
 		$localestrings['Greenland'] = "gl";
 		$localestrings['Grenada'] = "gd";
@@ -1594,7 +1598,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Guyana'] = "gy";
 		$localestrings['Haiti'] = "ht";
 		$localestrings['Heard Island And Mcdonald'] = "hm";
-		$localestrings['Holy See (Vatican City St'] = "va";
+		$localestrings['holland'] = "nl";
+		$localestrings['holy see'] = "va";
 		$localestrings['Honduras'] = "hn";
 		$localestrings['Hong Kong'] = "hk";
 		$localestrings['Hungary'] = "hu";
@@ -1608,12 +1613,14 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Isle Of Man'] = "im";
 		$localestrings['Israel'] = "il";
 		$localestrings['Italy'] = "it";
+		$localestrings['ivory coast'] = "ci";
 		$localestrings['Jamaica'] = "jm";
 		$localestrings['Japan'] = "jp";
 		$localestrings['Jersey'] = "je";
 		$localestrings['Jordan'] = "jo";
 		$localestrings['jordania'] = "jo";
 		$localestrings['Kazakhstan'] = "kz";
+		$localestrings['keeling islands'] = "cc";
 		$localestrings['Kenya'] = "ke";
 		$localestrings['Kiribati'] = "ki";
 		$localestrings['Kurdistan'] = "ku";
@@ -1635,6 +1642,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Maldives'] = "mv";
 		$localestrings['Mali'] = "ml";
 		$localestrings['Malta'] = "mt";
+		$localestrings['malvinas'] = "fk";
 		$localestrings['Marshall Islands'] = "mh";
 		$localestrings['Martinique'] = "mq";
 		$localestrings['Mauritania'] = "mr";
@@ -1652,6 +1660,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Namibia'] = "na";
 		$localestrings['Nauru'] = "nr";
 		$localestrings['Nepal'] = "np";
+		$localestrings['netherlands'] = "nl";
 		$localestrings['Netherlands Antilles'] = "an";
 		$localestrings['New Caledonia'] = "nc";
 		$localestrings['New Zealand'] = "nz";
@@ -1665,6 +1674,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Oman'] = "om";
 		$localestrings['Pakistan'] = "pk";
 		$localestrings['Palau'] = "pw";
+		$localestrings['palestinian Territories'] = "ps";
 		$localestrings['Panama'] = "pa";
 		$localestrings['Papua New Guinea'] = "pg";
 		$localestrings['Paraguay'] = "py";
@@ -1673,7 +1683,6 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Poland'] = "pl";
 		$localestrings['Portugal'] = "pt";
 		$localestrings['Puerto Rico'] = "pr";
-		$localestrings['Palestina'] = "ps";
 		$localestrings['Qatar'] = "qa";
 		$localestrings['Republic Of Korea'] = "kr";
 		$localestrings['Republic Of Moldova'] = "md";
@@ -1712,6 +1721,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Switzerland'] = "ch";
 		$localestrings['Syria'] = "sy";
 		$localestrings['Syrian Arab Republic'] = "sy";
+		$localestrings['taiwan'] = "tw";
 		$localestrings['Taiwan, Province Of China'] = "tw";
 		$localestrings['Tajikistan'] = "tj";
 		$localestrings['Thailand'] = "th";
@@ -1736,10 +1746,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['United Kingdom'] = "gb";
 		$localestrings['United States'] = "us";
 		$localestrings['United States Minor Outly'] = "um";
+		$localestrings['unknown'] = "--";
 		$localestrings['Unlisted country'] = "??";
 		$localestrings['Uruguay'] = "uy";
 		$localestrings['Uzbekistan'] = "uz";
 		$localestrings['Vanuatu'] = "vu";
+		$localestrings['vatican'] = "va";
+		$localestrings['vatican city'] = "va";
 		$localestrings['Venezuela'] = "ve";
 		$localestrings['Viet Nam'] = "vn";
 		$localestrings['Vietnam'] = "vn";
@@ -2309,7 +2322,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['580'] = "skype";
 		$localestrings['581'] = "Naar boven";
 		$localestrings['582'] = "Zichtbare code aanpassen";
-		$localestrings['583'] = "deze %s code downloaden";
+		$localestrings['583'] = "deze %scode downloaden";
 		$localestrings['584'] = "download";
 		$localestrings['585'] = "Code:";
 		load_localestrings($localestrings, LP_LOCALE, "forum.main", $step);
@@ -3315,8 +3328,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1215543510");
-$lp_date = "1215543510";
+if (!defined('LP_DATE')) define('LP_DATE', "1217798864");
+$lp_date = "1217798864";
 
 /*---------------------------------------------------+
 | main code                                          |
