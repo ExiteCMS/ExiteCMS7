@@ -182,7 +182,7 @@ if ($field == "") {
 		":smt120" => "more/120.gif",
 	":)" => "smile.gif"
 	);
-	foreach($smileys as $key=>$smiley) $smiles .= "<img src='".IMAGES."smiley/$smiley' alt='smiley' onclick=\"insertText('$field', ' $key ');\" />\n";
+	foreach($smileys as $key=>$smiley) $smiles .= "<img src='".IMAGES."smiley/$smiley' alt='$key' onclick=\"insertText('$field', ' $key ');\" />\n";
 	echo $smiles;
 }
 ?>
