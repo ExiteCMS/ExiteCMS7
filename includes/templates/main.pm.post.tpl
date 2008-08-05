@@ -151,10 +151,10 @@
 		</tr>
 		<tr>
 			<td align='right' width='145' class='tbl2' valign='top' style='white-space:nowrap'>
-				<input type='submit' class='button' name='toggle' value='{$locale.633}' onclick='javascript:flipDiv("smileys");return false;' />
+				<input type='submit' name='toggle' class='button' value='{$locale.633}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=message");return false;' />
 			</td>
 			<td class='tbl1'>
-				<div id='smileys' style='display:none'>{displaysmileys field="message"}</div>
+				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
 			</td>
 		</tr>
 		<tr>

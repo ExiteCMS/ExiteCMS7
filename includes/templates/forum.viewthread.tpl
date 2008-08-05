@@ -276,15 +276,15 @@ window.onload = init;
 		</tr>
 		<tr>
 			<td align='center' class='tbl2'>
-				<div id='smileys' style='display:none'>{displaysmileys field="message"}</div>
+				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
 				<br />
-				<input type='checkbox' name='disable_smileys' value='1' />{$locale.513}
+				<input type='hidden' id='smileys_loaded' name='smileys_loaded' value='0' />
 			</td>
 		</tr>
 		<tr>
 			<td align='center' class='tbl1'>
 				<input type='submit' name='postquickreply' value='{$locale.514}' class='button' />&nbsp; &nbsp;
-				<input type='button' name='toggle' class='button' value='{$locale.517}' onclick='javascript:flipDiv("smileys");return false;' />
+				<input type='button' name='toggle' class='button' value='{$locale.517}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=message");return false;' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
 			</td>
 		</tr>

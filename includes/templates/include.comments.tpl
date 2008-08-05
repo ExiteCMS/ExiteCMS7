@@ -79,12 +79,12 @@
 				<input type='button' value='code' class='button' style='width:40px;' onclick="addText('comment_message', '[code]', '[/code]');" />
 				<input type='button' value='quote' class='button' style='width:45px;' onclick="addText('comment_message', '[quote]', '[/quote]');" />
 				<br /><br />
-				<div id='smileys' style='display:none'>{displaysmileys field="comment_message"}</div>
+				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
 			</td>
 		</tr>
 		<tr>
 			<td colspan=2' align='center'>
-				<input type='submit' name='toggle' value='{$locale.c108}' class='button' onclick='javascript:flipDiv("smileys");return false;' />
+				<input type='submit' name='toggle' class='button' value='{$locale.c108}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=comment_message");return false;' />
 				<input type='checkbox' name='disable_smileys' value='1' />{$locale.c107}<br /><br />
 			</td>
 		</tr>

@@ -40,6 +40,54 @@ function flipDiv(who) {
 	return false;
 }
 
+// load the smiley's html, and place it in the innerHTML of 'field'
+function loadSmileys(elementid, triggerfield, url) {
+	flipDiv(elementid);
+	var elementHTML = document.getElementById(elementid).innerHTML;
+	if (elementHTML.indexOf("ajax-loader.gif") > -1) {
+		clientSideInclude(elementid, url)
+	}
+}
+
+// synchronous AJAX call
+function clientSideInclude(id, url) {
+
+	var element = document.getElementById(id);
+	if (!element) {
+		alert("Bad id " + id + "passed to clientSideInclude. You need a div or span element with this id in your page.");
+		return;
+	}
+
+	var req = false;
+	if (window.XMLHttpRequest) {
+		// For Safari, Firefox, and other non-MS browsers
+		try {
+			req = new XMLHttpRequest();
+		} catch (e) {
+			req = false;
+		}
+	} else if (window.ActiveXObject) {
+		// For Internet Explorer on Windows
+		try {
+			req = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try {
+				req = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+				req = false;
+			}
+		}
+	}
+	if (req) {
+		// Synchronous request, wait till we have it all
+		req.open('GET', url, false);
+		req.send(null);
+		element.innerHTML = req.responseText;
+	} else {
+		element.innerHTML = "Sorry, your browser does not support XMLHTTPRequest objects. This page requires Internet Explorer 5 or better for Windows, or Firefox for any system, or Safari. Other compatible browsers may also exist.";
+	}
+}
+
 function addText(elname, wrap1, wrap2) {
 	if (document.selection) { // for IE 
 		var str = document.selection.createRange().text;
