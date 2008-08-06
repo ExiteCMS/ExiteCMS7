@@ -87,7 +87,7 @@
 					</tr>
 					<tr>
 						<td align='right' width='145' valign='top' class='tbl2'>
-							<input type='button' name='toggle' class='button' value='{$locale.467}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=message");return false;' />
+							<input type='button' name='toggle' class='button' value='{$locale.467}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
 						</td>
 						<td class='tbl1'>
 							<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>

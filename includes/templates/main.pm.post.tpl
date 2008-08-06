@@ -151,7 +151,7 @@
 		</tr>
 		<tr>
 			<td align='right' width='145' class='tbl2' valign='top' style='white-space:nowrap'>
-				<input type='submit' name='toggle' class='button' value='{$locale.633}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=message");return false;' />
+				<input type='submit' name='toggle' class='button' value='{$locale.633}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
 			</td>
 			<td class='tbl1'>
 				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>

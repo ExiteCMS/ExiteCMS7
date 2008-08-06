@@ -284,7 +284,7 @@ window.onload = init;
 		<tr>
 			<td align='center' class='tbl1'>
 				<input type='submit' name='postquickreply' value='{$locale.514}' class='button' />&nbsp; &nbsp;
-				<input type='button' name='toggle' class='button' value='{$locale.517}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=message");return false;' />
+				<input type='button' name='toggle' class='button' value='{$locale.517}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
 			</td>
 		</tr>

@@ -84,7 +84,7 @@
 		</tr>
 		<tr>
 			<td colspan=2' align='center'>
-				<input type='submit' name='toggle' class='button' value='{$locale.c108}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.smileys.php?field=comment_message");return false;' />
+				<input type='submit' name='toggle' class='button' value='{$locale.c108}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=comment_message");return false;' />
 				<input type='checkbox' name='disable_smileys' value='1' />{$locale.c107}<br /><br />
 			</td>
 		</tr>

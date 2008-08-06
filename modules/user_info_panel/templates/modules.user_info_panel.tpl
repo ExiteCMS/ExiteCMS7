@@ -36,24 +36,24 @@
 			Login session ends on<br />{$login_expiry|date_format:"subheaderdate"}
 		</div>
 	{/if}
-	{if $new_pm_msg != 0}
+	<div id='new_pm_panel' style='text-align:center;display:{if $new_pm_msg}block{else}none{/if};'>
 		<hr />
 		<div style='text-align:center'>
-			<b><a href='{$smarty.const.BASEDIR}pm.php?action=show_new' class='side'>{if $new_pm_msg == 1}{$new_pm_msg|string_format:$locale.085}{else}{$new_pm_msg|string_format:$locale.086}{/if}</a></b>
+			<b><a href='{$smarty.const.BASEDIR}pm.php?action=show_new' class='side'><span id='new_pm_panel_value'>{if $new_pm_msg == 1}{$new_pm_msg|string_format:$locale.085}{else}{$new_pm_msg|string_format:$locale.086}{/if}</span></a></b>
 		</div>
-	{/if}
-	{if $new_post_msg != 0}
+	</div>
+	<div id='new_posts_panel' style='text-align:center;display:{if $new_post_msg}block{else}none{/if};'>
 		<hr />
 		<div style='text-align:center'>
 			{if $new_posts_panel}
-				<a href='{$smarty.const.MODULES}forum_threads_list_panel/new_posts.php' class='side'><b>{if $new_post_msg == 1}{$new_post_msg|string_format:$locale.088}{else}{$new_post_msg|string_format:$locale.089}{/if}</b></a>
+				<a href='{$smarty.const.MODULES}forum_threads_list_panel/new_posts.php' class='side'><b><span id='new_posts_panel_value'>{if $new_post_msg == 1}{$new_post_msg|string_format:$locale.088}{else}{$new_post_msg|string_format:$locale.089}{/if}</span></b></a>
 				<hr />
 				{buttonlink name=$locale.091 link=$smarty.const.MODULES|cat:"forum_threads_list_panel/new_posts.php?markasread="|cat:$user_id}
 			{else}
 				<b>{if $new_post_msg == 1}{$new_post_msg|string_format:$locale.088}{else}{$new_post_msg|string_format:$locale.089}{/if}</b>
 			{/if}
 		</div>
-	{/if}
+	</div>
 {else}
 	{include file="_openside.tpl" name=$_name title=$locale.060 state=$_state style=$_style}
 	<div style='text-align:center'>

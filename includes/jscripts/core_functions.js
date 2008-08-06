@@ -41,15 +41,18 @@ function flipDiv(who) {
 }
 
 // load the smiley's html, and place it in the innerHTML of 'field'
-function loadSmileys(elementid, triggerfield, url) {
+function loadSmileys(elementid, triggerfield, url, spinner) {
 	flipDiv(elementid);
+	if (typeof spinner == 'undefined' ) {
+		spinner = "ajax-loader.gif";
+	}
 	var elementHTML = document.getElementById(elementid).innerHTML;
-	if (elementHTML.indexOf("ajax-loader.gif") > -1) {
+	if (elementHTML.indexOf(spinner) > -1) {
 		clientSideInclude(elementid, url)
 	}
 }
 
-// synchronous AJAX call
+// update the innerHTML of 'id' using an AJAX call
 function clientSideInclude(id, url) {
 
 	var element = document.getElementById(id);
@@ -57,6 +60,16 @@ function clientSideInclude(id, url) {
 		alert("Bad id " + id + "passed to clientSideInclude. You need a div or span element with this id in your page.");
 		return;
 	}
+	var response = AjaxCall(url);
+	if (response != false) {
+		element.innerHTML = response;
+	} else {
+		element.innerHTML = "Sorry, your browser does not support XMLHTTPRequest objects. This page requires Internet Explorer 5 or better for Windows, or Firefox for any system, or Safari. Other compatible browsers may also exist.";
+	}
+}
+
+// simple synchronous AJAX call
+function AjaxCall(url) {
 
 	var req = false;
 	if (window.XMLHttpRequest) {
@@ -82,9 +95,9 @@ function clientSideInclude(id, url) {
 		// Synchronous request, wait till we have it all
 		req.open('GET', url, false);
 		req.send(null);
-		element.innerHTML = req.responseText;
+		return req.responseText;
 	} else {
-		element.innerHTML = "Sorry, your browser does not support XMLHTTPRequest objects. This page requires Internet Explorer 5 or better for Windows, or Firefox for any system, or Safari. Other compatible browsers may also exist.";
+		return false;
 	}
 }
 

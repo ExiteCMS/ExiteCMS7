@@ -63,43 +63,6 @@ $variables = array();
 // header menu definition (links generated in this theme's theme_functions include)
 $variables['headermenu'] = $linkinfo;
 
-// unread forum post indicator
-if (iMEMBER) {
-	if ($userdata['user_posts_unread']) {
-		$result = dbquery("
-			SELECT count(*) as unread 
-				FROM ".$db_prefix."posts p 
-					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id 
-					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-				WHERE ".groupaccess('f.forum_access')."
-					AND tr.user_id = '".$userdata['user_id']."' 
-					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
-					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
-						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
-			);
-	} else {
-		$result = dbquery("
-			SELECT count(*) as unread 
-				FROM ".$db_prefix."posts p 
-					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id 
-					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-				WHERE ".groupaccess('f.forum_access')."
-					AND tr.user_id = '".$userdata['user_id']."' 
-					AND p.post_author != '".$userdata['user_id']."'
-					AND p.post_edituser != '".$userdata['user_id']."'
-					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
-					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
-						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
-			);
-	} 
-	$variables['new_posts'] = ($result ? mysql_result($result, 0) : 0);
-} else {
-	$variables['new_posts'] = 0;
-}
-
-// unread PM indicator
-$variables['new_pm'] = (iMEMBER ? $variables['new_pm_msg'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id='".$userdata['user_id']."' AND pmindex_to_id='".$userdata['user_id']."' AND pmindex_read_datestamp = '0'") : 0);
-
 // Check if we have a favicon to show (first check global image
 // directory, then theme image directory (for a theme override)
 if (file_exists(PATH_ROOT."images/favicon.ico")) $variables['favicon'] = BASEDIR."images/favicon.ico";
