@@ -74,6 +74,40 @@ if (isset($google_key)) $variables['google_key'] = $google_key;
 // Pass any other header parameters if needed
 if (isset($headerparms)) $variables['headparms'] = $headerparms;
 
+// check for unread messages
+if (iMEMBER) {
+	if ($userdata['user_posts_unread']) {
+		$result = dbquery("
+			SELECT count(*) as unread 
+				FROM ".$db_prefix."posts p 
+					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id 
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+				WHERE ".groupaccess('f.forum_access')."
+					AND tr.user_id = '".$userdata['user_id']."' 
+					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
+					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
+			);
+	} else {
+		$result = dbquery("
+			SELECT count(*) as unread 
+				FROM ".$db_prefix."posts p 
+					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id 
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+				WHERE ".groupaccess('f.forum_access')."
+					AND tr.user_id = '".$userdata['user_id']."' 
+					AND p.post_author != '".$userdata['user_id']."'
+					AND p.post_edituser != '".$userdata['user_id']."'
+					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
+					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
+			);
+	} 
+	$variables['new_posts'] = ($result ? mysql_result($result, 0) : 0);
+} else {
+	$variables['new_posts'] = 0;
+}
+
 // define the header panel
 $template_panels[] = array('type' => 'header', 'name' => '_header', 'template' => '_header.tpl');
 $template_variables['_header'] = $variables;
