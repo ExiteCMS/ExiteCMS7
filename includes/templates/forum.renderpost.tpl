@@ -58,7 +58,7 @@
 		{/if}
 		</td>
 		{if $posts[pid].show_ip}
-		<td width='1%' class='tbl_top_right' valign='middle'>
+		<td width='1%' class='tbl_top_right' valign='bottom'>
 			{if $user_can_blacklist}
 				<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;ip={$posts[pid].post_ip}'>
 					<img src='{$smarty.const.THEME}images/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}{$locale.570a}' style='border:0px;' />
