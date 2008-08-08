@@ -91,6 +91,7 @@ if ($settings['enable_registration']) {
 	$variables['show_reglink'] = true;
 	// get all menu items for this user
 	$linkinfo = array();
+	require_once PATH_INCLUDES."menu_include.php";
 	menu_generate_tree("", array(1,2,3), false);
 	foreach ($linkinfo as $link) {
 		if ($link['link_url'] == "/register.php") {

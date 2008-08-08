@@ -5,9 +5,6 @@
 | Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
-| Some portions copyright 2002 - 2006 Nick Jones     |
-| http://www.php-fusion.co.uk/                       |
-+----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
 | GNU General Public License. For details refer to   |
 | the included gpl.txt file or visit http://gnu.org  |
@@ -78,8 +75,15 @@ if ($action == "") {
 			locale_load("modules.".$data['mod_folder']);
 			$data['report_title'] = $locale[$data['report_title']];
 		} else {
-			// make sure this field is not NULL
-			$data['mod_folder'] = "";
+			// make sure this field is not NULL, we need it later
+			$variables['mod_folder'] = "";
+			// it's a core report, get the title for the module locales
+			locale_load("main.reports");
+			if (isset($locale[$variables['report_title']])) {
+				$variables['report_title'] = $locale[$variables['report_title']];
+			} else {
+				// not found, assume it's a static title
+			}
 		}
 		$data['groupname'] = getgroupname($data['report_visibility']);
 			// store the report record

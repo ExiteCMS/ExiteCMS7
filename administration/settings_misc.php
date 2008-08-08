@@ -29,6 +29,7 @@ if (!checkrights("S6") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 
 if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['tinymce_enabled']) ? $_POST['tinymce_enabled'] : "0")."' WHERE cfg_name = 'tinymce_enabled'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['hoteditor_enabled']) ? $_POST['hoteditor_enabled'] : "0")."' WHERE cfg_name = 'hoteditor_enabled'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['smtp_host'])."' WHERE cfg_name = 'smtp_host'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['smtp_username'])."' WHERE cfg_name = 'smtp_username'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['smtp_password'])."' WHERE cfg_name = 'smtp_password'");

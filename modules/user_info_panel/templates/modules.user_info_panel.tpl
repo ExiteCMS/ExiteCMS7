@@ -59,7 +59,7 @@
 	<div style='text-align:center'>
 		{$loginerror|default:""}
 	</div>
-	<form name='loginform' method='post' action='{$smarty.const.FUSION_SELF}'>
+	<form name='loginform1' method='post' action='{$smarty.const.FUSION_SELF}'>
 		{foreach from=$auth_methods item=method key=i}
 			{if $method_count > 1}
 				{if $method == "ldap"}
@@ -122,6 +122,16 @@
 				<input type='hidden' name='javascript_check' value='n' />
 			</div>
 		</form>
+	{literal}
+	<script type='text/javascript'>
+	/* <![CDATA[ */
+		if (document.loginform1.javascript_check.value == 'n')
+		{
+			document.loginform1.javascript_check.value = 'y';
+		}
+		/* ]]> */
+	</script>
+		{/literal}
 	{if $show_reglink || $show_passlink}
 		<hr />
 	{/if}

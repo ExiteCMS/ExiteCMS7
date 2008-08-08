@@ -24,8 +24,19 @@
 			</td>
 			<td width='50%' class='tbl'>
 				<select name='tinymce_enabled' class='textbox'>
-					<option value='1'{if $settings2.tinymce_enabled == "1"} selected="selected"{/if}>{$locale.508}</option>
 					<option value='0'{if $settings2.tinymce_enabled == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.tinymce_enabled == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.673}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='hoteditor_enabled' class='textbox'>
+					<option value='0'{if $settings2.hoteditor_enabled == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.hoteditor_enabled == "1"} selected="selected"{/if}>{$locale.508}</option>
 				</select>
 			</td>
 		</tr>

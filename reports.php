@@ -44,8 +44,15 @@ if ($action == "report") {
 				$variables['report_title'] = $locale[$variables['report_title']];
 				$locales[] = "modules.".$variables['mod_folder'];
 			} else {
-				// make sure this field is not NULL
+				// make sure this field is not NULL, we need it later
 				$variables['mod_folder'] = "";
+				// it's a core report, get the title for the module locales
+				locale_load("main.reports");
+				if (isset($locale[$variables['report_title']])) {
+					$variables['report_title'] = $locale[$variables['report_title']];
+				} else {
+					// not found, assume it's a static title
+				}
 			}
 			// get the access group name
 			$variables['groupname'] = getgroupname($variables['report_visibility']);
