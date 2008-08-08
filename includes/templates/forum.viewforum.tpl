@@ -33,10 +33,12 @@
 		{/if}
 	</tr>
 </table>
-{if $rows > $smarty.const.ITEMS_PER_PAGE}
-<div align='center' style='margin-top:5px;margin-bottom:5px;'>
-	{makepagenav start=$rowstart count=$settings.numofthreads total=$rows range=$settings.navbar_range link=$pagenav_url}
-</div>
+{if $rows > $settings.numofthreads}
+	<div align='center' style='margin-top:5px;margin-bottom:5px;'>
+		{makepagenav start=$rowstart count=$settings.numofthreads total=$rows range=$settings.navbar_range link=$pagenav_url}
+	</div>
+{else}
+	<br />
 {/if}
 <table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 	<tr>
