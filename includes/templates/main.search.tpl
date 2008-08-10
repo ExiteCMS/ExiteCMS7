@@ -7,42 +7,157 @@
 {* Author: WanWizard <wanwizard@gmail.com>                                 *}
 {*                                                                         *}
 {* Revision History:                                                       *}
-{* 2007-07-07 - WW - Initial version                                       *}
+{* 2008-08-08 - WW - Initial version                                       *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
 {* Template for the main module 'search'                                   *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title=$locale.400|cat:" "|cat:$settings.sitename state=$_state style=$_style}
-<center>
-	{section name=idx loop=$links}
-	{if $smarty.section.idx.first}
-	<form name='searchform' method='post' action='{$smarty.const.FUSION_SELF}'>
-		{$locale.401} 
-		<input type='text' name='stext' value='{$searchtext}' class='textbox' style='width:200px' />
-		<input type='submit' name='search' value='{$locale.408}' class='button' />
-		<br /><br />
-	{/if}
-	<input type='radio' name='stype' value='{$links[idx].value}'{if $links[idx].value == $stype} checked="checked"{/if} /> {$links[idx].link_name}
-	{if $links[idx].value == $stype}{assign var='searched' value=$links[idx].link_name}{/if}
-	{if $smarty.section.idx.last}
-		{if $smarty.const.iMEMBER}
-		<input type='radio' name='stype' value='m'{if 'm' == $stype} checked="checked"{/if} /> {$locale.407}
-		{if $searched|default:"" == ""}{assign var='searched' value=$locale.407}{/if}
-		{/if}
-	</form>
-	{/if}
-	{sectionelse}
-		<br />
-		<b>{$locale.472}</b>
-		<br /><br />
-	{/section}
-	{if $searchtext|default:"" == ""}
-		<br /><hr />
-		<table width='600' align='center' cellspacing='0' cellpadding='0' border='0' class='tbl-border'>
-		{foreach from=$locale.480 item=line}
+{if $action == ""}
+	{include file="_opentable.tpl" name=$_name title=$locale.400|cat:" "|cat:$settings.sitename state=$_state style=$_style}
+	<form name='searchform' method='post' action='{$smarty.const.FUSION_SELF}?action=search'>
+		<table width='100%' cellspacing='2' cellpadding='2'>
+			<tr class='tbl2'>
+				<td colspan='2'>
+					<b>{$locale.401}</b>
+				</td>
+			</tr>
+			<tr class='tbl1' style='white-space:nowrap;'>
+				<td>
+					<input type='text' name='stext' value='{$searchtext}' class='textbox' style='width:225px;' />
+					&nbsp;
+					<input type='submit' name='search' value='{$locale.402}' class='button' disabled='disabled' />
+					<br />
+					<input type='checkbox' name='boolean' value='1' class='textbox' />{$locale.447}
+				</td>
+				<td align='right'>
+					<input type='radio' name='qtype' value='OR' checked='checked' /> {$locale.407}
+					<input type='radio' name='qtype' value='AND' /> {$locale.408}
+					<br />
+					<span class='smallalt'>{$locale.427}</span>
+				</td>
+			</tr>
+		</table>
+		<table width='100%' cellspacing='2' cellpadding='2'>
+			<tr class='tbl2'>
+				<td>
+					<b>{$locale.403}</b>
+				</td>
+				<td>
+					<b>{$locale.404}</b>
+				</td>
+			</tr>
+			<tr class='tbl1'>
+				<td valign='top'>
+					{section name=id loop=$searches}
+						{include file=$searches[id].template}
+					{sectionelse}
+						{$locale.409}
+					{/section}
+				</td>
+				<td valign='top'>
+					<table width='100%' cellspacing='2' cellpadding='2'>
+						<tr>
+							<td align='left' valign='top' class='tbl1'>
+								{$locale.444}: <select id='sortby' name='sortby' class='textbox'>
+									<option value='score' selected='selected'>{$locale.419}</option>
+									<option value='author'>{$locale.422}</option>
+									<option value='subject'>{$locale.421}</option>
+									<option value='datestamp'>{$locale.420}</option>
+									<option value='count'>{$locale.443}</option>
+								</select>
+							</td>
+							<td align='right' class='tbl1'>
+								<input type='radio' id='order1' name='order' value='0' checked='checked' /> {$locale.423}
+								<input type='radio' id='order2' name='order' value='1' /> {$locale.424}
+							</td>
+						</tr>
+						<tr>
+							<td align='left' class='tbl2' colspan='2'>
+								<b>{$locale.418}</b>
+							</td>
+						</tr>
+						<tr>
+							<td align='left' colspan='2'>
+								{$locale.425}:
+								<select id='limit' name='limit' class='textbox'>
+								<option value='25'>25</option>
+								<option value='50'>50</option>
+								<option value='100'>100</option>
+								<option value='150'>150</option>
+								<option value='200'>200</option>
+								<option value='0' selected='selected'>{$locale.410}</option>
+								</select> {$locale.426}
+							</td>
+						</tr>
+						<tr>
+							<td align='left' colspan='2'>
+								<div id='div_contentfilter_date' style='display:none;'>
+									{$locale.425}:
+									<select id='datelimit' name='datelimit' class='textbox'>
+										<option value='0' selected='selected'>{$locale.410}</option>
+										<option value='86400'>{$locale.411}</option>
+										<option value='604800'>{$locale.412}</option>
+										<option value='1209600'>{$locale.413}</option>
+										<option value='2419200'>{$locale.414}</option>
+										<option value='7257600'>{$locale.415}</option>
+										<option value='14515200'>{$locale.416}</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						{if $content_filters|@count > 0}
+							{foreach from=$content_filters item=contentfilter}
+							<tr>
+								<td align='left' valign='top' colspan='2'>
+									<div id='div_{$contentfilter.field}' style='display:none;'>
+									{$locale.446} {$contentfilter.title|lower}:
+									<select id='{$contentfilter.field}' name='{$contentfilter.field}' class='textbox'>
+										<option value='0' selected='selected'>{$locale.410}</option>
+										{section name=uidx loop=$contentfilter.values}
+										<option value='{$contentfilter.values[uidx].id}'>{$contentfilter.values[uidx].value}</option>
+										{/section}
+									</select>
+									</div>
+								</td>
+							</tr>
+							{/foreach}
+						{/if}
+					</table>
+				</td>
+			</tr>
 			<tr>
+				<td colspan='2'>
+					<hr />
+					{$locale.445}
+				</td>
+			</tr>
+		</table>
+	</form>
+	{literal}
+	<script type='text/javascript'>
+	function show_filter(filter) {
+		document.searchform.search.disabled = false;
+	{/literal}
+		document.getElementById("div_contentfilter_date").style.display = 'none';
+		{foreach from=$content_filters item=contentfilter}
+		document.getElementById("div_{$contentfilter.field}").style.display = 'none';
+		{/foreach}
+	{literal}
+		var filters = filter.split(",");
+		for(i = 0; i < filters.length; i++){
+			document.getElementById('div_contentfilter_'+filters[i]).style.display = 'block';
+		}
+	}
+	</script>
+	{/literal}
+	{include file="_closetable.tpl"}
+		{include file="_opentable.tpl" name=$_name title=$locale.428 state=$_state style=$_style}
+	<table width='100%' cellspacing='0' cellpadding='0' border='0' class='tbl-border'>
+	{foreach from=$locale.405 item=line}
+		<tr>
+			{if $line.0|default:"" != ""}
 				<td align='center' class='tbl1' style='white-space:nowrap'>
 					{$line.0}
 				</td>
@@ -52,87 +167,44 @@
 				<td class='tbl1'>
 					{$line.1}
 				</td>
-			</tr>
-		{/foreach}
-		</table>
-	{/if}
-</center>
-{include file="_closetable.tpl"}
-{if $searchtext|default:"" != ""}
-{include file="_opentable.tpl" name=$_name title=$locale.409 state=$_state style=$_style}
-{if $result_count == 0}
-	{$locale.470}
+			{else}
+				<td align='left' class='tbl1' style='white-space:nowrap' colspan='3'>
+					{$line.1}
+				</td>
+			{/if}
+		</tr>
+	{/foreach}
+	</table>
+	{include file="_closetable.tpl"}
 {else}
-	{$result_count} {$locale.422} {$searched}{$locale.423}:
-{/if}
-<br /><br />
-{section name=idx loop=$results}
-{if $stype == "a"}
-	{$results[idx].relevance|string_format:"%u"}% - <a href='readarticle.php?article_id={$results[idx].data.article_id}'>{$results[idx].data.article_subject}</a>
-	<br />
-	<span class='small2'>{$locale.040} 
-	{if iMEMBER}
-		<a href='profile.php?lookup={$results[idx].data.user_id}'>{$results[idx].data.user_name}</a>
-	{else}
-		{$results[idx].data.user_name}
+	{include file="_opentable.tpl" name=$_name title=$locale.406 state=$_state style=$_style}
+	<table width='100%'>
+		<tr>
+			<td align='left'>
+				{$locale.429} "<b>{$stext}</b>" {$locale.430} <b>{$searches.0.search_title}</b> {$locale.442|sprintf:$rows}
+			</td>
+			<td align='right'>
+				<form name='return' method='post' action='{$smarty.const.FUSION_SELF}'>
+					<input type='submit' class='button' name='view' value='{$locale.431}' />
+				</form>
+			</td>
+		</tr>
+		{if $message|default:"" != ""}
+		<tr>
+			<td align='left'>
+				<span style='color:red;font-weight:bold;'>{$message}</span>
+			</td>
+		</tr>
+		{/if}
+	</table>
+	{if $message|default:"" == ""}
+		<hr />
+		{include file=$searches.0.template}
 	{/if}
-	{$locale.041} {$results[idx].data.article_datestamp|date_format:"longdate"}</span>
-{elseif $stype == "d"}
-	<a href='downloads.php?cat_id={$results[idx].data.download_cat}&amp;download_id={$results[idx].data.download_id}' target='_blank'>{$results[idx].data.download_title}</a> - {$results[idx].data.download_filesize}
-	<br />
-	{if $results[idx].data.download_description}
-		{$results[idx].data.download_description}<br />
+	{include file="_closetable.tpl"}
+	{if $rows > $items_per_page}
+		{makepagenav start=$rowstart count=$items_per_page total=$rows range=$settings.navbar_range link=$pagenav_url}
 	{/if}
-	<span class='small'><font class='small'>{$locale.451}</font> {$results[idx].data.download_license} |
-	<font class='small'>{$locale.452}</font> {$results[idx].data.download_os} |
-	<font class='small'>{$locale.453}</font> {$results[idx].data.download_version}
-	<br />
-	<font class='small'>{$locale.454}</font>{$results[idx].data.download_datestamp|date_format:"longdate"} |
-	<font class='small'>{$locale.455}</font> {$results[idx].data.download_count}</span>
-{elseif $stype == "f"}
-	{$results[idx].relevance|string_format:"%u"}% - <a href='/forum/viewthread.php?forum_id={$results[idx].data.forum_id}&amp;thread_id={$results[idx].data.thread_id}&amp;pid={$results[idx].data.post_id}#post_{$results[idx].data.post_id}'>{$results[idx].data.post_subject}</a>
-	<br />
-	<span class='small2'>{$locale.040} 
-	{if iMEMBER}
-		<a href='profile.php?lookup={$results[idx].data.user_id}'>{$results[idx].data.user_name}</a>
-	{else}
-		{$results[idx].data.user_name}
-	{/if}
-	{$locale.041} {$results[idx].data.post_datestamp|date_format:"longdate"}</span>
-{elseif $stype == "n"}
-	{$results[idx].relevance|string_format:"%u"}% - <a href='news.php?readmore={$results[idx].data.news_id}'>{$results[idx].data.news_subject}</a>
-	<br />
-	<span class='small2'>{$locale.040} 
-	{if iMEMBER}
-		<a href='profile.php?lookup={$results[idx].data.user_id}'>{$results[idx].data.user_name}</a>
-	{else}
-		{$results[idx].data.user_name}
-	{/if}
-	{$locale.041} {$results[idx].data.news_datestamp|date_format:"longdate"}</span>
-{elseif $stype == "m"}
-	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
-	{if iMEMBER}
-		<a href='profile.php?lookup={$results[idx].data.user_id}'>{$results[idx].data.user_name}</a>
-	{else}
-		{$results[idx].data.user_name}
-	{/if}
-{elseif $stype == "w"}
-	{$results[idx].relevance|string_format:"%u"}% - <a href='weblinks.php?cat_id={$results[idx].data.weblink_cat}&amp;weblink_id={$results[idx].data.weblink_id}' target='_blank'>{$results[idx].data.weblink_name}</a>
-	<br />
-	{if $results[idx].data.weblink_description}
-		{$results[idx].data.weblink_description}<br />
-	{/if}
-	<span class='small'><font class='small'>{$locale.451}</font> {$results[idx].data.weblink_datestamp|date_format:"longdate"} |
-	<span class='small'>{$locale.456}</span> {$results[idx].data.weblink_count}</span>
-{/if}
-{if !$smarty.section.idx.last}
-<br />{if $stype != "m"}<br />{/if}
-{/if}
-{/section}
-{include file="_closetable.tpl"}
-{if $result_count > $items_per_page}
-	{makepagenav start=$rowstart count=$items_per_page total=$result_count range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?stype="|cat:$stype|cat:"&amp;stext="|cat:$searchtext|cat:"&amp;"}
-{/if}
 {/if}
 {***************************************************************************}
 {* End of template                                                         *}

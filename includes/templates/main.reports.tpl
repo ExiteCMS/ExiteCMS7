@@ -34,6 +34,9 @@
 				</tr>
 			</table>
 		</form>
+		{if !$smarty.section.id.last}
+			<br />
+		{/if}
 		{sectionelse}
 		<div style='text-align:center;'>
 				<br />
@@ -62,7 +65,7 @@
 		{/if}
 	</table>
 	{if $message|default:"" == ""}
-		{include file=$template}
+		{include file=$reports.0.template}
 	{/if}
 {/if}
 {include file="_closetable.tpl"}

@@ -33,80 +33,57 @@ if (!isset($report_id) || !isNum($report_id)) $report_id = 0;
 // array to store the required locales
 $locales = array();
 
-if ($action == "report") {
-	// get the report info
-	$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."reports r LEFT JOIN ".$db_prefix."modules m ON r.report_mod_id = m.mod_id WHERE r.report_id = '".$report_id."' AND r.report_active = 1");
-	if ($variables = dbarray($result)) {
-		if (checkgroup($variables['report_visibility'])) {
-			// get the title for this report
-			if ($variables['report_mod_id']) {
-				locale_load("modules.".$variables['mod_folder']);
-				$variables['report_title'] = $locale[$variables['report_title']];
-				$locales[] = "modules.".$variables['mod_folder'];
-			} else {
-				// make sure this field is not NULL, we need it later
-				$variables['mod_folder'] = "";
-				// it's a core report, get the title for the module locales
-				locale_load("main.reports");
-				if (isset($locale[$variables['report_title']])) {
-					$variables['report_title'] = $locale[$variables['report_title']];
-				} else {
-					// not found, assume it's a static title
-				}
-			}
-			// get the access group name
-			$variables['groupname'] = getgroupname($variables['report_visibility']);
-			// name of the report table
-			$variables['template'] = PATH_MODULES.$variables['mod_folder']."/templates/modules.".$variables['mod_folder'].".report.".$variables['report_name'].".tpl";
-			// do any postprocessing
-			@include PATH_MODULES.$variables['mod_folder']."/report.".$variables['report_name'].".php";
-			// store the report result
-			$variables['reportvars'] = isset($reportvars) ? $reportvars : "";
-		} else {
-			// no access to the report requested, return to the list
-			$action = "";
-		}
-	} else {
-		// report not found, return to the list
-		$action = "";
-	}
-}
-
-if ($action == "") {
-	// generate the report overview
-	$reports = array();
-	$reportindex = array();
-	$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."reports r LEFT JOIN ".$db_prefix."modules m ON r.report_mod_id = m.mod_id WHERE r.report_active = 1");
-	while ($data = dbarray($result)) {
-		if (checkgroup($data['report_visibility'])) {
-			// get the title for this report
-			if ($data['report_mod_id']) {
-				locale_load("modules.".$data['mod_folder']);
-				$data['report_title'] = $locale[$data['report_title']];
-				$locales[] = "modules.".$data['mod_folder'];
-			} else {
-				// make sure this field is not NULL
-				$data['mod_folder'] = "";
-			}
-			// get the access group name
-			$data['groupname'] = getgroupname($data['report_visibility']);
-			// name of the report table
+$reports = array();
+$reportindex = array();
+$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."reports r LEFT JOIN ".$db_prefix."modules m ON r.report_mod_id = m.mod_id WHERE r.report_active = 1".($report_id?" AND r.report_id = '$report_id'":""));
+while ($data = dbarray($result)) {
+	if ($admin_req || checkgroup($data['report_visibility'])) {
+		// get the title for this report
+		if ($data['report_mod_id']) {
+			locale_load("modules.".$data['mod_folder']);
+			$data['report_title'] = $locale[$data['report_title']];
+			$locales[] = "modules.".$data['mod_folder'];
+			// name of the report template
 			$data['template'] = PATH_MODULES.$data['mod_folder']."/templates/modules.".$data['mod_folder'].".report.".$data['report_name'].".tpl";
 			// do any preprocessing
 			@include PATH_MODULES.$data['mod_folder']."/report.".$data['report_name'].".php";
-			$data['reportvars'] = isset($reportvars) ? $reportvars : "";
-			// store the report record
-			$reports[$data['report_id']] = $data;
-			$reportindex[] = $data['report_title']."_>_".$data['report_id'];
+		} else {
+			if ($data['report_mod_core']) {
+				$data['mod_folder'] = "ExiteCMS";
+				$data['custom'] = false;
+				// name of the report template
+				$data['template'] = PATH_INCLUDES."reports/templates/report.".$data['report_name'].".tpl";
+				// do any preprocessing
+				@include PATH_INCLUDES."reports/report.".$data['report_name'].".php";
+			} else {
+				$data['mod_folder'] = "-";
+				$data['custom'] = true;
+			}
+			// it's a core report, get the title from the module locales
+			locale_load("main.reports");
+			if (isset($locale[$data['report_title']])) {
+				$data['report_title'] = $locale[$data['report_title']];
+			} else {
+				// not found, assume it's a static title
+			}
 		}
-	}
-	//make sure the modules are properly sorted
-	sort($reportindex);
-	$variables['reports'] = array();
-	foreach($reportindex as $index) {
-		$variables['reports'][] = $reports[substr(strstr($index,"_>_"),3)];
+		// get the access group name
+		$data['groupname'] = getgroupname($data['report_visibility']);
+		// store any reporting variables
+		$variables['reportvars'] = isset($reportvars) ? $reportvars : "";
+		// store the report record
+		$reports[$data['report_id']] = $data;
+		$reportindex[] = $data['report_title']."_>_".$data['report_id'];
 	}
 }
+
+//make sure the modules are properly sorted
+sort($reportindex);
+$variables['reports'] = array();
+foreach($reportindex as $index) {
+	$variables['reports'][] = $reports[substr(strstr($index,"_>_"),3)];
+}
+
 $locales[] = "main.reports";
 
 $variables['action'] = $action;

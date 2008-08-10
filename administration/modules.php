@@ -210,7 +210,7 @@ if ($action == 'install' && isset($module)) {
 					$mod_search['title'] = isset($mod_search['title']) ? $mod_search['title'] : ("Search: ".$mod_search['name']);
 					$mod_search['version'] = isset($mod_search['version']) ? $mod_search['version'] : $mod_version;
 					// add it to the search table
-					$result = dbquery("INSERT INTO ".$db_prefix."searches (search_mod_id, search_name, search_title, search_version, search_visibility) 
+					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_visibility) 
 						VALUES ('".$mod_id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."', '".$mod_search['visibility']."')");
 				}
 			}
@@ -353,7 +353,7 @@ if ($action == 'uninstall' && isset($id)) {
 	$result = dbquery("DELETE FROM ".$db_prefix."reports WHERE report_mod_id='$id'");
 
 	// remove any searches associated with this module
-	$result = dbquery("DELETE FROM ".$db_prefix."searches WHERE search_mod_id='$id'");
+	$result = dbquery("DELETE FROM ".$db_prefix."search WHERE search_mod_id='$id'");
 }
 
 if ($action == 'locales' && isset($id)) {
@@ -524,7 +524,7 @@ if ($action == 'upgrade' && isset($id)) {
 	}
 
 	// remove any searches associated with this module
-	$result = dbquery("DELETE FROM ".$db_prefix."searches WHERE search_mod_id='$id'");
+	$result = dbquery("DELETE FROM ".$db_prefix."search WHERE search_mod_id='$id'");
 
 	// if a module is installed, and if searches are defined, install the search links for this module
 	if (isset($mod_search_links) && is_array($mod_search_links) && count($mod_search_links)) {
@@ -541,7 +541,7 @@ if ($action == 'upgrade' && isset($id)) {
 					$mod_search['title'] = isset($mod_search['title']) ? $mod_search['title'] : ("Search: ".$mod_search['name']);
 					$mod_search['version'] = isset($mod_search['version']) ? $mod_search['version'] : $mod_version;
 					// add it to the search table
-					$result = dbquery("INSERT INTO ".$db_prefix."searches (search_mod_id, search_name, search_title, search_version, search_visibility) 
+					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_visibility) 
 						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."', '".$mod_search['visibility']."')");
 				}
 			}
