@@ -44,7 +44,7 @@ $forum_list = ""; $current_cat = "";
 // get the list of forums the user has access to
 $result = dbquery(
 	"SELECT f.*, COUNT(t.thread_id) AS thread_count, MAX(t.thread_lastpost) AS last_post, f2.forum_name AS forum_cat_name, f2.forum_id as cat_id, u.user_id, u.user_name FROM ".$db_prefix."forums f
-	INNER JOIN ".$db_prefix."threads t USING(forum_id)
+	LEFT JOIN ".$db_prefix."threads t USING(forum_id)
 	INNER JOIN ".$db_prefix."forums f2 ON f.forum_cat = f2.forum_id
 	LEFT JOIN ".$db_prefix."users u ON f.forum_lastuser = u.user_id
 	WHERE ".groupaccess('f.forum_access')." AND f.forum_cat != '0' GROUP BY forum_id ORDER BY f2.forum_order ASC, f.forum_order ASC"
