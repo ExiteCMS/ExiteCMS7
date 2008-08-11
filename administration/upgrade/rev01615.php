@@ -21,7 +21,7 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(15,00,0,7,1,2008), 
+					'date' => mktime(15,00,0,8,10,2008), 
 					'title' => "Required updates for ExiteCMS v7.1 rev.".$_revision,
 					'description' => "Updated the modular search core module.");
 

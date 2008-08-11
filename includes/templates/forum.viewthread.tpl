@@ -275,7 +275,7 @@ window.onload = init;
 			</td>
 		</tr>
 		<tr>
-			<td align='center' class='tbl2'>
+			<td align='center' class='tbl1'>
 				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
 				<br />
 				<input type='hidden' id='smileys_loaded' name='smileys_loaded' value='0' />

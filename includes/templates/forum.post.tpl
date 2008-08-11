@@ -61,7 +61,7 @@
 							{$locale.461}:
 						</td>
 						<td class='tbl1'>
-							{if $settings.hoteditor_enabled == 1}
+							{if $settings.hoteditor_enabled == 0}
 								<textarea name='message' cols='80' rows='15' class='textbox' style='width:100%; height:{math equation='x/4' x=$smarty.const.BROWSER_HEIGHT format='%u'}px;'>{$message}</textarea>
 								<br />
 								<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('message', '[b]', '[/b]');" />
