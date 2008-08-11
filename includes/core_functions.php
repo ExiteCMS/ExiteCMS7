@@ -198,8 +198,9 @@ require_once PATH_INCLUDES."user_functions.php";
 
 // set the query log debugging switch, enable error reporting if needed
 $_db_log = checkgroup($settings['debug_querylog'], false);
-// if debugging is requested, also activate some other debugging features
-if ($_db_log) {
+
+// activate PHP error reporting
+if (isset($settings['debug_php_errors']) && $settings['debug_php_errors']) {
 	error_reporting(E_ALL);
 }
 

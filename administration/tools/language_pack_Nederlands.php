@@ -1075,6 +1075,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['667'] = "In seconden .Maar één bericht is toegestaan in deze periode";
 		$localestrings['668'] = "Toon ook de resultaten van de Query Optimizer:";
 		$localestrings['669'] = "Achtergrond kleur in onderhoudsmodus:";
+		$localestrings['670'] = "Activeer PHP error reporting:";
 		$localestrings['671'] = "Activeer SQL query debugging voor:";
 		$localestrings['672'] = "uitgeschakeld";
 		$localestrings['673'] = "Gebruik de HotEditor BBcode editor?";
@@ -3096,6 +3097,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src405']['7'] = array();
 		$localestrings['src405']['7']['0'] = "\" \"";
 		$localestrings['src405']['7']['1'] = "Door een tekst tussen dubbele aanhalingstekens te plaatsen kunt u aangeven dat die tekst, exact zoals ingetypt, moet worden gezocht..";
+		$localestrings['src406'] = "Zoekresultaten";
 		$localestrings['src407'] = "vind één";
 		$localestrings['src408'] = "vind alle";
 		$localestrings['src409'] = "Er zijn geen locaties beschikbaar om door te zoeken";

@@ -200,6 +200,17 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.670}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='debug_php_errors' class='textbox'>
+					<option value='1'{if $settings2.debug_php_errors == "1"} selected="selected"{/if}>{$locale.508}</option>
+					<option value='0'{if $settings2.debug_php_errors == "0"} selected="selected"{/if}>{$locale.509}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='submit' name='savesettings' value='{$locale.750}' class='button' />

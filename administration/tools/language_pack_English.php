@@ -1075,6 +1075,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['667'] = "In seconds.Only one post per interval is allowed.";
 		$localestrings['668'] = "Show results of the Query Optimizer as well:";
 		$localestrings['669'] = "Maintenance mode background color:";
+		$localestrings['670'] = "Activate PHP error reporting:";
 		$localestrings['671'] = "Activate SQL query debugging for:";
 		$localestrings['672'] = "disabled";
 		$localestrings['673'] = "Use HotEditor BBcode editor?";
@@ -3096,6 +3097,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src405']['7'] = array();
 		$localestrings['src405']['7']['0'] = "\" \"";
 		$localestrings['src405']['7']['1'] = "Double quotes at the beginning and end of a phrase, matches only rows that contain the complete phrase, as it was typed.";
+		$localestrings['src406'] = "Search Results";
 		$localestrings['src407'] = "match any";
 		$localestrings['src408'] = "match all";
 		$localestrings['src409'] = "There are no locations available for you to search";
