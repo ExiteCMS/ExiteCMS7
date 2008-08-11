@@ -20,6 +20,7 @@ define('MIN_SEARCH_LENGTH', 3);
 
 // load the locale for this module
 locale_load("main.search");
+$locales = array("main.search");
 
 // default the possible filters
 $select_filters = array("score", "author", "subject", "datestamp", "count");
@@ -87,7 +88,7 @@ while ($data = dbarray($result)) {
 		$variables['reportvars'] = isset($reportvars) ? $reportvars : array();
 		// no results?
 		if (count($variables['reportvars']) == 0) {
-			$variables['message'] = $locale['432'];
+			$variables['message'] = $locale['src432'];
 		}
 		// store the search record
 		$searches[$data['search_id']] = $data;
@@ -111,10 +112,13 @@ $variables['search_id'] = $search_id;
 // store the extra filters defined
 $variables['content_filters'] = $content_filters;
 
-$locales[] = "main.search";
+// make sure the panel has a title
+if (!isset($title)) {
+	$title = $locale['src406'];
+}
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'search', 'template' => 'main.search.tpl', 'locale' => $locales);
+$template_panels[] = array('type' => 'body', 'name' => 'search', 'title' => $title, 'template' => 'main.search.tpl', 'locale' => $locales);
 $template_variables['search'] = $variables;
 
 // Call the theme code to generate the output for this webpage

@@ -189,7 +189,7 @@ if (isset($action)) {
 				}
 
 				// get the score divider for this result set
-				$divider == 0;
+				$divider = 0;
 				foreach($reportvars['output'] as $key => $value) {
 					$divider = max($divider, $value['score']);
 				}

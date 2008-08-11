@@ -43,6 +43,9 @@ define('FULL_SCREEN', (iMEMBER && $userdata['user_forum_fullscreen']));
 // temp storage for template variables
 $variables = array();
 
+// define the stylesheet for HotEditor
+$headerparms = '	<link rel="stylesheet" href="'.THEME.'hoteditor/style.css" type="text/css" />';
+
 // load the locales for this forum module
 locale_load("forum.main");
 locale_load("forum.post");

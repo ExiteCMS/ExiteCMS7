@@ -61,7 +61,7 @@ if ($action == "add" && !isset($variables['search'])) {
 
 // edit an existing search definition
 if ($action == "edit" && !isset($variables['search'])) {
-	$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."search r LEFT JOIN ".$db_prefix."modules m ON r.search_mod_id = m.mod_id");
+	$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."search r LEFT JOIN ".$db_prefix."modules m ON r.search_mod_id = m.mod_id WHERE search_id = '".$search_id."'");
 	if ($data = dbarray($result)) {
 		// get the title for this search
 		if ($data['search_mod_id']) {
@@ -95,9 +95,8 @@ if ($action == "edit" && !isset($variables['search'])) {
 // add a new or edit an existing search definition
 if ($action == "add" || $action == "edit") {
 	// get the list of defined user groups
-	$variables['usergroups'] = getusergroups(true);
+	$variables['usergroups'] = getusergroups(false);
 }
-
 // toggle the search status
 if ($action == "setstatus") {
 	// if a status is passed, validate it
