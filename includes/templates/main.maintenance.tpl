@@ -21,7 +21,7 @@
 		<title>{$settings.sitename}</title>
 		<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
 		<meta http-equiv='refresh' content='60; url={$smarty.const.BASEDIR}'>
-		{include file='_stylesheets.tpl'}
+		<link href="{$smarty.const.THEME}exitecms__0001.css" rel="stylesheet" type="text/css" />
 	</head>
 
 	<body class='body'>
