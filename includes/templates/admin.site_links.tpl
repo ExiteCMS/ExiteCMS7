@@ -242,12 +242,16 @@ update_link_parent('{$panel_name}');
 {literal}
 
 // make sure the dropdown is positioned on the current link parent
-var i = 0;
-var listLength = document.getElementById("link_parent").length;
-for (i=0; i < listLength; i++) {
-	if (document.getElementById("link_parent").options[i].value == {/literal}{$link_parent}{literal}) {
-		document.getElementById("link_parent").options[i].selected = true;
-		break;
+if (document.getElementById("link_parent")) {
+	var i = 0;
+	var listLength = document.getElementById("link_parent").length;
+	if (listLength) {
+		for (i=0; i < listLength; i++) {
+			if (document.getElementById("link_parent").options[i].value == {/literal}{$link_parent}{literal}) {
+				document.getElementById("link_parent").options[i].selected = true;
+				break;
+			}
+		}
 	}
 }
 
@@ -261,6 +265,8 @@ function updateparentlist() {
 // called by updateparentlist, or at initial page load, with the name of the selected menu panel
 // to prepopulate the parent link dropdown
 function update_link_parent(menuname) {
+
+	if (!document.getElementById("link_parent")) return;
 
 	// empty the dropdown first
 	document.getElementById("link_parent").length = 0;
