@@ -130,7 +130,7 @@ foreach($auth_methods as $auth_method) {
 }
 
 // check if a local fallback is defined
-$variables['auth_method'] .= $auth_method . ($auth_local ? "+" : " ");
+$variables['auth_method'] = $auth_method . ($auth_local ? "+" : " ");
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.settings_security', 'template' => 'admin.settings_security.tpl', 'locale' => "admin.settings");

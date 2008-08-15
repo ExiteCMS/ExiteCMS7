@@ -947,7 +947,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['405'] = "Site e-mail address:";
 		$localestrings['406'] = "Your name or nickname:";
 		$localestrings['407'] = "Site introduction:";
-		$localestrings['408'] = "Leave empty if not required";
+		$localestrings['408'] = "Used by some themes. Leave empty if not required";
 		$localestrings['409'] = "Site description:";
 		$localestrings['410'] = "Site keywords:";
 		$localestrings['411'] = "Separate each word with a comma";
@@ -1034,12 +1034,12 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['562'] = "Migration strategies";
 		$localestrings['563'] = "From:";
 		$localestrings['564'] = "To:";
-		$localestrings['569a'] = "The current text for the selected item will be copied for all active locales.";
-		$localestrings['569b'] = "The current text for the selected item will be duplicated for all active locales.";
-		$localestrings['569c'] = "Only the translation for the system locale will be kept, all others will be deleted.";
-		$localestrings['569d'] = "Current translations will be linked to individual locales, and can be deleted or modified as a single entity.";
-		$localestrings['569e'] = "Only the translation for the system locale will be kept, all others will be deleted.";
-		$localestrings['569f'] = "Current translations will be merged into a single entity. Items that don't exist for every locale will be merged as well. This may lead to duplicates.";
+		$localestrings['569a'] = "?";
+		$localestrings['569b'] = "The current text for the selected item will be copied to all active locales.";
+		$localestrings['569c'] = "?";
+		$localestrings['569d'] = "?";
+		$localestrings['569e'] = "All locale information will be erased and all information will be merged. This may lead to duplicates.";
+		$localestrings['569f'] = "?";
 		$localestrings['570'] = "Panels:";
 		$localestrings['571'] = "Menu sytem:";
 		$localestrings['572'] = "Articles:";

@@ -17,7 +17,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
 {include file="admin.settings_links.tpl}
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='500'>
+	<table align='center' cellpadding='0' cellspacing='0' width='600'>
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.427}
@@ -122,16 +122,20 @@
 			</td>
 		</tr>	
 		<tr>
-			<td class='tbl2' align='center' colspan='2'>
-				<font style='color:red;'>Note that localisation is expirimental at the moment. There are no migrations implemented when you change a method. Chances are that you're going to loose data, of that different locales will end up mixed together.</font>
+			<td class='tbl2' align='center' colspan='2' style='border: 1px solid red;'>
+				<font style='color:red;'><b>Note that localisation is expirimental at the moment.</b></font>
 			</td>
 		</tr>	
-{*		<tr>
+		<tr>
+			<td class='tbl' align='center' colspan='2'>
+			</td>
+		</tr>	
+		<tr>
 			<td class='tbl2' align='center' colspan='2'>
 				{$locale.562}
 			</td>
 		</tr>	
-		<tr>
+{*		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.563}
 			</td>
@@ -153,7 +157,7 @@
 				<hr />
 			</td>
 		</tr>	
-		<tr>
+*}		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.563}
 			</td>
@@ -175,7 +179,7 @@
 				<hr />
 			</td>
 		</tr>	
-		<tr>
+{*		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.563}
 			</td>
@@ -219,7 +223,7 @@
 				<hr />
 			</td>
 		</tr>	
-		<tr>
+*}		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.563}
 			</td>
@@ -241,7 +245,7 @@
 				<hr />
 			</td>
 		</tr>	
-		<tr>
+{*		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.563}
 			</td>

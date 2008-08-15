@@ -17,7 +17,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
 {include file="admin.settings_links.tpl}
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='500'>
+	<table align='center' cellpadding='0' cellspacing='0' width='600'>
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.402}
@@ -102,6 +102,8 @@
 		<tr>
 			<td valign='top' width='50%' class='tbl'>
 				{$locale.412}
+				<br />
+				<span class='small2'>{$locale.408}</span>
 			</td>
 			<td width='50%' class='tbl'>
 				<textarea name='footer' rows='6' cols='80' class='textbox' style='width:230px;'>{$settings2.footer}</textarea>
