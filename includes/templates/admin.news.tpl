@@ -18,6 +18,15 @@
 {include file="_opentable.tpl" name=$_name title=$locale.408 state=$_state style=$_style}
 <form name='selectform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<center>
+		{if $settings.news_localisation == "multiple"}
+			{assign var="url_locale" value="&amp;news_locale="|cat:$news_locale}
+			<br />
+			{$locale.553} {html_options name=news_locale options=$locales selected=$news_locale class="textbox" onchange="location = '"|cat:$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;news_locale=' + this.options[this.selectedIndex].value;"}
+			<br />
+		{else}
+			{assign var="news_locale" value=""}
+		{/if}
+		<br />
 		<select name='news_id' class='textbox' style='width:400px'>
 			{section name=item loop=$news}
 				<option value='{$news[item].news_id}' {if $news[item].selected}selected='selected'{/if}>{$news[item].news_subject}</option>
@@ -26,88 +35,15 @@
 		&nbsp;
 		<input type='submit' name='edit' value='{$locale.409}' class='button' />
 		<input type='submit' name='delete' value='{$locale.410}' onclick='return DeleteNews();' class='button' />
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type='submit' name='latest' value='{$locale.540}' class='button' />
 	</center>
 </form>
 {include file="_closetable.tpl"}
-{if $latest_news_selection}
-{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
-<form name='latestnewsform' method='post' action='{$action}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
-		<tr>
-			<td align='center' class='tbl'>
-			{$locale.541}
-			</td>
-		</tr>
-		<tr>
-			<td align='center' class='tbl'>
-			{foreach from=$headlines item=headline name=hl}
-				{$locale.543} {$smarty.foreach.hl.iteration}:
-				<select name='headlines[{$smarty.foreach.hl.iteration}]' class='textbox' style='width: 400px'>
-				{section name=id loop=$headline}
-					{if $headline[id].news_new_cat}
-						{if !$smarty.section.id.first}</optgroup>{/if}
-						<optgroup label='{$headline[id].news_cat_name}'>
-						{assign var='hasvalues' value=false}
-					{/if}
-					<option value='{$headline[id].news_id}' {if $headline[id].selected}selected{/if}>{$headline[id].news_subject}</option>
-					{assign var='hasvalues' value=true}
-					{if $smarty.section.id.last && $hasvalues}</optgroup>{/if}
-				{/section}
-			</select>
-			<br /><br />
-			{/foreach}
-			</td>
-		</tr>
-	</table>
-	<hr />
-	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
-		<tr>
-			<td align='center' class='tbl'>
-			{$locale.542}
-			</td>
-		</tr>
-		<tr>
-			<td align='center' class='tbl'>
-			{foreach from=$newsitems item=newsitem name=ni}
-				{$locale.543} {$smarty.foreach.ni.iteration}:
-				<select name='newsitems[{$smarty.foreach.ni.iteration}]' class='textbox' style='width: 400px'>
-				{section name=id loop=$newsitem}
-					{if $newsitem[id].news_new_cat}
-						{if !$smarty.section.id.first}</optgroup>{/if}
-						<optgroup label='{$newsitem[id].news_cat_name}'>
-						{assign var='hasvalues' value=false}
-					{/if}
-					<option value='{$newsitem[id].news_id}' {if $newsitem[id].selected}selected{/if}>{$newsitem[id].news_subject}</option>
-					{assign var='hasvalues' value=true}
-					{if $smarty.section.id.last && $hasvalues}</optgroup>{/if}
-				{/section}
-			</select>
-			<br /><br />
-			{/foreach}
-			</td>
-		</tr>
-		<tr>
-			<td align='center' class='tbl'>
-				<span class='small'>{$locale.545}</span>
-			</td>
-		</tr>
-		<tr>
-			<td align='center' class='tbl'>
-				<input type='checkbox' name='news_latest' value='yes'{if $news_latest} checked{/if}/> {$locale.546}<br />
-			</td>
-		</tr>
-		<tr>
-			<td align='center' class='tbl'>
-				<br />
-				<input type='submit' name='save_latest' value='{$locale.544}' class='button' />
-			</td>
-		</tr>
-	</table>
-{include file="_closetable.tpl"}
+{if $settings.article_localisation == "multiple"}
+	{assign var="tabletitle" value=$_title|cat:" "|cat:$locale.554|cat:" '<b>"|cat:$news_locale|cat:"</b>'"}
 {else}
-{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
+	{assign var="tabletitle" value=$_title}
+{/if}
+{include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
 <form name='inputform' method='post' action='{$action}' onsubmit='return ValidateForm(this);'>
 	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
 		<tr>
@@ -365,6 +301,7 @@
 					</tr>
 					<tr>
 						<td colspan='2' align='center' class='tbl'>
+							<input type='hidden' name='news_locale' value='{$news_locale}' />
 							<br />
 							<input type='submit' name='preview' value='{$locale.418}' class='button' />
 							<input type='submit' name='save' value='{$locale.419}' class='button' />
@@ -397,7 +334,6 @@ function SetRatings() {
 }
 {/literal}
 </script>
-{/if}
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}

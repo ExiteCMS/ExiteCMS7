@@ -494,6 +494,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['236'] = "Language Settings";
 		$localestrings['237'] = "Webmaster Toolbox for";
 		$localestrings['238'] = "Forum Ranking";
+		$localestrings['239'] = "Frontpage News";
 		$localestrings['250'] = "Website Statistics";
 		$localestrings['251'] = "Registered Members:";
 		$localestrings['252'] = "Unactivated Members:";
@@ -699,13 +700,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['519'] = "You must define at least one category before you can add any Articles";
 		$localestrings['520'] = "Click here";
 		$localestrings['521'] = " to go to Article Categories";
-		$localestrings['540'] = "Latest News selection";
-		$localestrings['541'] = "Latest News Headlines:";
-		$localestrings['542'] = "Latest News Items:";
+		$localestrings['540'] = "Frontpage News selection";
+		$localestrings['541'] = "Frontpage Headlines:";
+		$localestrings['542'] = "Frontpage News Items:";
 		$localestrings['543'] = "News Item";
 		$localestrings['544'] = "Update";
-		$localestrings['545'] = "On this page you define the sequence in which the news articles are displayed on the news homepage. \n					First, all headlines you selected are displayed. After that, the latest news items. Both in the order\n					in which they are selected.<br />If the checkbox below is not checked, all other news items that are not\nexpired will be shown next.";
-		$localestrings['546'] = "Hide all non-selected news items from the Latest News page";
+		$localestrings['545'] = "On this page you define the sequence in which the news items are displayed on the news frontpage. \n					First, all headlines you selected are displayed. After that, the latest news items. Both in the order\n					in which they are selected.<br />If the checkbox below is not checked, all other news items that are not\nexpired will be shown next.";
+		$localestrings['546'] = "Hide all non-selected news items from the Frontpage";
 		$localestrings['550'] = "Please specify a subject";
 		$localestrings['551'] = "Delete this News?";
 		$localestrings['552'] = "Delete this Article?";
@@ -2653,7 +2654,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['027'] = "My Recent Posts";
 		$localestrings['027a'] = "All Posts";
 		$localestrings['028'] = "New Posts";
-		$localestrings['029'] = "Latest News";
+		$localestrings['029'] = "Frontpage News";
 		$localestrings['030'] = "Forum";
 		$localestrings['031'] = "Thread";
 		$localestrings['032'] = "Views";
@@ -2673,7 +2674,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['044'] = " Reads";
 		$localestrings['045'] = "Print";
 		$localestrings['046'] = "News";
-		$localestrings['047'] = "No News has been posted yet";
+		$localestrings['047'] = "There is no frontpage news available";
 		$localestrings['048'] = "Edit";
 		$localestrings['049'] = "Posted by <b>%s</b> (and visible to you)";
 		$localestrings['050'] = "Prev";

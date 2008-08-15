@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Mon Aug 11 2008, 16:55:53 CEST
+// generated on : Fri Aug 15 2008, 15:55:48 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -29,7 +29,7 @@ $locale['026'] = "My Recent Threads";
 $locale['027'] = "My Recent Posts";
 $locale['027a'] = "All Posts";
 $locale['028'] = "New Posts";
-$locale['029'] = "Latest News";
+$locale['029'] = "Frontpage News";
 $locale['030'] = "Forum";
 $locale['031'] = "Thread";
 $locale['032'] = "Views";
@@ -49,7 +49,7 @@ $locale['043'] = " Comments";
 $locale['044'] = " Reads";
 $locale['045'] = "Print";
 $locale['046'] = "News";
-$locale['047'] = "No News has been posted yet";
+$locale['047'] = "There is no frontpage news available";
 $locale['048'] = "Edit";
 $locale['049'] = "Posted by <b>%s</b> (and visible to you)";
 $locale['050'] = "Prev";

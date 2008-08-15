@@ -27,6 +27,26 @@ if (isset($cat_id) && !isNum($cat_id)) fallback(FUSION_SELF);
 $variables = array();
 $news_cats = array();
 
+// compose the query where clause based on the localisation method choosen
+switch ($settings['news_localisation']) {
+	case "none":
+		$where = "";
+		break;
+	case "single":
+		$where = "";
+		break;
+	case "multiple":
+		if (isset($_POST['news_locale'])) $news_locale = stripinput($_POST['news_locale']);
+		if (isset($news_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($news_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($news_locale);
+		}
+		if (!isset($news_locale)) $news_locale = $settings['locale_code'];
+		$variables['news_locale'] = $news_locale;
+		$where = "news_locale = '".$news_locale."' ";
+		break;
+}
+
 // make the selection based on the presence of cat_id 
 if (isset($cat_id)) {
 	$sql = "WHERE news_cat_id='".$cat_id."'";
@@ -60,13 +80,13 @@ if (isset($cat_id)) {
 $result = dbquery("SELECT * FROM ".$db_prefix."news_cats ".$sql);
 while ($data = dbarray($result)) {
 	// total number of items for this news_cat
-	$data['itemcount'] = dbcount("(news_id)", "news", "news_cat='".$data['news_cat_id']."' AND ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")");
+	$data['itemcount'] = dbcount("(news_id)", "news", "news_cat='".$data['news_cat_id']."' AND ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")".($where==""?"":(" AND ".$where)));
 	// set a flag to indicate there are more items then shown
 	$data['more'] = (!isset($cat_id) && $data['itemcount'] > NC_OVERVIEW_LIMIT);
 	// get all news items for this cat (limit if showing an overview)
 	$data['items'] = array();
 	if ($data['itemcount']) {
-		$result2 = dbquery("SELECT * FROM ".$db_prefix."news WHERE news_cat='".$data['news_cat_id']."' AND ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().") ORDER BY news_datestamp DESC ".$sql2);
+		$result2 = dbquery("SELECT * FROM ".$db_prefix."news WHERE news_cat='".$data['news_cat_id']."' AND ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().") ".($where==""?"":(" AND ".$where))." ORDER BY news_datestamp DESC ".$sql2);
 		while ($data2 = dbarray($result2)) {
 			$data['items'][] = $data2;
 		}

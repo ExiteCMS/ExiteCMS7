@@ -494,6 +494,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['236'] = "Taal Instellingen";
 		$localestrings['237'] = "Gereedschapskist van";
 		$localestrings['238'] = "Forum rangen";
+		$localestrings['239'] = "Voorpagina nieuws";
 		$localestrings['250'] = "Website Statistieken";
 		$localestrings['251'] = "Geregistreerde gebruikers:";
 		$localestrings['252'] = "Niet geactiveerde gebruikers:";
@@ -699,12 +700,12 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['519'] = "Er moet minstens één categorie gedefinieerd zijn alvorens u artikelen kunt invoeren";
 		$localestrings['520'] = "Klik hier";
 		$localestrings['521'] = " om naar de artikel categorieen te gaan";
-		$localestrings['540'] = "Selectie Laatste nieuws";
+		$localestrings['540'] = "Selectie Voorpagina nieuws";
 		$localestrings['541'] = "Belangrijke berichten:";
 		$localestrings['542'] = "Laatste nieuwsberichten :";
 		$localestrings['543'] = "Nieuwsbericht";
 		$localestrings['544'] = "Aanpassen";
-		$localestrings['545'] = "Op deze pagina kunt u de volgorde definieren waarin de nieuwsberichten op de laatste nieuws pagina zullen verschijnen.\nAls eerste zullen alle belangrijke berichten worden getoond, daarna, alle laatste nieuwsberichten. Beide in de volgorde waarin ze zijn geselecteerd.<br />Als de box hieronder niet is geselecteerd, zullen daarna alle andere nieuwsberichten die nog niet voorbij de einddatum zijn worden getoond.";
+		$localestrings['545'] = "Op deze pagina kunt u de volgorde definieren waarin de nieuwsberichten op de voorpagina zullen verschijnen.\nAls eerste zullen alle belangrijke berichten worden getoond, daarna, alle laatste nieuwsberichten. Beide in de volgorde waarin ze zijn geselecteerd.<br />Als de box hieronder niet is geselecteerd, zullen daarna alle andere nieuwsberichten die nog niet voorbij de einddatum zijn worden getoond.";
 		$localestrings['546'] = "Verberg alle niet geselecteerde nieuwsberichten van de laatste nieuws pagina.";
 		$localestrings['550'] = "Voer a.u.b. een onderwerp in";
 		$localestrings['551'] = "Verwijder dit bericht?";
@@ -2673,7 +2674,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['044'] = " keer gelezen";
 		$localestrings['045'] = "Afdrukken";
 		$localestrings['046'] = "Nieuws";
-		$localestrings['047'] = "Er zijn nog geen nieuwsberichten geplaatst";
+		$localestrings['047'] = "Er zijn geen voorpagina nieuwsberichten aanwezig";
 		$localestrings['048'] = "Wijzig";
 		$localestrings['049'] = "Geplaatst door <b>%s</b> (en zichtbaar voor u)";
 		$localestrings['050'] = "Vorige";

@@ -50,107 +50,37 @@ if (isset($status)) {
 	$variables = array();
 }
 
-// save the selection for the lastest news homepage panel
-if (isset($_POST['save_latest'])) {
-
-	// validate the input
-	if (!is_array($_POST['headlines'])) fallback(BASEDIR."index.php");
-	$headlines = $_POST['headlines'];
-	if (count($headlines) != $settings['news_headline']) fallback(BASEDIR."index.php");
-	
-	if (!is_array($_POST['newsitems'])) fallback(BASEDIR."index.php");
-	$newsitems = $_POST['newsitems'];
-
-	// reset all headline news items before setting new ones
-	$result = dbquery("UPDATE ".$db_prefix."news SET news_headline = '0'");
-	// save the new headlines
-	foreach($headlines as $key => $item) {
-		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_headline = '".($settings['news_headline'] + 1 - $key)."' WHERE news_id = '".$item."'");
-	}
-	
-	// reset all lastest news items before setting new ones
-	$result = dbquery("UPDATE ".$db_prefix."news SET news_latest_news = '0'");
-	// save the new latest news items
-	foreach($newsitems as $key => $item) {
-		if ($item != 0) $result = dbquery("UPDATE ".$db_prefix."news SET news_latest_news = '".($settings['news_items'] + 1 - $key)."' WHERE news_id = '".$item."'");
-	}
-	
-	// update the news_latest configuration flag
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isset($_POST['news_latest']) ? "1" : "0")."' WHERE cfg_name = 'news_latest'");
-	
+// compose the query where clause based on the localisation method choosen
+switch ($settings['news_localisation']) {
+	case "none":
+		$where = "";
+		$news_locale = "";
+		break;
+	case "single":
+		$where = "";
+		$news_locale = "";
+		break;
+	case "multiple":
+		if (isset($_POST['news_locale'])) $news_locale = stripinput($_POST['news_locale']);
+		if (isset($news_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($news_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($news_locale);
+		}
+		if (!isset($news_locale)) $news_locale = $settings['locale_code'];
+		$variables['news_locale'] = $news_locale;
+		$where = "news_locale = '".$news_locale."' ";
+		break;
 }
 
 // fill the newsitems array for the newsitem selection dropdown
-$result = dbquery("SELECT * FROM ".$db_prefix."news ORDER BY news_datestamp DESC");
+$result = dbquery("SELECT * FROM ".$db_prefix."news ".($where==""?"":("WHERE ".$where))." ORDER BY news_datestamp DESC");
 $variables['newsitems'] = array();
 while ($data = dbarray($result)) {
 	$data['selected'] = (isset($news_id) && $news_id == $data['news_id']);
 	$variables['news'][] = $data;
 }
 
-// controle variable to indicate which panel to show
-$variables['latest_news_selection'] = isset($_POST['latest']) || isset($_POST['save_latest']);
-
-if ($variables['latest_news_selection']) {
-
-	// build the list of available news cards
-	$newslist = array();
-	// and an empty first entry
-	$newslist[] = array('news_id' => 0, 'news_subject' => "", 'news_cat_name' => "", 'news_new_cat' => 1, 'selected' => 0);
-	$result = dbquery("SELECT n.news_id, n.news_subject, c.news_cat_name FROM ".$db_prefix."news n, ".$db_prefix."news_cats c WHERE n.news_cat = c.news_cat_id ORDER BY c.news_cat_name, n.news_datestamp DESC");
-	$current_cat = "";
-	while ($data = dbarray($result)) {
-		if ($data['news_cat_name'] != $current_cat) {
-			$data['news_new_cat'] = 1;
-			$current_cat = $data['news_cat_name'];
-		} else {
-			$data['news_new_cat'] = 0;
-		}
-		$data['selected'] = 0;
-		$newslist[] = $data;
-	}
-
-	// define the headlines array
-	$headlines = array();
-	for ($i = 1; $i <= $settings['news_headline']; $i++) {
-		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE news_headline='".($settings['news_headline'] + 1 - $i)."'");
-		if ($data = dbarray($result)) {
-			$news_id = $data['news_id'];
-		} else {
-			$news_id = 0;
-		}
-		$headlines[$i] = array();
-		foreach($newslist as $item) {
-			if ($item['news_id'] == $news_id) $item['selected'] = 1;
-			$headlines[$i][] = $item;
-		}
-	}
-	$variables['headlines'] = $headlines;
-
-	// define the latest news items array
-	$newsitems = array();
-	for ($i = 1; $i <= $settings['news_items']; $i++) {
-		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE news_latest_news='".($settings['news_items'] + 1 - $i)."'");
-		if ($data = dbarray($result)) {
-			$news_id = $data['news_id'];
-		} else {
-			$news_id = 0;
-		}
-		$newsitems[$i] = array();
-		foreach($newslist as $item) {
-			if ($item['news_id'] == $news_id) $item['selected'] = 1;
-			$newsitems[$i][] = $item;
-		}
-	}
-	$variables['newsitems'] = $newsitems;
-
-	// get the latest_news_only setting
-	$variables['news_latest'] = $settings['news_latest'];
-
-	// set the panel title
-	$title = $locale['540'];
-	
-} else if (isset($_POST['save'])) {
+if (isset($_POST['save'])) {
 
 	// save the news item
 	$news_subject = stripinput($_POST['news_subject']);
@@ -182,7 +112,7 @@ if ($variables['latest_news_selection']) {
 		$result = dbquery("UPDATE ".$db_prefix."news SET news_subject='$news_subject', news_cat='$news_cat', news_news='$body', news_extended='$body2', news_breaks='$news_breaks', news_datestamp='$news_post_date', news_start='$news_start_date', news_end='$news_end_date', news_visibility='$news_visibility', news_allow_comments='$news_comments', news_allow_ratings='$news_ratings' WHERE news_id='$news_id'");
 		redirect(FUSION_SELF.$aidlink."&status=su");
 	} else {
-		$result = dbquery("INSERT INTO ".$db_prefix."news (news_subject, news_cat, news_news, news_extended, news_breaks, news_name, news_datestamp, news_start, news_end, news_visibility, news_reads, news_allow_comments, news_allow_ratings) VALUES ('$news_subject', '$news_cat', '$body', '$body2', '$news_breaks', '".$userdata['user_id']."', '$news_post_date', '$news_start_date', '$news_end_date', '$news_visibility', '0', '$news_comments', '$news_ratings')");
+		$result = dbquery("INSERT INTO ".$db_prefix."news (news_subject, news_cat, news_news, news_extended, news_breaks, news_name, news_locale, news_datestamp, news_start, news_end, news_visibility, news_reads, news_allow_comments, news_allow_ratings) VALUES ('$news_subject', '$news_cat', '$body', '$body2', '$news_breaks', '".$userdata['user_id']."', '$news_locale', '$news_post_date', '$news_start_date', '$news_end_date', '$news_visibility', '0', '$news_comments', '$news_ratings')");
 		redirect(FUSION_SELF.$aidlink."&status=sn");
 	}
 	
@@ -226,13 +156,15 @@ if ($variables['latest_news_selection']) {
 			"hours" => isNum($_POST['news_end']['hours']) ? $_POST['news_end']['hours'] : "0",
 			"minutes" => isNum($_POST['news_end']['minutes']) ? $_POST['news_end']['minutes'] : "0",
 		);
-		$news_date = array(
-			"mday" => isNum($_POST['news_date']['mday']) ? $_POST['news_date']['mday'] : "--",
-			"mon" => isNum($_POST['news_date']['mon']) ? $_POST['news_date']['mon'] : "--",
-			"year" => isNum($_POST['news_date']['year']) ? $_POST['news_date']['year'] : "----",
-			"hours" => isNum($_POST['news_date']['hours']) ? $_POST['news_date']['hours'] : "0",
-			"minutes" => isNum($_POST['news_date']['minutes']) ? $_POST['news_date']['minutes'] : "0",
-		);
+		if (isset($_POST['news_date'])) {
+			$news_date = array(
+				"mday" => isNum($_POST['news_date']['mday']) ? $_POST['news_date']['mday'] : "--",
+				"mon" => isNum($_POST['news_date']['mon']) ? $_POST['news_date']['mon'] : "--",
+				"year" => isNum($_POST['news_date']['year']) ? $_POST['news_date']['year'] : "----",
+				"hours" => isNum($_POST['news_date']['hours']) ? $_POST['news_date']['hours'] : "0",
+				"minutes" => isNum($_POST['news_date']['minutes']) ? $_POST['news_date']['minutes'] : "0",
+			);
+		}
 		$news_comments = isset($_POST['news_comments']) ? 1 : 0;
 		$news_ratings = isset($_POST['news_ratings']) ? 1 : 0;
 
@@ -270,7 +202,13 @@ if ($variables['latest_news_selection']) {
 		$title = $locale['400'];
 	} else {
 		if (isset($_POST['preview'])) {
-			$action = FUSION_SELF.$aidlink."&amp;news_id=$news_id";
+			if (isset($news_id) && $news_id) {
+				$action = FUSION_SELF.$aidlink."&amp;news_id=$news_id";
+				$title = $locale['400'];
+			} else {
+				$action = FUSION_SELF.$aidlink;
+				$title = $locale['404'];
+			}
 		} else {
 			$news_subject = "";
 			$news_cat = 0;
@@ -281,8 +219,8 @@ if ($variables['latest_news_selection']) {
 			$news_ratings = 1;
 			$news_visibility = 0;
 			$action = FUSION_SELF.$aidlink;
+			$title = $locale['404'];
 		}
-		$title = $locale['404'];
 	}
 	
 	// load the variables to display this news item
@@ -317,6 +255,14 @@ if ($variables['latest_news_selection']) {
 	define('LOAD_TINYMCE', true);
 
 }
+
+// get the installed locales
+$variables['locales'] = array();
+$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
+while ($data = dbarray($result)) {
+	$variables['locales'][$data['locale_code']] = $data['locale_name'];
+}
+
 
 // store the info to generate the panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.news', 'title' => $title, 'template' => 'admin.news.tpl', 'locale' => "admin.news-articles");

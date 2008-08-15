@@ -1,4 +1,4 @@
-<?php
+	<?php
 /*---------------------------------------------------+
 | ExiteCMS Content Management System                 |
 +----------------------------------------------------+
@@ -20,6 +20,29 @@ $variables = array();
 
 // make sure the readmore variable is numeric. If not, reload the page
 if (isset($readmore) && !isNum($readmore)) fallback(FUSION_SELF);
+
+// compose the query where clause based on the localisation method choosen
+switch ($settings['news_localisation']) {
+	case "none":
+		$fwhere = "";
+		$nwhere = "";
+		break;
+	case "single":
+		$fwhere = "";
+		$nwhere = "";
+		break;
+	case "multiple":
+		if (isset($_POST['news_locale'])) $news_locale = stripinput($_POST['news_locale']);
+		if (isset($news_locale)) {
+			$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".stripinput($news_locale)."' AND locale_active = '1' LIMIT 1");
+			if (!dbrows($result)) unset($news_locale);
+		}
+		if (!isset($news_locale)) $news_locale = $settings['locale_code'];
+		$variables['news_locale'] = $news_locale;
+		$fwhere = "frontpage_locale = '".$news_locale."' ";
+		$nwhere = "news_locale = '".$news_locale."' ";
+		break;
+}
 
 if (isset($readmore)) {
 	// view a single news item
@@ -71,36 +94,42 @@ if (isset($readmore)) {
 	}
 } else {
 	// show a news item overview
-
 	// make sure rowstart is valid and initialised if needed
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 	// check how many news items we have
 	if ($settings['news_latest']) {
-		// only show items that have been marked as latest news
-		$rows = dbcount("(news_id)", "news", groupaccess('news_visibility')." AND (news_headline > 0 OR news_latest_news > 0) AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")");
+		// only the ones defined for the frontpage
+		$result = dbquery("SELECT news_id FROM ".$db_prefix."news_frontpage f INNER JOIN ".$db_prefix."news ON news_id=frontpage_news_id WHERE ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")".($fwhere==""?"":(" AND ".$fwhere)));
 	} else {
-		// show all news items
-		$rows = dbcount("(news_id)", "news", groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")");
+		// all news items
+		$result = dbquery("SELECT news_id FROM ".$db_prefix."news WHERE ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")".($nwhere==""?"":(" AND ".$nwhere)));
 	}
+	$rows = dbrows($result);
 	if ($rows != 0) {
 		// news items found, fetch them, taking rowstart into account
 		if ($settings['news_latest']) {
 			$result = dbquery(
-				"SELECT tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
+				"SELECT nf.*, tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news_frontpage nf
+				INNER JOIN ".$db_prefix."news tn ON tn.news_id=nf.frontpage_news_id
 				LEFT JOIN ".$db_prefix."users tu ON tn.news_name=tu.user_id
 				LEFT JOIN ".$db_prefix."news_cats tc ON tn.news_cat=tc.news_cat_id
-				WHERE ".groupaccess('news_visibility')." AND (news_headline > 0 OR news_latest_news > 0) AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")
-				ORDER BY news_headline DESC, news_latest_news DESC, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
+				WHERE ".groupaccess('news_visibility')." AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")
+					".($fwhere==""?"":(" AND ".$fwhere))."
+				ORDER BY frontpage_headline DESC, frontpage_order, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
 			);		
 		} else {
 			$result = dbquery(
-				"SELECT tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
+				"SELECT nf.*, tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
+				LEFT JOIN ".$db_prefix."news_frontpage nf ON tn.news_id=nf.frontpage_news_id
 				LEFT JOIN ".$db_prefix."users tu ON tn.news_name=tu.user_id
 				LEFT JOIN ".$db_prefix."news_cats tc ON tn.news_cat=tc.news_cat_id
-				WHERE ".groupaccess('news_visibility')." AND (news_start='0'||news_start<=".time().") AND (news_end='0'||news_end>=".time().")
-				ORDER BY news_headline DESC, news_latest_news DESC, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
+				WHERE ".groupaccess('news_visibility')." AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")
+					".($nwhere==""?"":(" AND ".$nwhere))."
+				ORDER BY frontpage_headline DESC, frontpage_order, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
 			);		
 		}
+		// array to track news_id's to prevent duplicate items (wrong definition in admin/frontpage)
+		$duplicates = array();
 		// retrieve all the rows and store them in the template variable, one array per column
 		$variables['news'] = array();
 		$variables['_maxcols'] = $settings['news_columns'];
@@ -108,9 +137,16 @@ if (isset($readmore)) {
 		$h = 0;
 		$mc = false;
 		while ($data = dbarray($result)) {
+			// check if we have displayed this news item before
+			if (in_array($data['news_id'], $duplicates)) {
+				// already displayed, skip it
+				continue;
+			}
+			// new item, store it for checks later
+			$duplicates[] = $data['news_id'];
 			if (!isset($variables['news'][$i])) $variables['news'][$i] = array();
 			// increment the news headline counter
-			if (!$data['news_headline'] || $h == $settings['news_headline']) $i++;
+			if (!$data['frontpage_headline'] || $h == $settings['news_headline']) $i++;
 			// if the maximum number of columns reached, roll it over
 			if ($i > $variables['_maxcols']) { $i = 1; $mc = true; }
 			// still counting headlines?
