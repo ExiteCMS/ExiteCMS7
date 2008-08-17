@@ -446,14 +446,14 @@ function parsemessage($msg_array) {
 	// strip URL bbcode
 	$rawmsg = preg_replace_callback('#\[url(=.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_urlblock', $rawmsg);
 
+	// strip IMG bbcode
+	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_imgblock', $rawmsg);
+
     // find other URL's in the text, strip them and add them to $urlblocks for conversion to [URL] bbcodes
 	$rawmsg = preg_replace_callback('#(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(localhost)|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?(/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$\#\:\*\=~_\-@]*)*#si', '_parseubb_texturls', $rawmsg);
 
 	// convert any newlines to html <br>
 	$rawmsg = nl2br($rawmsg);
-
-	// strip IMG bbcode
-	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_imgblock', $rawmsg);
 
 	// detect and convert wikitags to wiki bbcodes if needed
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {

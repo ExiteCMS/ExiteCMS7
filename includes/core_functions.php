@@ -373,7 +373,7 @@ function isIP($value){
 }
 
 // validate an URL
-function isURL($value, $onlyhttp=false) {
+function isURL($value, $onlyhttp=false, $schemereq=false) {
 
 	// Build the regex to check the URL
 	if ($onlyhttp) {
@@ -381,7 +381,11 @@ function isURL($value, $onlyhttp=false) {
 	} else {
 		$scheme = "(https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/";		// ALL SCHEMES supported
 	}
-	$urlregex = "^(".$scheme.")?";												// make the scheme optional
+	if ($schemereq) {
+		$urlregex = "^(".$scheme.")";											// scheme
+	} else {
+		$urlregex = "^(".$scheme.")?";											// scheme (optional)
+	}
 	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
 	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
 	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
@@ -710,7 +714,7 @@ function descript($text,$striptags=true) {
 // Scan image files for malicious code
 function verify_image($file) {
 	$image_safe = true;
-	if (file_exists($file)) {
+	if (isURL($file, false, true) || file_exists($file)) {
 		$er = error_reporting(0);
 		// get info about the image
 		$imginfo = @getimagesize($file);
