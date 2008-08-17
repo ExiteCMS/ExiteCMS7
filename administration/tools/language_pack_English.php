@@ -939,6 +939,26 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "admin.search", $step);
 
 		$localestrings = array();
+		$localestrings['400'] = "Searches";
+		$localestrings['401'] = "Search Title";
+		$localestrings['402'] = "Visibility";
+		$localestrings['403'] = "Options";
+		$localestrings['404'] = "Deactivate";
+		$localestrings['405'] = "Activate";
+		$localestrings['406'] = "Modify this search";
+		$localestrings['407'] = "Delete this search";
+		$localestrings['408'] = "Currently there are no searches defined";
+		$localestrings['409'] = "Add a Search";
+		$localestrings['410'] = "from";
+		$localestrings['411'] = "Try this search";
+		$localestrings['420'] = "Search name:";
+		$localestrings['421'] = "Module name:";
+		$localestrings['422'] = "Search title:";
+		$localestrings['423'] = "Search accessable for:";
+		$localestrings['424'] = "Save";
+		load_localestrings($localestrings, LP_LOCALE, "admin.searches", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Settings";
 		$localestrings['401'] = "Main";
 		$localestrings['402'] = "Site name:";
@@ -3132,10 +3152,10 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src437'] = "Downloads:";
 		$localestrings['src438'] = "Date Joined:";
 		$localestrings['src439'] = "Last Login:";
-		$localestrings['src440'] = "never";	
-		$localestrings['src441'] = "Attachment:";	
+		$localestrings['src440'] = "never";
+		$localestrings['src441'] = "Attachment:";
 		$localestrings['src442'] = "produced <b>%s</b> results:";
-		$localestrings['src443'] = "count";	
+		$localestrings['src443'] = "count";
 		$localestrings['src444'] = "Sort by";
 		$localestrings['src445'] = "Note that depending on the selected location, not all sort options and result filters are relevant!";
 		$localestrings['src446'] = "Filter on";
@@ -3148,6 +3168,19 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src514'] = "Downloads";
 		$localestrings['src515'] = "Members";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
+
+		$localestrings = array();
+		$localestrings['src400'] = "Search this site";
+		$localestrings['src401'] = "Search";
+		$localestrings['src402'] = "Result for your search";
+		$localestrings['src403'] = "Currently there are no searches defined";
+		$localestrings['src410'] = "Articles";
+		$localestrings['src411'] = "News";
+		$localestrings['src412'] = "Forum posts";
+		$localestrings['src413'] = "Forum attachments";
+		$localestrings['src414'] = "Downloads";
+		$localestrings['src415'] = "Members";
+		load_localestrings($localestrings, LP_LOCALE, "main.searches", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Select your default locale";
@@ -3324,6 +3357,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u064'] = "Female";
 		$localestrings['u065'] = "Undisclosed";
 		$localestrings['u066'] = "OpenID URL:";
+		$localestrings['u067'] = "use the BBcode WYSIWYG editor:";
 		$localestrings['u901'] = "Full Name";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
 		return "";
@@ -3365,8 +3399,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1217798860");
-$lp_date = "1217798860";
+if (!defined('LP_DATE')) define('LP_DATE', "1218989654");
+$lp_date = "1218989654";
 
 /*---------------------------------------------------+
 | main code                                          |

@@ -61,7 +61,7 @@
 							{$locale.461}:
 						</td>
 						<td class='tbl1'>
-							{if $settings.hoteditor_enabled == 0}
+							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 								<textarea name='message' cols='80' rows='15' class='textbox' style='width:100%; height:{math equation='x/4' x=$smarty.const.BROWSER_HEIGHT format='%u'}px;'>{$message}</textarea>
 								<br />
 								<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('message', '[b]', '[/b]');" />
@@ -85,16 +85,17 @@
 									{/section}
 								</select>
 							{else}
-								<input type='hidden' id='hoteditor_bbcode_ouput_editor' name='message' value='{$message}' />
+								<style type='text/css'>@import url({$smarty.const.THEME}hoteditor/style.css);</style>
+								<input type='hidden' id='message' name='message' value='{$message}' />
 								<script language="javascript" type="text/javascript">
 									var hoteditor_path = "{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/";
 									var hoteditor_theme_path = "{$smarty.const.THEME}hoteditor";
 								</script>
-								<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor.js?version=4.2"></script>				
+								<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2"></script>				
 								{literal}
 								<script language="javascript" type="text/javascript">
-									var getdata ="";
-									Instantiate("max","editor", getdata , "100%", "300px");
+									var getdata = document.getElementById("message").value;
+									Instantiate("max","editor", getdata , "100%", "250px");
 									
 									//For Vietnamese User. Edit file editor.js to enable vietnamese keyboard
 									if(enable_vietnamese_keyboard==1){
@@ -107,18 +108,17 @@
 										var hoteditor_avim_method = hot_readCookie("hoteditor_avim_method");var him_auto_checked;var him_telex_checked;var him_vni_checked;var him_viqr_checked;var him_viqr2_checked;var him_off_checked;if(hoteditor_avim_method=="0"){him_auto_checked="checked";}else if(hoteditor_avim_method=="1"){him_telex_checked="checked";}else if(hoteditor_avim_method=="2"){him_vni_checked="checked";}else if(hoteditor_avim_method=="3"){him_viqr_checked="checked";}else if(hoteditor_avim_method=="4"){him_viqr2_checked="checked";}else if(hoteditor_avim_method=="-1"){him_off_checked="checked";}
 										document.write("<script language=\"JavaScript\" type=\"text/javascript\" src={/literal}{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/avim.js{literal}><\/script><div style='width:100%;text-align:center;font-family:Verdana;font-size:11px;'><input "+him_auto_checked+" id=him_auto onclick=setMethod(0); type=radio name=viet_method> Auto :: <input "+him_telex_checked+" id=him_telex onclick=setMethod(1); type=radio name=viet_method> Telex :: <input "+him_vni_checked+" id=him_vni onclick=setMethod(2); type=radio name=viet_method> VNI :: <input "+him_viqr_checked+" id=him_viqr onclick=setMethod(3); type=radio name=viet_method> VIQR :: <input "+him_viqr2_checked+" id=him_viqr2 onclick=setMethod(4); type=radio name=viet_method> VIQR* :: <input "+him_off_checked+" id=him_off onclick=setMethod(-1); type=radio name=viet_method> Off</div>");
 									}
-
 									function get_hoteditor_data(){
 										setCodeOutput();
 										var bbcode_output=document.getElementById("hoteditor_bbcode_ouput_editor").value;//Output to BBCode
 										document.getElementById("message").value = bbcode_output;
-										document.getElementById("preview_innerhtml").innerHTML=html_output;
 									}					
 								</script>
 								{/literal}
 							{/if}
 						</td>
 					</tr>
+					{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 					<tr>
 						<td align='right' width='145' valign='top' class='tbl2'>
 							<input type='button' name='toggle' class='button' value='{$locale.467}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
@@ -127,6 +127,7 @@
 							<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
 						</td>
 					</tr>
+					{/if}
 					<tr>
 						<td align='right' width='145' valign='top' class='tbl2'>
 							{$locale.463}:
@@ -136,7 +137,7 @@
 								<input type='checkbox' name='sticky' value='1'{if $is_sticky} checked{/if} />{$locale.480}
 								<br />
 							{/if}
-							{if $opt_smileys}
+							{if $opt_smileys && ($settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0)}
 								<input type='checkbox' name='disable_smileys' value='1'{if $is_smileys_disabled} checked{/if} />{$locale.483}
 								<br />
 							{/if}
@@ -294,8 +295,8 @@
 					&nbsp;&nbsp;&nbsp;&nbsp;
 				{/if}
 				<input type='submit' name='cancel' value='{$locale.417}' class='button' />
-				<input type='submit' name='preview' value='{$button_preview}' class='button' />
-				<input type='submit' name='save' value='{$button_save}' class='button' />
+				<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:get_hoteditor_data();' />
+				<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:get_hoteditor_data();' />
 				<input type='hidden' name='post_author' value='{$post_author}' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
 			</td>

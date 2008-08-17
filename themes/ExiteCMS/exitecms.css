@@ -157,8 +157,8 @@ hr.side-hr				{ height:2px; }
 .quote					{ color:#333; background-color:#ddd; padding:4px; margin:5px 10px 5px 10px; border:1px #444 solid; }
 
 						/* code sections within the message body (note: total number of px for padding+margin must remain the same, the code expects this!!!) */
-.codeblock_source		{ width:400px; margin-left:10px; border:1px #bbb solid; background-color:#fff; padding:0px; white-space:nowrap; overflow-x:auto; }
-.codeblock_cmds			{ width:390px; margin-left:10px; border:1px #bbb solid; background-color:#fff; padding:0px 5px 0px 5px; border-top:0px; text-align:right; }
+.codeblock_source		{ width:380px; margin-left:10px; border:1px #bbb solid; background-color:#fff; padding:0px; white-space:nowrap; overflow-x:auto; }
+.codeblock_cmds			{ width:370px; margin-left:10px; border:1px #bbb solid; background-color:#fff; padding:0px 5px 0px 5px; border-top:0px; text-align:right; }
 
 						/* thumbnail caption in the message body */
 .thumbnail				{ color:#fff;background-color:#333;text-align:center; }

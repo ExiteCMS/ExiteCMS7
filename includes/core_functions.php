@@ -575,7 +575,7 @@ function parsesmileys($message) {
 		"\:\)" => "<img src='".IMAGES."smiley/smile.gif' alt='smiley' />"
 	);
 	foreach($smiley as $key=>$smiley_img) {
-		$search = "#([[:space:]])".$key."([[:space:]])?#si";
+		$search = "#(^|[[:space:]])".$key."([[:space:]]|$)?#si";
 		$replace = "\\1".$smiley_img."\\2";
 		$message = preg_replace($search, $replace, $message);
 	}
@@ -608,8 +608,8 @@ function _parseubb_checkurl($matches) {
 function _parseubb_checkimg($matches) {
 	global $locale;
 
-	// validate the URL (in $matches[1])
-	if (isURL($matches[1], true)) {
+	// validate the URL (in $matches[1]) or check if it is a local image file
+	if (isURL($matches[1], true) || file_exists(PATH_ROOT.$matches[1])) {
 		if (verify_image($matches[1])) {
 			return "<img src=\"".$matches[1]."\" style=\"border:0px\" alt=\"\" />";
 		}
@@ -622,13 +622,42 @@ function _parseubb_checkimg($matches) {
 function parseubb($text) {
 	global $settings, $locale;
 	
-	$text = preg_replace('#\[li\](.*?)\[/li\]#si', '<li>\1</li>', $text);
-	$text = preg_replace('#\[ul\](.*?)\[/ul\]#si', '<ul>\1</ul>', $text);
+	// horizontal line
+	$text = preg_replace('#\[hr\]#si', '<hr />', $text);
 
+	// old style lists
+	$text = preg_replace('#\[li\](.*?)\[/li\]#si', '<li style=\'margin-left:15px;\'>\1</li>', $text);
+	$text = preg_replace('#\[ul\](.*?)\[/ul\]#si', '<ul style=\'margin-left:-20px;\'>\1</ul>', $text);
+
+	// new style lists
+	$text = preg_replace('#\[list=1\](.*?)\[/list\]#si', '<ol>\1</ol>', $text);
+	$text = preg_replace('#\[list\](.*?)\[/list\]#si', '<ul>\1</ul>', $text);
+	$text = preg_replace('#\r\n\[\*\]#si', '<li>', $text);
+
+	//get rid of line breaks after a list item, for better formatting
+	$text=str_replace("</li><br />","</li>",$text);
+	$text=str_replace("</ul><br />","</ul>",$text);
+
+	// text formatting
 	$text = preg_replace('#\[b\](.*?)\[/b\]#si', '<b>\1</b>', $text);
 	$text = preg_replace('#\[i\](.*?)\[/i\]#si', '<i>\1</i>', $text);
 	$text = preg_replace('#\[u\](.*?)\[/u\]#si', '<u>\1</u>', $text);
-	$text = preg_replace('#\[center\](.*?)\[/center\]#si', '<center>\1</center>', $text);
+	$text = preg_replace('#\[strike\](.*?)\[/strike\]#si', '<span style=\'text-decoration: line-through;\'>\1</span>', $text);
+	$text = preg_replace('#\[sup\](.*?)\[/sup\]#si', '<sup>\1</sup>', $text);
+	$text = preg_replace('#\[sub\](.*?)\[/sub\]#si', '<sub>\1</sub>', $text);
+	$text = preg_replace('#\[blockquote\](.*?)\[/blockquote\]#si', '<blockquote style=\'border:1px dotted;padding:2px;\'>\1</blockquote>', $text);
+
+	$text = preg_replace('#\[left\](.*?)\[/left\]#si', '<div align=\'left\'>\1</div>', $text);
+	$text = preg_replace('#\[center\](.*?)\[/center\]#si', '<div align=\'center\'>\1</div>', $text);
+	$text = preg_replace('#\[justify\](.*?)\[/justify\]#si', '<div align=\'justify\'>\1</div>', $text);
+	$text = preg_replace('#\[right\](.*?)\[/right\]#si', '<div align=\'right\'>\1</div>', $text);
+
+	$text = preg_replace('#\[font=(.*?)\](.*?)\[/font\]#si', '<span style=\'font-family:\1\'>\2</span>', $text);
+	$text = preg_replace('#\[size=([0-3]?[0-9])\](.*?)\[/size\]#si', '<span style=\'font-size:\1px\'>\2</span>', $text);
+	$text = preg_replace('#\[small\](.*?)\[/small\]#si', '<span class=\'small\'>\1</span>', $text);
+
+	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
+	$text = preg_replace('#\[highlight=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/highlight\]#si', '<span style=\'background-color:\1\'>\2</span>', $text);
 
 	// new wiki bbcode
 	if (isset($settings['wiki_forum_links']) && $settings['wiki_forum_links']) {
@@ -648,21 +677,21 @@ function parseubb($text) {
 	// convert mail bbcode
 	$text = preg_replace('#\[mail\]([\r\n]*)([^\s\'\";:\+]*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\2</a>', $text);
 	$text = preg_replace('#\[mail=([\r\n]*)([^\s\'\";:\+]*?)\](.*?)([\r\n]*)\[/mail\]#si', '<a href=\'mailto:\2\'>\3</a>', $text);
-	// small	
-	$text = preg_replace('#\[small\](.*?)\[/small\]#si', '<span class=\'small\'>\1</span>', $text);
-	// color
-	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
-	// new youtube bbcode
+
+	// youtube bbcode
 	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
+
 	// flash movies
 	$text = preg_replace('#\[flash width=([0-9]*?) height=([0-9]*?)\]([^\s\'\";:\+]*?)(\.swf)\[/flash\]#si', '<object classid=\'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\' codebase=\'http://active.macromedia.com/flash6/cabs/swflash.cab#version=6,0,0,0\' id=\'\3\4\' width=\'\1\' height=\'\2\'><param name=movie value=\'\3\4\'><param name=\'quality\' value=\'high\'><param name=\'bgcolor\' value=\'#ffffff\'><embed src=\'\3\4\' quality=\'high\' bgcolor=\'#ffffff\' width=\'\1\' height=\'\2\' type=\'application/x-shockwave-flash\' pluginspage=\'http://www.macromedia.com/go/getflashplayer\'></embed></object>', $text);
+
 	// images
 	if (ini_get('allow_url_fopen')) {
 		$text = preg_replace_callback('#\[img\](.*?)\[/img\]#si', '_parseubb_checkimg', $text);
 	} else {
 		$text = preg_replace("#\[img\]((http|ftp|https|ftps)://)(.*?)(\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG))\[/img\]#sie","'<img src=\'\\1'.str_replace(array('.php','?','&','='),'','\\3').'\\4\' style=\'border:0px\' alt=\'\' />'",$text);
 	}
-	// quotes
+
+	// quote	 & code blocks
 	$text = preg_replace('#\[quote=([\r\n]*)(.*?)\]#si', '<b>\2 '.$locale['199'].':</b><br />[quote]', $text);
 	$qcount = substr_count($text, "[quote]"); $ccount = substr_count($text, "[code]");
 	for ($i=0;$i < $qcount;$i++) $text = preg_replace('#\[quote\](.*?)\[/quote\]#si', '<div class=\'quote\'>\1</div>', $text);

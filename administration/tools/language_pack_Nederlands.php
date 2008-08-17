@@ -939,6 +939,26 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "admin.search", $step);
 
 		$localestrings = array();
+		$localestrings['400'] = "Zoekopdrachten";
+		$localestrings['401'] = "Zoek titel";
+		$localestrings['402'] = "Toegang voor";
+		$localestrings['403'] = "Opties";
+		$localestrings['404'] = "Deactiveer";
+		$localestrings['405'] = "Activeer";
+		$localestrings['406'] = "Wijzig deze zoekopdracht";
+		$localestrings['407'] = "Verwijder deze zoekopdracht";
+		$localestrings['408'] = "Er zijn momenteel geen zoekopdrachten gedefinieerd";
+		$localestrings['409'] = "Zoekopdracht toevoegen";
+		$localestrings['410'] = "van";
+		$localestrings['411'] = "Zoekopdracht aanmaken";
+		$localestrings['420'] = "Zoekopdracht naam:";
+		$localestrings['421'] = "Module naam:";
+		$localestrings['422'] = "Zoekopdracht titel:";
+		$localestrings['423'] = "Zoekopdracht toegankelijk voor:";
+		$localestrings['424'] = "Opslaan";
+		load_localestrings($localestrings, LP_LOCALE, "admin.searches", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Instellingen";
 		$localestrings['401'] = "Algemeen";
 		$localestrings['402'] = "Naam van de website:";
@@ -3132,8 +3152,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src437'] = "Downloads:";
 		$localestrings['src438'] = "Lid geworden op:";
 		$localestrings['src439'] = "Laatste login:";
-		$localestrings['src440'] = "nooit";	
-		$localestrings['src441'] = "Bijlage:";	
+		$localestrings['src440'] = "nooit";
+		$localestrings['src441'] = "Bijlage:";
 		$localestrings['src442'] = "heeft <b>%s</b> resultaten opgeleverd:";
 		$localestrings['src443'] = "aantal";
 		$localestrings['src444'] = "Sorteren op";
@@ -3148,6 +3168,19 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src514'] = "Downloads";
 		$localestrings['src515'] = "Leden";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
+
+		$localestrings = array();
+		$localestrings['src400'] = "Search this site";
+		$localestrings['src401'] = "Search";
+		$localestrings['src402'] = "Result for your search";
+		$localestrings['src403'] = "Currently there are no searches defined";
+		$localestrings['src410'] = "Articles";
+		$localestrings['src411'] = "News";
+		$localestrings['src412'] = "Forum posts";
+		$localestrings['src413'] = "Forum attachments";
+		$localestrings['src414'] = "Downloads";
+		$localestrings['src415'] = "Members";
+		load_localestrings($localestrings, LP_LOCALE, "main.searches", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Selecteer de standaard taal voor uw site";
@@ -3324,6 +3357,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u064'] = "Vrouwlijk";
 		$localestrings['u065'] = "Geen opgave";
 		$localestrings['u066'] = "OpenID URL:";
+		$localestrings['u067'] = "BBcode WYSIWYG editor gebruiken:";
 		$localestrings['u901'] = "Volledige naam";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
 		return "";
@@ -3365,8 +3399,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1217798864");
-$lp_date = "1217798864";
+if (!defined('LP_DATE')) define('LP_DATE', "1218989657");
+$lp_date = "1218989657";
 
 /*---------------------------------------------------+
 | main code                                          |

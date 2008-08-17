@@ -97,6 +97,17 @@
 				<input type='radio' name='user_hide_email' value='0' {if $this_userdata.user_hide_email == "0"}checked="checked"{/if} />{$locale.u008}
 			</td>
 		</tr>
+		{if $settings.hoteditor_enabled == 1}
+		<tr>
+			<td class='tbl'>
+				{$locale.u067}
+			</td>
+			<td class='tbl'>
+				<input type='radio' name='user_hoteditor' value='1' {if $this_userdata.user_hoteditor == "1"}checked="checked"{/if} />{$locale.u007}
+				<input type='radio' name='user_hoteditor' value='0' {if $this_userdata.user_hoteditor == "0"}checked="checked"{/if} />{$locale.u008}
+			</td>
+		</tr>
+		{/if}
 		<tr>
 			<td class='tbl'>
 				{$locale.u026}

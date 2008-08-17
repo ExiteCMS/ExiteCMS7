@@ -406,6 +406,7 @@ if (isset($_POST['preview'])) {
 			$preview['post_datestamp'] = time();
 			$preview['post_id'] = $post_id;
 			$preview['thread_id'] = $thread_id;
+			$preview['forum_id'] = $forum_id;
 			$preview['post_sticky'] = isset($_POST['sticky']) ? "1" : "0";
 			$preview['post_smileys'] = isset($_POST['disable_smileys']) ? false : true;
 			$preview['post_showsig'] = isset($_POST['show_sig']) ? "1" : "0";
