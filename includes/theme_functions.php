@@ -222,6 +222,7 @@ function load_templates($_type='', $_name='') {
 			$template->assign('_name', isset($panel['name'])?$panel['name']:"");
 			$template->assign('_title', isset($panel['title'])?$panel['title']:"");
 			$template->assign('_state', isset($panel['state'])?$panel['state']:"");
+			$template->assign('_type', isset($panel['panel_type'])?$panel['panel_type']:"");
 
 			// if one or more locales are assigned to this panel, load them first
 			if (isset($panel['locale'])) {
