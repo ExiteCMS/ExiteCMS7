@@ -280,7 +280,7 @@ window.onload = init;
 					var hoteditor_path = "{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/";
 					var hoteditor_theme_path = "{$smarty.const.THEME}hoteditor";
 				</script>
-				<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor.js?version=4.2"></script>				
+				<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2"></script>				
 				{literal}
 				<script language="javascript" type="text/javascript">
 					var getdata = document.getElementById("message").value;
