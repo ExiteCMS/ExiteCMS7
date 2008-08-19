@@ -53,16 +53,12 @@
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.666}
-			</td>
-			<td width='50%' class='tbl'>
-				<input type='text' name='smtp_username' value='{$settings2.smtp_username}' maxlength='100' class='textbox' style='width:200px;' />
-			</td>
-		</tr>
-		<tr>
-			<td width='50%' class='tbl'>
+				<br />
 				<span class='small2'>{$locale.663}</span>
 			</td>
 			<td width='50%' class='tbl'>
+				<input type='text' name='smtp_username' value='{$settings2.smtp_username}' maxlength='100' class='textbox' style='width:200px;' />
+				<br /><br />
 				<input type='password' name='smtp_password' value='{$settings2.smtp_password}' maxlength='100' class='textbox' style='width:200px;' />
 			</td>
 		</tr>
