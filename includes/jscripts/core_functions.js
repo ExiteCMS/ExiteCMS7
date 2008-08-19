@@ -19,11 +19,13 @@ function flipBox(who) {
 	if (document.images['b_' + who].src.indexOf('_on') == -1) { 
 		tmp = document.images['b_' + who].src.replace('_off', '_on');
 		document.getElementById('box_' + who).style.display = 'none';
+	    document.getElementById('box_' + who).style.visibility = 'hidden';
 		document.images['b_' + who].src = tmp;
 		status = '1';
 	} else { 
 		tmp = document.images['b_' + who].src.replace('_on', '_off');
 		document.getElementById('box_' + who).style.display = 'block';
+	    document.getElementById('box_' + who).style.visibility = 'visible';
 		document.images['b_' + who].src = tmp;
 		status = '0';
 	}
@@ -33,10 +35,13 @@ function flipBox(who) {
 
 // Based on FlipBox, but usable for normal divs
 function flipDiv(who) {
-	if (document.getElementById(who).style.display == 'block')
+	if (document.getElementById(who).style.display == 'block') {
 	    document.getElementById(who).style.display = 'none';
-	else
+	    document.getElementById(who).style.visibility = 'hidden';
+	} else {
 	    document.getElementById(who).style.display = 'block';
+	    document.getElementById(who).style.visibility = 'visible';
+	}
 	return false;
 }
 
