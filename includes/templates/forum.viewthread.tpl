@@ -20,7 +20,7 @@ function jumpForum(forumid) {ldelim}
 {rdelim}
 </script>
 {include file="_opentable.tpl" name=$_name title=$locale.500 state=$_state style=$_style}
-<table id='width_check' cellspacing='0' cellpadding='0' width='100%'>
+<table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
 		<td class='smallalt'>
 			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
@@ -198,19 +198,26 @@ function init() {
 	// kill the timer
 	if (_timer) clearInterval(_timer);
 
-	// calculate the width of a code block
-	var blockwidth = document.getElementById("width_check").offsetWidth-141;
-	var block_a = 0;
-	var block_b = 0;
+	// needed inside the loop
+	var parent_left = 0;
+	var parent_width = 0;
+	var obj = 1;
+	var i = 1;
 
 	// loop through all blocks found, and set the width correctly
-	var i = 1;
 	while (document.getElementById("codeblock"+i+"a") != null && document.getElementById("codeblock"+i+"b") != null) {
-		// need to check and do something dynamic with margins and padding here...
-		block_a = blockwidth - 40 + "px";
-		block_b = blockwidth - 50 + "px";
-		document.getElementById("codeblock"+i+"a").style.width = block_a;
-		document.getElementById("codeblock"+i+"b").style.width = block_b;
+		// get the info about the objects parent
+		obj = document.getElementById("codeblock"+i+"a").parentNode;
+		// fall back gracefully if the parentNode can not be found
+		if (obj == null) obj = document.getElementById("codeblock"+i+"a").offsetParent;
+		parent_left = findPosX(obj);
+		parent_width = obj.offsetWidth;
+//		alert(parent_left + " : " + parent_width);
+		// calculate the new width of the block, leave plenty of space to handle browser subtleties 
+		block_width = parent_left + parent_width - findPosX(document.getElementById("codeblock"+i+"a")) - 30;
+		// adjust the width of the code blocks
+		document.getElementById("codeblock"+i+"a").style.width = block_width + "px";
+		document.getElementById("codeblock"+i+"b").style.width = block_width - 10 + "px";
 		i++;
 	}
 };
