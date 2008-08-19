@@ -145,6 +145,9 @@ $variables['rows'] = $rows;
 if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 $variables['rowstart'] = $rowstart;
 
+// is a thread time limit defined for guest users?
+$thread_limit = iMEMBER ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
+
 // get the threads to fill this page
 $result = dbquery(
 	"SELECT t.*, MAX(p.post_id) AS last_post, COUNT(p.post_id) AS thread_replies, tu1.user_name AS user_author, tu1.user_ip AS user_ip, 
@@ -152,7 +155,7 @@ $result = dbquery(
 		INNER JOIN ".$db_prefix."posts p USING ( thread_id )
 		LEFT JOIN ".$db_prefix."users tu1 ON t.thread_author = tu1.user_id
 		LEFT JOIN ".$db_prefix."users tu2 ON t.thread_lastuser = tu2.user_id
-		WHERE t.forum_id = '".$forum_id."'
+		WHERE t.forum_id = '".$forum_id."'".($thread_limit==0?"":" AND t.thread_lastpost > ".$thread_limit)."
 		GROUP BY thread_id
 		ORDER BY thread_sticky DESC, thread_lastpost DESC
 		LIMIT ".$rowstart.", ".$settings['numofthreads']

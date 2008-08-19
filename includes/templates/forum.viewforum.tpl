@@ -164,6 +164,13 @@
 					</td>
 				</tr>
 			{/section}
+				{if !iMEMBER && $settings.forum_guest_limit}
+				<tr>
+					<td class='tbl2' align='center' colspan='7'>
+						<span class='small' style='font-size:90%;font-weight:bold;'>{if $settings.forum_guest_limit == 1}{$locale.462|sprintf:$locale.074}{else}{assign var=days value=$settings.forum_guest_limit|cat:" "|cat:$locale.075}{$locale.462|sprintf:$days}{/if}</span>
+					</td>
+				</tr>
+				{/if}
 			</table>
 		</td>
 	</tr>

@@ -1039,6 +1039,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['540'] = "Active Directory Server";
 		$localestrings['541'] = ", then ";
 		$localestrings['542'] = ", with OpenID";
+		$localestrings['543'] = "Limit forum posts for guests to:";
+		$localestrings['544'] = "No Limit";
 		$localestrings['550'] = "Security";
 		$localestrings['551'] = "Enable registration system?";
 		$localestrings['552'] = "Use email verification for registration?";
@@ -2312,6 +2314,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['459'] = "Locked Thread.";
 		$localestrings['460'] = "Sticky Thread.";
 		$localestrings['461'] = "You are not authorised to view this Forum.";
+		$localestrings['462'] = "For guest users, only the active threads of the last %s are visible. Please consider becoming a member";
 		$localestrings['500'] = "View Thread";
 		$localestrings['501'] = "Author";
 		$localestrings['502'] = "Posts:";

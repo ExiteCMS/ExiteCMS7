@@ -81,7 +81,7 @@
 			<td width='40%' class='tbl'>
 				<select name='unread_threshold' class='textbox'>
 				{section name=days start=0 loop=361 step=30}
-				<option value='{$smarty.section.days.index}' {if $smarty.section.days.index == $settings2.unread_threshold|default:0}selected='selected'{/if}>{if $smarty.section.days.index == 0}{$locale.714}{else}{$smarty.section.days.index} {$locale.518}{/if}</option>
+				<option value='{$smarty.section.days.index}' {if $smarty.section.days.index == $settings2.unread_threshold|default:0}selected='selected'{/if}>{if $smarty.section.days.index == 0}{$locale.544}{else}{$smarty.section.days.index} {$locale.518}{/if}</option>
 				{/section}
 				</select>
 			</td>
@@ -107,6 +107,19 @@
 				<option value='0' {if $settings2.forum_edit_timeout}selected='selected'{/if}>{$locale.714}</option>
 				{section name=hours start=1 loop=25}
 				<option value='{$smarty.section.hours.index}' {if $settings2.forum_edit_timeout == $smarty.section.hours.index}selected='selected'{/if}>{$smarty.section.hours.index} {if $smarty.section.hours.index == 1}{$locale.535}{else}{$locale.536}{/if}</option>
+				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='60%' class='tbl'>
+				{$locale.543}
+			</td>
+			<td width='40%' class='tbl'>
+				<select name='forum_guest_limit' class='textbox'>
+				<option value='0' {if $settings2.forum_guest_limit}selected='selected'{/if}>{$locale.544}</option>
+				{section name=days start=1 loop=91}
+				<option value='{$smarty.section.days.index}' {if $settings2.forum_guest_limit == $smarty.section.days.index}selected='selected'{/if}>{$smarty.section.days.index} {if $smarty.section.days.index == 1}{$locale.527}{else}{$locale.518}{/if}</option>
 				{/section}
 				</select>
 			</td>

@@ -47,6 +47,13 @@
 							<a name='cat_{$forums[id].cat_id}'></a>{$forums[id].forum_cat_name}
 						</td>
 					</tr>
+					{if !iMEMBER && $settings.forum_guest_limit}
+						<tr>
+							<td class='tbl2' align='center' colspan='6'>
+								<span class='small' style='font-size:90%;font-weight:bold;'>{if $settings.forum_guest_limit == 1}{$locale.462|sprintf:$locale.074}{else}{assign var=days value=$settings.forum_guest_limit|cat:" "|cat:$locale.075}{$locale.462|sprintf:$days}{/if}</span>
+							</td>
+						</tr>
+					{/if}
 					{/if}
 					<tr>
 						<td width='1%' align='center' class='tbl1'>

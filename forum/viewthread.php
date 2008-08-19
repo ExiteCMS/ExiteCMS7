@@ -117,15 +117,19 @@ if (iMEMBER && (in_array($userdata['user_id'], $forum_mods) || ($fdata['forum_mo
 // check if this user is allowed to blacklist
 $variables['user_can_blacklist'] = checkrights("B");
 
+// check if there is a thread time limit defined for guests
+$thread_limit = iMEMBER ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
+
 // get information about the current thread
 $result = dbquery(
 	"SELECT * FROM ".$db_prefix."threads 
-	WHERE thread_id='".$thread_id."' AND forum_id='".$fdata['forum_id']."'"
+	WHERE thread_id='".$thread_id."' AND forum_id='".$fdata['forum_id']."'".($thread_limit==0?"":" AND thread_lastpost > ".$thread_limit)
 );
-// bail out if the requested forum does not exist
+// bail out if the requested thread does not exist
 if (!dbrows($result)) {
-	fallback("index.php");
+	fallback("viewforum.php?forum_id=".$forum_id);
 }
+
 // store the thread information
 $tdata = dbarray($result);
 $variables['thread'] = $tdata;
@@ -341,13 +345,15 @@ if ($rows != 0) {
 			$data['unread'] = false;
 		} else {
 			// check if the post timestamp within the set unread threshold
-			if ($data['post_datestamp'] > $settings['unread_threshold'] || $data['post_editttime'] > $settings['unread_threshold']) {
+			if ($data['post_datestamp'] > $settings['unread_threshold'] || $data['post_edittime'] > $settings['unread_threshold']) {
 				// check if it is newer that the first and last marker in the threads_read record
 				if ($data['post_datestamp'] > $thread_last_read || $data['post_edittime'] > $thread_last_read || $data['post_datestamp'] < $thread_first_read || ($data['post_edittime'] != 0 && $data['post_edittime'] < $thread_first_read))  {
 					$data['unread'] = true;
 				} else {
 					$data['unread'] = false;
 				}
+			} else {
+				$data['unread'] = false;
 			}
 		}
 

@@ -1039,6 +1039,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['540'] = "Active Directory Server";
 		$localestrings['541'] = ", daarna ";
 		$localestrings['542'] = ", met OpenID";
+		$localestrings['543'] = "Forumberichten voor gasten limiteren tot:";
+		$localestrings['544'] = "Geen limiet";
 		$localestrings['550'] = "Beveiliging";
 		$localestrings['551'] = "Activeer registratie systeem?";
 		$localestrings['552'] = "Gebruik extra verificatie van gebruikers via email?";
@@ -2312,6 +2314,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['459'] = "Topic op slot.";
 		$localestrings['460'] = "Belangrijke topic.";
 		$localestrings['461'] = "U bent niet geauthoriseerd om dit forum te bekijken.";
+		$localestrings['462'] = "Voor gasten zijn alleen de topics van de laatste %s zichtbaar. Wordt lid om alles te kunnen zien";
 		$localestrings['500'] = "Bekijk topic";
 		$localestrings['501'] = "Auteur";
 		$localestrings['502'] = "Berichten:";
