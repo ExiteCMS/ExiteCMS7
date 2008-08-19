@@ -80,6 +80,7 @@ if (isset($_POST['save_latest'])) {
 
 	// reset all headline news items before setting new ones
 	$result = dbquery("DELETE FROM ".$db_prefix."news_frontpage ".($fwhere==""?"":("WHERE ".$fwhere)));
+
 	// save the new headlines
 	foreach($headlines as $key => $item) {
 		if ($item != 0) $result = dbquery("INSERT INTO ".$db_prefix."news_frontpage (frontpage_locale, frontpage_headline, frontpage_order, frontpage_news_id) VALUES ('".$news_locale."', 1, '".$key."', '".$item."')");
@@ -91,8 +92,8 @@ if (isset($_POST['save_latest'])) {
 	}
 	
 	// update the news_latest configuration flag
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isset($_POST['news_latest']) ? "1" : "0")."' WHERE cfg_name = 'news_latest'");
-	
+	$settings['news_latest'] = isset($_POST['news_latest']) ? "1" : "0";
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings['news_latest']."' WHERE cfg_name = 'news_latest'");
 }
 
 // build the list of available news cards
@@ -108,7 +109,6 @@ while ($data = dbarray($result)) {
 	} else {
 		$data['news_new_cat'] = 0;
 	}
-	$data['selected'] = 0;
 	$newslist[] = $data;
 }
 
@@ -123,7 +123,7 @@ for ($i = 1; $i <= $settings['news_headline']; $i++) {
 	}
 	$headlines[$i] = array();
 	foreach($newslist as $item) {
-		if ($item['news_id'] == $news_id) $item['selected'] = 1;
+		$item['selected'] = $item['news_id'] == $news_id ? 1 : 0;
 		$headlines[$i][] = $item;
 	}
 }
@@ -132,22 +132,19 @@ $variables['headlines'] = $headlines;
 // define the latest news items array
 $newsitems = array();
 for ($i = 1; $i <= $settings['news_items']; $i++) {
-	$result = dbquery("SELECT news_id FROM ".$db_prefix."news_frontpage INNER JOIN ".$db_prefix."news ON frontpage_news_id WHERE frontpage_headline=0 AND frontpage_order=".($settings['news_headline'] + 1 - $i));
+	$result = dbquery("SELECT frontpage_news_id FROM ".$db_prefix."news_frontpage INNER JOIN ".$db_prefix."news ON frontpage_news_id WHERE frontpage_headline=0 AND frontpage_order=".$i);
 	if ($data = dbarray($result)) {
-		$news_id = $data['news_id'];
+		$news_id = $data['frontpage_news_id'];
 	} else {
 		$news_id = 0;
 	}
 	$newsitems[$i] = array();
 	foreach($newslist as $item) {
-		if ($item['news_id'] == $news_id) $item['selected'] = 1;
+		$item['selected'] = $item['news_id'] == $news_id ? 1 : 0;
 		$newsitems[$i][] = $item;
 	}
 }
 $variables['newsitems'] = $newsitems;
-
-// get the latest_news_only setting
-$variables['news_latest'] = $settings['news_latest'];
 
 // set the panel title
 $title = $locale['540'];
