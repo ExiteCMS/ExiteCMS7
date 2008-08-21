@@ -49,12 +49,12 @@ $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##search (
 ) ENGINE=MyISAM");
 
 // add the ExiteCMS core searches to the search table
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'articles', 'src410', 1, '1.0.0', 1, 0)");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'news', 'src411', 1, '1.0.0', 1, 0)");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'forumposts', 'src412', 1, '1.0.0', 1, 0)");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'forumattachments', 'src413', 1, '1.0.0', 1, 0)");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'downloads', 'src414', 1, '1.0.0', 1, 0)");
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'members', 'src415', 0, '1.0.0', 1, 0)");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'articles', 'src510', 1, '1.0.0', 1, 0)");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'news', 'src511', 1, '1.0.0', 1, 0)");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'forumposts', 'src512', 1, '1.0.0', 1, 0)");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'forumattachments', 'src513', 1, '1.0.0', 1, 0)");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'downloads', 'src514', 1, '1.0.0', 1, 0)");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'members', 'src515', 0, '1.0.0', 1, 0)");
 
 // update the admin link to search
 $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##admin SET admin_link = 'search.php' WHERE admin_link = 'searches.php'");
