@@ -49,10 +49,12 @@ switch ($settings['news_localisation']) {
 	case "none":
 		$fwhere = "";
 		$nwhere = "";
+		if (!isset($news_locale)) $news_locale = $settings['locale_code'];
 		break;
 	case "single":
 		$fwhere = "";
 		$nwhere = "";
+		if (!isset($news_locale)) $news_locale = $settings['locale_code'];
 		break;
 	case "multiple":
 		if (isset($_POST['news_locale'])) $news_locale = stripinput($_POST['news_locale']);

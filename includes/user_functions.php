@@ -58,7 +58,7 @@ if (!CMS_IS_BOT) {
 // Check if a user is logging in
 if (isset($_POST['login'])) {
 	$auth_result = false;
-	$auth_methods = explode(",",$settings['auth_type'].",");
+	$auth_methods = isset($settings['auth_type']) ? explode(",",$settings['auth_type'].",") : array('local');
 	foreach($auth_methods as $auth_method) {
 		switch($auth_method) {
 			case "local":

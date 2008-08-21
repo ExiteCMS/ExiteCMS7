@@ -52,7 +52,6 @@ function get_smileys($folder) {
 
 // process the request
 switch ($request) {
-	// return the HTML needed for the smiley's block
 	case "pm":
 		// get the number of unread PM messages for this user
 		if (!iMEMBER) {
@@ -119,6 +118,7 @@ switch ($request) {
 		}
 		break;
 	case "smileys":
+		// return the HTML needed for the smiley's block
 		if (empty($parms[0])) {
 			echo "ERROR: Missing parameter on '$request' ajax call!";
 		} else {

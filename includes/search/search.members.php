@@ -116,12 +116,10 @@ if (isset($action)) {
 			$variables['items_per_page'] = $settings['numofthreads'];
 
 			// now add a query limit, make sure not to overshoot the limit requested
-			if ($limit > 0) {
-				if ($variables['rows']-$rowstart > $settings['numofthreads']) {
-					$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
-				} else {
-					$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
-				}
+			if ($variables['rows']-$rowstart > $settings['numofthreads']) {
+				$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
+			} else {
+				$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
 			}
 			$rptresult = dbquery($sql);
 
