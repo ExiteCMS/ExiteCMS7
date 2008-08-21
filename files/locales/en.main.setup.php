@@ -2,17 +2,29 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Sun Aug 3 2008, 23:27:40 CEST
+// generated on : Thu Aug 21 2008, 16:06:23 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";
-$locale['401'] = "Unable to establish database connection.<br><br>\nPlease ensure you have entered the correct details.";
-$locale['402'] = "Unable to select the database table.<br><br>\nPlease ensure you have entered the correct details.";
+$locale['401'] = "Unable to establish database connection.";
+$locale['402'] = "Unable to select the database table.";
+$locale['403'] = "Unable to run the ExiteCMS Setup";
+$locale['404'] = "Please consult the setup instructions on our <a href='%s'>support website</a>";
+$locale['405'] = "The cache directory is not writeable.";
+$locale['406'] = "on how to define the proper file rights.";
+$locale['407'] = "The template cache directory is not writeable";
+$locale['408'] = "The setup procedure has already run. You can't run the setup twice.";
+$locale['409'] = "on how to reset your installation.";
 $locale['410'] = "Welcome to ExiteCMS Setup";
 $locale['411'] = "Write permissions check passed";
 $locale['412'] = "Write permissions check failed on:";
 $locale['413'] = "Please ensure that your webserver has write<br />access (chmod) on these folders.";
 $locale['414'] = "Please complete the following form and click 'Next Step'.";
+$locale['415'] = "No rights to create the configuration file.";
+$locale['416'] = "The locales cache directory is not writeable";
+$locale['417'] = "Database Hostname invalid. Please enter a host name, IP address, or 'localhost'";
+$locale['418'] = "Database Username invalid. Please enter a valid username";
+$locale['419'] = "Database Password invalid. Please enter a valid password";
 $locale['420'] = "MySQL Database access settings";
 $locale['421'] = "Database Hostname:";
 $locale['422'] = "Database Username:";
@@ -20,10 +32,15 @@ $locale['423'] = "Database Password:";
 $locale['424'] = "Database Name:";
 $locale['425'] = "Table Prefix:";
 $locale['426'] = "Next Step >>";
+$locale['427'] = "Database Name invalid. Please enter a valid name";
+$locale['428'] = "Table prefix invalid. Please enter a valid prefix";
+$locale['429'] = "Please check your database hostname, username and password";
 $locale['430'] = "Unable to write to config<br>\nPlease check write permissions and restart setup.";
 $locale['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 $locale['432'] = "The config has been written successfully.<br><br>\n";
 $locale['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
+$locale['434'] = "The Database '%s' does not exist or the database user has no rights to access it.";
+$locale['435'] = "Insufficient rights to create new tables in database '%s'.";
 $locale['440'] = "Super Admin login details";
 $locale['441'] = "Username:";
 $locale['442'] = "Password:";

@@ -53,7 +53,19 @@ function CMS_getmxrr($hostname, &$mxhosts) {
 
 	// for non-windows platforms, use the internal function
 	if (CMS_getOS() != "Windows") {
-		return getmxrr($hostname, $mxhosts);
+		$result = getmxrr($hostname, $hosts, $weight);
+		if (!$result) {
+			return false;
+		} else {
+			// sort the result based on weight
+			$mxs = array();
+			for ($i=0;$i<count($hosts);$i++) {
+				$mxs[$hosts[$i]] = $weight[$i];
+			}
+			asort($mxs);
+			$mxhosts = array_keys($mxs);
+			return true;
+		}
 	}
 
 	if (!empty($hostname)) {

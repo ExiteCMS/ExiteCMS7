@@ -29,12 +29,14 @@ require_once PATH_INCLUDES."geoip_include.php";
 
 // parameter validation
 if (isset($user_id) && !isNum($user_id)) fallback("index.php");
-if (!isset($country) || strlen($country) != 2) $country = "";
-if (!isset($sortby) || strlen($sortby) != 1) $sortby = "all";
 if (!isset($step)) $step = "";
 if (!isset($user_id)) $user_id= 0;
+if (!isset($country) || strlen($country) != 2) $country = "";
+if (!isset($sortby) || strlen($sortby) != 1) $sortby = "all";
+if (!isset($order)) $order = "username";
+if (!isset($field)) $field = "username";
 
-if (isset($_POST['cancel_delete'])) fallback(FUSION_SELF.$aidlink."&sortby=$sortby&rowstart=$rowstart");
+if (isset($_POST['cancel_delete'])) fallback(FUSION_SELF.$aidlink."&order=$order&sortby=$sortby&field=$field&rowstart=$rowstart");
 
 if ($step == "add") {
 	if (isset($_POST['add_user'])) {
@@ -143,24 +145,47 @@ $variables['country'] = $country;
 
 $rows = 0;
 if (iMEMBER) {
-	// create the where clause
-	if ($sortby == "all") {
-		if ($country == "") {
-			$orderby = "";
-		} else {
-			$orderby = " user_cc_code = '".$country."'";
-		}
-	} else {
-		if ($country == "") {
-			$orderby = " user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%'";
-		} else {
-			$orderby = " user_cc_code = '".$country."' AND (user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%')";
-		}
+	// create the letter filter SQL clause and the selection sort SQL clause
+	switch($order) {
+		case "country":
+			$sortfield = "user_cc_code ASC, user_level DESC, user_name ASC";
+			break;
+		case "email":
+			$sortfield = "user_email ASC, user_level DESC";
+			break;
+		case "username":
+		default:
+			$sortfield = "user_level DESC, user_name ASC";
+			break;
 	}
+	// create the query filter SQL clause
+	$where = "";
+	switch($field) {
+		case "country":
+			$letterfilter = "DISTINCT(UPPER(SUBSTRING(user_cc_code,1,1)))";
+			break;
+		case "email":
+			$letterfilter = "DISTINCT(UPPER(SUBSTRING(user_email,1,1)))";
+			if ($sortby != "all") {
+				$where = "(user_email LIKE '".stripinput($sortby)."%' OR user_email LIKE '".strtolower(stripinput($sortby))."%')";
+			}
+			break;
+		case "username":
+		default:
+			$letterfilter = "DISTINCT(UPPER(SUBSTRING(user_name,1,1)))";
+			if ($sortby != "all") {
+				$where = "(user_name LIKE '".stripinput($sortby)."%' OR user_name LIKE '".strtolower(stripinput($sortby))."%')";
+			}
+			break;
+	}
+	// add the country filter if requested
+	$where .= $country == "" ? "" : (($where == "" ? "" : " AND ").("user_cc_code = '$country'"));
+
+
 	// get the list of members
 	$variables['members'] = array();
 	if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
-	$result = dbquery("SELECT * FROM ".$db_prefix."users".($orderby==""?"":" WHERE").$orderby." ORDER BY user_level DESC, user_name LIMIT ".$rowstart.", ".$settings['numofthreads']);
+	$result = dbquery("SELECT * FROM ".$db_prefix."users".($where == ""?"":(" WHERE ".$where))." ORDER BY ".$sortfield." LIMIT ".$rowstart.", ".$settings['numofthreads']);
 	$rows = dbrows($result);
 	$variables['members'] = array();
 	if ($rows != 0) {
@@ -196,21 +221,23 @@ if (iMEMBER) {
 	}
 	// starting characters to filter on. Make sure there are an even number!
 	$variables['search'] = array();
-	$result = dbquery("SELECT DISTINCT(UPPER(SUBSTRING(user_name,1,1))) AS letter FROM ".$db_prefix."users ORDER BY letter");
+	$result = dbquery("SELECT ".$letterfilter." AS letter FROM ".$db_prefix."users".($where == ""?"":(" WHERE ".$where))." ORDER BY letter");
 	while ($data = dbarray($result)) {
 		// get rid of unwanted characters. Need to find a beter solution for this
 		$variables['search'][] = str_replace(array('&', '?'), array('',''), $data['letter']);
 	}
-	if (count($variables['search'])%2) $variables['search'][] = "";
+	if (count($variables['search']) > 1 && count($variables['search'])%2) $variables['search'][] = "";
 	$variables['sortby'] = $sortby;
-	$variables['rows'] = dbcount("(*)", "users", $orderby);
+	$variables['rows'] = dbcount("(*)", "users", $where);
 	$variables['rowstart'] = $rowstart;
 	$variables['items_per_page'] = $settings['numofthreads'];
-	$variables['pagenav_url'] = FUSION_SELF.$aidlink."&amp;sortby=$sortby&amp;".($country==""?"":"country=$country&amp;");
+	$variables['pagenav_url'] = FUSION_SELF.$aidlink."&amp;sortby=$sortby&amp;field=$field&amp;order=$order&amp;".($country==""?"":"country=$country&amp;");
 }
 
 $variables['step'] = $step;
 $variables['user_id'] = $user_id;
+$variables['field'] = $field;
+$variables['order'] = $order;
 $template_panels[] = array('type' => 'body', 'name' => 'admin.members', 'template' => 'admin.members.tpl', 'locale' => array("admin.members", "main.user_fields"));
 $template_variables['admin.members'] = $variables;
 

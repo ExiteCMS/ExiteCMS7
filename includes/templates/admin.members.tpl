@@ -182,16 +182,28 @@
 				<tr>
 					<td class='tbl2'>
 						<div style='float:right;'><a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=add'><img src='{$smarty.const.THEME}images/user_add.gif' alt='{$locale.403}' title='{$locale.403}' /></a></div>
-						<b>{$locale.401}</b>
+						{if $order == "username"}
+							 <b>{$locale.401}</b> <img src='{$smarty.const.THEME}images/panel_on.gif' alt='' />
+						{else}
+							<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;order=username&amp;field={$field}&amp;sortby={$sortby}&amp;country={$country}'><b>{$locale.401}</b></a>
+						{/if}
 					</td>
 					{if $userdata.user_level >= 102 || $settings.forum_flags}
 					<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
-						<b>{$locale.406}</b>
+						{if $order == "country"}
+							 <b>{$locale.406}</b> <img src='{$smarty.const.THEME}images/panel_on.gif' alt='' />
+						{else}
+							<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;order=country&amp;field={$field}&amp;sortby={$sortby}&amp;country={$country}'><b>{$locale.406}</b></a>
+						{/if}
 					</td>
 					{/if}
-					{if $userdata.user_level >= 102}
+					{if $smarty.const.iADMIN}
 						<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
-							<b>{$locale.409}</b>
+							{if $order == "email"}
+								 <b>{$locale.409}</b> <img src='{$smarty.const.THEME}images/panel_on.gif' alt='' />
+							{else}
+								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;order=email&amp;field={$field}&amp;sortby={$sortby}&amp;country={$country}'><b>{$locale.409}</b></a>
+							{/if}
 						</td>
 					{/if}
 					<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
@@ -208,7 +220,7 @@
 					</td>
 					{if $userdata.user_level >= 102 || $settings.forum_flags}
 						<td align='left' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
-							{$members[id].cc_flag}{if $members[id].user_cc_code == ""}{$members[id].cc_name}{else}<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;sortby={$sortby}&amp;country={$members[id].user_cc_code}'>{$members[id].cc_name}</a>{/if}
+							{$members[id].cc_flag}{if $members[id].user_cc_code == ""}{$members[id].cc_name}{else}<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;order={$order}&amp;sortby={$sortby}&amp;field={$field}&amp;country={$members[id].user_cc_code}'>{$members[id].cc_name}</a>{/if}
 						</td>
 					{/if}
 					{if $userdata.user_level >= 102}
@@ -242,32 +254,37 @@
 					</td>
 				</tr>
 			{if $smarty.section.id.last}
-			</table>
-			<br />
-			<table align='center' cellpadding='0' cellspacing='1' class='tbl-border'>
-				<tr>
-					<td rowspan='2' class='tbl2'>
-						<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;sortby=all'>{$locale.404}</a>
-					</td>
-					{foreach from=$search item=letter name=search}
-					{if $smarty.foreach.search.first}
-						{math equation="x/2-1" x=$smarty.foreach.search.total format="%u" assign='break'}
+				</table>
+				{if $field == "username" || $field == "email"}
+				<br />
+				<table align='center' cellpadding='0' cellspacing='1' class='tbl-border'>
+					<tr>
+						{foreach from=$search item=letter name=search}
+						{if $smarty.foreach.search.first}
+							{math equation="x/2-1" x=$smarty.foreach.search.total format="%u" assign='break'}
+						{/if}
+						<td align='center' class='tbl1'>
+							<div class='small'>
+								<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;field={$field}&amp;sortby={$letter}&amp;order={$order}{if $country !=""}&amp;country={$country}{/if}'>{$letter}</a>
+							</div>
+						</td>
+					{if !$smarty.foreach.search.last && $smarty.foreach.search.index==$break}
+					</tr>
+					<tr>
 					{/if}
-					<td align='center' class='tbl1'>
-						<div class='small'>
-							<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;sortby={$letter}{if $country !=""}&amp;country={$country}{/if}'>{$letter}</a>
-						</div>
-					</td>
-				{if $smarty.foreach.search.index==$break}
-							<td rowspan='2' class='tbl2'>
-						<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;sortby=all'>{$locale.404}</a>
-					</td>
-				</tr>
-				<tr>
+						{/foreach}
+					</tr>
+				</table>
+				<div style='text-align:center'>
+					{buttonlink name=$locale.404|sprintf:$locale.401 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;field=username"|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all&amp;country="|cat:$country}
+					&nbsp;
+					{buttonlink name=$locale.404|sprintf:$locale.409 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;field=email"|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all&amp;country="|cat:$country}
+					{if $sortby != "all" || $country != ""}
+						&nbsp;
+						{buttonlink name=$locale.414 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;field="|cat:$field|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all"}
+					{/if}
+				</div>
 				{/if}
-					{/foreach}
-				</tr>
-			</table>
 			{/if}
 		{sectionelse}
 			<center>

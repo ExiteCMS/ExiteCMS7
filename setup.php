@@ -17,19 +17,21 @@
 | mySQL database functions
 +----------------------------------------------------*/
 function dbconnect($db_host, $db_user, $db_pass, $db_name) {
+	global $locale;
+
 	$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
 	$db_select = @mysql_select_db($db_name);
 	if (!$db_connect) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+		terminate($locale['401'], mysql_errno()." : ".mysql_error());
 	} elseif (!$db_select) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+		terminate($locale['402'], mysql_errno()." : ".mysql_error());
 	}
 }
 
 function dbquery($query) {
+
 	$result = @mysql_query($query);
 	if (!$result) {
-		echo mysql_error();
 		return false;
 	} else {
 		return $result;
@@ -37,6 +39,7 @@ function dbquery($query) {
 }
 
 function dbarray($resource) {
+
 	$result = @mysql_fetch_assoc($resource);
 	if (!$result) {
 		echo mysql_error();
@@ -71,6 +74,7 @@ function dbcommands($cmdarray, $db_prefix) {
 | Strip Input Function, prevents HTML in unwanted places
 +----------------------------------------------------*/
 function stripinput($text) {
+
 	if (ini_get('magic_quotes_gpc')) $text = stripslashes($text);
 	$search = array("\"", "'", "\\", '\"', "\'", "<", ">", "&nbsp;");
 	$replace = array("&quot;", "&#39;", "&#92;", "&quot;", "&#39;", "&lt;", "&gt;", " ");
@@ -82,6 +86,7 @@ function stripinput($text) {
 | Create a list of files or folders and store them in an array
 +----------------------------------------------------*/
 function makefilelist($folder, $filter, $sort=true, $type="files") {
+
 	$res = array();
 	$filter = explode("|", $filter); 
 	if (is_dir($folder)) {
@@ -103,14 +108,33 @@ function makefilelist($folder, $filter, $sort=true, $type="files") {
 | load a locale file
 +----------------------------------------------------*/
 function locale_load($locale_name) {
-
 	global $settings, $locale, $db_prefix;
 
 	$locales_file = PATH_ROOT."files/locales/".(defined('LP_LOCALE')?LP_LOCALE:"en").".".$locale_name.".php";
 	if (file_exists($locales_file)) {
-		require $locales_file;
+		require_once $locales_file;
 	}
 	return;
+}
+
+/*---------------------------------------------------+
+| load a locale file
++----------------------------------------------------*/
+function terminate($error, $tip="", $wiki=0) {
+	global $locale;
+
+	$msg = "<div style='font-family:Verdana;font-size:14px;text-align:center;'><b>".(empty($locale['403'])?"Unable to run the ExiteCMS setup":$locale['403']).":<br /><br /><font style='color:red;'>";
+	$msg .= $error."</font></b><br /><br />";
+	$msg .= $error."</font></b><br /><br />";
+	if ($wiki) {
+		if (empty($locale['404')) {
+			$msg .= "Please consult our <a href='http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup'>Wiki</a> ";
+		} else {
+			$msg = sprintf($locale['404'], "http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup");
+		}
+	}
+	$msg .= $tip."</div>";
+	die($msg);
 }
 
 /*---------------------------------------------------+
@@ -123,7 +147,6 @@ define("PATH_ADMIN", PATH_ROOT."administration/");
 define("PATH_FILES", PATH_ROOT."files/");
 define("PATH_THEMES", PATH_ROOT."themes/");
 define("PATH_THEME", PATH_ROOT."themes/ExiteCMS/");
-define("PATH_PHOTOS", PATH_ROOT."images/photoalbum/");
 define("PATH_IMAGES", PATH_ROOT."images/");
 define("PATH_IMAGES_A", PATH_IMAGES."articles/");
 define("PATH_IMAGES_ADS", PATH_IMAGES."advertising/");
@@ -140,30 +163,33 @@ define('INIT_CMS_OK', true);
 define('CMS_CLI', true);
 define('CMS_SETUP', true);
 
-// error tracking
+// temp storage for template variables
+$variables = array();
+
+// used for error tracking
 $error = "";
 
-// verify the locale
+// verify the selected locale
 $localeset = isset($_GET['localeset']) ? $_GET['localeset'] : "";
 if (!file_exists(PATH_ADMIN."tools/language_pack_".$localeset.".php")) {
 	// not found? Load the english one instead
 	$localeset = "English";
 	if (!file_exists(PATH_ADMIN."tools/language_pack_".$localeset.".php")) {
 		// not found either? bail out!
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: No suitable language pack found.</b><br />Please consult the documentation on how to install a language pack.</div>");
+		terminate("No suitable language pack found.", "Please consult the documentation on how to install a language pack.");
 	}
 }
+
 // load the language pack file, to get some initial info about the language
 require PATH_ADMIN."tools/language_pack_".$localeset.".php";
 
+// load the locale for this module
+locale_load("main.setup");
+
 // define some of the website settings for the template engine
 $settings = array("locale" => LP_LOCALE, "theme" => "ExiteCMS");
-
-// temp storage for template variables
-$variables = array();
-
 $variables['localeset'] = LP_LANGUAGE;
-$variables['charset'] = "iso-8859-1";
+$variables['charset'] = LP_CHARSET;
 
 // parameter validation
 $step = (isset($_GET['step']) ? $_GET['step'] : "0");
@@ -171,31 +197,97 @@ $variables['step'] = $step;
 
 // check if the cache directories are writeable
 if (!is_writable(PATH_FILES."cache")) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The cache directory is not writeable.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	terminate($locale['405'], $locale['406'], true);
 }
 if (!is_writable(PATH_FILES."tplcache")) {
-	die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The template cache directory is not writeable.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	terminate($locale['407'], $locale['406'], true);
 }
-// get the location of the config file, check if the config file is writable
+if (!is_writable(PATH_FILES."locales")) {
+	terminate($locale['416'], $locale['406'], true);
+}
+
+// get the FQFN of the config file
 @include_once PATH_ROOT."configpath.php";
 if (substr(CONFIG_PATH,0,1) == "/") {
-	if(!is_writable(CONFIG_PATH."/config.php")) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The config file can not be written.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
-	}
+	define('CONFIG_FILE', str_replace("//", "/", CONFIG_PATH."/config.php"));
 } else {
-	if(!is_writable(PATH_ROOT.CONFIG_PATH."/config.php")) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to run the ExiteCMS setup: The config file can not be written.</b><br />Please consult our <a href='http://exitecms.exite.eu'>Wiki</a> on how to define the proper file rights.</div>");
+	define('CONFIG_FILE', str_replace("//", "/", PATH_ROOT.CONFIG_PATH."/config.php"));
+}
+
+// first part in step0: check the config file
+if ($step == "0") {
+	// file MUST NOT exist...
+	if (file_exists(CONFIG_FILE)) {
+		terminate($locale['408'], $locale['409'], true);
+	}
+	// ... and the directory MUST be writeable!
+	if(!is_writable(dirname(CONFIG_FILE))) {
+		terminate($locale['415'], $locale['406'], true);
 	}
 }
 
-// first part in step1: create config.php. We need it later
+// first part in step1: validate the input, and create the config file
 if ($step == "1") {
+	// verify the user input: hostname
 	$db_host = stripinput($_POST['db_host']);
+	$variables['db_host'] = $db_host;
+	if ($empty($db_host) || !preg_match("/^[-0-9\.A-Z_@]+$/i", $db_host)) {
+		$error .= $locale['417']."<br />\n";
+	}
+	// verify the user input: username
 	$db_user = stripinput($_POST['db_user']);
+	$variables['db_user'] = $db_user;
+	if ($empty($db_user) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_user)) {
+			$error .= $locale['418']."<br />\n";
+		}
+	}
+	// verify the user input: password
 	$db_pass = stripinput($_POST['db_pass']);
+	$variables['db_pass'] = $db_pass;
+	if ($empty($db_pass) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_pass)) {
+			$error .= $locale['419']."<br />\n";
+		}
+	}
+	// verify the user input: database name
 	$db_name = stripinput($_POST['db_name']);
+	$variables['db_name'] = $db_name;
+	if ($empty($db_name) || !preg_match("/^[-0-9A-Z_@]$/i", $db_name)) {
+			$error .= $locale['427']."<br />\n";
+		}
+	}
+	// verify the user input: table prefix
 	$db_prefix = stripinput($_POST['db_prefix']);
-	$config = "<?php
+	$variables['db_prefix'] = $db_prefix;
+	if (!preg_match("/^[-0-9A-Z_@]*$/i", $db_prefix)) {
+			$error .= $locale['428']."<br />\n";
+		}
+	}
+	// verify a connection to the database server can be made
+	if (empty($error)) {
+		$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
+		if (!$db_connect) {
+			$error .= $locale['429']."<br />\n";
+		}
+	}
+	// verify if the database exists on the server
+	if (empty($error)) {
+		$db_select = @mysql_select_db($db_name);
+		if (!$db_select) {
+			$error .= sprintf($locale['434'],$db_name)."<br />\n";
+		}
+	}
+	// verify if the given user has create table on the database
+	if (empty($error)) {
+		$result = dbquery("CREATE TABLE ".$db_prefix."_test (test TINYINT(1) NOT NULL) ENGINE = MYISAM");
+		if (!$result) {
+			$error .= sprintf($locale['435'],$db_name)."<br />\n";
+		} else {
+			$result = dbquery("DROP TABLE ".$db_prefix."_test");
+		}
+	}
+	// if no errors were detected, create the config file
+	if ($error == "") {
+		$config = "<?php
 // global database settings
 "."$"."db_host="."\"".$_POST['db_host']."\"".";
 "."$"."db_user="."\"".$_POST['db_user']."\"".";
@@ -210,24 +302,17 @@ if ($step == "1") {
 "."$"."user_db_name="."\"".$_POST['db_name']."\"".";
 "."$"."user_db_prefix="."\"".$_POST['db_prefix']."\"".";
 ?>";
-	if (substr(CONFIG_PATH,0,1) == "/") {
-		$cfg_path = CONFIG_PATH;
-	} else {
-		$cfg_path = PATH_ROOT.CONFIG_PATH;
-	}
-	$temp = fopen($cfg_path."config.php","w");
-	if (!fwrite($temp, $config)) {
-		$error .= $locale['430']."<br /><br />";
-		fclose($temp);
-	} else {
-		fclose($temp);
+		$temp = fopen(CONFIG_FILE,"w");
+		if (!fwrite($temp, $config)) {
+			$error .= $locale['430']."<br /><br />";
+			fclose($temp);
+		} else {
+			fclose($temp);
+		}
 	}
 }
 
 require_once PATH_ROOT."includes/theme_functions.php";
-
-// load the locale for this module
-locale_load("main.setup");
 
 // process the different setup steps
 switch($step) {
@@ -250,12 +335,12 @@ switch($step) {
 			$variables['write_check'] = true; 
 		} else { 
 			$variables['write_check'] = false;
-			$error = "<b>".$locale['412']."</b><br /><br />".$permissions."<br /><b>".$locale['413']."</b>";
+			$error = "<b>".$locale['412']."</b><br /><br /><span style='text-align:left'>".$permissions."</span><br /><b>".$locale['413']."</b>";
 		}
 		break;
 	case "1":
 		if ($error == "") {
-			require_once "config.php";
+			require_once CONFIG_FILE;
 			$link = dbconnect($db_host, $db_user, $db_pass, $db_name);
 			require_once PATH_INCLUDES."dbsetup_include.php";
 			if (isset($fail) && $fail == "1") {
@@ -271,7 +356,7 @@ switch($step) {
 		}
 		break;
 	case "2":
-		require_once "config.php";
+		require_once CONFIG_FILE;
 		$link = dbconnect($db_host, $db_user, $db_pass, $db_name);
 		$basedir = substr($_SERVER['PHP_SELF'], 0, -9);
 		$username = stripinput($_POST['username']);
@@ -287,52 +372,14 @@ switch($step) {
 	 	if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $email)) {
 			$error .= $locale['453']."<br /><br />\n";
 		}
+		// double-hash the password to prevent hash table lookups
 		$password = md5(md5($password1));
 
 		require_once PATH_INCLUDES."dbsetup_include.php";
 
 		if ($error == "") {
 
-			// add records to the admin table
-			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('A',  'articles.gif', '".addslashes($locale['462'])."', 'articles.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AC', 'article_cats.gif', '".addslashes($locale['461'])."', 'article_cats.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('AD', 'admins.gif', '".addslashes($locale['460'])."', 'administrators.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('B',  'blacklist.gif', '".addslashes($locale['463'])."', 'blacklist.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('BG',  'blogs.gif', '".addslashes($locale['473'])."', 'blogs.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('C',  '', '".addslashes($locale['464'])."', 'reserved', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('CP', 'c-pages.gif', '".addslashes($locale['465'])."', 'custom_pages.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('D',  'dl.gif', '".addslashes($locale['468'])."', 'downloads.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('DB', 'db_backup.gif', '".addslashes($locale['466'])."', 'db_backup.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('DC', 'dl_cats.gif', '".addslashes($locale['467'])."', 'download_cats.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('F',  'forums.gif', '".addslashes($locale['470'])."', 'forums.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('FQ', 'faq.gif', '".addslashes($locale['469'])."', 'faq.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('I',  'modules.gif', '".addslashes($locale['472'])."', 'modules.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('IM', 'images.gif', '".addslashes($locale['471'])."', 'images.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('IP', '', '".addslashes($locale['473'])."', 'reserved', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('M',  'members.gif', '".addslashes($locale['474'])."', 'members.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('N',  'news.gif', '".addslashes($locale['475'])."', 'news.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('NC', 'news_cats.gif', '".addslashes($locale['494'])."', 'news_cats.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('P',  'panels.gif', '".addslashes($locale['476'])."', 'panels.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('PI', 'phpinfo.gif', '".addslashes($locale['478'])."', 'phpinfo.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('PO', 'polls.gif', '".addslashes($locale['479'])."', 'forum_polls.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S1', 'settings.gif', '".addslashes($locale['487'])."', 'settings_main.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S2', 'settings_time.gif', '".addslashes($locale['488'])."', 'settings_time.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S3', 'settings_forum.gif', '".addslashes($locale['489'])."', 'settings_forum.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S4', 'registration.gif', '".addslashes($locale['490'])."', 'settings_registration.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S6', 'settings_misc.gif', '".addslashes($locale['492'])."', 'settings_misc.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S7', 'settings_pm.gif', '".addslashes($locale['493'])."', 'settings_messages.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S8', 'settings_lang.gif', '".addslashes($locale['459'])."', 'settings_languages.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('SL', 'site_links.gif', '".addslashes($locale['481'])."', 'site_links.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('T',  'tools.gif', '".addslashes($locale['495'])."', 'tools.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('U',  'upgrade.gif', '".addslashes($locale['483'])."', 'upgrade.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UG', 'user_groups.gif', '".addslashes($locale['484'])."', 'user_groups.php', 2)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('UR', 'submissions.gif', '".addslashes($locale['496'])."', 'redirects.php', 1)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('R',  'reports.gif', '".addslashes($locale['477'])."', 'reports.php', 3)");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('S',  'searches.gif', '".addslashes($locale['480'])."', 'searches.php', 3)");
-			$result = dbcommands($commands, $db_prefix);
-
-			// create the admin rights field for the webmaster, based on all admin modules just inserted
+			// create the admin rights field for the webmaster, based on all admin modules available
 			$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
 			$adminrights = "";
 			while ($data = dbarray($result)) {
@@ -396,6 +443,16 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['509'])."', 'reports.php', '0', '1', '0', '10', 'main_menu_panel')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".addslashes($locale['508'])."', 'register.php', '100', '2', '0', '11', 'main_menu_panel')");
 			$result = dbcommands($commands, $db_prefix);
+
+			// add the ExiteCMS core search options
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'articles', 'src510', 1, '1.0.0', 1, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'news', 'src511', 1, '1.0.0', 1, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'forumposts', 'src512', 1, '1.0.0', 1, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'forumattachments', 'src513', 1, '1.0.0', 1, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'downloads', 'src514', 1, '1.0.0', 1, 0)");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'members', 'src515', 0, '1.0.0', 1, 0)");
+
+			// add the ExiteCMS core report options
 
 			// add the default forum poll settings
 			$commands = array();

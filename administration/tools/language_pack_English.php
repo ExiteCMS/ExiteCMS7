@@ -524,7 +524,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['401'] = "User Name";
 		$localestrings['402'] = "User Type";
 		$localestrings['403'] = "Add a new user";
-		$localestrings['404'] = "Show All";
+		$localestrings['404'] = "Filter on %s";
 		$localestrings['405'] = "Options";
 		$localestrings['406'] = "Country";
 		$localestrings['407'] = "Never";
@@ -534,6 +534,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['411'] = "%u member";
 		$localestrings['412'] = "%u members";
 		$localestrings['413'] = "Undelete this user";
+		$localestrings['414'] = "Reset filter";
 		$localestrings['415'] = "Edit this user's profile";
 		$localestrings['416'] = "Activate this account";
 		$localestrings['417'] = "Ban this member";
@@ -2817,7 +2818,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['401'] = "User Name";
 		$localestrings['402'] = "User Type";
 		$localestrings['403'] = "There are no user names found";
-		$localestrings['404'] = "Show All";
+		$localestrings['404'] = "Filter on %s";
 		$localestrings['405'] = "Last visit";
 		$localestrings['406'] = "Country";
 		$localestrings['407'] = "Never";
@@ -2826,6 +2827,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['410'] = "View User Group";
 		$localestrings['411'] = "%u member";
 		$localestrings['412'] = "%u members";
+		$localestrings['414'] = "Reset filter";
 		$localestrings['420'] = "Member Profile";
 		$localestrings['422'] = "Statistics";
 		$localestrings['423'] = "User Groups";
@@ -3187,13 +3189,25 @@ if (!function_exists('install_language_pack')) {
 
 		$localestrings = array();
 		$localestrings['400'] = "Select your default locale";
-		$localestrings['401'] = "Unable to establish database connection.<br><br>\nPlease ensure you have entered the correct details.";
-		$localestrings['402'] = "Unable to select the database table.<br><br>\nPlease ensure you have entered the correct details.";
+		$localestrings['401'] = "Unable to establish database connection.";
+		$localestrings['402'] = "Unable to select the database table.";
+		$localestrings['403'] = "Unable to run the ExiteCMS Setup";
+		$localestrings['404'] = "Please consult the setup instructions on our <a href='%s'>support website</a>";
+		$localestrings['405'] = "The cache directory is not writeable.";
+		$localestrings['406'] = "on how to define the proper file rights.";
+		$localestrings['407'] = "The template cache directory is not writeable";
+		$localestrings['408'] = "The setup procedure has already run. You can't run the setup twice.";
+		$localestrings['409'] = "on how to reset your installation.";
 		$localestrings['410'] = "Welcome to ExiteCMS Setup";
 		$localestrings['411'] = "Write permissions check passed";
 		$localestrings['412'] = "Write permissions check failed on:";
 		$localestrings['413'] = "Please ensure that your webserver has write<br />access (chmod) on these folders.";
 		$localestrings['414'] = "Please complete the following form and click 'Next Step'.";
+		$localestrings['415'] = "No rights to create the configuration file.";
+		$localestrings['416'] = "The locales cache directory is not writeable";
+		$localestrings['417'] = "Database Hostname invalid. Please enter a host name, IP address, or 'localhost'";
+		$localestrings['418'] = "Database Username invalid. Please enter a valid username";
+		$localestrings['419'] = "Database Password invalid. Please enter a valid password";
 		$localestrings['420'] = "MySQL Database access settings";
 		$localestrings['421'] = "Database Hostname:";
 		$localestrings['422'] = "Database Username:";
@@ -3201,10 +3215,15 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['424'] = "Database Name:";
 		$localestrings['425'] = "Table Prefix:";
 		$localestrings['426'] = "Next Step >>";
+		$localestrings['427'] = "Database Name invalid. Please enter a valid name";
+		$localestrings['428'] = "Table prefix invalid. Please enter a valid prefix";
+		$localestrings['429'] = "Please check your database hostname, username and password";
 		$localestrings['430'] = "Unable to write to config<br>\nPlease check write permissions and restart setup.";
 		$localestrings['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 		$localestrings['432'] = "The config has been written successfully.<br><br>\n";
 		$localestrings['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
+		$localestrings['434'] = "The Database '%s' does not exist or the database user has no rights to access it.";
+		$localestrings['435'] = "Insufficient rights to create new tables in database '%s'.";
 		$localestrings['440'] = "Super Admin login details";
 		$localestrings['441'] = "Username:";
 		$localestrings['442'] = "Password:";
@@ -3402,8 +3421,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1218989654");
-$lp_date = "1218989654";
+if (!defined('LP_DATE')) define('LP_DATE', "1219327583");
+$lp_date = "1219327583";
 
 /*---------------------------------------------------+
 | main code                                          |

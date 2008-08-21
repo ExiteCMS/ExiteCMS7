@@ -524,7 +524,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['401'] = "Gebruikersnaam";
 		$localestrings['402'] = "Gebruikerstype";
 		$localestrings['403'] = "Nieuwe gebruiker toevoegen";
-		$localestrings['404'] = "Toon alles";
+		$localestrings['404'] = "filter op %s";
 		$localestrings['405'] = "Opties";
 		$localestrings['406'] = "Land";
 		$localestrings['407'] = "Nooit";
@@ -534,6 +534,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['411'] = "%u gebruiker";
 		$localestrings['412'] = "%u gebruikers";
 		$localestrings['413'] = "Heractiveer deze gebruiker";
+		$localestrings['414'] = "Filter wissen";
 		$localestrings['415'] = "Wijzig het profiel van deze gebruiker";
 		$localestrings['416'] = "Activeer deze gebruiker";
 		$localestrings['417'] = "Blokeer deze gebruiker";
@@ -2817,7 +2818,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['401'] = "Gebruikersnaam";
 		$localestrings['402'] = "Type gebruiker";
 		$localestrings['403'] = "Er zijn geen gebruikersnamen gevonden";
-		$localestrings['404'] = "Alles";
+		$localestrings['404'] = "Filter op %s";
 		$localestrings['405'] = "Laatste bezoek";
 		$localestrings['406'] = "Land";
 		$localestrings['407'] = "Nooit";
@@ -2826,6 +2827,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['410'] = "Bekijk gebruikersgroep";
 		$localestrings['411'] = "%u lid";
 		$localestrings['412'] = "%u leden";
+		$localestrings['414'] = "Filter wissen";
 		$localestrings['420'] = "Lid profiel";
 		$localestrings['422'] = "Statistieken";
 		$localestrings['423'] = "Gebruikersgroepen";
@@ -3187,13 +3189,25 @@ if (!function_exists('install_language_pack')) {
 
 		$localestrings = array();
 		$localestrings['400'] = "Selecteer de standaard taal voor uw site";
-		$localestrings['401'] = "Kan geen verbinding maken met de database.<br><br>\nControleer of de door u opgegeven parameters correct zijn.";
-		$localestrings['402'] = "Kan de database niet selecteren.<br><br>\nControleer of de door u opgegeven parameters correct zijn.";
-		$localestrings['410'] = "Welkom bij de ExiteCMS installatie";
+		$localestrings['401'] = "Kan geen verbinding maken met de database.";
+		$localestrings['402'] = "Kan de database niet selecteren.";
+		$localestrings['403'] = "Kan de ExiteCMS installatie niet uitvoeren";
+		$localestrings['404'] = "Raadpleeg a.u.b. de installatie instructies op onze <a href='%s'>support website</a>";
+		$localestrings['405'] = "Geen schrijfrechten op de cache folder.";
+		$localestrings['406'] = "over how bestandsrechten te definieren.";
+		$localestrings['407'] = "Geen schrijfrechten op de template cache folder";
+		$localestrings['408'] = "De installatie procedure is reeds uitgevoerd. U kunt dit niet nogmaals doen.";
+		$localestrings['409'] = "over hoe u opnieuw kunt installeren.";
+		$localestrings['410'] = "Welkom bij de ExiteCMS installatie procedure";
 		$localestrings['411'] = "Controle op schrijfrechten succesvol";
 		$localestrings['412'] = "De webserver heeft geen schrijfrechten op:";
 		$localestrings['413'] = "Zorg er voor dat de webserver schrijfrechten heeft<br />op deze folders.";
 		$localestrings['414'] = "Vul a.u.b. dit formulier in, en klik daarna op 'Volgende Stap'.";
+		$localestrings['415'] = "Geen rechten om het configuratie bestand aan te maken.";
+		$localestrings['416'] = "Geen schrijfrechten op de locales cache folder";
+		$localestrings['417'] = "Database systeemnaam incorrect. Vul a.u.b. een correct systeemnaam, een IP adres, of 'localhost' in.";
+		$localestrings['418'] = "Database gebruikersnaam incorrect. Vul a.u.b. een correct gebruikersnaam in.";
+		$localestrings['419'] = "Database wachtwoord incorrect. Vul a.u.b. een corect wachtwoord in.";
 		$localestrings['420'] = "MySQL Database parameters";
 		$localestrings['421'] = "Database systeemnaam:";
 		$localestrings['422'] = "Database gebruikernaam:";
@@ -3201,10 +3215,15 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['424'] = "Database naam:";
 		$localestrings['425'] = "Tabel voorvoegsel:";
 		$localestrings['426'] = "Volgende Stap >>";
+		$localestrings['427'] = "Database naam incorrect. Vul a.u.b. een correcte naam in.";
+		$localestrings['428'] = "Tabel voorvoegsel incorrect. Vul a.u.b. een correct voorvoegsel in.";
+		$localestrings['429'] = "Controleer de systeemnaam, gebruikersnaam en wachtwoord op juistheid.";
 		$localestrings['430'] = "Kan de configuratie niet wegschrijven<br \>\nControleer a.u.b. de schrijfpermissies en herstart daarna de installatie.";
-		$localestrings['431'] = "De installatie kon één of meerder database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+		$localestrings['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 		$localestrings['432'] = "De configuratie is succesvol weggeschreven.<br><br>\n";
 		$localestrings['433'] = "De database tabellen zijn aangemaakt.<br><br>\nVul a.u.b. het volgende formulier in, en klik daarna op 'Volgende Stap'.";
+		$localestrings['434'] = "De database '%s' bestaat niet of uw gebruiker heeft onvoldoende rechten op deze database.";
+		$localestrings['435'] = "Uw database gebruiker heeft onvoldoende rechten op de database '%s' om tabellen aan te maken.";
 		$localestrings['440'] = "Webmaster aanmeld gegevens";
 		$localestrings['441'] = "Gebruikersnaam:";
 		$localestrings['442'] = "Wachtwoord:";
@@ -3402,8 +3421,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1218989657");
-$lp_date = "1218989657";
+if (!defined('LP_DATE')) define('LP_DATE', "1219327586");
+$lp_date = "1219327586";
 
 /*---------------------------------------------------+
 | main code                                          |

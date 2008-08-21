@@ -99,20 +99,21 @@ define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
 // mark that CMS Engine is properly initialized
 define("INIT_CMS_OK", TRUE);
 
-// load the config file
+// get the full filename of the config file
 @include_once PATH_ROOT."configpath.php";
 if (substr(CONFIG_PATH,0,1) == "/") {
-	if(is_file(CONFIG_PATH."/config.php")) {
-		@include_once CONFIG_PATH."/config.php";
-	}
+	define('CONFIG_FILE', str_replace("//", "/", CONFIG_PATH."/config.php"));
 } else {
-	if(is_file(PATH_ROOT.CONFIG_PATH."/config.php")) {
-		@include_once PATH_ROOT.CONFIG_PATH."/config.php";
-	}
+	define('CONFIG_FILE', str_replace("//", "/", PATH_ROOT.CONFIG_PATH."/config.php"));
+}
+if(is_file(CONFIG_FILE)) {
+	@include_once CONFIG_FILE;
 }
 
 // if config.php is absent or empty, bail out with an error
-if (!isset($db_name)) terminate('FATAL ERROR: config file is missing. Check our Wiki at http://exitecms.exite.eu on how to run the setup');
+if (!isset($db_name)) {
+	terminate('FATAL ERROR: config file is missing. Did you run the setup?<br />Check our Wiki at http://exitecms.exite.eu on how to run the setup');
+}
 
 // load the database functions, and establish a database connection
 require_once PATH_INCLUDES."db_functions.php";
