@@ -3224,6 +3224,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
 		$localestrings['434'] = "The Database '%s' does not exist or the database user has no rights to access it.";
 		$localestrings['435'] = "Insufficient rights to create new tables in database '%s'.";
+		$localestrings['436'] = "(optional)";
 		$localestrings['440'] = "Super Admin login details";
 		$localestrings['441'] = "Username:";
 		$localestrings['442'] = "Password:";
@@ -3421,8 +3422,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1219327583");
-$lp_date = "1219327583";
+if (!defined('LP_DATE')) define('LP_DATE', "1219335044");
+$lp_date = "1219335044";
 
 /*---------------------------------------------------+
 | main code                                          |

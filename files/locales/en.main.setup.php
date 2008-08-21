@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Thu Aug 21 2008, 16:06:23 CEST
+// generated on : Thu Aug 21 2008, 18:10:44 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";
@@ -41,6 +41,7 @@ $locale['432'] = "The config has been written successfully.<br><br>\n";
 $locale['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
 $locale['434'] = "The Database '%s' does not exist or the database user has no rights to access it.";
 $locale['435'] = "Insufficient rights to create new tables in database '%s'.";
+$locale['436'] = "(optional)";
 $locale['440'] = "Super Admin login details";
 $locale['441'] = "Username:";
 $locale['442'] = "Password:";

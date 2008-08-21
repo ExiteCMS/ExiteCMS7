@@ -112,7 +112,9 @@ function locale_load($locale_name) {
 
 	$locales_file = PATH_ROOT."files/locales/".(defined('LP_LOCALE')?LP_LOCALE:"en").".".$locale_name.".php";
 	if (file_exists($locales_file)) {
-		require_once $locales_file;
+		require $locales_file;
+	} else {
+		die("locales file $locales_file not found!");
 	}
 	return;
 }
@@ -125,15 +127,14 @@ function terminate($error, $tip="", $wiki=0) {
 
 	$msg = "<div style='font-family:Verdana;font-size:14px;text-align:center;'><b>".(empty($locale['403'])?"Unable to run the ExiteCMS setup":$locale['403']).":<br /><br /><font style='color:red;'>";
 	$msg .= $error."</font></b><br /><br />";
-	$msg .= $error."</font></b><br /><br />";
 	if ($wiki) {
-		if (empty($locale['404')) {
+		if (empty($locale['404'])) {
 			$msg .= "Please consult our <a href='http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup'>Wiki</a> ";
 		} else {
-			$msg = sprintf($locale['404'], "http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup");
+			$msg .= sprintf($locale['404'], "http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup");
 		}
 	}
-	$msg .= $tip."</div>";
+	$msg .=" ". $tip."</div>";
 	die($msg);
 }
 
@@ -181,9 +182,10 @@ if (!file_exists(PATH_ADMIN."tools/language_pack_".$localeset.".php")) {
 }
 
 // load the language pack file, to get some initial info about the language
-require PATH_ADMIN."tools/language_pack_".$localeset.".php";
+require_once PATH_ADMIN."tools/language_pack_".$localeset.".php";
 
 // load the locale for this module
+$locale = array();
 locale_load("main.setup");
 
 // define some of the website settings for the template engine
@@ -192,8 +194,7 @@ $variables['localeset'] = LP_LANGUAGE;
 $variables['charset'] = LP_CHARSET;
 
 // parameter validation
-$step = (isset($_GET['step']) ? $_GET['step'] : "0");
-$variables['step'] = $step;
+$step = (isset($_POST['step']) ? $_POST['step'] : "0");
 
 // check if the cache directories are writeable
 if (!is_writable(PATH_FILES."cache")) {
@@ -229,58 +230,54 @@ if ($step == "0") {
 // first part in step1: validate the input, and create the config file
 if ($step == "1") {
 	// verify the user input: hostname
-	$db_host = stripinput($_POST['db_host']);
+	$db_host = isset($_POST['db_host']) ? stripinput($_POST['db_host']) : "";
 	$variables['db_host'] = $db_host;
-	if ($empty($db_host) || !preg_match("/^[-0-9\.A-Z_@]+$/i", $db_host)) {
-		$error .= $locale['417']."<br />\n";
+	if (empty($db_host) || !preg_match("/^[-0-9\.A-Z_@]+$/i", $db_host)) {
+		$error .= $locale['417']."<br /><br />\n";
 	}
 	// verify the user input: username
-	$db_user = stripinput($_POST['db_user']);
+	$db_user = isset($_POST['db_user']) ? stripinput($_POST['db_user']) : "";
 	$variables['db_user'] = $db_user;
-	if ($empty($db_user) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_user)) {
-			$error .= $locale['418']."<br />\n";
-		}
+	if (empty($db_user) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_user)) {
+		$error .= $locale['418']."<br /><br />\n";
 	}
 	// verify the user input: password
-	$db_pass = stripinput($_POST['db_pass']);
+	$db_pass = isset($_POST['db_pass']) ? stripinput($_POST['db_pass']) : "";
 	$variables['db_pass'] = $db_pass;
-	if ($empty($db_pass) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_pass)) {
-			$error .= $locale['419']."<br />\n";
-		}
+	if (empty($db_pass) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_pass)) {
+		$error .= $locale['419']."<br /><br />\n";
 	}
 	// verify the user input: database name
-	$db_name = stripinput($_POST['db_name']);
+	$db_name = isset($_POST['db_name']) ? stripinput($_POST['db_name']) : "";
 	$variables['db_name'] = $db_name;
-	if ($empty($db_name) || !preg_match("/^[-0-9A-Z_@]$/i", $db_name)) {
-			$error .= $locale['427']."<br />\n";
-		}
+	if (empty($db_name) || !preg_match("/^[-0-9A-Z_@]+$/i", $db_name)) {
+		$error .= $locale['427']."<br /><br />\n";
 	}
 	// verify the user input: table prefix
-	$db_prefix = stripinput($_POST['db_prefix']);
+	$db_prefix = isset($_POST['db_prefix']) ? stripinput($_POST['db_prefix']) : "";
 	$variables['db_prefix'] = $db_prefix;
 	if (!preg_match("/^[-0-9A-Z_@]*$/i", $db_prefix)) {
-			$error .= $locale['428']."<br />\n";
-		}
+		$error .= $locale['428']."<br /><br />\n";
 	}
 	// verify a connection to the database server can be made
 	if (empty($error)) {
 		$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
 		if (!$db_connect) {
-			$error .= $locale['429']."<br />\n";
+			$error .= $locale['401']."<br />".$locale['429']."<br /><br />\n";
 		}
 	}
 	// verify if the database exists on the server
 	if (empty($error)) {
 		$db_select = @mysql_select_db($db_name);
 		if (!$db_select) {
-			$error .= sprintf($locale['434'],$db_name)."<br />\n";
+			$error .= sprintf($locale['434'],$db_name)."<br /><br />\n";
 		}
 	}
 	// verify if the given user has create table on the database
 	if (empty($error)) {
 		$result = dbquery("CREATE TABLE ".$db_prefix."_test (test TINYINT(1) NOT NULL) ENGINE = MYISAM");
 		if (!$result) {
-			$error .= sprintf($locale['435'],$db_name)."<br />\n";
+			$error .= sprintf($locale['435'],$db_name)."<br /><br />\n";
 		} else {
 			$result = dbquery("DROP TABLE ".$db_prefix."_test");
 		}
@@ -295,7 +292,7 @@ if ($step == "1") {
 "."$"."db_name="."\"".$_POST['db_name']."\"".";
 "."$"."db_prefix="."\"".$_POST['db_prefix']."\"".";
 
-// user database settings
+// user database settings (may be shared with another ExiteCMS DB)
 "."$"."user_db_host="."\"".$_POST['db_host']."\"".";
 "."$"."user_db_user="."\"".$_POST['db_user']."\"".";
 "."$"."user_db_pass="."\"".$_POST['db_pass']."\"".";
@@ -309,6 +306,9 @@ if ($step == "1") {
 		} else {
 			fclose($temp);
 		}
+	}
+	if (!empty($error)) {
+		$step = 0;
 	}
 }
 
@@ -359,10 +359,14 @@ switch($step) {
 		require_once CONFIG_FILE;
 		$link = dbconnect($db_host, $db_user, $db_pass, $db_name);
 		$basedir = substr($_SERVER['PHP_SELF'], 0, -9);
-		$username = stripinput($_POST['username']);
-		$password1 = stripinput($_POST['password1']);
-		$password2 = stripinput($_POST['password2']);
-		$email = stripinput($_POST['email']);
+		$username = isset($_POST['username']) ? stripinput($_POST['username']) : "";
+		$variables['username'] = $username;
+		$password1 = isset($_POST['password1']) ? stripinput($_POST['password1']) : "";
+		$variables['password1'] = $password1;
+		$password2 = isset($_POST['password2']) ? stripinput($_POST['password2']) : "";
+		$variables['password2'] = $password2;
+		$email = isset($_POST['email']) ? stripinput($_POST['email']) : "";
+		$variables['email'] = $email;
 		if (!preg_match("/^[-0-9A-Z_@\s]+$/i", $username)) $error .= $locale['450']."<br /><br />\n";
 		if (preg_match("/^[0-9A-Z@]{6,20}$/i", $password1)) {
 			if ($password1 != $password2) $error .= $locale['451']."<br /><br />\n";
@@ -377,7 +381,11 @@ switch($step) {
 
 		require_once PATH_INCLUDES."dbsetup_include.php";
 
-		if ($error == "") {
+		if ($error != "") {
+
+			$step = 1;
+
+		} else {
 
 			// create the admin rights field for the webmaster, based on all admin modules available
 			$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
@@ -470,6 +478,8 @@ switch($step) {
 
 if (isset($message)) $variables['message'] = $message;
 $variables['error'] = $error;
+
+$variables['step'] = $step;
 
 // define the setup body panel variables
 $template_panels[] = array('type' => 'body', 'name' => 'setup', 'template' => 'main.setup.tpl', 'locale' => "main.setup");

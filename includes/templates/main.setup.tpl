@@ -27,11 +27,12 @@ a:hover 	{ color:#027AC6; text-decoration:underline; }
 .textbox 	{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; color:#000; background-color:#FFFFFF; border:1px #7F98A7 solid; }
 td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 .tbl-border { background-color:#D1D8DD; }
-.tbl 		{ font-size:11px; color:#000; background-color:#E1E1E1; }
+.tbl 		{ font-size:11px; color:#000; background-color:#C1C1C1; }
 .tbl1 		{ font-size:11px; color:#000; background-color:#F1F1F1; padding:4px; }
 .tbl2 		{ font-size:11px; color:#000; background-color:#E6E6E6; padding:4px; }
 .tbl3 		{ font-size:11px; color:#000; background-color:#E65656; padding:4px; }
 .tbl4 		{ font-size:11px; color:#000; background-color:#56E656; padding:4px; }
+.small		{ font-size:10px; color:#666; }
 -->
 </style>{/literal}
 </head>
@@ -52,7 +53,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 		<table align='center' cellpadding='0' cellspacing='0' width='600'>
 			<tr>
 				<td align='center'>
-					<img width='450' src='images/cms-logo-big.png'>
+					<img width='598' src='images/cms-logo-big.png'>
 				</td>
 			</tr>
 		</table>
@@ -91,7 +92,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 						{if $localeset == $loc}
 							<b>{$loc}</b>
 						{else}
-							<a href='{$smarty.const.FUSION_SELF}?step=0&localeset={$loc}'>{$loc}</a>
+							<a href='{$smarty.const.FUSION_SELF}?localeset={$loc}'>{$loc}</a>
 						{/if}
 					</td>
 				{if $smarty.foreach.x.last && $column < 4}
@@ -118,7 +119,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 					</tr>
 				</table>
 				<br>
-				<form name='setup' method='post' action='{$smarty.const.FUSION_SELF}?step=1&localeset={$localeset}'>
+				<form name='setup' method='post' action='{$smarty.const.FUSION_SELF}?localeset={$localeset}'>
 					<table align='center' width='600' cellpadding='0' cellspacing='1' class='tbl-border'>
 						<tr>
 							<td align='center' colspan='2' class='tbl2'>
@@ -138,7 +139,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 								{$locale.422}
 							</td>
 							<td class='tbl1'>
-								<input type='text' value='' name='{$db_user}' class='textbox' />
+								<input type='text' value='{$db_user}' name='db_user' class='textbox' />
 							</td>
 						</tr>
 						<tr>
@@ -146,7 +147,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 								{$locale.423}
 							</td>
 							<td class='tbl1'>
-								<input type='password' value='' name='{$db_pass}' class='textbox'>
+								<input type='password' value='{$db_pass}' name='db_pass' class='textbox'>
 							</td>
 						</tr>
 						<tr>
@@ -154,7 +155,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 								{$locale.424}
 							</td>
 							<td class='tbl1'>
-								<input type='text' value='' name='{$db_name}' class='textbox' />
+								<input type='text' value='{$db_name}' name='db_name' class='textbox' />
 							</td>
 						</tr>
 						<tr>
@@ -162,11 +163,12 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 								{$locale.425}
 							</td>
 							<td class='tbl1'>
-								<input type='text' value='{$db_prefix|default:"exitecms_"}' name='db_prefix' class='textbox' />
+								<input type='text' value='{$db_prefix|default:"exitecms_"}' name='db_prefix' class='textbox' /> <span class='small'>{$locale.436}</span>
 							</td>
 						</tr>
 						<tr>
 							<td align='center' colspan='2' class='tbl1'>
+								<input type='hidden' name='step' value='1' />
 								<input type='submit' name='next' value='{$locale.426}' class='button' />
 							</td>
 						</tr>
@@ -184,7 +186,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 				</tr>
 			</table>
 			<br />
-			<form name='setup' method='post' action='{$smarty.const.FUSION_SELF}?step=2&localeset={$localeset}'>
+			<form name='setup' method='post' action='{$smarty.const.FUSION_SELF}?localeset={$localeset}'>
 				<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
 					<tr>
 						<td align='center' colspan='2' class='tbl2'>
@@ -196,7 +198,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 							{$locale.441}
 						</td>
 						<td class='tbl1'>
-							<input type='text' name='username' maxlength='30' class='textbox' />
+							<input type='text' value='{$username}' name='username' maxlength='30' class='textbox' />
 						</td>
 					</tr>
 					<tr>
@@ -204,7 +206,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 							{$locale.442}
 						</td>
 						<td class='tbl1'>
-							<input type='password' name='password1' maxlength='20' class='textbox' />
+							<input type='password' value='{$password1}' name='password1' maxlength='20' class='textbox' />
 						</td>
 					</tr>
 					<tr>
@@ -212,7 +214,7 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 							{$locale.443}
 						</td>
 						<td class='tbl1'>
-							<input type='password' name='password2' maxlength='20' class='textbox' />
+							<input type='password' value='{$password2}' name='password2' maxlength='20' class='textbox' />
 						</td>
 					</tr>
 					<tr>
@@ -220,11 +222,12 @@ td 			{ font-family:Verdana,Tahoma,Arial,Sans-Serif; font-size:11px; }
 							{$locale.444}
 						</td>
 						<td class='tbl1'>
-							<input type='text' name='email' maxlength='100' class='textbox' />
+							<input type='text' value='{$email}' name='email' maxlength='100' class='textbox' />
 						</td>
 					</tr>
 					<tr>
 						<td colspan='2' align='center' class='tbl1'>
+							<input type='hidden' name='step' value='2' />
 							<input type='submit' name='next' value='{$locale.426}' class='button'>
 						</td>
 					</tr>

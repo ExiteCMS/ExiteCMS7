@@ -3224,6 +3224,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['433'] = "De database tabellen zijn aangemaakt.<br><br>\nVul a.u.b. het volgende formulier in, en klik daarna op 'Volgende Stap'.";
 		$localestrings['434'] = "De database '%s' bestaat niet of uw gebruiker heeft onvoldoende rechten op deze database.";
 		$localestrings['435'] = "Uw database gebruiker heeft onvoldoende rechten op de database '%s' om tabellen aan te maken.";
+		$localestrings['436'] = "(optioneel)";
 		$localestrings['440'] = "Webmaster aanmeld gegevens";
 		$localestrings['441'] = "Gebruikersnaam:";
 		$localestrings['442'] = "Wachtwoord:";
@@ -3421,8 +3422,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1219327586");
-$lp_date = "1219327586";
+if (!defined('LP_DATE')) define('LP_DATE', "1219335047");
+$lp_date = "1219335047";
 
 /*---------------------------------------------------+
 | main code                                          |

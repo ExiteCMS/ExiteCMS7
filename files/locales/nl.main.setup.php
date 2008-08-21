@@ -1,18 +1,30 @@
 <?php
 // ----------------------------------------------------------
-// locale       : Nederlands
+// locale       : English
 // locale name  : main.setup
-// generated on : Tue Nov 20 2007, 14:54:31 CET
+// generated on : Thu Aug 21 2008, 18:10:47 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";
-$locale['401'] = "Kan geen verbinding maken met de database.<br><br>\nControleer of de door u opgegeven parameters correct zijn.";
-$locale['402'] = "Kan de database niet selecteren.<br><br>\nControleer of de door u opgegeven parameters correct zijn.";
-$locale['410'] = "Welkom bij de ExiteCMS installatie";
+$locale['401'] = "Kan geen verbinding maken met de database.";
+$locale['402'] = "Kan de database niet selecteren.";
+$locale['403'] = "Kan de ExiteCMS installatie niet uitvoeren";
+$locale['404'] = "Raadpleeg a.u.b. de installatie instructies op onze <a href='%s'>support website</a>";
+$locale['405'] = "Geen schrijfrechten op de cache folder.";
+$locale['406'] = "over how bestandsrechten te definieren.";
+$locale['407'] = "Geen schrijfrechten op de template cache folder";
+$locale['408'] = "De installatie procedure is reeds uitgevoerd. U kunt dit niet nogmaals doen.";
+$locale['409'] = "over hoe u opnieuw kunt installeren.";
+$locale['410'] = "Welkom bij de ExiteCMS installatie procedure";
 $locale['411'] = "Controle op schrijfrechten succesvol";
 $locale['412'] = "De webserver heeft geen schrijfrechten op:";
 $locale['413'] = "Zorg er voor dat de webserver schrijfrechten heeft<br />op deze folders.";
 $locale['414'] = "Vul a.u.b. dit formulier in, en klik daarna op 'Volgende Stap'.";
+$locale['415'] = "Geen rechten om het configuratie bestand aan te maken.";
+$locale['416'] = "Geen schrijfrechten op de locales cache folder";
+$locale['417'] = "Database systeemnaam incorrect. Vul a.u.b. een correct systeemnaam, een IP adres, of 'localhost' in.";
+$locale['418'] = "Database gebruikersnaam incorrect. Vul a.u.b. een correct gebruikersnaam in.";
+$locale['419'] = "Database wachtwoord incorrect. Vul a.u.b. een corect wachtwoord in.";
 $locale['420'] = "MySQL Database parameters";
 $locale['421'] = "Database systeemnaam:";
 $locale['422'] = "Database gebruikernaam:";
@@ -20,10 +32,16 @@ $locale['423'] = "Database wachtwoord:";
 $locale['424'] = "Database naam:";
 $locale['425'] = "Tabel voorvoegsel:";
 $locale['426'] = "Volgende Stap >>";
+$locale['427'] = "Database naam incorrect. Vul a.u.b. een correcte naam in.";
+$locale['428'] = "Tabel voorvoegsel incorrect. Vul a.u.b. een correct voorvoegsel in.";
+$locale['429'] = "Controleer de systeemnaam, gebruikersnaam en wachtwoord op juistheid.";
 $locale['430'] = "Kan de configuratie niet wegschrijven<br \>\nControleer a.u.b. de schrijfpermissies en herstart daarna de installatie.";
-$locale['431'] = "De installatie kon één of meerder database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+$locale['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 $locale['432'] = "De configuratie is succesvol weggeschreven.<br><br>\n";
 $locale['433'] = "De database tabellen zijn aangemaakt.<br><br>\nVul a.u.b. het volgende formulier in, en klik daarna op 'Volgende Stap'.";
+$locale['434'] = "De database '%s' bestaat niet of uw gebruiker heeft onvoldoende rechten op deze database.";
+$locale['435'] = "Uw database gebruiker heeft onvoldoende rechten op de database '%s' om tabellen aan te maken.";
+$locale['436'] = "(optioneel)";
 $locale['440'] = "Webmaster aanmeld gegevens";
 $locale['441'] = "Gebruikersnaam:";
 $locale['442'] = "Wachtwoord:";
@@ -40,7 +58,7 @@ $locale['461'] = "Artikel categorieen";
 $locale['462'] = "Artikelen";
 $locale['463'] = "Blokkeren";
 $locale['464'] = "Commentaar";
-$locale['465'] = "Dynamische pagina's";
+$locale['465'] = "Dynamische pagina\'s";
 $locale['466'] = "Database backup";
 $locale['467'] = "Download categorieen";
 $locale['468'] = "Downloads";
@@ -48,14 +66,14 @@ $locale['469'] = "FAQs";
 $locale['470'] = "Forums";
 $locale['471'] = "Plaatjes";
 $locale['472'] = "Modules & Plugins";
-$locale['473'] = "x";
+$locale['473'] = "Blogs";
 $locale['474'] = "Leden";
 $locale['475'] = "Nieuws";
 $locale['476'] = "Panelen";
-$locale['477'] = "x";
+$locale['477'] = "Rapporten";
 $locale['478'] = "PHP informatie";
 $locale['479'] = "Polls";
-$locale['480'] = "x";
+$locale['480'] = "Zoekacties";
 $locale['481'] = "Menu systeem";
 $locale['482'] = "x";
 $locale['483'] = "Opwaarderen";
@@ -81,6 +99,7 @@ $locale['505'] = "Nieuws categorieen";
 $locale['506'] = "Neem contact op";
 $locale['507'] = "Zoeken";
 $locale['508'] = "Registreren";
+$locale['509'] = "Rapportages";
 $locale['520'] = "Hoofdmenu";
 $locale['521'] = "Online gebruikers";
 $locale['522'] = "Forum topic";
@@ -104,13 +123,13 @@ $locale['550'] = "Nieuws";
 $locale['551'] = "ExiteCMS";
 $locale['552'] = "Beveiliging";
 $locale['553'] = "Software";
-$locale['554'] = "Thema's";
+$locale['554'] = "Thema\'s";
 $locale['555'] = "Windows";
 $locale['560'] = "Sorry, maar het door u gevraagde document kan niet op de server gevonden worden.";
 $locale['561'] = "Het is waarschijnlijk dat dit wordt veroorzaakt door een van de vele reorganisaties die veroorzaakt worden door een continue ontwikkeling van deze website, en migraties van een oude server met veel balast naar een fonkelnieuwe omgeving.";
 $locale['562'] = "Aan de andere kant, het zou ook volledig toeval kunnen zijn, of het resultaat van cosmische straling. Wie weet?";
 $locale['563'] = "De beste kans om te vinden wat je zoek is te starten op onze home pagina, (<a href=\"/\">klik hier om daar na toe te gaan</a>), de opties in het menu te bekijken, of gebruik te maken van de zoek optie in het menu.";
 $locale['564'] = "Als dat geen resultaat mocht opleveren, en u weet zeker dat het document dat u zoekt op deze website te vinden moet zijn, stuur dat een website beheerder een privé bericht (alleen voor geregistreerde gebruikers).";
-$locale['580'] = "De installatie is klaar, ExiteCMS is nu klaar voor gebruik.<br>\n<a href='index.php'>Klik hier</a> om naar uw ExiteCMS powered website te gaan.<br>\n<b>Opmerking:</b> voor uw veiligheid kunt u het best nu het bestand setup.php van uw server verwijderen<br>\en de rechten op het bestand config op alleen lezen zetten (chmod 644).<br><br>\nWij danken u voor uw keuze voor ExiteCMS.";
+$locale['580'] = "De installatie is klaar, ExiteCMS is nu klaar voor gebruik.<br>\n<a href='index.php'>Klik hier</a> om naar uw ExiteCMS powered website te gaan.<br>\n<b>Opmerking:</b> voor uw veiligheid kunt u het best nu het bestand setup.php van uw server verwijderen<br>\nen de rechten op het bestand config op alleen lezen zetten (chmod 644).<br><br>\nWij danken u voor uw keuze voor ExiteCMS.";
 $locale['title'] = "ExiteCMS Setup";
 ?>

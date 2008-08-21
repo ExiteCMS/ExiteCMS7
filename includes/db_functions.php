@@ -32,21 +32,24 @@ function ModUserTables(&$query) {
 	global $db_prefix, $db_name, $user_db_prefix, $user_db_name;
 
 	$isUserQuery = false;
-		
-	// tables with user information
-	$usertables = array("users", "new_users", "user_groups", "bad_login", "online", "blacklist");
+
+	// only do this if there's a prefix defined
+	if (!empty($db_prefix)) {		
+		// tables with user information
+		$usertables = array("users", "new_users", "user_groups", "bad_login", "online", "blacklist");
 	
-	// check if this is a query on a user table
-	foreach($usertables as $usertable) {
-		if(strpos($query, " ".$db_prefix.$usertable)) {
-			$isUserQuery = true;
-			$query = str_replace(" ".$db_prefix.$usertable, " ".$user_db_name.".".$user_db_prefix.$usertable, $query);
-			$query = str_replace("=".$db_prefix.$usertable, "=".$user_db_name.".".$user_db_prefix.$usertable, $query);
+		// check if this is a query on a user table
+		foreach($usertables as $usertable) {
+			if(strpos($query, " ".$db_prefix.$usertable)) {
+				$isUserQuery = true;
+				$query = str_replace(" ".$db_prefix.$usertable, " ".$user_db_name.".".$user_db_prefix.$usertable, $query);
+				$query = str_replace("=".$db_prefix.$usertable, "=".$user_db_name.".".$user_db_prefix.$usertable, $query);
+			}
 		}
+		// prefix all other tables with the database name as well
+		$query = str_replace(" ".$db_prefix, " ".$db_name.".".$db_prefix, $query);
 	}
-	// prefix all other tables with the database name as well
-	$query = str_replace(" ".$db_prefix, " ".$db_name.".".$db_prefix, $query);
-	
+
 	// and return the result
 	return $isUserQuery;
 }
