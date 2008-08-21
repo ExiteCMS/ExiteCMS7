@@ -1,10 +1,10 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `01/09/2008 08:00`
+// Date generated  : `21/08/2008 19:07`
 //----------------------------------------------------------
 
-define('CMS_VERSION', '7.20');
+define('CMS_VERSION', '7.10');
 define('CMS_REVISION', '1650');
 
 if ($step == 1) {
@@ -235,7 +235,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('article_localisation', 'none')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachmax', '10485760')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachments', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachtypes', '.exe,.com,.bat,.js,.vbs,.htm,.html,.shtml,.php')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.esml,.psd,.mvi')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ad_basedn', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ad_suffix', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ldap_basedn', '')");
@@ -249,7 +249,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('browserlang', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('counter', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('country', 'nl')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_php_errors', '0')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_php_errors', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_querylog', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_sql_explain', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('description', 'ExiteCMS, a light-weight CMS system, written in PHP, and using MySQL and the Smarty template engine')");
@@ -270,18 +270,18 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('guestposts', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('hide_webmaster', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('hoteditor_enabled', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('keywords', 'Exite, ExiteCMS, CMS, Content Management, Smarty, MySQL, PHP, Open-Source')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('keywords', 'ExiteCMS, CMS, Content Management System, Smarty, MySQL, PHP, Open-Source')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('locale', 'English')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('login_expire', '7200')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('login_extended_expire', '604800')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('longdate', '%m/%d/%Y %H:%M:%S')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance_color', '#83AF83')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance_message', 'Maintenance Mode Message')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('maintenance_message', 'Maintenance Mode Test')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('max_users', '5')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('max_users_datestamp', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('navbar_range', '5')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('newsletter_email', 'bounce@example.com')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('newsletter_email', 'noreply@example.com')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('news_columns', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('news_headline', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('news_items', '5')");
@@ -311,11 +311,11 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_name', 'ExiteCMSid')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('shortdate', '%m/%d/%Y')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteemail', 'website@example.com')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteintro', '<center>\r\n<b>Congratulations, and welcome to this brand new website, powered by <a href='http://exitecms.exite.eu'>ExiteCMS</a>!<br /><br /><br />\r\n<b>ExiteCMS v7.0 ©2007 Exite BV.</b></center>')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteintro', '<center>\r\n<b>Congratulations, and welcome on the <a href=\"http://exitecms.exite.eu\">ExiteCMS</a> powered website!</b><br /><br /><br />\r\nExiteCMS v7.2 ©2008 Exite BV.</center>')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('sitelinks_localisation', 'none')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('sitename', 'ExiteCMS Powered Website')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteurl', '/')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteusername', 'webmaster')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('siteusername', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('smtp_host', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('smtp_password', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('smtp_username', '')");
@@ -331,7 +331,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('tinymce_enabled', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('unread_threshold', '90')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('validation_method', 'image')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('version', '7.20')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('version', '7.10')");
 }
 
 //
@@ -647,6 +647,10 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."modules (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "modules : ".mysql_error();
+} else {
+	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES('Main menu panel', 'main_menu_panel', '1.1.0')");
+	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES('Advanced login panel', 'user_info_panel', '1.1.0')");
+	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES('Welcome message panel', 'welcome_message_panel', '1.1.0')");
 }
 
 //
@@ -1123,6 +1127,22 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "users : ".mysql_error();
+}
+
+//
+// Code to create table `ult_configuration`
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."ult_configuration");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."ult_configuration (
+  `cfg_id` smallint(5) unsigned NOT NULL auto_increment,
+  `cfg_name` varchar(50) NOT NULL default '',
+  `cfg_value` text NOT NULL,
+  `cfg_timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`cfg_id`)
+) ENGINE=MyISAM;");
+if (!$result) {
+	$fail = "1";
+	$failed[] = "ult_configuration : ".mysql_error();
 }
 
 }

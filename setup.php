@@ -387,6 +387,11 @@ switch($step) {
 
 		} else {
 
+			// update installation specific configuration items
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$basedir."' WHERE cfg_name = 'siteurl'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$username."' WHERE cfg_name = ''siteusername");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$localeset."' WHERE cfg_name = 'locale'");
+ 
 			// create the admin rights field for the webmaster, based on all admin modules available
 			$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
 			$adminrights = "";
@@ -423,14 +428,7 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".addslashes($locale['555'])."', 'windows.gif')");
 			$result = dbcommands($commands, $db_prefix);
 	
-			// add the standard modules to make them pre-installed
-			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##modules (mod_title, mod_folder, mod_version) VALUES ('Main menu panel', 'main_menu_panel', '1.0.0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##modules (mod_title, mod_folder, mod_version) VALUES ('Advanced login panel', 'user_info_panel', '1.0.0')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##modules (mod_title, mod_folder, mod_version) VALUES ('Welcome message panel', 'welcome_message_panel', '1.0.0')");
-			$result = dbcommands($commands, $db_prefix);
-
-			// and activate the panels of these modules
+			// activate the panels of core modules
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".addslashes($locale['520'])."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".addslashes($locale['524'])."', 'welcome_message_panel', '2', '1', 'file', '0', '0', '1')");
@@ -461,6 +459,8 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'members', 'src515', 0, '1.0.0', 1, 0)");
 
 			// add the ExiteCMS core report options
+			
+			/* NOT IMPLEMENTED YET */
 
 			// add the default forum poll settings
 			$commands = array();
