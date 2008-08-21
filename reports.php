@@ -22,7 +22,7 @@ locale_load("main.reports");
 $variables = array();
 
 //check if this is an administrator request
-$admin_req = checkrights("R") && defined("iAUTH") && $aid != iAUTH;
+$admin_req = checkrights("R") && defined("iAUTH") && isset($aid) && $aid == iAUTH;
 
 // check if the action variable is defined, if not, assign a default
 if (!isset($action)) $action = "";
