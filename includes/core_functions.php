@@ -694,7 +694,7 @@ function parseubb($text) {
 
 	// quote	 & code blocks
 	$text = preg_replace('#\[quote=([\r\n]*)(.*?)\]#si', '<b>\2 '.$locale['199'].':</b><br />[quote]', $text);
-	$qcount = substr_count($text, "[quote]"); $ccount = substr_count($text, "[code]");
+	$qcount = substr_count(strtolower($text), "[quote]"); $ccount = substr_count(strtolower($text), "[code]");
 	for ($i=0;$i < $qcount;$i++) $text = preg_replace('#\[quote\](.*?)\[/quote\]#si', '<div class=\'quote\'>\1</div>', $text);
 	for ($i=0;$i < $ccount;$i++) $text = preg_replace('#\[code\](.*?)\[/code\]#si', '<b>code:</b><div class=\'codeblock\'>\1</div>', $text);
 
