@@ -45,12 +45,22 @@
 			editor_deselector:'textbox',
 			theme:'advanced',
 			language:'{/literal}{$settings.tinyMCE_locale}{literal}',
-			entities:'60,lt,62,gt',
+			entities:'34,quot,38,amp,60,lt,62,gt',
 			document_base_url:'{/literal}{$settings.siteurl}{literal}',
-			relative_urls:'false',
-			convert_newlines_to_brs:'true',
-			force_br_newlines:'true',
+			relative_urls:'true',
+			apply_source_formatting:'false',
+			inline_styles:'true',
+			convert_newlines_to_brs:'false',
+			convert_fonts_to_spans:'true',
+			force_br_newlines:'false',
 			force_p_newlines:'false',
+			remove_linebreaks:'true',
+			forced_root_block:'',
+			fix_list_elements:'false',
+			fix_table_elements:'true',
+			fix_nesting:'false',
+			cleanup:'true',
+			cleanup_on_startup:'false',
 			plugins : "style,layer,table,save,advhr,advimage,ibrowser,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
 			theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
 			theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,|,image,ibrowser,cleanup,help,code,|,forecolor,backcolor",
@@ -66,16 +76,6 @@
 			plugin_insertdate_timeFormat:'%H:%M:%S',
 			invalid_elements:'script,object,applet,iframe',
 			extended_valid_elements:'a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]'
-			});
-		}
-		function simple() {
-			tinyMCE.init({
-			mode:'textareas',
-			theme:'simple',
-			language:'{/literal}{$settings.locale_code}{literal}',
-			convert_newlines_to_brs:'true',
-			force_br_newlines:'true',
-			force_p_newlines:'false'
 			});
 		}
 		
@@ -151,7 +151,7 @@ function checkMessages() {
 	var newmsg = AjaxCall("includes/ajax.response.php?request=posts");
 	if (document.getElementById("new_posts_header")) {
 		if (newmsg > 0) {
-			document.getElementById("new_posts_header").innerHTML = "<a href='{/literal}{$smarty.const.BASEDIR}{literal}modules/forum_threads_list_panel/new_posts.php'><img src='{/literal}{$smarty.const.THEME}{literal}images/newposts.gif' height='9' alt='{/literal}{$locale.028}{literal}' /></a>";
+			document.getElementById("new_posts_header").innerHTML = "<a href='{/literal}{$smarty.const.BASEDIR}{literal}modules/forum_threads_list_panel/new_posts.php'><img src='{/literal}{$smarty.const.THEME}{literal}images/newposts.gif' height='9' alt='{/literal}{$locale.028}{literal}' /></a>&nbsp;";
 			document.getElementById("new_posts_header").style.display = 'inline';
 		} else {
 			document.getElementById("new_posts_header").style.display = 'none';
@@ -169,7 +169,7 @@ function checkMessages() {
 	var newpm = AjaxCall("includes/ajax.response.php?request=pm");
 	if (document.getElementById("new_pm_header")) {
 		if (newpm > 0) {
-			document.getElementById("new_pm_header").innerHTML = "<a href='{/literal}{$smarty.const.BASEDIR}{literal}pm.php?action=show_new'><img src='{/literal}{$smarty.const.THEME}{literal}images/newmsgs.gif' height='9' alt='' /></a>";
+			document.getElementById("new_pm_header").innerHTML = "<a href='{/literal}{$smarty.const.BASEDIR}{literal}pm.php?action=show_new'><img src='{/literal}{$smarty.const.THEME}{literal}images/newmsgs.gif' height='9' alt='' /></a>&nbsp;";
 			document.getElementById("new_pm_header").style.display = 'inline';
 		} else {
 			document.getElementById("new_pm_header").style.display = 'none';
@@ -187,8 +187,8 @@ function checkMessages() {
 	msgtimerid = setTimeout("checkMessages()", 300000);
 }
 
-// wait 5 minutes, then check for messages
-msgtimerid = setTimeout("checkMessages()", 300000);
+// wait 15 seconds, then check for messages
+msgtimerid = setTimeout("checkMessages()", 15000);
 
 /* ]]> */
 </script>{/literal}

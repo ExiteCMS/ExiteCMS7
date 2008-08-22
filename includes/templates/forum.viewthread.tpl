@@ -264,8 +264,8 @@ window.onload = init;
 <form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}?forum_id={$forum_id}&amp;thread_id={$thread_id}'>
 	<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 		<tr>
-			<td align='center' class='tbl1'>
 			{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+			<td align='center' class='tbl1'>
 				<textarea name='message' cols='80' rows='7' class='textbox' style='width:100%; height:{math equation='x/4' x=$smarty.const.BROWSER_HEIGHT format='%u'}px;'></textarea>
 				<br />
 				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('message', '[b]', '[/b]');" />
@@ -281,6 +281,7 @@ window.onload = init;
 				<input type='button' value='code' class='button' style='width:40px;' onclick="addText('message', '[code]', '[/code]');" />
 				<input type='button' value='quote' class='button' style='width:45px;' onclick="addText('message', '[quote]', '[/quote]');" />
 			{else}
+			<td align='left' class='tbl1'>
 				<style type='text/css'>@import url({$smarty.const.THEME}hoteditor/style.css);</style>
 				<input type='hidden' id='message' name='message' value='' />
 				<script language="javascript" type="text/javascript">
