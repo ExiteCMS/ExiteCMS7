@@ -287,6 +287,7 @@ window.onload = init;
 				<script language="javascript" type="text/javascript">
 					var hoteditor_path = "{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/";
 					var hoteditor_theme_path = "{$smarty.const.THEME}hoteditor";
+					var hoteditor_reply_to = "";
 				</script>
 				<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2"></script>				
 				{literal}

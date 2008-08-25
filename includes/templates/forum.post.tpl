@@ -90,6 +90,7 @@
 								<script language="javascript" type="text/javascript">
 									var hoteditor_path = "{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/";
 									var hoteditor_theme_path = "{$smarty.const.THEME}hoteditor";
+									var hoteditor_reply_to = "{$orgauthor|default:""}";
 								</script>
 								<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2"></script>				
 								{literal}
@@ -190,7 +191,11 @@
 							<br />
 							<textarea name='attach_comment' cols='50' rows='2' class='textbox'>{$comments}</textarea>
 							<br />
-							<input type='submit' name='upload' value='{$locale.471}' class='button' />
+							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+								<input type='submit' name='upload' value='{$locale.471}' class='button' />
+							{else}
+								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='javascript:get_hoteditor_data();' />
+							{/if}
 						</td>
 					</tr>
 					{/if}
@@ -229,7 +234,11 @@
 					<td class='tbl1'>
 						<input type='text' id='fpm_option_{$opt}' name='fpm[option][{$opt}]' value='{$option}' class='textbox' maxlength='200' style='width:250px' />
 						{if $opt == $fpm.option_show && $opt != $fpm_settings.option_max}
-							<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' />
+							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' />
+							{else}
+								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' onclick='javascript:get_hoteditor_data();' />
+							{/if}
 						{/if}
 					</td>
 				</tr>
@@ -295,8 +304,13 @@
 					&nbsp;&nbsp;&nbsp;&nbsp;
 				{/if}
 				<input type='submit' name='cancel' value='{$locale.417}' class='button' />
-				<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:get_hoteditor_data();' />
-				<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:get_hoteditor_data();' />
+				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<input type='submit' name='preview' value='{$button_preview}' class='button' />
+					<input type='submit' name='save' value='{$button_save}' class='button' />
+				{else}
+					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:get_hoteditor_data();' />
+					<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:get_hoteditor_data();' />
+				{/if}
 				<input type='hidden' name='post_author' value='{$post_author}' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
 			</td>
