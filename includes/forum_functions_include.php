@@ -400,7 +400,7 @@ function _parseubb_codeblock($matches) {
 function _parseubb_urlblock($matches) {
 	global $urlblocks;
 
-	$urlblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), $matches[2]);
+	$urlblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), parseubb(shortenlink($matches[2],50)));
 	return "{@@*".(count($urlblocks)-1)."*@@}";
 }
 
@@ -416,7 +416,7 @@ function _parseubb_texturls($matches) {
 
 	// validate the URL before converting it
 	if (isURL($matches[0])) {
-		$urlblocks[] = array($matches[0], shortenlink($matches[0], 50));
+		$urlblocks[] = array($matches[0], parseubb(shortenlink($matches[0], 50)));
 		return "{@@*".(count($urlblocks)-1)."*@@}";
 	} else {
 		return $matches[0];
