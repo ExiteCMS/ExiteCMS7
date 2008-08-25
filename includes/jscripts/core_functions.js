@@ -58,7 +58,7 @@ function loadSmileys(elementid, triggerfield, url, spinner) {
 }
 
 // update the innerHTML of 'id' using an AJAX call
-function clientSideInclude(id, url) {
+function clientSideInclude(id, url, error) {
 
 	var element = document.getElementById(id);
 	if (!element) {
@@ -66,14 +66,16 @@ function clientSideInclude(id, url) {
 		return;
 	}
 	var response = AjaxCall(url);
-	if (response != false) {
+	if (response != null) {
 		element.innerHTML = response;
 	} else {
-		element.innerHTML = "Sorry, your browser does not support XMLHTTPRequest objects. This page requires Internet Explorer 5 or better for Windows, or Firefox for any system, or Safari. Other compatible browsers may also exist.";
+		if (error != null && error) {
+			element.innerHTML = "Sorry, your browser does not support XMLHTTPRequest objects. This page requires Internet Explorer 5 or better for Windows, or Firefox for any system, or Safari. Other compatible browsers may also exist.";
+		}
 	}
 }
 
-// simple synchronous AJAX call
+// simple synchronous AJAX call, return null when it fails
 function AjaxCall(url) {
 
 	var req = false;
@@ -97,12 +99,20 @@ function AjaxCall(url) {
 		}
 	}
 	if (req) {
-		// Synchronous request, wait till we have it all
-		req.open('GET', url, false);
-		req.send(null);
-		return req.responseText;
+		try {
+			// Synchronous request, wait till we have it all
+			req.open('GET', url, false);
+			req.send(null);
+			if (req.status != 200) {
+				return null;
+			} else {
+				return req.responseText;
+			}
+		} catch (e) {
+			return null;
+		}
 	} else {
-		return false;
+		return null;
 	}
 }
 
