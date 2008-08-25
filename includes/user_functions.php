@@ -55,7 +55,7 @@ if (!CMS_IS_BOT) {
 	}
 }
 
-// Check if a user is logging in
+// Check if a user wants to logging in
 if (isset($_POST['login'])) {
 	$auth_result = false;
 	$auth_methods = isset($settings['auth_type']) ? explode(",",$settings['auth_type'].",") : array('local');
@@ -96,8 +96,8 @@ if (isset($_POST['login'])) {
 	}
 }
 
-// login session expired?
-if (!empty($_SESSION['login_expire']) && $_SESSION['login_expire'] < time()) {
+// if not in the process of posting a form, did the login session expired?
+if (count($_POST)==0 && !empty($_SESSION['login_expire']) && $_SESSION['login_expire'] < time()) {
 	// clear the login info from the session
 	unset($_SESSION['user']);
 	unset($_SESSION['userinfo']);
