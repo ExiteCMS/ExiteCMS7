@@ -33,7 +33,8 @@
 |	
 |	The ExiteCMS team decoded the original obfusicated code in order to make changes to
 |	the way some BBcodes were parsed. We didn't tamper with the copyright en credit code
-|	in any way. We hope this doesn't violate the author's wishes. 
+|	in any way. We hope this doesn't violate the author's wishes, as the licencing
+|   conditions of the free version aren't exactly clear. 
 |
 +--------------------------------------------------------------------------
 */
@@ -63,7 +64,7 @@ var upload_path = "";
 
 //---------------- FOR WYSIWYG EDITOR (BBCODE EDITOR) ----------------
 
-var TitleText = "ExiteCMS - Rich Text Editor";
+var TitleText = "Rich Text Editor";
 var iframe_meta_tag = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n";
 var iframe_style = "BODY{font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
 iframe_style += "TABLE{border-collapse: collapse;border-spacing: 0px;border: 1px solid #6CAFF7;background-color: #F4F4F4;width:100%;font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
@@ -95,7 +96,7 @@ var symbol_frame_width =382;		var symbol_frame_height =300;		var pop_Insert_Symb
 
 //---------------- FOR BBCODE EDITOR ----------------
 
-var TitleText_Texarea ="ExiteCMS - BBCode Editor";
+var TitleText_Texarea ="BBCode Editor";
 
 var textarea_toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight,btRemove_Format,SPACE,btBold,btItalic,btUnderline";
 var textarea_toolbar2 ="SPACE,btAlign_Left,btCenter,btAlign_Right,btJustify,SPACE,btCut,btCopy,btPaste,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal,SPACE,btBullets,btNumbering,btIncrease_Indent";
@@ -375,12 +376,12 @@ function updateRTE(a) {
 		b = b.replace(/<br[^>]*>/gi, "<br>");
 		b = b.replace(/[\n\r]/gi, "");
 		b = HTMLToBBCode(b);
-		b = b.replace(/\[table\]\n+/gi, "[TABLE]");
-		b = b.replace(/\n+\[td\]/gi, "[TD]");
-		b = b.replace(/\n+\[\/table\]/gi, "[/TABLE]");
-		b = b.replace(/\n+\[\/td\]/gi, "[/TD]");
-		b = b.replace(/\n+\[tr\]/gi, "[TR]");
-		b = b.replace(/\n+\[\/tr\]/gi, "[/TR]");
+		b = b.replace(/\[table\]\n+/gi, "[table]");
+		b = b.replace(/\n+\[td\]/gi, "[td]");
+		b = b.replace(/\n+\[\/table\]/gi, "[/table]");
+		b = b.replace(/\n+\[\/td\]/gi, "[/td]");
+		b = b.replace(/\n+\[tr\]/gi, "[tr]");
+		b = b.replace(/\n+\[\/tr\]/gi, "[/tr]");
 		document.getElementById("hoteditor_bbcode_ouput_" + a).value = b;
 		document.getElementById("hoteditor_html_ouput_" + a).value = BBCodeToHTML(b);
 	} else if (editor_type == "0") {
@@ -393,12 +394,12 @@ function updateRTE(a) {
 		b = b.replace(/[\r\n]/gi, "");
 		document.getElementById("hoteditor_html_ouput_" + a).value = b;
 		b = HTMLToBBCode(b);
-		b = b.replace(/\[table\]\n+/gi, "[TABLE]");
-		b = b.replace(/\n+\[td\]/gi, "[TD]");
-		b = b.replace(/\n+\[\/table\]/gi, "[/TABLE]");
-		b = b.replace(/\n+\[\/td\]/gi, "[/TD]");
-		b = b.replace(/\n+\[tr\]/gi, "[TR]");
-		b = b.replace(/\n+\[\/tr\]/gi, "[/TR]");
+		b = b.replace(/\[table\]\n+/gi, "[table]");
+		b = b.replace(/\n+\[td\]/gi, "[td]");
+		b = b.replace(/\n+\[\/table\]/gi, "[/table]");
+		b = b.replace(/\n+\[\/td\]/gi, "[/td]");
+		b = b.replace(/\n+\[tr\]/gi, "[tr]");
+		b = b.replace(/\n+\[\/tr\]/gi, "[/tr]");
 		document.getElementById("hoteditor_bbcode_ouput_" + a).value = b;
 	}
 }
@@ -1294,7 +1295,7 @@ function FormatText(a, b, c) {
 			if (n == null || isNaN(n)) {
 				n = flash_height_number_default;
 			}
-			var o = "[" + b.toUpperCase() + "=" + m + "," + n + "]" + l + "[/" + b.toUpperCase() + "]";
+			var o = "[" + b.toLowerCase() + "=" + m + "," + n + "]" + l + "[/" + b.toLowerCase() + "]";
 			if (isIE) {
 				d.document.execCommand("removeformat", false, "");
 				rng.pasteHTML(" ");
@@ -1322,13 +1323,26 @@ function FormatText(a, b, c) {
 			r += t + "</table><br>";
 			WriteHTML(r, a);
 		}
-	} else if (b == "youtube" || b == "google" || b == "yahoo") {
-		if (b == "youtube") {
-			var l = prompt(promptYouTube, URLDefaultYouTube);
-			if (l != null) {
-				l = l.replace(/watch\?v=/gi, "v/");
+	} else if (b == "youtube") {
+		var l = prompt(promptYouTube, URLDefaultYouTube);
+		if (l != null) {
+			l = l.replace(/watch\?v=/gi, "v/");
+		}
+		if (l != null) {
+			var o = "[" + b.toLowerCase() + "]" + l + "[/" + b.toLowerCase() + "]";
+			if (isIE) {
+				d.document.execCommand("removeformat", false, "");
+				rng.pasteHTML("");
+				rng.pasteHTML(o);
+			} else if (isSafari) {
+				d.document.execCommand("InsertText", false, o);
+			} else {
+				d.focus();
+				d.document.execCommand("InsertHTML", false, o);
 			}
-		} else if (b == "google") {
+		}
+	} else if (b == "google" || b == "yahoo") {
+		if (b == "google") {
 			var l = prompt(promptGoogle, URLDefaultGoogle);
 			if (l != null) {
 				l = l.replace(/videoplay/i, "googleplayer.swf");
@@ -1342,7 +1356,7 @@ function FormatText(a, b, c) {
 			}
 		}
 		if (l != null) {
-			var o = "[" + bbFlash.toUpperCase() + "=" + flash_width_number_default + "," + flash_height_number_default + "]" + l + "[/" + bbFlash.toUpperCase() + "]";
+			var o = "[" + bbFlash.toLowerCase() + "=" + flash_width_number_default + "," + flash_height_number_default + "]" + l + "[/" + bbFlash.toLowerCase() + "]";
 			if (isIE) {
 				d.document.execCommand("removeformat", false, "");
 				rng.pasteHTML("");
@@ -1355,7 +1369,7 @@ function FormatText(a, b, c) {
 			}
 		}
 	} else if (b == "quote" || b == "code" || b == "php" || b == "html") {
-		b = b.toUpperCase();
+		b = b.toLowerCase();
 		var u = "";
 		if (isIE) {
 			u = rng.htmlText;
@@ -1366,14 +1380,19 @@ function FormatText(a, b, c) {
 				u = "";
 			}
 		}
-		if (b == "code" || b == "php" || b == "html") {
-			u = u.replace(/[\n\r]/gi, "");
-			u = u.replace(/<(br|p|div|li).*?>/gi, "[br/]");
-			u = u.replace(/<\/(p|div).*?>/gi, "");
-			u = u.replace(/(<([^>]+)>)/gi, "");
-			u = u.replace(/\[br\/\]/gi, "<br>");
+//		ExiteCMS: don't tamper with the contents of a code block!
+//		if (b == "code" || b == "php" || b == "html") {
+//			u = u.replace(/[\n\r]/gi, "");
+//			u = u.replace(/<(br|p|div|li).*?>/gi, "[br/]");
+//			u = u.replace(/<\/(p|div).*?>/gi, "");
+//			u = u.replace(/(<([^>]+)>)/gi, "");
+//			u = u.replace(/\[br\/\]/gi, "<br>");
+//		}
+		if (b == "quote" && hoteditor_reply_to != "") {
+			u = "[" + b + "=" + hoteditor_reply_to + "]" + u + "[/" + b + "]";
+		} else {
+			u = "[" + b + "]" + u + "[/" + b + "]";
 		}
-		u = "[" + b + "]" + u + "[/" + b + "]";
 		WriteHTML(u, a);
 	} else if (b == "symbol") {
 		parent.command = b;
@@ -1486,8 +1505,13 @@ function FormatText(a, b, c) {
 			}
 		} else {
 			try {
-				d.document.execCommand("Unlink", false, null);
-				d.document.execCommand("CreateLink", false, l);
+				// ExiteCMS: no text selected, then use the link itself as text
+				if (rng == null) {
+					WriteHTML("<a href='" + l + "'>" + l +"</a>", a);
+				} else {
+					d.document.execCommand("Unlink", false, null);
+					d.document.execCommand("CreateLink", false, l);
+				}
 			} catch (e) {
 			}
 		}
@@ -2274,7 +2298,7 @@ function BBCodeToHTML(a) {
 	a = a.replace(/\[\/(sub|sup|strike|s|blockquote|b|i|u)\]/gi, "</$1>");
 	a = a.replace(/\[font=(.*?)\]/gi, "<font face=\"$1\">");
 	a = a.replace(/\[color=(.*?)\]/gi, "<font color=\"$1\">");
-	a = a.replace(/\[size=(.*?)\]/gi, "<font size=\"$1\">");
+	a = a.replace(/\[size=(.*?)\]/gi, "<font style=\"font-size:$1px\">");
 	a = a.replace(/\[\/(font|color|size)\]/gi, "</font>");
 	a = a.replace(/\[highlight=(.*?)\]/gi, "<span style=\"background-color:$1\">");
 	a = a.replace(/\[\/highlight\]/gi, "</span>");
@@ -2307,6 +2331,7 @@ function BBCodeToHTML(a) {
 			}
 		}
 	}
+
 	if (isOpera9 || isIE) {
 		a = a.replace(/<li>/gi, "</li><li>");
 		a = a.replace(/<\/(ol|ul)>/gi, "</li></$1>");
@@ -2342,7 +2367,7 @@ function AnalyzeHTMLBlock(a, b) {
 			} else if (f == "list-style-type" && g == "lower-alpha") {
 				c += "[list=a]";
 			} else if (f == "text-align") {
-				g = g.toUpperCase();
+				g = g.toLowerCase();
 				c += "[" + g + "]";
 			} else if (f == "margin-left" || f == "margin-right") {
 				g = parseInt(g) / 40;
@@ -2424,6 +2449,7 @@ function HTMLToBBCode(a) {
 	} else {
 		a = htmlentities(a);
 	}
+	var px = new Array(0, 6, 8,10,12,14,18,24,28);
 	var b = a.split("<");
 	var c = new Array;
 	var e = 0;
@@ -2555,7 +2581,7 @@ function HTMLToBBCode(a) {
 							m += "[list=1]";
 						}
 					} else if (k.align) {
-						m = "[" + k.align.toUpperCase() + "]" + "[list=1]";
+						m = "[" + k.align.toLowerCase() + "]" + "[list=1]";
 					} else {
 						m = "[list=1]";
 					}
@@ -2563,14 +2589,13 @@ function HTMLToBBCode(a) {
 					if (k.style) {
 						m = AnalyzeHTMLBlock(g, k) + "[list]";
 					} else if (k.align) {
-						m = "[" + k.align.toUpperCase() + "]" + "[list=1]";
+						m = "[" + k.align.toLowerCase() + "]" + "[list=1]";
 					} else {
 						m = "[list]";
 					}
-				} else if (g == "font" ||
-					g == "h1" ||
-					g == "h2" ||
-					g == "h3" || g == "h4" || g == "h5" || g == "h6") {
+				} else if (g == "h1" ||	g == "h2" || g == "h3" || g == "h4" || g == "h5" || g == "h6") {
+					m += "[size=" + px[8 - g.substr(1)] + "]";
+				} else if (g == "font") {
 					if (j.length > 0) {
 						for (var r in k) {
 							k[r] = k[r].replace(/^ +| +$/g, "");
@@ -2578,13 +2603,12 @@ function HTMLToBBCode(a) {
 								m += "[color=" + k.color + "]";
 							} else if (r == "size") {
 								if (isNaN(parseInt(k.size))) {
-									k.size = 2;
+									k.size = 3;
 								}
-								var px = new Array(0, 6, 8,10,12,14,18,24,36);
-								if (k.size > 7) {
+								if (k.size > 8) {
 									m += "[size=" + k.size + "]";
 								} else {
-									m += "[size=" + px[k.size] + "]";
+									m += "[size=" + px[(k.size+1)] + "]";
 								}
 							} else if (r == "face") {
 								m += "[font=" + k.face + "]";
@@ -2597,7 +2621,7 @@ function HTMLToBBCode(a) {
 					if (k.style) {
 						m = AnalyzeHTMLBlock(g, k);
 					} else if (k.align) {
-						m = "[" + k.align.toUpperCase() + "]";
+						m = "[" + k.align.toLowerCase() + "]";
 					} else {
 						m = "[HOTEDITOR_NEW_LINE]";
 					}
@@ -2703,7 +2727,7 @@ function HTMLToBBCode(a) {
 	if (starup == "0") {
 		C = C.replace(/\[\/tr\]/gi, "\n[/tr]");
 		C = C.replace(/\[tr\]/gi, "\n[tr]");
-		C = C.replace(/\[td\]/gi, "\n[rd]");
+		C = C.replace(/\[td\]/gi, "\n[td]");
 		C = C.replace(/\[\/table\]/gi, "\n[/table]");
 		C = C.replace(/\[\/table\]$/gi, "[/table]\n");
 	}

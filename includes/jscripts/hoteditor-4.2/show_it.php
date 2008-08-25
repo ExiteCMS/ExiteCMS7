@@ -210,7 +210,7 @@ $folder
 </html>
 <script language=javascript>
 	var my_what ="$what";
-	if(my_what=="smileys"){
+	if(my_what=="smiley"){
 		self.parent.Set_smiles_path("$script_url?step=1&what=$what");
 	}
 	if(my_what=="wordarts"){
@@ -352,7 +352,7 @@ print<<<EOF
 	<script language="JavaScript" type="text/javascript">
 
 	var my_what ="$what";
-	if(my_what=="smileys"){
+	if(my_what=="smiley"){
 		my_document.Set_smiles_path("$script_url?$q_string");
 	}
 	if(my_what=="wordarts"){
@@ -373,7 +373,7 @@ print<<<EOF
 				window.opener.SafariInsertImage(data);
 			}
 			else{
-				if(my_what =="smileys"){
+				if(my_what =="smiley"){
 					my_document.InsertSymbol("<img border=0 src='" + data + "'> &nbsp;");
 				}
 				else{
