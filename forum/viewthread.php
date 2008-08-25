@@ -300,8 +300,8 @@ if ($rows != 0) {
 					}
 				}
 				if (is_array($groups)) {
-					// check for group matching as well, assume a match will be found
-					$ranking_match = true;
+					// check for group matching as well, start with the opposite of the 'bail out' value
+					$ranking_match = $data2['rank_groups_and'];
 					foreach($groups as $group) {
 						if ($data2['rank_groups_and']) {
 							// all should match
