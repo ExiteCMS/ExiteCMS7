@@ -46,12 +46,12 @@ body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu San
 .content				{ }
 
 						/* column definitions (left, center, right) */
-.side-border-left		{ padding:0px 5px 0px 0px; }
+.side-border-left		{ text-align:left; padding:0px 5px 0px 0px; }
 .main-bg				{ color:#444; padding:0px 0px 5px 0px; }
-.side-border-right		{ padding:0px 0px 0px 5px; }
+.side-border-right		{ text-align:left; padding:0px 0px 0px 5px; }
 
 						/* panels in the center column */
-.main-body 				{ color:#444; background-color:#fff; padding:4px 4px 6px 4px; margin:0px; }
+.main-body 				{ text-align:left; color:#444; background-color:#fff; padding:4px 4px 6px 4px; margin:0px; }
 
 						/* panels in the left & right columns (with and without padding, p.e. for images) */
 .side-body				{ color:#000; background-color:#fff; padding:4px 4px 6px 4px; }

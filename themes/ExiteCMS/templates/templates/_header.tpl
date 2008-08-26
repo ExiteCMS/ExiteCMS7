@@ -148,36 +148,34 @@ fontReset(fontGrootte);
 
 function checkMessages() {
 	// check for new forum messages
-	var newmsg = AjaxCall("includes/ajax.response.php?request=posts");
-	if (document.getElementById("new_posts_header")) {
+	var newmsg = AjaxCall("{/literal}{$smarty.const.BASEDIR}{literal}includes/ajax.response.php?request=posts");
+	if (newmsg != null && document.getElementById("new_posts_header")) {
 		if (newmsg > 0) {
 			document.getElementById("new_posts_header").innerHTML = "<a href='{/literal}{$smarty.const.BASEDIR}{literal}modules/forum_threads_list_panel/new_posts.php'><img src='{/literal}{$smarty.const.THEME}{literal}images/newposts.gif' height='9' alt='{/literal}{$locale.028}{literal}' /></a>&nbsp;";
-			document.getElementById("new_posts_header").style.display = 'inline';
 		} else {
-			document.getElementById("new_posts_header").style.display = 'none';
+			document.getElementById("new_posts_header").innerHTML = "";
 		}
 	}
-	if (document.getElementById("new_posts_panel")) {
+	if (newmsg != null && document.getElementById("new_posts_panel")) {
 		if (newmsg > 0) {
-			document.getElementById("new_posts_panel_value").innerHTML = AjaxCall("includes/ajax.response.php?request=posts&parms=text");
+			document.getElementById("new_posts_panel_value").innerHTML = AjaxCall("{/literal}{$smarty.const.BASEDIR}{literal}includes/ajax.response.php?request=posts&parms=text");
 			document.getElementById("new_posts_panel").style.display = 'inline';
 		} else {
 			document.getElementById("new_posts_panel").style.display = 'none';
 		}
 	}
 	// check for new pm messages
-	var newpm = AjaxCall("includes/ajax.response.php?request=pm");
-	if (document.getElementById("new_pm_header")) {
+	var newpm = AjaxCall("{/literal}{$smarty.const.BASEDIR}{literal}includes/ajax.response.php?request=pm");
+	if (newpm != null && document.getElementById("new_pm_header")) {
 		if (newpm > 0) {
 			document.getElementById("new_pm_header").innerHTML = "<a href='{/literal}{$smarty.const.BASEDIR}{literal}pm.php?action=show_new'><img src='{/literal}{$smarty.const.THEME}{literal}images/newmsgs.gif' height='9' alt='' /></a>&nbsp;";
-			document.getElementById("new_pm_header").style.display = 'inline';
 		} else {
-			document.getElementById("new_pm_header").style.display = 'none';
+			document.getElementById("new_pm_header").innerHTML = "";
 		}
 	}
-	if (document.getElementById("new_pm_panel")) {
+	if (newpm != null && document.getElementById("new_pm_panel")) {
 		if (newpm > 0) {
-			document.getElementById("new_pm_panel_value").innerHTML = AjaxCall("includes/ajax.response.php?request=pm&parms=text");
+			document.getElementById("new_pm_panel_value").innerHTML = AjaxCall("{/literal}{$smarty.const.BASEDIR}{literal}includes/ajax.response.php?request=pm&parms=text");
 			document.getElementById("new_pm_panel").style.display = 'inline';
 		} else {
 			document.getElementById("new_pm_panel").style.display = 'none';
@@ -186,12 +184,13 @@ function checkMessages() {
 	// restart the timer for the next check, in 5 minutes
 	msgtimerid = setTimeout("checkMessages()", 300000);
 }
-
+{/literal}
+{if iMEMBER}
 // wait 15 seconds, then check for messages
 msgtimerid = setTimeout("checkMessages()", 15000);
-
+{/if}
 /* ]]> */
-</script>{/literal}
+</script>
 <table align='center' cellspacing='0' cellpadding='0' width='{$smarty.const.THEME_WIDTH}' class='main-bg'>
 	<tr>
 		<td>
@@ -226,8 +225,13 @@ msgtimerid = setTimeout("checkMessages()", 15000);
 				<tr>
 					<td class='headermenu'>
 						<a href='.' onclick='fontGroter(-0.1); return false' title='Decrease font-size'><img src='{$smarty.const.THEME}images/minus.gif' alt='' border='0' /></a><a href='.' onclick='fontReset(0.7); return false' title='Restore default font-sizes'><img src='{$smarty.const.THEME}images/reset.gif' hspace='2' alt='' border='0' /></a><a href='.' onclick='fontGroter(0.1); return false' title='Increase font-size'><img src='{$smarty.const.THEME}images/plus.gif' alt='' border='0' /></a>
-						<div id='new_posts_header' style='display:{if $new_posts}inline{else}none{/if};'>{if $new_posts}<a href='{$smarty.const.BASEDIR}modules/forum_threads_list_panel/new_posts.php'><img src='{$smarty.const.THEME}images/newposts.gif' height='9' alt='{$locale.028}' /></a>{/if}</div>
-						<div id='new_pm_header' style='display:none;'>[placeholder for new pm image and link]</div>
+						<div id='new_posts_header' style='display:inline;'>
+							{if $new_posts}
+								<a href='{$smarty.const.BASEDIR}modules/forum_threads_list_panel/new_posts.php'><img src='{$smarty.const.THEME}images/newposts.gif' height='9' alt='{$locale.028}' /></a>
+							{/if}
+						</div>
+						<div id='new_pm_header' style='display:inline;'>
+						</div>
 						{section name=index loop=$headermenu}
 							{if $smarty.section.index.first} &nbsp;{else} &middot;{/if} <a href='{$headermenu[index].link_url}' {if $headermenu[index].link_window == 1}target='_blank' {/if}><span class='headermenuitem'>{$headermenu[index].link_name}</span></a>
 						{/section}

@@ -14,7 +14,6 @@
 {* This template generates the standard closing of a center panel          *}
 {*                                                                         *}
 {***************************************************************************}
-						</div>
 					</td>
 				</tr>
 			</table>

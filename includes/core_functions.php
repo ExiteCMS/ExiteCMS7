@@ -212,7 +212,8 @@ require_once PATH_INCLUDES."locale_functions.php";
 locale_load("main.global");
 
 // check for upgrades in progress.
-if (!eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
+// when a form has been posted, skip this and finish the POST!
+if (count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 
 	include PATH_ADMIN."upgrade.php";
 	//  If so, force a switch to maintenance mode
@@ -635,6 +636,14 @@ function parseubb($text) {
 	$text = preg_replace('#\[list\](.*?)\[/list\]#si', '<ul>\1</ul>', $text);
 	$text = preg_replace('#\r\n\[\*\]#si', '<li>', $text);
 
+	// bbcode tables
+	$text = preg_replace('#\[table\]#si', '<table align="left" valign="top" class="tbl-border">', $text);
+	$text = preg_replace('#\[\/table\]#si', '</table>', $text);
+	$text = preg_replace('#\[td\]#si', '<td class="tbl1">', $text);
+	$text = preg_replace('#\[\/td\]#si', '</td>', $text);
+	$text = preg_replace('#\[tr\]#si', '<tr>', $text);
+	$text = preg_replace('#\[\/tr\]#si', '</tr>', $text);
+
 	//get rid of line breaks after a list item, for better formatting
 	$text=str_replace("</li><br />","</li>",$text);
 	$text=str_replace("</ul><br />","</ul>",$text);
@@ -692,7 +701,7 @@ function parseubb($text) {
 		$text = preg_replace("#\[img\]((http|ftp|https|ftps)://)(.*?)(\.(jpg|jpeg|gif|png|JPG|JPEG|GIF|PNG))\[/img\]#sie","'<img src=\'\\1'.str_replace(array('.php','?','&','='),'','\\3').'\\4\' style=\'border:0px\' alt=\'\' />'",$text);
 	}
 
-	// quote	 & code blocks
+	// quote & code blocks
 	$text = preg_replace('#\[quote=([\r\n]*)(.*?)\]#si', '<b>\2 '.$locale['199'].':</b><br />[quote]', $text);
 	$qcount = substr_count(strtolower($text), "[quote]"); $ccount = substr_count(strtolower($text), "[code]");
 	for ($i=0;$i < $qcount;$i++) $text = preg_replace('#\[quote\](.*?)\[/quote\]#si', '<div class=\'quote\'>\1</div>', $text);
