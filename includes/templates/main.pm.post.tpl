@@ -32,7 +32,7 @@
 			<td align='right' width='145' class='tbl2' valign='top' style='white-space:nowrap'>
 				{$locale.421}:
 			</td>
-			<td class='tbl1' valign='top' style='white-space:nowrap'>
+			<td class='tbl1' valign='top'>
 				<div style='display:none'>
 				<select multiple="multiple" size='5' name='recipients[]' id='recipients' class='textbox' style='width:200px'>
 				{section name=id loop=$recipients}
@@ -67,24 +67,28 @@
 					<hr />
 					{section name=id loop=$user_list}
 						{if $smarty.section.id.first}
-						<select id='user_ids' name='user_ids' class='textbox'>
-						{/if}
-						<option value='{$user_list[id].user_id}'>{$user_list[id].user_name}</option>
-						{if $smarty.section.id.last}
-						</select>
-						<input type='submit' name='select_user' value='{$locale.468}' class='button' onclick="AddUser();return false;" />
-						{if $allow_sendtoall}&nbsp; - &nbsp;{/if}
+							<div id='user_dropdown' style='display:inline;'>
+								<select id='user_ids' name='user_ids' class='textbox'>
+								{/if}
+								<option value='{$user_list[id].user_id}'>{$user_list[id].user_name}</option>
+								{if $smarty.section.id.last}
+								</select>
+								<input type='submit' name='select_user' value='{$locale.468}' class='button' onclick="AddUser();return false;" />
+							</div>
 						{/if}
 					{/section}
 					{if $allow_sendtoall}
 						{section name=id loop=$user_groups}
 							{if $smarty.section.id.first}
-							<select id='group_ids' name='group_ids' class='textbox'>
-							{/if}
-							<option value='{$user_groups[id].0}'>{$user_groups[id].1}</option>
-							{if $smarty.section.id.last}
-							</select>
-							<input type='submit' name='select_group' value='{$locale.469}' class='button' onclick="AddGroup();return false;" />
+							&nbsp; - &nbsp;
+							<div id='group_dropdown' style='display:inline;'>
+								<select id='group_ids' name='group_ids' class='textbox'>
+								{/if}
+								<option value='{$user_groups[id].0}'>{$user_groups[id].1}</option>
+								{if $smarty.section.id.last}
+								</select>
+								<input type='submit' name='select_group' value='{$locale.469}' class='button' onclick="AddGroup();return false;" />
+							</div>
 							{/if}
 						{/section}
 					{/if}
@@ -105,7 +109,7 @@
 				<input type='submit' class='button' name='toggle_msg' value='{$locale.417}' onclick='javascript:flipDiv("org_message");return false;' />
 			</td>
 			<td class='tbl1'>
-				<div id='org_message' style='display:none'>{$reply_message}<br /></div>
+				<div id='org_message' class='textbox' style='display:none'>{$org_message|stripinput|nl2br}<br /></div>
 			</td>
 		</tr>
 		{/if}
@@ -120,9 +124,44 @@
 				{/if}
 			</td>
 			<td class='tbl1'>
-				<textarea name='message' cols='80' rows='15' class='textbox' style='width:100%; height:{math equation='x/4' x=$smarty.const.BROWSER_HEIGHT format='%u'}px;'>{$message}</textarea>
+				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<textarea name='message' cols='80' rows='15' class='textbox' style='width:100%; height:{math equation="x/4" x=$smarty.const.BROWSER_HEIGHT format="%u"}px;'>{$message}</textarea>
+				{else}
+					<style type='text/css'>@import url({$smarty.const.THEME}hoteditor/style.css);</style>
+					<input type='hidden' id='message' name='message' value='{$message}' />
+					<script language="javascript" type="text/javascript">
+						var hoteditor_path = "{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/";
+						var hoteditor_theme_path = "{$smarty.const.THEME}hoteditor";
+						var hoteditor_reply_to = "{$orgauthor|default:""}";
+					</script>
+					<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2"></script>				
+					{literal}
+					<script language="javascript" type="text/javascript">
+						var getdata = document.getElementById("message").value;
+						Instantiate("max","editor", getdata , "100%", "250px");
+						
+						//For Vietnamese User. Edit file editor.js to enable vietnamese keyboard
+						if(enable_vietnamese_keyboard==1){
+							document.write("<script language=\"JavaScript\" type=\"text/javascript\" src={/literal}{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/avim.js{literal}><\/script>");
+							var hoteditor_avim_method = hot_readCookie("hoteditor_avim_method");var him_auto_checked="";var him_telex_checked="";var him_vni_checked="";var him_viqr_checked="";var him_viqr2_checked="";var him_off_checked="";if(hoteditor_avim_method=="0"){him_auto_checked="checked";}else if(hoteditor_avim_method=="1"){him_telex_checked="checked";}else if(hoteditor_avim_method=="2"){him_vni_checked="checked";}else if(hoteditor_avim_method=="3"){him_viqr_checked="checked";}else if(hoteditor_avim_method=="4"){him_viqr2_checked="checked";}else if(hoteditor_avim_method=="-1"){him_off_checked="checked";}
+							document.write("<div style='width:100%;text-align:center;font-family:Verdana;font-size:11px;'><input "+him_auto_checked+" id=him_auto onclick=setMethod(0); type=radio name=viet_method> Auto :: <input "+him_telex_checked+" id=him_telex onclick=setMethod(1); type=radio name=viet_method> Telex :: <input "+him_vni_checked+" id=him_vni onclick=setMethod(2); type=radio name=viet_method> VNI :: <input "+him_viqr_checked+" id=him_viqr onclick=setMethod(3); type=radio name=viet_method> VIQR :: <input "+him_viqr2_checked+" id=him_viqr2 onclick=setMethod(4); type=radio name=viet_method> VIQR* :: <input "+him_off_checked+" id=him_off onclick=setMethod(-1); type=radio name=viet_method> Off<br><img src="+styles_folder_path+"/vietnamese_symbol.gif></div>");
+						}
+
+						if(enable_vietnamese_keyboard==1){
+							var hoteditor_avim_method = hot_readCookie("hoteditor_avim_method");var him_auto_checked;var him_telex_checked;var him_vni_checked;var him_viqr_checked;var him_viqr2_checked;var him_off_checked;if(hoteditor_avim_method=="0"){him_auto_checked="checked";}else if(hoteditor_avim_method=="1"){him_telex_checked="checked";}else if(hoteditor_avim_method=="2"){him_vni_checked="checked";}else if(hoteditor_avim_method=="3"){him_viqr_checked="checked";}else if(hoteditor_avim_method=="4"){him_viqr2_checked="checked";}else if(hoteditor_avim_method=="-1"){him_off_checked="checked";}
+							document.write("<script language=\"JavaScript\" type=\"text/javascript\" src={/literal}{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/avim.js{literal}><\/script><div style='width:100%;text-align:center;font-family:Verdana;font-size:11px;'><input "+him_auto_checked+" id=him_auto onclick=setMethod(0); type=radio name=viet_method> Auto :: <input "+him_telex_checked+" id=him_telex onclick=setMethod(1); type=radio name=viet_method> Telex :: <input "+him_vni_checked+" id=him_vni onclick=setMethod(2); type=radio name=viet_method> VNI :: <input "+him_viqr_checked+" id=him_viqr onclick=setMethod(3); type=radio name=viet_method> VIQR :: <input "+him_viqr2_checked+" id=him_viqr2 onclick=setMethod(4); type=radio name=viet_method> VIQR* :: <input "+him_off_checked+" id=him_off onclick=setMethod(-1); type=radio name=viet_method> Off</div>");
+						}
+						function get_hoteditor_data(){
+							setCodeOutput();
+							var bbcode_output=document.getElementById("hoteditor_bbcode_ouput_editor").value;//Output to BBCode
+							document.getElementById("message").value = bbcode_output;
+						}					
+					</script>
+					{/literal}
+				{/if}
 			</td>
 		</tr>
+		{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 		<tr>
 			<td align='right' class='tbl2' valign='top'>
 			</td>
@@ -165,6 +204,7 @@
 				<input type='checkbox' name='chk_disablesmileys' value='y'{if $is_disablesmileys} checked{/if} />{$locale.427}
 			</td>
 		</tr>
+		{/if}
 		{if $settings.attachments}
 		<tr>
 			<td align='right' width='145' valign='top' class='tbl2'{if $attachment_count > 0} rowspan='2'{/if}>
@@ -204,7 +244,11 @@
 				<br />
 				<textarea name='attach_comment' cols='50' rows='2' class='textbox'>{$comments}</textarea>
 				<br />
-				<input type='submit' name='upload' value='{$locale.473}' class='button' />
+				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<input type='submit' name='upload' value='{$locale.473}' class='button' />
+				{else}
+					<input type='submit' name='upload' value='{$locale.473}' class='button' onclick='javascript:get_hoteditor_data();' />
+				{/if}
 			</td>
 		</tr>
 		{/if}
@@ -219,8 +263,13 @@
 				<input type='hidden' name='pmindex_from_id' value='{$pmindex_from_id}' />
 				<input type='hidden' name='pmindex_to_id' value='{$pmindex_to_id}' />
 				<input type='submit' name='close' value='{$locale.435}' class='button' />
-				<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="return ValidateForm()" />
-				<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="return ValidateForm()" />
+				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="return ValidateForm()" />
+					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="return ValidateForm()" />
+				{else}
+					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="javascript:get_hoteditor_data();return ValidateForm()" />
+					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="javascript:get_hoteditor_data();return ValidateForm()" />
+				{/if}
 			</td>
 		</tr>
 	</table>
@@ -246,6 +295,9 @@
 		document.getElementById("recipients").options[listLength] = new Option(selText, selValue);
 		document.getElementById("recipients").options[listLength].selected = true;
 		document.getElementById("user_ids").options[selItem] = null;
+		if (document.getElementById("user_ids").length == 0) { 
+			document.getElementById("user_dropdown").style.display = 'none';
+		}
 
 		UpdateDisplayedList();
 		return false;
@@ -260,6 +312,9 @@
 		document.getElementById("recipients").options[listLength] = new Option(selText, selValue);
 		document.getElementById("recipients").options[listLength].selected = true;
 		document.getElementById("group_ids").options[selItem] = null;
+		if (document.getElementById("group_ids").length == 0) { 
+			document.getElementById("group_dropdown").style.display = 'none';
+		}
 
 		UpdateDisplayedList();
 	}
@@ -296,6 +351,13 @@
 		}
 		if (html == "") html = "-";
 		document.getElementById('to_list').innerHTML = html;
+
+		if (document.getElementById("group_ids").length > 0) { 
+			document.getElementById("group_dropdown").style.display = 'inline';
+		}
+		if (document.getElementById("user_ids").length > 0) { 
+			document.getElementById("user_dropdown").style.display = 'inline';
+		}
 	}
 //]]>
 </script>{/literal}

@@ -881,16 +881,26 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$pm_id = $data['pm_id'];
 				$variables['subject'] = (!strstr($data['pm_subject'], "RE: ") ? "RE: " : "").$data['pm_subject'];
 				$variables['org_message'] = $data['pm_message'];
-				if ($action != "reply") {
+				$variables['orgauthor'] = "";
+				if ($action != "post") {
 					if ($data['pmindex_user_id'] == $data['pmindex_to_id'] || $data['pmindex_to_id'] == 0)
 						$result2 = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = '".$data['pmindex_from_id']."'");
 					else
 						$result2 = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = '".$data['pmindex_to_id']."'");
 					if ($result2) {
 						$data2 = dbarray($result2);
-						$variables['message'] = "[quote=".$data2['user_name']."]".$variables['org_message']."[/quote]";
+						if ($action == "quote") {
+							$variables['message'] = "[quote=".$data2['user_name']."]".$variables['org_message']."[/quote]";
+						} else if ($action == "forward") {
+							$variables['message'] = $variables['org_message'];
+						}
+						$variables['orgauthor'] = $data2['user_name'];
 					} else {
-						$variables['message'] = "[quote]".$variables['org_message']."[/quote]";
+						if ($action == "quote") {
+							$variables['message'] = "[quote]".$variables['org_message']."[/quote]";
+						} else if ($action == "forward") {
+							$variables['message'] = $variables['org_message'];
+						}
 					}
 				}
 				if ($data['pm_smileys'] == 0) 
