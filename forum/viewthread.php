@@ -301,9 +301,9 @@ if ($rows != 0) {
 				}
 				if (is_array($groups)) {
 					// check for group matching as well, start with the opposite of the 'bail out' value
-					$ranking_match = $data2['rank_groups_and'];
+					$ranking_match = $data2['rank_groups_and'] ? false : true;
 					foreach($groups as $group) {
-						if ($data2['rank_groups_and']) {
+						if ($data2['rank_groups_and'] == 0) {
 							// all should match
 							if (!checkusergroup($data['post_author'], $group)) {
 								// bail out if a non-match has been found
