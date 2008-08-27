@@ -1020,7 +1020,7 @@ if (isset($_POST["cancel"])) {
 			$variables['attachmax'] = parsebytesize($settings['attachmax']);
 			$variables['attachtypes'] = str_replace(',', ' ', $settings['attachtypes']);
 			// define the panel
-			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array("forum.main", "forum.post", "admin.forum_polls"));
+			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array("forum.main", "forum.post", "admin.forum_polls", "hoteditor"));
 			$template_variables['forum.post'] = $variables;
 			break;
 	

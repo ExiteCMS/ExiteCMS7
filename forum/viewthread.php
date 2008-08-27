@@ -558,7 +558,7 @@ $variables['random_id'] = $random_id;
 $variables['pagenav_url'] = FUSION_SELF."?forum_id=$forum_id&amp;thread_id=$thread_id&amp;";
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'forum.viewthread', 'template' => 'forum.viewthread.tpl', 'locale' => array("forum.main","admin.forum_polls"));
+$template_panels[] = array('type' => 'body', 'name' => 'forum.viewthread', 'template' => 'forum.viewthread.tpl', 'locale' => array("forum.main","admin.forum_polls", "hoteditor"));
 $template_variables['forum.viewthread'] = $variables;
 
 // Call the theme code to generate the output for this webpage

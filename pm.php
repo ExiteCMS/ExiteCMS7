@@ -1040,7 +1040,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	}
 
 	// define the panel and assign the template variables
-	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => "main.pm");
+	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => array("main.pm", "hoteditor"));
 	$template_variables['pm.post'] = $variables;
 
 } else {

@@ -1,5 +1,4 @@
 /*
-
 +--------------------------------------------------------------------------
 |
 |	WARNING: REMOVING THIS COPYRIGHT HEADER IS EXPRESSLY FORBIDDEN
@@ -36,12 +35,27 @@
 |	in any way. We hope this doesn't violate the author's wishes, as the licencing
 |   conditions of the free version aren't exactly clear. 
 |
+|	NOTE //--------------------------
+|
+|   This version of editor.js has been modified by the ExiteCMS team:
+|   - new wrapSelection() function that can handle scrolling in textarea's
+|   - made sure all BBcode tags are in lower case
+|   - changed relative font sizes (1-7) to absolute size in pixels
+|   - make sure the script doesn't touch input in [code], [php] and [html] blocks
+|   - added test to see  toolbars and text strings are already defined
+|     (allows override of default settings by the calling ExiteCMS template)
+|   - added option to define a keycode in the calling ExiteCMS template
+|     so that a CMS user can buy one and doesn't have to change this script
+|	- convert relative URL's pasted in the rich text editor to absolute
+|     url's when converting to BBcode (to avoid ../ kind of relative paths
+|     in [url] and [img] tags, which the ExiteCMS BBcode parser refuses)
+|
 +--------------------------------------------------------------------------
 */
 
 // HotEditor free-use notice
 var Credit ="Rich Text Editor by www.eCardMax.com";
-var Keycode ="8059051C55C81839D1E2BAA6355AC0253063E38835";
+if (Keycode == null) var Keycode ="8059051C55C81839D1E2BAA6355AC0253063E38835";
 
 // ExiteCMS configuration
 var enable_vietnamese_keyboard = 0;
@@ -64,7 +78,7 @@ var upload_path = "";
 
 //---------------- FOR WYSIWYG EDITOR (BBCODE EDITOR) ----------------
 
-var TitleText = "Rich Text Editor";
+if (TitleText == null) var TitleText = "Rich Text Editor";
 var iframe_meta_tag = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n";
 var iframe_style = "BODY{font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
 iframe_style += "TABLE{border-collapse: collapse;border-spacing: 0px;border: 1px solid #6CAFF7;background-color: #F4F4F4;width:100%;font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
@@ -74,35 +88,49 @@ var iframe_image_background="<body background=" + styles_folder_path + "/iframe_
 var show_custom_bbcode_bar=0;
 var array_toolbar_user_custom=new Array();
 
-var toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight,btRemove_Format,SPACE,btBold,btItalic,btUnderline";
-var toolbar2 ="SPACE,btAlign_Left,btCenter,btAlign_Right,btJustify,SPACE,btCut,btCopy,btPaste,btUndo,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal,SPACE,btBullets,btNumbering,btIncrease_Indent";
-var toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions,btYouTube,SPACE,btQuote,btCode";
-
-var minibar ="SPACE,btFont_Name,btFont_Color,btHighlight,SPACE,btBold,btItalic,btUnderline,SPACE,btHyperlink,btEmotions,SPACE,btQuote,btCode";
+if (toolbar1 == null) {
+	var toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight,btRemove_Format,SPACE,btBold,btItalic,btUnderline";
+}
+if (toolbar2 == null) {
+	var toolbar2 ="SPACE,btAlign_Left,btCenter,btAlign_Right,btJustify,SPACE,btCut,btCopy,btPaste,btUndo,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal,SPACE,btBullets,btNumbering,btIncrease_Indent";
+}
+if (toolbar3 == null) {
+	var toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions,btYouTube,SPACE,btQuote,btCode";
+}
+if (minibar == null) {
+	var minibar ="SPACE,btFont_Name,btFont_Color,btHighlight,SPACE,btBold,btItalic,btUnderline,SPACE,btHyperlink,btEmotions,SPACE,btQuote,btCode";
+}
 
 // Setup Popup layer Width & Height & Title bar here (for WYSIWYG Editor)
-var forecolor_frame_width =235;		var forecolor_frame_height =185;	var pop_Select_Forecolor ="Font Color";
-var hilitecolor_frame_width =165;	var hilitecolor_frame_height =110;	var pop_Select_Hilitecolor ="Text Highlight Color";
-var fontname_frame_width =205;		var fontname_frame_height =300;		var pop_Select_Font ="Font Face";
-var fontsize_frame_width =80;		var fontsize_frame_height =249;		var pop_Select_FontSize ="Font Size";
-var simley_frame_width =370;		var simley_frame_height =340;		var pop_Select_Smile ="Insert your emotions to document";
-var wordart_frame_width =370;		var wordart_frame_height =340;		var pop_Select_WordArt ="Insert WordArt to document";
-var clipart_frame_width =370;		var clipart_frame_height =340;		var pop_Select_ClipArt ="Insert ClipArt to document";
-var calendar_frame_width =330;		var calendar_frame_height =350;		var pop_Select_Calendar ="View Calendar / World Clock";
-var upload_frame_width =385;		var upload_frame_height =250;		var pop_Select_Upload ="Upload your image files";
-var vk_frame_width =520;			var vk_frame_height =250;			var pop_Insert_VK ="Virtual Keyboard";		
-var moretags_frame_width =190;		var moretags_frame_height =150;		var pop_Insert_Moretags="Insert Forum Tags";
-var symbol_frame_width =382;		var symbol_frame_height =300;		var pop_Insert_Symbol ="Insert Symbol - Special characters";
+var forecolor_frame_width =235;		var forecolor_frame_height =185;	if (pop_Select_Forecolor == null) var pop_Select_Forecolor ="Font Color";
+var hilitecolor_frame_width =165;	var hilitecolor_frame_height =110;	if (pop_Select_Hilitecolor == null) var pop_Select_Hilitecolor ="Text Highlight Color";
+var fontname_frame_width =205;		var fontname_frame_height =300;		if (pop_Select_Font == null) var pop_Select_Font ="Font Face";
+var fontsize_frame_width =80;		var fontsize_frame_height =249;		if (pop_Select_FontSize == null) var pop_Select_FontSize ="Font Size";
+var simley_frame_width =370;		var simley_frame_height =340;		if (pop_Select_Smile == null) var pop_Select_Smile ="Insert your emotions to document";
+var wordart_frame_width =370;		var wordart_frame_height =340;		if (pop_Select_WordArt == null) var pop_Select_WordArt ="Insert WordArt to document";
+var clipart_frame_width =370;		var clipart_frame_height =340;		if (pop_Select_ClipArt == null) var pop_Select_ClipArt ="Insert ClipArt to document";
+var calendar_frame_width =330;		var calendar_frame_height =350;		if (pop_Select_Calendar == null) var pop_Select_Calendar ="View Calendar / World Clock";
+var upload_frame_width =385;		var upload_frame_height =250;		if (pop_Select_Upload == null) var pop_Select_Upload ="Upload your image files";
+var vk_frame_width =520;			var vk_frame_height =250;			if (pop_Insert_VK == null) var pop_Insert_VK ="Virtual Keyboard";		
+var moretags_frame_width =190;		var moretags_frame_height =150;		if (pop_Insert_Moretags == null) var pop_Insert_Moretags="Insert Forum Tags";
+var symbol_frame_width =382;		var symbol_frame_height =300;		if (pop_Insert_Symbol == null) var pop_Insert_Symbol ="Insert Symbol - Special characters";
 
 //---------------- FOR BBCODE EDITOR ----------------
 
-var TitleText_Texarea ="BBCode Editor";
+if (TitleText_Textarea == null) var TitleText_Textarea ="BBCode Editor";
 
-var textarea_toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight,btRemove_Format,SPACE,btBold,btItalic,btUnderline";
-var textarea_toolbar2 ="SPACE,btAlign_Left,btCenter,btAlign_Right,btJustify,SPACE,btCut,btCopy,btPaste,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal,SPACE,btBullets,btNumbering,btIncrease_Indent";
-var textarea_toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions,btYouTube,SPACE,btQuote,btCode";
-
-var textarea_minibar ="SPACE,btFont_Name,btFont_Color,btHighlight,SPACE,btBold,btItalic,btUnderline,SPACE,btHyperlink,btEmotions,SPACE,btQuote,btCode";
+if (textarea_toolbar1 == null) {
+	var textarea_toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight,btRemove_Format,SPACE,btBold,btItalic,btUnderline";
+}
+if (textarea_toolbar2 == null) {
+	var textarea_toolbar2 ="SPACE,btAlign_Left,btCenter,btAlign_Right,btJustify,SPACE,btCut,btCopy,btPaste,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal,SPACE,btBullets,btNumbering,btIncrease_Indent";
+}
+if (textarea_toolbar3 == null) {
+	var textarea_toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions,btYouTube,SPACE,btQuote,btCode";
+}
+if (textarea_minibar == null) {
+	var textarea_minibar ="SPACE,btFont_Name,btFont_Color,btHighlight,SPACE,btBold,btItalic,btUnderline,SPACE,btHyperlink,btEmotions,SPACE,btQuote,btCode";
+}
 
 var array_fontname = new Array();
 array_fontname[0] ="Arial";
@@ -137,80 +165,10 @@ array_fontcolor[4]	="#A5A5A5";array_fontcolor[10] ="#262626";array_fontcolor[16]
 array_fontcolor[5]	="#7F7F7F";array_fontcolor[11] ="#0C0C0C";array_fontcolor[17] ="#1D1B10";array_fontcolor[23] ="#0F243E";array_fontcolor[29] ="#244061";array_fontcolor[35] ="#632423";array_fontcolor[41] ="#4F6128";array_fontcolor[47] ="#3F3151";array_fontcolor[53] ="#205867";array_fontcolor[59] ="#974806";
 array_fontcolor[60] ="#C00000";array_fontcolor[61] ="#FF0000";array_fontcolor[62] ="#FFC000";array_fontcolor[63] ="#FFFF00";array_fontcolor[64] ="#92D050";array_fontcolor[65] ="#00B050";array_fontcolor[66] ="#00B0F0";array_fontcolor[67] ="#0070C0";array_fontcolor[68] ="#002060";array_fontcolor[69] ="#7030A0";
 
-var safari_paste_command ="Please press key Command + V to paste text to editor.";
-var safari_enter_text_link="Enter Text Link";
-var safari_bullets_numbering_prompt="Write your text here. Click Cancel button or press Escape when you're done";
+var flash_width_number_default=425;
+var flash_height_number_default=350;
 
-var flash_enter_url="Enter Flash URL";
-var flash_width_number_text="Enter Width number";	var flash_width_number_default=425;
-var flash_height_number_text="Enter Height number";	var flash_height_number_default=350;
-
-var enter_url_text="Enter a URL:";
-var enter_email_text="Enter Email Address:";
-var enter_image_url="Enter Image URL:";
-
-var capIESpell ="Spell check with IESpell";		
-var alertNoIESpell ="IESpell Tool has not installed.\n\nWould you like to download and install it now?\n\nClick OK button to open IESpell download page in new window";		
-var IESpellURL ="http://www.iespell.com/download.php";
-var IESpellError="Sorry! Your browser can't load IESpell";
-
-var capDesignModeTitle ="Switch On/Off WYSIWYG Mode";
-var capFont_Name ="Font Name";
-var capFont_Size ="Font Size";
-var capFont_Color ="Font Color";
-var capHighlight ="Highlight";
-var capRemove_Format ="Clear Formatting";
-var capBold ="Bold (Ctrl-B)";
-var capItalic ="Italic (Ctrl-I)";
-var capUnderline ="Underline (Ctrl-U)";
-var capAlign_Left ="Align Text Left";
-var capCenter ="Center";
-var capAlign_Right ="Align Text Right";
-var capJustify ="Justify";
-var capBreakLine ="Break (Shift Enter)";
-var capBullets ="Bullets";
-var capNumbering ="Numbering";
-var capDecrease_Indent ="Decrease Indent";
-var capIncrease_Indent ="Increase Indent";
-var capDecrease_Size ="Decrease Editor Size";
-var capIncrease_Size ="Increase Editor Size";
-var capQuote ="Wrap in [quote][/quote]";
-var capCode ="Wrap in [code][/code]";
-var capPHP ="Wrap in [php][/php]";
-var capHTML="Wrap in [html][/html]";
-var capMoreTags="View More Tags [xxx][/xxx]";
-
-var capFlash="Insert Flash";
-var capYouTube="Insert YouTube Video";	var promptYouTube="Enter YouTube video ID from the URL (v=XXXXXXXX)"; var URLDefaultYouTube="XXXXXXXX";
-var capGoogle="Insert Google Video";	var promptGoogle="Enter Google Video URL"; var URLDefaultGoogle="http://video.google.com/videoplay?docid=XXXXXXXXXXXXXX&hl=en";
-var capYahoo="Insert Yahoo Video";		var promptYahoo="Enter Yahoo Add to Site Code"; var URLDefaultYahoo="<embed src='http://us.i1.yimg.com/cosmos.bcst.yahoo.com/player...........' type='application/x-shockwave-flash' width='425' height='350'></embed>";
-
-var capTable ="Insert Table";
-var capCut ="Cut (Ctrl-X)";
-var capCopy ="Copy (Ctrl-C)";
-var capPaste ="Paste (Ctrl-V)";
-var capUndo ="Undo (Ctrl-Z)";
-var capRedo ="Redo (Ctrl-Y)";
-var capHyperlink ="Insert Hyperlink (Ctrl-K)";
-var capHyperlink_Email ="Insert Email Link";
-var capRemovelink ="Remove Hyperlink";
-var capCalendar ="View Calendar / World Clock";
-var capInsert_Image ="Insert Image";
-var capClipart ="Insert Clipart";
-var capWordArt ="Insert WordArt";
-var capEmotions ="Insert your emotions";
-var capUpload ="Upload your own Photo";
-var capStrikethrough ="Strikethrough";
-var capSubscript ="Subscript";
-var capSuperscript ="Superscript";
-var capHorizontal ="Horizontal Line";
-var capSymbol ="Insert Symbol";
-var capVirtualKeyboard ="Open Virtual Keyboard";
-var capViewHTML ="View/Edit HTML source code";
-var capDelete_All ="Delete All";
-var capOnOff_RichText ="Switch On/Off WYSIWYG Mode";
-
-// Hoteditor code -----------------------------------------------------------
+// Hoteditor code - [ no more changes from here! ]---------------------------
 
 var bbNumbering = "list=1,*";
 var bbBullets = "list,*";
@@ -447,7 +405,7 @@ function switch_editor(a) {
 		editor_type = "0";
 		document.getElementById("editor_switch" + a).src = styles_folder_path + "/" + "switch_richtext_off.gif";
 		document.getElementById("switch_span" + a).className = "Hoteditor_DesignModeOff_TextColor";
-		document.getElementById("change_title_editor" + a).innerHTML = TitleText_Texarea;
+		document.getElementById("change_title_editor" + a).innerHTML = TitleText_Textarea;
 		var c = document.getElementById(a).contentWindow.document.body.innerHTML;
 		c = c.replace(/[\n\r]/gi, "");
 		hot_createCookie("hoteditor_cookie", "0", 365);
@@ -539,6 +497,13 @@ function resize_editor(a, b, c) {
 }
 
 
+function autoresize(b, c) {
+	return;
+	while (document.getElementById(c).clientHeight < document.getElementById(c).scrollHeight) {
+		resize_editor('increase_size', b, c);
+	}
+}
+
 function writeRTE(a, b, c, d, e, f, g) {
 	if (Credit != "Rich Text Editor by www.eCardMax.com") {
 		alert("Please do not remove or modify the Credit 'Rich Text Editor by www.eCardMax.com' inside the script editor.js");
@@ -555,7 +520,7 @@ function writeRTE(a, b, c, d, e, f, g) {
 	if (editor_type == "1") {
 		document.write("<img align=absmiddle border=0 src=" + styles_folder_path + "/logo.gif> <span id=change_title_editor" + b + ">" + TitleText + "</span></td>\n");
 	} else {
-		document.write("<img align=absmiddle border=0 src=" + styles_folder_path + "/logo.gif> <span id=change_title_editor" + b + ">" + TitleText_Texarea + "</span></td>\n");
+		document.write("<img align=absmiddle border=0 src=" + styles_folder_path + "/logo.gif> <span id=change_title_editor" + b + ">" + TitleText_Textarea + "</span></td>\n");
 	}
 	if (show_arrow_up_down == 1) {
 		document.write("<td width=1% nowrap align=right><div><img title=\"" + capDecrease_Size + "\" class=Hoteditor_Button style=\"cursor:pointer\" onmouseover=\"this.className='Hoteditor_Button_Over';\" onmouseout=\"this.className='Hoteditor_Button_Out';\" onclick=\"resize_editor('decrease_size','" + b + "','" + "textarea_" + b + "');\" border=0 src=" + styles_folder_path + "/arrow_up.gif></div><div><img title=\"" + capIncrease_Size + "\" class=Hoteditor_Button style=\"cursor:pointer\" onmouseover=\"this.className='Hoteditor_Button_Over';\" onmouseout=\"this.className='Hoteditor_Button_Out';\" onclick=\"resize_editor('increase_size','" + b + "','" + "textarea_" + b + "');\" border=0 src=" + styles_folder_path + "/arrow_dn.gif></div></td>\n");
@@ -689,7 +654,7 @@ function writeRTE(a, b, c, d, e, f, g) {
 	j = j.replace(/\[td\]/gi, "\n[td]");
 	j = j.replace(/\[\/table\]/gi, "\n[/table]");
 	j = j.replace(/\[\/table\]$/gi, "[/table]\n");
-	document.write("<center><textarea wrap=auto " + print_dir + " style='font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;width:98%;height:" + e + "' class=Hoteditor_iTextarea id='textarea_" + b + "' name='textarea_" + b + "'>" + j + "</textarea></center>\n");
+	document.write("<center><textarea wrap=auto " + print_dir + " style='font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;width:98%;height:" + e + "' class=Hoteditor_iTextarea id='textarea_" + b + "' onkeyup='autoresize(\"" + b + "\",\"" + "textarea_" + b + "\");' name='textarea_" + b + "'>" + j + "</textarea></center>\n");
 	if (isMacOS && isGecko) {
 		var h = "";
 	} else {
@@ -948,7 +913,7 @@ function show_toolbar_textarea(a, b) {
 	} else if (a == "btClipart") {
 		write_button_textarea(capClipart, "insertclipart.gif", "", "insertclipart", b);
 	} else if (a == "btFont_Name") {
-		document.write("<select class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('font','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>Fonts</option>");
+		document.write("<select class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('font','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>" + dropdownFonts + "</option>");
 		for (i = 0; i < array_fontname.length; i++) {
 			document.write("<option value='" + array_fontname[i] + "'>" + array_fontname[i] + "</option>");
 		}
@@ -956,19 +921,19 @@ function show_toolbar_textarea(a, b) {
 	} else if (a == "btFont_Size") {
 		var c = new Array;
 		var px = new Array(0, 6, 8,10,12,14,18,24,36);
-		document.write("<select style=\"width:52px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('size','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>Size</option>");
+		document.write("<select style=\"width:52px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('size','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>" + dropdownSize + "</option>");
 		for (i = 1; i < 9; i++) {
 			document.write("<option value='" + px[i] + "'>" + px[i] + "px</option>");
 		}
 		document.write("</select><img src=" + styles_folder_path + "/button_space.gif>");
 	} else if (a == "btFont_Color") {
-		document.write("<select style=\"width:60px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('color','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>Color</option>");
+		document.write("<select style=\"width:60px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('color','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>" + dropdownColor + "</option>");
 		for (i = 0; i < array_fontcolor.length; i++) {
 			document.write("<option style='background-color:" + array_fontcolor[i] + ";color:" + array_fontcolor[i] + "' value='" + array_fontcolor[i] + "'>" + array_fontcolor[i] + "</option>");
 		}
 		document.write("</select><img src=" + styles_folder_path + "/button_space.gif>");
 	} else if (a == "btHighlight") {
-		document.write("<select style=\"width:65px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('highlight','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>HiLight</option>");
+		document.write("<select style=\"width:65px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('highlight','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>" + dropdownHighlight + "</option>");
 		for (i = 0; i < array_fontcolor.length; i++) {
 			document.write("<option style='background-color:" + array_fontcolor[i] + ";color:" + array_fontcolor[i] + "' value='" + array_fontcolor[i] + "'>" + array_fontcolor[i] + "</option>");
 		}
@@ -2069,7 +2034,9 @@ function NoError() {
 
 onerror = NoError;
 
-function mozWrap(a, b, c) {
+
+// ExiteCMS: New wrapSelection function to deal with textarea's with scrollbars
+function wrapSelection(a, b, c) {
 	var d = document.getElementById(c);
 	var e = d.textLength;
 	var f = d.selectionStart;
@@ -2081,7 +2048,8 @@ function mozWrap(a, b, c) {
 	var i = d.value.substring(f, g);
 	var j = d.value.substring(g, e);
 	if (b == "HR" || b == "hr") {
-		d.value = h + "[" + a + "]" + j;
+		var startTag = "[" + a + "]";
+		var endTag = "";
 	} else {
 		var k = "";
 		if (a == "URL" || a == "url" || a == "MAIL" || a == "mail") {
@@ -2089,38 +2057,36 @@ function mozWrap(a, b, c) {
 				k = b.replace("=", "");
 			}
 		}
-		d.value = h + "[" + a + b + "]" + i + k + "[/" + a + "]" + j;
+		var startTag = "[" + a + b + "]"
+		var endTag ="[/" + a + "]";
 	}
-}
-
-
-function IEWrap(a, b, c) {
-	strSelection = document.selection.createRange().text;
-	document.getElementById(c).focus();
-	if (b == "HR" || b == "hr") {
-		document.selection.createRange().text = "[" + a + "]";
-	} else {
-		if (strSelection != "") {
-			document.selection.createRange().text = "[" + a + b + "]" + strSelection + "[/" + a.replace(/=(.*?)$/g, "") + "]";
+	var s=d.scrollTop;
+	if(typeof d.selectionStart == 'number') {
+		// Mozilla, Opera, and other browsers
+		if (endTag != "") {
+			d.value = h + startTag + i + k + endTag + j;
 		} else {
-			if (a == "URL" ||
-				a == "url" || a == "MAIL" || a == "mail") {
-				var d = b.replace("=", "");
-				document.selection.createRange().text = "[" + a + b + "]" + d + "[/" + a.replace(/=(.*?)$/g, "") + "]";
-			} else {
-				document.selection.createRange().text = "[" + a + b + "]" + "[/" + a.replace(/=(.*?)$/g, "") + "]";
-			}
+			d.value = h + startTag + j;
 		}
-	}
-}
-
-
-function wrapSelection(a, b, c) {
-	if (isIE) {
-		IEWrap(a, b, c);
+		d.focus();
+		d.selectionStart=f;
+		d.selectionEnd=g+(d.value.length-e);
+	} else if(document.selection) {
+		// Internet Explorer
+		d.focus();
+		var range = document.selection.createRange();
+		if(range.parentElement() != d) {
+			return false;
+		}
+		if(typeof range.text == 'string') {
+			document.selection.createRange().text = startTag + range.text + endTag;
+		}
+		d.focus();
 	} else {
-		mozWrap(a, b, c);
+		d.value += startTag + endTag;
+		d.focus();
 	}
+	d.scrollTop=s;
 }
 
 
@@ -2513,7 +2479,7 @@ function HTMLToBBCode(a) {
 					var o = f.replace(/<a(.*?)href="(.*?)"/gi, "$2");
 					o = o.replace(">" + n[1], "");
 					var p = o.split(" ");
-					o = p[0];
+					o = toAbsURL(p[0]);
 					if (k.style) {
 						if (n[1] == o) {
 							m = "[url]" + AnalyzeHTMLBlock(g, k);
@@ -2630,7 +2596,7 @@ function HTMLToBBCode(a) {
 						f = f.replace(/<img(.*?)src="(.*?)">/gi, "[img]$2[/img]");
 					} else {
 						f.match(/<img(.*?)src="(.*?)"(.*?)>/gi);
-						var s = RegExp.$2;
+						var s = toAbsURL(RegExp.$2);
 						s = s.replace("./", "");
 						if (s.toLowerCase().substr(0, 7) != "http://" && s.toLowerCase().substr(0, 1) != "/") {
 							var t = document.URL;
@@ -2644,7 +2610,7 @@ function HTMLToBBCode(a) {
 							}
 							f = f.replace(/\<img(.*?)src="(.*?)"(.*?)>/gi, "[img]" + v + s + "[/img]");
 						} else {
-							f = f.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, "[img]$2[/img]");
+							f = f.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, "[img]" + s + "[/img]");
 						}
 					}
 				} else if (g == "table") {
@@ -2753,3 +2719,23 @@ function RGB2HTML(a) {
 	}
 	return "#" + r + g + b;
 }
+
+function toAbsURL(s) {
+	var l = location, h, p, f, i;
+	if (/^\w+:/.test(s)) {
+		return s;
+	}
+	h = l.protocol + '//' + l.host;
+	if (s.indexOf('/') == 0) {
+		return h + s;
+	}
+	p = l.pathname.replace(/\/[^\/]*$/, '');
+	f = s.match(/\.\.\//g);
+	if (f) {
+		s = s.substring(f.length * 3);
+		for (i = f.length; i--;) {
+			p = p.substring(0, p.lastIndexOf('/'));
+		}
+	}
+	return h + p + '/' + s;
+} 

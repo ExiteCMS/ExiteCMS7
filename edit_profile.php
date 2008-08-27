@@ -275,7 +275,7 @@ foreach($auth_methods as $auth_method) {
 }
 
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array("main.members-profile", "main.user_fields"));
+$template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array("main.members-profile", "main.user_fields", "hoteditor"));
 $template_variables['edit_profile'] = $variables;
 
 // Call the theme code to generate the output for this webpage
