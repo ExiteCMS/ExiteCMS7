@@ -11,6 +11,10 @@
 +----------------------------------------------------*/
 require "core_functions.php";
 
+// make sure the page isn't cached
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+
 // get the request field, sanitize it, and check it's availability
 $request = isset($_GET['request']) ? stripinput($_GET['request']) : "";
 if ($request == "") {
