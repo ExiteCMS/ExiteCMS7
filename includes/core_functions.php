@@ -224,7 +224,7 @@ if (count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 	if ($settings['maintenance'] && !eregi("maintenance.php", $_SERVER['PHP_SELF'])) {
 		if (!iSUPERADMIN) {
 			// deny all non-webmasters access to the site
-			redirect('maintenance.php?reason='.$settings['maintenance']);
+			redirect(BASEDIR.'maintenance.php?reason='.$settings['maintenance']);
 		} else {
 			// force webmasters to the upgrade module
 //			redirect(ADMIN.'upgrade.php'.$aidlink);
