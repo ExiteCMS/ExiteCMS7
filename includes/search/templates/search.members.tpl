@@ -30,7 +30,7 @@
 		<font class='smallalt'>{$locale.439}</font> {if $reportvars.output[idx].user_lastvisit}{$reportvars.output[idx].user_lastvisit|date_format:"forumdate"}{else}{$locale.440}{/if}</span>
 	{/section}
 {else}
-	<input type='radio' name='search_id' value='{$searches[id].search_id}' {if $search_id == $searches[id].search_id}checked='checked'{/if} onclick='javascript:show_filter("");' /> {$searches[id].search_title} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
+	<input type='radio' name='search_id' value='{$searches[id].search_id}' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
 {/if}
 {***************************************************************************}
 {* End of template                                                         *}

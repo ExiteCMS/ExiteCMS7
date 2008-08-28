@@ -937,6 +937,12 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['422'] = "Zoekopdracht titel:";
 		$localestrings['423'] = "Zoekopdracht toegankelijk voor:";
 		$localestrings['424'] = "Opslaan";
+		$localestrings['425'] = "Prioriteit verhogen";
+		$localestrings['426'] = "Prioriteit verlagen";
+		$localestrings['427'] = "Omhoog";
+		$localestrings['428'] = "Omlaag";
+		$localestrings['429'] = "Volgorde";
+		$localestrings['430'] = "De volgorde waarin de zoeklocaties zijn opgelijst bepaald de standaard geselecteerde zoek locatie";
 		load_localestrings($localestrings, LP_LOCALE, "admin.search", $step);
 
 		$localestrings = array();

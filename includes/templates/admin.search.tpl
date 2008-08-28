@@ -85,6 +85,9 @@
 			<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
 				<b>{$locale.402}</b>
 			</td>
+			<td colspan='2' align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+				<b>{$locale.429}</b>
+			</td>
 			<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
 				<b>{$locale.403}</b>
 			</td>
@@ -99,6 +102,17 @@
 			</td>
 			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
 				{$searches[id].groupname}
+			</td>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+				{$searches[id].search_order}
+			</td>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+			{if $searches[id].order_up != 0}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=swap&amp;order1="|cat:$searches[id].search_order|cat:"&amp;order2="|cat:$searches[id].order_up image="up.gif" alt="$locale.425 title=$locale.427}
+			{/if}
+			{if $searches[id].order_down != 0}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=swap&amp;order1="|cat:$searches[id].search_order|cat:"&amp;order2="|cat:$searches[id].order_down image="down.gif" alt="$locale.426 title=$locale.428}
+			{/if}
 			</td>
 			<td align='left' width='1%' class='tbl1' style='white-space:nowrap'>
 				{if $searches[id].search_active}
@@ -116,18 +130,23 @@
 		</tr>
 		{sectionelse}
 		<tr>
-			<td align='center' colspan='3' class='tbl1'>
+			<td align='center' colspan='5' class='tbl1'>
 				{$locale.408}
 				<br /><br />
 			</td>
 		</tr>
 		{/section}
 		<tr>
-			<td align='center' colspan='3' class='tbl1'>
+			<td align='center' colspan='5' class='tbl1'>
+				<span class='smallalt'>{$locale.430}</span>
+			</td>
+		</tr>
+{*		<tr>
+			<td align='center' colspan='5' class='tbl1'>
 				{buttonlink name=$locale.409 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=add"}
 			</td>
 		</tr>
-	</table>
+*}	</table>
 {/if}
 {include file="_closetable.tpl"}
 {***************************************************************************}

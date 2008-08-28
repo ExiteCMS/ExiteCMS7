@@ -150,8 +150,9 @@
 			document.getElementById('div_contentfilter_'+filters[i]).style.display = 'block';
 		}
 	}
-	</script>
 	{/literal}
+	show_filter("{$default_filter}");
+	</script>
 	{include file="_closetable.tpl"}
 		{include file="_opentable.tpl" name=$_name title=$locale.src428 state=$_state style=$_style}
 	<table width='100%' cellspacing='0' cellpadding='0' border='0' class='tbl-border'>

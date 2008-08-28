@@ -18,7 +18,10 @@ $reportvars = array();
 if (isset($action)) {
 
 	if ($action == "") {
-		
+
+		// add the possible  search filters ($data is defined in the calling script!)
+		$data['search_filters' ] = "date,users,forums";
+
 		// get the list of all members
 		if (!isset($content_filters['forums'])) {
 			$content_filters['forums'] = array();

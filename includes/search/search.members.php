@@ -19,7 +19,9 @@ if (isset($action)) {
 
 	if ($action == "") {
 		
-			// no pre-processing required for this search
+		// add the possible  search filters ($data is defined in the calling script!)
+		$data['search_filters' ] = "";
+
 
 	} else {
 

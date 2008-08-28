@@ -952,6 +952,12 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['422'] = "Search title:";
 		$localestrings['423'] = "Search accessable for:";
 		$localestrings['424'] = "Save";
+		$localestrings['425'] = "Move up in priority";
+		$localestrings['426'] = "Move down in priority";
+		$localestrings['427'] = "Up";
+		$localestrings['428'] = "Down";
+		$localestrings['429'] = "Order";
+		$localestrings['430'] = "The order in which the searches are listed here determines the default search location";
 		load_localestrings($localestrings, LP_LOCALE, "admin.search", $step);
 
 		$localestrings = array();

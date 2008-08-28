@@ -210,9 +210,17 @@ if ($action == 'install' && isset($module)) {
 					$mod_search['fulltext'] = (isset($mod_search['fulltext']) && isNum($mod_search['fulltext']) ? $mod_search['fulltext'] : 0);
 					$mod_search['title'] = isset($mod_search['title']) ? $mod_search['title'] : ("Search: ".$mod_search['name']);
 					$mod_search['version'] = isset($mod_search['version']) ? $mod_search['version'] : $mod_version;
+					// get the max searchorder
+					$result = dbquery("SELECT max(search_order) as max FROM ".$db_prefix."search");
+					if ($result) {
+						$data = dbarray($result);
+						$max = $data['max'] + 1;
+					} else {
+						$max = 1;
+					}
 					// add it to the search table
-					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility) 
-						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."')");
+					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order) 
+						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."', ".$max.")");
 				}
 			}
 		}
@@ -542,9 +550,17 @@ if ($action == 'upgrade' && isset($id)) {
 					$mod_search['fulltext'] = (isset($mod_search['fulltext']) && isNum($mod_search['fulltext']) ? $mod_search['fulltext'] : 0);
 					$mod_search['title'] = isset($mod_search['title']) ? $mod_search['title'] : ("Search: ".$mod_search['name']);
 					$mod_search['version'] = isset($mod_search['version']) ? $mod_search['version'] : $mod_version;
+					// get the max searchorder
+					$result = dbquery("SELECT max(search_order) as max FROM ".$db_prefix."search");
+					if ($result) {
+						$data = dbarray($result);
+						$max = $data['max'] + 1;
+					} else {
+						$max = 1;
+					}
 					// add it to the search table
-					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility) 
-						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."')");
+					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order) 
+						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."', ".$max.")");
 				}
 			}
 		}

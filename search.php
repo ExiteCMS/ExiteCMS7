@@ -102,10 +102,19 @@ foreach($searchindex as $index) {
 	$variables['searches'][] = $searches[substr(strstr($index,"_>_"),3)];
 }
 
-// do we have a search location? if not, get the first search item
-if (!$search_id && count($variables['searches'])) {
-//	$search_id = $variables['searches'][0]['search_id'];
+// find the id of the default selection
+if ($action == "") {
+	$variables['default_location'] = 9999999999;
+	$variables['default_filter'] = "";
+	foreach($variables['searches'] as $key => $search) {
+		if ($search['search_order'] < $variables['default_location']) {
+			$variables['default_location'] = $search['search_order'];
+			$variables['default_filter'] = $search['search_filters'];
+			if (!isset($search['search_filters'])) _debug($search, true);
+		}
+	}
 }
+
 // store the selected search location
 $variables['search_id'] = $search_id;
 

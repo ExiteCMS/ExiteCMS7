@@ -97,6 +97,7 @@ if ($action == "add" || $action == "edit") {
 	// get the list of defined user groups
 	$variables['usergroups'] = getusergroups(false);
 }
+
 // toggle the search status
 if ($action == "setstatus") {
 	// if a status is passed, validate it
@@ -107,12 +108,31 @@ if ($action == "setstatus") {
 	$action = "";
 }
 
+// swap the order of two records
+if ($action == "swap") {
+	// check the parameters passed
+	$order1 = (isset($_GET['order1']) && isNum($_GET['order1'])) ? $_GET['order1'] : 0;
+	$order2 = (isset($_GET['order2']) && isNum($_GET['order2'])) ? $_GET['order2'] : 0;
+	if ($order1 != 0 && $order2 != 0 && $order1 != $order2) {
+		$result1 = dbquery("SELECT search_id FROM ".$db_prefix."search WHERE search_order = '".$order1."'");
+		$result2 = dbquery("SELECT search_id FROM ".$db_prefix."search WHERE search_order = '".$order2."'");
+		if ($result1 && $result2) {
+			// everything checks out, swap 'm!
+			$data = dbarray($result1);
+			$result = dbquery("UPDATE ".$db_prefix."search SET search_order = ".$order2." WHERE search_id = ".$data['search_id']);
+			$data = dbarray($result2);
+			$result = dbquery("UPDATE ".$db_prefix."search SET search_order = ".$order1." WHERE search_id = ".$data['search_id']);
+		}
+	}
+	// return to the overview screen
+	$action = "";
+}
+
 // no action specified: show the search overview
 if ($action == "") {
 	// generate the searches overview
-	$searches = array();
-	$searchindex = array();
-	$result = dbquery("SELECT s.*, m.mod_folder FROM ".$db_prefix."search s LEFT JOIN ".$db_prefix."modules m ON s.search_mod_id = m.mod_id");
+	$variables['searches'] = array();
+	$result = dbquery("SELECT s.*, m.mod_folder FROM ".$db_prefix."search s LEFT JOIN ".$db_prefix."modules m ON s.search_mod_id = m.mod_id ORDER BY search_order");
 	while ($data = dbarray($result)) {
 		// get the title for this search
 		if ($data['search_mod_id']) {
@@ -131,17 +151,16 @@ if ($action == "") {
 		}
 		$data['groupname'] = getgroupname($data['search_visibility']);
 			// store the search record
-		$searches[$data['search_id']] = $data;
-		$searchindex[] = $data['search_title']."_>_".$data['search_id'];
-	}
-	//make sure the modules are properly sorted
-	sort($searchindex);
-	$variables['search'] = array();
-	foreach($searchindex as $index) {
-		$variables['searches'][] = $searches[substr(strstr($index,"_>_"),3)];
+		$variables['searches'][] = $data;
 	}
 	// reload the locale for this module
 	locale_load("admin.search");
+}
+
+// add the previous and next id's
+foreach($variables['searches'] as $key => $value) {
+	$variables['searches'][$key]['order_down'] = isset($variables['searches'][$key+1]) ? $variables['searches'][$key+1]['search_order'] : 0;
+	$variables['searches'][$key]['order_up'] = isset($variables['searches'][$key-1]) ? $variables['searches'][$key-1]['search_order'] : 0;
 }
 
 // store the action variable

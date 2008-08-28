@@ -19,6 +19,9 @@ if (isset($action)) {
 
 	if ($action == "") {
 	
+		// add the possible  search filters ($data is defined in the calling script!)
+		$data['search_filters' ] = "date,users";
+
 		// get the list of all members
 		if (!isset($content_filters['users'])) {
 			$content_filters['users'] = array();
