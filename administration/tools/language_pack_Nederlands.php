@@ -3183,7 +3183,36 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['rpt403'] = "Er zijn op dit moment geen rapporten beschikbaar";
 		$localestrings['rpt404'] = "Resultaat voor het rapport";
 		$localestrings['rpt405'] = "Rapportenlijst";
+		$localestrings['rpt500'] = "Geregistreerde gebruikers per land";
+		$localestrings['rpt501'] = "Toon mij";
+		$localestrings['rpt502'] = "de top";
+		$localestrings['rpt503'] = "alle";
+		$localestrings['rpt504'] = "resultaten in het rapport, en sorteer het";
+		$localestrings['rpt505'] = "aflopend";
+		$localestrings['rpt506'] = "oplopend";
+		$localestrings['rpt507'] = "Land";
+		$localestrings['rpt508'] = "Ledenaantal";
+		$localestrings['rpt509'] = "Aangemelde nieuwe leden per maand";
+		$localestrings['rpt510'] = "Registratie periode";
+		$localestrings['rpt511'] = "Onbekend";
+		$localestrings['rpt950'] = "Het rapport kon niet worden aangemaakt:";
+		$localestrings['rpt951'] = "Het gevraagde rapport bevat geen gegevens";
 		load_localestrings($localestrings, LP_LOCALE, "main.reports", $step);
+
+		$localestrings = array();
+		$localestrings['mon001'] = "Januari";
+		$localestrings['mon002'] = "Februari";
+		$localestrings['mon003'] = "Maart";
+		$localestrings['mon004'] = "April";
+		$localestrings['mon005'] = "Mei";
+		$localestrings['mon006'] = "Juni";
+		$localestrings['mon007'] = "Juli";
+		$localestrings['mon008'] = "Augustus";
+		$localestrings['mon009'] = "September";
+		$localestrings['mon010'] = "Oktober";
+		$localestrings['mon011'] = "November";
+		$localestrings['mon012'] = "December";
+		load_localestrings($localestrings, LP_LOCALE, "months", $step);
 
 		$localestrings = array();
 		$localestrings['src400'] = "Zoeken";

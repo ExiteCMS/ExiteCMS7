@@ -48,7 +48,7 @@
 	<table width='100%'>
 		<tr>
 			<td align='left'>
-				{$locale.rpt404}: <b>{$report_title}</b>
+				{$locale.rpt404}: <b>{$reports.0.report_title}</b>
 			</td>
 			<td align='right'>
 				<form name='return' method='post' action='{$smarty.const.FUSION_SELF}'>

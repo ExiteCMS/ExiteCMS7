@@ -24,6 +24,21 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "404page", $step);
 
 		$localestrings = array();
+		$localestrings['mon001'] = "January";
+		$localestrings['mon002'] = "February";
+		$localestrings['mon003'] = "March";
+		$localestrings['mon004'] = "April";
+		$localestrings['mon005'] = "May";
+		$localestrings['mon006'] = "June";
+		$localestrings['mon007'] = "July";
+		$localestrings['mon008'] = "August";
+		$localestrings['mon009'] = "September";
+		$localestrings['mon010'] = "October";
+		$localestrings['mon011'] = "November";
+		$localestrings['mon012'] = "December";
+		load_localestrings($localestrings, LP_LOCALE, "months", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Edit 404 Page";
 		$localestrings['401'] = "404 page for the locale '%s' is updated";
 		$localestrings['402'] = "Error saving the 404 Page";
@@ -3183,6 +3198,20 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['rpt403'] = "Currently there are no reports defined";
 		$localestrings['rpt404'] = "Result for the requested report";
 		$localestrings['rpt405'] = "Report List";
+		$localestrings['rpt500'] = "Registered users per country";
+		$localestrings['rpt501'] = "Show me";
+		$localestrings['rpt502'] = "the top";
+		$localestrings['rpt503'] = "all";
+		$localestrings['rpt504'] = "results in the report, and sort it";
+		$localestrings['rpt505'] = "descending";
+		$localestrings['rpt506'] = "ascending";
+		$localestrings['rpt507'] = "Country";
+		$localestrings['rpt508'] = "User Count";
+		$localestrings['rpt509'] = "New users joined per month";
+		$localestrings['rpt510'] = "Period of registration";
+		$localestrings['rpt511'] = "Unknown";
+		$localestrings['rpt950'] = "The report could not be generated:";
+		$localestrings['rpt951'] = "The requested report does not contain any data";
 		load_localestrings($localestrings, LP_LOCALE, "main.reports", $step);
 
 		$localestrings = array();
