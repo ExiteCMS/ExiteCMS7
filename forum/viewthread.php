@@ -118,7 +118,7 @@ if (iMEMBER && (in_array($userdata['user_id'], $forum_mods) || ($fdata['forum_mo
 $variables['user_can_blacklist'] = checkrights("B");
 
 // check if there is a thread time limit defined for guests
-$thread_limit = iMEMBER ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
+$thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
 
 // get information about the current thread
 $result = dbquery(

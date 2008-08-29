@@ -31,7 +31,7 @@ $title = $locale['027a'];
 if (!isset($forum_id) || !isNum($forum_id)) $forum_id = false;
 
 // is a thread time limit defined for guest users?
-$thread_limit = iMEMBER ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
+$thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
 
 // check if we have anything to display
 $result = dbquery(

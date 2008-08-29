@@ -146,7 +146,7 @@ if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 $variables['rowstart'] = $rowstart;
 
 // is a thread time limit defined for guest users?
-$thread_limit = iMEMBER ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
+$thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
 
 // get the threads to fill this page
 $result = dbquery(
