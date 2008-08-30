@@ -186,8 +186,8 @@ function checkMessages() {
 }
 {/literal}
 {if iMEMBER}
-// wait 15 seconds, then check for messages
-msgtimerid = setTimeout("checkMessages()", 15000);
+// start the timer for the first check, in 5 minutes
+msgtimerid = setTimeout("checkMessages()", 300000);
 {/if}
 /* ]]> */
 </script>
@@ -231,6 +231,9 @@ msgtimerid = setTimeout("checkMessages()", 15000);
 							{/if}
 						</div>
 						<div id='new_pm_header' style='display:inline;'>
+							{if $new_pm}
+								<a href='{$smarty.const.BASEDIR}pm.php?action=show_new'><img src='{$smarty.const.THEME}images/newmsgs.gif' height='9' alt='' /></a>&nbsp;
+							{/if}
 						</div>
 						{section name=index loop=$headermenu}
 							{if $smarty.section.index.first} &nbsp;{else} &middot;{/if} <a href='{$headermenu[index].link_url}' {if $headermenu[index].link_window == 1}target='_blank' {/if}><span class='headermenuitem'>{$headermenu[index].link_name}</span></a>

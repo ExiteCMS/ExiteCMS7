@@ -104,7 +104,9 @@ if (iMEMBER) {
 			);
 	} 
 	$variables['new_posts'] = ($result ? mysql_result($result, 0) : 0);
+	$variables['new_pm'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id='".$userdata['user_id']."' AND pmindex_to_id='".$userdata['user_id']."' AND pmindex_read_datestamp = '0'");
 } else {
+	$variables['new_pm'] = 0;
 	$variables['new_posts'] = 0;
 }
 
