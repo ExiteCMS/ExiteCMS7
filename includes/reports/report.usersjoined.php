@@ -17,9 +17,6 @@ $reportvars = array();
 // make sure we have an action variable
 if (isset($action)) {
 
-	// check if we have a rowstart value
-	if (!isset($rowstart)) $rowstart = 0;
-	
 	if ($action == "") {
 		
 			// pre-processing
@@ -38,7 +35,7 @@ if (isset($action)) {
 		}
 		
 		// add the group by clause for the count()
-		$sql .= " GROUP BY user_cc_code";
+		$sql .= " GROUP BY year, month";
 
 		// construct the page navigator to allow paging
 		$variables['pagenav_url'] = FUSION_SELF."?action=report&amp;report_id=".$report_id."&amp;";
@@ -54,38 +51,40 @@ if (isset($action)) {
 				$sql .= " ORDER BY year DESC, month DESC";
 			}
 
+			// check if we have a rowstart value
+			if (!isset($rowstart)) $rowstart = 0;
+		
 			// check how many rows this would output
-			$rptresult = mysql_query($sql.($top?" LIMIT $top":""));
-			if ($rptresult) {
-				// store some row counter for the pager
-				$variables['rows'] = dbrows($rptresult);
+			$rptresult = dbquery($sql.($top?" LIMIT $top":""));
+			$variables['rows'] = dbrows($rptresult);
+			if ($variables['rows']) {
 				$variables['rowstart'] = $rowstart;
+				$variables['items_per_page'] = $settings['numofthreads'];
 
 				// now add a query limit, make sure not to overshoot the limit requested
-				if ($top > 0) {
-					if ($variables['rows']-$rowstart > $settings['numofthreads']) {
-						$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
-					} else {
-						$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
+				if ($variables['rows']-$rowstart > $settings['numofthreads']) {
+					$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
+				} else {
+					$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
+				}
+				$rptresult = dbquery($sql);
+
+				// get the results if any
+				if ($variables['rows']) {
+
+					// load the months locale
+					locale_load("months");
+
+					// get the results
+					$reportvars['output'] = array();
+					while ($rptdata = dbarray($rptresult)) {
+						$rptdata['_rownr'] = ++$rowstart;
+						$rptdata['monthname'] = $locale['mon0'.substr('00'.$rptdata['month'],-2)];
+						$reportvars['output'][] = $rptdata;
 					}
+				} else {
+					$variables['message'] = $locale['rpt950']." ".mysql_error();
 				}
-				$rptresult = mysql_query($sql);
-
-				// include the GeoIP functions
-				require_once PATH_INCLUDES."geoip_include.php";
-
-				// load the months locale
-				locale_load("months");
-
-				// get the results
-				$reportvars['output'] = array();
-				while ($rptdata = dbarray($rptresult)) {
-					$rptdata['_rownr'] = ++$rowstart;
-					$rptdata['monthname'] = $locale['mon0'.substr('00'.$rptdata['month'],-2)];
-					$reportvars['output'][] = $rptdata;
-				}
-			} else {
-				$variables['message'] = $locale['rpt950']." ".mysql_error();
 			}
 		}
 	}

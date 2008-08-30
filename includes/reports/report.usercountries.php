@@ -55,37 +55,42 @@ if (isset($action)) {
 			}
 
 			// check how many rows this would output
-			$rptresult = mysql_query($sql.($top?" LIMIT $top":""));
-			if ($rptresult) {
-				// store some row counter for the pager
-				$variables['rows'] = dbrows($rptresult);
+			$rptresult = dbquery($sql.($top?" LIMIT $top":""));
+			$variables['rows'] = dbrows($rptresult);
+			if ($variables['rows']) {
 				$variables['rowstart'] = $rowstart;
+				$variables['items_per_page'] = $settings['numofthreads'];
 
 				// now add a query limit, make sure not to overshoot the limit requested
-				if ($top > 0) {
-					if ($variables['rows']-$rowstart > $settings['numofthreads']) {
-						$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
-					} else {
-						$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
-					}
+				if ($variables['rows']-$rowstart > $settings['numofthreads']) {
+					$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
+				} else {
+					$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
 				}
-				$rptresult = mysql_query($sql);
+				$rptresult = dbquery($sql);
 
-				// include the GeoIP functions
-				require_once PATH_INCLUDES."geoip_include.php";
+				// get the results if any
+				if ($variables['rows']) {
 
-				// get the results
-				$reportvars['output'] = array();
-				while ($rptdata = dbarray($rptresult)) {
-					$rptdata['_rownr'] = ++$rowstart;
-					$rptdata['country'] = GeoIP_Code2Name($rptdata['user_cc_code']);
-					if (empty($rptdata['country'])) {
-						$rptdata['country'] = GeoIP_Code2Name("--");
+					// include the GeoIP functions
+					require_once PATH_INCLUDES."geoip_include.php";
+
+					// load the months locale
+					locale_load("months");
+
+					// get the results
+					$reportvars['output'] = array();
+					while ($rptdata = dbarray($rptresult)) {
+						$rptdata['_rownr'] = ++$rowstart;
+						$rptdata['country'] = GeoIP_Code2Name($rptdata['user_cc_code']);
+						if (empty($rptdata['country'])) {
+							$rptdata['country'] = GeoIP_Code2Name("--");
+						}
+						$reportvars['output'][] = $rptdata;
 					}
-					$reportvars['output'][] = $rptdata;
+				} else {
+					$variables['message'] = $locale['rpt950']." ".mysql_error();
 				}
-			} else {
-				$variables['message'] = $locale['rpt950']." ".mysql_error();
 			}
 		}
 	}

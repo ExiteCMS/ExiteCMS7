@@ -30,7 +30,11 @@
 				{$reportvars.output[id]._rownr}
 			</td>
 			<td align='left' class='{cycle values="tbl1,tbl2" advance=false}'>
-				{$reportvars.output[id].country}
+				{if $reportvars.output[id].user_cc_code != ""}
+					<a href='/members.php?order=username&sortby=all&field=username&country={$reportvars.output[id].user_cc_code}'>{$reportvars.output[id].country}</a>
+				{else}
+					{$reportvars.output[id].country}
+				{/if}
 			</td>
 			<td align='center' class='{cycle values="tbl1,tbl2"}'>
 				{$reportvars.output[id].count}
