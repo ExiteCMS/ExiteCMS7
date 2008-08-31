@@ -62,10 +62,9 @@ function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type
 	$mail->Body = $message;
 	
 	if(!$mail->Send()) {
-		$mail->ErrorInfo;
-		$mail->ClearAllRecipients();
+		$mail->ClearAllRecipients(); 
 		$mail->ClearReplyTos();
-		return false;
+		return $mail->ErrorInfo;
 	} else {
 		$mail->ClearAllRecipients(); 
 		$mail->ClearReplyTos();
