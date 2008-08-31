@@ -24,21 +24,6 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "404page", $step);
 
 		$localestrings = array();
-		$localestrings['mon001'] = "January";
-		$localestrings['mon002'] = "February";
-		$localestrings['mon003'] = "March";
-		$localestrings['mon004'] = "April";
-		$localestrings['mon005'] = "May";
-		$localestrings['mon006'] = "June";
-		$localestrings['mon007'] = "July";
-		$localestrings['mon008'] = "August";
-		$localestrings['mon009'] = "September";
-		$localestrings['mon010'] = "October";
-		$localestrings['mon011'] = "November";
-		$localestrings['mon012'] = "December";
-		load_localestrings($localestrings, LP_LOCALE, "months", $step);
-
-		$localestrings = array();
 		$localestrings['400'] = "Edit 404 Page";
 		$localestrings['401'] = "404 page for the locale '%s' is updated";
 		$localestrings['402'] = "Error saving the 404 Page";
@@ -3300,6 +3285,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src513'] = "Forum attachments";
 		$localestrings['src514'] = "Downloads";
 		$localestrings['src515'] = "Members";
+		$localestrings['src516'] = "(subject only)";
+		$localestrings['src517'] = "(subject & message)";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
 
 		$localestrings = array();
@@ -3511,6 +3498,21 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u067'] = "use the BBcode WYSIWYG editor:";
 		$localestrings['u901'] = "Full Name";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
+
+		$localestrings = array();
+		$localestrings['mon001'] = "January";
+		$localestrings['mon002'] = "February";
+		$localestrings['mon003'] = "March";
+		$localestrings['mon004'] = "April";
+		$localestrings['mon005'] = "May";
+		$localestrings['mon006'] = "June";
+		$localestrings['mon007'] = "July";
+		$localestrings['mon008'] = "August";
+		$localestrings['mon009'] = "September";
+		$localestrings['mon010'] = "October";
+		$localestrings['mon011'] = "November";
+		$localestrings['mon012'] = "December";
+		load_localestrings($localestrings, LP_LOCALE, "months", $step);
 		return "";
 	}
 }
@@ -3550,8 +3552,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1219869155");
-$lp_date = "1219869155";
+if (!defined('LP_DATE')) define('LP_DATE', "1220181318");
+$lp_date = "1220181318";
 
 /*---------------------------------------------------+
 | main code                                          |

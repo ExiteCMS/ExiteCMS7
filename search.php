@@ -35,10 +35,24 @@ if (!isset($action)) $action = "";
 $variables['action'] = $action;
 
 if (!isset($search_id)) {
-	if (isset($_POST['search_id']) && isNum($_POST['search_id'])) {
-		$search_id = $_POST['search_id'];
+	if (isset($_POST['search_id'])) {
+		if (isNum($_POST['search_id'])) {
+			$search_id = $_POST['search_id'];
+			$sub_search_id = 0;
+		} else {
+			$sub_search_id = substr($_POST['search_id'], strpos($_POST['search_id'], ".")+1);
+			$search_id = substr($_POST['search_id'], 0, strpos($_POST['search_id'], "."));
+		}
 	} else {
 		$search_id = 0;
+		$sub_search_id = 0;
+	}
+} else {
+	if (isNum($search_id)) {
+		$sub_search_id = 0;
+	} else {
+		$sub_search_id = substr($search_id, strpos($search_id, ".")+1);
+		$search_id = substr($search_id, 0, strpos($search_id, "."));
 	}
 }
 
@@ -48,10 +62,6 @@ $searchindex = array();
 $result = dbquery("SELECT s.*, m.mod_folder FROM ".$db_prefix."search s LEFT JOIN ".$db_prefix."modules m ON s.search_mod_id = m.mod_id WHERE s.search_active = 1".($search_id?" AND s.search_id = '$search_id'":""));
 while ($data = dbarray($result)) {
 	if (checkgroup($data['search_visibility'])) {
-		// do we have a search location? if not, make forumposts default
-//		if (!$search_id && $data['search_name'] == "forumposts") {
-//			$search_id = $data['search_id'];
-//		}
 		// get the title for this search
 		if ($data['search_mod_id']) {
 			$data['custom'] = false;

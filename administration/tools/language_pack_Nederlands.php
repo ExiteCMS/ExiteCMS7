@@ -3206,21 +3206,6 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "main.reports", $step);
 
 		$localestrings = array();
-		$localestrings['mon001'] = "Januari";
-		$localestrings['mon002'] = "Februari";
-		$localestrings['mon003'] = "Maart";
-		$localestrings['mon004'] = "April";
-		$localestrings['mon005'] = "Mei";
-		$localestrings['mon006'] = "Juni";
-		$localestrings['mon007'] = "Juli";
-		$localestrings['mon008'] = "Augustus";
-		$localestrings['mon009'] = "September";
-		$localestrings['mon010'] = "Oktober";
-		$localestrings['mon011'] = "November";
-		$localestrings['mon012'] = "December";
-		load_localestrings($localestrings, LP_LOCALE, "months", $step);
-
-		$localestrings = array();
 		$localestrings['src400'] = "Zoeken";
 		$localestrings['src401'] = "Zoeken naar:";
 		$localestrings['src402'] = "Zoeken";
@@ -3300,6 +3285,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src513'] = "Forum bijlagen";
 		$localestrings['src514'] = "Downloads";
 		$localestrings['src515'] = "Leden";
+		$localestrings['src516'] = "(alleen titel)";
+		$localestrings['src517'] = "(titel & bericht)";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
 
 		$localestrings = array();
@@ -3511,6 +3498,21 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u067'] = "BBcode WYSIWYG editor gebruiken:";
 		$localestrings['u901'] = "Volledige naam";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
+
+		$localestrings = array();
+		$localestrings['mon001'] = "Januari";
+		$localestrings['mon002'] = "Februari";
+		$localestrings['mon003'] = "Maart";
+		$localestrings['mon004'] = "April";
+		$localestrings['mon005'] = "Mei";
+		$localestrings['mon006'] = "Juni";
+		$localestrings['mon007'] = "Juli";
+		$localestrings['mon008'] = "Augustus";
+		$localestrings['mon009'] = "September";
+		$localestrings['mon010'] = "Oktober";
+		$localestrings['mon011'] = "November";
+		$localestrings['mon012'] = "December";
+		load_localestrings($localestrings, LP_LOCALE, "months", $step);
 		return "";
 	}
 }
@@ -3550,8 +3552,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1219869158");
-$lp_date = "1219869158";
+if (!defined('LP_DATE')) define('LP_DATE', "1220181322");
+$lp_date = "1220181322";
 
 /*---------------------------------------------------+
 | main code                                          |

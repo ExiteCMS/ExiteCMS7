@@ -94,14 +94,30 @@ if (isset($action)) {
 		}
 		$boolean = isset($_POST['boolean']) ? 0 : 1;
 
+		if (!isset($sub_search_id)) $sub_search_id = 0;
+
 		// basis of the query for this search
 		if ($boolean) {
-			$sql = "SELECT tp.*, tf.*, tu.user_id,user_name,
-					MATCH(tp.post_subject, tp.post_message) AGAINST ('$stext' IN BOOLEAN MODE) AS score
-					FROM ".$db_prefix."posts tp
-					INNER JOIN ".$db_prefix."forums tf USING(forum_id)
-					INNER JOIN ".$db_prefix."users tu ON tp.post_author=tu.user_id
-					WHERE ".groupaccess('forum_access')." AND MATCH(tp.post_subject, tp.post_message) AGAINST ('$stext' IN BOOLEAN MODE)";
+			switch ($sub_search_id) {
+				case "1":
+					$sql = "SELECT tp.*, tf.*, tu.user_id,user_name,
+							MATCH(tp.post_subject) AGAINST ('$stext' IN BOOLEAN MODE) AS score
+							FROM ".$db_prefix."posts tp
+							INNER JOIN ".$db_prefix."forums tf USING(forum_id)
+							INNER JOIN ".$db_prefix."users tu ON tp.post_author=tu.user_id
+							WHERE ".groupaccess('forum_access')." AND MATCH(tp.post_subject) AGAINST ('$stext' IN BOOLEAN MODE)";
+					break;
+				case "2":
+					// fall through to default
+				default:
+					$sql = "SELECT tp.*, tf.*, tu.user_id,user_name,
+							MATCH(tp.post_subject, tp.post_message) AGAINST ('$stext' IN BOOLEAN MODE) AS score
+							FROM ".$db_prefix."posts tp
+							INNER JOIN ".$db_prefix."forums tf USING(forum_id)
+							INNER JOIN ".$db_prefix."users tu ON tp.post_author=tu.user_id
+							WHERE ".groupaccess('forum_access')." AND MATCH(tp.post_subject, tp.post_message) AGAINST ('$stext' IN BOOLEAN MODE)";
+					break;
+			}
 		} else {
 			$sql = "SELECT tp.*, tf.*, tu.user_id,user_name, 1 AS score
 					FROM ".$db_prefix."posts tp
@@ -112,7 +128,16 @@ if (isset($action)) {
 			$searchstring = "";
 			foreach($stext as $sstring) {
 				if (!empty($sstring)) {
-					$searchstring .= ($searchstring==""?"":(" ".$qtype))." (post_subject LIKE '%".trim($sstring)."%' OR post_message LIKE '%".trim($sstring)."%') ";
+					switch ($sub_search_id) {
+						case "1":
+							$searchstring .= ($searchstring==""?"":(" ".$qtype))." post_subject LIKE '%".trim($sstring)."%' ";
+							break;
+						case "2":
+							// fall through to default
+						default:
+							$searchstring .= ($searchstring==""?"":(" ".$qtype))." (post_subject LIKE '%".trim($sstring)."%' OR post_message LIKE '%".trim($sstring)."%') ";
+							break;
+					}
 				}
 			}
 			if (!empty($searchstring)) {

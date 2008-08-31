@@ -30,7 +30,8 @@
 		<font class='smallalt'>{$locale.436}</font> {$reportvars.output[idx].post_datestamp|date_format:"longdate"}</span>
 	{/section}
 {else}
-	<input type='radio' name='search_id' value='{$searches[id].search_id}' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
+	<input type='radio' name='search_id' value='{$searches[id].search_id}.1' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {$locale.src516} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
+	<input type='radio' name='search_id' value='{$searches[id].search_id}.2' onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {$locale.src517} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
 {/if}
 {***************************************************************************}
 {* End of template                                                         *}
