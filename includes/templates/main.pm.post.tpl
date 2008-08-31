@@ -322,10 +322,10 @@
 		if (html == "") html = "-";
 		document.getElementById('to_list').innerHTML = html;
 
-		if (document.getElementById("group_ids").length > 0) { 
+		if (document.getElementById("group_ids") && document.getElementById("group_ids").length > 0) { 
 			document.getElementById("group_dropdown").style.display = 'inline';
 		}
-		if (document.getElementById("user_ids").length > 0) { 
+		if (document.getElementById("user_ids") && document.getElementById("user_ids").length > 0) { 
 			document.getElementById("user_dropdown").style.display = 'inline';
 		}
 	}

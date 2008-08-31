@@ -317,9 +317,6 @@ function storemessage($message, $old_pm_id) {
 		}
 	}
 
-	// load the sendmail module, we might have to send notifications
-	require_once PATH_INCLUDES."sendmail_include.php";
-
 	// create the recipients list for this message
 	$recipients = "";
 	foreach($message['recipients'] as $recipient) {
@@ -385,6 +382,9 @@ function storemessage($message, $old_pm_id) {
 	$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_reply_id, pmindex_from_id, pmindex_from_email, pmindex_to_id, pmindex_to_email, pmindex_to_group, pmindex_folder, pmindex_read_datestamp)
 		 VALUES ('".$pm_id."', '".$userdata['user_id']."', '0', '".$userdata['user_id']."', '', '0', '', '0', '1', '".time()."')");
 	
+	// load the sendmail module, we might have to send notifications
+	require_once PATH_INCLUDES."sendmail_include.php";
+
 	// loop through the users
 	foreach($message['user_ids'] as $user) {
 		// check if this recipient has room in his inbox. If not, create it
@@ -407,8 +407,13 @@ function storemessage($message, $old_pm_id) {
 			 VALUES ('".$pm_id."', '".$user['user_id']."', '0', '".$userdata['user_id']."', '', '".$user['user_id']."', '', '0', '0', '1')");
 		// user notification if needed
 		if ($user['pmconfig_email_notify']) {
-			sendemail($user['user_name'],$user['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),sprintf($locale['625'],$settings['sitename']),$user['user_name'].sprintf($locale['626'],$userdata['user_name'], $settings['sitename'],$settings['siteurl']));
+			$error = sendemail($user['user_name'],$user['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),sprintf($locale['625'],$settings['sitename']),$user['user_name'].sprintf($locale['626'],$userdata['user_name'], $settings['sitename'],$settings['siteurl']));
 		}
+	}
+	if (isset($error)) {
+		return $error;
+	} else {
+		return true;
 	}
 }
 
