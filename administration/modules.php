@@ -455,8 +455,8 @@ if ($action == 'upgrade' && isset($id)) {
 					// if the panel doesn't exist, try to find another menu panel (if multiple are installed, pick the first one in the ordered list)
 					$result = dbquery("SELECT panel_filename FROM ".$db_prefix."panels WHERE panel_filename LIKE '%_menu_panel.php' ORDER BY panel_order LIMIT 1");
 					if (dbrows($result)) {
-						$data = dbarray($result);
-						$link_panel = substr($data['panel_filename'],0,strpos($data['panel_filename'], "/"));
+						$data2 = dbarray($result);
+						$link_panel = substr($data2['panel_filename'],0,strpos($data2['panel_filename'], "/"));
 					} else {
 						// if still not found, fall back to the CMS default
 						$link_panel = "main_menu_panel";
@@ -483,9 +483,9 @@ if ($action == 'upgrade' && isset($id)) {
 				switch ($settings['sitelinks_localisation']) {
 					case "multiple":
 						$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
-						while ($data = dbarray($result)) {
+						while ($data2 = dbarray($result)) {
 							$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
-								VALUES ('".$mod_link['name']."', '".$data['locale_code']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
+								VALUES ('".$mod_link['name']."', '".$data2['locale_code']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
 						}
 						break;
 					default:
@@ -553,8 +553,8 @@ if ($action == 'upgrade' && isset($id)) {
 					// get the max searchorder
 					$result = dbquery("SELECT max(search_order) as max FROM ".$db_prefix."search");
 					if ($result) {
-						$data = dbarray($result);
-						$max = $data['max'] + 1;
+						$data2 = dbarray($result);
+						$max = $data2['max'] + 1;
 					} else {
 						$max = 1;
 					}
