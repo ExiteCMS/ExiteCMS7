@@ -920,9 +920,9 @@ function show_toolbar_textarea(a, b) {
 		document.write("</select><img src=" + styles_folder_path + "/button_space.gif>");
 	} else if (a == "btFont_Size") {
 		var c = new Array;
-		var px = new Array(0, 6, 8,10,12,14,18,24,36);
+		var px = new Array(6, 8,10,12,14,18,24,36);
 		document.write("<select style=\"width:52px\" class=Hoteditor_iTextarea size=1 onchange=\"wrapSelection('size','=' + this.value,'" + b + "');this.selectedIndex='0';\"><option value=''>" + dropdownSize + "</option>");
-		for (i = 1; i < 9; i++) {
+		for (i = 0; i < 8; i++) {
 			document.write("<option value='" + px[i] + "'>" + px[i] + "px</option>");
 		}
 		document.write("</select><img src=" + styles_folder_path + "/button_space.gif>");
@@ -2415,7 +2415,7 @@ function HTMLToBBCode(a) {
 	} else {
 		a = htmlentities(a);
 	}
-	var px = new Array(0, 6, 8,10,12,14,18,24,28);
+	var px = new Array(6, 8,10,12,14,18,24,36);
 	var b = a.split("<");
 	var c = new Array;
 	var e = 0;
@@ -2568,13 +2568,16 @@ function HTMLToBBCode(a) {
 							if (r == "color") {
 								m += "[color=" + k.color + "]";
 							} else if (r == "size") {
-								if (isNaN(parseInt(k.size))) {
-									k.size = 3;
-								}
-								if (k.size > 8) {
-									m += "[size=" + k.size + "]";
+								if (px[k[r]]) {
+									m += "[size=" + px[(k.size)] + "]";
 								} else {
-									m += "[size=" + px[(k.size+1)] + "]";
+									if (k[r] < px[0]) {
+										m += "[size=" + px[0] + "]";
+									} else if (k[r] > px[7]) {
+										m += "[size=" + px[7] + "]";
+									} else {
+										m += "[size=" + k[r] + "]";
+									}
 								}
 							} else if (r == "face") {
 								m += "[font=" + k.face + "]";
