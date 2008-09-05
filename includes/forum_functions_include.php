@@ -460,11 +460,22 @@ function parsemessage($msg_array) {
 		// build the search and replace arrays
 		$search = array();
 		$replace = array();
-		$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
-		while ($data = dbarray($result)) {
-			if (!empty($data['tag'])) {
-				$search[] = "/(\b)(".$data['tag'].")(\b)/i";
-				$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+		if (dbtable_exists($db_prefix."wiki_pages")) {
+			$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
+			while ($data = dbarray($result)) {
+				if (!empty($data['tag'])) {
+					$search[] = "/(\b)(".$data['tag'].")(\b)/i";
+					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+				}
+			}
+		}
+		if (dbtable_exists($db_prefix."wiki_aliases")) {
+			$result = dbquery("SELECT DISTINCT from_tag FROM ".$db_prefix."wiki_aliases");
+			while ($data = dbarray($result)) {
+				if (!empty($data['from_tag'])) {
+					$search[] = "/(\b)(".$data['from_tag'].")(\b)/i";
+					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+				}
 			}
 		}
 		$rawmsg = preg_replace($search, $replace, $rawmsg);
