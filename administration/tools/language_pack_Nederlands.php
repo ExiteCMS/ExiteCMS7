@@ -194,7 +194,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['404'] = "Terug naar de beheerdersindex";
 		$localestrings['405'] = "Download categorie verwijderd";
 		$localestrings['420'] = "Download categorie wijzigen";
-		$localestrings['421'] = "Download category toevoegen";
+		$localestrings['421'] = "Download categorie toevoegen";
+		$localestrings['422'] = "Download categorie kopieeren";
 		$localestrings['429'] = "Categorie datum aanpassen";
 		$localestrings['430'] = "Categorie naam:";
 		$localestrings['431'] = "Categorie omschrijving:";
@@ -253,6 +254,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['514'] = "Categorie locale:";
 		$localestrings['515'] = "Selecteer een taal:";
 		$localestrings['516'] = "Nieuwe download toevoegen";
+		$localestrings['517'] = "Kopieer";
 		load_localestrings($localestrings, LP_LOCALE, "admin.downloads", $step);
 
 		$localestrings = array();
@@ -3552,8 +3554,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1220181322");
-$lp_date = "1220181322";
+if (!defined('LP_DATE')) define('LP_DATE', "1220606798");
+$lp_date = "1220606798";
 
 /*---------------------------------------------------+
 | main code                                          |

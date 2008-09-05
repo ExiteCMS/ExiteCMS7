@@ -195,6 +195,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['405'] = "Download Category Deleted";
 		$localestrings['420'] = "Edit Download Category";
 		$localestrings['421'] = "Add Download Category";
+		$localestrings['422'] = "Copy Download Category";
 		$localestrings['429'] = "Update category timestamp";
 		$localestrings['430'] = "Category Name:";
 		$localestrings['431'] = "Category Description:";
@@ -253,6 +254,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['514'] = "Category Locale:";
 		$localestrings['515'] = "Select a language:";
 		$localestrings['516'] = "Add a download entry";
+		$localestrings['517'] = "Copy";
 		load_localestrings($localestrings, LP_LOCALE, "admin.downloads", $step);
 
 		$localestrings = array();
@@ -3552,8 +3554,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1220181318");
-$lp_date = "1220181318";
+if (!defined('LP_DATE')) define('LP_DATE', "1220606795");
+$lp_date = "1220606795";
 
 /*---------------------------------------------------+
 | main code                                          |

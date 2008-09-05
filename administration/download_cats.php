@@ -90,7 +90,7 @@ if (isset($_POST['save_cat'])) {
 	}
 	$formaction = FUSION_SELF.$aidlink."&amp;";
 	if (isset($cat_locale) && !empty($cat_locale)) $formaction .= "cat_locale=".$cat_locale;
-	if (cat_not_recursive($cat_id, $cat_sub)) {
+	if ($cat_id == 0 || cat_not_recursive($cat_id, $cat_sub)) {
 		$update_datestamp = isset($_POST['update_datestamp']) && isNum($_POST['update_datestamp']) ? true : false;
 		if (isset($step) && $step == "edit") {
 			// update
@@ -98,6 +98,15 @@ if (isset($_POST['save_cat'])) {
 		} else {
 			// insert
 			$result = dbquery("INSERT INTO ".$db_prefix."download_cats (download_cat_name, download_cat_locale, download_cat_description, download_cat_sorting, download_cat_cat_sorting, download_cat_access, download_cat_image, download_parent, download_datestamp) VALUES('$cat_name', '$cat_locale', '$cat_description', '$cat_sorting', '$cat_cat_sorting', '$cat_access', '$cat_image', '$cat_sub', '".time()."')");
+			$download_cat = mysql_insert_id();
+		}
+		// was this a copy? if so, copy the contents of this category as well
+		if ($step == "copy") {
+			// get the downloads for the original category
+			$result = dbquery("SELECT * FROM ".$db_prefix."downloads WHERE download_cat = ".$cat_id);
+			while ($data = dbarray($result)) {
+				$result2 = dbquery("INSERT INTO ".$db_prefix."downloads (download_title, download_description, download_url, download_cat, download_license, download_os, download_version, download_filesize, download_datestamp, download_count, download_external) VALUES ('".$data['download_title']."', '".$data['download_description']."', '".$data['download_url']."', '$download_cat', '".$data['download_license']."', '".$data['download_os']."', '".$data['download_version']."', '".$data['download_filesize']."', '".time()."', '0', '".$data['download_external']."')");
+			}
 		}
 		$step = "add";
 	} else {
@@ -109,7 +118,7 @@ if (isset($_POST['save_cat'])) {
 	}
 }
 
-if (isset($step) && $step == "edit") {
+if (isset($step) && ($step == "edit" || $step == "copy")) {
 	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='$cat_id'");
 	$data = dbarray($result);
 	$cat_name = $data['download_cat_name'];
@@ -135,9 +144,13 @@ if (isset($step) && $step == "edit") {
 	$cat_access = $data['download_cat_access'];
 	$cat_image = $data['download_cat_image'];
 	$cat_sub = $data['download_parent'];
-	$formaction = FUSION_SELF.$aidlink."&amp;step=edit&amp;cat_id=".$data['download_cat_id'];
+	$formaction = FUSION_SELF.$aidlink."&amp;step=".$step."&amp;cat_id=".$data['download_cat_id'];
 	if (isset($cat_locale) && !empty($cat_locale)) $formaction .= "&amp;cat_locale=".$cat_locale;
-	$title = $locale['420'];
+	if ($step == "edit") {
+		$title = $locale['420'];
+	} else {
+		$title = $locale['422'];
+	}
 } else { 
 	$cat_id = 0;
 	$cat_name = "";

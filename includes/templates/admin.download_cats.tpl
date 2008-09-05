@@ -55,6 +55,7 @@
 					<option value='0'{if $cat_sub == 0} selected{/if}>{$locale.455}</option>
 				{section name=cat loop=$cats}
 					{if $is_edit && $cats[cat].download_cat_id == $cat_id}
+						{* remove the selected category from the dropdown *}
 					{else}
 					<option value='{$cats[cat].download_cat_id}'{if $cat_sub == $cats[cat].download_cat_id} selected{/if}>{$cats[cat].download_cat_name}</option>
 					{/if}
@@ -151,7 +152,7 @@
 	{assign var="cat_locale" value=""}
 {/if}
 <br />
-<table align='center' width='550' cellspacing='1' cellpadding='0' class='tbl-border'>
+<table align='center' width='600' cellspacing='1' cellpadding='0' class='tbl-border'>
 {section name=dc loop=$cats}
 {if $smarty.section.dc.first}
 	<tr>
@@ -183,7 +184,8 @@
 		</td>
 		<td align='center' width='1%' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
 			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=edit&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.503}' title='{$locale.503}' /></a>&nbsp;
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>
+			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=delete&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.504}' title='{$locale.504}' /></a>&nbsp;
+			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=copy&amp;cat_id={$cats[dc].download_cat_id}&amp;cat_locale={$cat_locale}'><img src='{$smarty.const.THEME}images/page_copy.gif' alt='{$locale.517}' title='{$locale.517}' /></a>
 		</td>
 	</tr>
 {sectionelse}
