@@ -46,9 +46,6 @@
 |     (allows override of default settings by the calling ExiteCMS template)
 |   - added option to define a keycode in the calling ExiteCMS template
 |     so that a CMS user can buy one and doesn't have to change this script
-|	- convert relative URL's pasted in the rich text editor to absolute
-|     url's when converting to BBcode (to avoid ../ kind of relative paths
-|     in [url] and [img] tags, which the ExiteCMS BBcode parser refuses)
 |
 +--------------------------------------------------------------------------
 */
@@ -2479,7 +2476,8 @@ function HTMLToBBCode(a) {
 					var o = f.replace(/<a(.*?)href="(.*?)"/gi, "$2");
 					o = o.replace(">" + n[1], "");
 					var p = o.split(" ");
-					o = toAbsURL(p[0]);
+//					o = toAbsURL(p[0]);
+					o = p[0];
 					if (k.style) {
 						if (n[1] == o) {
 							m = "[url]" + AnalyzeHTMLBlock(g, k);
@@ -2599,7 +2597,8 @@ function HTMLToBBCode(a) {
 						f = f.replace(/<img(.*?)src="(.*?)">/gi, "[img]$2[/img]");
 					} else {
 						f.match(/<img(.*?)src="(.*?)"(.*?)>/gi);
-						var s = toAbsURL(RegExp.$2);
+//						var s = toAbsURL(RegExp.$2);
+						var s = RegExp.$2;
 						s = s.replace("./", "");
 						if (s.toLowerCase().substr(0, 7) != "http://" && s.toLowerCase().substr(0, 1) != "/") {
 							var t = document.URL;
