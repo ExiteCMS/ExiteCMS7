@@ -232,6 +232,7 @@
 				<input type='hidden' name='org_message' value='{$org_message}' />
 				<input type='hidden' name='pmindex_from_id' value='{$pmindex_from_id}' />
 				<input type='hidden' name='pmindex_to_id' value='{$pmindex_to_id}' />
+				<input type='hidden' name='random_id' value='{$random_id}' />
 				<input type='submit' name='close' value='{$locale.435}' class='button' />
 				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="return ValidateForm()" />

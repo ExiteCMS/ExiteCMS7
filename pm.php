@@ -300,7 +300,16 @@ function deletemessage($msg_id, $user_id) {
 +----------------------------------------------------*/
 function storemessage($message, $old_pm_id) {
 
-	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $user_options, $totals;
+	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $user_options, $totals, $random_id;
+
+	// check for double posting, generate an error if it is
+	if (isset($_SESSION['pm'][$random_id])) {
+		return $locale['641'];
+	}
+
+	// add this post to pm message tracker
+	if (!isset($_SESSION['pm']) || !is_array($_SESSION['pm'])) $_SESSION['pm'] = array();
+	$_SESSION['pm'][$random_id] = time()+60*60*12;
 
 	// check if we need to make room in the outbox of the sender
 	if (!$global_options['pm_sentbox_group']) {
@@ -1042,6 +1051,13 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	$result = dbquery("SELECT locales_key, locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$settings['locale_code']."' AND locales_name = 'colors'");
 	while ($data = dbarray($result)) {
 		$variables['fontcolors'][] = array('color' => $data['locales_key'], 'name' => $data['locales_value']);
+	}
+
+	// message id, to prevend duplicate posts
+	if (isset($_POST['random_id'])) {
+		$variables['random_id'] = $_POST['random_id'];
+	} else {
+		$variables['random_id'] = md5(microtime());
 	}
 
 	// define the panel and assign the template variables

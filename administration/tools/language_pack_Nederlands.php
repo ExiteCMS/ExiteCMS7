@@ -3113,6 +3113,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['638'] = "In de folder lijst, toon me de:";
 		$localestrings['639'] = "Onderwerpenlijst";
 		$localestrings['640'] = "volledige berichten";
+		$localestrings['641'] = "Fout: U hebt dit bericht al geplaatst. Misschien de terug knop van uw browser gebruikt?";
 		load_localestrings($localestrings, LP_LOCALE, "main.pm", $step);
 
 		$localestrings = array();
@@ -3554,8 +3555,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1220606798");
-$lp_date = "1220606798";
+if (!defined('LP_DATE')) define('LP_DATE', "1220608759");
+$lp_date = "1220608759";
 
 /*---------------------------------------------------+
 | main code                                          |

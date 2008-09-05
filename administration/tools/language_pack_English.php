@@ -3113,6 +3113,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['638'] = "In the folder list, show me the:";
 		$localestrings['639'] = "Headers only";
 		$localestrings['640'] = "Message details";
+		$localestrings['641'] = "Error: Your have already posted this message. Did you use the back button?";
 		load_localestrings($localestrings, LP_LOCALE, "main.pm", $step);
 
 		$localestrings = array();
@@ -3554,8 +3555,8 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1220606795");
-$lp_date = "1220606795";
+if (!defined('LP_DATE')) define('LP_DATE', "1220608756");
+$lp_date = "1220608756";
 
 /*---------------------------------------------------+
 | main code                                          |
