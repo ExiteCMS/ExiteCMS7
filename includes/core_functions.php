@@ -612,9 +612,7 @@ function _parseubb_checkimg($matches) {
 
 	// validate the URL (in $matches[1]) or check if it is a local image file
 	if (isURL($matches[1], true) || file_exists(PATH_ROOT.$matches[1])) {
-		if (verify_image($matches[1])) {
-			return "<img src=\"".$matches[1]."\" style=\"border:0px\" alt=\"\" />";
-		}
+		return "<img src=\"".$matches[1]."\" style=\"border:0px\" alt=\"\" />";
 	}
 	// return a sanitized version of the orginal BBcode
 	return stripinput($matches[0]);
@@ -752,48 +750,46 @@ function descript($text,$striptags=true) {
 
 // Scan image files for malicious code
 function verify_image($file) {
-        $image_safe = true;
-        // check if the file is a URL
-        if (isURL($file)) {
-                // check if the URL exists
-                $uri = parse_url($file);
-                if ($uri['host'] == $_SERVER['HTTP_HOST']) {
-                        // from the local server, image has been checked when uploaded!
-                        return true;
-                }
-                $uri['port'] = isset($uri['port']) ? $uri['port'] : 80;
-                // use a timeout of 1 second, slow servers will slow us down too!
-                $handle = @fsockopen($uri['host'], $uri['port'], $errno, $errstr, 1);
-                if (!$handle) {
-                        // no response on URL request, image is invalid!
-                        return false;
-                }
-                fclose($handle);
-                // for now. Online checking takes to long...
-                return true;
-        }
-        // check the image
-        $er = error_reporting(0);
-        // get info about the image
-        $imginfo = @getimagesize($file);
-        error_reporting($er);
-        if ($imginfo === false) {
-                $image_safe = false;
-        } else {
-                // get the file contents so we can check it
-                $txt = file_get_contents($file);
-                if ($txt === false) { $image_safe = false; }
-                elseif (preg_match('#&(quot|lt|gt|nbsp);#i', $txt)) { $image_safe = false; }
-                elseif (preg_match("#&\#x([0-9a-f]+);#i", $txt)) { $image_safe = false; }
-                elseif ($imginfo[2] != 5 && preg_match('#&\#([0-9]+);#i', $txt)) { $image_safe = false; }       // skip for psd files
-                elseif (preg_match("#([a-z]*)=([\`\'\"]*)script:#iU", $txt)) { $image_safe = false; }
-                elseif (preg_match("#([a-z]*)=([\`\'\"]*)javascript:#iU", $txt)) { $image_safe = false; }
-                elseif (preg_match("#([a-z]*)=([\'\"]*)vbscript:#iU", $txt)) { $image_safe = false; }
-                elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*expression\([^>]*>#iU", $txt)) { $image_safe = false; }
-                elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*behaviour\([^>]*>#iU", $txt)) { $image_safe = false; }
-                elseif (preg_match("#</*(applet|link|style|script|iframe|frame|frameset)[^>]*>#i", $txt)) { $image_safe = false; }
-        }
-        return $image_safe;
+	$image_safe = true;
+	// check if the file is a URL
+	if (isURL($file)) {
+		// check if the URL exists
+		$uri = parse_url($file);
+		if ($uri['host'] == $_SERVER['HTTP_HOST']) {
+			// from the local server, image has been checked when uploaded!
+			return true;
+		}
+		$uri['port'] = isset($uri['port']) ? $uri['port'] : 80;
+		// use a timeout of 1 second, slow servers will slow us down too!
+		$handle = @fsockopen($uri['host'], $uri['port'], $errno, $errstr, 1);
+		if (!$handle) {
+			// no response on URL request, image is invalid!
+			return false;
+		}
+		fclose($handle);
+	}
+	// check the image
+	$er = error_reporting(0);
+	// get info about the image
+	$imginfo = @getimagesize($file);
+	error_reporting($er);
+	if ($imginfo === false) {
+		$image_safe = false;
+	} else {
+		// get the file contents so we can check it
+		$txt = file_get_contents($file);
+		if ($txt === false) { $image_safe = false; }
+		elseif (preg_match('#&(quot|lt|gt|nbsp);#i', $txt)) { $image_safe = false; }
+		elseif (preg_match("#&\#x([0-9a-f]+);#i", $txt)) { $image_safe = false; }
+		elseif ($imginfo[2] != 5 && preg_match('#&\#([0-9]+);#i', $txt)) { $image_safe = false; }       // skip for psd files
+		elseif (preg_match("#([a-z]*)=([\`\'\"]*)script:#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#([a-z]*)=([\`\'\"]*)javascript:#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#([a-z]*)=([\'\"]*)vbscript:#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*expression\([^>]*>#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#(<[^>]+)style=([\`\'\"]*).*behaviour\([^>]*>#iU", $txt)) { $image_safe = false; }
+		elseif (preg_match("#</*(applet|link|style|script|iframe|frame|frameset)[^>]*>#i", $txt)) { $image_safe = false; }
+	}
+	return $image_safe;
 }
 
 // Replace offensive words with the defined replacement word
