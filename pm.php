@@ -516,6 +516,9 @@ $totals['archive'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$
 // make sure the action variable is defined
 if (!isset($action)) $action = "";
 
+// make sure view_id has a value
+$variables['view_id'] = 0;
+
 // reset the error message
 $variables['errormessage'] = "";
 
@@ -1088,18 +1091,66 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$title = $folder;
 		// select the records for this folder's page
 		if ($folder == $locale[402]) {
+			// if msg_id has been given, but rowstart = 0, determine rowstart first
+			if ($variables['view_id'] != 0 && $rowstart == 0) {
+				$result = dbquery(
+					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '0'
+					ORDER BY m.pm_datestamp DESC"
+				);
+				$found = 0;
+				while ($data = dbarray($result)) {
+					if ($data['pmindex_id'] == $variables['view_id']) {
+						break;
+					}
+					$found++;
+				}
+				$rowstart = ($found % ITEMS_PER_PAGE -1) * ITEMS_PER_PAGE;
+			}
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '0'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);
 		} elseif ($folder == $locale[403]) {
+			// if msg_id has been given, but rowstart = 0, determine rowstart first
+			if ($variables['view_id'] != 0 && $rowstart == 0) {
+				$result = dbquery(
+					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
+					ORDER BY m.pm_datestamp DESC"
+				);
+				$found = 0;
+				while ($data = dbarray($result)) {
+					if ($data['pmindex_id'] == $variables['view_id']) {
+						break;
+					}
+					$found++;
+				}
+				$rowstart = ($found % ITEMS_PER_PAGE -1) * ITEMS_PER_PAGE;
+			}
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);
 		} elseif ($folder == $locale[404]) {
+			// if msg_id has been given, but rowstart = 0, determine rowstart first
+			if ($variables['view_id'] != 0 && $rowstart == 0) {
+				$result = dbquery(
+					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '2'
+					ORDER BY m.pm_datestamp DESC"
+				);
+				$found = 0;
+				while ($data = dbarray($result)) {
+					if ($data['pmindex_id'] == $variables['view_id']) {
+						break;
+					}
+					$found++;
+				}
+				$rowstart = ($found % ITEMS_PER_PAGE -1) * ITEMS_PER_PAGE;
+			}
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '2'
@@ -1120,11 +1171,14 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			if ($data['pmindex_from_id'] == $userdata['user_id']) {
 				$readstatus = array();
 				foreach($data['recipients'] as $recipient) {
-					$result2 = dbquery("SELECT u.user_name, pmi.* FROM ".$db_prefix."pm_index pmi, ".$db_prefix."users u WHERE pmi.pmindex_user_id = u.user_id AND pm_id = '".$data['pm_id']."' AND pmindex_user_id = '".$recipient['user_id']."'");
-					if ($data2 = dbarray($result2)) {
-						$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read' => ($data['pmindex_read_datestamp'] <> '0'), 'datestamp' => $data2['pmindex_read_datestamp']);
-					} else {
-						$readstatus[] = array('user_id' => 0, 'user_name' => "", 'read' => 0, 'datestamp' => 0);
+					// skip the groups, we only need the user id's
+					if (isset($recipient['user_id'])) {
+						$result2 = dbquery("SELECT u.user_name, pmi.* FROM ".$db_prefix."pm_index pmi, ".$db_prefix."users u WHERE pmi.pmindex_user_id = u.user_id AND pm_id = '".$data['pm_id']."' AND pmindex_user_id = '".$recipient['user_id']."'");
+						if ($data2 = dbarray($result2)) {
+							$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read' => ($data['pmindex_read_datestamp'] <> '0'), 'datestamp' => $data2['pmindex_read_datestamp']);
+						} else {
+							$readstatus[] = array('user_id' => 0, 'user_name' => "", 'read' => 0, 'datestamp' => 0);
+						}
 					}
 				}
 				$data['readstatus'] = $readstatus;

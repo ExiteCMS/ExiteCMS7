@@ -3212,7 +3212,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src400'] = "Zoeken";
 		$localestrings['src401'] = "Zoeken naar:";
 		$localestrings['src402'] = "Zoeken";
-		$localestrings['src403'] = "Locatie:";
+		$localestrings['src403'] = "Zoeklocatie:";
 		$localestrings['src404'] = "Opties:";
 		$localestrings['src405'] = array();
 		$localestrings['src405']['0'] = array();
@@ -3290,20 +3290,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src515'] = "Leden";
 		$localestrings['src516'] = "(alleen titel)";
 		$localestrings['src517'] = "(titel & bericht)";
+		$localestrings['src518'] = "Privé berichten";
+		$localestrings['src519'] = "Inbox";
+		$localestrings['src520'] = "Outbox";
+		$localestrings['src521'] = "Archief";
+		$localestrings['src522'] = "Aan";
+		$localestrings['src523'] = "Van";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
-
-		$localestrings = array();
-		$localestrings['src400'] = "Search this site";
-		$localestrings['src401'] = "Search";
-		$localestrings['src402'] = "Result for your search";
-		$localestrings['src403'] = "Currently there are no searches defined";
-		$localestrings['src410'] = "Articles";
-		$localestrings['src411'] = "News";
-		$localestrings['src412'] = "Forum posts";
-		$localestrings['src413'] = "Forum attachments";
-		$localestrings['src414'] = "Downloads";
-		$localestrings['src415'] = "Members";
-		load_localestrings($localestrings, LP_LOCALE, "main.searches", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Selecteer de standaard taal voor uw site";

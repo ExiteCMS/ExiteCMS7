@@ -3212,7 +3212,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src400'] = "Search";
 		$localestrings['src401'] = "Search for:";
 		$localestrings['src402'] = "Search";
-		$localestrings['src403'] = "Location:";
+		$localestrings['src403'] = "Search location:";
 		$localestrings['src404'] = "Sorting:";
 		$localestrings['src405'] = array();
 		$localestrings['src405']['0'] = array();
@@ -3290,20 +3290,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src515'] = "Members";
 		$localestrings['src516'] = "(subject only)";
 		$localestrings['src517'] = "(subject & message)";
+		$localestrings['src518'] = "Private messages";
+		$localestrings['src519'] = "Inbox";
+		$localestrings['src520'] = "Outbox";
+		$localestrings['src521'] = "Archive";
+		$localestrings['src522'] = "To";
+		$localestrings['src523'] = "From";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
-
-		$localestrings = array();
-		$localestrings['src400'] = "Search this site";
-		$localestrings['src401'] = "Search";
-		$localestrings['src402'] = "Result for your search";
-		$localestrings['src403'] = "Currently there are no searches defined";
-		$localestrings['src410'] = "Articles";
-		$localestrings['src411'] = "News";
-		$localestrings['src412'] = "Forum posts";
-		$localestrings['src413'] = "Forum attachments";
-		$localestrings['src414'] = "Downloads";
-		$localestrings['src415'] = "Members";
-		load_localestrings($localestrings, LP_LOCALE, "main.searches", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Select your default locale";

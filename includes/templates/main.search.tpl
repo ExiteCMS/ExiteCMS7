@@ -68,8 +68,9 @@
 									<option value='count'>{$locale.src443}</option>
 								</select>
 							</td>
-							<td align='right' class='tbl1'>
+							<td align='left' class='tbl1'>
 								<input type='radio' id='order1' name='order' value='0' checked='checked' /> {$locale.src423}
+								<br />
 								<input type='radio' id='order2' name='order' value='1' /> {$locale.src424}
 							</td>
 						</tr>
