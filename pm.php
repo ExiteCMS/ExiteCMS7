@@ -1105,7 +1105,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 					}
 					$found++;
 				}
-				$rowstart = ($found % ITEMS_PER_PAGE -1) * ITEMS_PER_PAGE;
+				$rowstart = intval($found / ITEMS_PER_PAGE) * ITEMS_PER_PAGE;
 			}
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
@@ -1127,7 +1127,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 					}
 					$found++;
 				}
-				$rowstart = ($found % ITEMS_PER_PAGE -1) * ITEMS_PER_PAGE;
+				$rowstart = intval($found / ITEMS_PER_PAGE) * ITEMS_PER_PAGE;
 			}
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
@@ -1149,7 +1149,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 					}
 					$found++;
 				}
-				$rowstart = ($found % ITEMS_PER_PAGE -1) * ITEMS_PER_PAGE;
+				$rowstart = intval($found / ITEMS_PER_PAGE) * ITEMS_PER_PAGE;
 			}
 			$result = dbquery(
 				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
@@ -1175,7 +1175,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 					if (isset($recipient['user_id'])) {
 						$result2 = dbquery("SELECT u.user_name, pmi.* FROM ".$db_prefix."pm_index pmi, ".$db_prefix."users u WHERE pmi.pmindex_user_id = u.user_id AND pm_id = '".$data['pm_id']."' AND pmindex_user_id = '".$recipient['user_id']."'");
 						if ($data2 = dbarray($result2)) {
-							$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read' => ($data['pmindex_read_datestamp'] <> '0'), 'datestamp' => $data2['pmindex_read_datestamp']);
+							$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read' => ($data2['pmindex_read_datestamp'] != 0), 'datestamp' => $data2['pmindex_read_datestamp']);
 						} else {
 							$readstatus[] = array('user_id' => 0, 'user_name' => "", 'read' => 0, 'datestamp' => 0);
 						}
