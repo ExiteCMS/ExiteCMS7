@@ -147,7 +147,7 @@ if (file_exists('/tmp/GeoIPCountryCSV.zip')) {
 						display("  * Updating country code for statistics record '".$data['dlsi_id']."'.");
 						$result2 = dbquery("UPDATE ".$db_prefix."dlstats_ips SET dlsi_ccode = '".$cc."' WHERE dlsi_id = '".$data['dlsi_id']."'");
 					} else {
-						display("  * No country code found for statistics record '".$data['dlsi_id']."'.");
+						display("  * No country code found for statistics record '".$data['dlsi_id']."', ip = ".$data['dlsi_ip'].".");
 					}
 				}
 			}
