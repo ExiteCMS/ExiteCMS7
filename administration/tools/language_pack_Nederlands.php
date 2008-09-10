@@ -519,6 +519,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['307'] = "Het pakket voor de taal %s (%s) is succesvol opgewaardeerd";
 		$localestrings['308'] = "Bij het verwerken van het pakket voor de taal %s (%s) is een fout opgetreden. De fout is:";
 		$localestrings['309'] = "U kunt dit taal pakket niet installeren. Dit pakket is bedoelt voor ExiteCMS versie";
+		$localestrings['310'] = "Locale";
+		$localestrings['311'] = "Countries";
+		$localestrings['312'] = "Language pack #";
+		$localestrings['313'] = "Currently installed";
+		$localestrings['314'] = "This is an outdated language pack. A newer one is already installed.";
 		load_localestrings($localestrings, LP_LOCALE, "admin.main", $step);
 
 		$localestrings = array();
@@ -3536,7 +3541,7 @@ if (!function_exists('load_localestrings')) {
 			if (is_array($value)) {
 				$value = "#ARRAY#\n".serialize($value);
 			}
-			$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".time()."')");
+			$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".LP_DATE."')");
 		}
 		$_db_log = $dblog;
 		return true;
@@ -3548,8 +3553,9 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1220608759");
-$lp_date = "1220608759";
+if (!defined('LP_DATE')) define('LP_DATE', "1220999409");
+if (!defined('LP_FLAGS')) define('LP_FLAGS', "nl|be");
+$lp_date = "1220999409";
 
 /*---------------------------------------------------+
 | main code                                          |
@@ -3635,6 +3641,12 @@ if (!defined('LP_SKIP_MAIN')) {
 		// interactive mode
 		require_once PATH_INCLUDES."theme_functions.php";
 	
+		// countries for which this language pack applies
+		$variables['flags'] = explode("|", LP_FLAGS);
+
+		// check the last update of the locale
+		$variables['last_update'] = dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'");
+		
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;
 		$variables['can_remove'] = $variables['can_install'] ? FALSE : TRUE;

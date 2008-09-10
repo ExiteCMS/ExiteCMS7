@@ -510,7 +510,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['261'] = "x";
 		$localestrings['262'] = "Unread Posts:";
 		$localestrings['300'] = "ExiteCMS Language packs";
-		$localestrings['301'] = "This is the <u>%1\$s</u> language pack (locale '%2\$s')<br />version <u>%4\$s</u> for ExiteCMS version <u>%3\$s</u>";
+		$localestrings['301'] = "ExiteCMS version";
 		$localestrings['302'] = "Install";
 		$localestrings['303'] = "Remove";
 		$localestrings['304'] = "Upgrade";
@@ -519,6 +519,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['307'] = "Language pack for %s (%s) succesfully upgraded";
 		$localestrings['308'] = "While processing the language pack for %s (%s), an error occured. The error is:";
 		$localestrings['309'] = "You can not install this language pack. This pack is for ExiteCMS version";
+		$localestrings['310'] = "Locale";
+		$localestrings['311'] = "Countries";
+		$localestrings['312'] = "Language pack #";
+		$localestrings['313'] = "Currently installed";
+		$localestrings['314'] = "This is an outdated language pack. A newer one is already installed.";
 		load_localestrings($localestrings, LP_LOCALE, "admin.main", $step);
 
 		$localestrings = array();
@@ -3536,7 +3541,7 @@ if (!function_exists('load_localestrings')) {
 			if (is_array($value)) {
 				$value = "#ARRAY#\n".serialize($value);
 			}
-			$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".time()."')");
+			$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".LP_DATE."')");
 		}
 		$_db_log = $dblog;
 		return true;
@@ -3548,8 +3553,9 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1220608756");
-$lp_date = "1220608756";
+if (!defined('LP_DATE')) define('LP_DATE', "1220999447");
+if (!defined('LP_FLAGS')) define('LP_FLAGS', "gb|us|ca");
+$lp_date = "1220999447";
 
 /*---------------------------------------------------+
 | main code                                          |
@@ -3635,6 +3641,12 @@ if (!defined('LP_SKIP_MAIN')) {
 		// interactive mode
 		require_once PATH_INCLUDES."theme_functions.php";
 	
+		// countries for which this language pack applies
+		$variables['flags'] = explode("|", LP_FLAGS);
+
+		// check the last update of the locale
+		$variables['last_update'] = dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'");
+		
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;
 		$variables['can_remove'] = $variables['can_install'] ? FALSE : TRUE;

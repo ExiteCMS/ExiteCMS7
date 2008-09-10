@@ -276,12 +276,15 @@ function load_localestrings($localestrings, $locales_code, $locales_name, $step=
 		$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_code = '$locales_code' AND locales_name = '$locales_name'");
 	}
 
+	// determine the timestamp of this update
+	$timestamp = defined('LP_DATE') ? LP_DATE : time();
+
 	// proces the imported locale strings
 	foreach ($localestrings as $key => $value) {
 		if (is_array($value)) {
 			$value = "#ARRAY#\n".serialize($value);
 		}
-		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".time()."')");
+		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".$timestamp."')");
 	}
 	return true;
 }
