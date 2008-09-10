@@ -3103,7 +3103,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['623'] = "Bewaar opties";
 		$localestrings['624'] = "Opties bewaard";
 		$localestrings['625'] = "Er is een nieuw privé bericht voor u op %s";
-		$localestrings['626'] = ",\nU hebt een nieuw privé bericht ontvangen op %2\$s van '%1\$s'. U kunt dit bericht lezen op %3\$spm.php\n\nU kunt verdere notificaties uitschakelen via het optie paneel in het privé berichten scherm indien u niet langer prijs stelt op deze berichten.";
+		$localestrings['626'] = ",\nU hebt een nieuw privé bericht ontvangen:\n\n\tvan %1\$s op %2\$s\n\tOnderwerp: %3\$s\n\nU kunt dit bericht lezen op %4\$spm.php\n\nU kunt verdere notificaties uitschakelen via het optie paneel in het privé berichten scherm indien u niet langer prijs stelt op deze berichten.";
 		$localestrings['627'] = "Fout";
 		$localestrings['628'] = "Privé bericht kan niet verzonden worden. De inbox van de ontvanger is vol.";
 		$localestrings['629'] = "U kunt de selecteerde berichten niet verplaatsen naar de gespecificeerde folder, omdat deze de maximum limiet heeft bereikt.";

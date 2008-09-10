@@ -416,7 +416,10 @@ function storemessage($message, $old_pm_id) {
 			 VALUES ('".$pm_id."', '".$user['user_id']."', '0', '".$userdata['user_id']."', '', '".$user['user_id']."', '', '0', '0', '1')");
 		// user notification if needed
 		if ($user['pmconfig_email_notify']) {
-			$error = sendemail($user['user_name'],$user['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),sprintf($locale['625'],$settings['sitename']),$user['user_name'].sprintf($locale['626'],$userdata['user_name'], $settings['sitename'],$settings['siteurl']));
+			$error = sendemail($user['user_name'], $user['user_email'], $settings['siteusername'],
+						($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),
+						sprintf($locale['625'],$settings['sitename']),
+						$user['user_name'].sprintf($locale['626'], $userdata['user_name'], $settings['sitename'], $message['pm_subject'], $settings['siteurl']));
 		}
 	}
 	if (isset($error)) {
