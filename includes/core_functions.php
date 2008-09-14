@@ -343,16 +343,20 @@ function shortenlink($text, $length, $filler="...") {
 	$returner = str_replace($enc, $dec, $text);
 	if (strlen($returner) > $length) {
 		$url = preg_match("=[^/]/[^/]=",$returner,$treffer,PREG_OFFSET_CAPTURE);
-		$cutpos = $treffer[0][1]+2;
-		$part[0] = substr($returner,0,$cutpos);
-		$part[1] = substr($returner,$cutpos);
-		$strlen1 = $cutpos;
-		if ($strlen1 > $length) {
-			$returner = substr($returner,0,$length-3).$filler;
+		if (!$url) {
+			// invalid url, skip it
 		} else {
-			$strlen2 = strlen($part[1]);
-			$cutpos = $strlen2-($length-3-$strlen1);
-			$returner = $part[0].$filler.substr($part[1],$cutpos);
+			$cutpos = $treffer[0][1]+2;
+			$part[0] = substr($returner,0,$cutpos);
+			$part[1] = substr($returner,$cutpos);
+			$strlen1 = $cutpos;
+			if ($strlen1 > $length) {
+				$returner = substr($returner,0,$length-3).$filler;
+			} else {
+				$strlen2 = strlen($part[1]);
+				$cutpos = $strlen2-($length-3-$strlen1);
+				$returner = $part[0].$filler.substr($part[1],$cutpos);
+			}
 		}
 	}
 	$returner = str_replace($dec, $enc, $returner);
