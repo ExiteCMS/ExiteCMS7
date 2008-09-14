@@ -139,6 +139,9 @@ function _write_session($session_id,$session_data) {
 	if (!$session_data) {
 		return false;
 	} else {
+		// check for the site_visited cookie. If not found, there can't be session data available
+		if (!isset($_COOKIE['site_visited'])) return false;
+
 		// define the expiration time of this session
 		if ($settings['session_gc_maxlifetime']) {
 			$session_expire = time() + $settings['session_gc_maxlifetime'];
