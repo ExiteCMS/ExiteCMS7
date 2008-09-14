@@ -53,12 +53,33 @@
 		</tr>
 		{/if}
 		{if $panel_id == 0 || $panel_type == "dynamic"}
+		<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}editarea/edit_area_full_with_plugins.js"></script>
+		{literal}
+			<script language="javascript" type="text/javascript">
+			editAreaLoader.init({
+				id : "panel_code"		// textarea id
+				,syntax: "php"			// syntax to be uses for highgliting
+				,start_highlight: true		// to display with highlight mode on start-up
+				,language: "{/literal}{$settings.locale_code}{literal}"
+				,display:"later"
+				,font_size: 8
+			});
+			editAreaLoader.init({
+				id : "panel_template"		// textarea id
+				,syntax: "smarty"			// syntax to be uses for highgliting
+				,start_highlight: true		// to display with highlight mode on start-up
+				,language: "{/literal}{$settings.locale_code}{literal}"
+				,display:"later"
+				,font_size: 8
+			});
+			</script>
+		{/literal}
 		<tr>
 			<td valign='top' class='tbl'>
 				{$locale.455}
 			</td>
 			<td class='tbl'>
-				<textarea name='panel_code' cols='80' rows='15' class='textbox' style='width:450px;'>{$panel_code}</textarea>
+				<textarea id='panel_code' name='panel_code' cols='80' rows='15' class='textbox' style='width:450px;'>{$panel_code}</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -66,7 +87,7 @@
 				{$locale.465}
 			</td>
 			<td class='tbl'>
-				<textarea name='panel_template' cols='80' rows='15' class='textbox' style='width:450px;'>{$panel_template}</textarea>
+				<textarea id='panel_template' name='panel_template' cols='80' rows='15' class='textbox' style='width:450px;'>{$panel_template}</textarea>
 			</td>
 		</tr>
 		{/if}
