@@ -7,7 +7,8 @@ $GLOBALS["editable_ext"]=array(
 	"\.txt$|\.php$|\.php3$|\.php5$|\.phtml$|\.inc$|\.sql$|\.pl$|\.csv$",
 	"\.htm$|\.html$|\.shtml$|\.dhtml$|\.xml$",
 	"\.js$|\.css$|\.cgi$|\.cpp$|\.c$|\.cc$|\.cxx$|\.hpp$|\.h$",
-	"\.pas$|\.p$|\.java$|\.py$|\.sh$\.tcl$|\.tk$"
+	"\.pas$|\.p$|\.java$|\.py$|\.sh$\.tcl$|\.tk$",
+	"\.tpl$"
 );
 //------------------------------------------------------------------------------
 // image files:
@@ -26,6 +27,7 @@ $GLOBALS["used_mime_types"]=array(
 	
 	// programming
 	"php"	=> array($GLOBALS["mimes"]["php"],"source_php.png","\.php$|\.php3$|\.phtml$|\.inc$"),
+	"tpl"	=> array($GLOBALS["mimes"]["tpl"],"source.png","\.tpl$"),
 	"sql"	=> array($GLOBALS["mimes"]["sql"],"source.png","\.sql$"),
 	"perl"	=> array($GLOBALS["mimes"]["perl"],"source_pl.png","\.pl$"),
 	"html"	=> array($GLOBALS["mimes"]["html"],"html.png","\.htm$|\.html$|\.shtml$|\.dhtml$|\.xml$"),

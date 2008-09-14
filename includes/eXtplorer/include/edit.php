@@ -1,6 +1,7 @@
 <?php
 // ensure this file is being included by a parent file
 if( !defined( '_JEXEC' ) && !defined( '_VALID_MOS' ) ) die( 'Restricted access' );
+require_once dirname(__FILE__)."/../../core_functions.php";
 /**
  * @version $Id: edit.php 105 2008-05-31 13:38:38Z soeren $
  * @package eXtplorer
@@ -99,6 +100,8 @@ class ext_Edit extends ext_Action {
 				$cp_lang = 'ruby'; break;
 			case 'sql':
 				$cp_lang = 'sql'; break;
+			case 'tpl':
+				$cp_lang = 'smarty'; break;
 			case 'vb':
 			case 'vbs':
 				$cp_lang = 'vbscript'; break;
@@ -130,7 +133,7 @@ class ext_Edit extends ext_Action {
 		$content = stripslashes( $content );
 	}
 	//$content = htmlspecialchars( $content );
-		
+
 	?><script type="text/javascript">//<!--
 	dialog.setContentSize( 700, 500 );
 	simple = new Ext.form.Form({
@@ -196,7 +199,7 @@ class ext_Edit extends ext_Action {
 	simple.addButton('<?php echo ext_Lang::msg('btnclose', true ) ?>', function() { dialog.destroy(); } );
 	simple.render('adminForm');
 	simple.findField('thecode').setValue(simple.findField( 'thecode').getValue().replace( /&gt;/g, '>').replace( /&lt;/g, '<'));
-	editAreaLoader.baseURL = "<?php echo _EXT_URL ?>/scripts/editarea/";
+	editAreaLoader.baseURL = "<?php echo $GLOBALS['settings']['siteurl'] ?>includes/editarea/";
 	editAreaLoader.init({
 		id : "ext_codefield"		// textarea id
 		,syntax: "<?php echo $cp_lang ?>"			// syntax to be uses for highgliting

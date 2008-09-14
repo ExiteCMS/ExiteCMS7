@@ -310,7 +310,7 @@ class ext_List extends ext_Action {
 		show_header();
 		$scriptTag = '
 		<script type="text/javascript" src="'. _EXT_URL . '/fetchscript.php?'
-			.'&amp;subdir[]=scripts/editarea/&amp;file[]=edit_area_full_with_plugins.js'
+			.'&amp;subdir[]='.BASEDIR.'includes/editarea/&amp;file[]=edit_area_full_with_plugins.js'
 			.'&amp;subdir[]=scripts/extjs/&amp;file[]=yui-utilities.js'
 			.'&amp;subdir[]=scripts/extjs/&amp;file[]=ext-yui-adapter.js'
 			.'&amp;subdir[]=scripts/extjs/&amp;file[]=ext-all.js&amp;gzip=1"></script>

@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__)."/../core_functions.php";
 /**
 * This file is used to send gzipped Javascripts and Stylesheets to the browser
 * 
@@ -187,10 +188,14 @@ for( $i = 0; $i < $countFiles; $i++ ) {
 	$file = $files[$i];
 	$subdir = $subdirs[$i];
 	
-	$dir = realpath( $base_dir . '/' .  $subdir );
+	if ($subdir{0} == "/") {
+		$dir = realpath( PATH_ROOT . $subdir );
+	} else {
+		$dir = realpath( $base_dir . '/' .  $subdir );
+	}
 	$file = $dir . '/' . basename( $file );
 	
-	if( !file_exists( $file ) || !stristr( $dir, $base_dir )) {
+	if( !file_exists( $file ) || !stristr( $dir, PATH_ROOT )) {
 		if( $countFiles == 1 ) {
 		    header("HTTP/1.0 404 Not Found");
 		    echo 'Not Found';
@@ -211,9 +216,13 @@ for( $i = 0; $i < $countFiles; $i++ ) {
 	$file = $files[$i];
 	$subdir = $subdirs[$i];
 	
-	$dir = realpath( $base_dir . '/' .  $subdir );
+	if ($subdir{0} == "/") {
+		$dir = realpath( PATH_ROOT . $subdir );
+	} else {
+		$dir = realpath( $base_dir . '/' .  $subdir );
+	}
 	$file = $dir . '/' . basename( $file );
-	if( !file_exists( $file ) || !stristr( $dir, $base_dir ) || !is_readable( $file )) {
+	if( !file_exists( $file ) || !stristr( $dir, PATH_ROOT ) || !is_readable( $file )) {
 		continue;
 	}
 	$processed_files++;
