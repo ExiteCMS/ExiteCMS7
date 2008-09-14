@@ -4,7 +4,7 @@
 
 editAreaLoader.load_syntax["smarty"] = {
 	'COMMENT_SINGLE' : {}
-	,'COMMENT_MULTI' : {1: '<!--' : '-->', 2:'{literal}' : '{/literal}'}
+	,'COMMENT_MULTI' : {'<!--' : '-->'}
 	,'QUOTEMARKS' : {1: "'", 2: '"'}
 	,'KEYWORD_CASE_SENSITIVE' : false
 	,'KEYWORDS' : {
@@ -26,6 +26,12 @@ editAreaLoader.load_syntax["smarty"] = {
 			,'modifiers' : 'gi'
 			,'execute' : 'before' // before or after
 		}
+		,'smartytags' : {
+			'search' : '({)(/?[^\r\n\t>]*)(})'
+			,'class' : 'smartytags'
+			,'modifiers' : 'gi'
+			,'execute' : 'before' // before or after
+		}
 		,'attributes' : {
 			'search' : '( |\n|\r|\t)([^ \r\n\t=]+)(=)'
 			,'class' : 'attributes'
@@ -43,6 +49,7 @@ editAreaLoader.load_syntax["smarty"] = {
 		,'REGEXPS' : {
 			'attributes': 'color: #B1AC41;'
 			,'tags': 'color: #E62253;'
+			,'smartytags': 'color: #FEBB6C;'
 			,'doctype': 'color: #8DCFB5;'
 			,'test': 'color: #00FF00;'
 		}	
