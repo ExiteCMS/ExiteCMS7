@@ -2480,7 +2480,6 @@ function HTMLToBBCode(a) {
 					var o = f.replace(/<a(.*?)href="(.*?)"/gi, "$2");
 					o = o.replace(">" + n[1], "");
 					var p = o.split(" ");
-//					o = toAbsURL(p[0]);
 					o = p[0];
 					if (k.style) {
 						if (n[1] == o) {
@@ -2651,7 +2650,7 @@ function HTMLToBBCode(a) {
 					b[i] = b[i].replace(/(<([^>]+)>)/, "");
 				}
 			} else {
-				b[i] = "";
+				if (i > 0) b[i] = "";
 			}
 		}
 		var C = b.join("");
