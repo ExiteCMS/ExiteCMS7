@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| Copyright 2008 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
@@ -319,6 +319,11 @@ switch ($type) {
 			terminate("<b>Invalid or missing message ID.</b>");
 		}
 		break;
+	case "pc":
+		if (!isset($pm_id) || !isNum($pm_id) || !isset($id) || !isNum($id)) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		break;
 	default:
 		if (!isset($file_id) || !isNum($file_id)) {
 			terminate("<b>Invalid or missing file ID.</b>");
@@ -423,6 +428,34 @@ switch (strtolower($type)) {
 		$filename = $attachment['pmattach_name'];
 		$filepath = PATH_PM_ATTACHMENTS;
 		$downloadname = $attachment['pmattach_realname'] == "" ? $attachment['pmattach_name'] : $attachment['pmattach_realname'];
+		break;
+
+	case "pc":	// personal message codeblock
+		// if not logged in, check if userid and password is given and valid (authorisation is required!)
+		if (!iMEMBER) {
+			// Not public, authentication is required
+			auth_BasicAuthentication();
+		}
+		// check if the requested message exists, if so retrieve the information
+		$message = dbarray(dbquery(
+						"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+						WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_id = '".$pm_id."'"));
+		if (!is_array($message)) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		// get the code blocks from the message body
+		require PATH_INCLUDES."forum_functions_include.php";
+		// strip CODE bbcode, optionally perform Geshi color coding
+		$codeblocks = array();
+		$raw_color_blocks = true;
+		$message = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $message['pm_message']);
+		// do we have the requested code block?
+		if (!isset($codeblocks[$id])) {
+			terminate("<b>Invalid or missing message ID.</b>");
+		}
+		$source = "var";
+		$downloadname = "file.".($codeblocks[$id][1]==""?"txt":$codeblocks[$id][1]);
+		$downloaddata = _unhtmlentities($codeblocks[$id][0]);
 		break;
 
 	default:
