@@ -78,7 +78,7 @@ var upload_path = "";
 if (TitleText == null) var TitleText = "Rich Text Editor";
 var iframe_meta_tag = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n";
 var iframe_style = "BODY{font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
-iframe_style += "TABLE{border-collapse: collapse;border-spacing: 0px;border: 1px solid #6CAFF7;background-color: #F4F4F4;width:100%;font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
+iframe_style += "TABLE{border-collapse: collapse;border-spacing: 0px;border: 1px solid #6CAFF7;background-color: #F4F4F4;font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
 iframe_style += "TD{height:25px; border: 1px solid #6CAFF7}";
 var iframe_image_background="<body background=" + styles_folder_path + "/iframe_background.gif" + " style=\"background-attachment: fixed; background-repeat: repeat;\">";
 
@@ -1273,7 +1273,7 @@ function FormatText(a, b, c) {
 		var p = prompt("Number of Rows", "3");
 		var q = prompt("Number of Columns", "2");
 		if (p != null && q != null && !isNaN(p) && !isNaN(q)) {
-			var r = "<table>";
+			var r = "<div><table>";
 			var t = "";
 			for (irow = 0; irow < p; irow++) {
 				t += "<tr>";
@@ -1282,7 +1282,7 @@ function FormatText(a, b, c) {
 				}
 				t += "</tr>";
 			}
-			r += t + "</table><br>";
+			r += t + "</table></div><div style='clear:both;'></div>";
 			WriteHTML(r, a);
 		}
 	} else if (b == "youtube") {
@@ -2252,8 +2252,8 @@ function BBCodeToHTML(a) {
 	a = a.replace(/\[\/table\]$/gi, "[/TABLE]\n");
 	a = a.replace(/\n/g, "<br>");
 	a = a.replace(/\[hr\]/gi, "<hr>");
-	a = a.replace(/\[table\]/gi, "<table>");
-	a = a.replace(/\[\/table\]/gi, "</table>");
+	a = a.replace(/\[table\]/gi, "<div><table>");
+	a = a.replace(/\[\/table\]/gi, "</table></div><div style='clear:both;'></div>");
 	a = a.replace(/\[(\/|)tr\]/gi, "<$1tr>");
 	a = a.replace(/\[(\/|)td\]/gi, "<$1td>");
 	a = a.replace(/\[(\/|)indent\]/gi, "<$1blockquote>");
@@ -2283,7 +2283,7 @@ function BBCodeToHTML(a) {
 	a = a.replace(/\[\*\]/gi, "<li>");
 	a = a.replace(/<br[^>]*><li>/gi, "<li>");
 	a = a.replace(/<br[^>]*> <li>/gi, "<li>");
-	a = a.replace(/<br[^>]*><\/li>/gi, "</li>");
+	a = a.replace(/<br[^>]*><\/li>/gi, "</li>")
 	if (b) {
 		for (var i = 0; i < b.length; i++) {
 			if (b[i].toLowerCase() == "[list]") {
@@ -2315,7 +2315,11 @@ function AnalyzeHTMLBlock(a, b) {
 			var e = d[j].split(":");
 			var f = e[0].toLowerCase().replace(/ /g, "");
 			f = f.replace(/style=/gi, "");
-			var g = e[1].replace(/^ +| +$/g, "");
+			if (e[1] == null) {
+				var g = "";
+			} else {
+				var g = e[1].replace(/^ +| +$/g, "");
+			}
 			if (f == "background-color") {
 				if (g.indexOf("rgb(") != -1) {
 					var h = RGB2HTML(g);
@@ -2646,6 +2650,8 @@ function HTMLToBBCode(a) {
 				} else {
 					b[i] = b[i].replace(/(<([^>]+)>)/, "");
 				}
+			} else {
+				b[i] = "";
 			}
 		}
 		var C = b.join("");
