@@ -20,8 +20,7 @@ define('WRAP_CODE_IN_CODEBLOCK', false);
 // these arrays need to be global
 $current_message = array();
 $codeblocks = array();
-$urlblocks = array();
-$imgblocks = array();
+$exclblocks = array();
 $blockcount = 0;
 $raw_color_blocks = false;
 
@@ -333,6 +332,370 @@ function _unhtmlentities($string) {
 	return strtr($string, $trans_tbl);
 }
 
+// Parse smiley bbcode into HTML images
+function parsesmileys($message) {
+	$smiley = array(
+		"\:oops\:" => "<img src='".IMAGES."smiley/more/redface.gif' alt='smiley' />",
+		"\:doubt\:" => "<img src='".IMAGES."smiley/more/doubt.gif' alt='smiley' />",
+		"\:thumbleft" => "<img src='".IMAGES."smiley/more/icon_thumleft.gif' alt='smiley' />",
+		"\:thumbright" => "<img src='".IMAGES."smiley/more/icon_thumright.gif' alt='smiley' />",
+		"\:smt004" => "<img src='".IMAGES."smiley/more/004.gif' alt='smiley' />",
+		"\:smt005" => "<img src='".IMAGES."smiley/more/005.gif' alt='smiley' />",
+		"\:smt006" => "<img src='".IMAGES."smiley/more/006.gif' alt='smiley' />",
+		"\:smt007" => "<img src='".IMAGES."smiley/more/007.gif' alt='smiley' />",
+		"\:smt008" => "<img src='".IMAGES."smiley/more/008.gif' alt='smiley' />",
+		"\:smt009" => "<img src='".IMAGES."smiley/more/009.gif' alt='smiley' />",
+		"\:smt010" => "<img src='".IMAGES."smiley/more/010.gif' alt='smiley' />",
+		"\:smt011" => "<img src='".IMAGES."smiley/more/011.gif' alt='smiley' />",
+		"\:smt012" => "<img src='".IMAGES."smiley/more/012.gif' alt='smiley' />",
+		"\:smt013" => "<img src='".IMAGES."smiley/more/013.gif' alt='smiley' />",
+		"\:smt014" => "<img src='".IMAGES."smiley/more/014.gif' alt='smiley' />",
+		"\:smt016" => "<img src='".IMAGES."smiley/more/016.gif' alt='smiley' />",
+		"\:smt017" => "<img src='".IMAGES."smiley/more/017.gif' alt='smiley' />",
+		"\:smt018" => "<img src='".IMAGES."smiley/more/018.gif' alt='smiley' />",
+		"\:smt019" => "<img src='".IMAGES."smiley/more/019.gif' alt='smiley' />",
+		"\:smt020" => "<img src='".IMAGES."smiley/more/020.gif' alt='smiley' />",
+		"\:smt021" => "<img src='".IMAGES."smiley/more/021.gif' alt='smiley' />",
+		"\:smt022" => "<img src='".IMAGES."smiley/more/022.gif' alt='smiley' />",
+		"\:smt023" => "<img src='".IMAGES."smiley/more/023.gif' alt='smiley' />",
+		"\:smt024" => "<img src='".IMAGES."smiley/more/024.gif' alt='smiley' />",
+		"\:smt025" => "<img src='".IMAGES."smiley/more/025.gif' alt='smiley' />",
+		"\:smt026" => "<img src='".IMAGES."smiley/more/026.gif' alt='smiley' />",
+		"\:smt027" => "<img src='".IMAGES."smiley/more/027.gif' alt='smiley' />",
+		"\:smt028" => "<img src='".IMAGES."smiley/more/028.gif' alt='smiley' />",
+		"\:smt029" => "<img src='".IMAGES."smiley/more/029.gif' alt='smiley' />",
+		"\:smt030" => "<img src='".IMAGES."smiley/more/030.gif' alt='smiley' />",
+		"\:smt031" => "<img src='".IMAGES."smiley/more/031.gif' alt='smiley' />",
+		"\:smt032" => "<img src='".IMAGES."smiley/more/032.gif' alt='smiley' />",
+		"\:smt033" => "<img src='".IMAGES."smiley/more/033.gif' alt='smiley' />",
+		"\:smt034" => "<img src='".IMAGES."smiley/more/034.gif' alt='smiley' />",
+		"\:smt035" => "<img src='".IMAGES."smiley/more/035.gif' alt='smiley' />",
+		"\:smt036" => "<img src='".IMAGES."smiley/more/036.gif' alt='smiley' />",
+		"\:smt037" => "<img src='".IMAGES."smiley/more/037.gif' alt='smiley' />",
+		"\:smt038" => "<img src='".IMAGES."smiley/more/038.gif' alt='smiley' />",
+		"\:smt039" => "<img src='".IMAGES."smiley/more/039.gif' alt='smiley' />",
+		"\:smt040" => "<img src='".IMAGES."smiley/more/040.gif' alt='smiley' />",
+		"\:smt041" => "<img src='".IMAGES."smiley/more/041.gif' alt='smiley' />",
+		"\:smt042" => "<img src='".IMAGES."smiley/more/042.gif' alt='smiley' />",
+		"\:smt043" => "<img src='".IMAGES."smiley/more/043.gif' alt='smiley' />",
+		"\:smt044" => "<img src='".IMAGES."smiley/more/044.gif' alt='smiley' />",
+		"\:smt045" => "<img src='".IMAGES."smiley/more/045.gif' alt='smiley' />",
+		"\:smt046" => "<img src='".IMAGES."smiley/more/046.gif' alt='smiley' />",
+		"\:smt047" => "<img src='".IMAGES."smiley/more/047.gif' alt='smiley' />",
+		"\:smt048" => "<img src='".IMAGES."smiley/more/048.gif' alt='smiley' />",
+		"\:smt049" => "<img src='".IMAGES."smiley/more/049.gif' alt='smiley' />",
+		"\:smt050" => "<img src='".IMAGES."smiley/more/050.gif' alt='smiley' />",
+		"\:smt051" => "<img src='".IMAGES."smiley/more/051.gif' alt='smiley' />",
+		"\:smt052" => "<img src='".IMAGES."smiley/more/052.gif' alt='smiley' />",
+		"\:smt053" => "<img src='".IMAGES."smiley/more/053.gif' alt='smiley' />",
+		"\:smt054" => "<img src='".IMAGES."smiley/more/054.gif' alt='smiley' />",
+		"\:smt055" => "<img src='".IMAGES."smiley/more/055.gif' alt='smiley' />",
+		"\:smt056" => "<img src='".IMAGES."smiley/more/056.gif' alt='smiley' />",
+		"\:smt057" => "<img src='".IMAGES."smiley/more/057.gif' alt='smiley' />",
+		"\:smt058" => "<img src='".IMAGES."smiley/more/058.gif' alt='smiley' />",
+		"\:smt059" => "<img src='".IMAGES."smiley/more/059.gif' alt='smiley' />",
+		"\:smt060" => "<img src='".IMAGES."smiley/more/060.gif' alt='smiley' />",
+		"\:smt061" => "<img src='".IMAGES."smiley/more/061.gif' alt='smiley' />",
+		"\:smt062" => "<img src='".IMAGES."smiley/more/062.gif' alt='smiley' />",
+		"\:smt063" => "<img src='".IMAGES."smiley/more/063.gif' alt='smiley' />",
+		"\:smt064" => "<img src='".IMAGES."smiley/more/064.gif' alt='smiley' />",
+		"\:smt065" => "<img src='".IMAGES."smiley/more/065.gif' alt='smiley' />",
+		"\:smt066" => "<img src='".IMAGES."smiley/more/066.gif' alt='smiley' />",
+		"\:smt067" => "<img src='".IMAGES."smiley/more/067.gif' alt='smiley' />",
+		"\:smt068" => "<img src='".IMAGES."smiley/more/068.gif' alt='smiley' />",
+		"\:smt069" => "<img src='".IMAGES."smiley/more/069.gif' alt='smiley' />",
+		"\:smt070" => "<img src='".IMAGES."smiley/more/070.gif' alt='smiley' />",
+		"\:smt073" => "<img src='".IMAGES."smiley/more/073.gif' alt='smiley' />",
+		"\:smt074" => "<img src='".IMAGES."smiley/more/074.gif' alt='smiley' />",
+		"\:smt075" => "<img src='".IMAGES."smiley/more/075.gif' alt='smiley' />",
+		"\:smt076" => "<img src='".IMAGES."smiley/more/076.gif' alt='smiley' />",
+		"\:smt077" => "<img src='".IMAGES."smiley/more/077.gif' alt='smiley' />",
+		"\:smt078" => "<img src='".IMAGES."smiley/more/078.gif' alt='smiley' />",
+		"\:smt079" => "<img src='".IMAGES."smiley/more/079.gif' alt='smiley' />",
+		"\:smt080" => "<img src='".IMAGES."smiley/more/080.gif' alt='smiley' />",
+		"\:smt081" => "<img src='".IMAGES."smiley/more/081.gif' alt='smiley' />",
+		"\:smt082" => "<img src='".IMAGES."smiley/more/082.gif' alt='smiley' />",
+		"\:smt083" => "<img src='".IMAGES."smiley/more/083.gif' alt='smiley' />",
+		"\:smt084" => "<img src='".IMAGES."smiley/more/084.gif' alt='smiley' />",
+		"\:smt085" => "<img src='".IMAGES."smiley/more/085.gif' alt='smiley' />",
+		"\:smt086" => "<img src='".IMAGES."smiley/more/086.gif' alt='smiley' />",
+		"\:smt087" => "<img src='".IMAGES."smiley/more/087.gif' alt='smiley' />",
+		"\:smt088" => "<img src='".IMAGES."smiley/more/088.gif' alt='smiley' />",
+		"\:smt089" => "<img src='".IMAGES."smiley/more/089.gif' alt='smiley' />",
+		"\:smt090" => "<img src='".IMAGES."smiley/more/090.gif' alt='smiley' />",
+		"\:smt091" => "<img src='".IMAGES."smiley/more/091.gif' alt='smiley' />",
+		"\:smt092" => "<img src='".IMAGES."smiley/more/092.gif' alt='smiley' />",
+		"\:smt093" => "<img src='".IMAGES."smiley/more/093.gif' alt='smiley' />",
+		"\:smt084" => "<img src='".IMAGES."smiley/more/094.gif' alt='smiley' />",
+		"\:smt095" => "<img src='".IMAGES."smiley/more/095.gif' alt='smiley' />",
+		"\:smt096" => "<img src='".IMAGES."smiley/more/096.gif' alt='smiley' />",
+		"\:smt097" => "<img src='".IMAGES."smiley/more/097.gif' alt='smiley' />",
+		"\:smt098" => "<img src='".IMAGES."smiley/more/098.gif' alt='smiley' />",
+		"\:smt099" => "<img src='".IMAGES."smiley/more/099.gif' alt='smiley' />",
+		"\:smt101" => "<img src='".IMAGES."smiley/more/101.gif' alt='smiley' />",
+		"\:smt103" => "<img src='".IMAGES."smiley/more/103.gif' alt='smiley' />",
+		"\:smt104" => "<img src='".IMAGES."smiley/more/104.gif' alt='smiley' />",
+		"\:smt105" => "<img src='".IMAGES."smiley/more/105.gif' alt='smiley' />",
+		"\:smt106" => "<img src='".IMAGES."smiley/more/106.gif' alt='smiley' />",
+		"\:smt107" => "<img src='".IMAGES."smiley/more/107.gif' alt='smiley' />",
+		"\:smt108" => "<img src='".IMAGES."smiley/more/108.gif' alt='smiley' />",
+		"\:smt109" => "<img src='".IMAGES."smiley/more/109.gif' alt='smiley' />",
+		"\:smt110" => "<img src='".IMAGES."smiley/more/110.gif' alt='smiley' />",
+		"\:smt111" => "<img src='".IMAGES."smiley/more/111.gif' alt='smiley' />",
+		"\:smt112" => "<img src='".IMAGES."smiley/more/112.gif' alt='smiley' />",
+		"\:smt113" => "<img src='".IMAGES."smiley/more/113.gif' alt='smiley' />",
+		"\:smt114" => "<img src='".IMAGES."smiley/more/114.gif' alt='smiley' />",
+		"\:smt115" => "<img src='".IMAGES."smiley/more/115.gif' alt='smiley' />",
+		"\:smt116" => "<img src='".IMAGES."smiley/more/116.gif' alt='smiley' />",
+		"\:smt117" => "<img src='".IMAGES."smiley/more/117.gif' alt='smiley' />",
+		"\:smt118" => "<img src='".IMAGES."smiley/more/118.gif' alt='smiley' />",
+		"\:smt119" => "<img src='".IMAGES."smiley/more/119.gif' alt='smiley' />",
+		"\:smt120" => "<img src='".IMAGES."smiley/more/120.gif' alt='smiley' />",
+		"\:boring" => "<img src='".IMAGES."smiley/more/015.gif' alt='smiley' />",
+		"\:smt071" => "<img src='".IMAGES."smiley/more/071.gif' alt='smiley' />",
+		"\:smt102" => "<img src='".IMAGES."smiley/more/102.gif' alt='smiley' />",
+		"\:smt100" => "<img src='".IMAGES."smiley/more/100.gif' alt='smiley' />",
+		"\:shock\:" => "<img src='".IMAGES."smiley/more/shock.gif' alt='smiley' />",
+		"\:lol\:" => "<img src='".IMAGES."smiley/more/lol.gif' alt='smiley' />",
+		"\:razz\:" => "<img src='".IMAGES."smiley/more/razz.gif' alt='smiley' />",
+		"\:cry\:" => "<img src='".IMAGES."smiley/more/cry.gif' alt='smiley' />",
+		"\:evil\:" => "<img src='".IMAGES."smiley/more/evil.gif' alt='smiley' />",
+		"\:twisted\:" => "<img src='".IMAGES."smiley/more/icon_twisted.gif' alt='smiley' />",
+		"\:roll\:" => "<img src='".IMAGES."smiley/more/rolleyes.gif' alt='smiley' />",
+		"\:wink\:" => "<img src='".IMAGES."smiley/more/wink.gif' alt='smiley' />",
+		"\:idea\:" => "<img src='".IMAGES."smiley/more/idea.gif' alt='smiley' />",
+		"\:arrow\:" => "<img src='".IMAGES."smiley/more/arrow.gif' alt='smiley' />",
+		"\:mrgreen\:" => "<img src='".IMAGES."smiley/more/icon_mrgreen.gif' alt='smiley' />",
+		"\:badgrin\:" => "<img src='".IMAGES."smiley/more/badgrin.gif' alt='smiley' />",
+		"\;\)" => "<img src='".IMAGES."smiley/wink.gif' alt='smiley' />",
+		"\:\(" => "<img src='".IMAGES."smiley/sad.gif' alt='smiley' />",
+		"\:\|" => "<img src='".IMAGES."smiley/frown.gif' alt='smiley' />",
+		"\:o" => "<img src='".IMAGES."smiley/shock.gif' alt='smiley' />",
+		"\:p" => "<img src='".IMAGES."smiley/pfft.gif' alt='smiley' />",
+		"b\)" => "<img src='".IMAGES."smiley/cool.gif' alt='smiley' />",
+		"\:d" => "<img src='".IMAGES."smiley/grin.gif' alt='smiley' />",
+		"\:@" => "<img src='".IMAGES."smiley/angry.gif' alt='smiley' />",
+		"=D&gt;" => "<img src='".IMAGES."smiley/more/eusa_clap.gif' alt='smiley' />",
+		"\\\:D/" => "<img src='".IMAGES."smiley/more/eusa_dance.gif' alt='smiley' />",
+		"\:D" => "<img src='".IMAGES."smiley/more/biggrin.gif' alt='smiley' />",
+		"\:\-D" => "<img src='".IMAGES."smiley/more/003.gif' alt='smiley' />",
+		"\:\-\)" => "<img src='".IMAGES."smiley/more/001.gif' alt='smiley' />",
+		"\:\(" => "<img src='".IMAGES."smiley/more/sad.gif' alt='smiley' />",
+		"\:o" => "<img src='".IMAGES."smiley/more/surprised.gif' alt='smiley' />",
+		"8\)" => "<img src='".IMAGES."smiley/more/cool.gif' alt='smiley' />",
+		"\:x" => "<img src='".IMAGES."smiley/more/mad.gif' alt='smiley' />",
+		"\:\-x" => "<img src='".IMAGES."smiley/more/icon_mad.gif' alt='smiley' />",
+		"\:P" => "<img src='".IMAGES."smiley/more/icon_razz.gif' alt='smiley' />",
+		"\;\-\)" => "<img src='".IMAGES."smiley/more/002.gif' alt='smiley' />",
+		"\:\!\:" => "<img src='".IMAGES."smiley/more/exclaim.gif' alt='smiley' />",
+		"\:\?\:" => "<img src='".IMAGES."smiley/more/question.gif' alt='smiley' />",
+		"\:\?" => "<img src='".IMAGES."smiley/more/confused.gif' alt='smiley' />",
+		"\:\|" => "<img src='".IMAGES."smiley/more/neutral.gif' alt='smiley' />",
+		"\#\-o" => "<img src='".IMAGES."smiley/more/eusa_doh.gif' alt='smiley' />",
+		"\=P\~" => "<img src='".IMAGES."smiley/more/eusa_drool.gif' alt='smiley' />",
+		"\:\^o" => "<img src='".IMAGES."smiley/more/eusa_liar.gif' alt='smiley' />",
+		"\[\-X" => "<img src='".IMAGES."smiley/more/eusa_naughty.gif' alt='smiley' />",
+		"\[\-o\<\;" => "<img src='".IMAGES."smiley/more/eusa_pray.gif' alt='smiley' />",
+		"8\-\[" => "<img src='".IMAGES."smiley/more/eusa_shifty.gif' alt='smiley' />",
+		"\[\-\(" => "<img src='".IMAGES."smiley/more/eusa_snooty.gif' alt='smiley' />",
+		"\:\-k" => "<img src='".IMAGES."smiley/more/eusa_think.gif' alt='smiley' />",
+		"\]\(\*\,\)" => "<img src='".IMAGES."smiley/more/eusa_wall.gif' alt='smiley' />",
+		"\:\-\"" => "<img src='".IMAGES."smiley/more/eusa_whistle.gif' alt='smiley' />",
+		"O\:\)" => "<img src='".IMAGES."smiley/more/eusa_angel.gif' alt='smiley' />",
+		"\=\;" => "<img src='".IMAGES."smiley/more/eusa_hand.gif' alt='smiley' />",
+		"\:\-\&" => "<img src='".IMAGES."smiley/more/eusa_sick.gif' alt='smiley' />",
+		"\:\-\(\{\|\=" => "<img src='".IMAGES."smiley/more/eusa_boohoo.gif' alt='smiley' />",
+		"\:\-\$" => "<img src='".IMAGES."smiley/more/eusa_shhh.gif' alt='smiley' />",
+		"\:\-s" => "<img src='".IMAGES."smiley/more/eusa_eh.gif' alt='smiley' />",
+		"\:\-\#" => "<img src='".IMAGES."smiley/more/eusa_silenced.gif' alt='smiley' />",
+		"\:\)" => "<img src='".IMAGES."smiley/smile.gif' alt='smiley' />"
+	);
+	foreach($smiley as $key=>$smiley_img) {
+		$search = "#(^|[[:space:]])".$key."([[:space:]]|$)?#si";
+		$replace = "\\1".$smiley_img."\\2";
+		$message = preg_replace($search, $replace, $message);
+	}
+	return $message;
+}
+
+// message parser, strip [code], [img], [mail] and [url] sections, parse for BBcode, smiley's, then insert the sections again
+// $postinfo -> array() -> should contain forum_id, thread_id, post_id , must contain post_message if msgbody is empty
+// $msgboby -> message to parse if postinfo is not used
+// $smileys -> true if the message needs to be parsed for smileys
+// $limit -> limit UBB parsing when true (p.e. skip code, quote and wiki tags)
+function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false) {
+	global $settings, $db_prefix, $codeblocks, $exclblocks, $current_message;
+
+	// make sure we have something to parse
+	if (!is_array($postinfo) || (empty($msgbody) && empty($postinfo['post_message'] ))) {
+		return "";
+	}
+	$current_message = $postinfo;
+	$rawmsg = empty($msgbody) ? $current_message['post_message'] : $msgbody;
+	if (isset($current_message['post_smileys'])) $smileys = $current_message['post_smileys'];
+
+	// make sure these are empty!
+	$codeblocks = array();
+	$exclblocks = array();
+
+	// if not resticted, strip CODE bbcode, optionally perform Geshi color coding
+	if (!$limit) $rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
+
+	// strip URL bbcode
+	$rawmsg = preg_replace_callback('#\[url(=?.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_exclblock', $rawmsg);
+
+	// strip IMG bbcode
+	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_exclblock', $rawmsg);
+
+	// strip MAIL bbcode
+	$rawmsg = preg_replace_callback('#\[mail(=?.*?)\](.*?)([\r\n]*)\[/mail\]#si', '_parseubb_exclblock', $rawmsg);
+
+    // find other URL's in the text, strip them and add them to $urlblocks for conversion to [URL] bbcodes
+	$rawmsg = preg_replace_callback('#(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(localhost)|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?(/[a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$\#\:\*\=~_\-@]*)*#si', '_parseubb_texturls', $rawmsg);
+
+	// detect and convert wikitags to wiki bbcodes if needed
+	if (!$limit && isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
+		// build the search and replace arrays
+		$search = array();
+		$replace = array();
+		if (dbtable_exists($db_prefix."wiki_pages")) {
+			$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
+			while ($data = dbarray($result)) {
+				if (!empty($data['tag'])) {
+					$search[] = "/(\b)(".$data['tag'].")(\b)/i";
+					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+				}
+			}
+		}
+		if (dbtable_exists($db_prefix."wiki_aliases")) {
+			$result = dbquery("SELECT DISTINCT from_tag FROM ".$db_prefix."wiki_aliases");
+			while ($data = dbarray($result)) {
+				if (!empty($data['from_tag'])) {
+					$search[] = "/(\b)(".$data['from_tag'].")(\b)/i";
+					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
+				}
+			}
+		}
+		$rawmsg = preg_replace($search, $replace, $rawmsg);
+	} else {
+		// wiki links not enabled or filtered, remove any wiki BBcode's found
+		$rawmsg = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '\1', $rawmsg);
+	}
+
+	// convert any newlines to html <br>
+	$rawmsg = nl2br($rawmsg);
+
+	// parse all ubbcode
+	$rawmsg = parseubb($rawmsg, $limit);
+	
+	// parse the smileys in the message
+	if ($smileys) $rawmsg = parsesmileys($rawmsg);
+
+	// re-insert the saved code blocks
+	foreach($codeblocks as $key => $codeblock) {
+		$rawmsg = str_replace("{**@".$key."@**}", $codeblock[0], $rawmsg);
+	}
+
+	// re-insert the excluded blocks
+	foreach($exclblocks as $key => $exclblock) {
+		switch ($exclblock[2]) {
+			case "img":
+				if ((isURL($exclblock[0]) && verify_image($exclblock[0])) || file_exists(PATH_ROOT.$exclblock[0])) {
+					$rawmsg = str_replace("{@@*".$key."*@@}", "<img src='".$exclblock[0]."' />", $rawmsg);
+				} else {
+					$rawmsg = str_replace("{@@*".$key."*@@}", "[img]".$exclblock[0]."[/img]", $rawmsg);
+				}
+				break;
+			case "mail":
+				$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='mailto:".($exclblock[0]==""?$exclblock[1]:$exclblock[0])."'>".$exclblock[1]."</a>", $rawmsg);
+				break;
+			case "url":
+			default:
+				if (isURL($exclblock[0])) {
+					// check if the URL is prefixed. If not, assume http://
+					if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $exclblock[0])) {
+						$exclblock[0] = "http://".$exclblock[0];
+					}
+					// convert it into a link
+					$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$exclblock[0]."' alt='' target='_blank'>".$exclblock[1]."</a>", $rawmsg);
+				} else {
+					// make the URL harmless
+					$rawmsg = str_replace("{@@*".$key."*@@}", "[url=".stripinput($exclblock[0])."]".stripinput($exclblock[1])."[/url]", $rawmsg);
+				}
+				break;
+		}
+	}
+
+	return $rawmsg;
+}
+
+// Parse bbcode into HTML code
+function parseubb($text, $limit = false) {
+	global $settings, $locale;
+	
+	// horizontal line
+	$text = preg_replace('#\[hr\]#si', '<hr />', $text);
+
+	// old style lists
+	$text = preg_replace('#\[li\](.*?)\[/li\]#si', '<li style=\'margin-left:15px;\'>\1</li>', $text);
+	$text = preg_replace('#\[ul\](.*?)\[/ul\]#si', '<ul style=\'margin-left:-20px;\'>\1</ul>', $text);
+
+	// new style lists
+	$text = preg_replace('#\[list=1\](.*?)\[/list\]#si', '<ol>\1</ol>', $text);
+	$text = preg_replace('#\[list\](.*?)\[/list\]#si', '<ul>\1</ul>', $text);
+	$text = preg_replace('#\r\n\[\*\]#si', '<li>', $text);
+
+	// bbcode tables
+	$text = preg_replace('#\[table\]#si', '<div><table align="left" valign="top" class="tbl-border">', $text);
+	$text = preg_replace('#\[\/table\]#si', '</table></div><div style="clear:both;"></div>', $text);
+	$text = preg_replace('#\[td\]#si', '<td class="tbl1">', $text);
+	$text = preg_replace('#\[\/td\]#si', '</td>', $text);
+	$text = preg_replace('#\[tr\]#si', '<tr>', $text);
+	$text = preg_replace('#\[\/tr\]#si', '</tr>', $text);
+
+	//get rid of line breaks after a list item, for better formatting
+	$text=str_replace("</li><br />","</li>",$text);
+	$text=str_replace("</ul><br />","</ul>",$text);
+
+	// text formatting
+	$text = preg_replace('#\[b\](.*?)\[/b\]#si', '<b>\1</b>', $text);
+	$text = preg_replace('#\[i\](.*?)\[/i\]#si', '<i>\1</i>', $text);
+	$text = preg_replace('#\[u\](.*?)\[/u\]#si', '<u>\1</u>', $text);
+	$text = preg_replace('#\[strike\](.*?)\[/strike\]#si', '<span style=\'text-decoration: line-through;\'>\1</span>', $text);
+	$text = preg_replace('#\[sup\](.*?)\[/sup\]#si', '<sup>\1</sup>', $text);
+	$text = preg_replace('#\[sub\](.*?)\[/sub\]#si', '<sub>\1</sub>', $text);
+	if (!$limit) {
+		$text = preg_replace('#\[blockquote\](.*?)\[/blockquote\]#si', '<blockquote style=\'border:1px dotted;padding:2px;\'>\1</blockquote>', $text);
+	}
+	$text = preg_replace('#\[left\](.*?)\[/left\]#si', '<div align=\'left\'>\1</div>', $text);
+	$text = preg_replace('#\[center\](.*?)\[/center\]#si', '<div align=\'center\'>\1</div>', $text);
+	$text = preg_replace('#\[justify\](.*?)\[/justify\]#si', '<div align=\'justify\'>\1</div>', $text);
+	$text = preg_replace('#\[right\](.*?)\[/right\]#si', '<div align=\'right\'>\1</div>', $text);
+
+	$text = preg_replace('#\[font=(.*?)\](.*?)\[/font\]#si', '<span style=\'font-family:\1\'>\2</span>', $text);
+	$text = preg_replace('#\[size=([0-3]?[0-9])\](.*?)\[/size\]#si', '<span style=\'font-size:\1px\'>\2</span>', $text);
+	$text = preg_replace('#\[small\](.*?)\[/small\]#si', '<span class=\'small\'>\1</span>', $text);
+
+	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
+	$text = preg_replace('#\[highlight=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/highlight\]#si', '<span style=\'background-color:\1\'>\2</span>', $text);
+
+	// youtube bbcode
+	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
+
+	// flash movies
+	$text = preg_replace('#\[flash width=([0-9]*?) height=([0-9]*?)\]([^\s\'\";:\+]*?)(\.swf)\[/flash\]#si', '<object classid=\'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\' codebase=\'http://active.macromedia.com/flash6/cabs/swflash.cab#version=6,0,0,0\' id=\'\3\4\' width=\'\1\' height=\'\2\'><param name=movie value=\'\3\4\'><param name=\'quality\' value=\'high\'><param name=\'bgcolor\' value=\'#ffffff\'><embed src=\'\3\4\' quality=\'high\' bgcolor=\'#ffffff\' width=\'\1\' height=\'\2\' type=\'application/x-shockwave-flash\' pluginspage=\'http://www.macromedia.com/go/getflashplayer\'></embed></object>', $text);
+
+	// quote blocks
+	if (!$limit) {
+		$text = preg_replace('#\[quote=([\r\n]*)(.*?)\]#si', '<b>\2 '.$locale['199'].':</b><br />[quote]', $text);
+		$qcount = substr_count(strtolower($text), "[quote]");
+		for ($i=0;$i < $qcount;$i++) $text = preg_replace('#\[quote\](.*?)\[/quote\]#si', '<div class=\'quote\'>\1</div>', $text);
+	}
+	$text = descript($text,false);
+
+	return $text;
+}
+
 function _parseubb_codeblock($matches) {
 	global $codeblocks, $blockcount, $current_message, $raw_color_blocks, $locale;
 
@@ -389,129 +752,55 @@ function _parseubb_codeblock($matches) {
 	}
 	$id = count($codeblocks);
 	++$blockcount;
-	if (WRAP_CODE_IN_CODEBLOCK) {
-		$codeblocks[] = array("<div class='codeblock'>".$matches[2]."</div><div class='codeblock' style='border-top:0px; text-align:right;'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."'>".$locale['584']."</a></div>", $matches[1]);
+	// is this a forum post?
+	if (isset($current_message['forum_id']) && isset($current_message['thread_id']) && isset($current_message['post_id'])) {
+		if (WRAP_CODE_IN_CODEBLOCK) {
+			$codeblocks[] = array("<div class='codeblock_source' id='codeblock".$blockcount."a' style='white-space:normal;'>".$matches[2]."</div><div class='codeblock_cmds' id='codeblock".$blockcount."b' style='border-top:0px; text-align:right;'><a href='".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."'>".$locale['584']."</a></div>", $matches[1]);
+		} else {
+			$codeblocks[] = array("<div class='codeblock_source' id='codeblock".$blockcount."a'>".$matches[2]."</div><div class='codeblock_cmds' id='codeblock".$blockcount."b'><input type='button' class='button' name='download' value='".$locale['584']."' onclick='window.open(\"".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."\");return false;' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."' /></div>", $matches[1]);
+		}
 	} else {
-		$codeblocks[] = array("<div class='codeblock_source' id='codeblock".$blockcount."a'>".$matches[2]."</div><div class='codeblock_cmds' id='codeblock".$blockcount."b'><input type='button' class='button' name='download' value='".$locale['584']."' onclick='window.open(\"".BASEDIR."getfile.php?type=fc&amp;forum_id=".$current_message['forum_id']."&amp;thread_id=".$current_message['thread_id']."&amp;post_id=".$current_message['post_id']."&amp;id=".$id."\");return false;' title='".sprintf($locale['583'],($matches[1]==""?"":($matches[1]." ")))."' /></div>", $matches[1]);
+		// is this a private message?
+		if (isset($current_message['pm_id'])) {
+			$codeblocks[] = array("<div class='codeblock_source' id='codeblock".$blockcount."a'>".$matches[2]."</div><div class='codeblock_cmds' id='codeblock".$blockcount."b'><input type='button' class='button' name='download' value='".$locale['643']."' onclick='window.open(\"".BASEDIR."getfile.php?type=pc&amp;pm_id=".$current_message['pm_id']."&amp;id=".$id."\");return false;' title='".sprintf($locale['642'],($matches[1]==""?"":($matches[1]." ")))."' /></div>", $matches[1]);
+		} else {
+			// no downloadable code, don't add a download button
+			$codeblocks[] = array("<div class='codeblock_source' id='codeblock".$blockcount."a'>".$matches[2]."</div><div class='codeblock_cmds' id='codeblock".$blockcount."b'></div>", $matches[1]);
+		}
 	}
 	return "{**@".($id)."@**}";
 }
 
-function _parseubb_urlblock($matches) {
-	global $urlblocks;
+function _parseubb_exclblock($matches) {
+	global $exclblocks;
 
-	$urlblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), parseubb(shortenlink($matches[2],50)));
-	return "{@@*".(count($urlblocks)-1)."*@@}";
-}
-
-function _parseubb_imgblock($matches) {
-	global $imgblocks;
-
-	$imgblocks[] = array($matches[1], $matches[1]);
-	return "{@*@".(count($imgblocks)-1)."@*@}";
+	// determine the BBcode
+	$type = substr($matches[0],1, strpos($matches[0], "]")-1);
+	if (strpos($type, "=")) $type = substr($type,0,strpos($type, "="));
+	switch($type) {
+		case "img":
+			$exclblocks[] = array($matches[1],$matches[1],"img");
+			break;
+		case "mail":
+			$exclblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), $matches[2], "mail");
+			break;
+		case "url":
+		default:
+			$exclblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), parseubb(shortenlink($matches[2],50)), "url");
+			break;
+	}
+	return "{@@*".(count($exclblocks)-1)."*@@}";
 }
 
 function _parseubb_texturls($matches) {
-	global $urlblocks;
+	global $exclblocks;
 
 	// validate the URL before converting it
 	if (isURL($matches[0])) {
-		$urlblocks[] = array($matches[0], parseubb(shortenlink($matches[0], 50)));
-		return "{@@*".(count($urlblocks)-1)."*@@}";
+		$exclblocks[] = array($matches[0], parseubb(shortenlink($matches[0], 50)), "url");
+		return "{@@*".(count($exclblocks)-1)."*@@}";
 	} else {
 		return $matches[0];
 	}
-}
-
-// message parser, strip [code], [img] and [url] sections, parse for BBcode, smiley's, then insert the sections again
-function parsemessage($msg_array) {
-	global $settings, $db_prefix, $codeblocks, $urlblocks, $imgblocks, $current_message;
-
-	// validate the parameters
-	if (!is_array($msg_array) || !isset($msg_array['post_message']) || !isset($msg_array['post_smileys'])) {
-		return "";
-	}
-	$current_message = $msg_array;
-	$rawmsg = $msg_array['post_message'];
-	$smileys = $msg_array['post_smileys'];
-
-	// make sure these are empty!
-	$codeblocks = array();
-	$urlblocks = array();
-	$imgblocks = array();
-
-	// strip CODE bbcode, optionally perform Geshi color coding
-	$rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
-
-	// strip URL bbcode
-	$rawmsg = preg_replace_callback('#\[url(=.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_urlblock', $rawmsg);
-
-	// strip IMG bbcode
-	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_imgblock', $rawmsg);
-
-    // find other URL's in the text, strip them and add them to $urlblocks for conversion to [URL] bbcodes
-	$rawmsg = preg_replace_callback('#(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(localhost)|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?(/[a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$\#\:\*\=~_\-@]*)*#si', '_parseubb_texturls', $rawmsg);
-
-	// convert any newlines to html <br>
-	$rawmsg = nl2br($rawmsg);
-
-	// detect and convert wikitags to wiki bbcodes if needed
-	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
-		// build the search and replace arrays
-		$search = array();
-		$replace = array();
-		if (dbtable_exists($db_prefix."wiki_pages")) {
-			$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
-			while ($data = dbarray($result)) {
-				if (!empty($data['tag'])) {
-					$search[] = "/(\b)(".$data['tag'].")(\b)/i";
-					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
-				}
-			}
-		}
-		if (dbtable_exists($db_prefix."wiki_aliases")) {
-			$result = dbquery("SELECT DISTINCT from_tag FROM ".$db_prefix."wiki_aliases");
-			while ($data = dbarray($result)) {
-				if (!empty($data['from_tag'])) {
-					$search[] = "/(\b)(".$data['from_tag'].")(\b)/i";
-					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
-				}
-			}
-		}
-		$rawmsg = preg_replace($search, $replace, $rawmsg);
-	}
-
-	// re-insert the saved img blocks
-	foreach($imgblocks as $key => $imgblock) {
-		$rawmsg = str_replace("{@*@".$key."@*@}", "[img]".$imgblock[0]."[/img]", $rawmsg);
-	}
-
-	// parse the smileys in the message
-	if ($smileys) $rawmsg = parsesmileys($rawmsg);
-
-	// parse all ubbcode
-	$rawmsg = parseubb($rawmsg);
-	
-	// re-insert the saved code blocks
-	foreach($codeblocks as $key => $codeblock) {
-		$rawmsg = str_replace("{**@".$key."@**}", $codeblock[0], $rawmsg);
-	}
-
-	// re-insert the saved url blocks
-	foreach($urlblocks as $key => $urlblock) {
-		if (isURL($urlblock[0])) {
-			// check if the URL is prefixed. If not, assume http://
-			if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $urlblock[0])) {
-				$urlblock[0] = "http://".$urlblock[0];
-			}
-			// convert it into a link
-			$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$urlblock[0]."' alt='' target='_blank'>".$urlblock[1]."</a>", $rawmsg);
-		} else {
-			// make the URL harmless
-			$rawmsg = str_replace("{@@*".$key."*@@}", "[url=".stripinput($urlblock[0])."]".stripinput($urlblock[1])."[/url]", $rawmsg);
-		}
-	}
-
-	return $rawmsg;
 }
 ?>

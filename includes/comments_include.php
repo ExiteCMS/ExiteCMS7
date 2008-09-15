@@ -14,6 +14,9 @@
 +----------------------------------------------------*/
 if (eregi("comments_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
+// load message parsing functions
+require_once PATH_INCLUDES."forum_functions_include.php";
+
 // load the locale for this include
 locale_load("main.comments");
 
@@ -79,10 +82,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		$variables['allow_post'] = checkrights("C");
 		$variables['comments'] = array();
 		while ($data = dbarray($result)) {
-			if ($data['comment_smileys'] == "1") {
-				$data['comment_message']= parsesmileys($data['comment_message']);
-			}
-			$data['comment_message'] = nl2br(parseubb($data['comment_message']));
+			$data['comment_message'] = parsemessage(array(), $data['comment_message'], $data['comment_smileys'], true);
 			$variables['comments'][] = $data;
 		}
 	}
@@ -98,7 +98,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 	}
 
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => "main.comments");
+	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => array("main.comments", "hoteditor"));
 	$template_variables['comments_include'] = $variables;
 }
 ?>

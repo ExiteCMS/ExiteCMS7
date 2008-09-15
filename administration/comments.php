@@ -13,7 +13,8 @@
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/../includes/core_functions.php";
-require_once PATH_ROOT."/includes/theme_functions.php";
+require_once PATH_INCLUDES."theme_functions.php";
+require_once PATH_INCLUDES."forum_functions_include.php";
 
 // load the locale for this module
 locale_load("admin.comments");
@@ -55,8 +56,7 @@ $result = dbquery(
 	WHERE comment_type='$ctype' AND comment_item_id='$cid' ORDER BY comment_datestamp ASC"
 );
 while ($data = dbarray($result)) {
-	$data['comment_message'] = nl2br(parseubb($data['comment_message']));
-	if ($data['comment_smileys'] == "1") $data['comment_message'] = parsesmileys($data['comment_message']);
+	$data['comment_message'] = parsemessage(array(), $data['comment_message'], $data['comment_smileys'], true);
 	$variables['comments'][] = $data;
 }
 

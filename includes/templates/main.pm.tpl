@@ -25,14 +25,6 @@
 	</table>
 	{include file="_closetable.tpl"}
 {/if}
-{if $rows > $smarty.const.ITEMS_PER_PAGE}
-	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
-	<table width='100%' cellspacing='0' cellpadding='0'>
-		<tr>
-			<td height='5'></td>
-		</tr>
-	</table>
-{/if}
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 <table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
@@ -273,17 +265,89 @@
 {if $rows > $smarty.const.ITEMS_PER_PAGE}
 	{makepagenav start=$rowstart count=$smarty.const.ITEMS_PER_PAGE total=$rows range=$settings.navbar_range link=$pagenav_url}
 {/if}
-{literal}<script type='text/javascript'>
-	function setChecked(frmName,chkName,val) {
-		dml=document.forms[frmName];
-		len=dml.elements.length;
-		for(i=0;i < len;i++) {
-			if(dml.elements[i].name == chkName) {
-				dml.elements[i].checked = val;
-			}
+<script type='text/javascript'>
+{literal}
+function setChecked(frmName,chkName,val) {
+	dml=document.forms[frmName];
+	len=dml.elements.length;
+	for(i=0;i < len;i++) {
+		if(dml.elements[i].name == chkName) {
+			dml.elements[i].checked = val;
 		}
 	}
-</script>{/literal}
+}
+// Dean Edwards/Matthias Miller/John Resig
+function init() {
+	// quit if this function has already been called
+	if (arguments.callee.done) return;
+
+	// flag this function so we don't do the same thing twice
+	arguments.callee.done = true;
+
+	// kill the timer
+	if (_timer) clearInterval(_timer);
+
+	// needed inside the loop
+	var parent_left = 0;
+	var parent_width = 0;
+	var obj = 1;
+	var i = 1;
+
+	// loop through all blocks found, and set the width correctly
+	while (document.getElementById("codeblock"+i+"a") != null && document.getElementById("codeblock"+i+"b") != null) {
+		// get the info about the objects parent
+		obj = document.getElementById("codeblock"+i+"a").parentNode;
+		// fall back gracefully if the parentNode can not be found
+		if (obj == null) obj = document.getElementById("codeblock"+i+"a").offsetParent;
+		parent_left = findPosX(obj);
+		parent_width = obj.offsetWidth;
+//		alert(parent_left + " : " + parent_width);
+		// calculate the new width of the block, leave plenty of space to handle browser subtleties 
+		block_width = parent_left + parent_width - findPosX(document.getElementById("codeblock"+i+"a")) - 30;
+		// adjust the width of the code blocks
+		document.getElementById("codeblock"+i+"a").style.width = block_width + "px";
+		document.getElementById("codeblock"+i+"b").style.width = block_width - 10 + "px";
+		i++;
+	}
+};
+
+/* for Mozilla/Opera9 */
+if (document.addEventListener) {
+	document.addEventListener("DOMContentLoaded", init, false);
+}
+
+/* for Internet Explorer */
+/*@cc_on @*/
+/*@if (@_win32)
+	document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
+	var script = document.getElementById("__ie_onload");
+	script.onreadystatechange = function() {
+		if (this.readyState == "complete") {
+			init(); // call the onload handler
+		}
+	};
+/*@end @*/
+
+/* for Safari and Konqueror */
+if (/KHTML|WebKit/i.test(navigator.userAgent)) { // sniff
+	var _timer = setInterval(function() {
+		if (/loaded|complete/.test(document.readyState)) {
+			init(); // call the onload handler
+		}
+	}, 10);
+}
+
+/* other alternatives */
+if (window.attachEvent) {
+	window.attachEvent('onload', init);
+} else if (window.addEventListener) {
+	window.addEventListener('load', init, false);
+}
+
+/* if all else fails try this */
+window.onload = init;
+{/literal}
+</script>
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}

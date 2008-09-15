@@ -55,18 +55,18 @@
 {include file="_opentable.tpl" name=$_name title=$locale.c102 state=$_state style=$_style}
 {if $smarty.const.iMEMBER || $settings.guestposts == "1"}
 	<form name='inputform' method='post' action='{$post_link}'>
-		<table align='center' cellspacing='0' cellpadding='0' class='tbl'>
+		<table align='center' width='100%' cellspacing='0' cellpadding='0' class='tbl'>
 		{if $smarty.const.iGUEST}
 			<tr>
-				<td colspan='2' align='center'>
+				<td colspan='2' align='center' class='tbl1'>
 					{$locale.c103} <input type='text' name='comment_name' maxlength='30' class='textbox' style='width:200px;' />
 					<span style='color:#CC0000;font-weight:bold;'>*</span>
-					<br /><br />
 				</td>
 			</tr>
 		{/if}
 		<tr>
-			<td colspan='2' align='center'>
+			{if $settings.hoteditor_enabled == 0 || (iMEMBER  && $userdata.user_hoteditor == 0)}
+			<td colspan='2' align='center' class='tbl1'>
 				<textarea name='comment_message' rows='6' cols='80' class='textbox' style='width:400px'></textarea><br />
 				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('comment_message', '[b]', '[/b]');" />
 				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('comment_message', '[i]', '[/i]');" />
@@ -80,15 +80,25 @@
 				<input type='button' value='quote' class='button' style='width:45px;' onclick="addText('comment_message', '[quote]', '[/quote]');" />
 				<br /><br />
 				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
+			{else}
+			<td colspan='2' align='center' class='tbl1'>
+				{include file="_bbcode_editor.tpl" name="comment_message" id="comment_message" author="" message="" width="100%" height="150px"}
+			{/if}
 			</td>
 		</tr>
+		{if $settings.hoteditor_enabled == 0 || (iMEMBER  && $userdata.user_hoteditor == 0)}
 		<tr>
-			<td colspan=2' align='center'>
+			<td colspan='2' align='center' class='tbl1'>
 				<input type='submit' name='toggle' class='button' value='{$locale.c108}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=comment_message");return false;' />
 				<input type='checkbox' name='disable_smileys' value='1' />{$locale.c107}<br /><br />
 			</td>
 		</tr>
+		{/if}
 		{if $smarty.const.iGUEST}
+			<tr>
+				<td colspan='2' class='tbl1'>
+				</td>
+			</tr>
 			{if $cic != ""}
 				<tr>
 					<td colspan='2' align='center'>
@@ -133,7 +143,7 @@
 		{/if}
 		<tr>
 			<td colspan=2' align='center'>
-				<input type='submit' name='post_comment' value='{$locale.c102}' class='button' />
+				<input type='submit' name='post_comment' value='{$locale.c102}' class='button' onclick='javascript:get_hoteditor_data();' />
 			</td>
 		</tr>
 	</table>

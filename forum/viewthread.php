@@ -436,11 +436,12 @@ if ($rows != 0) {
 
 		// check if the users avatar exists
 		if (!file_exists(PATH_IMAGES."avatars/".$data['user_avatar'])) $data['user_avatar'] = "imagenotfound.jpg";
+
 		// prepare the message text for display
-		$data['post_message'] = parsemessage($data);
+		$data['post_message'] = parsemessage($data, "", $data['post_smileys'], false);
 
 		// prepare the users signature
-		$data['user_sig'] = nl2br(parseubb(parsesmileys($data['user_sig'])));
+		$data['user_sig'] = parsemessage(array(), $data['user_sig']);
 
 		// check for attachments (if enabled globally and for this forum)
 		$data['attachments'] = array();

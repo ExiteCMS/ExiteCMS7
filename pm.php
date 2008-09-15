@@ -10,7 +10,7 @@
 | the included gpl.txt file or visit http://gnu.org  |
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
-require_once PATH_ROOT."/includes/theme_functions.php";
+require_once PATH_INCLUDES."theme_functions.php";
 
 // temp storage for template variables
 $variables = array();
@@ -132,17 +132,15 @@ function gathermsginfo($msgrec, $preview = false) {
 	}
 
 	// parse the messsage body
-	$_s = $msgrec['pm_smileys'];
-	$msgrec['post_smileys'] = $msgrec['pm_smileys']==0;
-	$msgrec['post_message'] = $msgrec['pm_message'];
-	$msgrec['pm_message'] = parsemessage($msgrec);
-	$msgrec['pm_smileys'] = $_s;
+	$msgrec['pm_message'] = parsemessage(array('pm_id' => $msgrec['pmindex_id']), $msgrec['pm_message'], $msgrec['pm_smileys']==0, false);
 	
 	// check if the users avatar exists
 	if (!empty($msgrec['user_avatar']) && !file_exists(PATH_IMAGES."avatars/".$msgrec['user_avatar'])) $msgrec['user_avatar'] = "imagenotfound.jpg";
 		
 	// prepare the users signature
-	if (!empty($msgrec['user_sig'])) $msgrec['user_sig'] = nl2br(parseubb(parsesmileys($msgrec['user_sig'])));
+	if (!empty($msgrec['user_sig'])) {
+		$msgrec['user_sig'] = parsemessage(array(), $msgrec['user_sig'], true, true);
+	}
 	
 	// check if there are attachments for this message
 	$msgrec['attachments'] = array();
@@ -395,6 +393,7 @@ function storemessage($message, $old_pm_id) {
 	require_once PATH_INCLUDES."sendmail_include.php";
 
 	// loop through the users
+	$error = "";
 	foreach($message['user_ids'] as $user) {
 		// check if this recipient has room in his inbox. If not, create it
 		if (!$global_options['pm_inbox_group']) {
@@ -422,11 +421,7 @@ function storemessage($message, $old_pm_id) {
 						$user['user_name'].sprintf($locale['626'], $userdata['user_name'], $settings['sitename'], $message['pm_subject'], $settings['siteurl']));
 		}
 	}
-	if (isset($error)) {
-		return $error;
-	} else {
-		return true;
-	}
+	return $error;
 }
 
 /*---------------------------------------------------+
@@ -884,11 +879,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$variables['org_message'] = isset($_POST['org_message']) ? $_POST['org_message'] : "";
 		$variables['pmindex_from_id'] = isset($_POST['pmindex_from_id']) ? $_POST['pmindex_from_id'] : 0;
 		$variables['pmindex_to_id'] = isset($_POST['pmindex_to_id']) ? $_POST['pmindex_to_id'] : 0;
-		if (!isset($_POST['chk_disablesmileys'])) 
-			$variables['reply_message'] = parsesmileys($variables['org_message']);
-		else
-			$variables['reply_message'] = $variables['org_message'];
-		$variables['reply_message'] = nl2br(parseubb($variables['reply_message']));
+		$variables['reply_message'] = parsemessage(array(), $variables['org_message'], !isset($_POST['chk_disablesmileys']), false);
 	} else {
 		if ($action != "post") {
 			// load from the database
@@ -896,8 +887,17 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$result = dbquery(
 					"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
 					WHERE m.pm_id = i.pm_id AND i.pmindex_id = '".$msg_id."' LIMIT 1"
-				);		
+				);
+				// fallback if the record can not be found
+				if (dbrows($result)==0) {
+					fallback(FUSION_SELF."?folder=$folder");
+				}
+				// get the record
 				$data = dbarray($result);
+				// check if the users owns this record. if not, fall back!
+				if ($data['pmindex_user_id'] != $userdata['user_id']) {
+					fallback(FUSION_SELF."?folder=$folder");
+				}
 				$pm_id = $data['pm_id'];
 				$variables['subject'] = (!strstr($data['pm_subject'], "RE: ") ? "RE: " : "").$data['pm_subject'];
 				$variables['org_message'] = $data['pm_message'];
@@ -923,11 +923,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 						}
 					}
 				}
-				if ($data['pm_smileys'] == 0) 
-					$variables['reply_message'] = parsesmileys($variables['org_message']);
-				else
-					$variables['reply_message'] = $variables['org_message'];
-				$variables['reply_message'] = nl2br(parseubb($variables['reply_message']));
+				$variables['reply_message'] = parsemessage(array(), $variables['org_message'], $data['pm_smileys'] == 0, false);
 				$variables['org_message'] = $variables['org_message'];
 				$variables['pmindex_from_id'] = $data['pmindex_from_id'];
 				$variables['pmindex_to_id'] = $data['pmindex_to_id'];
@@ -1178,7 +1174,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 					if (isset($recipient['user_id'])) {
 						$result2 = dbquery("SELECT u.user_name, pmi.* FROM ".$db_prefix."pm_index pmi, ".$db_prefix."users u WHERE pmi.pmindex_user_id = u.user_id AND pm_id = '".$data['pm_id']."' AND pmindex_user_id = '".$recipient['user_id']."'");
 						if ($data2 = dbarray($result2)) {
-							$readstatus[] = array('user_id' => $data2['pmindex_user_id'], 'user_name' => $data2['user_name'], 'read' => ($data2['pmindex_read_datestamp'] != 0), 'datestamp' => $data2['pmindex_read_datestamp']);
+							$readstatus[] = array('user_id' => $data2['pmindex_read_requested'] ? $data2['pmindex_user_id'] : 0, 'user_name' => $data2['user_name'], 'read' => ($data2['pmindex_read_datestamp'] != 0), 'datestamp' => $data2['pmindex_read_datestamp']);
 						} else {
 							$readstatus[] = array('user_id' => 0, 'user_name' => "", 'read' => 0, 'datestamp' => 0);
 						}
