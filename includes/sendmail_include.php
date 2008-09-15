@@ -68,7 +68,7 @@ function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type
 	} else {
 		$mail->ClearAllRecipients(); 
 		$mail->ClearReplyTos();
-		return true;
+		return "";
 	}
 
 }
