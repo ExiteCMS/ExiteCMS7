@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | PHP-Fusion 6 Content Management System
 +----------------------------------------------------+
-| Copyright © 2002 - 2006 Nick Jones
+| Copyright Â© 2002 - 2006 Nick Jones
 | http://www.php-fusion.co.uk/
 +----------------------------------------------------+
 | Released under the terms & conditions of v2 of the

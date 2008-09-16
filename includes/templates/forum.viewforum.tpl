@@ -18,9 +18,9 @@
 <table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
 		<td class='smallalt'>
-			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> »
-			<a href='index.php'>{$locale.400}</a> » 
-			<a href='index.php#cat_{$forum_cat_id}'>{$forum_cat_name}</a> » 
+			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> Â»
+			<a href='index.php'>{$locale.400}</a> Â» 
+			<a href='index.php#cat_{$forum_cat_id}'>{$forum_cat_name}</a> Â» 
 			{$forum_name}
 		</td>
 		{if $smarty.const.iMEMBER && $user_can_post}

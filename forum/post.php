@@ -820,7 +820,7 @@ if (isset($_POST["cancel"])) {
 		$result = dbquery("SELECT * FROM ".$db_prefix."threads WHERE forum_id='".$_POST['new_forum_id']."' AND thread_id != '$thread_id' ORDER BY thread_lastpost DESC");
 		$variables['threads'] = array();
 		while ($data = dbarray($result)) {
-			$data['thread_ident'] = substr('     '.$data['thread_id'], -5).' » '.$data['thread_subject'];
+			$data['thread_ident'] = substr('     '.$data['thread_id'], -5).' Â» '.$data['thread_subject'];
 			$variables['threads'][] = $data;
 		}
 

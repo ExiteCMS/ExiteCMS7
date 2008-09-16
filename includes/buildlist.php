@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | buildlist.php - iLister enginge.
 +----------------------------------------------------+
-| Copyright © 2005 Johs Lind
+| Copyright Â© 2005 Johs Lind
 | http://www.geltzer.dk/
 | Inspired by: Php-fusion 6 coding
 +----------------------------------------------------+
