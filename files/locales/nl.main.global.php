@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : Nederlands
 // locale name  : main.global
-// generated on : Mon Sep 15 2008, 18:36:32 CEST
+// generated on : Tue Sep 16 2008, 11:28:26 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";
@@ -79,12 +79,12 @@ $locale['077'] = "maanden";
 $locale['078'] = "jaar";
 $locale['079'] = "jaar";
 $locale['080'] = "Profiel wijzigen";
-$locale['081'] = "Privé berichten";
+$locale['081'] = "PrivÃ© berichten";
 $locale['082'] = "Gebruikerslijst";
 $locale['083'] = "CMS Administratie";
 $locale['084'] = "Afmelden";
-$locale['085'] = "%u privé bericht";
-$locale['086'] = "%u privé berichten";
+$locale['085'] = "%u privÃ© bericht";
+$locale['086'] = "%u privÃ© berichten";
 $locale['087'] = "Downloads";
 $locale['088'] = "%u nieuw bericht";
 $locale['089'] = "%u nieuwe berichten";

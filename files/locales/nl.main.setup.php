@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------
-// locale       : English
+// locale       : Nederlands
 // locale name  : main.setup
-// generated on : Mon Sep 15 2008, 18:38:08 CEST
+// generated on : Tue Sep 16 2008, 11:28:17 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";
@@ -36,7 +36,7 @@ $locale['427'] = "Database naam incorrect. Vul a.u.b. een correcte naam in.";
 $locale['428'] = "Tabel voorvoegsel incorrect. Vul a.u.b. een correct voorvoegsel in.";
 $locale['429'] = "Controleer de systeemnaam, gebruikersnaam en wachtwoord op juistheid.";
 $locale['430'] = "Kan de configuratie niet wegschrijven<br \>\nControleer a.u.b. de schrijfpermissies en herstart daarna de installatie.";
-$locale['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+$locale['431'] = "De installatie kon Ã©Ã©n of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
 $locale['432'] = "De configuratie is succesvol weggeschreven.<br><br>\n";
 $locale['433'] = "De database tabellen zijn aangemaakt.<br><br>\nVul a.u.b. het volgende formulier in, en klik daarna op 'Volgende Stap'.";
 $locale['434'] = "De database '%s' bestaat niet of uw gebruiker heeft onvoldoende rechten op deze database.";
@@ -86,7 +86,7 @@ $locale['489'] = "Forum instellingen";
 $locale['490'] = "Registratie instellingen";
 $locale['491'] = "x";
 $locale['492'] = "Overige instellingen";
-$locale['493'] = "Opties voor privé berichten";
+$locale['493'] = "Opties voor privÃ© berichten";
 $locale['494'] = "Nieuws categorieen";
 $locale['495'] = "Gereedschapskist";
 $locale['496'] = "Link verwijzingen";
@@ -129,7 +129,7 @@ $locale['560'] = "Sorry, maar het door u gevraagde document kan niet op de serve
 $locale['561'] = "Het is waarschijnlijk dat dit wordt veroorzaakt door een van de vele reorganisaties die veroorzaakt worden door een continue ontwikkeling van deze website, en migraties van een oude server met veel balast naar een fonkelnieuwe omgeving.";
 $locale['562'] = "Aan de andere kant, het zou ook volledig toeval kunnen zijn, of het resultaat van cosmische straling. Wie weet?";
 $locale['563'] = "De beste kans om te vinden wat je zoek is te starten op onze home pagina, (<a href=\"/\">klik hier om daar na toe te gaan</a>), de opties in het menu te bekijken, of gebruik te maken van de zoek optie in het menu.";
-$locale['564'] = "Als dat geen resultaat mocht opleveren, en u weet zeker dat het document dat u zoekt op deze website te vinden moet zijn, stuur dat een website beheerder een privé bericht (alleen voor geregistreerde gebruikers).";
+$locale['564'] = "Als dat geen resultaat mocht opleveren, en u weet zeker dat het document dat u zoekt op deze website te vinden moet zijn, stuur dat een website beheerder een privÃ© bericht (alleen voor geregistreerde gebruikers).";
 $locale['580'] = "De installatie is klaar, ExiteCMS is nu klaar voor gebruik.<br>\n<a href='index.php'>Klik hier</a> om naar uw ExiteCMS powered website te gaan.<br>\n<b>Opmerking:</b> voor uw veiligheid kunt u het best nu het bestand setup.php van uw server verwijderen<br>\nen de rechten op het bestand config op alleen lezen zetten (chmod 644).<br><br>\nWij danken u voor uw keuze voor ExiteCMS.";
 $locale['title'] = "ExiteCMS Setup";
 ?>

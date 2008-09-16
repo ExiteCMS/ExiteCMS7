@@ -1847,11 +1847,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['bb'] = "Dollars";
 		$localestrings['bd'] = "Taka";
 		$localestrings['be'] = "Euro";
-		$localestrings['bf'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['bf'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['bg'] = "Leva";
 		$localestrings['bh'] = "Dinars";
 		$localestrings['bi'] = "Francs";
-		$localestrings['bj'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['bj'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['bm'] = "Dollars";
 		$localestrings['bn'] = "Dollars";
 		$localestrings['bo'] = "Bolivianos";
@@ -1865,13 +1865,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['ca'] = "Dollars";
 		$localestrings['cc'] = "Dollars";
 		$localestrings['cd'] = "Francs";
-		$localestrings['cf'] = "Communauté Financiëre Africaine Francs (BCEA)";
-		$localestrings['cg'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['cf'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
+		$localestrings['cg'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['ch'] = "Swiss Francs";
-		$localestrings['ci'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['ci'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['ck'] = "New Zealand Dollars";
 		$localestrings['cl'] = "Pesos";
-		$localestrings['cm'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['cm'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['cn'] = "Yuan Renminbi";
 		$localestrings['co'] = "Pesos";
 		$localestrings['cr'] = "Colones";
@@ -1900,7 +1900,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['fm'] = "Dollars";
 		$localestrings['fo'] = "Kroner";
 		$localestrings['fr'] = "Euro";
-		$localestrings['ga'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['ga'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['gb'] = "Pounds";
 		$localestrings['gd'] = "East Caribbean Dollars";
 		$localestrings['ge'] = "Lari";
@@ -1912,11 +1912,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['gm'] = "Dalasi";
 		$localestrings['gn'] = "Francs";
 		$localestrings['gp'] = "Euro";
-		$localestrings['gq'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['gq'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['gr'] = "Euro";
 		$localestrings['gt'] = "Quetzales";
 		$localestrings['gu'] = "Dollars";
-		$localestrings['gw'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['gw'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['gy'] = "Dollars";
 		$localestrings['hk'] = "Dollars";
 		$localestrings['hm'] = "Dollars";
@@ -1965,7 +1965,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['mg'] = "Ariary";
 		$localestrings['mh'] = "Dollars";
 		$localestrings['mk'] = "Denars";
-		$localestrings['ml'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['ml'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['mm'] = "Kyats";
 		$localestrings['mn'] = "Tugriks";
 		$localestrings['mp'] = "Dollars";
@@ -1981,7 +1981,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['mz'] = "Meticais";
 		$localestrings['na'] = "Dollars";
 		$localestrings['nc'] = "Francs";
-		$localestrings['ne'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['ne'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['nf'] = "Dollars";
 		$localestrings['ng'] = "Nairas";
 		$localestrings['ni'] = "Cordobas";
@@ -2020,16 +2020,16 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['sk'] = "Koruny";
 		$localestrings['sl'] = "Leones";
 		$localestrings['sm'] = "Euro";
-		$localestrings['sn'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['sn'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['so'] = "Shillings";
 		$localestrings['sr'] = "Dollars";
 		$localestrings['sv'] = "Colones";
 		$localestrings['sy'] = "Pounds";
 		$localestrings['sz'] = "Emalangeni";
 		$localestrings['tc'] = "Dollars";
-		$localestrings['td'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['td'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['tf'] = "Euro";
-		$localestrings['tg'] = "Communauté Financiëre Africaine Francs (BCEA)";
+		$localestrings['tg'] = "CommunautÃ© FinanciÃ«re Africaine Francs (BCEA)";
 		$localestrings['th'] = "Baht";
 		$localestrings['tj'] = "Rubles";
 		$localestrings['tk'] = "New Zealand Dollars";
@@ -3553,11 +3553,11 @@ if (!function_exists('load_localestrings')) {
 if (!defined('LP_LOCALE')) define('LP_LOCALE', "en");
 if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
-if (!defined('LP_CHARSET')) define('LP_CHARSET', "iso-8859-1");
+if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1221496684");
+if (!defined('LP_DATE')) define('LP_DATE', "1221557557");
 if (!defined('LP_FLAGS')) define('LP_FLAGS', "gb|us|ca");
-$lp_date = "1221496684";
+$lp_date = "1221557557";
 
 /*---------------------------------------------------+
 | main code                                          |

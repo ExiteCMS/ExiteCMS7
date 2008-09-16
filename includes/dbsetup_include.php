@@ -1,11 +1,15 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `21/08/2008 19:07`
+// Date generated  : `16/09/2008 11:48`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.10');
-define('CMS_REVISION', '1650');
+define('CMS_REVISION', '1748');
+
+define('MYSQL_CHARSET', 'utf8');
+define('MYSQL_COLLATE', 'utf8_bin');
+
 
 if ($step == 1) {
 
@@ -22,7 +26,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP (
   `ip_start_num` int(10) unsigned NOT NULL default 0,
   `ip_end_num` int(10) unsigned NOT NULL default 0,
   `ip_code` char(2) NOT NULL default ''
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "GeoIP : ".mysql_error();
@@ -36,7 +40,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP_exceptions (
   `ip_number` varchar(15) NOT NULL default '',
   `ip_code` char(2) NOT NULL default '',
   `ip_name` varchar(50) NOT NULL default ''
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "GeoIP_exceptions : ".mysql_error();
@@ -54,7 +58,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."admin (
   `admin_link` varchar(100) NOT NULL default 'reserved',
   `admin_page` tinyint(1) unsigned NOT NULL default 1,
   PRIMARY KEY  (`admin_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "admin : ".mysql_error();
@@ -111,7 +115,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."article_cats (
   `article_cat_sorting` varchar(50) NOT NULL default 'article_subject ASC',
   `article_cat_access` tinyint(3) unsigned NOT NULL default 0,
   PRIMARY KEY  (`article_cat_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "article_cats : ".mysql_error();
@@ -135,7 +139,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."articles (
   `article_allow_comments` tinyint(1) unsigned NOT NULL default 1,
   `article_allow_ratings` tinyint(1) unsigned NOT NULL default 1,
   PRIMARY KEY  (`article_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "articles : ".mysql_error();
@@ -151,7 +155,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."bad_login (
   `login_time` varchar(200) NOT NULL default '',
   `login_user` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`login_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "bad_login : ".mysql_error();
@@ -167,7 +171,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."blacklist (
   `blacklist_email` varchar(100) NOT NULL default '',
   `blacklist_reason` text NOT NULL,
   PRIMARY KEY  (`blacklist_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "blacklist : ".mysql_error();
@@ -190,7 +194,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."blogs (
   `blog_editor` mediumint(8) NOT NULL default 0,
   `blog_edittime` int(10) NOT NULL default 0,
   PRIMARY KEY  (`blog_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "blogs : ".mysql_error();
@@ -210,7 +214,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."comments (
   `comment_datestamp` int(10) unsigned NOT NULL default 0,
   `comment_ip` varchar(20) NOT NULL default '0.0.0.0',
   PRIMARY KEY  (`comment_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "comments : ".mysql_error();
@@ -226,7 +230,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."configuration (
   `cfg_value` text NOT NULL,
   `cfg_timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`cfg_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "configuration : ".mysql_error();
@@ -235,7 +239,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('article_localisation', 'none')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachmax', '10485760')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachments', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.esml,.psd,.mvi')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('attachtypes', '.exe,.com,.bat,.js,.htm,.html,.shtml,.php,.php3,.php4,.php5')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ad_basedn', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ad_suffix', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ldap_basedn', '')");
@@ -304,7 +308,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_send2group', '103')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_sentbox', '25')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_sentbox_group', '103')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('revision', '1650')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('revision', '1748')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_divisor', '100')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_maxlifetime', '604800')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_probability', '1')");
@@ -346,7 +350,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."custom_pages (
   `page_allow_comments` tinyint(1) unsigned NOT NULL default 0,
   `page_allow_ratings` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`page_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "custom_pages : ".mysql_error();
@@ -368,7 +372,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."download_cats (
   `download_parent` tinyint(3) NOT NULL default 0,
   `download_datestamp` int(10) unsigned NOT NULL default 0,
   PRIMARY KEY  (`download_cat_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "download_cats : ".mysql_error();
@@ -392,7 +396,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."downloads (
   `download_count` smallint(5) unsigned NOT NULL default 0,
   `download_external` tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (`download_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "downloads : ".mysql_error();
@@ -407,7 +411,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."faq_cats (
   `faq_cat_name` varchar(200) NOT NULL default '',
   `faq_cat_description` varchar(250) NOT NULL default '',
   PRIMARY KEY  (`faq_cat_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "faq_cats : ".mysql_error();
@@ -423,7 +427,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."faqs (
   `faq_question` varchar(200) NOT NULL default '',
   `faq_answer` text NOT NULL,
   PRIMARY KEY  (`faq_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "faqs : ".mysql_error();
@@ -436,7 +440,7 @@ $result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."flood_control");
 $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."flood_control (
   `flood_ip` varchar(20) NOT NULL default '0.0.0.0',
   `flood_timestamp` int(5) unsigned NOT NULL default 0
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "flood_control : ".mysql_error();
@@ -460,7 +464,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_attachments (
   KEY `post_id` (`post_id`),
   FULLTEXT KEY `attach_realname` (`attach_realname`),
   FULLTEXT KEY `attach_comment` (`attach_comment`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forum_attachments : ".mysql_error();
@@ -477,7 +481,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_options (
   `option_text` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`option_id`),
   KEY `Polls` (`poll_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forum_poll_options : ".mysql_error();
@@ -502,7 +506,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_settings 
   `duration_max` int(10) unsigned NOT NULL default 0,
   `hide_poll` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`forum_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forum_poll_settings : ".mysql_error();
@@ -517,7 +521,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_votes (
   `user_id` mediumint(8) unsigned NOT NULL default 0,
   `vote_selection` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`poll_id`,`user_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forum_poll_votes : ".mysql_error();
@@ -538,7 +542,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_polls (
   `poll_status` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`poll_id`),
   UNIQUE KEY `Threads` (`thread_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forum_polls : ".mysql_error();
@@ -561,7 +565,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_ranking (
   `rank_groups` varchar(200) NOT NULL default '',
   `rank_groups_and` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`rank_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forum_ranking : ".mysql_error();
@@ -588,7 +592,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forums (
   `forum_rulespage` smallint(5) unsigned NOT NULL default 0,
   `forum_banners` tinyint(1) unsigned NOT NULL default 1,
   PRIMARY KEY  (`forum_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "forums : ".mysql_error();
@@ -603,10 +607,11 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locale (
   `locale_code` varchar(8) NOT NULL default '',
   `locale_name` varchar(50) NOT NULL default '',
   `locale_locale` varchar(25) NOT NULL default '',
+  `locale_countries` varchar(100) NOT NULL default '',
   `locale_charset` varchar(25) NOT NULL default '',
   `locale_active` tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (`locale_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "locale : ".mysql_error();
@@ -627,7 +632,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locales (
   PRIMARY KEY  (`locales_id`),
   KEY `localenamekey` (`locales_code`,`locales_name`,`locales_key`),
   KEY `locales_name` (`locales_name`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "locales : ".mysql_error();
@@ -643,7 +648,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."modules (
   `mod_folder` varchar(100) NOT NULL default '',
   `mod_version` varchar(10) NOT NULL default '0',
   PRIMARY KEY  (`mod_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "modules : ".mysql_error();
@@ -662,7 +667,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."new_users (
   `user_email` varchar(100) NOT NULL default '',
   `user_datestamp` int(10) unsigned NOT NULL default 0,
   `user_info` text NOT NULL
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "new_users : ".mysql_error();
@@ -692,7 +697,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news (
   FULLTEXT KEY `news_subject` (`news_subject`),
   FULLTEXT KEY `news_news` (`news_news`),
   FULLTEXT KEY `news_extended` (`news_extended`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "news : ".mysql_error();
@@ -707,7 +712,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news_cats (
   `news_cat_name` varchar(100) NOT NULL default '',
   `news_cat_image` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`news_cat_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "news_cats : ".mysql_error();
@@ -724,7 +729,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news_frontpage (
   `frontpage_order` smallint(5) unsigned NOT NULL default 0,
   `frontpage_news_id` smallint(5) unsigned NOT NULL default 0,
   PRIMARY KEY  (`frontpage_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "news_frontpage : ".mysql_error();
@@ -738,7 +743,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."online (
   `online_user` varchar(50) NOT NULL default '',
   `online_ip` varchar(20) NOT NULL default '',
   `online_lastactive` int(10) unsigned NOT NULL default 0
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "online : ".mysql_error();
@@ -765,7 +770,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."panels (
   `panel_state` tinyint(1) unsigned NOT NULL default 0,
   `panel_datestamp` int(10) unsigned NOT NULL default 0,
   PRIMARY KEY  (`panel_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "panels : ".mysql_error();
@@ -783,8 +788,10 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm (
   `pm_smileys` tinyint(1) unsigned NOT NULL default 1,
   `pm_size` mediumint(8) unsigned NOT NULL default 0,
   `pm_datestamp` int(10) unsigned NOT NULL default 0,
-  PRIMARY KEY  (`pm_id`)
-) ENGINE=MyISAM;");
+  PRIMARY KEY  (`pm_id`),
+  FULLTEXT KEY `pm_subject` (`pm_subject`),
+  FULLTEXT KEY `pm_message` (`pm_message`)
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "pm : ".mysql_error();
@@ -803,7 +810,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_attachments (
   `pmattach_ext` varchar(5) NOT NULL default '',
   `pmattach_size` int(20) unsigned NOT NULL default 0,
   PRIMARY KEY  (`pmattach_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "pm_attachments : ".mysql_error();
@@ -822,7 +829,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_config (
   `pmconfig_auto_archive` smallint(5) unsigned NOT NULL default 90,
   `pmconfig_view` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`pmconfig_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "pm_config : ".mysql_error();
@@ -847,7 +854,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_index (
   `pmindex_folder` tinyint(1) unsigned NOT NULL default 0,
   `pmindex_locked` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`pmindex_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "pm_index : ".mysql_error();
@@ -878,7 +885,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."posts (
   KEY `post_datestamp` (`post_datestamp`),
   KEY `post_edittime` (`post_edittime`),
   FULLTEXT KEY `subject_message` (`post_subject`,`post_message`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "posts : ".mysql_error();
@@ -897,7 +904,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."ratings (
   `rating_datestamp` int(10) unsigned NOT NULL default 0,
   `rating_ip` varchar(20) NOT NULL default '0.0.0.0',
   PRIMARY KEY  (`rating_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "ratings : ".mysql_error();
@@ -914,7 +921,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."redirects (
   `url_redirect` tinyint(1) unsigned NOT NULL default 0,
   `url_parms` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`url_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "redirects : ".mysql_error();
@@ -934,7 +941,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."reports (
   `report_active` tinyint(1) unsigned NOT NULL default 0,
   `report_visibility` tinyint(3) NOT NULL default 0,
   PRIMARY KEY  (`report_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "reports : ".mysql_error();
@@ -954,8 +961,9 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."search (
   `search_version` varchar(10) NOT NULL default '0',
   `search_active` tinyint(1) unsigned NOT NULL default 0,
   `search_visibility` tinyint(3) NOT NULL default 0,
+  `search_order` tinyint(3) unsigned NOT NULL default 0,
   PRIMARY KEY  (`search_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "search : ".mysql_error();
@@ -974,7 +982,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."sessions (
   `session_ip` varchar(15) NOT NULL default '',
   `session_data` text NOT NULL,
   PRIMARY KEY  (`session_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "sessions : ".mysql_error();
@@ -997,7 +1005,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."site_links (
   `link_parent` tinyint(3) unsigned default 0,
   `link_order` smallint(2) unsigned NOT NULL default 0,
   PRIMARY KEY  (`link_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "site_links : ".mysql_error();
@@ -1012,7 +1020,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."thread_notify (
   `notify_datestamp` int(10) unsigned NOT NULL default 0,
   `notify_user` mediumint(8) unsigned NOT NULL default 0,
   `notify_status` tinyint(1) unsigned NOT NULL default 1
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "thread_notify : ".mysql_error();
@@ -1033,7 +1041,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads (
   `thread_sticky` tinyint(1) unsigned NOT NULL default 0,
   `thread_locked` tinyint(1) unsigned NOT NULL default 0,
   PRIMARY KEY  (`thread_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "threads : ".mysql_error();
@@ -1050,7 +1058,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads_read (
   `thread_first_read` int(10) unsigned NOT NULL default 4294967295,
   `thread_last_read` int(10) unsigned NOT NULL default 0,
   PRIMARY KEY  (`user_id`,`forum_id`,`thread_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "threads_read : ".mysql_error();
@@ -1071,7 +1079,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."user_groups (
   `group_groups` text NOT NULL,
   `group_visible` mediumint(8) unsigned NOT NULL default 0,
   PRIMARY KEY  (`group_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "user_groups : ".mysql_error();
@@ -1123,7 +1131,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
   `user_openid_url` varchar(255) NOT NULL default '',
   `user_hoteditor` tinyint(1) unsigned NOT NULL default 1,
   PRIMARY KEY  (`user_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "users : ".mysql_error();
@@ -1139,10 +1147,22 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."ult_configuration (
   `cfg_value` text NOT NULL,
   `cfg_timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`cfg_id`)
-) ENGINE=MyISAM;");
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
 	$failed[] = "ult_configuration : ".mysql_error();
+}
+
+//
+// Code to create table ``
+//
+$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."");
+$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix." (
+  `x` char(1) NOT NULL default ''
+) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
+if (!$result) {
+	$fail = "1";
+	$failed[] = " : ".mysql_error();
 }
 
 }
