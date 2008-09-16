@@ -83,8 +83,11 @@ if ($settings['revision'] > 1070) {
 
 // if we couldn't find it, use some default values
 if (!isset($settings['locale_code'])) $settings['locale_code'] = "en";
-if (!isset($settings['charset'])) $settings['charset'] = "iso-8859-1";
+if (!isset($settings['charset'])) $settings['charset'] = "utf-8";
 if (!isset($settings['locales'])) $settings['locales'] = "en_US|en_GB|english|eng";
+
+// set the PHP charset
+ini_set('default_charset', $settings['charset']);
 
 // set the locale for strfime()
 setlocale(LC_TIME, explode("|", $settings['locales']));
