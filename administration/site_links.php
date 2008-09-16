@@ -236,7 +236,7 @@ $variables['parents'] = array();
 $result = dbquery("SELECT DISTINCT panel_name from ".$db_prefix."site_links".($where==""?"":(" WHERE ".$where))."");
 while ($data = dbarray($result)) {
 	$parents = array('panel' => $data['panel_name'], 'parent_ids' => array());
-	$result2 = dbquery("SELECT link_id, link_name from ".$db_prefix."site_links WHERE panel_name = '".$data['panel_name']."' AND link_url = '---'".($where==""?"":(" AND ".$where))."");
+	$result2 = dbquery("SELECT link_id, link_name from ".$db_prefix."site_links WHERE panel_name = '".$data['panel_name']."' AND link_name != '---' AND link_url = '---'".($where==""?"":(" AND ".$where))."");
 	while ($data2 = dbarray($result2)) {
 		$parents['parent_ids'][] = $data2;
 	}
