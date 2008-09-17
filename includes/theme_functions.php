@@ -15,7 +15,7 @@
 if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // load the Smarty template engine
-require_once PATH_INCLUDES."Smarty-2.6.19/Smarty.class.php";
+require_once PATH_INCLUDES."Smarty-2.6.20/Smarty.class.php";
 
 // extend Smarty with the ExiteCMS custom bits
 class ExiteCMS_Smarty extends Smarty {
