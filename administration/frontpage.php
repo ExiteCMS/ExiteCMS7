@@ -102,9 +102,12 @@ if (isset($_POST['save_latest'])) {
 $newslist = array();
 // and an empty first entry
 $newslist[] = array('news_id' => 0, 'news_subject' => "", 'news_cat_name' => "", 'news_new_cat' => 1, 'selected' => 0);
-$result = dbquery("SELECT n.news_id, n.news_subject, c.news_cat_name FROM ".$db_prefix."news n, ".$db_prefix."news_cats c WHERE n.news_cat = c.news_cat_id ORDER BY c.news_cat_name, n.news_datestamp DESC");
+$result = dbquery("SELECT n.news_id, n.news_subject, c.news_cat_name FROM ".$db_prefix."news n LEFT JOIN ".$db_prefix."news_cats c ON n.news_cat = c.news_cat_id ORDER BY c.news_cat_name, n.news_datestamp DESC");
 $current_cat = "";
 while ($data = dbarray($result)) {
+	if (is_null($data['news_cat_name'])) {
+		$data['news_cat_name'] = $locale['425'];
+	}
 	if ($data['news_cat_name'] != $current_cat) {
 		$data['news_new_cat'] = 1;
 		$current_cat = $data['news_cat_name'];
