@@ -15,7 +15,7 @@
 {* Shows a iconised list of all available webmasters tools.                *}
 {*                                                                         *}
 {***************************************************************************}
-{include file="_opentable.tpl" name=$_name title="ExiteCMS v."|cat:$settings.version|cat:" &bull; "|cat:" SVN Revision "|cat:$settings.revision|cat:" &bull; "|cat:$locale.237|cat:" <b>"|cat:$settings.sitename|cat:"</b>"  state=$_state style=$_style}
+{include file="_opentable.tpl" name=$_name title="ExiteCMS v."|cat:$settings.version|cat:"."|cat:$settings.revision|cat:" &bull; "|cat:$locale.237|cat:" <b>"|cat:$settings.sitename|cat:"</b>"  state=$_state style=$_style}
 <table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
 		<td class='tbl1'>

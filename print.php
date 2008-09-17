@@ -69,11 +69,9 @@ $variables['type'] = $type;
 $template_panels[] = array('type' => 'body', 'name' => 'print', 'template' => 'main.print.tpl', 'locale' => "main.print");
 $template_variables['print'] = $variables;
 
+// load the panels
 load_templates('body', '');
 
-// close the database connection
-mysql_close();
-
-// and flush any output remaining
-ob_end_flush();
+// and clean up
+theme_cleanup();
 ?>

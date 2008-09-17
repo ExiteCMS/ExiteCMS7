@@ -3306,6 +3306,19 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
 
 		$localestrings = array();
+		$localestrings['src400'] = "Search this site";
+		$localestrings['src401'] = "Search";
+		$localestrings['src402'] = "Result for your search";
+		$localestrings['src403'] = "Currently there are no searches defined";
+		$localestrings['src410'] = "Articles";
+		$localestrings['src411'] = "News";
+		$localestrings['src412'] = "Forum posts";
+		$localestrings['src413'] = "Forum attachments";
+		$localestrings['src414'] = "Downloads";
+		$localestrings['src415'] = "Members";
+		load_localestrings($localestrings, LP_LOCALE, "main.searches", $step);
+
+		$localestrings = array();
 		$localestrings['400'] = "Select your default locale";
 		$localestrings['401'] = "Unable to establish database connection.";
 		$localestrings['402'] = "Unable to select the database table.";
@@ -3552,12 +3565,12 @@ if (!function_exists('load_localestrings')) {
 
 if (!defined('LP_LOCALE')) define('LP_LOCALE', "en");
 if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "English");
-if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng");
+if (!defined('LP_LOCALES')) define('LP_LOCALES', "en_US|en_GB|english|eng|en");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1221557557");
-if (!defined('LP_FLAGS')) define('LP_FLAGS', "gb|us|ca");
-$lp_date = "1221557557";
+if (!defined('LP_DATE')) define('LP_DATE', "1221582311");
+if (!defined('LP_FLAGS')) define('LP_FLAGS', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
+$lp_date = "1221582311";
 
 /*---------------------------------------------------+
 | main code                                          |

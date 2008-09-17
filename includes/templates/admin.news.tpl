@@ -45,7 +45,7 @@
 {/if}
 {include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
 <form name='inputform' method='post' action='{$action}' onsubmit='return ValidateForm(this);'>
-	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
+	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
 			<td align='center' class='tbl'>
 				{$locale.411}
@@ -67,7 +67,7 @@
 		</tr>
 		{if $settings.tinymce_enabled != 1}
 		<tr>
-			<td class='tbl'>
+			<td align='center' class='tbl'>
 				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('body', '<b>', '</b>');">
 				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('body', '<i>', '</i>');">
 				<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('body', '<u>', '</u>');">
@@ -116,7 +116,7 @@
 		</tr>
 		{if $settings.tinymce_enabled != 1}
 		<tr>
-			<td class='tbl'>
+			<td align='center' class='tbl'>
 				<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('body2', '<b>', '</b>');">
 				<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('body2', '<i>', '</i>');">
 				<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('body2', '<u>', '</u>');">

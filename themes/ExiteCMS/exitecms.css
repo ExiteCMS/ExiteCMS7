@@ -90,7 +90,7 @@ body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu San
 .side-panel				{ padding:0px 0px 0px 0px; margin:0px 0px 5px 0px; border:1px #ddd solid; }
 
 						/* center panel title */
-.cap-main				{ font-weight:normal; text-align:left; color:#ffffff; background-color: #666666; font-size:1.2em; padding:0px 0px 0px 2px; }
+.cap-main				{ font-weight:normal; text-align:left; color:#ffffff; background-color: #666666; font-size:1.2em; padding:3px 2px 3px 2px; }
 
 						/* side panel title */
 .sub-cap-main			{ font-weight:normal; color:#ffffff; background-color:#666666; padding:0px 2px 0px 2px; }

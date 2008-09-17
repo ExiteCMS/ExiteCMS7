@@ -3216,7 +3216,7 @@ if (!function_exists('install_language_pack')) {
 		load_localestrings($localestrings, LP_LOCALE, "main.reports", $step);
 
 		$localestrings = array();
-		$localestrings['src400'] = "Zoeken";
+		$localestrings['src400'] = "Zoeken op";
 		$localestrings['src401'] = "Zoeken naar:";
 		$localestrings['src402'] = "Zoeken";
 		$localestrings['src403'] = "Zoeklocatie:";
@@ -3304,6 +3304,19 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src522'] = "Aan";
 		$localestrings['src523'] = "Van";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
+
+		$localestrings = array();
+		$localestrings['src400'] = "Search this site";
+		$localestrings['src401'] = "Search";
+		$localestrings['src402'] = "Result for your search";
+		$localestrings['src403'] = "Currently there are no searches defined";
+		$localestrings['src410'] = "Articles";
+		$localestrings['src411'] = "News";
+		$localestrings['src412'] = "Forum posts";
+		$localestrings['src413'] = "Forum attachments";
+		$localestrings['src414'] = "Downloads";
+		$localestrings['src415'] = "Members";
+		load_localestrings($localestrings, LP_LOCALE, "main.searches", $step);
 
 		$localestrings = array();
 		$localestrings['400'] = "Selecteer de standaard taal voor uw site";
@@ -3555,9 +3568,9 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut|nl_BE");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.10");
-if (!defined('LP_DATE')) define('LP_DATE', "1221557554");
-if (!defined('LP_FLAGS')) define('LP_FLAGS', "nl|be");
-$lp_date = "1221557554";
+if (!defined('LP_DATE')) define('LP_DATE', "1221582308");
+if (!defined('LP_FLAGS')) define('LP_FLAGS', "nl|be|sr|aw|an");
+$lp_date = "1221582308";
 
 /*---------------------------------------------------+
 | main code                                          |

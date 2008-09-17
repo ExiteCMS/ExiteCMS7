@@ -112,9 +112,6 @@ session_write_close();
 
 load_templates('body', '');
 
-// close the database connection
-mysql_close();
-
-// and flush any output remaining
-ob_end_flush();
+// and clean up
+theme_cleanup();
 ?>
