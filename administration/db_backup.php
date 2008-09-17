@@ -35,7 +35,10 @@ if (isset($action) && $action == 'restore' && isset($_POST['local_delete'])) {
 // create the database backup
 if (isset($_POST['btn_create_backup'])) {
 	$user_password = md5(md5($_POST['user_password']));
-	if ($_POST['backup_keep'] == 0 && $_POST['backup_download'] == 0) {
+	$backup_keep = isset($_POST['backup_keep']) && isNum($_POST['backup_keep']) ? $_POST['backup_keep'] : 0;
+	$backup_download = isset($_POST['backup_download']) && isNum($_POST['backup_download']) ? $_POST['backup_download'] : 1;
+	$backup_compress = isset($_POST['backup_type']) && ($_POST['backup_type'] == ".gz") ? 1 : 0;
+	if ($backup_keep == 0 && $backup_download == 0) {
 		$variables['error'] = 2;
 	} else if ($user_password != $userdata['user_password']) {
 		$variables['error'] = 3;
@@ -43,30 +46,54 @@ if (isset($_POST['btn_create_backup'])) {
 		$db_tables = $_POST['db_tables'];
 		if(count($db_tables) > 0) {
 			$filename = PATH_ADMIN."db_backups/".stripinput($_POST['backup_filename']).".sql";
-			if ($_POST['backup_type'] == ".gz") {
+			if ($backup_compress) {
 				$filename .= ".gz"; 
+				$fp = gzopen ($filename, 'w9'); 
+			} else {
+				$fp = fopen ($filename, 'w9'); 
 			}
-			$fp = gzopen ($filename, 'w9'); 
 			if (!$fp) {
 				$variables['error'] = 1;
 			} else {
-				gzwrite($fp, "#----------------------------------------------------------".$crlf);
-				gzwrite($fp, "# ExiteCMS SQL Data Dump".$crlf);
-				gzwrite($fp, "# Database Name: `".$db_name."`".$crlf);
-				gzwrite($fp, "# Table Prefix: `".$db_prefix."`".$crlf);
-				gzwrite($fp, "# Date: `".date("d/m/Y H:i")."`".$crlf);
-				gzwrite($fp, "#----------------------------------------------------------".$crlf);
+				if ($backup_compress) {
+					gzwrite($fp, "#----------------------------------------------------------".$crlf);
+					gzwrite($fp, "# ExiteCMS SQL Data Dump".$crlf);
+					gzwrite($fp, "# Database Name: `".$db_name."`".$crlf);
+					gzwrite($fp, "# Table Prefix: `".$db_prefix."`".$crlf);
+					gzwrite($fp, "# Date: `".date("d/m/Y H:i")."`".$crlf);
+					gzwrite($fp, "#----------------------------------------------------------".$crlf);
+				} else {
+					fwrite($fp, "#----------------------------------------------------------".$crlf);
+					fwrite($fp, "# ExiteCMS SQL Data Dump".$crlf);
+					fwrite($fp, "# Database Name: `".$db_name."`".$crlf);
+					fwrite($fp, "# Table Prefix: `".$db_prefix."`".$crlf);
+					fwrite($fp, "# Date: `".date("d/m/Y H:i")."`".$crlf);
+					fwrite($fp, "#----------------------------------------------------------".$crlf);
+				}
 				dbquery('SET SQL_QUOTE_SHOW_CREATE=1');
 				foreach($db_tables as $table) {
 					@set_time_limit(1200);
 					dbquery("OPTIMIZE TABLE $table");
-					gzwrite($fp, $crlf."#".$crlf."# Structure for Table `".$table."`".$crlf."#".$crlf);
-					gzwrite($fp, "DROP TABLE IF EXISTS `$table`;$crlf");
+					if ($backup_compress) {
+						gzwrite($fp, $crlf."#".$crlf."# Structure for Table `".$table."`".$crlf."#".$crlf);
+						gzwrite($fp, "DROP TABLE IF EXISTS `$table`;$crlf");
+					} else {
+						fwrite($fp, $crlf."#".$crlf."# Structure for Table `".$table."`".$crlf."#".$crlf);
+						fwrite($fp, "DROP TABLE IF EXISTS `$table`;$crlf");
+					}
 					$row=dbarraynum(dbquery("SHOW CREATE TABLE $table"));
-					gzwrite($fp, $row[1].";".$crlf);
+					if ($backup_compress) {
+						gzwrite($fp, $row[1].";".$crlf);
+					} else {
+						fwrite($fp, $row[1].";".$crlf);
+					}
 					$result=dbquery("SELECT * FROM $table");
 					if($result&&dbrows($result)){
-						gzwrite($fp, $crlf."#".$crlf."# Table Data for `".$table."`".$crlf."#".$crlf);
+						if ($backup_compress) {
+							gzwrite($fp, $crlf."#".$crlf."# Table Data for `".$table."`".$crlf."#".$crlf);
+						} else {
+							fwrite($fp, $crlf."#".$crlf."# Table Data for `".$table."`".$crlf."#".$crlf);
+						}
 						$column_list="";
 						$num_fields=mysql_num_fields($result);
 						for($i=0;$i<$num_fields;$i++){
@@ -94,25 +121,38 @@ if (isset($_POST['btn_create_backup'])) {
 							}
 						}
 						$dump.=');';
-						gzwrite($fp, $dump.$crlf);
+						if ($backup_compress) {
+							gzwrite($fp, $dump.$crlf);
+						} else {
+							fwrite($fp, $dump.$crlf);
+						}
 					}
 		
 				}
-				gzclose($fp);
-				$file = stripinput($_POST['backup_filename']).".sql";
-				require_once PATH_INCLUDES."class.httpdownload.php";
-				$dl = new httpdownload;
-				$dl->use_resume = false;
-				if ($_POST['backup_type'] == ".gz") {
-					$dl->set_mime("application/x-gzip gz tgz");
-					$dl->set_byfile($filename);
-					$dl->set_filename($file.".gz");
+				if ($backup_compress) {
+					gzclose($fp);
 				} else {
-					$dl->set_mime("text/plain");
-					$dl->set_byfile($filename);
-					$dl->set_filename($file);
+					fclose($fp);
 				}
-				$dl->download();
+				if ($backup_download) {
+					$file = stripinput($_POST['backup_filename']).".sql";
+					require_once PATH_INCLUDES."class.httpdownload.php";
+					$dl = new httpdownload;
+					$dl->use_resume = false;
+					if ($_POST['backup_type'] == ".gz") {
+						$dl->set_mime("application/x-gzip gz tgz");
+						$dl->set_byfile($filename);
+						$dl->set_filename($file.".gz");
+					} else {
+						$dl->set_mime("text/plain");
+						$dl->set_byfile($filename);
+						$dl->set_filename($file);
+					}
+					$dl->download();
+				}
+				if (!$backup_keep) {
+					@unlink($filename);
+				}
 				fallback(FUSION_SELF.$aidlink);
 				exit;
 			}
