@@ -76,7 +76,7 @@ var upload_path = "";
 //---------------- FOR WYSIWYG EDITOR (BBCODE EDITOR) ----------------
 
 if (TitleText == null) var TitleText = "Rich Text Editor";
-var iframe_meta_tag = "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n";
+var iframe_meta_tag = "<meta http-equiv='Content-Type' content='text/html; charset=" + iframe_encoding + "'>\n";
 var iframe_style = "BODY{font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
 iframe_style += "TABLE{border-collapse: collapse;border-spacing: 0px;border: 1px solid #6CAFF7;background-color: #F4F4F4;font-family:Verdana,Arial,Sans-Serif,Tahoma;font-size:12px;color: black;}";
 iframe_style += "TD{height:25px; border: 1px solid #6CAFF7}";

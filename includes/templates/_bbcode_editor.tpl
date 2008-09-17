@@ -117,6 +117,9 @@
 	var hoteditor_path = "{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/";
 	var hoteditor_theme_path = "{$smarty.const.THEME}hoteditor";
 
+	// encoding
+	var iframe_encoding = "{$settings.charset}";
+
 	// author name used in [quote=author]
 	var hoteditor_reply_to = "{$author|default:""}";
 </script>
