@@ -36,7 +36,7 @@
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
 	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions.js'></script>
 	{if $smarty.const.LOAD_TINYMCE}
-		<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/tiny_mce-3.1.0.1/tiny_mce.js'></script>
+		<script type='text/javascript' src='{$smarty.const.TINY_MCE}tiny_mce.js'></script>
 		{literal}
 		<script type='text/javascript'>
 		function advanced() {

@@ -156,6 +156,8 @@ define("MODULES", BASEDIR."modules/");
 define("INCLUDES", BASEDIR."includes/");
 define("PHOTOS", IMAGES."photoalbum/");
 define("THEMES", BASEDIR."themes/");
+define("GESHI", INCLUDES."geshi-1.0.8");
+define("TINY_MCE", INCLUDES."jscripts/tiny_mce-3.2");
 
 // extract server settings information
 if (isset($_SERVER['SERVER_SOFTWARE'])) {
