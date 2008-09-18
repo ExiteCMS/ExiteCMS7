@@ -8,6 +8,7 @@
 {*                                                                         *}
 {* Revision History:                                                       *}
 {* 2007-07-01 - WW - Initial version                                       *}
+{* 2008-09-17 - WW - Added language and text direction to the html tag     *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -17,7 +18,7 @@
 {*                                                                         *}
 {***************************************************************************}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$settings.locale_code|truncate:2:""}" lang="{$settings.locale_code|truncate:2:""}">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$settings.locale_code|truncate:2:""}" lang="{$settings.locale_code|truncate:2:""}" dir="{$smarty.const.LOCALEDIR}">
 
 <head>
 	<title>{$settings.sitename}{if defined('PAGETITLE')} - {$smarty.const.PAGETITLE}{/if}</title>

@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| Copyright 2008 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
 | Some portions copyright 2002 - 2006 Nick Jones     |
@@ -15,8 +15,8 @@
 | Some portions developed by CrappoMan               |
 | email: simonpatterson@dsl.pipex.com                |
 +----------------------------------------------------*/
-require_once dirname(__FILE__)."/../includes/core_functions.php";
-require_once PATH_ROOT."/includes/theme_functions.php";
+require_once dirname(__FILE__)."/../../includes/core_functions.php";
+require_once PATH_INCLUDES."theme_functions.php";
 
 // check for the proper admin access rights
 if (!checkrights("DB") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
@@ -27,156 +27,11 @@ $variables = array();
 // make sure the script doesn't time out
 set_time_limit(0);
 
-$crlf = "\n";
-
-// delete an on-the-server backup
-if (isset($action) && $action == 'restore' && isset($_POST['local_delete'])) {
-	@unlink(PATH_ADMIN."db_backups/".stripinput($_POST['local_file']));
-	$action = "";
-}
-
-// create the database backup
-if (isset($_POST['btn_create_backup'])) {
-	$user_password = md5(md5($_POST['user_password']));
-	$backup_keep = isset($_POST['backup_keep']) && isNum($_POST['backup_keep']) ? $_POST['backup_keep'] : 0;
-	$backup_download = isset($_POST['backup_download']) && isNum($_POST['backup_download']) ? $_POST['backup_download'] : 1;
-	$backup_compress = isset($_POST['backup_type']) && ($_POST['backup_type'] == ".gz") ? 1 : 0;
-	if ($backup_keep == 0 && $backup_download == 0) {
-		$variables['error'] = 2;
-	} else if ($user_password != $userdata['user_password']) {
-		$variables['error'] = 3;
-	} else {
-		$db_tables = $_POST['db_tables'];
-		if(count($db_tables) > 0) {
-			$filename = PATH_ADMIN."db_backups/".stripinput($_POST['backup_filename']).".sql";
-			if ($backup_compress) {
-				$filename .= ".gz"; 
-				$fp = gzopen ($filename, 'w9'); 
-			} else {
-				$fp = fopen ($filename, 'w9'); 
-			}
-			if (!$fp) {
-				$variables['error'] = 1;
-			} else {
-				if ($backup_compress) {
-					gzwrite($fp, "#----------------------------------------------------------".$crlf);
-					gzwrite($fp, "# ExiteCMS SQL Data Dump".$crlf);
-					gzwrite($fp, "# Database Name: `".$db_name."`".$crlf);
-					gzwrite($fp, "# Table Prefix: `".$db_prefix."`".$crlf);
-					gzwrite($fp, "# Date: `".date("d/m/Y H:i")."`".$crlf);
-					gzwrite($fp, "#----------------------------------------------------------".$crlf);
-				} else {
-					fwrite($fp, "#----------------------------------------------------------".$crlf);
-					fwrite($fp, "# ExiteCMS SQL Data Dump".$crlf);
-					fwrite($fp, "# Database Name: `".$db_name."`".$crlf);
-					fwrite($fp, "# Table Prefix: `".$db_prefix."`".$crlf);
-					fwrite($fp, "# Date: `".date("d/m/Y H:i")."`".$crlf);
-					fwrite($fp, "#----------------------------------------------------------".$crlf);
-				}
-				dbquery('SET SQL_QUOTE_SHOW_CREATE=1');
-				foreach($db_tables as $table) {
-					@set_time_limit(1200);
-					dbquery("OPTIMIZE TABLE $table");
-					if ($backup_compress) {
-						gzwrite($fp, $crlf."#".$crlf."# Structure for Table `".$table."`".$crlf."#".$crlf);
-						gzwrite($fp, "DROP TABLE IF EXISTS `$table`;$crlf");
-					} else {
-						fwrite($fp, $crlf."#".$crlf."# Structure for Table `".$table."`".$crlf."#".$crlf);
-						fwrite($fp, "DROP TABLE IF EXISTS `$table`;$crlf");
-					}
-					$row=dbarraynum(dbquery("SHOW CREATE TABLE $table"));
-					if ($backup_compress) {
-						gzwrite($fp, $row[1].";".$crlf);
-					} else {
-						fwrite($fp, $row[1].";".$crlf);
-					}
-					$result=dbquery("SELECT * FROM $table");
-					if($result&&dbrows($result)){
-						if ($backup_compress) {
-							gzwrite($fp, $crlf."#".$crlf."# Table Data for `".$table."`".$crlf."#".$crlf);
-						} else {
-							fwrite($fp, $crlf."#".$crlf."# Table Data for `".$table."`".$crlf."#".$crlf);
-						}
-						$column_list="";
-						$num_fields=mysql_num_fields($result);
-						for($i=0;$i<$num_fields;$i++){
-							$column_list.=(($column_list!="")?", ":"")."`".mysql_field_name($result,$i)."`";
-						}
-					}
-					while($row=dbarraynum($result)){
-						$dump="INSERT INTO `$table` ($column_list) VALUES (";
-						for($i=0;$i<$num_fields;$i++){
-							$dump.=($i>0)?", ":"";
-							if(!isset($row[$i])){
-								$dump.="NULL";
-							}elseif($row[$i]=="0"||$row[$i]!=""){
-								$type=mysql_field_type($result,$i);
-								if($type=="tinyint"||$type=="smallint"||$type=="mediumint"||$type=="int"||$type=="bigint"||$type=="timestamp"){
-									$dump.=$row[$i];
-								}else{
-									$search_array=array('\\','\'',"\x00","\x0a","\x0d","\x1a");
-									$replace_array=array('\\\\','\\\'','\0','\n','\r','\Z');
-									$row[$i]=str_replace($search_array,$replace_array,$row[$i]);
-									$dump.="'$row[$i]'";
-								}
-							}else{
-							$dump.="''";
-							}
-						}
-						$dump.=');';
-						if ($backup_compress) {
-							gzwrite($fp, $dump.$crlf);
-						} else {
-							fwrite($fp, $dump.$crlf);
-						}
-					}
-		
-				}
-				if ($backup_compress) {
-					gzclose($fp);
-				} else {
-					fclose($fp);
-				}
-				if ($backup_download) {
-					$file = stripinput($_POST['backup_filename']).".sql";
-					require_once PATH_INCLUDES."class.httpdownload.php";
-					$dl = new httpdownload;
-					$dl->use_resume = false;
-					if ($_POST['backup_type'] == ".gz") {
-						$dl->set_mime("application/x-gzip gz tgz");
-						$dl->set_byfile($filename);
-						$dl->set_filename($file.".gz");
-					} else {
-						$dl->set_mime("text/plain");
-						$dl->set_byfile($filename);
-						$dl->set_filename($file);
-					}
-					$dl->download();
-				}
-				if (!$backup_keep) {
-					@unlink($filename);
-				}
-				fallback(FUSION_SELF.$aidlink);
-				exit;
-			}
-		} else {
-			fallback(FUSION_SELF.$aidlink);
-			exit;
-		}
-	}
-}
-
 // load the locale for this module
 locale_load("admin.db-backup");
 
 // make sure the parameter is valid
 if (!isset($action)) $action = "";
-
-// a restore is cancelled. Remove the uploaded backup file
-if (isset($_POST['btn_cancel'])) {
-	@unlink(PATH_ADMIN."db_backups/".$_POST['file']);
-	redirect(FUSION_SELF.$aidlink);
-}
 
 // a restore is requested
 if (isset($_POST['btn_do_restore'])) {
@@ -217,6 +72,10 @@ if (isset($_POST['btn_do_restore'])) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
 							$result = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$result);
+							$result = preg_replace("/(.*?)character set\s(.*?)\s(.*?)/im", "\\1\\3", $result);
+							$result = preg_replace("/(.*?)collate\s(.*?)\s(.*?)/im", "\\1\\3", $result);
+							$result = preg_replace("/(.*?)default charset=(.*?);(.*?)/im", "\\1\\3", $result);
+							$result .= "DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
 							mysql_unbuffered_query($result);
 						}
 					}
@@ -231,7 +90,11 @@ if (isset($_POST['btn_do_restore'])) {
 						$ins = $tmp[1];
 						if (in_array($ins, $list_ins)) {
 							$result = preg_replace("/INSERT INTO `$inf_tblpre(.*?)`/i","INSERT INTO `$restore_tblpre\\1`",$result);
-							mysql_unbuffered_query($result);
+							if (is_utf8_string($result)) {
+								mysql_unbuffered_query($result);
+							} else {
+								mysql_unbuffered_query(iconv("ISO-8859-1", "UTF-8", $result));
+							}
 						}
 					}
 				}
@@ -339,30 +202,15 @@ if (isset($_POST['btn_do_restore'])) {
 
 }
 	
-// make a list of tables in the current database
-$table_list=array();
-$result=dbquery("SHOW tables");
-while($row=dbarraynum($result)){
-	$table_list[] = array('id' => $row[0], 'name' => $row[0], 'selected' => preg_match("/^".$db_prefix."/i",$row[0]) );
-}
-
 // get a list of all backups on the server
 $variables['backup_files'] = makefilelist(PATH_ADMIN."db_backups/", ".|..|index.php", true);
-
-$variables['table_list'] = $table_list;
-$variables['db_name'] = $db_name;
-$variables['db_size'] = parseByteSize(get_database_size(),2,false);
-$variables['db_prefix'] = $db_prefix;
-$variables['db_tables'] = get_table_count();
-$variables['db_fusion_size'] = parseByteSize(get_database_size($db_prefix),2,false);
-$variables['db_fusion_tables'] = get_table_count($db_prefix);
 
 // template variables
 $variables['action'] = isset($action) ? $action : "";
 
 // define the admin body panel
-$template_panels[] = array('type' => 'body', 'name' => 'admin.db_backup', 'template' => 'admin.db_backup.tpl', 'locale' => "admin.db-backup");
-$template_variables['admin.db_backup'] = $variables;
+$template_panels[] = array('type' => 'body', 'name' => 'tools.iso2utf', 'template' => 'admin.tools.iso2utf.tpl', 'locale' => "admin.db-backup");
+$template_variables['tools.iso2utf'] = $variables;
 
 // Call the theme code to generate the output for this webpage
 require_once PATH_THEME."/theme.php";
@@ -412,5 +260,17 @@ function gzcompressfile($source,$level=false){
 		gzclose($fp_out);
 	}else $error=true;
 	if($error)return false; else return $dest;
+}
+
+function is_utf8_string($string) {
+	return preg_match('%(?:
+		[\xC2-\xDF][\x80-\xBF]               # non-overlong 2-byte
+		|\xE0[\xA0-\xBF][\x80-\xBF]          # excluding overlongs
+		|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}   # straight 3-byte
+		|\xED[\x80-\x9F][\x80-\xBF]          # excluding surrogates
+		|\xF0[\x90-\xBF][\x80-\xBF]{2}       # planes 1-3
+		|[\xF1-\xF3][\x80-\xBF]{3}           # planes 4-15
+		|\xF4[\x80-\x8F][\x80-\xBF]{2}       # plane 16
+	)+%xs', $string);
 }
 ?>

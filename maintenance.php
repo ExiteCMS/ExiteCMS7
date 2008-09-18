@@ -15,6 +15,13 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once dirname(__FILE__)."/includes/theme_functions.php";
 
+// logout requested, switch to setuser to perform the logout
+if (isset($_POST['logout'])) {
+	$_REQUEST['logout'] = "yes";
+	include PATH_ROOT."setuser.php";
+	exit;
+}
+
 // temp storage for template variables
 $variables = array();
 if (isset($reason) && $reason == "2") {
@@ -32,9 +39,6 @@ session_write_close();
 
 load_templates('body', '');
 
-// close the database connection
-mysql_close();
-
-// and flush any output remaining
-ob_end_flush();
+// clean up and clean exit
+theme_cleanup();
 ?>

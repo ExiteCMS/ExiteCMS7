@@ -17,8 +17,10 @@ require_once dirname(__FILE__)."/includes/theme_functions.php";
 // temp storage for template variables
 $variables = array();
 
-// set the redirect url (set in theme_cleanup)
-if (isset($_SESSION['last_url'])) {
+// set the redirect url (set in theme_cleanup), butnot when in maintenance!
+if (eregi("maintenance.php", $_SERVER['HTTP_REFERER'])) {
+	$variables['url'] = BASEDIR."index.php";
+} elseif (isset($_SESSION['last_url'])) {
 	$variables['url'] = $_SESSION['last_url'];
 } elseif (empty($_SERVER['HTTP_REFERER'])) {
 	$variables['url'] = BASEDIR."index.php";

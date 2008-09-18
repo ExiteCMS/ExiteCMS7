@@ -261,6 +261,23 @@ if (iADMIN) {
 	$aidlink = "?aid=".iAUTH;
 }
 
+// check for upgrades in progress.
+// NOTE: when a form has been posted, skip this and finish the POST!
+if (count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
+
+	include PATH_ADMIN."upgrade.php";
+	//  If so, force a switch to maintenance mode
+	if (UPGRADES) $settings['maintenance'] = 2;
+
+	// if not called from the maintenance mode module! (to prevent a loop, endless ;-)
+	// check if we need to redirect to maintenance mode (for users) or upgrade (for webmasters)
+	if (!iSUPERADMIN && $settings['maintenance'] && !eregi("maintenance.php", $_SERVER['PHP_SELF'])) {
+		// deny all non-webmasters access to the site
+		redirect(BASEDIR.'maintenance.php?reason='.$settings['maintenance']);
+	}
+}
+
+
 /*---------------------------------------------------+
 | User authentication functions                      |
 +----------------------------------------------------*/
