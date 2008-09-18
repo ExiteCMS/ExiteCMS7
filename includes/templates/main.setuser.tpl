@@ -15,15 +15,14 @@
 {*                                                                         *}
 {***************************************************************************}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$settings.locale_code|truncate:2:""}" lang="{$settings.locale_code|truncate:2:""}" dir="{$smarty.const.LOCALEDIR}">
 	<head>
-		<title>{$settings.sitename}</title>
-		<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-		<meta http-equiv='refresh' content='{$refresh}; url={$url}' />
+		<title>{$settings.sitename}{if defined('PAGETITLE')} - {$smarty.const.PAGETITLE}{/if}</title>
+		<meta http-equiv='Content-Type' content='text/html; charset={$settings.charset}' />
+		<meta http-equiv='Content-Language' content='{$settings.locale_code|truncate:2:""}' />
+		<meta http-equiv='refresh' content='60; url={$smarty.const.BASEDIR}'>
 		<link href="{$smarty.const.THEME}exitecms__0001.css" rel="stylesheet" type="text/css" />
 	</head>
-
 	<body class='body'>
 		<div class='splashscreen-h'>
 			<div class='splashscreen-v'>
