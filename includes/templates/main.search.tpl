@@ -31,11 +31,11 @@
 					<br />
 					<input type='checkbox' name='boolean' value='1' class='textbox' />{$locale.src447}
 				</td>
-				<td align='right'>
+				<td>
 					<input type='radio' name='qtype' value='OR' checked='checked' /> {$locale.src407}
 					<input type='radio' name='qtype' value='AND' /> {$locale.src408}
 					<br />
-					<span class='smallalt'>{$locale.src427}</span>
+					&nbsp;<span class='smallalt'>{$locale.src427}</span>
 				</td>
 			</tr>
 		</table>
