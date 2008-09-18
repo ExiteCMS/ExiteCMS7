@@ -37,9 +37,9 @@
 	 		{/if}
 		</td>
 		{if $posts[pid].show_ip}
-		<td class='tbl_top_mid' style='text-align:right;'>
+		<td class='tbl_top_mid' style='text-align:right;white-space:nowrap;'>
 		{else}
-		<td colspan='2' class='tbl_top_right' style='text-align:right;'>
+		<td colspan='2' class='tbl_top_right' style='text-align:right;white-space:nowrap;'>
 		{/if}
 		{if $smarty.const.iMEMBER && $user_can_post}
 			{if $posts[pid].user_can_edit}
@@ -58,7 +58,7 @@
 		{/if}
 		</td>
 		{if $posts[pid].show_ip}
-		<td width='1%' class='tbl_top_right' valign='bottom'>
+		<td width='1%' class='tbl_top_right'>
 			{if $user_can_blacklist}
 				<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;ip={$posts[pid].post_ip}'>
 					<img src='{$smarty.const.THEME}images/ip.gif' alt='{$locale.570}' title='{$posts[pid].post_ip}{$locale.570a}' style='border:0px;' />
