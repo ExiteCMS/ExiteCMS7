@@ -3178,8 +3178,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['459'] = "Probeer a.u.b. opnieuw";
 		$localestrings['500'] = "Vul a.u.b. uw gegevens hier in. ";
 		$localestrings['501'] = "Een verificatie email zal ter bevestiging naar dit email adres worden gestuurd. ";
-		$localestrings['502'] = "Velden gemarkeerd met <span style='color:#ff0000;'>*</span> moeten worden ingevuld.\nUw gebruikersnaam en wachtwoord is hoofdletter sensitief. Uw volledige naam zal alleen voor communicatie met uwzelf worden gebruikt, en is niet zichtbaar voor anderen.";
-		$localestrings['503'] = " Nadat u bent aangemeld kunt u verdere informatie over uwzelf invoeren door te kiezen voor Wijzig Profiel.";
+		$localestrings['502'] = "Velden gemarkeerd met <span style='color:#ff0000;'>*</span> moeten worden ingevuld.\nUw gebruikersnaam en wachtwoord is hoofdletter sensitief. Uw volledige naam zal alleen voor communicatie met u worden gebruikt, en is niet zichtbaar voor anderen.";
+		$localestrings['503'] = " Nadat u bent aangemeld kunt u verdere informatie over uzelf invoeren door te kiezen voor Wijzig Profiel.";
 		$localestrings['504'] = "Validatie Code:";
 		$localestrings['505'] = "Voor validatie code in:";
 		$localestrings['506'] = "Registreer";
