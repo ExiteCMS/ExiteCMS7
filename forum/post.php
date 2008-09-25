@@ -768,6 +768,8 @@ if (isset($_POST["cancel"])) {
 		} else {
 			// move the post to the new thread
 			$result = dbquery("UPDATE ".$db_prefix."posts SET thread_id='".$_POST['new_thread_id']."', forum_id='".$_POST['new_forum_id']."' WHERE post_id='$post_id'");
+			// move attachments as well
+			$result = dbquery("UPDATE ".$db_prefix."forum_attachments SET thread_id='".$_POST['new_thread_id']."' WHERE post_id='$post_id'");
 			// update the forum record of the new thread
 			$result = dbquery("SELECT MAX(forum_lastpost) as lastpost FROM ".$db_prefix."forums WHERE forum_id='".$_POST['new_forum_id']."'");
 			if (dbrows($result) == 0) fallback("index.php");
