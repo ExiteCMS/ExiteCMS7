@@ -103,7 +103,7 @@ function GeoIP_flag($geoip_flag="", $geoip_name="", $tag=true, $width=false, $he
 
 	if (!is_file(PATH_IMAGES."flags/".$geoip_flag.".gif")) {
 		if ($tag) {
-			$geoip_flag = "<img width='".($width?$width:"16")."' height='".($height?$height:"11")."' src='".IMAGES."spacer.gif' title='' alt='' />&nbsp;";
+			$geoip_flag = "<img width='".($width?$width:"14")."' height='".($height?$height:"10")."' src='".IMAGES."flags/unknown.gif' title='' alt='' />&nbsp;";
 		} else {
 			$geoip_flag = "";
 		}
