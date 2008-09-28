@@ -112,6 +112,46 @@ function dbquery($query, $display=false) {
 	return $result;
 }
 
+// generate an insert or update query from an array with field data
+function dbupdate($table, $index, $record) {
+	global $db_prefix;
+
+	// is this an insert or an update?
+	$fields = "";
+	$values = "";
+	if (empty($record[$index])) {
+		$sql = "INSERT INTO ".$db_prefix.$table." (";
+		foreach($record as $name => $value) {
+			if ($name == $index) continue;
+			$fields .= ($fields == "" ? "" : ", ") . $name;
+			if (is_string($value)) {
+				$values .= ($values == "" ? "'" : ", '").mysql_escape_string($value)."'";
+			} else {
+				$values .= ($values == "" ? "" : ", ").$value;
+			}
+		}
+		$sql .= $fields . ") VALUES (".$values.")";
+	} else {
+		$sql = "UPDATE ".$db_prefix.$table." SET ";
+		foreach($record as $name => $value) {
+			if ($name == $index) continue;
+			$fields .= ($fields == "" ? "" : ", ") . $name . " = ";
+			if (is_string($value)) {
+				$fields .= "'".mysql_escape_string($value)."' ";
+			} else {
+				$fields .= $value . " ";
+			}
+		}
+		$sql .= $fields . "WHERE " . $index . " = ";
+		if (is_string($record[$index])) {
+			$sql .= "'".mysql_escape_string($record[$index])."'";
+		} else {
+			$sql .= $record[$index];
+		}
+	}
+	return dbquery($sql);
+}
+
 // DEPRECIATED. Function is replaced by the more generic dbfunction(), and will be removed in a later release of ExiteCMS
 function dbcount($field,$table,$conditions="") {
 
