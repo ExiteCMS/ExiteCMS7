@@ -39,7 +39,7 @@
 				</a>
 			{/if}
 		</td>
-		{if $smarty.section.cat.iteration > $fullrows}
+		{if $smarty.section.cat.last && $smarty.section.cat.iteration > $fullrows}
 		<td width='{$lastwidth}%' colspan='{math equation="1+(x-y)*2" x=$columns y=$remainder}' class='tbl1' style='vertical-align:top'>
 		{else}
 		<td width='{$colwidth}%' class='tbl1' style='vertical-align:top'>
