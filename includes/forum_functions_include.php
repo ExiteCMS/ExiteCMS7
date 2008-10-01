@@ -562,7 +562,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 			$result = dbquery("SELECT DISTINCT tag FROM ".$db_prefix."wiki_pages");
 			while ($data = dbarray($result)) {
 				if (!empty($data['tag'])) {
-					$search[] = "/(\b)(".$data['tag'].")(\b)/i";
+					$search[] = "/(^|\s)(".$data['tag'].")($|\s|\.|,|:|;|\?|\!)/i";
 					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
 				}
 			}
@@ -571,7 +571,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 			$result = dbquery("SELECT DISTINCT from_tag FROM ".$db_prefix."wiki_aliases");
 			while ($data = dbarray($result)) {
 				if (!empty($data['from_tag'])) {
-					$search[] = "/(\b)(".$data['from_tag'].")(\b)/i";
+					$search[] = "/(^|\s)(".$data['from_tag'].")($|\s|\.|,|:|;|\?|\!)/i";
 					$replace[] = "\\1[wiki]\\2[/wiki]\\3";
 				}
 			}
@@ -637,13 +637,16 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[hr\]#si', '<hr />', $text);
 
 	// old style lists
-	$text = preg_replace('#\[li\](.*?)\[/li\]#si', '<li style=\'margin-left:15px;\'>\1</li>', $text);
-	$text = preg_replace('#\[ul\](.*?)\[/ul\]#si', '<ul style=\'margin-left:-20px;\'>\1</ul>', $text);
+	$text = preg_replace('#\[li\](.*?)\[/li\]#si', '<li style=\'margin-left:35px;\'>\1</li>', $text);
+	$text = preg_replace('#\[ul\](.*?)\[/ul\]#si', '<ul style=\'margin-left:-15px;\'>\1</ul>', $text);
 
 	// new style lists
 	$text = preg_replace('#\[list=1\](.*?)\[/list\]#si', '<ol>\1</ol>', $text);
 	$text = preg_replace('#\[list\](.*?)\[/list\]#si', '<ul>\1</ul>', $text);
 	$text = preg_replace('#\r\n\[\*\]#si', '<li>', $text);
+	// get rid of inserted breaks that ruin the layout
+	$text = preg_replace('#<br />\r\n<ol><br />#si', '<ol>', $text);
+	$text = preg_replace('#<br />\r\n<ul><br />#si', '<ul>', $text);
 
 	// bbcode tables
 	$text = preg_replace('#\[table\]#si', '<div><table align="left" valign="top" class="tbl-border">', $text);
