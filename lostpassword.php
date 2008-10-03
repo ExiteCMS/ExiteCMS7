@@ -63,7 +63,7 @@ if (isset($email) && isset($account)) {
 			$data = dbarray($result);
 			$new_pass_link = $settings['siteurl']."lostpassword.php?email=".$data['user_email']."&account=".$data['user_password'];
 			$mailbody = str_replace("[NEW_PASS_LINK]", $new_pass_link, $locale['410']);
-			$mailbody = str_replace("[USER_NAME]", $data['user_name'], $mailbody);
+			$mailbody = str_replace("[USERNAME]", $data['user_name'], $mailbody);
 			$mailbody = str_replace("[SITENAME]", $settings['sitename'], $mailbody);
 			$mailbody = str_replace("[SITEUSERNAME]", $settings['siteusername'], $mailbody);
 			sendemail($data['user_name'],$email,$settings['siteusername'],$settings['siteemail'],$locale['409'].$settings['sitename'],$mailbody);
