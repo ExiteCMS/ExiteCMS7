@@ -297,9 +297,11 @@ window.onload = init;
 		{/if}
 		<tr>
 			<td align='center' class='tbl1'>
-				<input type='submit' name='postquickreply' value='{$locale.514}' class='button' onclick='javascript:get_hoteditor_data();' />&nbsp; &nbsp;
 				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<input type='submit' name='postquickreply' value='{$locale.514}' class='button' />&nbsp; &nbsp;
 					<input type='button' name='toggle' class='button' value='{$locale.517}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
+				{else}
+					<input type='submit' name='postquickreply' value='{$locale.514}' class='button' onclick='javascript:get_hoteditor_data("message");' />
 				{/if}
 				<input type='hidden' name='random_id' value='{$random_id}' />
 			</td>

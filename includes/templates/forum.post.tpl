@@ -238,7 +238,7 @@
 							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 								<input type='submit' name='upload' value='{$locale.471}' class='button' />
 							{else}
-								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='javascript:get_hoteditor_data();' />
+								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='javascript:get_hoteditor_data("message");' />
 							{/if}
 						</td>
 					</tr>
@@ -281,7 +281,7 @@
 							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' />
 							{else}
-								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' onclick='javascript:get_hoteditor_data();' />
+								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' onclick='javascript:get_hoteditor_data("message");' />
 							{/if}
 						{/if}
 					</td>
@@ -352,8 +352,8 @@
 					<input type='submit' name='preview' value='{$button_preview}' class='button' />
 					<input type='submit' name='save' value='{$button_save}' class='button' />
 				{else}
-					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:get_hoteditor_data();' />
-					<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:get_hoteditor_data();' />
+					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:get_hoteditor_data("message");' />
+					<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:get_hoteditor_data("message");' />
 				{/if}
 				<input type='hidden' name='post_author' value='{$post_author}' />
 				<input type='hidden' name='random_id' value='{$random_id}' />

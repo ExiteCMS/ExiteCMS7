@@ -54,7 +54,7 @@
 			{if $user_can_post && $rulespage_defined}
 				<tr>
 					<td colspan='7' class='tbl2' align='center'>
-						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />&nbsp;<a class='tbl_top_mid' href='/viewpage.php?page_id={$forum.forum_rulespage}'>{$forum_rulestitle}</a>&nbsp;<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
+						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />&nbsp;<a class='errors' href='/viewpage.php?page_id={$forum.forum_rulespage}'>{$forum_rulestitle}</a>&nbsp;<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
 					</td>
 				</tr>
 			{/if}
