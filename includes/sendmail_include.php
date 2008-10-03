@@ -15,11 +15,11 @@ function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type
 
 	global $settings, $locale;
 	
-	require_once PATH_INCLUDES."phpmailer_include.php";
+	require_once PATH_INCLUDES."class.phpmailer.php";
 	
 	$mail = new PHPMailer();
-	if (file_exists(PATH_INCLUDES."languages/phpmailer.lang-".$settings['locale_code'].".php")) {
-		$mail->SetLanguage($settings['locale_code'], PATH_INCLUDES."language/");
+	if (file_exists(PATH_INCLUDES."languages/phpmailer.lang-".$settings['PHPmailer_locale'].".php")) {
+		$mail->SetLanguage($settings['PHPmailer_locale'], PATH_INCLUDES."language/");
 	} else {
 		$mail->SetLanguage("en", PATH_INCLUDES."language/");
 	}
