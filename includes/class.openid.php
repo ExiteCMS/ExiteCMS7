@@ -169,6 +169,9 @@ class SimpleOpenID{
 		if (!isset($u['path']) || ($u['path'] == '/')) {
 			$u['path'] = '';
 		}
+		if (!isset($u['host'])) {
+			$u['host'] = '';
+		}
 		if(substr($u['path'],-1,1) == '/'){
 			$u['path'] = substr($u['path'], 0, strlen($u['path'])-1);
 		}
