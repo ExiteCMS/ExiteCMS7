@@ -58,11 +58,12 @@ $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##albums (
 // add the new "Photos" table
 $commands[] = array('type' => 'db', 'value' => "CREATE TABLE ##PREFIX##photos (
   photo_id mediumint(8) unsigned NOT NULL auto_increment,
+  photo_name varchar(255) NOT NULL default '',
   photo_thumb varchar(50) NOT NULL default '',
   photo_thumb_count int(10) NOT NULL default 0,
   photo_sized varchar(50) NOT NULL default '',
   photo_sized_count int(10) NOT NULL default 0,
-  photo_original varchar(255) NOT NULL default '',
+  photo_original varchar(50) NOT NULL default '',
   photo_original_count int(10) NOT NULL default 0,
   photo_size int(10) NOT NULL default 0,
   photo_uploaded_by mediumint(8) unsigned NOT NULL default 0,
