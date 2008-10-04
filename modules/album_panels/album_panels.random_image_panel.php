@@ -54,8 +54,8 @@ if (isset($photo['album_id'])) {
 	// get the gallery and photo record
 	$result = dbquery("SELECT * FROM ".$db_prefix."gallery_photos gp
 		INNER JOIN ".$db_prefix."galleries g ON g.gallery_id = gp.gallery_id
-		INNER JOIN ".$db_prefix."photos p ON p.photo_id = ap.photo_id
-		WHERE gp.gallery_id = ".$photo['gallery_id']." AND ap.photo_id = ".$photo['photo_id']);
+		INNER JOIN ".$db_prefix."photos p ON p.photo_id = gp.photo_id
+		WHERE gp.gallery_id = ".$photo['gallery_id']." AND gp.photo_id = ".$photo['photo_id']);
 } else {
 	// no record present
 	$result = false;
