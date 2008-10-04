@@ -61,30 +61,32 @@ if (isset($_POST['newthumbs']) || isset($_POST['newphotos'])) {
 		// get info about the original file
 		$imagefile = @getimagesize(PATH_PHOTOS.$data['photo_original']);
 		// generate a new normalized image if needed
-		if (isset($_POST['newphotos'])) {
+		if (is_array($imagefile) && isset($_POST['newphotos'])) {
+			ini_set("max_execution_time", 0);
 			// do we need to delete the old one?
 			if ($data['photo_sized'] != $data['photo_original']) {
 				@unlink(PATH_PHOTOS.$data['photo_sized']);
 			}
-			if ($imagefile[0] > $settings['photo_w'] || $imagefile[1] > $settings['photo_h']) {
+			if ($imagefile[0] > $settings2['photo_w'] || $imagefile[1] > $settings2['photo_h']) {
 				// Generate a new intermediate image
 				$data['photo_sized'] = str_replace(".img", ".sized.img", $data['photo_original']);
-				createthumbnail($imagefile[2], PATH_PHOTOS.$data['photo_original'], PATH_PHOTOS.$data['photo_sized'], $settings['photo_w'], $settings['photo_h']);
+				createthumbnail($imagefile[2], PATH_PHOTOS.$data['photo_original'], PATH_PHOTOS.$data['photo_sized'], $settings2['photo_w'], $settings2['photo_h']);
 				$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_sized = '".$data['photo_sized']."' WHERE photo_id = ".$data['photo_id']);
 			} else {
 				$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_sized = photo_original WHERE photo_id = ".$data['photo_id']);
 			} 
 		}
 		// generate a new thumbnail if needed
-		if (isset($_POST['newthumbs'])) {
+		if (is_array($imagefile) && isset($_POST['newthumbs'])) {
+			ini_set("max_execution_time", 0);
 			// do we need to delete the old one?
 			if ($data['photo_thumb'] != $data['photo_original']) {
 				@unlink(PATH_PHOTOS.$data['photo_thumb']);
 			}
-			if ($imagefile[0] > $settings['photo_w'] || $imagefile[1] > $settings['photo_h']) {
+			if ($imagefile[0] > $settings2['thumb_w'] || $imagefile[1] > $settings2['thumb_h']) {
 				// Generate a new intermediate image
 				$data['photo_thumb'] = str_replace(".img", ".thumb.img", $data['photo_original']);
-				createthumbnail($imagefile[2], PATH_PHOTOS.$data['photo_original'], PATH_PHOTOS.$data['photo_thumb'], $settings['thumb_w'], $settings['thumb_h']);
+				createthumbnail($imagefile[2], PATH_PHOTOS.$data['photo_original'], PATH_PHOTOS.$data['photo_thumb'], $settings2['thumb_w'], $settings2['thumb_h']);
 				$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_thumb = '".$data['photo_thumb']."' WHERE photo_id = ".$data['photo_id']);
 			} else {
 				$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_thumb = photo_original WHERE photo_id = ".$data['photo_id']);
