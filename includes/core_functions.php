@@ -82,7 +82,7 @@ ob_start();
 define("PATH_ROOT", realpath(dirname(__FILE__).'/../').'/');
 define("PATH_ADMIN", PATH_ROOT."administration/");
 define("PATH_THEMES", PATH_ROOT."themes/");
-define("PATH_PHOTOS", PATH_ROOT."images/gallery/");
+define("PATH_PHOTOS", PATH_ROOT."images/albums/");
 define("PATH_IMAGES", PATH_ROOT."images/");
 define("PATH_IMAGES_A", PATH_IMAGES."articles/");
 define("PATH_IMAGES_ADS", PATH_IMAGES."advertising/");
@@ -91,7 +91,8 @@ define("PATH_IMAGES_N", PATH_IMAGES."news/");
 define("PATH_IMAGES_NC", PATH_IMAGES."news_cats/");
 define("PATH_IMAGES_DC", PATH_IMAGES."download_cats/");
 define("PATH_INCLUDES", PATH_ROOT."includes/");
-define("PATH_GESHI", PATH_INCLUDES."geshi-1.0.8");
+define("PATH_GESHI", PATH_INCLUDES."geshi-1.0.8/");
+define("PATH_SWFUPLOAD", PATH_INCLUDES."SWFUpload-2.1.0/");
 define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
 define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
@@ -154,16 +155,15 @@ define("ATTACHMENTS", BASEDIR."files/attachments/");
 define("PM_ATTACHMENTS", BASEDIR."files/pm_attachments/");
 define("MODULES", BASEDIR."modules/");
 define("INCLUDES", BASEDIR."includes/");
-define("PHOTOS", IMAGES."photoalbum/");
+define("PHOTOS", IMAGES."albums/");
 define("THEMES", BASEDIR."themes/");
-define("GESHI", INCLUDES."geshi-1.0.8");
-define("TINY_MCE", INCLUDES."jscripts/tiny_mce-3.2");
+define("GESHI", INCLUDES."geshi-1.0.8/");
+define("SWFUPLOAD", INCLUDES."SWFUpload-2.1.0/");
+define("TINY_MCE", INCLUDES."jscripts/tiny_mce-3.2/");
 
 // extract server settings information
 if (isset($_SERVER['SERVER_SOFTWARE'])) {
-
 	// Common definitions - CGI mode
-
 	define("CMS_CLI", false);
 	$_SERVER['QUERY_STRING'] = isset($_SERVER['QUERY_STRING']) ? cleanurl($_SERVER['QUERY_STRING']) : "";
 	$_SERVER['REQUEST_URI'] = isset($_SERVER['REQUEST_URI']) ? cleanurl($_SERVER['REQUEST_URI']) : "";
@@ -184,12 +184,11 @@ if (isset($_SERVER['SERVER_SOFTWARE'])) {
 	require_once PATH_INCLUDES."session_functions.php";
 
 } else {
-
 	// Common definitions - CLI mode
-
 	define("CMS_CLI", true);
 	define("USER_IP", '0.0.0.0');
 }
+// store the magic quotes setting
 define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
 
 // Browser window dimensions (assume 1024x768 if no cookies found)
@@ -344,14 +343,14 @@ function shortenlink($text, $length, $filler="...") {
 	return $returner;
 }
 
-// Validate numeric input
+// Validate numeric (positive/negative) input
 function isNum($value) {
-	return (preg_match("/^[0-9]+$/", $value));
+	return (preg_match("/^-?[0-9]+$/", $value));
 }
 
-// Validate decimal input
+// Validate decimal (positive/negative) input
 function isDec($value) {
-	return (preg_match("/^[0-9]+\.[0-9][0-9]$/", $value));
+	return (preg_match("/^-?[0-9]+\.[0-9][0-9]$/", $value));
 }
 
 // validate an IP address

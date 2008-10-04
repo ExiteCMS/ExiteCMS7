@@ -217,7 +217,7 @@
 				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 					<input type='submit' name='upload' value='{$locale.473}' class='button' />
 				{else}
-					<input type='submit' name='upload' value='{$locale.473}' class='button' onclick='javascript:get_hoteditor_data();' />
+					<input type='submit' name='upload' value='{$locale.473}' class='button' onclick='javascript:get_hoteditor_data("message");' />
 				{/if}
 			</td>
 		</tr>
@@ -238,8 +238,8 @@
 					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="return ValidateForm()" />
 					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="return ValidateForm()" />
 				{else}
-					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="javascript:get_hoteditor_data();return ValidateForm()" />
-					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="javascript:get_hoteditor_data();return ValidateForm()" />
+					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="javascript:get_hoteditor_data("message");return ValidateForm()" />
+					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="javascript:get_hoteditor_data("message");return ValidateForm()" />
 				{/if}
 			</td>
 		</tr>

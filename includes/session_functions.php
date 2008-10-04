@@ -32,6 +32,16 @@ session_set_cookie_params($settings['session_gc_maxlifetime'], "/", "", false);
 // disable the default session caching. very annoying
 session_cache_limiter("none");
 
+// when called from SWFUpload, set the session cookies from the post variable
+// to stay in the same session when uploading file(s)
+// (session hijacking is mitigated by the session_ua function)
+if (isset($_POST['SWFSESSIONID']) && !empty($_POST['SWFSESSIONID'])) {
+	$_COOKIE['site_visited'] = $_POST['SWFSESSIONID'];
+}
+if (isset($_POST[$settings['session_name']]) && !empty($_POST[$settings['session_name']])) {
+	session_id($_POST[$settings['session_name']]);
+}
+
 // start the session
 session_start();
 
@@ -44,6 +54,11 @@ foreach($_COOKIE as $cookiename => $cookievalue) {
 		// and delete the cookie
 		setcookie ($cookiename, "", 1);
 	}
+}
+
+// store the last_url cookie if found
+if (isset($_COOKIE['last_url']) && isURL($_COOKIE['last_url'])) {
+	$_SESSION['last_url'] = stripinput($_COOKIE['last_url']);
 }
 
 // remove any rubbish from the session record
@@ -113,10 +128,9 @@ function _read_session($session_id) {
 	if (!isset($_COOKIE['site_visited'])) return false;
 
 	// get the session 
-	$session_ua = md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited']);
 	$result = dbquery("SELECT * FROM ".$db_prefix."sessions 
 						WHERE session_id='$session_id' 
-							AND session_ua='$session_ua'
+							AND session_ua='"._session_ua()."'
 							AND session_expire >= ".time()
 					);
 
@@ -155,11 +169,10 @@ function _write_session($session_id,$session_data) {
 		} else {
 			$session_user_id = $userdata['user_id'];
 		}
-		$session_ua = md5($_SERVER["HTTP_USER_AGENT"] .$_COOKIE['site_visited']);
 		// insert or update the session information
 		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data) 
-						VALUES ('$session_id', '".$session_ua."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '".mysql_escape_string($session_data)."')
-						ON DUPLICATE KEY UPDATE session_data = '".mysql_escape_string($session_data)."', session_ua = '$session_ua', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
+						VALUES ('$session_id', '"._session_ua()."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '".mysql_escape_string($session_data)."')
+						ON DUPLICATE KEY UPDATE session_data = '".mysql_escape_string($session_data)."', session_ua = '"._session_ua()."', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
 					);
 		return true;
 	}
@@ -185,5 +198,20 @@ function _gc_session() {
 	$result = dbquery("DELETE FROM ".$db_prefix."sessions WHERE session_expire < ".time());
 
 	return true;
+}
+
+// generate the session_ua. It provides sort of two-factor authentication, using
+// what you have (session cookie and site_visited cookie) and what you are (IP information)
+// can't include the user agent here, because SWFupload uses a different agent string!
+function _session_ua() {
+
+	$session_ua = "";
+//	$session_ua .= isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
+	$session_ua .= isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "";
+	$session_ua .= isset($_SERVER['HTTP_VIA']) ? $_SERVER['HTTP_VIA'] : "";
+	$session_ua .= isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : "";
+	$session_ua .= isset($_COOKIE['site_visited']) ? $_COOKIE['site_visited'] : "";
+
+	return md5($session_ua);
 }
 ?>

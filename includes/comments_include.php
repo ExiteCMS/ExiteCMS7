@@ -21,7 +21,7 @@ require_once PATH_INCLUDES."forum_functions_include.php";
 locale_load("main.comments");
 
 // function to display the comments panel
-function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
+function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink, $admin=false) {
 
 	global $db_prefix, $settings,$locale,$userdata,$aidlink,
 		$template_panels, $template_variables;
@@ -79,7 +79,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		ORDER BY comment_datestamp ASC"
 	);
 	if (dbrows($result) != 0) {
-		$variables['allow_post'] = checkrights("C");
+		$variables['allow_post'] = checkrights("C") || $admin;
 		$variables['comments'] = array();
 		while ($data = dbarray($result)) {
 			$data['comment_message'] = parsemessage(array(), $data['comment_message'], $data['comment_smileys'], true);
@@ -97,8 +97,13 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink) {
 		$variables['validation_code'] = $_SESSION['securimage_code_value'];
 	}
 
+	// load the hoteditor if needed
+	if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+		if (!defined('LOAD_HOTEDITOR')) define('LOAD_HOTEDITOR', true);
+	}
+
 	// define the body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => array("main.comments", "hoteditor"));
+	$template_panels[] = array('type' => 'body', 'name' => 'comments_include', 'template' => 'include.comments.tpl', 'locale' => array("main.comments"));
 	$template_variables['comments_include'] = $variables;
 }
 ?>

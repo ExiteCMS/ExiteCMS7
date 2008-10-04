@@ -558,8 +558,13 @@ $variables['random_id'] = $random_id;
 // pagenav url
 $variables['pagenav_url'] = FUSION_SELF."?forum_id=$forum_id&amp;thread_id=$thread_id&amp;";
 
+// load the hoteditor if needed
+if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+	define('LOAD_HOTEDITOR', true);
+}
+
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'forum.viewthread', 'template' => 'forum.viewthread.tpl', 'locale' => array("forum.main","admin.forum_polls", "hoteditor"));
+$template_panels[] = array('type' => 'body', 'name' => 'forum.viewthread', 'template' => 'forum.viewthread.tpl', 'locale' => array("forum.main","admin.forum_polls"));
 $template_variables['forum.viewthread'] = $variables;
 
 // Call the theme code to generate the output for this webpage

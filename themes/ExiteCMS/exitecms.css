@@ -38,7 +38,7 @@ form					{ margin:0px; }
 
 /* --- Website template ------------------------------------ */
 
-						/* page body (normal/user mode + maintenance/webmaster mode) */
+						/* page body */
 body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu Sans",Arial,Sans-Serif; margin:4px 10px 5px 10px; width:100%; }
 .body 					{ color:#444; background-color:#aaa; }
 
@@ -58,9 +58,9 @@ body					{ font-size:1em; font-family:Verdana,"Bitstream Vera Sans","Deja Vu San
 .side-body-nm			{ color:#000; background-color:#fff; }
 
 						/* tags for sub texts, captions, etc. */ 
-.small					{ font-weight:normal; color:#444; }
-.small2					{ font-weight:normal; color:#666; }
-.smallalt				{ font-weight:normal; color:#888; }
+.small					{ font-weight:normal; font-size:90%; color:#444; }
+.small2					{ font-weight:normal; font-size:90%; color:#666; }
+.smallalt				{ font-weight:normal; font-size:90%; color:#888; }
 
 						/* title bars within a panel */
 .infobar 				{ font-weight:normal; color:#333; background-color:#ddd; padding:3px 4px 3px 4px; }
@@ -161,11 +161,81 @@ hr.side-hr				{ height:2px; }
 .codeblock_cmds			{ width:240px; margin-left:10px; border:1px #bbb solid; background-color:#fff; padding:0px 5px 0px 5px; border-top:0px; text-align:right; }
 
 						/* thumbnail caption in the message body */
-.thumbnail				{ color:#fff;background-color:#333;text-align:center; }
+.thumbnail				{ color:#fff; background-color:#333; text-align:center; }
 a.thumbnail				{ color: #ddd; }
+
+						/* image display in the album module */
+.album_thumb			{ border-style:outset; border-color:#999; border-width:5px; }
+
+						/* error messages and special notices */
+.errors 				{ text-align:center; font-weight:bold; font-size:110%; color:red; }
 
 						/* horizontal pollbar definition */
 .poll 					{ height:12px; border:1px #000 solid; }
+
+/* --- SWF upload module ----------------------------------- */
+
+						/* IE6 fixes */
+html fieldset 			{ position: relative; margin-top:1em; }
+html legend 			{ position:absolute; top: -0.5em; left: .5em; }
+
+						/* upload progress block, border and title */
+.swf_uploadprogress		{ border:1px solid #ccc; margin:0px; padding:25px 10px; }
+.swf_legend 			{ font-size:120%; font-weight:bold; padding:0 5px; margin:0 10px; color:#333; }
+
+						/* div to contain the SWFupload flash module */
+.progressWrapper 		{ width:100%; overflow:hidden; }
+
+.progressContainer 		{ margin:2px; padding:5px; border:solid 1px #444; background-color:#eee; overflow:hidden; }
+.progressContainer_red	{ border:solid 2px red; }
+.progressContainer_green { border:solid 1px #444; }
+.progressContainer_blue	{ border:solid 2px green; }
+.progressName			{ font-weight:bold; color:#666; width:100%; text-align:left; white-space:nowrap; overflow:hidden; }
+.progressBarInProgress	{ font-size:0; width:0%; height: 4px; background-color: blue; margin-top: 2px; }
+.progressBarComplete	{ width:100%; background-color: green; visibility: hidden; }
+.progressBarError		{ width:100%; background-color: red; visibility: hidden; }
+.progressBarStatus		{ margin-top: 2px; width: 100%; font-size: 90%; text-align: left; white-space: nowrap; }
+a.progressCancel 		{ font-size:0; height:16px; width:16px; background-image: url(/themes/ExiteCMS/images/cancel.gif); background-repeat:no-repeat; background-position:0px 0px; float:right; }
+
+/* --- Mootools Lightbox, by Milkbox -------------------------------- */
+
+						/* set the Milkbox overlay color // opacity: see the js options */
+#mbOverlay 				{ position:absolute; left:0; width:100%; background-color:#000; z-index:100; cursor:pointer; }
+
+						/* default Lightbox definition, can be overriden at runtime for proper positioning */
+#mbCenter 				{ position:absolute; z-index:101; overflow:hidden; left:50%; top:10%; background-color:#fff; border:5px solid #fff; margin:0; padding:5px; }
+
+						/* image loading notice */
+.mbLoading				{ background:#fff url(/themes/ExiteCMS/images/ajax-loader.gif) no-repeat center; }
+
+						/* Lightbox image settings */
+#mbImage				{ margin:0; padding:0; height:0; border:none; font-size:0; overflow:hidden; }
+
+						/* div clearing class */
+.clear					{ clear:both; height:0; margin:0; padding:0; font-size:0; overflow:hidden; }
+
+						/* image caption and navigation block, under the image */
+#mbBottom 				{ font-size:1em; color:#666; line-height:1.4em; text-align:left; padding-top:8px; margin:0; }
+
+						/* image caption */
+#mbDescription			{ margin-right:27px; padding:0px 10px 0 0; font-weight: normal; text-align:left; }
+
+						/* Lightbox navigation. Be careful if you change buttons dimensions! */
+#mbNavigation			{ float:right; width:27px; padding-top:3px; border-left:1px solid #9c9c9c; }
+
+						/* Lightbox images counter */
+#mbCount				{ width:55px; overflow:hidden; padding-top:1px; float:right; text-align:right; font-size:9px; }
+
+						/* navigation links */
+#mbCloseLink, #mbPrevLink, #mbNextLink { outline:none; display:block; float:right; height:20px; cursor:pointer; }
+#mbPrevLink, #mbNextLink{ width:17px; }
+#mbPrevLink				{ background:transparent url(/themes/ExiteCMS/images/lb_previous.gif) no-repeat; }
+#mbNextLink				{ background:transparent url(/themes/ExiteCMS/images/lb_next.gif) no-repeat; }
+
+						/* NOTE: doesn't work in ie6, so, just see the js options :) */
+a#mbPrevLink:hover,a#mbNextLink:hover,a#mbCloseLink:hover { background-position: 0 -23px; }
+
+#mbCloseLink 			{ width:20px; background: transparent url(/themes/ExiteCMS/images/lb_close.gif) no-repeat; }
 
 /* --- Upgrade admin module -------------------------------- */
 

@@ -143,7 +143,7 @@
 		{/if}
 		<tr>
 			<td colspan=2' align='center'>
-				<input type='submit' name='post_comment' value='{$locale.c102}' class='button' onclick='javascript:get_hoteditor_data();' />
+				<input type='submit' name='post_comment' value='{$locale.c102}' class='button' onclick='javascript:get_hoteditor_data("comment_message");' />
 			</td>
 		</tr>
 	</table>

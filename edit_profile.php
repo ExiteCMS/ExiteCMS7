@@ -85,7 +85,7 @@ if (isset($_POST['update_profile'])) {
 				$mailhost_ip = gethostbyname($mailhost);
 				if ($mailhost != $mailhost_ip) {
 					// found the mailserver for this email address. Check if the address exists
-					require_once PATH_INCLUDES.'smtp_include.php';
+					require_once PATH_INCLUDES.'class.smtp.php';
 					$mail = new SMTP();
 					if (!$mail->Connect($mailhost_ip,0,60)) {	// default SMTP port, 60sec timeout
 						// mail server doesn't respond
@@ -274,8 +274,13 @@ foreach($auth_methods as $auth_method) {
 	}
 }
 
+// load the hoteditor if needed
+if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+	define('LOAD_HOTEDITOR', true);
+}
+
 // define the search body panel variables
-$template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array("main.members-profile", "main.user_fields", "hoteditor"));
+$template_panels[] = array('type' => 'body', 'name' => 'edit_profile', 'template' => 'main.edit_profile.tpl', 'locale' => array("main.members-profile", "main.user_fields"));
 $template_variables['edit_profile'] = $variables;
 
 // Call the theme code to generate the output for this webpage

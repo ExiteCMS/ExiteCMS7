@@ -49,7 +49,6 @@
 |
 +--------------------------------------------------------------------------
 */
-
 // HotEditor free-use notice
 var Credit ="Rich Text Editor by www.eCardMax.com";
 if (Keycode == null) var Keycode ="8059051C55C81839D1E2BAA6355AC0253063E38835";
@@ -2745,4 +2744,4 @@ function toAbsURL(s) {
 		}
 	}
 	return h + p + '/' + s;
-} 
+}

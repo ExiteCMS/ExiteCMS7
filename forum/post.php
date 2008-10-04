@@ -43,9 +43,6 @@ define('FULL_SCREEN', (iMEMBER && $userdata['user_forum_fullscreen']));
 // temp storage for template variables
 $variables = array();
 
-// define the stylesheet for HotEditor
-$headerparms = '	<link rel="stylesheet" href="'.THEME.'hoteditor/style.css" type="text/css" />';
-
 // load the locales for this forum module
 locale_load("forum.main");
 locale_load("forum.post");
@@ -1021,8 +1018,12 @@ if (isset($_POST["cancel"])) {
 			$variables['fpm_settings'] = $fpm_settings;
 			$variables['attachmax'] = parsebytesize($settings['attachmax']);
 			$variables['attachtypes'] = str_replace(',', ' ', $settings['attachtypes']);
+			// load the hoteditor if needed
+			if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+				define('LOAD_HOTEDITOR', true);
+			}
 			// define the panel
-			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array("forum.main", "forum.post", "admin.forum_polls", "hoteditor"));
+			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array("forum.main", "forum.post", "admin.forum_polls"));
 			$template_variables['forum.post'] = $variables;
 			break;
 	

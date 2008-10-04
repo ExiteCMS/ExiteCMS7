@@ -35,12 +35,12 @@ function smarty_function_imagelink($params, &$smarty)
 {
 	// parameter validation and initialisation
 	if (!isset($params['image'])) {
-		$smarty->trigger_error("buttonlink: missing 'image' parameter");
+		$smarty->trigger_error("imagelink: missing 'image' parameter");
 	} else {
 		$image = $params['image'];
 	}
 	if (!isset($params['link'])) {
-		$smarty->trigger_error("buttonlink: missing 'link' parameter");
+		$smarty->trigger_error("imagelink: missing 'link' parameter");
 	} else {
 		$link = $params['link'];
 	}

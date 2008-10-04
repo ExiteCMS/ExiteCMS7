@@ -436,8 +436,9 @@ function count_panels($column) {
 +-----------------------------------------------------*/
 function theme_init() {
 
-	// make sure this constant exists
+	// make sure these constants exists
 	if (!defined('LOAD_TINYMCE')) define('LOAD_TINYMCE', false);
+	if (!defined('LOAD_HOTEDITOR')) define('LOAD_HOTEDITOR', false);
 }
 
 /*-----------------------------------------------------+
@@ -509,15 +510,6 @@ function theme_cleanup() {
 	
 	// and flush any output remaining
 	ob_end_flush();
-}
-
-/*-----------------------------------------------------+
-| _dvb - debug function to dump the $variables array   |
-+-----------------------------------------------------*/
-function _dvb() {
-	global $variables;
-	
-	echo "<pre>";print_r($variables);die();
 }
 
 /*-----------------------------------------------------+

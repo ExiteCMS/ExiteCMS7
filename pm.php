@@ -1062,8 +1062,13 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$variables['random_id'] = md5(microtime());
 	}
 
+	// load the hoteditor if needed
+	if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+		define('LOAD_HOTEDITOR', true);
+	}
+
 	// define the panel and assign the template variables
-	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => array("main.pm", "hoteditor"));
+	$template_panels[] = array('type' => 'body', 'name' => 'pm.post', 'title' => $title, 'template' => 'main.pm.post.tpl', 'locale' => array("main.pm"));
 	$template_variables['pm.post'] = $variables;
 
 } else {

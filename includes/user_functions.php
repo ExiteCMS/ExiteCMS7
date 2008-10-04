@@ -255,8 +255,8 @@ if (iMEMBER) {
 	}	
 }
 
-// if the user is an administrator, generate the security aidlink
-if (iADMIN) {
+// generate the security aidlink
+if (iMEMBER) {
 	define("iAUTH", substr(md5($userdata['user_password']),16,32));
 	$aidlink = "?aid=".iAUTH;
 }

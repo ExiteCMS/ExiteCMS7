@@ -88,7 +88,7 @@ if ($settings['enable_registration'] == 1) {
 			$mailhost_ip = gethostbyname($mailhost);
 			if ($mailhost != $mailhost_ip) {
 				// found the mailserver for this email address. Check if the address exists
-				require_once PATH_INCLUDES.'smtp_include.php';
+				require_once PATH_INCLUDES.'class.smtp.php';
 				$mail = new SMTP();
 				if (!$mail->Connect($mailhost_ip, 0, 60)) {		// default SMTP port, 60sec timeout
 					// mail server doesn't respond

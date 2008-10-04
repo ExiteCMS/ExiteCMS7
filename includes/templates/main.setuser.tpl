@@ -20,7 +20,7 @@
 		<title>{$settings.sitename}{if defined('PAGETITLE')} - {$smarty.const.PAGETITLE}{/if}</title>
 		<meta http-equiv='Content-Type' content='text/html; charset={$settings.charset}' />
 		<meta http-equiv='Content-Language' content='{$settings.locale_code|truncate:2:""}' />
-		<meta http-equiv='refresh' content='{$refresh}; url={$smarty.const.BASEDIR}'>
+		<meta http-equiv='refresh' content='{$refresh}; url={$url}'>
 		<link href="{$smarty.const.THEME}exitecms__0001.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body class='body'>

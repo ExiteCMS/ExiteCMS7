@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------
-// locale       : Nederlands
+// locale       : English
 // locale name  : main.setup
-// generated on : Tue Sep 16 2008, 18:25:08 CEST
+// generated on : Fri Sep 19 2008, 22:38:36 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";
@@ -75,7 +75,7 @@ $locale['478'] = "PHP informatie";
 $locale['479'] = "Polls";
 $locale['480'] = "Zoekacties";
 $locale['481'] = "Menu systeem";
-$locale['482'] = "x";
+$locale['482'] = "Fotoalbums";
 $locale['483'] = "Opwaarderen";
 $locale['484'] = "Gebruikersgroepen";
 $locale['485'] = "x";

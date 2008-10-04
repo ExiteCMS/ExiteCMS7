@@ -307,7 +307,7 @@
 				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 					<input type='submit' name='update_profile' value='{$locale.460}' class='button' />
 				{else}
-					<input type='submit' name='update_profile' value='{$locale.460}' class='button' onclick='javascript:get_hoteditor_data();' />
+					<input type='submit' name='update_profile' value='{$locale.460}' class='button' onclick='javascript:get_hoteditor_data("user_sig");' />
 				{/if}
 			</td>
 		</tr>
