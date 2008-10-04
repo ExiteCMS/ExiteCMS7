@@ -682,6 +682,10 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
 	$text = preg_replace('#\[highlight=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/highlight\]#si', '<span style=\'background-color:\1\'>\2</span>', $text);
 
+	// fix some anomilies of the hoteditor
+	$text = preg_replace('#\[color=\#NaNNaNNaN\](.*?)\[/size\]#si', '\1', $text);
+	$text = preg_replace('#\[size=undefined\](.*?)\[/size\]#si', '\1', $text);
+
 	// wiki links
 	$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text); 
 
