@@ -115,5 +115,4 @@ if (!@move_uploaded_file($_FILES["Filedata"]["tmp_name"], $SWFconfig['file'])) {
 
 // use the SWFconfig array to return detailed info to the caller
 $SWFconfig = array_merge($_FILES, $SWFconfig);
-_swf_debug(serialize($SWFconfig))
 ?>
