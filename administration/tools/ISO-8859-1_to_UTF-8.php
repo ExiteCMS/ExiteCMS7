@@ -74,9 +74,9 @@ if (isset($_POST['btn_do_restore'])) {
 					if (preg_match("/^CREATE TABLE `(.*?)`/im",$result,$tmp) <> 0) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
-							$result = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$result);
+							$result = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$line);
 							$result = preg_replace("/(.*?)character set\s(.*?)\s(.*?)/im", "\\1\\3", $result);
-							$result = preg_replace("/(.*?)collate\s(.*?)\s(.*?)/im", "\\1\\3", $result);
+							$result = preg_replace("/(.*?)collate\s(.*?)(\s|,|;)/im", "\\1\\3", $result);
 							$result = preg_replace("/(.*?)default charset=(.*?);(.*?)/im", "\\1\\3", $result);
 							$result .= "DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
 							mysql_unbuffered_query($result);
