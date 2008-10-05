@@ -23,6 +23,7 @@ if (!checkrights("DC") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 
 // verify the parameters
 if (isset($cat_id) && !isNum($cat_id)) fallback(FUSION_SELF.$aidlink);
+if (isset($step)) $step = "";
 
 // function to check if sub-categories are not assigned recusivly
 function cat_not_recursive($this_id, $new_id) {
