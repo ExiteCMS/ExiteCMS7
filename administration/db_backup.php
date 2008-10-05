@@ -111,7 +111,7 @@ if (isset($_POST['btn_create_backup'])) {
 								$dump.="NULL";
 							}elseif($row[$i]=="0"||$row[$i]!=""){
 								$type=mysql_field_type($result,$i);
-								if($type=="tinyint"||$type=="smallint"||$type=="mediumint"||$type=="int"||$type=="bigint"||$type=="timestamp"){
+								if($type=="tinyint"||$type=="smallint"||$type=="mediumint"||$type=="int"||$type=="bigint"){
 									$dump.=$row[$i];
 								}else{
 									$search_array=array('\\','\'',"\x00","\x0a","\x0d","\x1a");

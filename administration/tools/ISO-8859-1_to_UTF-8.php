@@ -27,6 +27,9 @@ $variables = array();
 // make sure the script doesn't time out
 set_time_limit(0);
 
+// and give it plenty of memory!
+ini_set('memory_limit', '512M');
+
 // load the locale for this module
 locale_load("admin.db-backup");
 
