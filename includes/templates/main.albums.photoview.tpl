@@ -72,9 +72,17 @@ var MilkboxWidth = readCookie('width') - 100;
 			<td align='center' colspan='3' class='tbl1'>
 				<b>{$locale.456}</b>
 				{if $photo.album_id}
-					<input class='textbox' name='album_photo_title' value='{$photo.album_photo_title}' style='width:300px;' />
+					{if $can_edit}
+						<input class='textbox' name='album_photo_title' value='{$photo.album_photo_title}' style='width:300px;' />
+					{else}
+						{$photo.album_photo_title}
+					{/if}
 				{elseif $photo.gallery_id}
-					<input class='textbox' name='gallery_photo_title' value='{$photo.gallery_photo_title}' style='width:300px;' />
+					{if $can_edit}
+						<input class='textbox' name='gallery_photo_title' value='{$photo.gallery_photo_title}' style='width:300px;' />
+					{else}
+						{$photo.gallery_photo_title}
+					{/if}
 				{/if}
 			</td>
 		</tr>
