@@ -585,6 +585,11 @@ if ($type == "album") {
 					");
 					if (dbrows($result)) {
 						$variables['album'] = dbarray($result);
+						if ($variables['is_moderator'] || (iMEMBER && $userdata['user_id'] == $variables['album']['album_owner'])) {
+						} else {
+							$variables['errormessages'][] = $locale['415'];
+							$type = ""; $action = "";
+						}
 					} else {
 						$variables['errormessages'][] = sprintf($locale['423'], $album_id);
 						$type = ""; $action = "";
@@ -882,6 +887,11 @@ if ($type == "gallery") {
 					");
 					if (dbrows($result)) {
 						$variables['gallery'] = dbarray($result);
+						if ($variables['is_moderator'] || (iMEMBER && $userdata['user_id'] == $variables['gallery']['gallery_owner'])) {
+						} else {
+							$variables['errormessages'][] = $locale['428'];
+							$type = ""; $action = "";
+						}
 					} else {
 						$variables['errormessages'][] = sprintf($locale['437'], $gallery_id);
 						$type = ""; $action = "";
