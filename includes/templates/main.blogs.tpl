@@ -213,7 +213,7 @@
 					</table>
 				{/section}
 			</td>
-			<td align='center' valign='top' class='tbl1' width='130'>
+			<td align='center' valign='top' class='tbl1' width='150'>
 				<table cellpadding='0' cellspacing='0' width='100%'>
 					<tr>
 						<td align='left' class='infobar'>
