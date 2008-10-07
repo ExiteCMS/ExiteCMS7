@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/includes/core_functions.php";
 
 // make sure the redirection happens from the root
 if (substr($settings['opening_page'],0,1) != "/")
-    redirect("/".$settings['opening_page']);
+    redirect($settings['siteurl'].$settings['opening_page']);
 else
     redirect($settings['opening_page']);
 ?>
