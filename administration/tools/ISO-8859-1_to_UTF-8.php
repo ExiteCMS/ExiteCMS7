@@ -48,7 +48,9 @@ if (isset($_POST['btn_do_restore'])) {
 	} else {
 		// check the parameters
 		if (isset($_POST['list_tbl']) && is_array($_POST['list_tbl'])) $list_tbl = $_POST['list_tbl']; else $list_tbl = array();
+		$tbl_count = count($list_tbl);
 		if (isset($_POST['list_ins']) && is_array($_POST['list_ins'])) $list_ins = $_POST['list_ins']; else $list_ins = array();
+		$ins_count = count($list_ins);
 		// read the header
 		$result = array();
 		for ($i = 0; $i < 7; $i++) {
@@ -57,52 +59,47 @@ if (isset($_POST['btn_do_restore'])) {
 		if((preg_match("/# Database Name: `(.+?)`/i", $result[2], $tmp1)<>0)&&(preg_match("/# Table Prefix: `(.+?)`/i", $result[3], $tmp2)<>0)) {
 			$inf_dbname = $tmp1[1];
 			$inf_tblpre = $tmp2[1];
-			if (count($list_tbl) > 0) {
-				while (!feof($fd)) {
-					$result = trim(fgets($fd));
-					while (!feof($fd) && substr($result, 0, 1) != "#" && substr($result, -1) != ";") {
-						$result .= trim(fgets($fd));
+			while (!feof($fd)) {
+				if ($tbl_count > 0 || $ins_count > 0) {
+					$line = trim(fgets($fd));
+					while (!feof($fd) && substr($line, 0, 1) != "#" && substr($line, -1) != ";") {
+						$line .= trim(fgets($fd));
 					};
-					$result = html_entity_decode($result, ENT_QUOTES);
-					if (preg_match("/^DROP TABLE IF EXISTS `(.*?)`/im",$result,$tmp) <> 0) {
+					$line = html_entity_decode($line, ENT_QUOTES);
+					if (preg_match("/^DROP TABLE IF EXISTS `(.*?)`/im",$line,$tmp) <> 0) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
-							$result = preg_replace("/^DROP TABLE IF EXISTS `$inf_tblpre(.*?)`/im","DROP TABLE IF EXISTS `$restore_tblpre\\1`",$result);
-							mysql_unbuffered_query($result);
+							$sql = preg_replace("/^DROP TABLE IF EXISTS `$inf_tblpre(.*?)`/im","DROP TABLE IF EXISTS `$restore_tblpre\\1`",$line);
+							mysql_unbuffered_query($sql);
 						}
 					}
-					if (preg_match("/^CREATE TABLE `(.*?)`/im",$result,$tmp) <> 0) {
+					if (preg_match("/^CREATE TABLE `(.*?)`/im",$line,$tmp) <> 0) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
-							$result = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$line);
-							$result = preg_replace("/(.*?)character set\s(.*?)\s(.*?)/im", "\\1\\3", $result);
-							$result = preg_replace("/(.*?)collate\s(.*?)(\s|,|;)/im", "\\1\\3", $result);
-							$result = preg_replace("/(.*?)default charset=(.*?);(.*?)/im", "\\1\\3", $result);
-							$result .= "DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
-							mysql_unbuffered_query($result);
+							$sql = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$line);
+							$sql = preg_replace("/(.*?)character set\s(.*?)\s(.*?)/im", "\\1\\3", $sql);
+							$sql = preg_replace("/(.*?)collate\s(.*?)(\s|,|;)/im", "\\1\\3", $sql);
+							$sql = preg_replace("/(.*?)default charset=(.*?);(.*?)/im", "\\1\\3", $sql);
+							$sql .= "DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
+							mysql_unbuffered_query($sql);
+						}
+					}
+				}
+				if (count($list_ins) > 0) {
+					if (preg_match("/INSERT INTO `(.*?)`/i",$line,$tmp) <> 0) {
+						$ins = $tmp[1];
+						if (in_array($ins, $list_ins)) {
+							$sql = preg_replace("/INSERT INTO `$inf_tblpre(.*?)`/i","INSERT INTO `$restore_tblpre\\1`",$line);
+							if (is_utf8_string($sql)) {
+								mysql_unbuffered_query($sql);
+							} else {
+								mysql_unbuffered_query(iconv("ISO-8859-1", "UTF-8", $sql));
+							}
 						}
 					}
 				}
 			}
 			fclose($fd);
-			if (count($list_ins) > 0) {
-				$fd = fopen(PATH_ADMIN."db_backups/".$_POST['file'], "r");
-				while (!feof($fd)) {
-					$result = fgets($fd);
-					if (preg_match("/INSERT INTO `(.*?)`/i",$result,$tmp) <> 0) {
-						$ins = $tmp[1];
-						if (in_array($ins, $list_ins)) {
-							$result = preg_replace("/INSERT INTO `$inf_tblpre(.*?)`/i","INSERT INTO `$restore_tblpre\\1`",$result);
-							if (is_utf8_string($result)) {
-								mysql_unbuffered_query($result);
-							} else {
-								mysql_unbuffered_query(iconv("ISO-8859-1", "UTF-8", $result));
-							}
-						}
-					}
-				}
-				fclose($fd);
-			}
 			$variables['error'] = 4;
 			$file = pathinfo($_POST['file']);
 			if ($file['extension'] == "tmp") {
