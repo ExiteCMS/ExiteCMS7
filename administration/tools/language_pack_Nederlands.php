@@ -3740,9 +3740,9 @@ if (!defined('LP_LANGUAGE')) define('LP_LANGUAGE', "Nederlands");
 if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut|nl_BE");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
-if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "LP_COUNTRIES");
+if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1223543941");
+if (!defined('LP_DATE')) define('LP_DATE', "1223544215");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

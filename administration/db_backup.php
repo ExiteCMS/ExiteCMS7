@@ -222,7 +222,7 @@ if (isset($_POST['btn_do_restore'])) {
 						}
 					}
 				}
-				if ($ins_count) > 0) {
+				if ($ins_count > 0) {
 					if (preg_match("/INSERT INTO `(.*?)`/i",$line,$tmp) <> 0) {
 						$ins = $tmp[1];
 						if (in_array($ins, $list_ins)) {
