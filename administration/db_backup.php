@@ -207,36 +207,27 @@ if (isset($_POST['btn_do_restore'])) {
 					while (!feof($fd) && substr($line, 0, 1) != "#" && substr($line, -1) != ";") {
 						$line .= trim(fgets($fd));
 					};
-					$line = html_entity_decode($line, ENT_QUOTES);
 					if (preg_match("/^DROP TABLE IF EXISTS `(.*?)`/im",$line,$tmp) <> 0) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
 							$sql = preg_replace("/^DROP TABLE IF EXISTS `$inf_tblpre(.*?)`/im","DROP TABLE IF EXISTS `$restore_tblpre\\1`",$line);
-							mysql_unbuffered_query(mysql_escape_string($sql));
+							mysql_unbuffered_query($sql);
 						}
 					}
 					if (preg_match("/^CREATE TABLE `(.*?)`/im",$line,$tmp) <> 0) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
 							$sql = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$line);
-							$sql = preg_replace("/(.*?)character set\s(.*?)\s(.*?)/im", "\\1\\3", $sql);
-							$sql = preg_replace("/(.*?)collate\s(.*?)(\s|,|;)/im", "\\1\\3", $sql);
-							$sql = preg_replace("/(.*?)default charset=(.*?);(.*?)/im", "\\1\\3", $sql);
-							$sql .= "DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
-							mysql_unbuffered_query(mysql_escape_string($sql));
+							mysql_unbuffered_query($sql);
 						}
 					}
 				}
-				if (count($list_ins) > 0) {
+				if ($ins_count) > 0) {
 					if (preg_match("/INSERT INTO `(.*?)`/i",$line,$tmp) <> 0) {
 						$ins = $tmp[1];
 						if (in_array($ins, $list_ins)) {
 							$sql = preg_replace("/INSERT INTO `$inf_tblpre(.*?)`/i","INSERT INTO `$restore_tblpre\\1`",$line);
-							if (is_utf8_string($sql)) {
-								mysql_unbuffered_query(mysql_escape_string($sql));
-							} else {
-								mysql_unbuffered_query(mysql_escape_string(iconv("ISO-8859-1", "UTF-8", $sql)));
-							}
+							mysql_unbuffered_query($sql);
 						}
 					}
 				}
