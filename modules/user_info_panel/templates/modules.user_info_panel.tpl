@@ -117,8 +117,8 @@
 		{/foreach}
 			<hr />
 			<div style='text-align:center'>
-				<input type='submit' name='login' value='{$locale.064}' class='button' />
-				<input type='checkbox' name='remember_me' value='yes' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/><br />
+				<input type='checkbox' name='remember_me' value='yes' title='{$locale.063}' style='vertical-align:middle;'{if $remember_me|default:"no" == "yes"} checked="checked"{/if}/>
+				<input type='submit' name='login' value='{$locale.064}' class='button' /><br />
 				<input type='hidden' name='javascript_check' value='n' />
 			</div>
 		</form>
