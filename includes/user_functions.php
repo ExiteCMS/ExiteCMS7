@@ -262,8 +262,8 @@ if (iMEMBER) {
 }
 
 // check for upgrades in progress.
-// NOTE: when a form has been posted, skip this and finish the POST!
-if (count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
+// NOTE: when in CLI mode,  skip this. Also, when a form has been posted, skip this and finish the POST!
+if (!CMS_CLI && count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 
 	include PATH_ADMIN."upgrade.php";
 	//  If so, force a switch to maintenance mode
