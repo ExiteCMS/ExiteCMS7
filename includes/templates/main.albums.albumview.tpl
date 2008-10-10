@@ -109,9 +109,9 @@
 					</div>
 				{/if}
 				{if $photos[id].album_photo_description|default:"" != ""}
-					<span class='small'>{$photos[id].parsed_album_photo_description}</span>
+					{$photos[id].parsed_album_photo_description}
 				{elseif $photos[id].can_edit}
-					<span class='small'>{$locale.487}</span>
+					{$locale.487}
 				{/if}
 			</td>
 		{if $column == $columns}</tr>{/if}

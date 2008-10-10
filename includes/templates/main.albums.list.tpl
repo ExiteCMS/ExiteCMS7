@@ -155,7 +155,7 @@ var MilkboxWidth = readCookie('width') - 100;
 					    </tr>
 					</table>
 					{if $collection[id].description|default:"" != ""}
-						<span class='small'>{$collection[id].description}</span>
+						{$collection[id].description}
 					{/if}
 				</td>
 			{if $column == $columns}</tr>{/if}
