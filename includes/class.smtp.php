@@ -768,6 +768,53 @@ class SMTP
   }
 
   /**
+   * Sends the command RCPT to the SMTP server with the TO: argument of $to.
+   * Returns true if the recipient was accepted false if it was rejected.
+   *
+   * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
+   *
+   * [WW] Copy of Recipient(), but allows 451 as a valid return code
+   *      and any reply that contains the word "greylist"
+   *
+   * SMTP CODE SUCCESS: 250,251,451
+   * SMTP CODE FAILURE: 550,551,552,553,450,452
+   * SMTP CODE ERROR  : 500,501,503,421
+   * @access public
+   * @return bool
+   */
+  function CheckRecipient($to) {
+    $this->error = null; # so no confusion is caused
+
+    if(!$this->connected()) {
+      $this->error = array(
+              "error" => "Called Recipient() without being connected");
+      return false;
+    }
+
+    fputs($this->smtp_conn,"RCPT TO:<" . $to . ">" . $this->CRLF);
+
+    $rply = $this->get_lines();
+    $code = substr($rply,0,3);
+
+    if($this->do_debug >= 2) {
+      echo "SMTP -> FROM SERVER:" . $this->CRLF . $rply;
+    }
+
+    if($code != 250 && $code != 251 && $code != 451 && strpos($reply,"greylist")===false) {
+      $this->error =
+        array("error" => "RCPT not accepted from server",
+              "smtp_code" => $code,
+              "smtp_msg" => substr($rply,4));
+      if($this->do_debug >= 1) {
+        echo "SMTP -> ERROR: " . $this->error["error"] .
+                 ": " . $rply . $this->CRLF;
+      }
+      return false;
+    }
+    return true;
+  }
+
+  /**
    * Sends the RSET command to abort and transaction that is
    * currently in progress. Returns true if successful false
    * otherwise.

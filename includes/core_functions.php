@@ -431,6 +431,8 @@ function verify_image($file) {
 			// from the local server, image has been checked when uploaded!
 			return true;
 		}
+		// checking takes to long, return true
+		return true;
 		$uri['port'] = isset($uri['port']) ? $uri['port'] : 80;
 		// use a timeout of 1 second, slow servers will slow us down too!
 		$handle = @fsockopen($uri['host'], $uri['port'], $errno, $errstr, 1);
