@@ -254,28 +254,25 @@ function load_templates($_type='', $_name='') {
 				$template->assign("_loadstats", $_loadstats);
 			}
 
+			// store the current template directories, we need to restore them later
+			$td = $template->template_dir;
+
 			//if this is a module template...
 			$tpl_parts = explode(".", $panel['template']);
 			if ($tpl_parts[0] == "modules") {
-				// store the current template directories, we need to restore them later
-				$td = $template->template_dir;
 				$template->template_dir = array_merge(array(PATH_MODULES.$tpl_parts[1].'/templates'), $template->template_dir);
-			} else {
-				// we shouldn't get here
 			}
 		
 			//if this is a tools template...
 			$tpl_parts = explode(".", $panel['template']);
 			if ($tpl_parts[0] == "admin" && $tpl_parts[1] == "tools") {
-				// store the current template directories, we need to restore them later
-				$td = $template->template_dir;
 				$template->template_dir = array_merge(array(PATH_ADMIN.'tools/templates'), $template->template_dir);
-			} else {
-				// we shouldn't get here
 			}
 		
 			// if a template is defined, get the last modified date, and load the template
 			if (isset($panel['template'])) {
+				// add the theme template directory as first template directory
+				$template->template_dir = array_merge(array(PATH_THEME.'templates/templates'), $template->template_dir);
 				// get the timestamp of the template, and update the last update timestamp if newer
 				$ts = $template->template_timestamp($panel['template']);
 				$_last_updated = isset($_last_updated) ? ($ts > $_last_updated ? $ts : $_last_updated ) : $ts;
@@ -284,8 +281,8 @@ function load_templates($_type='', $_name='') {
 				$template->display($panel['template']);
 			}
 			
-			// restore the template direcory if needed
-			if (isset($td) && is_array($td)) $template->template_dir = $td;
+			// restore the template direcory
+			$template->template_dir = $td;
 		}
 	}
 
