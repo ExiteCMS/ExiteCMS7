@@ -175,6 +175,27 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 				$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$subject', '$message', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '0', '0')");
 				$newpost_id = mysql_insert_id();
 				$result = dbquery("UPDATE ".$db_prefix."users SET user_posts=user_posts+1 WHERE user_id='".$userdata['user_id']."'");
+				// check if we need to notify people
+				if ($settings['thread_notify']) {
+					$result = dbquery(
+						"SELECT tn.*, tu.user_id,user_name,user_email FROM ".$db_prefix."thread_notify tn
+						LEFT JOIN ".$db_prefix."users tu ON tn.notify_user=tu.user_id
+						WHERE thread_id='$thread_id' AND notify_user!='".$userdata['user_id']."' AND notify_status='1'
+					");
+					if (dbrows($result)) {
+						require_once PATH_INCLUDES."sendmail_include.php";
+						$data2 = dbarray(dbquery("SELECT thread_subject FROM ".$db_prefix."threads WHERE thread_id='$thread_id'"));
+						$link = $settings['siteurl']."forum/viewthread.php?forum_id=$forum_id&thread_id=$thread_id&pid=$newpost_id#post_$newpost_id";
+						while ($data = dbarray($result)) {
+							$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}", "{SITE_NAME}", "{SITE_WEBMASTER}");
+							$message_el2 = array($data['user_name'], $data2['thread_subject'], $link, html_entity_decode($settings['sitename']), html_entity_decode($settings['siteusername']));
+							$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $locale['550']);
+							$message_content = str_replace($message_el1, $message_el2, $locale['551']);
+							$err = sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);
+						}
+						$result = dbquery("UPDATE ".$db_prefix."thread_notify SET notify_status='0' WHERE thread_id='$thread_id' AND notify_user != '".$userdata['user_id']."'");
+					}
+				}
 				redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=$newpost_id&errorcode=0");
 			}
 		}
