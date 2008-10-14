@@ -14,9 +14,13 @@
 +----------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 
-// make sure the redirection happens from the root
-if (substr($settings['opening_page'],0,1) != "/")
-    redirect($settings['siteurl'].$settings['opening_page']);
-else
-    redirect($settings['opening_page']);
+if (file_exists(PATH_ROOT.$settings['opening_page'])) {
+	include PATH_ROOT.$settings['opening_page'];
+} else {
+	// make sure the redirection happens from the root
+	if (substr($settings['opening_page'],0,1) != "/")
+	    redirect($settings['siteurl'].$settings['opening_page']);
+	else
+	    redirect($settings['opening_page']);
+}
 ?>
