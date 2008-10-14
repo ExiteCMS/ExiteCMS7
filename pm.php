@@ -421,7 +421,7 @@ function storemessage($message, $old_pm_id) {
 						$user['user_name'].sprintf($locale['626'], $userdata['user_name'], $settings['sitename'], $message['pm_subject'], $settings['siteurl']));
 		}
 	}
-	return $error;
+	return $error == true ? "" : $error;
 }
 
 /*---------------------------------------------------+
