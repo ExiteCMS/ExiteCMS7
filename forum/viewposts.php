@@ -37,7 +37,7 @@ $thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - 
 $result = dbquery(
 	"SELECT tp.*, tf.* FROM ".$db_prefix."posts tp
     INNER JOIN ".$db_prefix."threads th USING(thread_id)
-	INNER JOIN ".$db_prefix."forums tf USING(forum_id)
+	INNER JOIN ".$db_prefix."forums tf ON tp.forum_id = tf.forum_id
 	WHERE ".($thread_limit==0?"":" th.thread_lastpost > ".$thread_limit." AND ").groupaccess('forum_access').($forum_id ? " AND tp.forum_id = '$forum_id'" : "")
 );
 
@@ -51,7 +51,7 @@ $variables['rowstart'] = $rowstart;
 $result = dbquery(
 	"SELECT tp.*, tf.* FROM ".$db_prefix."posts tp
     INNER JOIN ".$db_prefix."threads th USING(thread_id)
-	INNER JOIN ".$db_prefix."forums tf USING(forum_id)
+	INNER JOIN ".$db_prefix."forums tf ON tp.forum_id = tf.forum_id
 	WHERE ".($thread_limit==0?"":" th.thread_lastpost > ".$thread_limit." AND ").groupaccess('forum_access').($forum_id ? " AND tp.forum_id = '$forum_id'" : "")."
 	ORDER BY post_datestamp DESC 
 	LIMIT $rowstart,".ITEMS_PER_PAGE

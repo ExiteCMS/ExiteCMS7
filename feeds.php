@@ -71,9 +71,9 @@ switch (strtolower($type)) {
 			$item['link'] = $settings['siteurl']."forum/viewthread.php?forum_id=".$data['forum_id']."&amp;thread_id=".$data['thread_id']."&amp;pid=".$data['post_id']."#post_".$data['post_id'];
 			$item['description'] = "<![CDATA[ <b>".$data['user_name']." ".$locale['401']."</b> ".(strlen($data['post_message']) > 500 ? (substr($data['post_message'],0,496)." ...") : $data['post_message'])." ]]>";
 			// locale must be english for this to work!
-			$loc = setlocale("LC_TIME", "en_US");
+			$loc = setlocale(LC_TIME, "en_US");
 			$item['pubDate'] = strftime("%a, %d %b %G %T %z", $data['post_datestamp']);
-			setlocale("LC_TIME", $loc);
+			setlocale(LC_TIME, $loc);
 			$item['guid'] = $item['link'];	// make the guid equal to the link, we don't have a need for permalinks
 			$feed[] = $item;
 		}

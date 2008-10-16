@@ -237,34 +237,40 @@ class httpdownload {
    header() : Send HTTP Header
   **/
   function _header($var) {
-    if ($this->handler['header']) return @call_user_func($this->handler['header'],$var);
-    else return header($var);
+    if ($this->handler['header']) $ret = @call_user_func($this->handler['header'],$var);
+    else $ret = header($var);
+	return $ret;
   }
 
   function &_fopen($file,$mode) {
-    if ($this->handler['fopen']) return @call_user_func($this->handler['fopen'],$file,$mode);
-    else return fopen($file,$mode);
+    if ($this->handler['fopen']) $ret = @call_user_func($this->handler['fopen'],$file,$mode);
+    else $ret = fopen($file,$mode);
+	return $ret;
   }
 
   function _fclose($res) {
-    if ($this->handler['fclose']) return @call_user_func($this->handler['fclose'],$res);
-    else return fclose($res);
+    if ($this->handler['fclose']) $ret = @call_user_func($this->handler['fclose'],$res);
+    else $ret = fclose($res);
+	return $ret;
   }
 
   function _fseek($res,$len) {
-    if ($this->handler['fseek']) return @call_user_func($this->handler['fseek'],$res,$len);
-    else return fseek($res,$len);
+    if ($this->handler['fseek']) $ret = @call_user_func($this->handler['fseek'],$res,$len);
+    else $ret = fseek($res,$len);
+	return $ret;
   }
 
   function &_fread($file,$size) {
-    if ($this->handler['fread']) return @call_user_func($this->handler['fread'],$file,$size);
-    else return fread($file,$size);
+    if ($this->handler['fread']) $ret = @call_user_func($this->handler['fread'],$file,$size);
+    else $ret = fread($file,$size);
+	return $ret;
   }
 
   function _auth() {
     if (!isset($_SERVER['PHP_AUTH_USER'])) return false;
-    if ($this->handler['auth']) return @call_user_func($this->handler['auth'],$_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']);
-    else return true; //you must use a handler
+    if ($this->handler['auth']) $ret = @call_user_func($this->handler['auth'],$_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']);
+    else $ret = true; //you must use a handler
+	return $ret;
   }
 
 }

@@ -81,7 +81,7 @@
 					<select id='gallery_read' name='gallery_read' class='textbox'>
 						<option value='-1'{if $gallery.gallery_read == -1} selected='selected'{/if}>{$locale.496}</option>
 					{section name=id loop=$all_user_groups}
-						<option value='{$all_user_groups[id].0}'{if $user_groups[id].0 == $gallery.gallery_read} selected='selected'{/if}>{$all_user_groups[id].1}</option>
+						<option value='{$all_user_groups[id].0}'{if $all_user_groups[id].0 == $gallery.gallery_read} selected='selected'{/if}>{$all_user_groups[id].1}</option>
 					{/section}
 					</select>
 				</td>

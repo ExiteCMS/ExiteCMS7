@@ -35,9 +35,6 @@ session_cache_limiter("none");
 // when called from SWFUpload, set the session cookies from the post variable
 // to stay in the same session when uploading file(s)
 // (session hijacking is mitigated by the session_ua function)
-if (isset($_POST['SWFSESSIONID']) && !empty($_POST['SWFSESSIONID'])) {
-	$_COOKIE['site_visited'] = $_POST['SWFSESSIONID'];
-}
 if (isset($_POST[$settings['session_name']]) && !empty($_POST[$settings['session_name']])) {
 	session_id($_POST[$settings['session_name']]);
 }
@@ -206,10 +203,15 @@ function _gc_session() {
 function _session_ua() {
 
 	$session_ua = "";
-//	$session_ua .= isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
-	$session_ua .= isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "";
-	$session_ua .= isset($_SERVER['HTTP_VIA']) ? $_SERVER['HTTP_VIA'] : "";
-	$session_ua .= isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : "";
+
+	// when called from SWFUpload, set the session cookies from the post variable
+	// to stay in the same session when uploading file(s)
+	// (session hijacking is mitigated by the session_ua function)
+	if (isset($_POST['SWFSESSIONID']) && !empty($_POST['SWFSESSIONID']) && strlen($_POST['SWFSESSIONID'])==32) {
+		return $_POST['SWFSESSIONID'];
+	}
+	$session_ua .= isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
+//	$session_ua .= isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "";
 	$session_ua .= isset($_COOKIE['site_visited']) ? $_COOKIE['site_visited'] : "";
 
 	return md5($session_ua);

@@ -152,7 +152,7 @@ $thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - 
 $result = dbquery(
 	"SELECT t.*, MAX(p.post_id) AS last_post, COUNT(p.post_id) AS thread_replies, tu1.user_name AS user_author, tu1.user_ip AS user_ip, 
 			tu2.user_name AS user_lastuser, tu1.user_cc_code AS user_cc_code FROM ".$db_prefix."threads t
-		INNER JOIN ".$db_prefix."posts p USING ( thread_id )
+		INNER JOIN ".$db_prefix."posts p ON t.thread_id = p.thread_id
 		LEFT JOIN ".$db_prefix."users tu1 ON t.thread_author = tu1.user_id
 		LEFT JOIN ".$db_prefix."users tu2 ON t.thread_lastuser = tu2.user_id
 		WHERE t.forum_id = '".$forum_id."'".($thread_limit==0?"":" AND t.thread_lastpost > ".$thread_limit)."

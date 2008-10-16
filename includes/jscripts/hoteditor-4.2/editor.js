@@ -60,8 +60,10 @@ var use_RichText = "1";
 var show_switch = "1";
 var show_mode_editor = "1";
 var show_arrow_up_down = 1;
-var mydirection = "ltr"; 
 var vk_main = "";
+
+// Text direction can be set by the template
+if (mydirection == null) var mydirection = "ltr"; 
 
 // Path definitions
 var styles_folder_path = hoteditor_theme_path;
@@ -2274,6 +2276,7 @@ function BBCodeToHTML(a) {
 	a = a.replace(/\[url=(.*?)\]/gi, "<a href=\"$1\">");
 	a = a.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\">$1[/url]");
 	a = a.replace(/\[\/url\]/gi, "</a>");
+	a = a.replace(/<a href="(.*?)"><\/a>/gi, "<a href=\"$1\">$1</a>");
 	a = a.replace(/\[img\](.*?)\[\/img\]/gi, "<img src=\"$1\">");
 	var b = a.match(/\[(list|list=1|list=a)\]/gi);
 	a = a.replace(/\[list=1\]/gi, "<ol>");
@@ -2481,25 +2484,23 @@ function HTMLToBBCode(a) {
 					var p = o.split(" ");
 					o = p[0];
 					if (k.style) {
-						if (n[1] == o) {
-							m = "[url]" + AnalyzeHTMLBlock(g, k);
+						m = "[url=" + o + "]";
+						var q = AnalyzeHTMLBlock(g, k);
+						if (q == "") {
+							m = m + o;
 						} else {
-							m = "[url=" + o + "]" + AnalyzeHTMLBlock(g, k);
+							m = m + q;
 						}
 					} else {
-						if (n[1] == o) {
-							m = "[url]";
-						} else {
-							if (o.indexOf("mailto:") != -1) {
-								var q = o.replace(/mailto:/i, "");
-								if (q == n[1]) {
-									m = "[mail]";
-								} else {
-									m = "[mail=" + q + "]";
-								}
+						if (o.indexOf("mailto:") != -1) {
+							var q = o.replace(/mailto:/i, "");
+							if (q == n[1]) {
+								m = "[mail]";
 							} else {
-								m = "[url=" + o + "]";
+								m = "[mail=" + q + "]";
 							}
+						} else {
+							m = "[url=" + o + "]";
 						}
 					}
 				} else if (g == "li") {

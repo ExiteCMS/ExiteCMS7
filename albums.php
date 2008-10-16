@@ -702,7 +702,7 @@ if ($type == "album") {
 					$variables['album'] = dbarray($result);
 					$variables['album']['photo_count'] = dbfunction("COUNT(*)", "album_photos", "album_id = ".$album_id);
 					// SWFUpload needs this, Flash doesn't maintain the session
-					$variables['session_id'] = $_COOKIE['site_visited'];
+					$variables['session_id'] = _session_ua();
 					$variables['session_name'] = $_COOKIE[$settings['session_name']];
 					// to check security when uploading
 					$variables['post_parms'] = array("album_id" => $variables['album']['album_id']);

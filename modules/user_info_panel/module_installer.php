@@ -35,12 +35,12 @@ $mod_folder = "user_info_panel";
 +----------------------------------------------------*/
 
 // check for a minumum version of the ExiteCMS engine
-if (str_replace(".", "", $settings['version']) < 700) {
-	$mod_errors .= sprintf($locale['mod001'], '7.00');
+if (str_replace(".", "", $settings['version']) < 720) {
+	$mod_errors .= sprintf($locale['mod001'], '7.20');
 }
 // check for a maximum version of the ExiteCMS engine
-if (str_replace(".", "", $settings['version']) > 710) {
-	$mod_errors .= sprintf($locale['mod002'], '7.10');
+if (str_replace(".", "", $settings['version']) > 720) {
+	$mod_errors .= sprintf($locale['mod002'], '7.20');
 }
 // check for a specific revision number range that is supported
 if ($settings['revision'] < 0 || $settings['revision'] > 999999) {

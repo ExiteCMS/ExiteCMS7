@@ -238,8 +238,8 @@
 					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="return ValidateForm()" />
 					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="return ValidateForm()" />
 				{else}
-					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick="javascript:get_hoteditor_data("message");return ValidateForm()" />
-					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick="javascript:get_hoteditor_data("message");return ValidateForm()" />
+					<input type='submit' name='send_preview' value='{$locale.429}' class='button' onclick='javascript:get_hoteditor_data("message");return ValidateForm()' />
+					<input type='submit' name='send_message' value='{$locale.430}' class='button' onclick='javascript:get_hoteditor_data("message");return ValidateForm()' />
 				{/if}
 			</td>
 		</tr>

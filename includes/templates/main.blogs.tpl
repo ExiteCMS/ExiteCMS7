@@ -155,11 +155,11 @@
 						</tr>
 						<tr>
 							<td style='width:100%;vertical-align:top;'>
-								{if $blog_id|default:0 == 0}
-									{assign var="rl" value=" <a href='blogs.php?blog_id="|cat:$bloglist[id].blog_id|cat:"'>...</a>"}
-									{$bloglist[id].blog_text|truncate:500:$rl}<br />
+								{if $blog_id|default:0 != 0}
+									{$bloglist[id].blog_text}
 								{else}
-									{$bloglist[id].blog_text}<br />
+									{$bloglist[id].blog_intro}
+									{if $bloglist[id].read_more}&nbsp;<a href='blogs.php?blog_id={$bloglist[id].blog_id} alt='{$locale.422}' title='{$locale.422}''>...</a>{/if}
 								{/if}
 							</td>
 						</tr>
@@ -169,7 +169,7 @@
 								{if $smarty.const.iMEMBER}<a href='profile.php?lookup={$bloglist[id].blog_author}'>{/if}
 								{$bloglist[id].user_name}{if $smarty.const.iMEMBER}</a>{/if}
 								{$locale.421} {$bloglist[id].blog_datestamp|date_format:"longdate"}
-								{if !$blog_id}&middot; <a href='blogs.php?blog_id={$bloglist[id].blog_id}'>{$locale.422}</a>{/if}
+								{if $bloglist[id].read_more && $blog_id|default:0 == 0}&middot; <a href='blogs.php?blog_id={$bloglist[id].blog_id}'>{$locale.422}</a>{/if}
 								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
 								<br />
 								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
