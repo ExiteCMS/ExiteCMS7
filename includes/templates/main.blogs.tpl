@@ -159,7 +159,7 @@
 									{$bloglist[id].blog_text}
 								{else}
 									{$bloglist[id].blog_intro}
-									{if $bloglist[id].read_more}&nbsp;<a href='blogs.php?blog_id={$bloglist[id].blog_id} alt='{$locale.422}' title='{$locale.422}''>...</a>{/if}
+									{if $bloglist[id].read_more}&nbsp;<a href='blogs.php?blog_id={$bloglist[id].blog_id}' alt='{$locale.422}' title='{$locale.422}'>...</a>{/if}
 								{/if}
 							</td>
 						</tr>
