@@ -19,7 +19,7 @@ if (file_exists(PATH_ROOT.$settings['opening_page'])) {
 } else {
 	// make sure the redirection happens from the root
 	if (substr($settings['opening_page'],0,1) != "/")
-	    redirect($settings['siteurl'].$settings['opening_page']);
+	    redirect(BASEDIR.$settings['opening_page']);
 	else
 	    redirect($settings['opening_page']);
 }
