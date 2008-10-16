@@ -296,6 +296,8 @@ function load_templates($_type='', $_name='') {
 function load_panels($column) {
 	global $db_prefix, $locale, $settings, $userdata, $template, $template_panels;
 	
+	$opening_page = substr($settings['opening_page'],0,1) != "/" ? (BASEDIR.$settings['opening_page']) : $settings['opening_page'];
+
 	// parameter validation and processing
 	$column = strtolower(trim($column));
 	switch ($column) {
@@ -314,14 +316,14 @@ function load_panels($column) {
 		case "upper":
 			// get the upper-center panels
 			$where = "panel_side='2'";
-			if (FUSION_URL != "/".$settings['opening_page']) {
+			if (FUSION_URL != BASEDIR."index.php" && FUSION_URL != $opening_page) {
 				$where .= " AND panel_display='1'";
 			}
 			break;
 		case "lower":
 			// get the lower-center panels
 			$where = "panel_side='3'";
-			if (FUSION_URL != "/".$settings['opening_page']) {
+			if (FUSION_URL != BASEDIR."index.php" && FUSION_URL != $opening_page) {
 				$where .= " AND panel_display='1'";
 			}
 			break;
