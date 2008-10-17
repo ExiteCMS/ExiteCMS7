@@ -34,43 +34,15 @@ $_loadstats['others'] = 0;
 $_loadstats['compression'] = (ini_get('zlib.output_compression') == "1");
 unset($_loadtime);
 
+// prevent possible XSS attacks via $_GET (uses pre v8 xss cleaning code).
+$_GET = xss_clean($_GET);
+
 // if register_globals is turned off, extract super globals (php 4.2.0+)
 // TODO - WANWIZARD - 20070701 - NEED TO GET RID OF THIS !!!
 if (ini_get('register_globals') != 1) {
 	if ((isset($_POST) == true) && (is_array($_POST) == true)) extract($_POST, EXTR_OVERWRITE);
 	if ((isset($_GET) == true) && (is_array($_GET) == true)) extract($_GET, EXTR_OVERWRITE);
-} else {
-	// if not, unset all globals created by register_globals!
-	$rg = array_keys($_REQUEST);
-	foreach($rg as $var) {
-		if ($_REQUEST[$var] === $$var) {
-//			unset($$var);
-		}
-	}
 }
-
-// prevent any possible XSS attacks via $_GET.
-foreach ($_GET as $check_url) {
-	// deal with array's in GET parameters
-	if (is_array($check_url)) {
-		foreach ($check_url as $url_parts) {
-			if ((eregi("<[^>]*script*\"?[^>]*>", $url_parts)) || (eregi("<[^>]*object*\"?[^>]*>", $url_parts)) ||
-					(eregi("<[^>]*iframe*\"?[^>]*>", $url_parts)) || (eregi("<[^>]*applet*\"?[^>]*>", $url_parts)) ||
-					(eregi("<[^>]*meta*\"?[^>]*>", $url_parts)) || (eregi("<[^>]*style*\"?[^>]*>", $url_parts)) ||
-					(eregi("<[^>]*form*\"?[^>]*>", $url_parts)) || (eregi("\([^>]*\"?[^)]*\)", $url_parts))) {
-				die ();
-			}
-		}
-	} else {
-		if ((eregi("<[^>]*script*\"?[^>]*>", $check_url)) || (eregi("<[^>]*object*\"?[^>]*>", $check_url)) ||
-				(eregi("<[^>]*iframe*\"?[^>]*>", $check_url)) || (eregi("<[^>]*applet*\"?[^>]*>", $check_url)) ||
-				(eregi("<[^>]*meta*\"?[^>]*>", $check_url)) || (eregi("<[^>]*style*\"?[^>]*>", $check_url)) ||
-				(eregi("<[^>]*form*\"?[^>]*>", $check_url)) || (eregi("\([^>]*\"?[^)]*\)", $check_url))) {
-			die ();
-		}
-	}
-}
-unset($check_url);
 
 // disable the standard PHP include path (empty's not accepted?)
 ini_set('include_path', '.');
@@ -774,9 +746,270 @@ function CMS_getOS () {
 	}
 }
 
-
 // replacement for die()
 function terminate($text) {
 	die("<div style='font-family:Verdana,Sans-serif;font-size:11px;text-align:center;'>$text</div>");
+}
+
+/*---------------------------------------------------+
+| XSS prevention functions, borrowed from the v8 code|
++---------------------------------------------------*/
+
+// check variables for xss attacks, and clean them
+function xss_clean($str) {
+
+	static $never_allowed_str, $never_allowed_regex;
+	
+	// never allowed, string replacement
+	if (!isset($never_allowed_str)) {
+		$never_allowed_str = array(
+			'document.cookie'	=> '[removed]',
+			'document.write'	=> '[removed]',
+			'.parentNode'		=> '[removed]',
+			'.innerHTML'		=> '[removed]',
+			'window.location'	=> '[removed]',
+			'-moz-binding'		=> '[removed]',
+			'<!--'				=> '&lt;!--',
+			'-->'				=> '--&gt;',
+			'<![CDATA['			=> '&lt;![CDATA['
+		);
+	}
+	
+	// never allowed, regex replacement
+	if (!isset($never_allowed_regex)) {
+		$never_allowed_regex = array(
+			"javascript\s*:"	=> '[removed]',
+			"expression\s*\("	=> '[removed]', // CSS and IE
+			"Redirect\s+302"	=> '[removed]'
+		);
+	}
+	
+	// is the argument passed an array?
+	if (is_array($str)) {
+		while (list($key) = each($str)) {
+			$str[$key] = xss_clean($str[$key]);
+		}
+		return $str;
+	}
+
+	// Remove Invisible Characters
+	$str = _remove_invisible_characters($str);
+
+	// Protect GET variables in URLs
+	$str = preg_replace('|\&([a-z\_0-9]+)\=([a-z\_0-9]+)|i', xss_hash()."\\1=\\2", $str);
+
+	// Validate standard character entities
+	// Add a semicolon if missing.  We do this to enable the conversion of entities to ASCII later.
+	$str = preg_replace('#(&\#?[0-9a-z]+)[\x00-\x20]*;?#i', "\\1;", $str);
+
+	// Validate UTF16 two byte encoding (x00). Just as above, adds a semicolon if missing.
+	$str = preg_replace('#(&\#x?)([0-9A-F]+);?#i',"\\1\\2;",$str);
+
+	// Un-Protect GET variables in URLs
+	$str = str_replace(xss_hash(), '&', $str);
+
+	// URL Decode
+	// Just in case stuff like this is submitted:
+	// <a href="http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D">Google</a>
+	$str = rawurldecode($str);
+	
+	// Convert character entities to ASCII 
+	// This permits our tests below to work reliably.
+	// We only convert entities that are within tags since
+	// these are the ones that will pose security problems.
+	$str = preg_replace_callback("/[a-z]+=([\'\"]).*?\\1/si", '_convert_attribute', $str);
+	$str = preg_replace_callback("/<\w+.*?(?=>|<|$)/si", '_html_entity_decode_callback', $str);
+
+	// Remove Invisible Characters Again!
+	$str = _remove_invisible_characters($str);
+		
+	// Convert all tabs to spaces
+	// This prevents strings like this: ja	vascript
+	// NOTE: we deal with spaces between characters later.
+	// NOTE: preg_replace was found to be amazingly slow here on large blocks of data,
+	//	     so we use str_replace.
+	if (strpos($str, "\t") !== false) {
+		$str = str_replace("\t", ' ', $str);
+	}
+		
+	// Capture converted string for later comparison
+	$converted_string = $str;
+		
+	// Not Allowed Under Any Conditions
+	foreach ($never_allowed_str as $key => $val) {
+		$str = str_replace($key, $val, $str);   
+	}
+	foreach ($never_allowed_regex as $key => $val) {
+		$str = preg_replace("#".$key."#i", $val, $str);   
+	}
+
+	// Makes PHP tags safe
+	// Note: XML tags are inadvertently replaced too:
+	// <?xml
+	// But it doesn't seem to pose a problem.
+	$str = str_replace(array('<?php', '<?PHP', '<?', '?'.'>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
+		
+	// Compact any exploded words
+	// This corrects words like:  j a v a s c r i p t
+	// These words are compacted back to their correct state.
+	$words = array('javascript', 'expression', 'vbscript', 'script', 'applet', 'alert', 'document', 'write', 'cookie', 'window');
+	foreach ($words as $word) {
+		$temp = '';
+		for ($i = 0, $wordlen = strlen($word); $i < $wordlen; $i++)	{
+			$temp .= substr($word, $i, 1)."\s*";
+		}
+		// We only want to do this when it is followed by a non-word character
+		// That way valid stuff like "dealer to" does not become "dealerto"
+		$str = preg_replace_callback('#('.substr($temp, 0, -3).')(\W)#is', '_compact_exploded_words', $str);
+	}
+		
+	// Remove disallowed Javascript in links or img tags
+	// We used to do some version comparisons and use of stripos for PHP5, but it is dog slow compared
+	// to these simplified non-capturing preg_match(), especially if the pattern exists in the string
+	do {
+		$original = $str;
+		if (preg_match("/<a/i", $str)) {
+			$str = preg_replace_callback("#<a\s*([^>]*?)(>|$)#si", '_js_link_removal', $str);
+		}
+		if (preg_match("/<img/i", $str)) {
+			$str = preg_replace_callback("#<img\s*([^>]*?)(>|$)#si", '_js_img_removal', $str);
+		}
+		if (preg_match("/script/i", $str) OR preg_match("/xss/i", $str)) {
+			$str = preg_replace("#<(/*)(script|xss)(.*?)\>#si", '[removed]', $str);
+		}
+	}
+	while($original != $str);
+
+	unset($original);
+
+	// Remove JavaScript Event Handlers
+	// Note: This code is a little blunt.  It removes
+	// the event handler and anything up to the closing >,
+	// but it's unlikely to be a problem.
+	$event_handlers = array('on\w*','xmlns');
+	$str = preg_replace("#<([^><]+)(".implode('|', $event_handlers).")(\s*=\s*[^><]*)([><]*)#i", "<\\1\\4", $str);
+		
+	// Sanitize naughty HTML elements
+	// If a tag containing any of the words in the list
+	// below is found, the tag gets converted to entities.
+	// So this: <blink> Becomes: &lt;blink&gt;
+	$naughty = 'alert|applet|audio|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|layer|link|meta|object|plaintext|style|script|textarea|title|video|xml|xss';
+	$str = preg_replace_callback('#<(/*\s*)('.$naughty.')([^><]*)([><]*)#is', '_sanitize_naughty_html', $str);
+
+	// Sanitize naughty scripting elements
+	// Similar to above, only instead of looking for
+	// tags it looks for PHP and JavaScript commands
+	// that are disallowed.  Rather than removing the
+	// code, it simply converts the parenthesis to entities
+	// rendering the code un-executable.
+	// For example:	eval('some code') Becomes: eval&#40;'some code'&#41;
+	$str = preg_replace('#(alert|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si', "\\1\\2&#40;\\3&#41;", $str);
+					
+	// Final clean up
+	// This adds a bit of extra precaution in case
+	// something got through the above filters
+	foreach ($never_allowed_str as $key => $val) {
+		$str = str_replace($key, $val, $str);   
+	}
+	foreach ($never_allowed_regex as $key => $val) {
+		$str = preg_replace("#".$key."#i", $val, $str);
+	}
+
+	// return the result
+	return $str;
+}
+
+// Random Hash for protecting URLs
+function xss_hash()	{
+
+	static $xss_hash;
+	
+	if (!isset($xss_hash)) {
+		if (phpversion() >= 4.2) {
+			mt_srand();
+		} else {
+			mt_srand(hexdec(substr(md5(microtime()), -8)) & 0x7fffffff);
+		}
+		$xss_hash = md5(time() + mt_rand(0, 1999999999));
+	}
+
+	return $xss_hash;
+}
+
+// Remove Invisible Characters
+function _remove_invisible_characters($str)	{
+
+	static $non_displayables;
+		
+	if (!isset($non_displayables)) {
+		// every control character except newline (10), carriage return (13), and horizontal tab (09),
+		// both as a URL encoded character (::shakes fist at IE and WebKit::), and the actual character
+		$non_displayables = array(
+			'/%0[0-8]/', '/[\x00-\x08]/',			// 00-08
+			'/%11/', '/\x0b/', '/%12/', '/\x0c/',	// 11, 12
+			'/%1[4-9]/', '/%2[0-9]/', '/%3[0-1]/',	// url encoded 14-31
+			'/[\x0e-\x1f]/');						// 14-31
+	}
+	do {
+		$cleaned = $str;
+		$str = preg_replace($non_displayables, '', $str);
+	}
+	while ($cleaned != $str);
+
+	return $str;
+}
+
+// Compact Exploded Words
+function _compact_exploded_words($matches) {
+
+	return preg_replace('/\s+/s', '', $matches[1]).$matches[2];
+}
+
+// Sanitize Naughty HTML
+function _sanitize_naughty_html($matches) {
+
+	// encode opening brace
+	$str = '&lt;'.$matches[1].$matches[2].$matches[3];
+
+	// encode captured opening or closing brace to prevent recursive vectors
+	$str .= str_replace(array('>', '<'), array('&gt;', '&lt;'), $matches[4]);
+
+	return $str;
+}
+
+// JS Link Removal
+function _js_link_removal($match) {
+	$attributes = _filter_attributes(str_replace(array('<', '>'), '', $match[1]));
+	return str_replace($match[1], preg_replace("#href=.*?(alert\(|alert&\#40;|javascript\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si", "", $attributes), $match[0]);
+}
+
+// JS Image Removal
+function _js_img_removal($match) {
+	$attributes = _filter_attributes(str_replace(array('<', '>'), '', $match[1]));
+	return str_replace($match[1], preg_replace("#src=.*?(alert\(|alert&\#40;|javascript\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si", "", $attributes), $match[0]);
+}
+
+// Attribute Conversion
+function _convert_attribute($match) {
+	return str_replace(array('>', '<'), array('&gt;', '&lt;'), $match[0]);
+}
+
+// HTML Entity Decode Callback
+function _html_entity_decode_callback($match) {
+	
+	global $settings;
+	return html_entity_decode($match[0], strtoupper($settings['charset']));
+}
+
+//  Filters tag attributes for consistency and safety
+function _filter_attributes($str) {
+
+	$out = '';
+	if (preg_match_all('#\s*[a-z\-]+\s*=\s*(\042|\047)([^\\1]*?)\\1#is', $str, $matches)) {
+		foreach ($matches[0] as $match) {
+			$out .= "{$match}";
+		}			
+	}
+	return $out;
 }
 ?>
