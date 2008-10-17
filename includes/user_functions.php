@@ -55,48 +55,7 @@ if (!CMS_IS_BOT) {
 	}
 }
 
-// Check if a user wants to logging in
-if (isset($_POST['login'])) {
-	$auth_result = false;
-	$auth_methods = isset($settings['auth_type']) ? explode(",",$settings['auth_type'].",") : array('local');
-	foreach($auth_methods as $auth_method) {
-		switch($auth_method) {
-			case "local":
-				// authentication against the local user database
-				if (!empty($_POST['user_name']) && !empty($_POST['user_pass'])) {
-					$auth_result = auth_local($_POST['user_name'], $_POST['user_pass']);
-				}
-				break;
-			case "ldap":
-				break;
-			case "ad":
-				break;
-			case "openid":
-				// authentication against an openid provider
-				if (!empty($_POST['user_openid_url'])) {
-					$auth_result = auth_openid($_POST['user_openid_url']);
-				}
-				break;
-			case "default":
-				// empty or unknown entry, ignore
-				break;
-		}
-	}
-	// check the result of the authentication attempt, and process it
-	if (is_array($auth_result)) {
-		switch($auth_result[0]) {
-			case "redirect":
-				redirect($auth_result[1], $auth_result[2]);
-				exit; 
-			default:
-				// unknown result code
-				_debug($auth_result);
-				terminate("unknown result code from an authentication module!");
-		}
-	}
-}
-
-// if not in the process of posting a form, did the login session expired?
+// if not in the process of posting a form, did the login session expire?
 if (count($_POST)==0 && !empty($_SESSION['login_expire']) && $_SESSION['login_expire'] < time()) {
 	// clear the login info from the session
 	unset($_SESSION['user']);
@@ -163,6 +122,11 @@ if (isset($_SESSION['userinfo'])) {
 		exit;
 	}
 } else {
+	// is login required?
+	if ($settings['auth_required'] && FUSION_SELF != "login.php" && FUSION_SELF != "setuser.php") {
+		redirect(BASEDIR."login.php", "script");
+		exit;
+	}
 	define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
 	define("THEME", THEMES.$settings['theme']."/");
 	$userdata = array(); $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = "";
@@ -274,96 +238,6 @@ if (!CMS_CLI && count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF']))
 	if (!iSUPERADMIN && $settings['maintenance'] && !eregi("maintenance.php", $_SERVER['PHP_SELF'])) {
 		// deny all non-webmasters access to the site
 		redirect(BASEDIR.'maintenance.php?reason='.$settings['maintenance']);
-	}
-}
-
-
-/*---------------------------------------------------+
-| User authentication functions                      |
-+----------------------------------------------------*/
-
-// authentication against the local user database
-function auth_local($userid, $password) {
-	global $db_prefix;
-	
-	// check and validate the given userid and pasword
-	$user_pass = md5(md5($password));
-	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($userid));
-
-	// check if we have a user record for this userid and password
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
-	if (dbrows($result) == 0) {
-		// not found, display an error message
-		return array("redirect", BASEDIR."setuser.php?error=3", "script");
-	} else {
-		// found, get the record and do some more validation
-		$ret = auth_user_validate(dbarray($result));
-		return $ret;
-	}
-}
-
-// authentication against an LDAP server
-function auth_ldap($userid, $password) {
-	return array('auth_ldap not defined yet!');
-}
-
-// authentication against an Active Directory server
-function auth_ad($userid, $password) {
-	return array('auth_ad not defined yet!');
-}
-
-// authentication using an OpenID
-function auth_openid($openid_url) {
-	global $settings;
-
-	// check if the URL is valid
-	if (isURL($openid_url)) {
-		require_once(PATH_INCLUDES."class.openid.php");
-		$openid = new SimpleOpenID;
-		$openid->SetIdentity($openid_url);
-		$openid->SetApprovedURL($settings['siteurl']."setuser.php");
-		$openid->SetTrustRoot($settings['siteurl']);
-		$server_url = $openid->GetOpenIDServer();
-		if ($server_url) {
-			return array("redirect", $openid->GetRedirectURL() , "script");
-		}
-	} else {
-		// for now...
-		return false;
-	}
-}
-
-// further validation on the userid found
-function auth_user_validate($userrecord) {
-
-	// if the account is suspended, check for an expiry date
-	if ($userrecord['user_status'] == 1 && $userrecord['user_ban_expire'] > 0 && $userrecord['user_ban_expire'] < time() ) {
-		// if this user's email address is marked as bad, reset the countdown counter
-		$userrecord['user_bad_email'] = $userrecord['user_bad_email'] == 0 ? 0 : time();
-		// reset the user status and the expiry date
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0', user_bad_email = '".$userrecord['user_bad_email']."' WHERE user_id='".$userrecord['user_id']."'");
-		$userrecord['user_status'] = 0;
-	}
-	if ($userrecord['user_status'] == 0) {	
-		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-		// set the 'remember me' status value 
-		$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
-		$_SESSION['userinfo'] = $userrecord['user_id'].".".$userrecord['user_password'];
-		// login expiry defined?
-		if ($settings['login_expire']) {
-			if (isset($_POST['remember_me']) && $_POST['remember_me'] == "yes") {
-				$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
-			} else {
-				$_SESSION['login_expire'] = time() + $settings['login_expire'];
-			}
-		} else {
-			$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
-		}
-		return array("redirect", BASEDIR."setuser.php?user=".$userrecord['user_name'], "script");
-	} elseif ($userrecord['user_status'] == 1) {
-		return array("redirect", BASEDIR."setuser.php?user_id=".$userrecord['user_id']."&error=1", "script");
-	} elseif ($userrecord['user_status'] == 2) {
-		return array("redirect", BASEDIR."setuser.php?error=2", "script");
 	}
 }
 

@@ -1081,6 +1081,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['572'] = "Articles:";
 		$localestrings['573'] = "News:";
 		$localestrings['574'] = "Downloads:";
+		$localestrings['575'] = "Login requires HTTPS:";
+		$localestrings['576'] = "Site access requires login:";
 		$localestrings['600'] = "Albums";
 		$localestrings['601'] = "Thumb size:";
 		$localestrings['602'] = "Photo size:";
@@ -3031,6 +3033,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['ac03'] = "Website Configuration";
 		$localestrings['ac04'] = "Installed Modules";
 		$localestrings['ac05'] = "Webmaster Toolbox";
+		$localestrings['https'] = "This website allows only logins secured by HTTPS";
 		$localestrings['sysusr'] = "Automatic Post";
 		$localestrings['user0'] = "Public";
 		$localestrings['user1'] = "Member";
@@ -3742,7 +3745,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1223543930");
+if (!defined('LP_DATE')) define('LP_DATE', "1224253694");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

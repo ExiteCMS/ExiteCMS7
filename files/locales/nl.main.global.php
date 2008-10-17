@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Thu Oct 9 2008, 11:23:35 CEST
+// generated on : Fri Oct 17 2008, 16:28:17 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";
@@ -140,6 +140,7 @@ $locale['ac02'] = "Gebruikersbeheer";
 $locale['ac03'] = "Website configuratie";
 $locale['ac04'] = "Optionele Modules";
 $locale['ac05'] = "Gereedschapskist";
+$locale['https'] = "Deze website staat alleen via HTTPS beveiligde logins toe";
 $locale['sysusr'] = "Automatisch Bericht";
 $locale['user0'] = "Publiek";
 $locale['user1'] = "Lid";

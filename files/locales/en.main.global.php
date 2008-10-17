@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Thu Oct 9 2008, 11:18:53 CEST
+// generated on : Fri Oct 17 2008, 16:28:20 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -140,6 +140,7 @@ $locale['ac02'] = "User Administration";
 $locale['ac03'] = "Website Configuration";
 $locale['ac04'] = "Installed Modules";
 $locale['ac05'] = "Webmaster Toolbox";
+$locale['https'] = "This website allows only logins secured by HTTPS";
 $locale['sysusr'] = "Automatic Post";
 $locale['user0'] = "Public";
 $locale['user1'] = "Member";

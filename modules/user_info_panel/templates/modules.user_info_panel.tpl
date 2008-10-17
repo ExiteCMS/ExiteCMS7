@@ -54,12 +54,13 @@
 			{/if}
 		</div>
 	</div>
-{else}
+	{include file="_closeside_x.tpl"}
+{elseif $settings.auth_ssl == 0 || $_SERVER.HTTPS|default:"" == "on"}
 	{include file="_openside.tpl" name=$_name title=$locale.060 state=$_state style=$_style}
 	<div style='text-align:center'>
 		{$loginerror|default:""}
 	</div>
-	<form name='loginform1' method='post' action='{$smarty.const.FUSION_SELF}'>
+	<form name='loginform1' method='post' action='{$smarty.const.BASEDIR}setuser.php?login=yes'>
 		{foreach from=$auth_methods item=method key=i}
 			{if $method_count > 1}
 				{if $method == "ldap"}
@@ -137,10 +138,6 @@
 	{/if}
 	{if $show_reglink}{$settings.siteurl|string_format:$locale.065}<br /><br />{/if}
 	{if $show_passlink}{$settings.siteurl|string_format:$locale.066}{/if}
-{/if}
-{if $smarty.const.iMEMBER|default:false}
-	{include file="_closeside_x.tpl"}
-{else}
 	{include file="_closeside.tpl"}
 {/if}
 {***************************************************************************}

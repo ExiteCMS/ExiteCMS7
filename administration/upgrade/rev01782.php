@@ -21,7 +21,7 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,19,9,2008), 
+					'date' => mktime(18,00,0,9,19,2008), 
 					'title' => "Required updates for ExiteCMS v7.1 rev.".$_revision,
 					'description' => "Database modifications for the new Photo Albums module.");
 

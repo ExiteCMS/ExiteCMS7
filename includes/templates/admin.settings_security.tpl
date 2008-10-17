@@ -101,6 +101,28 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.575}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='auth_ssl' class='textbox'>
+					<option value='0'{if $settings2.auth_ssl == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.auth_ssl == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.576}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='auth_required' class='textbox'>
+					<option value='0'{if $settings2.auth_required == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.auth_required == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<hr />
 			</td>

@@ -54,7 +54,7 @@ foreach($_COOKIE as $cookiename => $cookievalue) {
 }
 
 // store the last_url cookie if found
-if (isset($_COOKIE['last_url']) && isURL($_COOKIE['last_url'])) {
+if (isset($_COOKIE['last_url']) && (isURL($_COOKIE['last_url']) || isURL($settings['siteurl'].$_COOKIE['last_url'])) && $_COOKIE['last_url'] != BASEDIR."setuser.php?login=yes") {
 	$_SESSION['last_url'] = stripinput($_COOKIE['last_url']);
 }
 

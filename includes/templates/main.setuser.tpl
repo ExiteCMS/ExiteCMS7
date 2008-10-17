@@ -38,11 +38,13 @@
 				{$message.line2|default:""}<br />
 				{$message.line3|default:""}<br />
 				{$message.line4|default:""}<br />
-				<br />
-				{$locale.183}
-				<br />
-				{if $error != 0}[ <a href='{$url}'>{$locale.184}</a> ]{/if}
-				<br /><br />
+				{if $refresh < 99999}
+					<br />
+					{$locale.183}
+					<br />
+					{if $refresh > 1}[ <a href='{$url}'>{$locale.184}</a> ]{/if}
+					<br /><br />
+				{/if}
 				</center>
 			</div>
 		</div>

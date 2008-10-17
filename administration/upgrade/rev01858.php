@@ -11,7 +11,7 @@
 +----------------------------------------------------*/
 
 // upgrade for revision
-$_revision = '1818';
+$_revision = '1858';
 
 if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
@@ -21,15 +21,16 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(23,00,0,10,5,2008), 
-					'title' => "Required updates for ExiteCMS v7.1 rev.".$_revision,
-					'description' => "Moved the release to version 7.2.");
+					'date' => mktime(23,00,0,10,17,2008), 
+					'title' => "Required updates for ExiteCMS v7.2 rev.".$_revision,
+					'description' => "Improved the login procedure, added support for secure logins.");
 
 // array to store the commands of this update
 $commands = array();
 
 // database changes
 
-// update the version number
-$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##configuration SET cfg_value='7.20' WHERE cfg_name='version'");
+// add the new config values to the configuration table
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##configuration (cfg_name, cfg_value) VALUES ('auth_ssl', '0')");
+$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##configuration (cfg_name, cfg_value) VALUES ('auth_required', '0')");
 ?>
