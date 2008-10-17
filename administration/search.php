@@ -149,7 +149,7 @@ if ($action == "") {
 				// not found, assume it's a static title
 			}
 		}
-		$data['groupname'] = getgroupname($data['search_visibility']);
+		$data['groupname'] = getgroupname($data['search_visibility'], '-1');
 			// store the search record
 		$variables['searches'][] = $data;
 	}
