@@ -52,6 +52,7 @@
 	{$locale.c101}
 {/section}	
 {include file="_closetable.tpl"}
+{assign var=_name value=$_name|cat:"_post"}
 {include file="_opentable.tpl" name=$_name title=$locale.c102 state=$_state style=$_style}
 {if $smarty.const.iMEMBER || $settings.guestposts == "1"}
 	<form name='inputform' method='post' action='{$post_link}'>
