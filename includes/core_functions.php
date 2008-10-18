@@ -763,12 +763,12 @@ function xss_clean($str) {
 	// never allowed, string replacement
 	if (!isset($never_allowed_str)) {
 		$never_allowed_str = array(
-			'document.cookie'	=> '[removed]',
-			'document.write'	=> '[removed]',
-			'.parentNode'		=> '[removed]',
-			'.innerHTML'		=> '[removed]',
-			'window.location'	=> '[removed]',
-			'-moz-binding'		=> '[removed]',
+			'document.cookie'	=> '[--XSS--]',
+			'document.write'	=> '[--XSS--]',
+			'.parentNode'		=> '[--XSS--]',
+			'.innerHTML'		=> '[--XSS--]',
+			'window.location'	=> '[--XSS--]',
+			'-moz-binding'		=> '[--XSS--]',
 			'<!--'				=> '&lt;!--',
 			'-->'				=> '--&gt;',
 			'<![CDATA['			=> '&lt;![CDATA['
@@ -778,9 +778,9 @@ function xss_clean($str) {
 	// never allowed, regex replacement
 	if (!isset($never_allowed_regex)) {
 		$never_allowed_regex = array(
-			"javascript\s*:"	=> '[removed]',
-			"expression\s*\("	=> '[removed]', // CSS and IE
-			"Redirect\s+302"	=> '[removed]'
+			"javascript\s*:"	=> '[--XSS--]',
+			"expression\s*\("	=> '[--XSS--]', // CSS and IE
+			"Redirect\s+302"	=> '[--XSS--]'
 		);
 	}
 	
@@ -875,7 +875,7 @@ function xss_clean($str) {
 			$str = preg_replace_callback("#<img\s*([^>]*?)(>|$)#si", '_js_img_removal', $str);
 		}
 		if (preg_match("/script/i", $str) OR preg_match("/xss/i", $str)) {
-			$str = preg_replace("#<(/*)(script|xss)(.*?)\>#si", '[removed]', $str);
+			$str = preg_replace("#<(/*)(script|xss)(.*?)\>#si", '[--XSS--]', $str);
 		}
 	}
 	while($original != $str);
