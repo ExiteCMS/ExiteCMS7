@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `19/10/2008 10:24`
+// Date generated  : `19/10/2008 16:12`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.20');
-define('CMS_REVISION', '1858');
+define('CMS_REVISION', '1872');
 
 define('MYSQL_CHARSET', 'utf8');
 define('MYSQL_COLLATE', 'utf8_general_ci');
@@ -309,6 +309,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_php_errors', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_querylog', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('debug_sql_explain', '0')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('default_locale', 'en')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('description', 'ExiteCMS, a light-weight CMS system, wriiten in PHP, and using MySQL and the Smarty template engine')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('display_validation', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('download_columns', '1')");
@@ -364,7 +365,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_sentbox', '25')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('pm_sentbox_group', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('remote_stats', '0')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('revision', '1858')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('revision', '1872')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_divisor', '100')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_maxlifetime', '2678400')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('session_gc_probability', '1')");

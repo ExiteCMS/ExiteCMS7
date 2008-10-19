@@ -3745,7 +3745,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1224409123");
+if (!defined('LP_DATE')) define('LP_DATE', "1224413132");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
@@ -3844,7 +3844,7 @@ if (!defined('LP_SKIP_MAIN')) {
 		$variables['flags'] = explode("|", LP_COUNTRIES);
 
 		// check the last update of the locale
-		$variables['last_update'] = isset($settings['LanguagePack.'.LP_LANGUAGE]) ? $settings['LanguagePack.'.LP_LANGUAGE] : dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'");
+		$variables['last_update'] = isset($settings['LanguagePack.'.LP_LANGUAGE]) ? $settings['LanguagePack.'.LP_LANGUAGE] : min(LP_DATE - 1, dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'"));
 		
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;

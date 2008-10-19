@@ -256,10 +256,10 @@ function locale_load($locale_name, $locale_code="") {
 			// and it exists, load it
 			require $locales_file;
 		} else {
-			// otherwise, if the locale is not English, try to load the system locale version
-			if ($locale_code != "en") {
-				// retrieve the info for the system locale (which is the first one installed!)
-				$result = dbquery("SELECT * FROM ".$db_prefix."locale ORDER BY locale_id LIMIT 1");
+			// otherwise, if the locale is not the default system locale, try to load the system locale version
+			if ($locale_code != $settings['default_locale']) {
+				// retrieve the info for the system locale
+				$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_code = '".$settings['default_locale']."'");
 				if (dbrows($result)) {
 					$data = dbarray($result);
 					// try to load the default locale instead

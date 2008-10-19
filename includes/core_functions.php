@@ -748,7 +748,7 @@ function CMS_getOS () {
 
 // replacement for die()
 function terminate($text) {
-	die("<div style='font-family:Verdana,Sans-serif;font-size:11px;text-align:center;'>$text</div>");
+	die("<div style='font-family:Verdana,Sans-serif;font-size:14px;font-weight:bold;text-align:center;'>$text</div>");
 }
 
 /*---------------------------------------------------+

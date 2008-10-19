@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| Copyright 2008 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
 | Some portions copyright 2002 - 2006 Nick Jones     |
@@ -125,7 +125,7 @@ function locale_load($locale_name) {
 function terminate($error, $tip="", $wiki=0) {
 	global $locale;
 
-	$msg = "<div style='font-family:Verdana;font-size:14px;text-align:center;'><b>".(empty($locale['403'])?"Unable to run the ExiteCMS setup":$locale['403']).":<br /><br /><font style='color:red;'>";
+	$msg = "<div style='font-family:Verdana;font-size:14px;text-align:center;font-weight:bold;'><b>".(empty($locale['403'])?"Unable to run the ExiteCMS setup":$locale['403']).":<br /><br /><font style='color:red;'>";
 	$msg .= $error."</font></b><br /><br />";
 	if ($wiki) {
 		if (empty($locale['404'])) {
@@ -256,7 +256,7 @@ if ($step == "1") {
 	// verify the user input: table prefix
 	$db_prefix = isset($_POST['db_prefix']) ? stripinput($_POST['db_prefix']) : "";
 	$variables['db_prefix'] = $db_prefix;
-	if (!preg_match("/^[-0-9A-Z_@]*$/i", $db_prefix)) {
+	if (!empty($db_prefix) && !preg_match("/^[A-Z0-9][-0-9A-Z_@]*$/i", $db_prefix)) {
 		$error .= $locale['428']."<br /><br />\n";
 	}
 	// verify a connection to the database server can be made
@@ -275,11 +275,11 @@ if ($step == "1") {
 	}
 	// verify if the given user has create table on the database
 	if (empty($error)) {
-		$result = dbquery("CREATE TABLE ".$db_prefix."_test (test TINYINT(1) NOT NULL) ENGINE = MYISAM");
+		$result = dbquery("CREATE TABLE ".$db_prefix."___test (test TINYINT(1) NOT NULL) ENGINE = MYISAM");
 		if (!$result) {
 			$error .= sprintf($locale['435'],$db_name)."<br /><br />\n";
 		} else {
-			$result = dbquery("DROP TABLE ".$db_prefix."_test");
+			$result = dbquery("DROP TABLE ".$db_prefix."___test");
 		}
 	}
 	// if no errors were detected, create the config file
@@ -391,6 +391,7 @@ switch($step) {
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$basedir."' WHERE cfg_name = 'siteurl'");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$username."' WHERE cfg_name = ''siteusername");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$localeset."' WHERE cfg_name = 'locale'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".LP_CHARSET."' WHERE cfg_name = 'default_locale'");
  
 			// create the admin rights field for the webmaster, based on all admin modules available
 			$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
@@ -401,7 +402,7 @@ switch($step) {
 					
 			// add the webmaster to the users table
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '$password', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '$password', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '".LP_CHARSET."', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
 			$result = dbcommands($commands, $db_prefix);
 	
 			// add the default private messages configuration
