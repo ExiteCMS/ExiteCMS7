@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Sun Oct 19 2008, 16:53:17 CEST
+// generated on : Sun Oct 19 2008, 20:40:24 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";
@@ -123,7 +123,7 @@ $locale['550'] = "Nieuws";
 $locale['551'] = "ExiteCMS";
 $locale['552'] = "Beveiliging";
 $locale['553'] = "Software";
-$locale['554'] = "Thema\'s";
+$locale['554'] = "Thema's";
 $locale['555'] = "Windows";
 $locale['560'] = "Sorry, maar het door u gevraagde document kan niet op de server gevonden worden.";
 $locale['561'] = "Het is waarschijnlijk dat dit wordt veroorzaakt door een van de vele reorganisaties die veroorzaakt worden door een continue ontwikkeling van deze website, en migraties van een oude server met veel balast naar een fonkelnieuwe omgeving.";

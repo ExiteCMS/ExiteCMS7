@@ -169,11 +169,11 @@ function locale_load($locale_name, $locale_code="") {
 							fwrite($handle, "// ----------------------------------------------------------"."\n");
 						}
 
-						// search and replace array's
-						$keysearch = array("$", '"', '\'', chr(10), chr(13));
-						$keyreplace = array("\\$", '\\"', "\\'", "\\n", "\\r");
-						$search = array("$", '"', chr(10), chr(13));
-						$replace = array("\\$", '\\"', "\\n", "\\r");
+						// search and replace array's for keys and values
+						$keysearch = array("'");
+						$keyreplace = array("\'");
+						$search = array('"', '$', "\n");
+						$replace = array('\"', '\$', '\n');
 
 						while ($localerec = dbarray($result2)) {
 							$localerec['locales_key'] = str_replace($keysearch, $keyreplace, $localerec['locales_key']);
