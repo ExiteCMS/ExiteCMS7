@@ -1,7 +1,7 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `19/10/2008 16:12`
+// Date generated  : `19/10/2008 17:53`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.20');
@@ -411,21 +411,6 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."custom_pages (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "custom_pages : ".mysql_error();
-}
-
-//
-// Code to create table `dlstats_reports`
-//
-$result = dbquery("DROP TABLE IF EXISTS ".$db_prefix."dlstats_reports");
-$result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."dlstats_reports (
-  `dlsr_id` smallint(5) unsigned NOT NULL auto_increment,
-  `dlsr_title` varchar(50) NOT NULL default '',
-  `dlsr_query` text,
-  PRIMARY KEY  (`dlsr_id`)
-) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
-if (!$result) {
-	$fail = "1";
-	$failed[] = "dlstats_reports : ".mysql_error();
 }
 
 //
@@ -1084,6 +1069,9 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."reports (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "reports : ".mysql_error();
+} else {
+	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_name, report_title, report_version, report_active, report_visibility) VALUES('usercountries', 'rpt500', '1.0.0', 1, 103)");
+	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_name, report_title, report_version, report_active, report_visibility) VALUES('usersjoined', 'rpt509', '1.0.0', 1, 103)");
 }
 
 //
@@ -1106,6 +1094,14 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."search (
 if (!$result) {
 	$fail = "1";
 	$failed[] = "search : ".mysql_error();
+} else {
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('forumposts', 'src512', '1.0.0', 1, 103, '1', '1')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('news', 'src511', '1.0.0', 1, 103, '1', '2')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('articles', 'src510', '1.0.0', 1, 103, '1', '3')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('forumattachments', 'src513', '1.0.0', 1, 103, '1', '5')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('downloads', 'src514', '1.0.0', 1, 103, '1', '6')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('members', 'src515', '1.0.0', 1, 103, '0', '7')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('pm', 'src518', '1.0.0', 1, 103, '1', '10')");
 }
 
 //
