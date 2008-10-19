@@ -1,7 +1,7 @@
 <?php
 //----------------------------------------------------------
 // ExiteCMS file : dbsetup_include.php
-// Date generated  : `19/10/2008 17:53`
+// Date generated  : `19/10/2008 20:58`
 //----------------------------------------------------------
 
 define('CMS_VERSION', '7.20');
@@ -1070,8 +1070,8 @@ if (!$result) {
 	$fail = "1";
 	$failed[] = "reports : ".mysql_error();
 } else {
-	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_name, report_title, report_version, report_active, report_visibility) VALUES('usercountries', 'rpt500', '1.0.0', 1, 103)");
-	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_name, report_title, report_version, report_active, report_visibility) VALUES('usersjoined', 'rpt509', '1.0.0', 1, 103)");
+	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_core, report_name, report_title, report_version, report_active, report_visibility) VALUES(1, 'usercountries', 'rpt500', '1.0.0', 1, 102)");
+	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_core, report_name, report_title, report_version, report_active, report_visibility) VALUES(1, 'usersjoined', 'rpt509', '1.0.0', 1, 102)");
 }
 
 //
@@ -1095,13 +1095,13 @@ if (!$result) {
 	$fail = "1";
 	$failed[] = "search : ".mysql_error();
 } else {
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('forumposts', 'src512', '1.0.0', 1, 103, '1', '1')");
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('news', 'src511', '1.0.0', 1, 103, '1', '2')");
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('articles', 'src510', '1.0.0', 1, 103, '1', '3')");
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('forumattachments', 'src513', '1.0.0', 1, 103, '1', '5')");
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('downloads', 'src514', '1.0.0', 1, 103, '1', '6')");
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('members', 'src515', '1.0.0', 1, 103, '0', '7')");
-	$result = dbquery("INSERT INTO ".$db_prefix."search (search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES('pm', 'src518', '1.0.0', 1, 103, '1', '10')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'forumposts', 'src512', '1.0.0', 1, 101, '1', '1')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'news', 'src511', '1.0.0', 1, 101, '1', '2')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'articles', 'src510', '1.0.0', 1, 101, '1', '3')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'forumattachments', 'src513', '1.0.0', 1, 101, '1', '5')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'downloads', 'src514', '1.0.0', 1, 101, '1', '6')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'members', 'src515', '1.0.0', 1, 101, '0', '7')");
+	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'pm', 'src518', '1.0.0', 1, 101, '1', '10')");
 }
 
 //
