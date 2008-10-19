@@ -171,8 +171,8 @@ var MilkboxWidth = readCookie('width') - 100;
 	{sectionelse}
 		<center>
 			<br />
-			<b>{$locale.401}</b>
-			<br />
+			{$locale.401}
+			<br /><br />
 		</center>
 	{/section}
 {***************************************************************************}

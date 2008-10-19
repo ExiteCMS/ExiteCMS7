@@ -687,7 +687,9 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[size=undefined\](.*?)\[/size\]#si', '\1', $text);
 
 	// wiki links
-	$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text); 
+	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text); 
+	}
 
 	// youtube bbcode
 	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);

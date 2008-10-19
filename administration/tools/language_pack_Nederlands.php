@@ -3033,6 +3033,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['ac03'] = "Website configuratie";
 		$localestrings['ac04'] = "Optionele Modules";
 		$localestrings['ac05'] = "Gereedschapskist";
+		$localestrings['banned'] = "De website beheerder heeft uw IP adres\nde toegang tot deze website ontzegd";
 		$localestrings['https'] = "Deze website staat alleen via HTTPS beveiligde logins toe";
 		$localestrings['sysusr'] = "Automatisch Bericht";
 		$localestrings['user0'] = "Publiek";
@@ -3745,7 +3746,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1224441624");
+if (!defined('LP_DATE')) define('LP_DATE', "1224445625");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

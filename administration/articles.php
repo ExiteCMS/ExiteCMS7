@@ -73,7 +73,6 @@ $result = dbquery("SELECT * FROM ".$db_prefix."article_cats");
 if (dbrows($result) == 0) {
 	// if not, ask the user to define those first
 	$variables['message'] = $locale['518']."<br />".$locale['519']."<br /><a href='article_cats.php".$aidlink."'>".$locale['520']."</a>".$locale['521'];
-	$variables['bold'] = true;
 	$template_panels[] = array('type' => 'body', 'name' => 'admin.article.no_cats', 'title' => $locale['517'], 'template' => '_message_table_panel.tpl', 'locale' => "admin.news-articles");
 	$template_variables['admin.article.no_cats'] = $variables;
 	$variables = array();

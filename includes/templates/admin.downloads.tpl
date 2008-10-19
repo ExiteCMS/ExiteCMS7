@@ -147,9 +147,9 @@
 	{assign var="cat_locale" value=""}
 {/if}
 <br />
-<table align='center' cellpadding='0' cellspacing='0' width='400'>
 {section name=id loop=$tree}
 	{if $smarty.section.id.first}
+	<table align='center' cellpadding='0' cellspacing='0' width='400'>
 	<tr>
 		<td class='tbl2'>
 			{$locale.501}
@@ -219,23 +219,13 @@
 	</tr>
 	{/if}
 	{if $smarty.section.id.last}
+	</table>
+	<div style='text-align:center;'>
+		<br />
+		{buttonlink name=$locale.516 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=add"|cat:$url_locale}
+	</div>
 	{/if}
-{sectionelse}
-	<tr>
-		<td align='center'>
-			<br />
-			{$locale.506}
-			<br /><br />
-			<a href='download_cats.php{$aidlink}'>{$locale.507}
-			<br /><br />
-		</td>
-	</tr>
 {/section}
-</table>
-<div style='text-align:center;'>
-	<br />
-	{buttonlink name=$locale.516 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=add"|cat:$url_locale}
-</div>
 {include file="_closetable.tpl"}
 <script type='text/javascript'>
 function DeleteItem()
@@ -246,13 +236,3 @@ return confirm('{$locale.460}');
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}
-{if !$cats_found}
-<center>
-	{$locale.508}
-	<br />
-	{$locale.509}
-	<br /><br />
-	<a href='download_cats.php{$aidlink}'>{$locale.510}</a>{$locale.511}
-</center>
-{else}
-{/if}

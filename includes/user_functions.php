@@ -20,8 +20,9 @@ require_once "geoip_include.php";
 // Check if users full or partial ip is blacklisted
 $sub_ip1 = substr(USER_IP,0,strlen(USER_IP)-strlen(strrchr(USER_IP,".")));
 $sub_ip2 = substr($sub_ip1,0,strlen($sub_ip1)-strlen(strrchr($sub_ip1,".")));
-if (dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$sub_ip1' OR blacklist_ip='$sub_ip2'")) {
-	header("Location: http://en.wikipedia.org/wiki/IP_blocking"); exit;
+if (FUSION_SELF != "setuser.php" && dbcount("(*)", "blacklist", "blacklist_ip='".USER_IP."' OR blacklist_ip='$sub_ip1' OR blacklist_ip='$sub_ip2'")) {
+	redirect(BASEDIR."setuser.php?error=6");
+	exit;
 }
 
 // check for bot users

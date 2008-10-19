@@ -80,7 +80,7 @@
 {sectionelse}
 	<center>
 		<br />
-		<b>{$locale.407}</b>
+		{$locale.407}
 		<br /><br />
 	</center>
 {/section}

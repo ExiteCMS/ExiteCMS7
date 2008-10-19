@@ -136,7 +136,7 @@
 		{include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 		<center>
 			<br />
-			<b>{$locale.431}</b>
+			{$locale.431}
 			<br /><br />
 		</center>
 		{include file="_closetable.tpl"}

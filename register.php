@@ -76,8 +76,8 @@ if ($settings['enable_registration'] == 1) {
 			$error .= $locale['406']."<br /><br />\n";
 		}
 		
+		$email_domain = substr(strrchr($email, "@"), 1);
 		if (CHECK_EMAIL) {
-			$email_domain = substr(strrchr($email, "@"), 1);
 			if (CMS_getmxrr($email_domain, $mxhosts)) {
 				// Get the hostname the MX record points to
 				$mailhost = $mxhosts[0];
@@ -245,7 +245,6 @@ if ($settings['enable_registration'] == 1) {
 } else {
 	// define the body panel variables
 	$variables['message'] = $locale['507'];
-	$variables['bold'] = true;
 	$template_panels[] = array('type' => 'body', 'title' => $locale['400'], 'name' => 'register.disabled', 'template' => '_message_table_panel.tpl');
 	$template_variables['register.disabled'] = $variables;
 }

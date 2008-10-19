@@ -356,6 +356,8 @@ if (isset($_POST['save_cat'])) {
 		// forum category list
 		$variables['cat_opts'] = array();
 		$result2 = dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_cat='0' ORDER BY forum_order");
+		// disable the forum add/edit panel if no categories are present
+		if (dbrows($result2) == 0) $variables['show_forum_panel'] = false;
 		while ($data2 = dbarray($result2)) {
 			$data2['selected'] = ($action == "edit" && $t == "forum" && $data2['forum_id'] == $forum_cat);
 			$variables['cat_opts'][] = $data2;

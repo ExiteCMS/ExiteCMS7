@@ -249,6 +249,18 @@ switch($error) {
 		$message['line2'] =  "<b>".$locale['https']."</b>";
 		$refresh = 99999;
 		break;
+	case 6:
+		$message['line2'] =  "<font style='color:red;font-weight:bold'>".($locale['banned'])."</font>";
+		// get the reason for this ban
+		$sub_ip1 = substr(USER_IP,0,strlen(USER_IP)-strlen(strrchr(USER_IP,".")));
+		$sub_ip2 = substr($sub_ip1,0,strlen($sub_ip1)-strlen(strrchr($sub_ip1,".")));
+		$result = dbquery("SELECT * FROM ".$db_prefix."blacklist WHERE blacklist_ip='".USER_IP."' OR blacklist_ip='$sub_ip1' OR blacklist_ip='$sub_ip2'");
+		if (dbrows($result)) {
+			$data = dbarray($result);
+			$message['line4'] =  "<b>".$locale['180'].":<br /><font style='color:red;'>".($data['blacklist_reason'])."</font></b>";
+		}
+		$refresh = 99999;
+		break;
 	default:
 		// unknown result code
 		_debug($error);
