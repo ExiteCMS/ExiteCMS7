@@ -3576,7 +3576,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['551'] = "ExiteCMS";
 		$localestrings['552'] = "Beveiliging";
 		$localestrings['553'] = "Software";
-		$localestrings['554'] = "Thema\'s";
+		$localestrings['554'] = "Thema's";
 		$localestrings['555'] = "Windows";
 		$localestrings['560'] = "Sorry, maar het door u gevraagde document kan niet op de server gevonden worden.";
 		$localestrings['561'] = "Het is waarschijnlijk dat dit wordt veroorzaakt door een van de vele reorganisaties die veroorzaakt worden door een continue ontwikkeling van deze website, en migraties van een oude server met veel balast naar een fonkelnieuwe omgeving.";
@@ -3745,7 +3745,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1224427997");
+if (!defined('LP_DATE')) define('LP_DATE', "1224430375");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
