@@ -3745,7 +3745,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1224413129");
+if (!defined('LP_DATE')) define('LP_DATE', "1224427994");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
@@ -3848,7 +3848,7 @@ if (!defined('LP_SKIP_MAIN')) {
 		
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;
-		$variables['can_remove'] = LP_LOCALE != "en" && $variables['can_install'] == false;
+		$variables['can_remove'] = LP_LOCALE != $settings['default_locale'] && $variables['can_install'] == false;
 		$variables['can_upgrade'] = $variables['can_install'] == false && $variables['last_update'] < LP_DATE;
 	
 		// define the body panel variables

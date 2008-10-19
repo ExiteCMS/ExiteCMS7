@@ -60,6 +60,7 @@
 					{$smarty.const.LP_DATE|date_format:"%Y%m%d-%$"}
 				</td>
 			</tr>
+			{if $last_update}
 			<tr>
 				<td class='tbl' width='50%' align='right'>
 					{$locale.313} :
@@ -68,6 +69,7 @@
 					{$last_update|date_format:"%Y%m%d-%$"}
 				</td>
 			</tr>
+			{/if}
 			{if $smarty.const.LP_VERSION != $settings.version}
 			<tr>
 				<td colspan='2' class='tbl' align='center'>

@@ -391,7 +391,7 @@ switch($step) {
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$basedir."' WHERE cfg_name = 'siteurl'");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$username."' WHERE cfg_name = ''siteusername");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$localeset."' WHERE cfg_name = 'locale'");
-			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".LP_CHARSET."' WHERE cfg_name = 'default_locale'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".LP_LOCALE."' WHERE cfg_name = 'default_locale'");
  
 			// create the admin rights field for the webmaster, based on all admin modules available
 			$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
@@ -402,7 +402,7 @@ switch($step) {
 					
 			// add the webmaster to the users table
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '$password', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '".LP_CHARSET."', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '$password', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '".LP_LOCALE."', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
 			$result = dbcommands($commands, $db_prefix);
 	
 			// add the default private messages configuration
