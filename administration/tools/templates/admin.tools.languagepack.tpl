@@ -91,10 +91,10 @@
 						{if $can_install}
 							{buttonlink name=$locale.302 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=install"}&nbsp;
 						{/if}
-						{if $settings.sitename == "ExiteCMS Development Site" || ($can_upgrade && $last_update != $smarty.const.LP_DATE)}
+						{if $settings.sitename == "ExiteCMS Development Site" || $can_upgrade}
 						{buttonlink name=$locale.304 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=upgrade"}&nbsp;
 						{/if}
-						{if $can_remove && $smarty.const.LP_LOCALE != "en"}
+						{if $can_remove}
 						{buttonlink name=$locale.303 link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=remove"}&nbsp;	
 						{/if}
 					</td>

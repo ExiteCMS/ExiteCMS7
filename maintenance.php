@@ -15,9 +15,16 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once dirname(__FILE__)."/includes/theme_functions.php";
 
+// login requested, switch to setuser to perform the login
+if (isset($_POST['login'])) {
+	$_GET['login'] = "yes";
+	include PATH_ROOT."setuser.php";
+	exit;
+}
+
 // logout requested, switch to setuser to perform the logout
 if (isset($_POST['logout'])) {
-	$_REQUEST['logout'] = "yes";
+	$_GET['logout'] = "yes";
 	include PATH_ROOT."setuser.php";
 	exit;
 }

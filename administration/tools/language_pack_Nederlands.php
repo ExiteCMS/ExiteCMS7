@@ -3745,7 +3745,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1224253697");
+if (!defined('LP_DATE')) define('LP_DATE', "1224409123");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
@@ -3817,6 +3817,12 @@ if (!defined('LP_SKIP_MAIN')) {
 			} else {
 				if (!CMS_CLI) $variables['message'] .= sprintf($locale['307'],LP_LOCALE, LP_LANGUAGE);
 			}
+			// update the install timestamp in the config
+			if (isset($settings['LanguagePack.'.LP_LANGUAGE])) {
+				$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".LP_DATE."' WHERE cfg_name = 'LanguagePack.".LP_LANGUAGE."'");
+			} else {
+				$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES ('LanguagePack.".LP_LANGUAGE."', '".LP_DATE."')");
+			}
 		}
 	}
 	
@@ -3838,12 +3844,12 @@ if (!defined('LP_SKIP_MAIN')) {
 		$variables['flags'] = explode("|", LP_COUNTRIES);
 
 		// check the last update of the locale
-		$variables['last_update'] = dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'");
+		$variables['last_update'] = isset($settings['LanguagePack.'.LP_LANGUAGE]) ? $settings['LanguagePack.'.LP_LANGUAGE] : dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'");
 		
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;
-		$variables['can_remove'] = $variables['can_install'] ? FALSE : TRUE;
-		$variables['can_upgrade'] = $variables['can_remove'];
+		$variables['can_remove'] = LP_LOCALE != "en" && $variables['can_install'] == false;
+		$variables['can_upgrade'] = $variables['can_install'] == false && $variables['last_update'] < LP_DATE;
 	
 		// define the body panel variables
 		$template_panels[] = array('type' => 'body', 'name' => 'admin.tools.languagepack', 'title' => "ExiteCMS Language Packs", 'template' => 'admin.tools.languagepack.tpl', 'locale' => "admin.main");

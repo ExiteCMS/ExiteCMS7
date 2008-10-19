@@ -363,28 +363,6 @@ h1 {
 
 .center, .center p {text-align: center;}
 
-.keys {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color:#FFF;
-	font-weight: bold;
-	background-color: #33A;
-	border-top: 2px solid #FFF;
-	border-left: 2px solid #FFF;
-	border-right: 2px solid #336;
-	border-bottom: 2px solid #336;
-	text-align: center;
-	padding: 0.1em 0.3em;
-	line-height: 1.6em;
-	vertical-align: top;
-}
-
-.keys:hover {
-	background-color: #66C;
-	border-right: 2px solid #668;
-	border-bottom: 2px solid #668;
-}
-
 acronym {
 	border-bottom: 1px dotted #333;
 	cursor: help;
