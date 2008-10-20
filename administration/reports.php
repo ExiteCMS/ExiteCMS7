@@ -60,7 +60,7 @@ if ($action == "add" && !isset($variables['report'])) {
 
 // edit an existing report definition
 if ($action == "edit" && !isset($variables['report'])) {
-	$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."reports r LEFT JOIN ".$db_prefix."modules m ON r.report_mod_id = m.mod_id");
+	$result = dbquery("SELECT r.*, m.mod_folder FROM ".$db_prefix."reports r LEFT JOIN ".$db_prefix."modules m ON r.report_mod_id = m.mod_id WHERE report_id = $report_id");
 	if ($data = dbarray($result)) {
 		// get the title for this report
 		if ($data['report_mod_id']) {
