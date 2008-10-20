@@ -98,9 +98,9 @@ if (isset($_POST['save_latest'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings['news_latest']."' WHERE cfg_name = 'news_latest'");
 }
 
-// build the list of available news cards
+// build the list of available news cats
 $newslist = array();
-// and an empty first entry
+// add an empty first entry
 $newslist[] = array('news_id' => 0, 'news_subject' => "", 'news_cat_name' => "", 'news_new_cat' => 1, 'selected' => 0);
 $result = dbquery("SELECT n.news_id, n.news_subject, c.news_cat_name FROM ".$db_prefix."news n LEFT JOIN ".$db_prefix."news_cats c ON n.news_cat = c.news_cat_id ORDER BY c.news_cat_name, n.news_datestamp DESC");
 $current_cat = "";
@@ -120,9 +120,9 @@ while ($data = dbarray($result)) {
 // define the headlines array
 $headlines = array();
 for ($i = 1; $i <= $settings['news_headline']; $i++) {
-	$result = dbquery("SELECT news_id FROM ".$db_prefix."news_frontpage INNER JOIN ".$db_prefix."news ON frontpage_news_id WHERE frontpage_headline=1 AND frontpage_order=".$i);
+	$result = dbquery("SELECT frontpage_news_id FROM ".$db_prefix."news_frontpage WHERE frontpage_headline=1 AND frontpage_order=".$i);
 	if ($data = dbarray($result)) {
-		$news_id = $data['news_id'];
+		$news_id = $data['frontpage_news_id'];
 	} else {
 		$news_id = 0;
 	}
