@@ -220,7 +220,7 @@ if ($action == 'install' && isset($module)) {
 					}
 					// add it to the search table
 					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order) 
-						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."', ".$max.")");
+						VALUES ('".$mod_id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."', ".$max.")");
 				}
 			}
 		}
