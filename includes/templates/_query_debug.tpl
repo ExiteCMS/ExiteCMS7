@@ -43,7 +43,9 @@
 			</font>
 		</td>
 		<td class='{cycle values='tbl1,tbl2'}'>
+			{if $queries[id].1 == 0}<span style='font-weight:bold'>{/if}
 			{$queries[id].0|escape}
+			{if $queries[id].1 == 0}</span>{/if}
 			{if $queries[id].explain|is_array}
 				<br />
 				<table width='1200' cellspacing='1' cellpadding='0' class='tbl-border' style='margin:5px;background-color:red;'>
