@@ -284,28 +284,47 @@ function checkgroup($group, $all4superadmin = true) {
 function checkusergroup($user_id, $group_id) {
 	global $groups, $db_prefix;
 
-	// every user is a member
-	if ($group_id == "101") { return true; }
-	// get the group rights from the user record
-	$result = dbquery("SELECT user_groups, user_level FROM ".$db_prefix."users WHERE user_id = '".$user_id."'");
-	if ($data = dbarray($result)) {
-		// check if the requested group matches a user level
-		if ($group_id == $data['user_level']) { return true; }
-		// if group memberships are defined, get the users own group memberships into an array
-		if (!empty($data['user_groups'])) {
-			$groups = explode(".", substr($data['user_groups'], 1));
-			foreach ($groups as $group) {
-				// check if this groups has subgroups. If so, add them to the array
-				getsubgroups($group);
-			}
-			// now that we have all groups, check for a match
-			foreach ($groups as $group) {
-				if ($group == $group_id) { return true; }
+	// result cache
+	static $resultcache;
+	if (isset($resultcache[$user_id][$group_id])) {
+		return $resultcache[$user_id][$group_id];
+	}
+
+	$check = false;
+	if ($group_id == "101") { 
+		// every user is a member
+		$check = true;
+	} else {
+		// get the group rights from the user record
+		$result = dbquery("SELECT user_groups, user_level FROM ".$db_prefix."users WHERE user_id = '".$user_id."'");
+		if ($data = dbarray($result)) {
+			// check if the requested group matches a user level
+			if ($group_id == $data['user_level']) { 
+				$check = true;
+			} else {
+				// if group memberships are defined, get the users own group memberships into an array
+				if (!empty($data['user_groups'])) {
+					$groups = explode(".", substr($data['user_groups'], 1));
+					foreach ($groups as $group) {
+						// check if this groups has subgroups. If so, add them to the array
+						getsubgroups($group);
+					}
+					// now that we have all groups, check for a match
+					foreach ($groups as $group) {
+						if ($group == $group_id) { 
+							$check = true;
+							break;
+						}
+					}
+				}
 			}
 		}
 	}
-	// user not found or no group match
-	return false;
+
+	if (!isset($resultcache[$user_id])) $resultcache[$user_id] = array();
+	$resultcache[$user_id][$group_id] = $check;
+
+	return $check;
 }
 
 // Compile access levels & user group array
@@ -460,6 +479,12 @@ function getgroupmembers($group_id) {
 function allusersingroup($group_id) {
 
 	global $groups, $settings, $db_prefix;
+
+	// result cache
+	static $resultcache;
+	if (isset($resultcache[$group_id])) {
+		return $resultcache[$group_id];
+	}
 	
 	// gather the group and it's sub-groups into an array
 	$groups = array();
@@ -488,6 +513,10 @@ function allusersingroup($group_id) {
 		$data['user_level'] = getuserlevel($data['user_level']);
 		$members[] = $data;
 	}
+
+	if (!isset($resultcache)) $resultcache = array();
+	$resultcache[$group_id] = $members;
+
 	return $members;
 }
 ?>
