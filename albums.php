@@ -16,17 +16,42 @@ require_once dirname(__FILE__)."/includes/core_functions.php";
 +----------------------------------------------------*/
 
 // local function to check for album, gallery and/or photo access
-function has_photo_access($id=0, $type="", $photo_id=0) {
-	global $collection;
+function has_photo_access($id=0, $type="", $photo_id=0, $mode='read') {
+	global $collection, $settings, $userdata, $db_prefix;
 
 	// validate the parameters
 	if (empty($id) || empty($type)) return false;
+	if ($mode != 'read' && $mode != 'write') $mode = 'read';
+
+	// result cache
+	static $resultcache;
+	if (isset($resultcache[$type][$id][$mode])) {
+		return $resultcache[$type][$id][$mode];
+	}
 
 	// check if the requested id and type are part of the collection
 	$match = false;
 	foreach($collection as $item) {
 		if ($item['type'] == $type && $item['id'] == $id) {
-			$match = true;
+			// match found.
+			if ($mode == 'write') {
+				// Does the user have write access?
+				switch ($type) {
+					case "album":
+						$album = dbarray(dbquery("SELECT * FROM ".$db_prefix."albums WHERE album_id = $id"));
+						$match = $album && ((iMEMBER && $album['album_write'] == -1 && $album['album_owner'] == $userdata['user_id']) || checkgroup($album['album_write']));
+						break;
+					case "gallery":
+						$gallery = dbarray(dbquery("SELECT * FROM ".$db_prefix."galleries WHERE gallery_id = $id"));
+						$match = $gallery && ((iMEMBER && $gallery['gallery_write'] == -1 && $gallery['gallery_owner'] == $userdata['user_id']) || checkgroup($gallery['gallery_write']));
+						break;
+					default:
+						$match = false;
+						break;
+				}
+			} else {
+				$match = true;
+			}
 			break;
 		}
 	}
@@ -44,6 +69,14 @@ function has_photo_access($id=0, $type="", $photo_id=0) {
 				break;
 		}
 	}
+	
+	// add the result to the resultcache
+	if (!isset($resultcache)) $resultcache = array();
+	if (!isset($resultcache[$type])) $resultcache[$type] = array();
+	if (!isset($resultcache[$type][$id])) $resultcache[$type][$id] = array();
+	$resultcache[$type][$id][$mode] = $match;
+	
+	// return the result
 	return $match;
 }
 
@@ -183,7 +216,7 @@ $variables['rows'] = count($collection);
 // handle SWF uploads first
 if (isset($_POST['SWFSESSIONID'])) {
 	// check if the user has upload rights to this album
-	if (empty($_POST['album_id']) || !isNum($_POST['album_id']) || !has_photo_access($_POST['album_id'], "album", 0)) {
+	if (empty($_POST['album_id']) || !isNum($_POST['album_id']) || !has_photo_access($_POST['album_id'], "album", 0, "write")) {
 		echo "error|".$locale['402'];
 		exit(0);
 	}
@@ -249,7 +282,7 @@ if (!is_dir(PATH_PHOTOS)) {
 if ($type == "photo") {
 
 	if ($action == "edit" && isset($_POST['save'])) {
-		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id)) {
+		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id, "write")) {
 			$result = dbquery("UPDATE ".$db_prefix."album_photos SET 
 				album_photo_title = '".mysql_escape_string(stripinput($_POST['album_photo_title']))."',
 				album_photo_description = '".mysql_escape_string(stripinput($_POST['hoteditor_bbcode_ouput_photo_editor']))."' 
@@ -258,7 +291,7 @@ if ($type == "photo") {
 			// return to the photo view
 			$action = "view";
 		} else {
-			if (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id)) {
+			if (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id, "write")) {
 				$result = dbquery("UPDATE ".$db_prefix."gallery_photos SET 
 					gallery_photo_title = '".mysql_escape_string(stripinput($_POST['gallery_photo_title']))."',
 					gallery_photo_description = '".mysql_escape_string(stripinput($_POST['hoteditor_bbcode_ouput_photo_editor']))."'
@@ -289,7 +322,7 @@ if ($type == "photo") {
 				// parse the photo description
 				$variables['photo']['parsed_description'] = parsemessage(array(), is_null($variables['photo']['album_photo_description'])?"":$variables['photo']['album_photo_description'], true, true);
 				// check if the user may edit the photo properties
-				$variables['can_edit'] = ($variables['is_moderator'] || (iMEMBER && $userdata['user_id'] == $variables['photo']['album_owner'])) ? 1 : 0;
+				$variables['can_edit'] = has_photo_access($album_id, "album", $photo_id, "write");
 				// find the previous and next photo
 				$result = dbquery("SELECT photo_id FROM ".$db_prefix."album_photos
 					WHERE album_id = $album_id AND photo_id < $photo_id
@@ -344,7 +377,7 @@ if ($type == "photo") {
 				// parse the photo description
 				$variables['photo']['parsed_description'] = parsemessage(array(), is_null($variables['photo']['gallery_photo_description'])?"":$variables['photo']['gallery_photo_description'], true, true);
 				// check if the user may edit the photo properties
-				$variables['can_edit'] = ($variables['is_moderator'] || (iMEMBER && $userdata['user_id'] == $variables['photo']['gallery_owner'])) ? 1 : 0;
+				$variables['can_edit'] = has_photo_access($gallery_id, "gallery", $photo_id, "write");
 				// find the previous and next photo
 				$result = dbquery("SELECT photo_id FROM ".$db_prefix."gallery_photos
 					WHERE gallery_id = $gallery_id AND photo_id < $photo_id
@@ -396,13 +429,13 @@ if ($type == "photo") {
 
 	if ($action == "highlight") {
 		// check if the user has access to this album
-		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id)) {
+		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id, "write")) {
 			// set the photo as highlight
 			$result = dbquery("UPDATE ".$db_prefix."albums SET album_highlight = $photo_id WHERE album_id = $album_id");
 			$variables['errormessages'][] = $locale['521'];
 			// return to album view
 			$type = "album"; $action = "view";
-		} elseif (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id)) {
+		} elseif (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id, "write")) {
 			// set the photo as highlight
 			$result = dbquery("UPDATE ".$db_prefix."galleries SET gallery_highlight = $photo_id WHERE gallery_id = $gallery_id");
 			$variables['errormessages'][] = $locale['523'];
@@ -422,12 +455,12 @@ if ($type == "photo") {
 
 	if ($action == "delete" && isset($_POST['delete'])) {
 		// check if the user has access to this album and this photo
-		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id)) {
+		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id, "write")) {
 			delete_photo($album_id, $photo_id);
 			$variables['errormessages'][] = $locale['411'];
 			// return to the album
 			$type = "album"; $action = "view";
-		} elseif (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id)) {
+		} elseif (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id, "write")) {
 			// delete the gallery_photo record
 			$result = dbquery("DELETE FROM ".$db_prefix."gallery_photos WHERE gallery_id = $gallery_id AND photo_id = $photo_id");
 			$result = dbquery("UPDATE ".$db_prefix."galleries SET gallery_highlight = 0 WHERE gallery_id = $gallery_id AND gallery_highlight = $photo_id");
@@ -463,7 +496,7 @@ if ($type == "album") {
 		if ($action == "add" && !$variables['can_create']) {
 			$variables['errormessages'][] = $locale['414'];
 		}
-		if ($action == "edit" && !has_photo_access($variables['album']['album_id'], "album", 0)) {
+		if ($action == "edit" && !has_photo_access($variables['album']['album_id'], "album", 0, "write")) {
 			$variables['errormessages'][] = $locale['415'];
 		}
 		if (empty($variables['album']['album_title'])) {
@@ -498,7 +531,7 @@ if ($type == "album") {
 		$photo_id = isset($_POST['photo_id']) && isNum($_POST['photo_id']) ? $_POST['photo_id'] : 0;
 		$gallery_id = isset($_POST['gallery_id']) && isNum($_POST['gallery_id']) ? $_POST['gallery_id'] : 0;
 		$photo_title = stripinput($_POST['photo_title']);
-		if ($photo_id && has_photo_access($album_id, "album", $photo_id) && has_photo_access($gallery_id, "gallery", 0)) {
+		if ($photo_id && has_photo_access($album_id, "album", $photo_id) && has_photo_access($gallery_id, "gallery", 0, "write")) {
 			$result = dbquery("INSERT IGNORE INTO ".$db_prefix."gallery_photos (gallery_id, photo_id, gallery_photo_title, gallery_photo_datestamp) VALUES ($gallery_id, $photo_id, '".mysql_escape_string($photo_title)."', '".time()."')");
 		}
 	}
@@ -508,7 +541,7 @@ if ($type == "album") {
 	}
 
 	if ($action == "delete" && isset($_POST['delete'])) {
-		if (!has_photo_access($album_id, "album", 0)) {
+		if (!has_photo_access($album_id, "album", 0, "write")) {
 			$variables['errormessages'][] = $locale['420'];
 			$type = ""; $action = "";
 		} else {
@@ -545,7 +578,7 @@ if ($type == "album") {
 			}
 			break;
 		case "delete":
-			if (!has_photo_access($album_id, "album", 0)) {
+			if (!has_photo_access($album_id, "album", 0, "write")) {
 				$variables['errormessages'][] = $locale['420'];
 				$type = ""; $action = "";
 			} else {
@@ -571,7 +604,7 @@ if ($type == "album") {
 			}
 			break;
 		case "edit":
-			if (!has_photo_access($album_id, "album", 0)) {
+			if (!has_photo_access($album_id, "album", 0, "write")) {
 				$variables['errormessages'][] = $locale['415'];
 				$type = ""; $action = "";
 			} else {
@@ -627,11 +660,12 @@ if ($type == "album") {
 					$title = $locale['426']." ".$variables['album']['album_title'];
 					// check if there are galleries present
 					$variables['album']['galleries'] = 0;
+					$variables['album']['collection'] = array();
 					foreach($collection as $item) {
-						if ($item['type'] == "gallery") {
+						if ($item['type'] == "gallery" && has_photo_access($item['id'], $item['type'], 0, "write")) {
 							$variables['album']['galleries'] = 1;
 							// add the collection to the variables if any galleries found
-							$variables['album']['collection'] = $collection;
+							$variables['album']['collection'][] = $item;
 							break;
 						}
 					}
@@ -674,7 +708,7 @@ if ($type == "album") {
 					if (dbrows($result)) {
 						$variables['photos'] = array();
 						while ($data = dbarray($result)) {
-							$data['can_edit'] = ($variables['is_moderator'] || (iMEMBER && $userdata['user_id'] == $variables['album']['album_owner'])) ? 1 : 0;
+							$data['can_edit'] = has_photo_access($album_id, "album", 0, "write");
 							// update the thumb counter
 							$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_thumb_count = photo_thumb_count + 1 WHERE photo_id = ".$data['photo_id']);
 							$data['photo_thumb_count']++;
@@ -689,7 +723,7 @@ if ($type == "album") {
 			}
 			break;
 		case "upload":
-			if (!has_photo_access($album_id, "album", 0)) {
+			if (!has_photo_access($album_id, "album", 0, "write")) {
 				$variables['errormessages'][] = $locale['402'];
 				$type = ""; $action = "";
 			} else {
@@ -774,7 +808,7 @@ if ($type == "gallery") {
 		if ($action == "add" && !$variables['can_create']) {
 			$variables['errormessages'][] = $locale['427'];
 		}
-		if ($action == "edit" && !has_photo_access($variables['gallery']['gallery_id'], "gallery", 0)) {
+		if ($action == "edit" && !has_photo_access($variables['gallery']['gallery_id'], "gallery", 0, "write")) {
 			$variables['errormessages'][] = $locale['428'];
 		}
 		if (empty($variables['gallery']['gallery_title'])) {
@@ -810,7 +844,7 @@ if ($type == "gallery") {
 	}
 
 	if ($action == "delete" && isset($_POST['delete'])) {
-		if (!has_photo_access($gallery_id, "gallery", 0)) {
+		if (!has_photo_access($gallery_id, "gallery", 0, "write")) {
 			$variables['errormessages'][] = $locale['433'];
 			$type = ""; $action = "";
 		} else {
@@ -847,7 +881,7 @@ if ($type == "gallery") {
 			}
 			break;
 		case "delete":
-			if (!has_photo_access($gallery_id, "gallery", 0)) {
+			if (!has_photo_access($gallery_id, "gallery", 0, "write")) {
 				$variables['errormessages'][] = $locale['433'];
 				$type = ""; $action = "";
 			} else {
@@ -873,7 +907,7 @@ if ($type == "gallery") {
 			}
 			break;
 		case "edit":
-			if (!has_photo_access($gallery_id, "gallery", 0)) {
+			if (!has_photo_access($gallery_id, "gallery", 0, "write")) {
 				$variables['errormessages'][] = $locale['428'];
 				$type = ""; $action = "";
 			} else {
@@ -966,7 +1000,7 @@ if ($type == "gallery") {
 					if (dbrows($result)) {
 						$variables['photos'] = array();
 						while ($data = dbarray($result)) {
-							$data['can_edit'] = ($variables['is_moderator'] || (iMEMBER && $userdata['user_id'] == $variables['gallery']['gallery_owner'])) ? 1 : 0;
+							$data['can_edit'] = has_photo_access($gallery_id, "gallery", 0, "write");
 							// update the thumb counter
 							$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_thumb_count = photo_thumb_count + 1 WHERE photo_id = ".$data['photo_id']);
 							$data['photo_thumb_count']++;
@@ -1058,7 +1092,7 @@ if ($type == "") {
 					$data['slideshow'] = $slideshow;
 				}
 				// check if this album is editable
-				$data['can_edit'] = ($variables['is_moderator'] || checkgroup($data['album_write']) || (iMEMBER && $userdata['user_id'] == $data['owner'])) ? 1 : 0;
+				$data['can_edit'] = has_photo_access($value['id'], "album", 0, "write");
 				break;
 			case "gallery":
 				$result = dbquery("SELECT g.*, p.*, u.user_id, u.user_name FROM ".$db_prefix."galleries g
@@ -1081,7 +1115,7 @@ if ($type == "") {
 					}
 					$data['slideshow'] = $slideshow;
 				// check if this album is editable
-				$data['can_edit'] = ($variables['is_moderator'] || checkgroup($data['gallery_write']) || (iMEMBER && $userdata['user_id'] == $data['owner'])) ? 1 : 0;
+				$data['can_edit'] = has_photo_access($value['id'], "gallery", 0, "write");
 				}
 				break;
 			default:
