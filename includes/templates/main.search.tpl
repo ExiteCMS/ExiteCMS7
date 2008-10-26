@@ -61,10 +61,10 @@
 						<tr>
 							<td align='left' valign='top' class='tbl1'>
 								{$locale.src444}: <select id='sortby' name='sortby' class='textbox'>
-									<option value='score' selected='selected'>{$locale.src419}</option>
+									<option value='score'>{$locale.src419}</option>
 									<option value='author'>{$locale.src422}</option>
 									<option value='subject'>{$locale.src421}</option>
-									<option value='datestamp'>{$locale.src420}</option>
+									<option value='datestamp' selected='selected'>{$locale.src420}</option>
 									<option value='count'>{$locale.src443}</option>
 								</select>
 							</td>
