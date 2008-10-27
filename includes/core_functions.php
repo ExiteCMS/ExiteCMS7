@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| Copyright 2008 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
 | Some portions copyright 2002 - 2006 Nick Jones     |
@@ -17,6 +17,10 @@ if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
 // disable error reporting, we don't want to give anything away
 error_reporting(E_USER_ERROR);
 
+// check the environment to see if we can run
+if (!extension_loaded('gd') || !function_exists('gd_info')) {
+	terminate('FATAL ERROR: ExiteCMS requires the graphics library GD to function, and it doesn\'t seem to be present in your PHP setup');
+}
 // code to calculate the page loading time, this can be used
 // to show statistics in theme.php, p.e. when generating the
 // code for the page footer
