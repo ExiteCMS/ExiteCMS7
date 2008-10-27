@@ -90,7 +90,7 @@ if (isset($lookup)) {
 	if (dbtable_exists($db_prefix."shoutbox")) {
 		$data['shout_count'] = number_format(dbcount("(shout_id)", "shoutbox", "shout_name='".$data['user_id']."'"));
 	} else {
-		$data['shout_count'] = 0;
+		$data['shout_count'] = -1;	// indicate no shoutbox is available
 	}
 	$data['comment_count'] = number_format(dbcount("(comment_id)", "comments", "comment_name='".$data['user_id']."'"));
 	$data['user_posts'] = number_format($data['user_posts']);

@@ -2832,6 +2832,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['c112'] = "Validatie code:";
 		$localestrings['c113'] = "Voer de validatie code in:";
 		$localestrings['c114'] = "Nieuwe code";
+		$localestrings['c115'] = "Geblokeerd wegens te snel te veel berichten te plaatsen";
 		load_localestrings($localestrings, LP_LOCALE, "main.comments", $step);
 
 		$localestrings = array();
@@ -3746,7 +3747,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1224445625");
+if (!defined('LP_DATE')) define('LP_DATE', "1225146910");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

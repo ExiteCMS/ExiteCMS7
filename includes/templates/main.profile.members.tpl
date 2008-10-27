@@ -166,6 +166,7 @@
 		</td>
 	</tr>
 	{/if}
+	{if $data.shout_count >= 0}
 	<tr>
 		<td width='1%' class='{cycle values="tbl1,tbl2" advance=false}' style='white-space:nowrap'>
 			<b>{$locale.u041}</b>
@@ -174,6 +175,7 @@
 			{$data.shout_count}
 		</td>
 	</tr>
+	{/if}
 	<tr>
 		<td width='1%' class='{cycle values="tbl1,tbl2" advance=false}' style='white-space:nowrap'>
 			<b>{$locale.u042}</b>

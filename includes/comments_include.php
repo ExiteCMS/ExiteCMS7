@@ -56,14 +56,19 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink, $admin=false)
 		$comment_message = trim(stripinput(censorwords($_POST['comment_message'])));
 		$comment_smileys = isset($_POST['disable_smileys']) ? "0" : "1";
 		if ($comment_name != "" && $comment_message != "" && $cic == "") {
-			$result = dbquery("SELECT MAX(comment_datestamp) AS last_comment FROM ".$db_prefix."comments WHERE comment_ip='".USER_IP."'");
-			if (!iSUPERADMIN || dbrows($result) > 0) {
+			$result = dbquery("SELECT MAX(comment_datestamp) AS last_comment FROM ".$db_prefix."comments WHERE comment_ip='".USER_IP."' AND comment_name='".$comment_name."'");
+			if (!iSUPERADMIN && dbrows($result) > 0) {
 				$data = dbarray($result);
 				if ((time() - $data['last_comment']) < $settings['flood_interval']) {
 					$flood = true;
-					$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_timestamp) VALUES ('".USER_IP."', '".time()."')");
-					if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."'") > 4) {
-						if (iMEMBER) $result = dbquery("UPDATE ".$db_prefix."users SET user_status='1' WHERE user_id='".$userdata['user_id']."'");
+					$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_userid, flood_timestamp) VALUES ('".USER_IP."', '".$comment_name."', '".time()."')");
+					if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."' AND flood_userid='".$comment_name."'") > 4) {
+						if (iMEMBER) {
+							$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['c115']."' WHERE user_id='".$userdata['user_id']."'");
+						} else {
+							// anonymous user, blacklist the IP address
+							$result = dbquery("INSERT INTO ".$db_prefix."blacklist (blacklist_ip, blacklist_reason) VALUES ('".USER_IP."', '".$locale['c115']."')");
+						}
 					}
 				}
 			}

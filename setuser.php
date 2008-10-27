@@ -15,13 +15,17 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_INCLUDES."theme_functions.php";
 
+// used by the auth functions to store the retrieved local user_id
+// this value is needed in some of the error handling code
+$user_id = 0;
+
 /*---------------------------------------------------+
 | User authentication functions                      |
 +----------------------------------------------------*/
 
 // authentication against the local user database
 function auth_local($userid, $password) {
-	global $db_prefix;
+	global $db_prefix, $user_id;
 	
 	// check and validate the given userid and pasword
 	$user_pass = md5(md5($password));
@@ -33,8 +37,12 @@ function auth_local($userid, $password) {
 		// not found, display an error message
 		return 3;
 	} else {
+		// retrieve the record
+		$data = dbarray($result);
+		// store the global user_id for reference outside this function
+		$user_id = $data['user_id'];
 		// found, get the record and do some more validation
-		$ret = auth_user_validate(dbarray($result));
+		$ret = auth_user_validate($data);
 		return $ret;
 	}
 }
@@ -207,7 +215,7 @@ switch($error) {
 		break;
 	case 1:
 		$message['line1'] = "<b>".$locale['194']."</b>";
-		$data = dbarray(dbquery("SELECT user_ban_reason, user_ban_expire FROM ".$db_prefix."users WHERE user_id='$user_id'"));
+		$data = dbarray(dbquery("SELECT user_ban_reason, user_ban_expire FROM ".$db_prefix."users WHERE user_id='".$user_id."'"));
 		if (is_array($data)) {
 			if ($data['user_ban_reason'] != "") $message['line2'] = "<b>".$locale['180']." : ".$data['user_ban_reason']."</b>";
 			if ($data['user_ban_expire'] > 0) $message['line4']  = "<b>".$locale['181']." ".showdate('forumdate', $data['user_ban_expire'])."</b>";

@@ -595,9 +595,9 @@ if (isset($_POST["cancel"])) {
 								if ((time() - $data['last_post']) < $settings['flood_interval']) {
 									$flood = true;
 									$error = $locale['431'];
-									$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_timestamp) VALUES ('".USER_IP."', '".time()."')");
-									if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."'") > 4) {
-										$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['434']."' WHERE user_id='".$userdata['user_id']."'");
+									$result = dbquery("INSERT INTO ".$db_prefix."flood_control (flood_ip, flood_userid, flood_timestamp) VALUES ('".USER_IP."', '".$userdata['user_id']."', '".time()."')");
+									if (dbcount("(flood_ip)", "flood_control", "flood_ip='".USER_IP."' AND flood_userid='".$userdata['user_id']."'") > 4) {
+`										$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_reason='".$locale['434']."' WHERE user_id='".$userdata['user_id']."'");
 										$error .= "<br />".$locale['432'];
 									} else {
 										$error .= "<br />".sprintf($locale['433'], $settings['flood_interval']);

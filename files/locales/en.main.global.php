@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Sun Oct 19 2008, 21:41:38 CEST
+// generated on : Mon Oct 27 2008, 23:34:54 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";
@@ -140,7 +140,7 @@ $locale['ac02'] = "User Administration";
 $locale['ac03'] = "Website Configuration";
 $locale['ac04'] = "Installed Modules";
 $locale['ac05'] = "Webmaster Toolbox";
-$locale['banned'] = "The website administrator has banned your IP address %s\nfrom accessing this website";
+$locale['banned'] = "The website administrator has banned your IP address\nfrom accessing this website";
 $locale['https'] = "This website allows only logins secured by HTTPS";
 $locale['sysusr'] = "Automatic Post";
 $locale['user0'] = "Public";
