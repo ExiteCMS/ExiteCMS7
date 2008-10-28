@@ -71,7 +71,7 @@
 		<tr>
 			<td align='center' class='tbl'>
 				<br>
-				{if $new_page}
+				{if $new_page && false} {* hide this box for now *}
 					<input type='checkbox' name='add_link' value='1'{$addlink} />  {$locale.433}&nbsp;&nbsp;
 				{/if}
 				<input type='checkbox' name='page_comments' value='1'{$comments} /> {$locale.434}&nbsp;&nbsp;
