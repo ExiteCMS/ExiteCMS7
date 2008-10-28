@@ -26,7 +26,7 @@
 	<meta http-equiv='Content-Language' content='{$settings.locale_code|truncate:2:""}' />
 	<meta name='description' content='{$settings.description}' />
 	<meta name='keywords' content='{$settings.keywords}' />
-	<meta name='verify-v1' content='6URjaWmjS+WG0wxCe+MGVabKZdmqB3KAUHhGnkUc6DM=' />
+	<meta name="verify-v1" content="Ek6JHBkP+IbfHNOB0DaMHmxpC9eAljv3JCcWmUpcF+U=" />
 	{if $headparms|default:false != false}{$headparms}{/if}
 	<link href="{$smarty.const.THEME}exitecms__0001.css" rel="stylesheet" type="text/css" />
 	{literal}
