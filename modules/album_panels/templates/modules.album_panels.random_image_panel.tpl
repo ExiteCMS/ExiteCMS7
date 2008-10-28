@@ -17,10 +17,10 @@
 {include file="_openside.tpl" name=$_name title=$_title state=$_state style='side-body-nm'}
 <div id='random_image_div' style='text-align:center;margin:0;padding:0;'>
 	{if $image.album_id}
-		<a href='{$smarty.const.BASEDIR}albums.php?type=photo&action=view&album_id={$image.album_id}&photo_id={$image.photo_id}'><img id='random_image' width='10' style='margin:0;padding:0;' class='' src='{$smarty.const.PHOTOS}{$image.photo_sized}' alt='{$image.album_photo_description}' title='{$image.album_photo_description}' /></a>
+		<a href='{$smarty.const.BASEDIR}albums.php?type=photo&amp;action=view&amp;album_id={$image.album_id}&amp;photo_id={$image.photo_id}'><img id='random_image' width='10' style='margin:0;padding:0;' class='' src='{$smarty.const.PHOTOS}{$image.photo_sized}' alt='{$image.album_photo_description}' title='{$image.album_photo_description}' /></a>
 	{/if}
 	{if $image.gallery_id}
-		<a href='{$smarty.const.BASEDIR}albums.php?type=photo&action=view&gallery_id={$image.gallery_id}&photo_id={$image.photo_id}'><img id='random_image' width='10' style='margin:0;padding:0;' class='' src='{$smarty.const.PHOTOS}{$image.photo_sized}' alt='{$image.gallery_photo_description}' title='{$image.gallery_photo_description}' /></a>
+		<a href='{$smarty.const.BASEDIR}albums.php?type=photo&amp;action=view&amp;gallery_id={$image.gallery_id}&amp;photo_id={$image.photo_id}'><img id='random_image' width='10' style='margin:0;padding:0;' class='' src='{$smarty.const.PHOTOS}{$image.photo_sized}' alt='{$image.gallery_photo_description}' title='{$image.gallery_photo_description}' /></a>
 	{/if}
 </div>
 {include file="_closeside.tpl"}
@@ -61,7 +61,7 @@ if (document.addEventListener) {
 /* for Internet Explorer */
 /*@cc_on @*/
 /*@if (@_win32)
-	document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
+	document.write("&lt;script id=__ie_onload defer src=javascript:void(0)&gt;&lt;\/script&gt;");
 	var script = document.getElementById("__ie_onload");
 	script.onreadystatechange = function() {
 		if (this.readyState == "complete") {
@@ -85,9 +85,6 @@ if (window.attachEvent) {
 } else if (window.addEventListener) {
 	window.addEventListener('load', init, false);
 }
-
-/* if all else fails try this */
-window.onload = init;
 {/literal}
 </script>
 {***************************************************************************}

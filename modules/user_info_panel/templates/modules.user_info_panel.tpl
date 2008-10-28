@@ -70,7 +70,7 @@
 						</div>
 						{$locale.069} {$method|upper} {$locale.061}:
 					</div>
-					<div id='box_login{$i}' name='login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
+					<div id='box_login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
 				{elseif $method == "ad"}
 					<div class='side-label'>
 						<div style='display:inline; position:relative; float:right;margin-top:2px;'>
@@ -78,7 +78,7 @@
 						</div>
 						{$locale.069} {$method|upper} {$locale.061}:
 					</div>
-					<div id='box_login{$i}' name='login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
+					<div id='box_login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
 				{elseif $method == "local"}
 					<div class='side-label'>
 						<div style='display:inline; position:relative; float:right;margin-top:2px;'>
@@ -86,7 +86,7 @@
 						</div>
 						{$locale.069} {$locale.061}:
 					</div>
-					<div id='box_login{$i}' name='login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
+					<div id='box_login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
 				{elseif $method == "openid"}
 					<div class='side-label'>
 						<div style='display:inline; position:relative; float:right;margin-top:2px;'>
@@ -94,7 +94,7 @@
 						</div>
 						{$locale.069} {$locale.067}:
 					</div>
-					<div id='box_login{$i}' name='login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
+					<div id='box_login{$i}' style='display:{if $auth_state.$i}block{else}none{/if};'>
 				{/if}
 			{/if}
 			<div style='padding-left:2px;'>
