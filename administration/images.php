@@ -32,7 +32,7 @@ if (isset($action) && $action = "update") include PATH_INCLUDES."buildlist.php";
 
 // build the list of available image categories (skip internal CMS image subdirectories)
 $variables['image_cats'] = array();
-$dirlist = makefilelist(PATH_IMAGES, ".|..|advertising|avatars|flags|smiley", true, 'folders');
+$dirlist = makefilelist(PATH_IMAGES, ".|..|advertising|albums|avatars|flags|smiley", true, 'folders');
 $variables['image_cats'][] = array('folder' => "images", 'name' => $locale['422'], 'path' => PATH_IMAGES, 'selected' => ($ifolder == "images"));
 foreach($dirlist as $entry) {
 	$name = ucwords(str_replace("_", " ", $entry));

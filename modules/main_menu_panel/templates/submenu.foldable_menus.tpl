@@ -1,6 +1,6 @@
 {***************************************************************************}
 {*                                                                         *}
-{* PLi-Fusion CMS template: menu_panel.tpl                                 *}
+{* ExiteCMS template: menu_panel.tpl                                       *}
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
@@ -12,7 +12,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {*                                                                         *}
-{* This template generates the PLi-Fusion infusion panel: menu_panel       *}
+{* This template generates the panel: main_menu_panel                      *}
 {*                                                                         *}
 {***************************************************************************}
 {section name=link loop=$linkinfo}
@@ -32,15 +32,15 @@
 		{else}
 			{if $linkinfo[link].has_submenu}
 				<div style='cursor:pointer;' onclick="javascript:flipMenu('{$linkinfo[link].menu_depth+1}', 'menu{$linkinfo[link].link_id}')">
-					{if $linkinfo[link].menu_state == 0}
-					<div class='side-label-button'><img src='{$smarty.const.THEME}images/menu_off.gif' alt='close' name='b_menu{$linkinfo[link].link_id}' /></div>
-					{else}
-					<div class='side-label-button'><img src='{$smarty.const.THEME}images/menu_on.gif' alt='open' name='b_menu{$linkinfo[link].link_id}' /></div>
-					{/if}
 					<div class='side-label'>
 						{section name=depth start=0 loop=$linkinfo[link].menu_depth}
 						<img src='{$smarty.const.IMAGES}spacer.gif' width='4' height='6' alt='' />
 						{/section}
+						{if $linkinfo[link].menu_state == 0}
+						<div class='side-label-button'><img src='{$smarty.const.THEME}images/menu_off.gif' alt='close' name='b_menu{$linkinfo[link].link_id}' /></div>
+						{else}
+						<div class='side-label-button'><img src='{$smarty.const.THEME}images/menu_on.gif' alt='open' name='b_menu{$linkinfo[link].link_id}' /></div>
+						{/if}
 						{$linkinfo[link].link_name}
 					</div>
 				</div>

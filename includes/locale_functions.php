@@ -2,7 +2,7 @@
 /*---------------------------------------------------+
 | ExiteCMS Content Management System                 |
 +----------------------------------------------------+
-| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
+| Copyright 2008 Harro "WanWizard" Verton, Exite BV  |
 | for support, please visit http://exitecms.exite.eu |
 +----------------------------------------------------+
 | Released under the terms & conditions of v2 of the |
@@ -18,7 +18,7 @@ if (iMEMBER) {
 	if ($data = dbarray($result)) {
 		$settings['locale'] = $data['locale_name'];
 		define("LOCALESET", $settings['locale']."/");
-		define("LOCALEDIR", $data['locale_direction']);
+		define("LOCALEDIR", strtolower($data['locale_direction']));
 	}
 }
 
@@ -29,7 +29,7 @@ if (!defined('LOCALESET') && isset($_COOKIE['locale'])) {
 	if ($data = dbarray($result)) {
 		$settings['locale'] = $data['locale_name'];
 		define("LOCALESET", $settings['locale']."/");
-		define("LOCALEDIR", $data['locale_direction']);
+		define("LOCALEDIR", strtolower($data['locale_direction']));
 	}
 }
 
@@ -45,7 +45,7 @@ if (!defined('LOCALESET') && isset($settings['browserlang']) && $settings['brows
 			// if so, set the locale
 			$settings['locale'] = $data['locale_name'];
 			define("LOCALESET", $settings['locale']."/");
-			define("LOCALEDIR", $data['locale_direction']);
+			define("LOCALEDIR", strtolower($data['locale_direction']));
 			break;
 		}
 	}
@@ -60,7 +60,7 @@ if (!defined('LOCALESET') && isset($settings['browserlang']) && $settings['brows
 				// if so, set the locale
 				$settings['locale'] = $data['locale_name'];
 				define("LOCALESET", $settings['locale']."/");
-				define("LOCALEDIR", $data['locale_direction']);
+				define("LOCALEDIR", strtolower($data['locale_direction']));
 				break;
 			}
 		}
@@ -70,7 +70,7 @@ if (!defined('LOCALESET') && isset($settings['browserlang']) && $settings['brows
 // legacy locale defines (for v7.0 style locale files)
 define("PATH_LOCALE", PATH_ROOT."locale/");
 if (!defined('LOCALESET')) define("LOCALESET", $settings['locale']."/");
-if (!defined('LOCALEDIR')) define("LOCALEDIR", "LTR");
+if (!defined('LOCALEDIR')) define("LOCALEDIR", "ltr");
 
 // define the website location (country) (if not defined)
 if (!isset($settings['country'])) $settings['country'] = "??";

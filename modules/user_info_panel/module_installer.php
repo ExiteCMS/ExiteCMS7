@@ -18,8 +18,8 @@ $mod_title = "Advanced login panel";
 $mod_description = "Side panel with member login, and a member menu";
 $mod_version = "1.1.0";
 $mod_developer = "WanWizard";
-$mod_email = "wanwizard@gmail.com";
-$mod_weburl = "http://exitecms.exite.eu/";
+$mod_email = "wanwizard@exitecms.org";
+$mod_weburl = "http://www.exitecms.org/";
 $mod_type = "P";
 
 /*---------------------------------------------------+

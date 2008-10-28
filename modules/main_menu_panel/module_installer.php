@@ -18,8 +18,8 @@ $mod_title = "Site Main-menu panel";
 $mod_description = "Side panel to generate the site's main menu";
 $mod_version = "1.1.0";
 $mod_developer = "WanWizard";
-$mod_email = "wanwizard@gmail.com";
-$mod_weburl = "http://exitecms.exite.eu/";
+$mod_email = "wanwizard@exitecms.org";
+$mod_weburl = "http://www.exitecms.org/";
 $mod_type = "P";
 
 /*---------------------------------------------------+

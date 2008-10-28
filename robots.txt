@@ -1,7 +1,6 @@
 # /robots.txt file
 
 User-agent: *
-Disallow: /files
-Disallow: /images
-Disallow: /statistics
-Disallow: /modules/wiki/*history
+Disallow: /files/
+Disallow: /images/
+Disallow: /statistics/
