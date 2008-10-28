@@ -26,9 +26,9 @@
 			{/if}
 		</td>
 		<td class='tbl1' style='vertical-align:top'>
-			<table width='100%' cellspacing='0' cellpadding='0'>
+			<table class='infobar' width='100%' cellspacing='0' cellpadding='0'>
 				<tr>
-					<td align='left' class='infobar'>
+					<td align='left'>
 						<b>{$locale.401}</b> {$article_cats[cat].article_cat_name} - 
 						<b>{$locale.402}</b> {if $article_cats[cat].more}{$overview_limit} {$locale.408} {/if}{$article_cats[cat].itemcount}
 						{if $article_cats[cat].more}
@@ -37,8 +37,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td align='left' class='infobar'>
-						<b>{$article_cats[cat].article_cat_description}</b>
+					<td align='left' class='small'>
+						{$article_cats[cat].article_cat_description}
 					</td>
 				</tr>
 			</table>

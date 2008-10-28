@@ -55,13 +55,13 @@
 				</td>
 				<td class='tbl'>
 					<select name='cat_sort_by' class='textbox'>
-						<option value='1'{if  $cat_sort_by == "1"} selected{/if}>{$locale.468}</option>
-						<option value='1'{if  $cat_sort_by == "2"} selected{/if}>{$locale.469}</option>
-						<option value='1'{if  $cat_sort_by == "3"} selected{/if}>{$locale.470}</option>
+						<option value='1'{if  $cat_sort_by == "1"} selected='selected'{/if}>{$locale.468}</option>
+						<option value='1'{if  $cat_sort_by == "2"} selected='selected'{/if}>{$locale.469}</option>
+						<option value='1'{if  $cat_sort_by == "3"} selected='selected'{/if}>{$locale.470}</option>
 					</select> - 
 					<select name='cat_sort_order' class='textbox'>
-						<option value='ASC'{if  $cat_sort_order == "ASC"} selected{/if}>{$locale.471}</option>
-						<option value='DESC'{if  $cat_sort_order == "DESC"} selected{/if}>{$locale.472}</option>
+						<option value='ASC'{if  $cat_sort_order == "ASC"} selected='selected'{/if}>{$locale.471}</option>
+						<option value='DESC'{if  $cat_sort_order == "DESC"} selected='selected'{/if}>{$locale.472}</option>
 					</select>
 				</td>
 			</tr>
@@ -72,8 +72,21 @@
 				<td class='tbl'>
 					<select name='cat_access' class='textbox'>
 					{section name=id loop=$user_groups}
-						<option value='{$user_groups[id].id}{if $user_groups[id].selected} selected{/if}'>{$user_groups[id].name}</option>
+						<option value='{$user_groups[id].id}'{if $user_groups[id].selected} selected='selected'{/if}>{$user_groups[id].name}</option>
 					{/section}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td width='130' class='tbl'>
+					{$locale.437}
+				</td>
+				<td class='tbl'>
+					<select name='cat_image' class='textbox' style='width:200px;'>
+						<option value=''{if $cat_image == ""} selected='selected'{/if}>{$image}</option>
+					{foreach from=$image_list item=image name=image_list}
+						<option value='{$image}'{if $cat_image == $image} selected='selected'{/if}>{$image}</option>
+					{/foreach}
 					</select>
 				</td>
 			</tr>

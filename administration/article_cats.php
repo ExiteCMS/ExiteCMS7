@@ -68,6 +68,7 @@ if (isset($_POST['save_cat'])) {
 	$cat_locale = stripinput($_POST['cat_locale']);
 	$cat_description = stripinput($_POST['cat_description']);
 	$cat_access = isNum($_POST['cat_access']) ? $_POST['cat_access'] : "0";		
+	$cat_image = stripinput($_POST['cat_image']);
 	if (isNum($_POST['cat_sort_by']) && $_POST['cat_sort_by'] == "1") {
 		$cat_sorting = "article_id ".($_POST['cat_sort_order'] == "ASC" ? "ASC" : "DESC");
 	} else if (isNum($_POST['cat_sort_by']) && $_POST['cat_sort_by'] == "2") {
@@ -78,9 +79,9 @@ if (isset($_POST['save_cat'])) {
 		$cat_sorting = "article_subject ASC";
 	}
 	if (isset($action) && $action == "edit") {
-		$result = dbquery("UPDATE ".$db_prefix."article_cats SET article_cat_name='$cat_name', article_cat_locale='$cat_locale', article_cat_description='$cat_description', article_cat_sorting='$cat_sorting', article_cat_access='$cat_access' WHERE article_cat_id='$cat_id'");
+		$result = dbquery("UPDATE ".$db_prefix."article_cats SET article_cat_name='$cat_name', article_cat_locale='$cat_locale', article_cat_description='$cat_description', article_cat_image='$cat_image', article_cat_sorting='$cat_sorting', article_cat_access='$cat_access' WHERE article_cat_id='$cat_id'");
 	} else {
-		$result = dbquery("INSERT INTO ".$db_prefix."article_cats (article_cat_name, article_cat_locale, article_cat_description, article_cat_sorting, article_cat_access) VALUES ('$cat_name', '$cat_locale', '$cat_description', '$cat_sorting', '$cat_access')");
+		$result = dbquery("INSERT INTO ".$db_prefix."article_cats (article_cat_name, article_cat_locale, article_cat_description, article_cat_image, article_cat_sorting, article_cat_access) VALUES ('$cat_name', '$cat_locale', '$cat_description', '$cat_image',  '$cat_sorting', '$cat_access')");
 	}
 //	redirect("article_cats.php?aid=".iAUTH);
 }
@@ -100,6 +101,7 @@ if (isset($action)) {
 		$cat_name = $data['article_cat_name'];
 		$cat_locale = $data['article_cat_locale'];
 		$cat_description = $data['article_cat_description'];
+		$cat_image = $data['article_cat_image'];
 		$cat_sorting = explode(" ", $data['article_cat_sorting']);
 		if ($cat_sorting[0] == "article_id") { $cat_sort_by = "1"; }
 		if ($cat_sorting[0] == "article_subject") { $cat_sort_by = "2"; }
@@ -112,6 +114,7 @@ if (isset($action)) {
 		$cat_name = "";
 		$cat_locale = $cat_locale;
 		$cat_description = "";
+		$cat_image = "";
 		$cat_sort_by = "2";
 		$cat_sort_order = "ASC";
 		$cat_access = "";
@@ -123,6 +126,7 @@ if (isset($action)) {
 	$variables['cat_name'] = $cat_name;
 	$variables['cat_locale'] = $cat_locale;
 	$variables['cat_description'] = $cat_description;
+	$variables['cat_image'] = $cat_image;
 	$variables['cat_sort_by'] = $cat_sort_by; 
 	$variables['cat_sort_order'] = $cat_sort_order;
 		// get the list of available user groups
@@ -150,6 +154,9 @@ $result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'"
 while ($data = dbarray($result)) {
 	$variables['locales'][$data['locale_code']] = $data['locale_name'];
 }
+
+// generate the available images list
+$variables['image_list'] = makefilelist(PATH_IMAGES_NC, ".|..|index.php", true);
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.article_cats', 'title' => $title, 'template' => 'admin.article_cats.tpl', 'locale' => "admin.news-articles");
