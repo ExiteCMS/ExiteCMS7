@@ -2665,6 +2665,7 @@ function HTMLToBBCode(a) {
 	C = C.replace(/\[HOTEDITOR_NEW_LINE\]/g, "\n");
 	C = C.replace(/\[\/HOTEDITOR_NEW_LINE\]\n+/g, "\n");
 	C = C.replace(/\[\/HOTEDITOR_NEW_LINE\]/g, "\n");
+	C = C.replace(/\n\[table\]/g, "[table]");	// *WW* get rid of new lines in front of tables
 	if (starup == "0") {
 		C = C.replace(/\[\*\]/gi, "\n[*]");
 		C = C.replace(/\n\n\[\*\]/gi, "\n[*]");

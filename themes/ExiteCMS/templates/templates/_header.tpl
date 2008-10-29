@@ -35,7 +35,7 @@
 	</style>
 	{/literal}
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
-	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions.js'></script>
+	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions__0001.js'></script>
 	{if $smarty.const.LOAD_TINYMCE}
 		{include file="_load_tinymce.tpl"}
 	{/if}

@@ -541,14 +541,14 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 	// if not resticted, strip CODE bbcode, optionally perform Geshi color coding
 	if (!$limit) $rawmsg = preg_replace_callback('#\[code(=.*?)?\](.*?)([\r\n]*)\[/code\]#si', '_parseubb_codeblock', $rawmsg);
 
-	// strip URL bbcode
-	$rawmsg = preg_replace_callback('#\[url(=?.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_exclblock', $rawmsg);
-
 	// strip IMG bbcode
 	$rawmsg = preg_replace_callback('#\[img\](.*?)([\r\n]*)\[/img\]#si', '_parseubb_exclblock', $rawmsg);
 
 	// strip MAIL bbcode
 	$rawmsg = preg_replace_callback('#\[mail(=?.*?)\](.*?)([\r\n]*)\[/mail\]#si', '_parseubb_exclblock', $rawmsg);
+
+	// strip URL bbcode
+	$rawmsg = preg_replace_callback('#\[url(=?.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_exclblock', $rawmsg);
 
     // find other URL's in the text, strip them and add them to $urlblocks for conversion to [URL] bbcodes
 	$rawmsg = preg_replace_callback('#(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(localhost)|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?(/[a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$\#\:\*\=~_\-@]*)*#si', '_parseubb_texturls', $rawmsg);
@@ -596,7 +596,26 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 		$rawmsg = str_replace("{**@".$key."@**}", $codeblock[0], $rawmsg);
 	}
 
-	// re-insert the excluded blocks
+	// re-insert the excluded blocks, url's first
+	foreach($exclblocks as $key => $exclblock) {
+		switch ($exclblock[2]) {
+			case "url":
+				if (isURL($exclblock[0])) {
+					// check if the URL is prefixed. If not, assume http://
+					if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $exclblock[0])) {
+						$exclblock[0] = "http://".$exclblock[0];
+					}
+					// convert it into a link
+					$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$exclblock[0]."' alt='' target='_blank'>".$exclblock[1]."</a>", $rawmsg);
+				} else {
+					// strip the URL
+					$rawmsg = str_replace("{@@*".$key."*@@}", $exclblock[1], $rawmsg);
+				}
+				break;
+			default:
+				break;
+		}
+	}
 	foreach($exclblocks as $key => $exclblock) {
 		switch ($exclblock[2]) {
 			case "img":
@@ -609,19 +628,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 			case "mail":
 				$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='mailto:".($exclblock[0]==""?$exclblock[1]:$exclblock[0])."'>".$exclblock[1]."</a>", $rawmsg);
 				break;
-			case "url":
 			default:
-				if (isURL($exclblock[0])) {
-					// check if the URL is prefixed. If not, assume http://
-					if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $exclblock[0])) {
-						$exclblock[0] = "http://".$exclblock[0];
-					}
-					// convert it into a link
-					$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$exclblock[0]."' alt='' target='_blank'>".$exclblock[1]."</a>", $rawmsg);
-				} else {
-					// make the URL harmless
-					$rawmsg = str_replace("{@@*".$key."*@@}", "[url=".stripinput($exclblock[0])."]".stripinput($exclblock[1])."[/url]", $rawmsg);
-				}
 				break;
 		}
 	}
