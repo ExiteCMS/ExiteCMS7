@@ -112,8 +112,10 @@
 			</table>
 			<div style='text-align:center'>
 				{buttonlink name=$locale.404|sprintf:$locale.401 link=$smarty.const.FUSION_SELF|cat:"?field=username"|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all&amp;country="|cat:$country}
-				&nbsp;
-				{buttonlink name=$locale.404|sprintf:$locale.409 link=$smarty.const.FUSION_SELF|cat:"?field=email"|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all&amp;country="|cat:$country}
+				{if $smarty.const.iSUPERADMIN}
+					&nbsp;
+					{buttonlink name=$locale.404|sprintf:$locale.409 link=$smarty.const.FUSION_SELF|cat:"?field=email"|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all&amp;country="|cat:$country}
+				{/if}
 				{if $sortby != "all"}
 					&nbsp;
 					{buttonlink name=$locale.414 link=$smarty.const.FUSION_SELF|cat:"?field="|cat:$field|cat:"&amp;order="|cat:$order|cat:"&amp;sortby=all"}
