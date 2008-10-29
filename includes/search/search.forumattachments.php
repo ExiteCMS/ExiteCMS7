@@ -92,7 +92,20 @@ if (isset($action)) {
 		if (!isNum($limit)) {
 			$limit = 0;
 		}
-		$boolean = isset($_POST['boolean']) ? 0 : 1;
+		if (!isset($boolean)) {
+			$boolean = isset($_POST['boolean']) ? 0 : 1;
+		}
+
+		if (!isset($sub_search_id)) $sub_search_id = 0;
+
+		// construct the page navigator URL to allow paging
+		$variables['pagenav_url'] = FUSION_SELF."?action=search&amp;search_id=".$search_id."&amp;";
+		$variables['pagenav_url'] .= "stext=".urlencode($stext)."&amp;";
+		$variables['pagenav_url'] .= "boolean=".$boolean."&amp;";
+		$variables['pagenav_url'] .= "datelimit=".$datelimit."&amp;";
+		$variables['pagenav_url'] .= "sortby=".$sortby."&amp;";
+		$variables['pagenav_url'] .= "order=".$order."&amp;";
+		$variables['pagenav_url'] .= "limit=".$limit."&amp;";
 
 		// basis of the query for this search
 		if ($boolean) {
@@ -121,15 +134,6 @@ if (isset($action)) {
 			}
 			$sql .= $searchstring;
 		}
-
-		// construct the page navigator URL to allow paging
-		$variables['pagenav_url'] = FUSION_SELF."?action=search&amp;search_id=".$search_id."&amp;";
-		$variables['pagenav_url'] .= "stext=".$stext."&amp;";
-		$variables['pagenav_url'] .= "boolean=".$boolean."&amp;";
-		$variables['pagenav_url'] .= "datelimit=".$datelimit."&amp;";
-		$variables['pagenav_url'] .= "sortby=".$sortby."&amp;";
-		$variables['pagenav_url'] .= "order=".$order."&amp;";
-		$variables['pagenav_url'] .= "limit=".$limit."&amp;";
 
 		// add a datelimit if requested
 		if ($datelimit) {
