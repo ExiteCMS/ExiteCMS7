@@ -1,14 +1,17 @@
 {***************************************************************************}
-{*                                                                         *}
-{* ExiteCMS template: _bbcode_editor.tpl                                   *}
-{*                                                                         *}
+{* ExiteCMS Content Management System                                      *}
 {***************************************************************************}
-{*                                                                         *}
-{* Author: WanWizard <wanwizard@gmail.com>                                 *}
-{*                                                                         *}
-{* Revision History:                                                       *}
-{* 2008-08-26 - WW - Initial version                                       *}
-{*                                                                         *}
+{* Copyright 2006-2008 Exite BV, The Netherlands                           *}
+{* for support, please visit http://www.exitecms.org                       *}
+{*-------------------------------------------------------------------------*}
+{* Released under the terms & conditions of v2 of the GNU General Public   *}
+{* License. For details refer to the included gpl.txt file or visit        *}
+{* http://gnu.org                                                          *}
+{***************************************************************************}
+{* $Id::                                                                  $*}
+{*-------------------------------------------------------------------------*}
+{* Last modified by $Author::                                             $*}
+{* Revision number $Rev::                                                 $*}
 {***************************************************************************}
 {*                                                                         *}
 {* This template is used to display the HotEditor BBcode editor            *}

@@ -1,14 +1,21 @@
 <?php
-/*---------------------------------------------------+
-| PHP-Fusion 6 Content Management System
-+----------------------------------------------------+
-| Copyright © 2002 - 2006 Nick Jones
-| http://www.php-fusion.co.uk/
-+----------------------------------------------------+
-| Released under the terms & conditions of v2 of the
-| GNU General Public License. For details refer to
-| the included gpl.txt file or visit http://gnu.org
-+----------------------------------------------------*/
+/*---------------------------------------------------------------------+
+| ExiteCMS Content Management System                                   |
++----------------------------------------------------------------------+
+| Copyright 2006-2008 Exite BV, The Netherlands                        |
+| for support, please visit http://www.exitecms.org                    |
++----------------------------------------------------------------------+
+| Some code derived from PHP-Fusion, copyright 2002 - 2006 Nick Jones  |
++----------------------------------------------------------------------+
+| Released under the terms & conditions of v2 of the GNU General Public|
+| License. For details refer to the included gpl.txt file or visit     |
+| http://gnu.org                                                       |
++----------------------------------------------------------------------+
+| $Id::                                                               $|
++----------------------------------------------------------------------+
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
++---------------------------------------------------------------------*/
 if (!defined("INIT_CMS_OK")) { header("Location:../index.php"); exit; }
 
 function sendemail($toname,$toemail,$fromname,$fromemail,$subject,$message,$type="plain",$cc="",$bcc="") {

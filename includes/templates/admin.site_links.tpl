@@ -1,15 +1,17 @@
 {***************************************************************************}
-{*                                                                         *}
-{* ExiteCMS template: admin.site_links.tpl                                 *}
-{*                                                                         *}
+{* ExiteCMS Content Management System                                      *}
 {***************************************************************************}
-{*                                                                         *}
-{* Author: WanWizard <wanwizard@gmail.com>                                 *}
-{*                                                                         *}
-{* Revision History:                                                       *}
-{* 2007-07-22 - WW - Initial version                                       *}
-{* 2007-11-21 - WW - moved edit panel to a separate template               *}
-{*                                                                         *}
+{* Copyright 2006-2008 Exite BV, The Netherlands                           *}
+{* for support, please visit http://www.exitecms.org                       *}
+{*-------------------------------------------------------------------------*}
+{* Released under the terms & conditions of v2 of the GNU General Public   *}
+{* License. For details refer to the included gpl.txt file or visit        *}
+{* http://gnu.org                                                          *}
+{***************************************************************************}
+{* $Id::                                                                  $*}
+{*-------------------------------------------------------------------------*}
+{* Last modified by $Author::                                             $*}
+{* Revision number $Rev::                                                 $*}
 {***************************************************************************}
 {*                                                                         *}
 {* Template for the admin configuration module 'site_links'                *}

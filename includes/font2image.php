@@ -1,9 +1,24 @@
 <?php
+/*---------------------------------------------------------------------+
+| ExiteCMS Content Management System                                   |
++----------------------------------------------------------------------+
+| Copyright 2006-2008 Exite BV, The Netherlands                        |
+| for support, please visit http://www.exitecms.org                    |
++----------------------------------------------------------------------+
+| Some code derived from PHP-Fusion, copyright 2002 - 2006 Nick Jones  |
++----------------------------------------------------------------------+
+| Based on http://www.stewartpeak.com/headings/ by Stewart Rosenberger |
++----------------------------------------------------------------------+
+| Released under the terms & conditions of v2 of the GNU General Public|
+| License. For details refer to the included gpl.txt file or visit     |
+| http://gnu.org                                                       |
++----------------------------------------------------------------------+
+| $Id::                                                               $|
++----------------------------------------------------------------------+
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
++---------------------------------------------------------------------*/
 /*
-	Original code by Stewart Rosenberger, http://www.stewartspeak.com/headings/
-	
-	Converted and extended by WanWizard to work in am ExiteCMS environment
-	
 	usage: $image_resource = font2image($f2i_array);
 	
 	$f2i_array = array();

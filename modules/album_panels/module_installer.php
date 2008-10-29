@@ -11,19 +11,19 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id::                                                               $|
+| $Id:: index.php 1934 2008-10-29 22:36:59Z root                      $|
 +----------------------------------------------------------------------+
-| Last modified by $Author::                                          $|
-| Revision number $Rev::                                              $|
+| Last modified by $Author:: root                                     $|
+| Revision number $Rev:: 1934                                         $|
 +---------------------------------------------------------------------*/
 if (!checkrights("I") || !defined("iAUTH") || $aid != iAUTH || !defined('INIT_CMS_OK')) fallback(BASEDIR."index.php");
 
 /*---------------------------------------------------+
 | Module identification                              |
 +----------------------------------------------------*/
-$mod_title = "Advanced login panel";
-$mod_description = "Side panel with member login, and a member menu";
-$mod_version = "1.1.0";
+$mod_title = "Album side panels";
+$mod_description = "Example side panels to display album images";
+$mod_version = "1.0.0";
 $mod_developer = "WanWizard";
 $mod_email = "wanwizard@exitecms.org";
 $mod_weburl = "http://www.exitecms.org/";
@@ -33,7 +33,7 @@ $mod_type = "P";
 | Module administration panel installation details   |
 +----------------------------------------------------*/
 
-$mod_folder = "user_info_panel";
+$mod_folder = "album_panels";
 
 // no administration module for this plugin
 
@@ -90,9 +90,7 @@ if (!function_exists('module_upgrade')) {
 			case "0.0.1":
 				// pre-release version, no database or other changes
 			case "1.0.0":
-				// ExiteCMS v7.0. no upgrade actions for this release
-			case "1.1.0":
-				// upgrade to ExiteCMS v7.1. no upgrade actions for this release
+				// ExiteCMS v7.2. no upgrade actions for this release
 			default:
 				// do this at every upgrade
 		}
