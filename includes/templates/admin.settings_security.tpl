@@ -99,7 +99,9 @@
 					<option value='1+'{if $auth_method == "1+"} selected="selected"{/if}>{$locale.539}{$locale.541}{$locale.538}</option>
 					<option value='2'{if $auth_method == "2"} selected="selected"{/if}>{$locale.540}</option>
 					<option value='2+'{if $auth_method == "2+"} selected="selected"{/if}>{$locale.540}{$locale.541}{$locale.538}</option>
+					{if $has_curl}
 					<option value='3+'{if $auth_method == "3+"} selected="selected"{/if}>{$locale.538}{$locale.542}</option>
+					{/if}
 				</select>
 			</td>
 		</tr>

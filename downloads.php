@@ -83,7 +83,7 @@ if (isset($download_id)) {
 				if (isset($settings['dlstats_remote']) && !$settings['dlstats_remote']) {
 					// Then update the IP counters for mapping purposes
 					if (USER_IP != "0.0.0.0") {
-						$result = dbquery("INSERT INTO ".$db_prefix."dlstats_ips (dlsi_ip, dlsi_ccode, dlsi_counter) VALUES ('".USER_IP."', '".USER_CC."', '1') ON DUPLICATE KEY UPDATE dlsi_counter = dlsi_counter + 1");
+						$result = dbquery("INSERT INTO ".$db_prefix."dlstats_ips (dlsi_ip, dlsi_ccode, dlsi_counter, dlsi_onmap) VALUES ('".USER_IP."', '".USER_CC."', '1', '1') ON DUPLICATE KEY UPDATE dlsi_counter = dlsi_counter + 1");
 					}
 				}
 			}

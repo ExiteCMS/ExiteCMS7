@@ -297,7 +297,7 @@ if (!$result) {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ldap_suffix', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_required', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_ssl', '0')");
-	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_type', 'local,openid')");
+	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('auth_type', 'local')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('bad_words', '')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('bad_words_enabled', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('bad_word_replace', '[censored]')");

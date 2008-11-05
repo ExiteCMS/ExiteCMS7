@@ -45,7 +45,7 @@ if (isset($_POST['savesettings'])) {
 	if ($variables['errormessage'] == "") {
 		// authentication method check
 		$auth_method = $_POST['auth_method']{0};
-		$auth_local = $_POST['auth_method']{1} == "+" ? "1" : "0";
+		$auth_local = (isset($_POST['auth_method']{1}) && $_POST['auth_method']{1} == "+") ? "1" : "0";
 		switch ($auth_method) {
 			case "0": 	// Local only
 				$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'local' WHERE cfg_name = 'auth_type'");
@@ -113,12 +113,15 @@ if (isset($login_extended_expire)) {
 	$variables['login_extended_expire'] = $settings2['login_extended_expire'] / 86400;	// in days
 }
 
+// check if the PHP installation supports the OpenID class
+$variables['has_curl'] = function_exists('curl_exec');
+
 // determine the auth_method defined
 $auth_methods = explode(",",$settings2['auth_type']);
 $auth_method = 0;
 $auth_local = false;
-foreach($auth_methods as $auth_method) {
-	switch($auth_method) {
+foreach($auth_methods as $this_method) {
+	switch($this_method) {
 		case "ldap":
 			$auth_method = 1;
 			break;
@@ -126,7 +129,10 @@ foreach($auth_methods as $auth_method) {
 			$auth_method = 2;
 			break;
 		case "openid":
-			$auth_method = 3;
+			// OpenID requires CURL to be installed
+			if ($variables['has_curl']) {
+				$auth_method = 3;
+			}
 		case "local":
 			$auth_local = true;
 			break;

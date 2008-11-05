@@ -28,9 +28,11 @@ if (!iMEMBER) fallback(BASEDIR."index.php");
 // load the DNS functions include
 require_once PATH_INCLUDES."dns_functions.php";
 
-// load the OpenID class
-require_once PATH_INCLUDES."class.openid.php";
-$openid = new SimpleOpenID;
+// load the OpenID class (if cURL is present)
+if (function_exists('curl_exec')) {
+	require_once PATH_INCLUDES."class.openid.php";
+	$openid = new SimpleOpenID;
+}
 
 // load the locates for this module
 locale_load("main.members-profile");
@@ -135,8 +137,7 @@ if (isset($_POST['update_profile'])) {
 	}
 	
 	$user_fullname = stripinput($_POST['user_fullname']);
-	$user_openid_url = isURL(stripinput($_POST['user_openid_url'])) ? stripinput($_POST['user_openid_url']) : "";
-	$user_openid_url = strtolower($openid->OpenID_Standarize($user_openid_url));
+	$user_openid_url = (isset($_POST['user_openid_url']) && isURL(stripinput($_POST['user_openid_url']))) ? strtolower($openid->OpenID_Standarize(stripinput($_POST['user_openid_url']))) : "";
 	$user_hoteditor = isNum($_POST['user_hoteditor']) ? $_POST['user_hoteditor'] : "1";
 	$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";
 	$user_location = isset($_POST['user_location']) ? stripinput(trim($_POST['user_location'])) : "";
@@ -273,7 +274,9 @@ foreach($auth_methods as $auth_method) {
 			$variables['auth_userpass'] = 1;
 			break;
 		case "openid":
-			$variables['auth_openid'] = 1;
+			if (function_exists('curl_exec')) {
+				$variables['auth_openid'] = 1;
+			}
 			break;
 	}
 }
