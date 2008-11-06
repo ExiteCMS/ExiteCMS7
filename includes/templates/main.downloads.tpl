@@ -80,6 +80,9 @@
 {section name=item loop=$downloads}
 {if $smarty.section.item.first}
 	{include file="_opentable.tpl" name=$_name title=$locale.415|cat:" "|cat:$parent.download_cat_name state=$_state style=$_style}
+	{if $download_count > $download_limit}
+		{makepagenav start=$rowstart count=$download_limit total=$download_count range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?cat_id="|cat:$parent.download_cat_id|cat:"&amp;"}
+	{/if}
 <table width='100%' cellpadding='0' cellspacing='1' class='tbl-border'>
 {/if}
 	<tr>
@@ -129,10 +132,10 @@
 	</tr>
 {else}
 	</table>
-	{include file="_closetable.tpl"}
 	{if $download_count > $download_limit}
 		{makepagenav start=$rowstart count=$download_limit total=$download_count range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?cat_id="|cat:$parent.download_cat_id|cat:"&amp;"}
 	{/if}
+	{include file="_closetable.tpl"}
 {/if}
 {sectionelse}
 	{if $have_cats && $cats_count == 0}
