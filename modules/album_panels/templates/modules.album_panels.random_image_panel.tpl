@@ -27,12 +27,13 @@
 <script type='text/javascript'>
 {literal}
 // Dean Edwards/Matthias Miller/John Resig
-function init() {
+var randomimage_done = false;
+function randomimage() {
 	// quit if this function has already been called
-	if (arguments.callee.done) return;
+	if (randomimage_done) return;
 
 	// flag this function so we don't do the same thing twice
-	arguments.callee.done = true;
+	randomimage_done = true;
 
 	// kill the timer
 	if (_timer) clearInterval(_timer);
@@ -55,17 +56,17 @@ function init() {
 
 /* for Mozilla/Opera9 */
 if (document.addEventListener) {
-	document.addEventListener("DOMContentLoaded", init, false);
+	document.addEventListener("DOMContentLoaded", randomimage, false);
 }
 
 /* for Internet Explorer */
 /*@cc_on @*/
 /*@if (@_win32)
-	document.write("&lt;script id=__ie_onload defer src=javascript:void(0)&gt;&lt;\/script&gt;");
-	var script = document.getElementById("__ie_onload");
+	document.write("<script id=__ie_onload_randomimage defer src=javascript:void(0)><\/script>");
+	var script = document.getElementById("__ie_onload_randomimage");
 	script.onreadystatechange = function() {
 		if (this.readyState == "complete") {
-			init(); // call the onload handler
+			randomimage(); // call the onload handler
 		}
 	};
 /*@end @*/
@@ -74,16 +75,16 @@ if (document.addEventListener) {
 if (/KHTML|WebKit/i.test(navigator.userAgent)) { // sniff
 	var _timer = setInterval(function() {
 		if (/loaded|complete/.test(document.readyState)) {
-			init(); // call the onload handler
+			randomimage(); // call the onload handler
 		}
 	}, 10);
 }
 
 /* other alternatives */
 if (window.attachEvent) {
-	window.attachEvent('onload', init);
+	window.attachEvent('onload', randomimage);
 } else if (window.addEventListener) {
-	window.addEventListener('load', init, false);
+	window.addEventListener('load', randomimage, false);
 }
 {/literal}
 </script>
