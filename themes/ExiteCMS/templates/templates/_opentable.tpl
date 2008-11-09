@@ -27,12 +27,8 @@
 			<table cellpadding='0' cellspacing='0' width='100%'>
 				<tr>
 					<td class='cap-main'>
-						<div style='display:inline; position:relative; float:right;margin-top:2px;'>
-							<img src='{$smarty.const.THEME}images/panel_{if $_state == 1}on{else}off{/if}.gif' name='b_{$_name}' alt='' onclick="javascript:flipBox('{$_name}')" />
-						</div>
 						{$title|default:"&nbsp;"}
 					</td>
 				</tr>
 				<tr>
 					<td class='{$style|default:"main-body"}'>
-						<div id='box_{$_name}' {if $_state == 0}{else}style='display:none'{/if}>
