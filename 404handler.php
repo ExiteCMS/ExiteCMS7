@@ -33,6 +33,7 @@ $result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".((i
 if (!empty($url) && dbrows($result)) {
 
 	// found
+	header("HTTP/1.1 200 OK");
 	header("Status: 200 OK");
 	$data = dbarray($result);
 	// check if the url_to has is an external URL
@@ -95,6 +96,7 @@ if (!empty($url) && dbrows($result)) {
 } else {
 
 	// not found
+	header("HTTP/1.1 404 NOT FOUND");
 	header("Status: 404 NOT FOUND");
 	// if we had a request URL, and it was not a page (p.e. a missing image), exit without outputting anything
 	if (isset($_SERVER['REDIRECT_URL']) && strrchr($url,".") != ".php" && strrchr($url,".") != ".html") {
