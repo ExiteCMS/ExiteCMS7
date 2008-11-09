@@ -42,7 +42,7 @@ require_once PATH_INCLUDES."forum_functions_include.php";
 if (file_exists(PATH_MODULES."advertising/get_ad.php")) {
 	require_once PATH_MODULES."advertising/get_ad.php";
 	$variables['ad1'] = get_ad(array(1,2,5));
-	$variables['ad1'] = get_ad(array(4,5));
+	$variables['ad2'] = get_ad(array(4,5));
 } else {
 	$variables['ad1'] = "";
 	$variables['ad2'] = "";

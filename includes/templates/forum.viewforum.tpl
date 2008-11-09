@@ -47,10 +47,10 @@
 	<tr>
 		<td>
 			<table cellspacing='1' cellpadding='0' width='100%'>
-			{if $forum.forum_banners && $advert|default:"" != ""}
+			{if $forum.forum_banners && $ad1|default:"" != ""}
 				<tr>
 					<td colspan='7' class='tbl2' align='center'>
-						{$advert}
+						{$ad1}
 					</td>
 				</tr>
 			{/if}
@@ -177,6 +177,13 @@
 			</table>
 		</td>
 	</tr>
+	{if $forum.forum_banners && $ad2|default:"" != ""}
+		<tr>
+			<td colspan='7' class='tbl2' align='center'>
+				{$ad2}
+			</td>
+		</tr>
+	{/if}
 </table>
 <table width='100%' cellpadding='0' cellspacing='0' style='margin-top:5px;'>
 	<tr>
