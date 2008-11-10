@@ -624,7 +624,7 @@ if (isset($_POST["cancel"])) {
 										$thread_id = mysql_insert_id();
 										break;
 								}
-								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '$subject', '$message', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc_code']."', '0', '0')");
+								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '".mysql_real_escape_string($subject)."', '".mysql_real_escape_string($message)."', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc_code']."', '0', '0')");
 								$post_id = mysql_insert_id();
 								$result = dbquery("UPDATE ".$db_prefix."users SET user_posts=user_posts+1 WHERE user_id='".$userdata['user_id']."'");
 								if ($settings['thread_notify'] && isset($_POST['notify_me']))
