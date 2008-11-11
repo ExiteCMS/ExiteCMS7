@@ -265,7 +265,7 @@
 		</tr>
 		{/if}
 		<tr>
-			<td valign='top'>
+			<td class='tbl' valign='top'>
 				{$locale.u020}
 			</td>
 			<td class='tbl'>

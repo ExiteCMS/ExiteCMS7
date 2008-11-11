@@ -201,23 +201,9 @@ switch ($step) {
 					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor
 					ORDER BY blog_datestamp DESC LIMIT ".$settings['blogs_indexsize']);
 		}
-		error_reporting(E_ALL);
 		while ($data = dbarray($result)) {
 			// store the blog entry(s)
 			$data['blog_text'] = stripslashes($data['blog_text']);
-			$idx = 0;
-			while ($next = strpos($data['blog_text'], "<br /><br />", $idx)) {
-				if ($next > 500) break;
-				$idx = $next + 1;
-			}
-			if ($next) $idx = $next;
-			if ($idx) {
-				$data['blog_intro'] = substr($data['blog_text'],0, $idx);
-				$data['read_more'] = true;
-			} else {
-				$data['blog_intro'] = $data['blog_text'];
-				$data['read_more'] = false;
-			}
 			// count comments for this blog entry
 			$data['comments'] = $data['blog_comments'] ? dbcount("(comment_id)", "comments", "comment_type='B' AND comment_item_id='".$data['blog_id']."'") : 0;
 			$variables['bloglist'][] = $data;

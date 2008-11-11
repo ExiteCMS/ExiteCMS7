@@ -161,8 +161,7 @@
 								{if $blog_id|default:0 != 0}
 									{$bloglist[id].blog_text}
 								{else}
-									{$bloglist[id].blog_intro}
-									{if $bloglist[id].read_more}&nbsp;<a href='blogs.php?blog_id={$bloglist[id].blog_id}' alt='{$locale.422}' title='{$locale.422}'>...</a>{/if}
+									{$bloglist[id].blog_text|trimhtml:500:"<div class='small' style='float:right;'><a href='blogs.php?blog_id="|cat:$bloglist[id].blog_id|cat:"' alt='"|cat:$locale.422|cat:"' title='"|cat:$locale.422|cat:"'>"|cat:$locale.042|cat:"</a>...</div>"}
 								{/if}
 							</td>
 						</tr>

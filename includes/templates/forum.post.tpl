@@ -185,7 +185,7 @@
 								<input type='checkbox' name='sticky' value='1'{if $is_sticky} checked{/if} />{$locale.480}
 								<br />
 							{/if}
-							{if $opt_smileys && ($settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0)}
+							{if $opt_smileys}
 								<input type='checkbox' name='disable_smileys' value='1'{if $is_smileys_disabled} checked{/if} />{$locale.483}
 								<br />
 							{/if}

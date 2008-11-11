@@ -169,6 +169,7 @@
 				<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
 			</td>
 		</tr>
+		{/if}
 		<tr>
 			<td align='right' width='145' class='tbl2' valign='top' style='white-space:nowrap'>
 				{$locale.425}:
@@ -177,7 +178,6 @@
 				<input type='checkbox' name='chk_disablesmileys' value='y'{if $is_disablesmileys} checked{/if} />{$locale.427}
 			</td>
 		</tr>
-		{/if}
 		{if $settings.attachments}
 		<tr>
 			<td align='right' width='145' valign='top' class='tbl2'{if $attachment_count > 0} rowspan='2'{/if}>
