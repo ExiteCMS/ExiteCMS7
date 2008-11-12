@@ -25,8 +25,11 @@
 				<tr>
 					<td class='tbl2'>
 						<b>{$data.user_name}</b>
-						{if $data.user_status != 0}
-						&middot;
+					</td>
+					<td align='right' class='tbl2'>
+						{if $data.user_status == 0}
+							{$data.user_level}
+						{else}
 						<div class='small' style='display:inline;color:red;font-weight:bold;'>
 							{if $data.user_status == 1}{$locale.425}{/if}
 							{if $data.user_status == 2}{$locale.426}{/if}
@@ -34,7 +37,6 @@
 						</div>
 						{/if}
 					</td>
-					<td align='right' class='tbl2'>{$data.user_level}</td>
 				</tr>
 			</table>
 		</td>
@@ -124,7 +126,7 @@
 			{if $data.user_web|default:"" != ""}
 				{buttonlink name=$locale.u052 link=$data.user_web new="yes"}&nbsp;
 			{/if}
-			{if $data.show_pm_button}
+			{if $data.user_status ==0 && $data.show_pm_button}
 				{buttonlink name=$locale.u053 link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;user_id="|cat:$data.user_id|cat:"&amp;msg_id=0"}
 			{/if}
 		</td>

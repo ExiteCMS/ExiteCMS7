@@ -129,6 +129,17 @@
 		</tr>
 		<tr>
 			<td width='60%' class='tbl'>
+				{$locale.545}
+			</td>
+			<td width='40%' class='tbl'>
+				<select name='forum_user_status' class='textbox'>
+					<option value='0'{if $settings2.forum_user_status == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.forum_user_status == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width='60%' class='tbl'>
 				{$locale.514}
 				<br />
 				<span class='small2'><font color='red'>{$locale.515}</font> {$locale.516}</span>

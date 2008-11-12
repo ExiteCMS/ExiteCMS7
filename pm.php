@@ -136,6 +136,15 @@ function gathermsginfo($msgrec, $preview = false) {
 	// if only one recipient, copy it
 	if ($msgrec['recipient_count'] == 1) {
 		$msgrec['recipient'] = $msgrec['recipients'][0];
+		// user & group memberships
+		$msgrec['recipient']['group_names'][] = array('type' => 'U', 'level' => $msgrec['recipient']['user_level'], 'name' => getuserlevel($msgrec['recipient']['user_level']));
+		if ($msgrec['recipient']['user_groups'] != "") {
+			$gresult = dbquery("SELECT group_name, group_forumname, group_color FROM ".$db_prefix."user_groups WHERE group_id IN (".str_replace('.', ',', substr($msgrec['recipient']['user_groups'],1)).") AND group_visible & 2");
+			$grecs = dbrows($gresult);
+			while ($gdata = dbarray($gresult)) {
+				$msgrec['recipient']['group_names'][] = array('type' => 'G', 'color' => $gdata['group_color'], 'name' => $gdata['group_forumname']==""?$gdata['group_name']:$gdata['group_forumname']);
+			}
+		}
 	}
 
 	// parse the messsage body

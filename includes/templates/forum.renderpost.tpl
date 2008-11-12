@@ -74,6 +74,13 @@
 	</tr>
 	<tr>
 		<td valign='top' width='140' class='tbl_left'>
+			{if $settings.forum_user_status}
+				{if $posts[pid].user_online}
+					<div style='float:right'><img src='{$smarty.const.THEME}images/online.gif' title='{$locale.586}' alt='' /></div>
+				{else}
+					<div style='float:right'><img src='{$smarty.const.THEME}images/offline.gif' title='{$locale.587}' alt='' /></div>
+				{/if}
+			{/if}
 			{$posts[pid].cc_flag}
 			{if $smarty.const.iMEMBER && $posts[pid].user_status == 0 && $posts[pid].post_author > 0}
 				<a href='{$smarty.const.BASEDIR}profile.php?lookup={$posts[pid].user_id}'>{$posts[pid].user_name}</a>
@@ -89,50 +96,55 @@
 					<br />
 				{/if}
 			{/if}
-			{* show a ranking title first *}
-			{section name=ug loop=$posts[pid].group_names}
-				{if $posts[pid].group_names[ug].type == "R"}
-					{if $posts[pid].group_names[ug].color|default:"" != ""}
-						<span class='small'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
-					{else}
-						<span class='small'>{$posts[pid].group_names[ug].name}</span>
-					{/if}
-					<br />
-				{/if}
-			{/section}
-			{* show admin/superadmin level first *}
-			{section name=ug loop=$posts[pid].group_names}
-				{if $posts[pid].group_names[ug].type == "U"}
-					{if $posts[pid].group_names[ug].level > 101}
-						<span class='small'>{$posts[pid].group_names[ug].name}</span>
+			{if $posts[pid].user_status == 3}
+				<span class='small'><font color='red'>{$locale.userd}</font></span>
+				<br />
+			{else}
+				{* show a ranking title first *}
+				{section name=ug loop=$posts[pid].group_names}
+					{if $posts[pid].group_names[ug].type == "R"}
+						{if $posts[pid].group_names[ug].color|default:"" != ""}
+							<span class='small'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
+						{else}
+							<span class='small'>{$posts[pid].group_names[ug].name}</span>
+						{/if}
 						<br />
 					{/if}
-				{/if}
-			{/section}
-			{* show group memberships second *}
-			{assign var='groups_shown' value=false}
-			{section name=ug loop=$posts[pid].group_names}
-				{if $posts[pid].group_names[ug].type == "G"}
-					{if $posts[pid].group_names[ug].color|default:"" != ""}
-						<span class='small'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
-						<br />
-					{else}
-						<span class='small'>{$posts[pid].group_names[ug].name}</span>
-						<br />
-					{/if}
-					{assign var='groups_shown' value=true}
-				{/if}
-			{/section}
-			{* if no groups shown, and no admin, show the users level *}
-			{if !$groups_shown}
+				{/section}
+				{* show admin/superadmin level first *}
 				{section name=ug loop=$posts[pid].group_names}
 					{if $posts[pid].group_names[ug].type == "U"}
-						{if $posts[pid].group_names[ug].level < 102}
+						{if $posts[pid].group_names[ug].level > 101}
 							<span class='small'>{$posts[pid].group_names[ug].name}</span>
 							<br />
 						{/if}
 					{/if}
 				{/section}
+				{* show group memberships second *}
+				{assign var='groups_shown' value=false}
+				{section name=ug loop=$posts[pid].group_names}
+					{if $posts[pid].group_names[ug].type == "G"}
+						{if $posts[pid].group_names[ug].color|default:"" != ""}
+							<span class='small'><font color='{$posts[pid].group_names[ug].color}'>{$posts[pid].group_names[ug].name}</font></span>
+							<br />
+						{else}
+							<span class='small'>{$posts[pid].group_names[ug].name}</span>
+							<br />
+						{/if}
+						{assign var='groups_shown' value=true}
+					{/if}
+				{/section}
+				{* if no groups shown, and no admin, show the users level *}
+				{if !$groups_shown}
+					{section name=ug loop=$posts[pid].group_names}
+						{if $posts[pid].group_names[ug].type == "U"}
+							{if $posts[pid].group_names[ug].level < 102}
+								<span class='small'>{$posts[pid].group_names[ug].name}</span>
+								<br />
+							{/if}
+						{/if}
+					{/section}
+				{/if}
 			{/if}
 			<br />
 			{if $posts[pid].user_avatar|default:"" != ""}
@@ -241,24 +253,26 @@
 	</tr>
 	<tr valign='bottom'>
 		<td class='tbl_left_bottom'>
-		{if $smarty.const.iMEMBER && $posts[pid].user_id > 0 && $userdata.user_id != $posts[pid].user_id}
-			{buttonlink name=$locale.571 title=$locale.571a link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;user_id="|cat:$posts[pid].user_id|cat:"&amp;msg_id=0"}
-		{/if}
-		{if $posts[pid].user_msn|default:"" != ""}
-			{buttonlink name=$locale.576 link="mailto:"|cat:$posts[pid].user_msn}
-		{/if}
-		{if $posts[pid].user_icq|default:"" != ""}
-			{buttonlink name=$locale.578 link="http://web.icq.com/people/about_me.php?uin="|cat:$posts[pid].user_icq new="yes"}
-		{/if}
-		{if $posts[pid].user_web|default:"" != ""}
-			{buttonlink name=$locale.577 link=$posts[pid].user_web new="yes"}
-		{/if}
-		{if false && $posts[pid].user_aim|default:"" != ""}
-			{buttonlink name=$locale.579 link="aim:goim?screenname="|cat:$posts[pid].user_aim|replace:" ":"+"}
-		{/if}
-		{* used the YAHOO field to store the Skype ID *}
-		{if false && $posts[pid].user_yahoo|default:"" != ""}
-			{buttonlink name=$locale.580 link="skype:"|cat:$posts[pid].user_yahoo|cat:"?call" new="yes"}
+		{if $posts[pid].user_status == 0}
+			{if $smarty.const.iMEMBER && $posts[pid].user_id > 0 && $userdata.user_id != $posts[pid].user_id}
+				{buttonlink name=$locale.571 title=$locale.571a link=$smarty.const.BASEDIR|cat:"pm.php?action=post&amp;user_id="|cat:$posts[pid].user_id|cat:"&amp;msg_id=0"}
+			{/if}
+			{if $posts[pid].user_msn|default:"" != ""}
+				{buttonlink name=$locale.576 link="mailto:"|cat:$posts[pid].user_msn}
+			{/if}
+			{if $posts[pid].user_icq|default:"" != ""}
+				{buttonlink name=$locale.578 link="http://web.icq.com/people/about_me.php?uin="|cat:$posts[pid].user_icq new="yes"}
+			{/if}
+			{if $posts[pid].user_web|default:"" != ""}
+				{buttonlink name=$locale.577 link=$posts[pid].user_web new="yes"}
+			{/if}
+			{if false && $posts[pid].user_aim|default:"" != ""}
+				{buttonlink name=$locale.579 link="aim:goim?screenname="|cat:$posts[pid].user_aim|replace:" ":"+"}
+			{/if}
+			{* used the YAHOO field to store the Skype ID *}
+			{if false && $posts[pid].user_yahoo|default:"" != ""}
+				{buttonlink name=$locale.580 link="skype:"|cat:$posts[pid].user_yahoo|cat:"?call" new="yes"}
+			{/if}
 		{/if}
 		</td>
 		<td colspan='3' class='{if $posts[pid].unread}unread{else}tbl_right{/if}' style='border-top:none;'>

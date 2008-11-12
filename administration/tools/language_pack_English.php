@@ -1,21 +1,28 @@
 <?php 
-/*---------------------------------------------------+
-| ExiteCMS Content Management System                 |
-+----------------------------------------------------+
-| Copyright 2007 Harro "WanWizard" Verton, Exite BV  |
-| for support, please visit http://exitecms.exite.eu |
-+----------------------------------------------------+
-| The ExiteCMS team thanks the following person(s):  |
-|                                                    |
-| WanWizard                                          |
-|                                                    |
-| for their efforts in making this translation file. |
-| They can be contacted on http://exitecms.exite.eu  |
-+----------------------------------------------------+
-| Released under the terms & conditions of v2 of the |
-| GNU General Public License. For details refer to   |
-| the included gpl.txt file or visit http://gnu.org  |
-+----------------------------------------------------*/
+/*---------------------------------------------------------------------+
+| ExiteCMS Content Management System                                   |
++----------------------------------------------------------------------+
+| Copyright 2006-2008 Exite BV, The Netherlands                        |
+| for support, please visit http://www.exitecms.org                    |
++----------------------------------------------------------------------+
+| Some code derived from PHP-Fusion, copyright 2002 - 2006 Nick Jones  |
++----------------------------------------------------------------------+
+| The ExiteCMS team thanks the following person(s):                    |
+|                                                                      |
+| WanWizard                                                            |
+|                                                                      |
+| for their efforts in making this translation file.                   |
+| They can be contacted on http://www.exitecms.org                     |
++----------------------------------------------------------------------+
+| Released under the terms & conditions of v2 of the GNU General Public|
+| License. For details refer to the included gpl.txt file or visit     |
+| http://gnu.org                                                       |
++----------------------------------------------------------------------+
+| $Id::                                                               $|
++----------------------------------------------------------------------+
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
++---------------------------------------------------------------------*/
 if (!function_exists('install_language_pack')) {
 	function install_language_pack($step) {
 
@@ -1055,6 +1062,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['542'] = ", with OpenID";
 		$localestrings['543'] = "Limit forum posts for guests to:";
 		$localestrings['544'] = "No Limit";
+		$localestrings['545'] = "Show the online status of members:";
 		$localestrings['550'] = "Security";
 		$localestrings['551'] = "Enable registration system?";
 		$localestrings['552'] = "Use email verification for registration?";
@@ -2400,6 +2408,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['583'] = "download this %scode";
 		$localestrings['584'] = "download";
 		$localestrings['585'] = "Code:";
+		$localestrings['586'] = "Member online";
+		$localestrings['587'] = "Member not logged on";
 		load_localestrings($localestrings, LP_LOCALE, "forum.main", $step);
 
 		$localestrings = array();
@@ -3042,6 +3052,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['user2'] = "Administrator";
 		$localestrings['user3'] = "Webmaster";
 		$localestrings['usera'] = "Anonymous";
+		$localestrings['userd'] = "Account deleted";
 		$localestrings['userf1'] = "Moderator";
 		load_localestrings($localestrings, LP_LOCALE, "main.global", $step);
 
@@ -3747,7 +3758,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1225146906");
+if (!defined('LP_DATE')) define('LP_DATE', "1226501924");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

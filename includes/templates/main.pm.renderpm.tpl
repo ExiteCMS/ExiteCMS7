@@ -45,7 +45,7 @@
 		<td class='tbl_top_mid' style='text-align:right;'>
 			{if !$is_preview}
 				{buttonlink name=$locale.423 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=forward&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
-				{if $folder == $locale.402 && $messages[id].pmindex_folder == 0}
+				{if $messages[id].user_status == 0 && folder == $locale.402 && $messages[id].pmindex_folder == 0}
 					{buttonlink name=$locale.433 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=reply&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 					{buttonlink name=$locale.444 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=quote&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 				{/if}
@@ -71,41 +71,50 @@
 		<td valign='top' width='140' class='tbl_left'>
 			{if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}
 				{$messages[id].sender.cc_flag}
-				<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].sender.user_id}'>{$messages[id].sender.user_name}</a>
+				{if $messages[id].sender.user_status == 0}
+					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].sender.user_id}'>{$messages[id].sender.user_name}</a>
+				{else}
+					{$messages[id].sender.user_name}
+				{/if}
 				<br />
-				{* show admin/superadmin level first *}
-				{section name=ug loop=$messages[id].sender.group_names}
-					{if $messages[id].sender.group_names[ug].type == "U"}
-						{if $messages[id].sender.group_names[ug].level > 101}
-							<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
-							<br />
-						{/if}
-					{/if}
-				{/section}
-				{* show group memberships second *}
-				{assign var='groups_shown' value=false}
-				{section name=ug loop=$messages[id].sender.group_names}
-					{if $messages[id].sender.group_names[ug].type == "G"}
-						{if $messages[id].sender.group_names[ug].color|default:"" != ""}
-							<span class='small'><font color='{$messages[id].sender.group_names[ug].color}'>{$messages[id].sender.group_names[ug].name}</font></span>
-							<br />
-						{else}
-							<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
-							<br />
-						{/if}
-						{assign var='groups_shown' value=true}
-					{/if}
-				{/section}
-				{* if no groups shown, and no admin, show the users level *}
-				{if !$groups_shown}
+				{if $messages[id].sender.user_status == 3}
+					<span class='small'><font color='red'>{$locale.userd}</font></span>
+					<br />
+				{else}
+					{* show admin/superadmin level first *}
 					{section name=ug loop=$messages[id].sender.group_names}
 						{if $messages[id].sender.group_names[ug].type == "U"}
-							{if $messages[id].sender.group_names[ug].level < 102}
+							{if $messages[id].sender.group_names[ug].level > 101}
 								<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
 								<br />
 							{/if}
 						{/if}
 					{/section}
+					{* show group memberships second *}
+					{assign var='groups_shown' value=false}
+					{section name=ug loop=$messages[id].sender.group_names}
+						{if $messages[id].sender.group_names[ug].type == "G"}
+							{if $messages[id].sender.group_names[ug].color|default:"" != ""}
+								<span class='small'><font color='{$messages[id].sender.group_names[ug].color}'>{$messages[id].sender.group_names[ug].name}</font></span>
+								<br />
+							{else}
+								<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
+								<br />
+							{/if}
+							{assign var='groups_shown' value=true}
+						{/if}
+					{/section}
+					{* if no groups shown, and no admin, show the users level *}
+					{if !$groups_shown}
+						{section name=ug loop=$messages[id].sender.group_names}
+							{if $messages[id].sender.group_names[ug].type == "U"}
+								{if $messages[id].sender.group_names[ug].level < 102}
+									<span class='small'>{$messages[id].sender.group_names[ug].name}</span>
+									<br />
+								{/if}
+							{/if}
+						{/section}
+					{/if}
 				{/if}
 				<br />
 				{if $messages[id].sender.user_avatar|default:"" != ""}
@@ -124,41 +133,49 @@
 			{else}
 				{if $messages[id].recipient_count == 1}
 					{$messages[id].recipient.cc_flag}
-					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].recipient.user_id}'>{$messages[id].recipient.user_name}</a>
+					{if $messages[id].recipient.user_status == 0}
+						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].recipient.user_id}'>{$messages[id].recipient.user_name}</a>
+					{else}
+						{$messages[id].recipient.user_name}
+					{/if}
 					<br />
-					{* show admin/superadmin level first *}
-					{section name=ug loop=$messages[id].recipient.group_names}
-						{if $messages[id].recipient.group_names[ug].type == "U"}
-							{if $messages[id].recipient.group_names[ug].level > 101}
-								<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
-								<br />
-							{/if}
-						{/if}
-					{/section}
-					{* show group memberships second *}
-					{assign var='groups_shown' value=false}
-					{section name=ug loop=$messages[id].recipient.group_names}
-						{if $messages[id].recipient.group_names[ug].type == "G"}
-							{if $messages[id].recipient.group_names[ug].color|default:"" != ""}
-								<span class='small'><font color='{$messages[id].recipient.group_names[ug].color}'>{$messages[id].recipient.group_names[ug].name}</font></span>
-								<br />
-							{else}
-								<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
-								<br />
-							{/if}
-							{assign var='groups_shown' value=true}
-						{/if}
-					{/section}
-					{* if no groups shown, and no admin, show the users level *}
-					{if !$groups_shown}
+					{if $messages[id].recipient.user_status == 3}
+						<span class='small'><font color='red'>{$locale.userd}</font></span>
+					{else}
+						{* show admin/superadmin level first *}
 						{section name=ug loop=$messages[id].recipient.group_names}
 							{if $messages[id].recipient.group_names[ug].type == "U"}
-								{if $messages[id].recipient.group_names[ug].level < 102}
+								{if $messages[id].recipient.group_names[ug].level > 101}
 									<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
 									<br />
 								{/if}
 							{/if}
 						{/section}
+						{* show group memberships second *}
+						{assign var='groups_shown' value=false}
+						{section name=ug loop=$messages[id].recipient.group_names}
+							{if $messages[id].recipient.group_names[ug].type == "G"}
+								{if $messages[id].recipient.group_names[ug].color|default:"" != ""}
+									<span class='small'><font color='{$messages[id].recipient.group_names[ug].color}'>{$messages[id].recipient.group_names[ug].name}</font></span>
+									<br />
+								{else}
+									<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
+									<br />
+								{/if}
+								{assign var='groups_shown' value=true}
+							{/if}
+						{/section}
+						{* if no groups shown, and no admin, show the users level *}
+						{if !$groups_shown}
+							{section name=ug loop=$messages[id].recipient.group_names}
+								{if $messages[id].recipient.group_names[ug].type == "U"}
+									{if $messages[id].recipient.group_names[ug].level < 102}
+										<span class='small'>{$messages[id].recipient.group_names[ug].name}</span>
+										<br />
+									{/if}
+								{/if}
+							{/section}
+						{/if}
 					{/if}
 					<br />
 					{if $messages[id].recipient.user_avatar|default:"" != ""}
@@ -258,9 +275,13 @@
 	<tr valign='bottom'>
 		<td class='tbl_left_bottom'>
 		{if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}
-			{buttonlink name=$locale.560 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;user_id="|cat:$messages[id].pmindex_from_id|cat:"&amp;msg_id=0"}
+			{if $messages[id].sender.user_status == 0}
+				{buttonlink name=$locale.560 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;user_id="|cat:$messages[id].sender.user_id|cat:"&amp;msg_id=0"}
+			{/if}
 		{else}
-			{buttonlink name=$locale.560 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;user_id="|cat:$messages[id].pmindex_to_id|cat:"&amp;msg_id=0"}
+			{if $messages[id].recipient.user_status == 0}
+				{buttonlink name=$locale.560 link=$smarty.const.FUSION_SELF|cat:"?action=post&amp;user_id="|cat:$messages[id].recipient.user_id|cat:"&amp;msg_id=0"}
+			{/if}
 		{/if}
 		{if $messages[id].user_msn|default:"" != ""}
 			{buttonlink name=$locale.561 link="mailto:"|cat:$messages[id].user_msn}

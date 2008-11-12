@@ -289,13 +289,17 @@ $last_post_datestamp = 0;
 // get the posts for this page of the thread
 if ($rows != 0) {
 	$result = dbquery(
-		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status FROM ".$db_prefix."posts p
+		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status, o.online_lastactive FROM ".$db_prefix."posts p
 		LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id
 		LEFT JOIN ".$db_prefix."users u2 ON p.post_edituser = u2.user_id AND post_edituser > '0'
+		LEFT JOIN ".$db_prefix."online o ON p.post_author = o.online_user
 		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".$settings['numofthreads']
 	);
 	$variables['posts'] = array();
 	while ($data = dbarray($result)) {
+
+		// correct the online datastamp
+		$data['user_online'] =  ($settings['forum_user_status'] ==0 || is_null($data['online_lastactive'])) ? 0 : 1;
 
 		// default, show no ranking information
 		$data['show_ranking'] = false;
