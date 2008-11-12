@@ -76,6 +76,7 @@ define("PATH_SWFUPLOAD", PATH_INCLUDES."SWFUpload-2.1.0/");
 define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
 define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
+define("PATH_DOWNLOADS", PATH_ROOT."files/downloads/");
 
 // mark that CMS Engine is properly initialized
 define("INIT_CMS_OK", TRUE);
@@ -133,6 +134,7 @@ define("IMAGES_DC", IMAGES."download_cats/");
 define("FORUM", BASEDIR."forum/");
 define("ATTACHMENTS", BASEDIR."files/attachments/");
 define("PM_ATTACHMENTS", BASEDIR."files/pm_attachments/");
+define("DOWNLOADS", BASEDIR."files/downloads/");
 define("MODULES", BASEDIR."modules/");
 define("INCLUDES", BASEDIR."includes/");
 define("PHOTOS", IMAGES."albums/");

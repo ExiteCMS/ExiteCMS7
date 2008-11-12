@@ -244,6 +244,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['491'] = "Count download externally:";
 		$localestrings['492'] = "Yes";
 		$localestrings['493'] = "No";
+		$localestrings['494'] = "File:";
 		$localestrings['500'] = "Current Downloads";
 		$localestrings['501'] = "Download Item [Click to Test]";
 		$localestrings['502'] = "Options";
@@ -262,6 +263,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['515'] = "Select a language:";
 		$localestrings['516'] = "Add a download entry";
 		$localestrings['517'] = "Copy";
+		$localestrings['518'] = "Update to download directory";
+		$localestrings['519'] = "Select the file to upload";
+		$localestrings['520'] = "Upload";
+		$localestrings['521'] = "You are not allowed to upload %s files";
+		$localestrings['522'] = "File %s already exists";
+		$localestrings['523'] = " successfully uploaded";
+		$localestrings['524'] = "Not an uploaded file. Hack attempt?";
 		load_localestrings($localestrings, LP_LOCALE, "admin.downloads", $step);
 
 		$localestrings = array();
@@ -1008,6 +1016,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['425'] = "Required when the CMS is installed in a subdirectory of the website document root";
 		$localestrings['426'] = "Download Panel Layout:";
 		$localestrings['427'] = "Use browser language detection:";
+		$localestrings['428'] = "Specify files to download via URL?";
 		$localestrings['450'] = "Time and Date";
 		$localestrings['451'] = "Short date format:";
 		$localestrings['452'] = "Long date format:";
@@ -3758,7 +3767,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1226501924");
+if (!defined('LP_DATE')) define('LP_DATE', "1226512313");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

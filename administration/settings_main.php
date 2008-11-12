@@ -45,6 +45,7 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['news_headline']) ? $_POST['news_headline'] : "0")."' WHERE cfg_name = 'news_headline'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['numofthreads']) ? $_POST['numofthreads'] : "5")."' WHERE cfg_name = 'numofthreads'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['download_columns']) ? $_POST['download_columns'] : "1")."' WHERE cfg_name = 'download_columns'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['download_via_http']) ? $_POST['download_via_http'] : "1")."' WHERE cfg_name = 'download_via_http'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".stripinput($_POST['theme'])."' WHERE cfg_name = 'theme'");
 }
 

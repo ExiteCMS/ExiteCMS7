@@ -173,6 +173,30 @@ if ($step == "edit") {
 	$formaction = FUSION_SELF.$aidlink;
 	$title = $locale['471'];
 }
+
+if ($step == "upload") {
+	if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name'] != "") {
+		$filename = $_FILES['myfile']['name'];
+		$filename = PATH_DOWNLOADS.$filename;
+		$filetemp = $_FILES['myfile']['tmp_name'];
+		$illegal_types = array(".php", ".php3", ".php4", ".php5", ".js", ".htm", ".html");
+		$fileext = strrchr($_FILES['myfile']['name'], ".");
+		if (in_array($fileext, $illegal_types)) {
+			$errormessage = sprintf($locale['521'], $fileext);
+		} elseif (file_exists($filename)){
+			$errormessage = sprintf($locale['522'], $_FILES['myfile']['name']);
+		} elseif (is_uploaded_file($filetemp)){
+			// move the uploaded file
+			move_uploaded_file($filetemp, $filename);
+			chmod($filename,0664);
+			$errormessage = $_FILES['myfile']['name'].$locale['523'];
+		} else {
+			$errormessage = $locale['524'];
+		}
+	}
+	$variables['upload_error'] = isset($errormessage) ? $errormessage : "";
+}
+
 $variables['cats'] = array();
 $variables['download_cats'] = array();
 $result2 = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ".($where==""?"":("AND ".$where))." ORDER BY download_cat_id*10000+download_parent");
@@ -217,6 +241,11 @@ while($data = dbarray($result)) {
 	$variables['barfiles'][] = $data;
 }
 
+// create the list for the local file dropdown
+$variables['download_files'] = array();
+if ($settings['download_via_http'] == 0) {
+	$variables['download_files'] = makefilelist(PATH_DOWNLOADS, ".|..|index.php");
+}
 // template variables
 $variables['step'] = $step;
 $variables['formaction'] = $formaction.($cat_locale==""?"":("&amp;cat_locale=".$cat_locale));

@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Mon Oct 27 2008, 21:04:48 CET
+// generated on : Wed Nov 12 2008, 18:34:30 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";
@@ -148,5 +148,6 @@ $locale['user1'] = "Lid";
 $locale['user2'] = "Beheerder";
 $locale['user3'] = "Webmaster";
 $locale['usera'] = "Anoniem";
+$locale['userd'] = "Gebruiker verwijderd";
 $locale['userf1'] = "Moderator";
 ?>

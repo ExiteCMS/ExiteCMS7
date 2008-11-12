@@ -244,6 +244,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['491'] = "Download wordt extern geteld:";
 		$localestrings['492'] = "Ja";
 		$localestrings['493'] = "Nee";
+		$localestrings['494'] = "Bestand:";
 		$localestrings['500'] = "Huidige Downloads";
 		$localestrings['501'] = "Download Item [Klik om te testen]";
 		$localestrings['502'] = "Opties";
@@ -262,6 +263,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['515'] = "Selecteer een taal:";
 		$localestrings['516'] = "Nieuwe download toevoegen";
 		$localestrings['517'] = "Kopieer";
+		$localestrings['518'] = "Bestand naar de download directory versturen";
+		$localestrings['519'] = "Selecteer het te versturen bestand";
+		$localestrings['520'] = "Verstuur";
+		$localestrings['521'] = "Het is niet toegestaan %s bestanden te versturen";
+		$localestrings['522'] = "Bestand %s bestaat reeds";
+		$localestrings['523'] = " succesvol verstuurd";
+		$localestrings['524'] = "Dit is geen verstuurd bestand. Poging tot inbreken?";
 		load_localestrings($localestrings, LP_LOCALE, "admin.downloads", $step);
 
 		$localestrings = array();
@@ -1008,6 +1016,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['425'] = "Verplicht indien ExiteCMS is geinstalleerd in een folder van de website document root";
 		$localestrings['426'] = "Download Paneel Layout:";
 		$localestrings['427'] = "Taalinstelling van de browser:";
+		$localestrings['428'] = "Specificeer download bestanden als URL?";
 		$localestrings['450'] = "Datum en tijd";
 		$localestrings['451'] = "Kort datum formaat:";
 		$localestrings['452'] = "Lang datum formaat:";
@@ -3758,7 +3767,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1226501927");
+if (!defined('LP_DATE')) define('LP_DATE', "1226512319");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

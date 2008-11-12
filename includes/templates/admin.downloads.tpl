@@ -55,14 +55,29 @@
 						<br />
 					</td>
 				</tr>
-				<tr>
-					<td width='1%' class='tbl' style='white-space:nowrap'>
-						{$locale.482}
-					</td>
-					<td class='tbl'>
-						<input type='text' name='download_url' value='{$download_url}' class='textbox' style='width:400px;' />
-					</td>
-				</tr>
+				{if $settings.download_via_http == "1"}
+					<tr>
+						<td width='1%' class='tbl' style='white-space:nowrap'>
+							{$locale.482}
+						</td>
+						<td class='tbl'>
+							<input type='text' name='download_url' value='{$download_url}' class='textbox' style='width:400px;' />
+						</td>
+					</tr>
+				{else}
+					<tr>
+						<td width='1%' class='tbl' style='white-space:nowrap'>
+							{$locale.494}
+						</td>
+						<td class='tbl'>
+							<select name='download_url' class='textbox'>
+							{foreach from=$download_files item=file}
+								<option value='{$smarty.const.DOWNLOADS}{$file}' {if $download_url == $smarty.const.DOWNLOADS|cat:$file}selected='selected'{/if}>{$file}</option>
+							{/foreach}
+							</select>
+						</td>
+					</tr>
+				{/if}
 				<tr>
 					<td width='1%' class='tbl' style='white-space:nowrap'>
 						{$locale.491}
@@ -229,6 +244,29 @@
 	</div>
 	{/if}
 {/section}
+{include file="_closetable.tpl"}
+{include file="_opentable.tpl" name=$_name title=$locale.518 state=$_state style=$_style}
+<form name='download_upload' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;step=upload' enctype='multipart/form-data'>
+	{if $upload_error != ""}
+		<div class='errors'><br />{$upload_error}</div>
+	{/if}
+	<table align='center' width='600' cellpadding='0' cellspacing='0'>
+		<tr>
+			<td width='175' class='tbl'>
+				<br />{$locale.519}:<br />
+			</td>
+			<td class='tbl'>
+				<br /><input type='file' name='myfile' class='textbox' style='width:250px;' /><br />
+			</td>
+		</tr>
+		<tr>
+			<td align='center' colspan='2' class='tbl'>
+				<br />
+				<input type='submit' name='upload' value='{$locale.520}' class='button' />
+			</td>
+		</tr>
+	</table>
+</form>
 {include file="_closetable.tpl"}
 <script type='text/javascript'>
 function DeleteItem()
