@@ -682,7 +682,7 @@ if ($type == "album") {
 					$match = false;
 					foreach($collection as $item) {
 						// first match on id?
-						if (!$match && $item['id'] == $album_id) {
+						if (!$match && $item['id'] == $album_id && $item['type'] == "album") {
 							// mark the find
 							$match = true;
 							// and get the next record
@@ -974,7 +974,7 @@ if ($type == "gallery") {
 					$match = false;
 					foreach($collection as $item) {
 						// first match on id?
-						if (!$match && $item['id'] == $gallery_id) {
+						if (!$match && $item['id'] == $gallery_id && $item['type'] == "gallery") {
 							// mark the find
 							$match = true;
 							// and get the next record
