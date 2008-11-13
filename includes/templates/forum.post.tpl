@@ -129,7 +129,7 @@
 						</td>
 						<td class='tbl1'>
 							<div id='org_message' class='textbox' style='display:none'>{$org_message|stripinput|nl2br}<br /></div>
-							<input type='hidden' name='org_message' value='{$org_message}' />
+							<input type='hidden' name='org_message' value='{$org_message|stripinput}' />
 						</td>
 					</tr>
 					{/if}
