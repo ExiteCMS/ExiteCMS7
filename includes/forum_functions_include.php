@@ -604,11 +604,8 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 	foreach($exclblocks as $key => $exclblock) {
 		switch ($exclblock[2]) {
 			case "url":
+				$exclblock[0] = url_to_absolute($_SERVER['SCRIPT_URI'], $exclblock[0]);
 				if (isURL($exclblock[0])) {
-					// check if the URL is prefixed. If not, assume http://
-					if (!eregi("^((https?|s?ftp|mailto|svn|cvs|callto|mms|skype)\:\/\/){1}", $exclblock[0])) {
-						$exclblock[0] = "http://".$exclblock[0];
-					}
 					// convert it into a link
 					$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$exclblock[0]."' alt='' target='_blank'>".$exclblock[1]."</a>", $rawmsg);
 				} else {
