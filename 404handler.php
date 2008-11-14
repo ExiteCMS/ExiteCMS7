@@ -11,10 +11,10 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id::                                                               $|
+| $Id:: 404handler.php 1984 2008-11-09 14:49:23Z WanWizard            $|
 +----------------------------------------------------------------------+
-| Last modified by $Author::                                          $|
-| Revision number $Rev::                                              $|
+| Last modified by $Author:: WanWizard                                $|
+| Revision number $Rev:: 1984                                         $|
 +---------------------------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 
