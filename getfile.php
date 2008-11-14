@@ -434,9 +434,9 @@ switch (strtolower($type)) {
 				if (isset($cat['files'][$file_id])) {
 					// define the required parameters for the download
 					$source = "file";
-					$filename = $cat['files'][$file_id];
+					$filename = $cat['files'][$file_id]['name'];
 					$filepath = substr($cat['fd_path'].$cat['fd_this_dir'],0,-1);
-					$downloadname = $cat['files'][$file_id];
+					$downloadname = $cat['files'][$file_id]['name'];
 				}
 			}
 		}
