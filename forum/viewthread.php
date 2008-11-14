@@ -469,8 +469,8 @@ if ($rows != 0) {
 		// prepare the message text for display
 		$data['post_message'] = parsemessage($data, "", $data['post_smileys'], false);
 
-		// prepare the users signature
-		$data['user_sig'] = parsemessage(array(), $data['user_sig']);
+		// prepare the users signature (allow smiley's, limit parsing)
+		$data['user_sig'] = parsemessage(array(), $data['user_sig'], true, true);
 
 		// check for attachments (if enabled globally and for this forum)
 		$data['attachments'] = array();
