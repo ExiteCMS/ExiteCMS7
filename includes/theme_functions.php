@@ -458,6 +458,14 @@ function theme_cleanup() {
 		}
 	}
 
+	// delete all used flash info from the session
+	if (isset($_SESSION['_flash'])) {
+		foreach($_SESSION['_flash'] as $key => $value) {
+			if ($_SESSION['_flash'][$key]['used']) {
+				unset($_SESSION['_flash'][$key]);
+			}
+		}
+	}
 	// flush any session info
 	session_write_close();
 		

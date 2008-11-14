@@ -102,6 +102,32 @@ function stop_session() {
 	session_destroy();
 }
 
+// store a variable in the flash session store
+function session_set_flash($name, $var) {
+	
+	// check parameters
+	if (empty($name) || empty($var)) return;
+
+	// make sure the flash variable exists
+	if (!isset($_SESSION['_flash'])) $_SESSION['_flash'] = array();
+
+	// add the variable to the session flash store
+	$_SESSION['_flash'][$name] = array('var' => $var, 'used' => false);	
+}
+
+// retrieve a variable from the flash session store
+function session_get_flash($name) {
+
+	// return the flash value
+	if (empty($name) || !isset($_SESSION['_flash'][$name])) {
+		return false;
+	} else {
+		// mark the info in the session flash as used
+		$_SESSION['_flash'][$name]['used'] = true;
+		return $_SESSION['_flash'][$name]['var'];
+	}
+}
+
 /*---------------------------------------------------+
 | Custom session handler functions                   |
 +---------------------------------------------------*/
