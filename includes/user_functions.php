@@ -128,7 +128,7 @@ if (isset($_SESSION['userinfo'])) {
 	}
 } else {
 	// is login required?
-	if ($settings['auth_required'] && FUSION_SELF != "login.php" && FUSION_SELF != "setuser.php") {
+	if ($settings['auth_required'] && !in_array(FUSION_SELF, array("login.php","setuser.php","lostpassword.php", "register.php"))) {
 		redirect(BASEDIR."login.php", "script");
 		exit;
 	}

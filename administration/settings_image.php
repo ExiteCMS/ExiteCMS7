@@ -87,10 +87,12 @@ if (isset($_POST['newthumbs']) || isset($_POST['newphotos'])) {
 			if ($data['photo_thumb'] != $data['photo_original']) {
 				@unlink(PATH_PHOTOS.$data['photo_thumb']);
 			}
-			if ($imagefile[0] > $settings2['thumb_w'] || $imagefile[1] > $settings2['thumb_h']) {
+			if ($imagefile[0] > $settings2['thumb_w']) {
+				// calculate a new thumb height
+				$thumb_h = floor(($settings2['thumb_w'] / $imagefile[0]) * $imagefile[1]);
 				// Generate a new intermediate image
 				$data['photo_thumb'] = str_replace(".img", ".thumb.img", $data['photo_original']);
-				createthumbnail($imagefile[2], PATH_PHOTOS.$data['photo_original'], PATH_PHOTOS.$data['photo_thumb'], $settings2['thumb_w'], $settings2['thumb_h']);
+				createthumbnail($imagefile[2], PATH_PHOTOS.$data['photo_original'], PATH_PHOTOS.$data['photo_thumb'], $settings2['thumb_w'], $thumb_h);
 				$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_thumb = '".$data['photo_thumb']."' WHERE photo_id = ".$data['photo_id']);
 			} else {
 				$result2 = dbquery("UPDATE ".$db_prefix."photos SET photo_thumb = photo_original WHERE photo_id = ".$data['photo_id']);

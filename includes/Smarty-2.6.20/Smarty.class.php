@@ -30,7 +30,7 @@
  * @version 2.6.20
  */
 
-/* $Id$ */
+/* $Id: Smarty.class.php 1935 2008-10-29 23:42:42Z WanWizard $ */
 
 /**
  * DIR_SEP isn't used anymore, but third party apps might

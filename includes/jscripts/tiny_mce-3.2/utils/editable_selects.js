@@ -1,5 +1,5 @@
 /**
- * $Id$
+ * $Id: editable_selects.js 1935 2008-10-29 23:42:42Z WanWizard $
  *
  * Makes select boxes editable.
  *

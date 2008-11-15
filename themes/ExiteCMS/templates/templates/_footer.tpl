@@ -8,10 +8,10 @@
 {* License. For details refer to the included gpl.txt file or visit        *}
 {* http://gnu.org                                                          *}
 {***************************************************************************}
-{* $Id::                                                                  $*}
+{* $Id:: _footer.tpl 1935 2008-10-29 23:42:42Z WanWizard                  $*}
 {*-------------------------------------------------------------------------*}
-{* Last modified by $Author::                                             $*}
-{* Revision number $Rev::                                                 $*}
+{* Last modified by $Author:: WanWizard                                   $*}
+{* Revision number $Rev:: 1935                                            $*}
 {***************************************************************************}
 {*                                                                         *}
 {* This template generates the ExiteCMS website footer.                    *}
@@ -25,7 +25,7 @@
 			<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 				<tr>
 					<td>
-						v.{$settings.version} <a href='http://exitecms.exite.eu' target='_blank' title='ExiteCMS v7.2 ©2008 Exite BV'><img src='{$smarty.const.IMAGES}cms-logo-small.png' alt='' /></a> rev.{$settings.revision}<br />
+						v.{$settings.version} <a href='http://www.exitecms.org' target='_blank' title='ExiteCMS v7.2 ©2008 Exite BV'><img src='{$smarty.const.IMAGES}cms-logo-small.png' alt='' /></a> rev.{$settings.revision}<br />
 						{$settings.counter} {if $settings.counter == 1}{$locale.140}{else}{$locale.141}{/if}
 					</td>
 				</tr>

@@ -10,10 +10,10 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id::                                                               $|
+| $Id:: core_functions.js 1936 2008-10-30 00:09:50Z WanWizard         $|
 +----------------------------------------------------------------------+
-| Last modified by $Author::                                          $|
-| Revision number $Rev::                                              $|
+| Last modified by $Author:: WanWizard                                $|
+| Revision number $Rev:: 1936                                         $|
 +---------------------------------------------------------------------*/
 
 // Flipbox written by CrappoMan, simonpatterson@dsl.pipex.com

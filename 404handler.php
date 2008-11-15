@@ -1,5 +1,4 @@
 <?php
-// TEST CHANGE
 /*---------------------------------------------------------------------+
 | ExiteCMS Content Management System                                   |
 +----------------------------------------------------------------------+
@@ -12,10 +11,10 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id:: 404handler.php 1984 2008-11-09 14:49:23Z WanWizard            $|
+| $Id::                                                               $|
 +----------------------------------------------------------------------+
-| Last modified by $Author:: WanWizard                                $|
-| Revision number $Rev:: 1984                                         $|
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 

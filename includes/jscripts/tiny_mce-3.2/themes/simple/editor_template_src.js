@@ -1,5 +1,5 @@
 /**
- * $Id$
+ * $Id: editor_template_src.js 1935 2008-10-29 23:42:42Z WanWizard $
  *
  * This file is meant to showcase how to create a simple theme. The advanced
  * theme is more suitable for production use.

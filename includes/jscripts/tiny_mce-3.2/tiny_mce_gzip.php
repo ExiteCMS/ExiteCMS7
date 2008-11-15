@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: tiny_mce_gzip.php 1935 2008-10-29 23:42:42Z WanWizard $
  *
  * @author Moxiecode
  * @copyright Copyright © 2005-2006, Moxiecode Systems AB, All rights reserved.

@@ -1,5 +1,5 @@
 /**
- * $Id$
+ * $Id: mctabs.js 1935 2008-10-29 23:42:42Z WanWizard $
  *
  * Moxiecode DHTML Tabs script.
  *

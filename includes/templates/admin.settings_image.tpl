@@ -87,12 +87,12 @@
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.601}
-				<br />
-				<span class='small2'>{$locale.604}</span>
+{*				<br />
+				<span class='small2'>{$locale.604}</span> *}
 			</td>
 			<td width='50%' class='tbl'>
-				<input type='text' name='thumb_w' value='{$settings2.thumb_w}' maxlength='3' class='textbox' style='width:40px;' /> x
-				<input type='text' name='thumb_h' value='{$settings2.thumb_h}' maxlength='3' class='textbox' style='width:40px;' />
+				<input type='text' name='thumb_w' value='{$settings2.thumb_w}' maxlength='3' class='textbox' style='width:40px;' /> {* x
+				<input type='text' name='thumb_h' value='{$settings2.thumb_h}' maxlength='3' class='textbox' style='width:40px;' /> *}
 				&nbsp;
 				<input type='submit' name='newthumbs' value='{$locale.753}' class='button' />
 			</td>

@@ -11,10 +11,10 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id:: index.php 1934 2008-10-29 22:36:59Z root                      $|
+| $Id::                                                               $|
 +----------------------------------------------------------------------+
-| Last modified by $Author:: root                                     $|
-| Revision number $Rev:: 1934                                         $|
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 if (!checkrights("I") || !defined("iAUTH") || $aid != iAUTH || !defined('INIT_CMS_OK')) fallback(BASEDIR."index.php");
 
