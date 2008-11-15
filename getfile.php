@@ -435,14 +435,19 @@ switch (strtolower($type)) {
 					// define the required parameters for the download
 					$source = "file";
 					$filename = $cat['files'][$file_id]['name'];
-					$filepath = substr($cat['fd_path'].$cat['fd_this_dir'],0,-1);
+					$filepath = $cat['fd_path'].$cat['fd_this_dir'];
 					$downloadname = $cat['files'][$file_id]['name'];
 				}
 			}
 		}
 		if (!isset($source)) {
-			terminate('not implemented yet!');
+			terminate("<b>Invalid or missing file download ID.</b>");
 		}
+		// load the download log include
+		require_once PATH_ROOT."modules/download_statistics/download_include.php";
+		// add the download to the statistics tables
+		$on_map = empty($settings['dlstats_geomap_regex']) || preg_match($settings['dlstats_geomap_regex'], trim($filepath.$filename));
+		log_download($filepath.$filename, USER_IP, $on_map, 1, time());
 		break;
 
 	case "pa":	// personal message attachments

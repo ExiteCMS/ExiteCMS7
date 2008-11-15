@@ -81,17 +81,15 @@ if (isset($download_id)) {
 				$result = dbquery("UPDATE ".$db_prefix."downloads SET download_count=download_count+1 WHERE download_id='$download_id'");
 				// download module installed but no external stats collector active?
 				if (isset($settings['dlstats_remote']) && !$settings['dlstats_remote']) {
-					// Then update the IP counters for mapping purposes
-					if (USER_IP != "0.0.0.0") {
-						$result = dbquery("INSERT INTO ".$db_prefix."dlstats_ips (dlsi_ip, dlsi_ccode, dlsi_counter, dlsi_onmap) VALUES ('".USER_IP."', '".USER_CC."', '1', '1') ON DUPLICATE KEY UPDATE dlsi_counter = dlsi_counter + 1");
-					}
+					// load the download log include
+					require_once PATH_ROOT."modules/download_statistics/download_include.php";
+					// add the download to the statistics tables
+					$on_map = empty($settings['dlstats_geomap_regex']) || preg_match($settings['dlstats_geomap_regex'], trim($data['download_url']));
+					log_download("LOCAL: ".$data['download_url'], USER_IP, $on_map, 1, time());
 				}
 			}
 			// if a URL is given for the download, redirect to it, else fall back to the download category
 			if ($data['download_url']) {
-				// download statistics plugin installed but no remote stats used? Then update the IP counters
-				if (isset($settings['dlstats_remote']) && !$settings['dlstats_remote']) {
-				}
 				redirect($data['download_url']);
 				exit;
 			} else {
