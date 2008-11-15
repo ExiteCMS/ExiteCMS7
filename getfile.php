@@ -437,6 +437,7 @@ switch (strtolower($type)) {
 					$filename = $cat['files'][$file_id]['name'];
 					$filepath = $cat['fd_path'].$cat['fd_this_dir'];
 					$downloadname = $cat['files'][$file_id]['name'];
+					break;
 				}
 			}
 		}
@@ -447,7 +448,7 @@ switch (strtolower($type)) {
 		require_once PATH_ROOT."modules/download_statistics/download_include.php";
 		// add the download to the statistics tables
 		$on_map = empty($settings['dlstats_geomap_regex']) || preg_match($settings['dlstats_geomap_regex'], trim($filepath.$filename));
-		log_download($filepath.$filename, USER_IP, $on_map, 1, time());
+		log_download($cat['fd_this_dir'].$filename, USER_IP, $on_map, 1, time());
 		break;
 
 	case "pa":	// personal message attachments
