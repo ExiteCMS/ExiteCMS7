@@ -78,7 +78,14 @@ if (isset($_SESSION['userinfo'])) {
 	if (dbrows($result) != 0) {
 		$userdata = dbarray($result);
 		if ($userdata['user_status'] == 0) {
-			if ($userdata['user_theme'] != "Default" && file_exists(PATH_THEMES.$userdata['user_theme']."/theme.php")) {
+			// set the user's theme
+			if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
+				$userdata['user_theme'] = $_SESSION['set_theme'];
+				unset($_SESSION['set_theme']);
+				$result2 = dbquery("UPDATE ".$db_prefix."users SET user_theme = '".$userdata['user_theme']."' WHERE user_id='$userinfo_1' AND user_password='$userinfo_2'");
+				define("PATH_THEME", PATH_THEMES.$userdata['user_theme']."/");
+				define("THEME", THEMES.$userdata['user_theme']."/");
+			} elseif ($userdata['user_theme'] != "Default" && file_exists(PATH_THEMES.$userdata['user_theme']."/theme.php")) {
 				define("PATH_THEME", PATH_THEMES.$userdata['user_theme']."/");
 				define("THEME", THEMES.$userdata['user_theme']."/");
 			} else {
@@ -132,8 +139,13 @@ if (isset($_SESSION['userinfo'])) {
 		redirect(BASEDIR."login.php", "script");
 		exit;
 	}
-	define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
-	define("THEME", THEMES.$settings['theme']."/");
+	if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
+		define("PATH_THEME", PATH_THEMES.$_SESSION['set_theme']."/");
+		define("THEME", THEMES.$_SESSION['set_theme']."/");
+	} else {
+		define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
+		define("THEME", THEMES.$settings['theme']."/");
+	}
 	$userdata = array(); $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = "";
 }
 
@@ -210,8 +222,8 @@ if (iMEMBER) {
 		$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('".$userdata['user_id']."', '".USER_IP."', '".time()."')");
 	}
 }
-// users inactive for more than 180 seconds are not considered to be online
-$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_lastactive<".(time()-180)."");
+// users inactive for more than 5 minutes are not considered to be online
+$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_lastactive<".(time()-300)."");
 
 // update the threads_read table for the current user
 if (iMEMBER) {
