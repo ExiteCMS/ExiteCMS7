@@ -44,7 +44,7 @@
 <br />
 {section name=id loop=$modules}
 {if $smarty.section.id.first}
-<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 {/if}
 	<tr>
 		<td colspan='5' class='tbl1'>

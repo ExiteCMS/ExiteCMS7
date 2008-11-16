@@ -57,7 +57,7 @@
 {section name=id loop=$cats}
 {cycle name=column values="1,2,3,4" assign="column" print=no} 						{* keep track of the current column *}
 	{if $smarty.section.id.first}
-	<table align='center' cellpadding='0' cellspacing='1' width='600'>
+	<table align='center' cellpadding='0' cellspacing='1' width='100%'>
 	{/if}
 	{if $column == 1}<tr>{/if}
 	<td align='center' width='{$colwidth}%' class='tbl'>

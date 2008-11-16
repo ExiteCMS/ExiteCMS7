@@ -32,7 +32,7 @@
 {else}
 	{section name=id loop=$members}
 		{if $smarty.section.id.first}
-		<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 			<tr>
 				<td class='tbl2'>
 					{if $order == "username"}

@@ -155,7 +155,7 @@
 	{assign var="cat_locale" value=""}
 {/if}
 <br />
-<table align='center' width='600' cellspacing='1' cellpadding='0' class='tbl-border'>
+<table align='center' width='100%' cellspacing='1' cellpadding='0' class='tbl-border'>
 {section name=dc loop=$cats}
 {if $smarty.section.dc.first}
 	<tr>

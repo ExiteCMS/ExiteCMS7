@@ -137,7 +137,7 @@
 			{assign var="link_locale" value=""}
 		{/if}
 		<br />
-		<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 			<tr>
 				<td class='tbl2'>
 					<b>{$locale.430}</b>

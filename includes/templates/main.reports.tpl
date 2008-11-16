@@ -21,7 +21,7 @@
 {if $action == ""}
 		{section name=id loop=$reports}
 		<form name='form{$reports[id].report_id}' method='post' action='{$smarty.const.FUSION_SELF|cat:"?action=report&amp;report_id="|cat:$reports[id].report_id}'
-			<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+			<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 				<tr>
 					<td class='tbl2'>
 						{$locale.rpt401}: <b>{$reports[id].report_title}</b>

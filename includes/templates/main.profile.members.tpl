@@ -18,7 +18,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.420 state=$_state style=$_style}
-<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
 		<td colspan='3'>
 			<table align='center' cellpadding='0' cellspacing='0' width='100%'>
@@ -139,7 +139,7 @@
 	</tr>
 </table>
 <br />
-<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
 		<td class='tbl2' colspan='2'>
 			<b>{$locale.422}</b>
@@ -212,7 +212,7 @@
 {section name=group loop=$data.user_groups}
 	{if $smarty.section.group.first}
 		<br />
-		<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 			<tr>
 				<td class='tbl2'>
 					<b>{$locale.423}</b>
@@ -231,7 +231,7 @@
 {section name=id loop=$data.translations}
 	{if $smarty.section.id.first}
 		<br />
-		<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 			<tr>
 				<td class='tbl2'>
 					<b>{$locale.427}</b>

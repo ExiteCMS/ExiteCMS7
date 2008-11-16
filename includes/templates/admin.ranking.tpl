@@ -21,7 +21,7 @@
 	{assign var=tabletitle value=$locale.401}{if $action == "edit"}{assign var=tabletitle value=$locale.402}{/if}
 	{include file="_opentable.tpl" name=$_name title=$tabletitle state=$_state style=$_style}
 	<form name='layoutform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action={$action}'>
-		<table align='center' cellpadding='0' cellspacing='1' width='600'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%'>
 			<tr>
 				<td class='tbl'>
 					{$locale.421}
@@ -179,7 +179,7 @@
 	{include file="_closetable.tpl"}
 {else}
 	{include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
-	<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 		<tr>
 			<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
 				<b>{$locale.411}</b>

@@ -18,7 +18,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.410 state=$_state style=$_style}
-<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
 		<td align='center' colspan='{if $smarty.const.iUSER >= 102}4{else}2{/if}' class='tbl1'>
 			{if $smarty.const.iUSER >= 102}

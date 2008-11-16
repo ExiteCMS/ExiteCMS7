@@ -30,7 +30,7 @@
 <br />
 {section name=id loop=$panels}
 	{if $smarty.section.id.first}
-		<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	{/if}
 	{if $panels[id].new_panel_side}
 	{if !$smarty.section.id.first}

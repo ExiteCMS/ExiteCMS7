@@ -20,7 +20,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400  state=$_state style=$_style}
 {include file="admin.settings_links.tpl}
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='600'>
+	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
 			<td class='tbl2'>
 				{$locale.451}

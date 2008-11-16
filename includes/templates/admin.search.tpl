@@ -20,7 +20,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 {if $action == "add" || $action == "edit"}
 	<form name='searchform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-		<table align='center' cellpadding='0' cellspacing='1' width='600'>
+		<table align='center' cellpadding='0' cellspacing='1' width='100%'>
 			<tr>
 				<td class='tbl'>
 					{$locale.420}
@@ -80,7 +80,7 @@
 		</table>
 	</form>
 {else}
-	<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 		<tr>
 			<td class='tbl2'>
 				<b>{$locale.401}</b>

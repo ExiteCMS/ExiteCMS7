@@ -27,7 +27,7 @@
 	</div>
 {/if} 
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
-	<table align='center' cellpadding='0' cellspacing='0' width='600'>
+	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
 			<td width='50%' class='tbl'>
 				{$locale.551}

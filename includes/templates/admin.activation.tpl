@@ -20,7 +20,7 @@
 {include file="_opentable.tpl" name=$_name title=$locale.400 state=$_state style=$_style}
 {section name=id loop=$newusers}
 	{if $smarty.section.id.first}
-	<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+	<table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 		<tr>
 			<td class='tbl2' style='font-weight:bold;text-align:center;'>
 				{$locale.402}

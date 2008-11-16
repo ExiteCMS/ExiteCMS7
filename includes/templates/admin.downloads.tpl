@@ -250,7 +250,7 @@
 	{if $upload_error != ""}
 		<div class='errors'><br />{$upload_error}</div>
 	{/if}
-	<table align='center' width='600' cellpadding='0' cellspacing='0'>
+	<table align='center' width='100%' cellpadding='0' cellspacing='0'>
 		<tr>
 			<td width='175' class='tbl'>
 				<br />{$locale.519}:<br />
