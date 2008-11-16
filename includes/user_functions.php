@@ -139,14 +139,16 @@ if (isset($_SESSION['userinfo'])) {
 		redirect(BASEDIR."login.php", "script");
 		exit;
 	}
+	$userdata = array(); $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = "";
 	if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
 		define("PATH_THEME", PATH_THEMES.$_SESSION['set_theme']."/");
 		define("THEME", THEMES.$_SESSION['set_theme']."/");
+		$userdata['user_theme'] = $_SESSION['set_theme'];
 	} else {
 		define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
 		define("THEME", THEMES.$settings['theme']."/");
+		$userdata['user_theme'] = $settings['theme'];
 	}
-	$userdata = array(); $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = "";
 }
 
 // if logged in, extract info from the userdata record
