@@ -206,22 +206,23 @@ if (iMEMBER) {
 	$result = dbquery("UPDATE ".$db_prefix."users SET user_lastvisit='".time()."', user_ip='".USER_IP."', user_cc_code='".USER_CC."' WHERE user_id='".$userdata['user_id']."'");
 }
 
-// update the last users online information for guests
-if (iGUEST) {
-	$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");
-	if (dbrows($result) != 0) {
-		$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='0' AND online_ip='".USER_IP."'");
+if (!CMS_IS_BOT) {
+	if (iGUEST) {
+		// update the last users online information for guests
+		$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='0' AND online_ip='".USER_IP."'");
+		if (dbrows($result) != 0) {
+			$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='0' AND online_ip='".USER_IP."'");
+		} else {
+			$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('0', '".USER_IP."', '".time()."')");
+		}
 	} else {
-		$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('0', '".USER_IP."', '".time()."')");
-	}
-}
-// update the last users online information for members
-if (iMEMBER) {
-	$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='".$userdata['user_id']."'");
-	if (dbrows($result) != 0) {
-		$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='0' AND online_ip='".USER_IP."'");
-	} else {
-		$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('".$userdata['user_id']."', '".USER_IP."', '".time()."')");
+		// update the last users online information for members
+		$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='".$userdata['user_id']."'");
+		if (dbrows($result) != 0) {
+			$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='".$userdata['user_id']."' AND online_ip='".USER_IP."'");
+		} else {
+			$result = dbquery("INSERT INTO ".$db_prefix."online (online_user, online_ip, online_lastactive) VALUES ('".$userdata['user_id']."', '".USER_IP."', '".time()."')");
+		}
 	}
 }
 // users inactive for more than 5 minutes are not considered to be online
