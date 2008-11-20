@@ -86,7 +86,7 @@
 				</tr>
 			{section name=id loop=$threads}				
 				<tr>
-					<td align='center' width='20' class='tbl2'>
+					<td align='center' width='20' class='{cycle values='tbl1,tbl2' advance=no}'>
 						{if $threads[id].thread_locked && $threads[id].unread_posts == 0}
 							<img src='{$smarty.const.THEME}images/folderlock.gif' title='{$locale.564}' alt='{$locale.564}' />
 						{elseif $threads[id].thread_locked && $threads[id].unread_posts > 0}
@@ -99,12 +99,12 @@
 							<img src='{$smarty.const.THEME}images/folderhot.gif' title='{$locale.562}' alt='{$locale.562}' />
 						{/if}
 					</td>
-					<td align='center' width='20' class='tbl1'>
+					<td align='center' width='20' class='{cycle values='tbl1,tbl2' advance=no}'>
 						<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;pid={$threads[id].last_post}#post_{$threads[id].last_post}'>
 							<img src='{$smarty.const.THEME}images/last_post.jpg' title='{$locale.574}' alt='{$locale.574}' />
 						</a>
 					</td>
-					<td class='tbl1'>
+					<td class='{cycle values='tbl1,tbl2' advance=no}'>
 						{if $threads[id].thread_sticky}
 							<img src='{$smarty.const.THEME}images/stickythread.gif' title='{$locale.563}' alt='{$locale.563}' style='vertical-align:middle;' />
 						{/if}
@@ -125,7 +125,7 @@
 							{/if}
 						{/if}
 					</td>
-					<td class='tbl2'>
+					<td class='{cycle values='tbl1,tbl2' advance=no}'>
 						{$threads[id].cc_flag}
 						{if $threads[id].thread_author == 0}
 							{$locale.sysusr}
@@ -137,13 +137,13 @@
 							{/if}
 						{/if}
 					</td>
-					<td align='center' class='tbl1'>
+					<td align='center' class='{cycle values='tbl1,tbl2' advance=no}'>
 						{$threads[id].thread_views}
 					</td>
-					<td align='center' class='tbl2'>
+					<td align='center' class='{cycle values='tbl1,tbl2' advance=no}'>
 						{$threads[id].thread_replies}
 					</td>
-					<td class='tbl1'>
+					<td class='{cycle values='tbl1,tbl2' advance=yes}'>
 						{$threads[id].thread_lastpost|date_format:"forumdate"}
 						<br />
 						<span class='small'>

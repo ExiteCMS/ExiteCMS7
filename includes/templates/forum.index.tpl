@@ -59,10 +59,10 @@
 					{/if}
 					{/if}
 					<tr>
-						<td width='1%' align='center' class='tbl1'>
+						<td width='1%' align='center' class='{cycle values='tbl1,tbl2' advance=no}'>
 							<a href='{$smarty.const.BASEDIR}feeds.php?type=forum&amp;id={$forums[id].forum_id}'><img src='{$smarty.const.THEME}images/rss-icon.gif' alt='' /></a>
 						</td>
-						<td width='1%' align='center' class='tbl2'>
+						<td width='1%' align='center' class='{cycle values='tbl1,tbl2' advance=no}'>
 						{if $forums[id].unread_posts == 0}
 					    	<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' />
 						{elseif $forums[id].unread_posts <= $smarty.const.FOLDER_HOT}
@@ -71,7 +71,7 @@
 					    	<img src='{$smarty.const.THEME}images/folderhot.gif' alt='{$locale.561}' />
 						{/if}
 						</td>
-						<td class='tbl1'>
+						<td class='{cycle values='tbl1,tbl2' advance=no}'>
 							<a href='viewforum.php?forum_id={$forums[id].forum_id}'>{$forums[id].forum_name}</a>
 							<br />
 							<span class='small'>{$forums[id].forum_description}
@@ -94,13 +94,13 @@
 							{/section}
 							</span>
 						</td>
-						<td align='center' class='tbl2'>
+						<td align='center' class='{cycle values='tbl1,tbl2' advance=no}'>
 							{$forums[id].thread_count}
 						</td>
-						<td align='center' class='tbl1'>
+						<td align='center' class='{cycle values='tbl1,tbl2' advance=no}'>
 							{$forums[id].total_posts}
 						</td>
-						<td class='tbl2'>
+						<td class='{cycle values='tbl1,tbl2' advance=yes}'>
 						{if $forums[id].forum_lastpost == 0}
 							{$locale.405}
 						{else}
