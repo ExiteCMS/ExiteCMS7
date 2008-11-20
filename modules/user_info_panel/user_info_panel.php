@@ -76,7 +76,7 @@ if (iMEMBER) {
 
 $variables['loginerror'] = isset($loginerror) ? $loginerror : "";
 $variables['remember_me'] = isset($_SESSION['remember_me']) ? $_SESSION['remember_me'] : "no";
-$variables['login_expiry']  = time_system2local($_SESSION['login_expire']);
+$variables['login_expiry']  = isset($_SESSION['login_expire']) ? time_system2local($_SESSION['login_expire']) : "";
 
 // get which authentication to show
 $variables['auth_methods'] = explode(",",$settings['auth_type']);
