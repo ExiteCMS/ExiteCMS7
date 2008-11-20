@@ -33,7 +33,7 @@
 		{if $adminpage4|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}index.php{$aidlink}&amp;pagenum=4' class='side'>{$locale.ac04}</a></div>{/if}
 		{if $adminpage5|default:0 != 0}<div class='side-label-link'><img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> <a href='{$smarty.const.ADMIN}tools.php{$aidlink}' class='side'>{$locale.ac05}</a></div>{/if}
 	{/if}
-	{if $login_expiry}
+	{if false}
 		<hr />
 		<div id='countdown' style='text-align:center'>
 			Login session ends on<br />{$login_expiry|date_format:"subheaderdate"}
