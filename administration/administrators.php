@@ -80,29 +80,29 @@ if (isset($_POST['edit_rights']) || (isset($edit))) {
 }
 
 // get the list of members with administrator or webmaster level
-$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_level>='102' AND user_status = '0' ORDER BY user_level DESC, user_name");
+$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '0' ORDER BY user_level DESC, user_name");
 $variables['admins'] = array();
-while ($data = dbarray($result)) {
-	$data['user_rights'] = $data['user_rights'] ? str_replace(".", " ", $data['user_rights']) : "".$locale['405'];
-	$data['user_level'] = getuserlevel($data['user_level']);
-	if ($data['user_id'] == "1" || $data['user_id'] == $userdata['user_id']) { 
-		// no editing of the webmaster or the members own rights
-		$data['can_edit'] = false;
-	} elseif ($data['user_level'] != "103") {
-		// admins can always be edited
-		$data['can_edit'] = true;
-	} else { 
-		// catch-all, no editing possible!
-		$data['can_edit'] = false; 
-	}
-	$variables['admins'][] = $data;
-}
-
-// get the list of all members (remove the user himself from the list!)
-$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '0' ORDER BY user_name");
 $variables['users'] = array();
 while ($data = dbarray($result)) {
-	if ($data['user_id'] != $userdata['user_id']) $variables['users'][] = $data;
+	if ($data['user_level'] >= 102) {
+		// it's a webmaster or administrator
+		$data['user_rights'] = $data['user_rights'] ? str_replace(".", " ", $data['user_rights']) : "".$locale['405'];
+		$data['user_level'] = getuserlevel($data['user_level']);
+		if ($data['user_id'] == "1" || $data['user_id'] == $userdata['user_id']) { 
+			// no editing of the webmaster or the members own rights
+			$data['can_edit'] = false;
+		} elseif ($data['user_level'] != "103") {
+			// admins can always be edited
+			$data['can_edit'] = true;
+		} else { 
+			// catch-all, no editing possible!
+			$data['can_edit'] = false; 
+		}
+		$variables['admins'][] = $data;
+	} else {
+		// it's a member
+		$variables['users'][] = $data;
+	}
 }
 
 // get information for the edit admin panel

@@ -21,6 +21,9 @@ if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
 // disable error reporting, we don't want to give anything away
 error_reporting(E_USER_ERROR);
 
+// make sure we have enough memory to work with (independent of the php.ini setting)
+ini_set('memory_limit', '32M');
+
 // check the environment to see if we can run
 if (!extension_loaded('gd') || !function_exists('gd_info')) {
 	terminate('FATAL ERROR: ExiteCMS requires the graphics library GD to function, and it doesn\'t seem to be present in your PHP setup');

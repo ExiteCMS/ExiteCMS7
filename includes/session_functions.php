@@ -46,6 +46,9 @@ if (isset($_POST[$settings['session_name']]) && !empty($_POST[$settings['session
 // start the session
 session_start();
 
+// update the timestamp of the session cookie, we want expiry after the last page load, not after the session has started!
+setcookie(ini_get("session.name"), session_id(), time()+ini_get("session.gc_maxlifetime"));
+
 // if the user changed the state of a panel, a cookie has been created to record the new state
 // get these cookies, and store them in the users session record to be reused, and delete the cookie
 foreach($_COOKIE as $cookiename => $cookievalue) {
@@ -66,6 +69,12 @@ if (isset($_COOKIE['last_url']) && (isURL($_COOKIE['last_url']) || isURL($settin
 if (isset($_SESSION['locale']) && is_array($_SESSION['locale'])) {
 	unset($_SESSION['locale']);
 }
+
+// mark all variables in flash as used, so they get deleted at the end of this page request
+foreach($_SESSION['_flash'] as $key => $value) {
+	$_SESSION['_flash'][$key]['used'] = true;
+}
+
 
 /*---------------------------------------------------+
 | Session related global functions                   |
@@ -122,8 +131,6 @@ function session_get_flash($name) {
 	if (empty($name) || !isset($_SESSION['_flash'][$name])) {
 		return false;
 	} else {
-		// mark the info in the session flash as used
-		$_SESSION['_flash'][$name]['used'] = true;
 		return $_SESSION['_flash'][$name]['var'];
 	}
 }
