@@ -71,7 +71,7 @@
 		<td valign='top' width='140' class='tbl_left'>
 			{if $messages[id].pmindex_user_id == $messages[id].pmindex_to_id}
 				{$messages[id].sender.cc_flag}
-				{if $messages[id].sender.user_status == 0}
+				{if $messages[id].sender.user_status == 0 && $messages[id].sender.user_id}
 					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].sender.user_id}'>{$messages[id].sender.user_name}</a>
 				{else}
 					{$messages[id].sender.user_name}

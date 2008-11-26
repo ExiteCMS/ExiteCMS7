@@ -174,8 +174,12 @@
 		</td>
 		{if $folder != $locale.403}
 		<td class='tbl1' style='white-space:nowrap'>
-			{$messages[id].sender.cc_flag}
-			<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].sender.user_id}'>{$messages[id].sender.user_name}</a>
+			{if $messages[id].sender.user_id}
+				{$messages[id].sender.cc_flag}
+				<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].sender.user_id}'>{$messages[id].sender.user_name}</a>
+			{else}
+				{$messages[id].sender.user_name}
+			{/if}
 		</td>
 		{/if}
 		{if $folder != $locale.402}
