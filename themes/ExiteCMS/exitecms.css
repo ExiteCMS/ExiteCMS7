@@ -30,7 +30,7 @@ a:hover.side			{ color:#333333; text-decoration:underline; }
 a img					{ border:none; }
 
 						/* wiki links */
-a.wiki_link:link,a.wiki_link:visited { color:#34329C; text-decoration:none; border-width:0px 0px 1px 0px; border-style:dotted; border-color:#34329C; }
+a.wiki_link:link,a.wiki_link:visited { color:#34329C; text-decoration:none; border-width:0px 0px 1px 0px; border-style:dotted; border-color:#34329C; background-image: url(images/external_link.gif); background-position:right; background-repeat:no-repeat; padding-right:13px; }
 
 						/* horizontal lines */
 hr						{ border:none; color:#bbb; background-color:#bbb; height:1px; }
@@ -209,7 +209,7 @@ html legend 			{ position:absolute; top: -0.5em; left: .5em; }
 .progressBarComplete	{ width:100%; background-color: green; visibility: hidden; }
 .progressBarError		{ width:100%; background-color: red; visibility: hidden; }
 .progressBarStatus		{ margin-top: 2px; width: 100%; font-size: 90%; text-align: left; white-space: nowrap; }
-a.progressCancel 		{ font-size:0; height:16px; width:16px; background-image: url(/themes/ExiteCMS/images/cancel.gif); background-repeat:no-repeat; background-position:0px 0px; float:right; }
+a.progressCancel 		{ font-size:0; height:16px; width:16px; background-image: url(images/cancel.gif); background-repeat:no-repeat; background-position:0px 0px; float:right; }
 
 /* --- Mootools Lightbox, by Milkbox -------------------------------- */
 
@@ -220,7 +220,7 @@ a.progressCancel 		{ font-size:0; height:16px; width:16px; background-image: url
 #mbCenter 				{ position:absolute; z-index:101; overflow:hidden; left:50%; top:10%; background-color:#fff; border:5px solid #fff; margin:0; padding:5px; }
 
 						/* image loading notice */
-.mbLoading				{ background:#fff url(/themes/ExiteCMS/images/ajax-loader.gif) no-repeat center; }
+.mbLoading				{ background:#fff url(images/ajax-loader.gif) no-repeat center; }
 
 						/* Lightbox image settings */
 #mbImage				{ margin:0; padding:0; height:0; border:none; font-size:0; overflow:hidden; }
@@ -243,13 +243,13 @@ a.progressCancel 		{ font-size:0; height:16px; width:16px; background-image: url
 						/* navigation links */
 #mbCloseLink, #mbPrevLink, #mbNextLink { outline:none; display:block; float:right; height:20px; cursor:pointer; }
 #mbPrevLink, #mbNextLink{ width:17px; }
-#mbPrevLink				{ background:transparent url(/themes/ExiteCMS/images/lb_previous.gif) no-repeat; }
-#mbNextLink				{ background:transparent url(/themes/ExiteCMS/images/lb_next.gif) no-repeat; }
+#mbPrevLink				{ background:transparent url(images/lb_previous.gif) no-repeat; }
+#mbNextLink				{ background:transparent url(images/lb_next.gif) no-repeat; }
 
 						/* NOTE: doesn't work in ie6, so, just see the js options :) */
 a#mbPrevLink:hover,a#mbNextLink:hover,a#mbCloseLink:hover { background-position: 0 -23px; }
 
-#mbCloseLink 			{ width:20px; background: transparent url(/themes/ExiteCMS/images/lb_close.gif) no-repeat; }
+#mbCloseLink 			{ width:20px; background: transparent url(images/lb_close.gif) no-repeat; }
 
 /* --- Upgrade admin module -------------------------------- */
 
