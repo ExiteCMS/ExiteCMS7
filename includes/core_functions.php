@@ -97,7 +97,7 @@ if(is_file(CONFIG_FILE)) {
 
 // if config.php is absent or empty, bail out with an error
 if (!isset($db_name)) {
-	terminate('FATAL ERROR: config file is missing. Did you run the setup?<br />Check our Wiki at http://exitecms.exite.eu on how to run the setup');
+	terminate('FATAL ERROR: config file is missing. Did you run the setup?<br />Check our Wiki at http://www.exitecms.org on how to run the setup');
 }
 
 // load the database functions, and establish a database connection

@@ -133,9 +133,9 @@ function terminate($error, $tip="", $wiki=0) {
 	$msg .= $error."</font></b><br /><br />";
 	if ($wiki) {
 		if (empty($locale['404'])) {
-			$msg .= "Please consult our <a href='http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup'>Wiki</a> ";
+			$msg .= "Please consult our <a href='http://www.exitecms.org/modules/wiki/index.php?wakka=Setup'>Wiki</a> ";
 		} else {
-			$msg .= sprintf($locale['404'], "http://exitecms.exite.eu/modules/wiki/index.php?wakka=Setup");
+			$msg .= sprintf($locale['404'], "http://www.exitecms.org/modules/wiki/index.php?wakka=Setup");
 		}
 	}
 	$msg .=" ". $tip."</div>";
