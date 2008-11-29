@@ -36,7 +36,7 @@ $_bot_list = array("Teoma","alexa","froogle","Gigabot","inktomi","looksmart","UR
 					"WebAlta Crawler","Twiceler","curl/"
 				);
 foreach($_bot_list as $bot) {
-	if(stripos($bot, $_SERVER['HTTP_USER_AGENT']) !== false) {
+	if(strpos($_SERVER['HTTP_USER_AGENT'], $bot) !== false) {
 		define("CMS_IS_BOT", true);
 		break;
 	}
