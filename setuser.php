@@ -137,6 +137,8 @@ if (!isset($error) || !isNum($error)) $error = 0;
 // set the redirect url (set in theme_cleanup), butnot when in maintenance!
 if (isset($_SERVER['HTTP_REFERER']) && eregi("maintenance.php", $_SERVER['HTTP_REFERER'])) {
 	$variables['url'] = BASEDIR."index.php";
+} elseif (isset($_SERVER['HTTP_REFERER']) && eregi("setuser.php", $_SERVER['HTTP_REFERER'])) {
+	$variables['url'] = BASEDIR."index.php";
 } elseif (isset($_SESSION['last_url'])) {
 	$variables['url'] = $_SESSION['last_url'];
 } elseif (empty($_SERVER['HTTP_REFERER'])) {
