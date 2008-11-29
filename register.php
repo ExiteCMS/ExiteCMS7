@@ -61,8 +61,8 @@ if ($settings['enable_registration'] == 1) {
 	// process the new registration
 	} else if (isset($_POST['register'])) {
 		$error = "";
-		$username = stripinput(trim(eregi_replace(" +", " ", $_POST['username'])));
-		$fullname = $_POST['fullname'];
+		$username = stripinput(trim(eregi_replace(" +", "", $_POST['username'])));
+		$fullname = eregi_replace("\"|'", "", $_POST['fullname']);
 		$email = stripinput(trim(eregi_replace(" +", "", $_POST['email'])));
 		$password1 = stripinput(trim(eregi_replace(" +", "", $_POST['password1'])));
 		
@@ -70,7 +70,7 @@ if ($settings['enable_registration'] == 1) {
 		
 	//	if (!preg_match("/^[-0-9A-Z_@\s]+$/i", $username)) $error .= $locale['403']."<br /><br />\n";
 		
-		if (preg_match("/^[0-9A-Z@]{6,20}$/i", $password1)) {
+		if (preg_match("/^[0-9A-Z_@!\.\?]{6,20}$/i", $password1)) {
 			if ($password1 != $_POST['password2']) $error .= $locale['404']."<br /><br />\n";
 		} else {
 			$error .= $locale['405']."<br /><br />\n";
@@ -83,7 +83,7 @@ if ($settings['enable_registration'] == 1) {
 		$email_domain = substr(strrchr($email, "@"), 1);
 		if (CHECK_EMAIL) {
 			if (CMS_getmxrr($email_domain, $mxhosts)) {
-				// Get the hostname the MX record points to
+				// Get the hostnamxe the MX record points to
 				$mailhost = $mxhosts[0];
 			} else {
 				// No MX record for this domain. Might be a hostname that accepts email
@@ -169,7 +169,7 @@ if ($settings['enable_registration'] == 1) {
 			$user_theme = stripinput($_POST['user_theme']);
 			$user_sig = isset($_POST['user_sig']) ? stripinput(trim($_POST['user_sig'])) : "";
 		}
-		error_reporting(E_ALL);
+
 		if ($error == "") {
 			if ($settings['email_verification'] == "1") {
 				require_once PATH_INCLUDES."sendmail_include.php";

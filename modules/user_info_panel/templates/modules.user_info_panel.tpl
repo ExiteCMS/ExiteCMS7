@@ -58,7 +58,7 @@
 		</div>
 	</div>
 	{include file="_closeside_x.tpl"}
-{elseif $settings.auth_ssl == 0 || $_SERVER.HTTPS|default:"" == "on"}
+{elseif $show_login}
 	{include file="_openside.tpl" name=$_name title=$locale.060 state=$_state style=$_style}
 	<div style='text-align:center'>
 		{$loginerror|default:""}

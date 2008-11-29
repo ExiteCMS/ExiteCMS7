@@ -110,5 +110,9 @@ if ($settings['enable_registration']) {
 // check if we need to display links
 $variables['show_passlink'] = 1;
 
+// can we show the login panel?
+$variables['show_login'] = $settings['auth_ssl'] == 0 || ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on" );
+if (!iMEMBER && !$variables['show_login']) $no_panel_displayed = true;
+
 $template_variables['modules.user_info_panel'] = $variables;
 ?>
