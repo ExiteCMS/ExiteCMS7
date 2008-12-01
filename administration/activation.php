@@ -56,8 +56,15 @@ if ($step == "activate") {
 
 // delete a user registeration
 if ($step == "delete") {
-	$usercode = stripinput($_GET['user_code']);
-	$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
+	if (isset($_GET['user_code'])) {
+		$usercode = stripinput($_GET['user_code']);
+		$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code = '$usercode'");
+	} elseif (isset($_GET['user_id'])) {
+		$user_id = stripinput($_GET['user_id']);
+		if (isNum($user_id)) {
+			$result = dbquery("DELETE FROM ".$db_prefix."users WHERE user_status = '2' AND user_id = '$user_id'");
+		}
+	}
 }
 
 // get the list of new users

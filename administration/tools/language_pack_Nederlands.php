@@ -2827,13 +2827,13 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['427'] = "Blog auteurs";
 		$localestrings['428'] = "Blog aanpassen";
 		$localestrings['429'] = "Blog index";
-		$localestrings['493'] = "Are you sure you want to delete this blog entry?";
-		$localestrings['494'] = "The blog entry has been succesfully deleted";
-		$localestrings['495'] = "The blog update has been succesfully saved";
-		$localestrings['496'] = "The new blog entry has been succesfully saved";
-		$localestrings['497'] = "The blog entry may not be left empty";
-		$localestrings['498'] = "Please fill in a subject for this blog entry";
-		$localestrings['499'] = "There are no blog entries available for display";
+		$localestrings['493'] = "Weet u zeker dat u dit blog bericht wilt verwijderen?";
+		$localestrings['494'] = "Het blog bericht is succesvol verwijderd";
+		$localestrings['495'] = "De aanpassingen aan de blog zijn bewaard";
+		$localestrings['496'] = "Het nieuwe blog bericht is succesvol opgeslagen";
+		$localestrings['497'] = "Het bericht mag niet leeg gelaten worden";
+		$localestrings['498'] = "Geef a.u.b. een onderwerp voor dit blog bericht";
+		$localestrings['499'] = "Er zijn geen blog berichten gevonden om te tonen";
 		load_localestrings($localestrings, LP_LOCALE, "main.blogs", $step);
 
 		$localestrings = array();
@@ -3767,7 +3767,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1226762359");
+if (!defined('LP_DATE')) define('LP_DATE', "1227998517");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
