@@ -132,7 +132,7 @@ if ($step == "delete") {
 }
 if (isset($_POST['save_download'])) {
 	$download_title = stripinput($_POST['download_title']);
-	$download_description = addslash($_POST['download_description']);
+	$download_description = trim(stripinput($_POST['download_description']));
 	$download_url = stripinput($_POST['download_url']);
 	$download_external = (isset($_POST['download_external']) && isNum($_POST['download_external'])) ? $_POST['download_external'] : 0;
 	$download_license = stripinput($_POST['download_license']);
@@ -152,7 +152,7 @@ if ($step == "edit") {
 	$result = dbquery("SELECT * FROM ".$db_prefix."downloads WHERE download_id='$download_id'");
 	$data = dbarray($result);
 	$download_title = $data['download_title'];
-	$download_description = stripslashes($data['download_description']);
+	$download_description = $data['download_description'];
 	$download_url = $data['download_url'];
 	$download_license = $data['download_license'];
 	$download_os = $data['download_os'];
@@ -258,6 +258,11 @@ $variables['download_os'] = $download_os;
 $variables['download_version'] = $download_version;
 $variables['download_filesize'] = $download_filesize;
 $variables['download_external'] = $download_external;
+
+// load the hoteditor if needed
+if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+	define('LOAD_HOTEDITOR', true);
+}
 
 // panel definitions
 $template_panels[] = array('type' => 'body', 'name' => 'admin.downloads', 'title' => $title, 'template' => 'admin.downloads.tpl', 'locale' => "admin.downloads");

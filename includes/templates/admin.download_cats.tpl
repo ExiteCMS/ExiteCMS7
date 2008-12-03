@@ -42,11 +42,33 @@
 			</tr>
 		{/if}
 		<tr>
-			<td width='1%' class='tbl' style='white-space:nowrap'>
+			<td width='1%' class='tbl' style='vertical-align:top;white-space:nowrap'>
 				{$locale.431}
 			</td>
 			<td class='tbl'>
-				<input type='text' name='cat_description' value='{$cat_description}' class='textbox' style='width:250px;' />
+				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<textarea name='cat_description' rows='5' cols='80' class='textbox' style='width:350px'>{$cat_description}</textarea><br />
+					<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('cat_description', '[b]', '[/b]');" />
+					<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('cat_description', '[i]', '[/i]');" />
+					<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('cat_description', '[u]', '[/u]');" />
+					<input type='button' value='url' class='button' style='width:30px;' onclick="addText('cat_description', '[url]', '[/url]');" />
+					<input type='button' value='mail' class='button' style='width:35px;' onclick="addText('cat_description', '[mail]', '[/mail]');" />
+					<input type='button' value='img' class='button' style='width:30px;' onclick="addText('cat_description', '[img]', '[/img]');" />
+					<input type='button' value='center' class='button' style='width:45px;' onclick="addText('cat_description', '[center]', '[/center]');" />
+					<input type='button' value='small' class='button' style='width:40px;' onclick="addText('cat_description', '[small]', '[/small]');" />
+				{else}
+					<script language="javascript" type="text/javascript">
+						// non-standard toolbars for this editor instance
+						var toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight";
+						var toolbar2 ="SPACE,btRemove_Format,SPACE,btBold,btItalic,btUnderline,SPACE,btAlign_Left,btCenter,btAlign_Right,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal";
+						var toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions";
+
+						var textarea_toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight";
+						var textarea_toolbar2 ="SPACE,btRemove_Format,SPACE,btBold,btItalic,btUnderline,SPACE,btAlign_Left,btCenter,btAlign_Right,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal";
+						var textarea_toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions";
+					</script>
+					{include file="_bbcode_editor.tpl" name="cat_description" id="cat_description" author="" message=$cat_description width="350px" height="200px"}
+				{/if}
 			</td>
 		</tr>
 		<tr>
@@ -133,7 +155,11 @@
 		</tr>
 		<tr>
 			<td align='center' colspan='2' class='tbl'>
-				<input type='submit' name='save_cat' value='{$locale.432}' class='button' />
+				{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+					<input type='submit' name='save_cat' value='{$locale.432}' class='button' />
+				{else}
+					<input type='submit' name='save_cat' value='{$locale.432}' class='button' onclick='javascript:get_hoteditor_data("cat_description");' />
+				{/if}
 			</td>
 		</tr>
 	</table>

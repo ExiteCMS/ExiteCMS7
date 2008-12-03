@@ -40,18 +40,18 @@
 		<table width='100%' cellspacing='0' cellpadding='0' style='margin-top:5px;margin-bottom:5px;'>
 			<tr>
 				<td style='width:100%;vertical-align:top;'>
-					<a href='news_cats.php?cat_id={$news[column][item].news_cat_id}'>
+					<a href='{$smarty.const.BASEDIR}news_cats.php?cat_id={$news[column][item].news_cat_id}'>
 					<img src='{$smarty.const.IMAGES_NC}{$news[column][item].news_cat_image}' alt='{$news[column][item].news_cat_name}' align='left' style='border:0px;margin-top:3px;margin-right:5px' /></a>
 					{$news[column][item].news_news|escape:"amp"}<br />
 				</td>
 			</tr>
 		</table>
-		{if $allow_edit}<form name='editnews{$news[column][item].news_id}' method='post' action='/administration/news.php{$aidlink}&amp;news_id={$news[column][item].news_id}'>{/if}
+		{if $allow_edit}<form name='editnews{$news[column][item].news_id}' method='post' action='{$smarty.const.BASEDIR}administration/news.php{$aidlink}&amp;news_id={$news[column][item].news_id}'>{/if}
 			<table width='100%' cellspacing='0' cellpadding='0'>
 				<tr>
 					<td align='center' class='infobar'>
 						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> {$locale.040}
-						{if $smarty.const.iMEMBER}<a href='profile.php?lookup={$news[column][item].user_id}'>{/if}
+						{if $smarty.const.iMEMBER}<a href='{$smarty.const.BASEDIR}profile.php?lookup={$news[column][item].user_id}'>{/if}
 						{$news[column][item].user_name}{if $smarty.const.iMEMBER}</a>{/if}
 						{if $_maxcols == 3}
 							<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' /><br />
@@ -64,9 +64,9 @@
 						{else}
 							&middot;
 						{/if}
-						{if $news[column][item].news_extended}<a href='news.php?readmore={$news[column][item].news_id}'>{$locale.042}</a> &middot;{/if}
+						{if $news[column][item].news_extended}<a href='{$smarty.const.BASEDIR}news.php?readmore={$news[column][item].news_id}'>{$locale.042}</a> &middot;{/if}
 						{if $news[column][item].allow_comments}
-							<a href='news.php?readmore={$news[column][item].news_id}#comments'>{$news[column][item].news_comments} {$locale.043}</a> &middot;
+							<a href='{$smarty.const.BASEDIR}news.php?readmore={$news[column][item].news_id}#comments'>{$news[column][item].news_comments} {$locale.043}</a> &middot;
 							{if $_maxcols == 3}
 								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' /><br />
 								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />

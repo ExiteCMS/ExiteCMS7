@@ -69,7 +69,7 @@ if (isset($_POST['save_cat'])) {
 	$cat_id = isset($cat_id) ? $cat_id : "0";
 	$cat_name = stripinput($_POST['cat_name']);
 	$cat_locale = isset($_POST['cat_locale']) ? $_POST['cat_locale'] : "";
-	$cat_description = stripinput($_POST['cat_description']);
+	$cat_description = trim(stripinput($_POST['cat_description']));
 	$cat_access = isNum($_POST['cat_access']) ? $_POST['cat_access'] : "0";
 	$cat_image = stripinput($_POST['cat_image']);
 	$cat_sub = isNum($_POST['cat_sub']) ? $_POST['cat_sub'] : "0";
@@ -234,6 +234,11 @@ $variables['locales'] = array();
 $result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
 while ($data = dbarray($result)) {
 	$variables['locales'][$data['locale_code']] = $data['locale_name'];
+}
+
+// load the hoteditor if needed
+if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+	define('LOAD_HOTEDITOR', true);
 }
 
 // panel definitions

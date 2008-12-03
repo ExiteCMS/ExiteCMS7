@@ -34,25 +34,30 @@
 						{$locale.481}
 					</td>
 					<td class='tbl'>
-						<textarea name='download_description' rows='5' cols='80' class='textbox' style='width:400px;'>{$download_description}</textarea>
-					</td>
-				</tr>
-				<tr>
-					<td width='1%' class='tbl' style='white-space:nowrap'>
-					</td>
-					<td class='tbl'>
-						<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('download_description', '<b>', '</b>');" />
-						<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('download_description', '<i>', '</i>');" />
-						<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('download_description', '<u>', '</u>');" />
-						<input type='button' value='ul' class='button' style='width:25px;' onclick="addText('download_description', '<ul>', '</ul>');" />
-						<input type='button' value='li' class='button' style='width:25px;' onclick="addText('download_description', '<li>', '</li>');" />
-						<input type='button' value='link' class='button' style='width:35px' onclick="addText('download_description', '<a href=\'', '\' target=\'_blank\'>Link</a>');" />
-						<input type='button' value='img' class='button' style='width:35px' onclick="addText('download_description', '<img src=\'', '\' style=\'margin:5px\' align=\'left\'>');" />
-						<input type='button' value='center' class='button' style='width:45px' onclick="addText('download_description', '<center>', '</center>');" />
-						<input type='button' value='small' class='button' style='width:40px' onclick="addText('download_description', '<span class=\'small\'>', '</span>');" />
-						<input type='button' value='small2' class='button' style='width:45px' onclick="addText('download_description', '<span class=\'small2\'>', '</span>');" />
-						<input type='button' value='alt' class='button' style='width:25px' onclick="addText('download_description', '<span class=\'alt\'>', '</span>');" />
-						<br />
+						{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+							<textarea name='download_description' rows='5' cols='80' class='textbox' style='width:400px'>{$download_description}</textarea><br />
+							<input type='button' value='b' class='button' style='font-weight:bold;width:25px;' onclick="addText('download_description', '[b]', '[/b]');" />
+							<input type='button' value='i' class='button' style='font-style:italic;width:25px;' onclick="addText('download_description', '[i]', '[/i]');" />
+							<input type='button' value='u' class='button' style='text-decoration:underline;width:25px;' onclick="addText('download_description', '[u]', '[/u]');" />
+							<input type='button' value='url' class='button' style='width:30px;' onclick="addText('download_description', '[url]', '[/url]');" />
+							<input type='button' value='mail' class='button' style='width:35px;' onclick="addText('download_description', '[mail]', '[/mail]');" />
+							<input type='button' value='img' class='button' style='width:30px;' onclick="addText('download_description', '[img]', '[/img]');" />
+							<input type='button' value='center' class='button' style='width:45px;' onclick="addText('download_description', '[center]', '[/center]');" />
+							<input type='button' value='small' class='button' style='width:40px;' onclick="addText('download_description', '[small]', '[/small]');" />
+							<br />
+						{else}
+							<script language="javascript" type="text/javascript">
+								// non-standard toolbars for this editor instance
+								var toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight";
+								var toolbar2 ="SPACE,btRemove_Format,SPACE,btBold,btItalic,btUnderline,SPACE,btAlign_Left,btCenter,btAlign_Right,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal";
+								var toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions";
+
+								var textarea_toolbar1 ="SPACE,btFont_Name,btFont_Size,btFont_Color,btHighlight";
+								var textarea_toolbar2 ="SPACE,btRemove_Format,SPACE,btBold,btItalic,btUnderline,SPACE,btAlign_Left,btCenter,btAlign_Right,SPACE,btStrikethrough,btSubscript,btSuperscript,btHorizontal";
+								var textarea_toolbar3 ="SPACE,btHyperlink,btHyperlink_Email,btInsert_Image,btEmotions";
+							</script>
+							{include file="_bbcode_editor.tpl" name="download_description" id="download_description" author="" message=$download_description width="400px" height="200px"}
+						{/if}
 					</td>
 				</tr>
 				{if $settings.download_via_http == "1"}
@@ -142,7 +147,11 @@
 							<input type='checkbox' name='update_datestamp' value='1' /> {$locale.489}
 							<br /><br />
 						{/if}
-						<input type='submit' name='save_download' value='{$locale.488}' class='button' />
+						{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
+							<input type='submit' name='save_download' value='{$locale.488}' class='button' />
+						{else}
+							<input type='submit' name='save_download' value='{$locale.488}' class='button' onclick='javascript:get_hoteditor_data("download_description");' />
+						{/if}
 					</td>
 				</tr>
 			</table>

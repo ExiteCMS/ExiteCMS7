@@ -26,6 +26,9 @@ if (isset($cat_id) && !isNum($cat_id)) fallback("index.php");
 // load this module's locales
 locale_load("main.downloads");
 
+// shared forum functions include
+require_once PATH_INCLUDES."forum_functions_include.php";
+
 function countdownloads($cat_id) {
 	global $db_prefix;
 
@@ -135,6 +138,7 @@ $variables['download_cats'] = array();
 if ($variables['cats_count'] != 0) {
 	while ($data = dbarray($result)) {
 		$data['download_count'] = countdownloads($data['download_cat_id']);
+		$data['download_cat_description'] = parsemessage(array(), $data['download_cat_description'], true, true);
 		$variables['download_cats'][] = $data;
 	}
 }
@@ -147,7 +151,7 @@ if (isset($cat_id)) {
 		$variables['downloads'] = array();
 		while ($data = dbarray($result)) {
 			$data['now'] = showdate("", time());
-			$data['download_description'] = nl2br(stripslashes($data['download_description']));
+			$data['download_description'] = parsemessage(array(), $data['download_description'], true, true);
 			$variables['downloads'][] = $data;
 		}
 	}
