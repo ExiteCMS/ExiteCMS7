@@ -23,7 +23,7 @@
 			<br /><br />
 		{/if}
 		{$reportvars.output[idx].relevance|string_format:"%u"}% - <a href='/forum/viewthread.php?forum_id={$reportvars.output[idx].forum_id}&amp;thread_id={$reportvars.output[idx].thread_id}&amp;pid={$reportvars.output[idx].post_id}#post_{$reportvars.output[idx].post_id}'>{$reportvars.output[idx].post_subject}</a>,
-		{$locale.441} {$reportvars.output[idx].attach_realname}
+		{$locale.src441} {$reportvars.output[idx].attach_realname}
 		<br />
 		<span class='small'><font class='smallalt'>{$locale.040}</font>
 		{if iMEMBER}

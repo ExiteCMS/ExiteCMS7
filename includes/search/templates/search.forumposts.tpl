@@ -30,7 +30,7 @@
 		{else}
 			{$reportvars.output[idx].user_name}
 		{/if}
-		<font class='smallalt'>{$locale.436}</font> {$reportvars.output[idx].post_datestamp|date_format:"longdate"}</span>
+		<font class='smallalt'>{$locale.src436}</font> {$reportvars.output[idx].post_datestamp|date_format:"longdate"}</span>
 	{/section}
 {else}
 	<input type='radio' name='search_id' value='{$searches[id].search_id}.2' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {$locale.src517} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />

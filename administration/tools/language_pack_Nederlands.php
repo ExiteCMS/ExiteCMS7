@@ -3381,7 +3381,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src401'] = "Zoeken naar:";
 		$localestrings['src402'] = "Zoeken";
 		$localestrings['src403'] = "Zoeklocatie:";
-		$localestrings['src404'] = "Opties:";
+		$localestrings['src404'] = "Sorteren op:";
 		$localestrings['src405'] = array();
 		$localestrings['src405']['0'] = array();
 		$localestrings['src405']['0']['0'] = "";
@@ -3419,7 +3419,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src415'] = "laatste drie maanden";
 		$localestrings['src416'] = "laatste zes maanden";
 		$localestrings['src417'] = "Zoeken";
-		$localestrings['src418'] = "Sorteren op";
+		$localestrings['src418'] = "Resultaat filters:";
 		$localestrings['src419'] = "score";
 		$localestrings['src420'] = "plaatsingdatum";
 		$localestrings['src421'] = "onderwerp of titel";
@@ -3767,7 +3767,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1227998517");
+if (!defined('LP_DATE')) define('LP_DATE', "1228396459");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

@@ -41,6 +41,11 @@ $variables['rowstart'] = $rowstart;
 if (!isset($action)) $action = "";
 $variables['action'] = $action;
 
+// if this is a new search, wipe the search session variables
+if (isset($_POST['search_id']) && isset($_SESSION['search'])) {
+	unset($_SESSION['search']);
+}
+
 if (!isset($search_id)) {
 	if (isset($_POST['search_id'])) {
 		if (isNum($_POST['search_id'])) {

@@ -43,60 +43,59 @@ if (isset($action)) {
 
 	} else {
 
-		// get the required variables (could be POST or GET vars!)
-		if (isset($stext)) {
-			$stext = stripinput($stext);
-		} else {
-			$stext = isset($_POST['stext']) ? stripinput($_POST['stext']) : "";
-		}
-		$stext = str_replace(',', ' ', $stext);
-		$variables['stext'] = $stext;
-		// note: qtype not used because of a fulltext query
-		if (!isset($qtype)) {
-			$qtype = isset($_POST['qtype']) ? $_POST['qtype'] : "AND";
-		}
-		if ($qtype != "OR" && $qtype != "AND") {
-			$qtype = "AND";
-		}
-		if (!isset($datelimit)) {
-			$datelimit = isset($_POST['datelimit']) ? $_POST['datelimit'] : 0;
-		}
-		if (!isNum($datelimit)) {
-			$datelimit = 0;
-		}
-		if (!isset($sortby)) {
-			$sortby = isset($_POST['sortby']) ? $_POST['sortby'] : "score";
-		}
-		if (!in_array($sortby, $select_filters)) {
-			$sortby = $select_filters[0];
-		}
-		if (!isset($order)) {
-			$order = isset($_POST['order']) ? $_POST['order'] : 1;
-		}
-		if (!isNum($order)) {
-			$order = 1;
-		}
-		if (!isset($limit)) {
-			$limit = isset($_POST['limit']) ? $_POST['limit'] : 0;
-		}
-		if (!isNum($limit)) {
-			$limit = 0;
-		}
-		if (!isset($boolean)) {
-			$boolean = isset($_POST['boolean']) ? 0 : 1;
-		}
-
+		// make sure the sub search ID is defined
 		if (!isset($sub_search_id)) $sub_search_id = 0;
 
-		// construct the page navigator URL to allow paging
-		$variables['pagenav_url'] = FUSION_SELF."?action=search&amp;search_id=".$search_id."&amp;";
-		$variables['pagenav_url'] .= "stext=".urlencode($stext)."&amp;";
-		$variables['pagenav_url'] .= "boolean=".$boolean."&amp;";
-		$variables['pagenav_url'] .= "datelimit=".$datelimit."&amp;";
-		$variables['pagenav_url'] .= "sortby=".$sortby."&amp;";
-		$variables['pagenav_url'] .= "order=".$order."&amp;";
-		$variables['pagenav_url'] .= "limit=".$limit."&amp;";
+		// retrieve the search criteria
+		if (isset($_SESSION['search'])) {
+			// from the session store (used when paging through the results)
+			$stext = $_SESSION['search']['stext'];
+			$qtype = $_SESSION['search']['qtype'];
+			$datelimit = $_SESSION['search']['datelimit'];
+			$boolean = $_SESSION['search']['boolean'];
+			$sortby = $_SESSION['search']['sortby'];
+			$order = $_SESSION['search']['order'];
+			$limit = $_SESSION['search']['limit'];
+			$contentfilter_forums = $_SESSION['search']['contentfilter_forums'];
+			$contentfilter_users = $_SESSION['search']['contentfilter_users'];
+		} else {
+			// from the search form
+			$stext = isset($_POST['stext']) ? stripinput($_POST['stext']) : "";
+			$stext = str_replace(',', ' ', $stext);
+			$boolean = isset($_POST['boolean']) ? 0 : 1;
+			$qtype = isset($_POST['qtype']) ? stripinput($_POST['qtype']) : "AND";
+			if ($qtype != "OR" && $qtype != "AND") {
+				$qtype = "AND";
+			}
+			$sortby = isset($_POST['sortby']) ? stripinput($_POST['sortby']) : "score";
+			if (!in_array($sortby, $select_filters)) {
+				$sortby = $select_filters[0];
+			}
+			$order = isset($_POST['order']) && isNum($_POST['order']) ? $_POST['order'] : 1;
+			$limit = isset($_POST['limit']) && isNum($_POST['limit']) ? $_POST['limit'] : 0;
+			$datelimit = isset($_POST['datelimit']) && isNum($_POST['datelimit']) ? $_POST['datelimit'] : 0;
+			// add a forum filter if requested
+			if (isset($_POST['contentfilter_forums']) && isNum($_POST['contentfilter_forums']) && $_POST['contentfilter_forums'] > 0 ) {
+				$contentfilter_forums =  stripinput($_POST['contentfilter_forums']);
+			}
+			// add an author if requested
+			if (isset($_POST['contentfilter_users']) && isNum($_POST['contentfilter_users']) && $_POST['contentfilter_users'] > 0 ) {
+				$contentfilter_users = stripinput($_POST['contentfilter_users']);
+			}
+		}
+		$variables['stext'] = $stext;
 
+		// store the search parameters in the session record
+		$_SESSION['search'] = array('stext' => $stext,
+									'qtype' => $qtype,
+									'datelimit' => $datelimit,
+									'boolean' => $boolean,
+									'sortby' => $sortby,
+									'order' => $order,
+									'limit' => $limit,
+									'contentfilter_forums' => $contentfilter_forums,
+									'contentfilter_users' => $contentfilter_users
+								);
 		// basis of the query for this search
 		if ($boolean) {
 			$sql = "SELECT tn.*, user_id, user_name,
@@ -127,9 +126,10 @@ if (isset($action)) {
 		if ($datelimit) {
 			$sql .= " AND news_datestamp >= ".(time() - $datelimit);
 		}
+
 		// add an author if requested
-		if (isset($_POST['contentfilter_users']) && isNum($_POST['contentfilter_users']) && $_POST['contentfilter_users'] > 0 ) {
-			$sql .= " AND (tp.post_author = '".$_POST['contentfilter_users']."'"." OR tp.post_edituser = '".$_POST['contentfilter_users']."')";
+		if (!empty($contentfilter_users)) {
+			$sql .= " AND (news_name = '".$contentfilter_users."'"." OR news_name = '".$contentfilter_users."')";
 		}
 
 		// add the order field

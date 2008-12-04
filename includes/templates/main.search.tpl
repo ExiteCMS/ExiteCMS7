@@ -208,7 +208,7 @@
 	{/if}
 	{include file="_closetable.tpl"}
 	{if $rows > $items_per_page}
-		{makepagenav start=$rowstart count=$items_per_page total=$rows range=$settings.navbar_range link=$pagenav_url}
+		{makepagenav start=$rowstart count=$items_per_page total=$rows range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?action=search&amp;search_id="|cat:$search_id|cat:"&amp;"}
 	{/if}
 {/if}
 {***************************************************************************}

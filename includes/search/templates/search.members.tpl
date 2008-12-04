@@ -29,8 +29,8 @@
 			{$reportvars.output[idx].user_name}
 		{/if}
 		<br />&nbsp;
-		<span class='small'><font class='smallalt'>{$locale.438}</font> {$reportvars.output[idx].user_joined|date_format:"forumdate"},
-		<font class='smallalt'>{$locale.439}</font> {if $reportvars.output[idx].user_lastvisit}{$reportvars.output[idx].user_lastvisit|date_format:"forumdate"}{else}{$locale.440}{/if}</span>
+		<span class='small'><font class='smallalt'>{$locale.src438}</font> {$reportvars.output[idx].user_joined|date_format:"forumdate"},
+		<font class='smallalt'>{$locale.src439}</font> {if $reportvars.output[idx].user_lastvisit}{$reportvars.output[idx].user_lastvisit|date_format:"forumdate"}{else}{$locale.src440}{/if}</span>
 	{/section}
 {else}
 	<input type='radio' name='search_id' value='{$searches[id].search_id}' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
