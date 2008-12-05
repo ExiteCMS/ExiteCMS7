@@ -18,21 +18,17 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $action == "search"}
-	{section name=idx loop=$reportvars.output}
-		{if !$smarty.section.idx.first}
-			<br /><br />
-		{/if}
-		{$reportvars.output[idx].relevance|string_format:"%u"}% - <a href='/forum/viewthread.php?forum_id={$reportvars.output[idx].forum_id}&amp;thread_id={$reportvars.output[idx].thread_id}&amp;pid={$reportvars.output[idx].post_id}#post_{$reportvars.output[idx].post_id}'>{$reportvars.output[idx].post_subject}</a>,
-		{$locale.src441} {$reportvars.output[idx].attach_realname}
-		<br />
-		<span class='small'><font class='smallalt'>{$locale.040}</font>
-		{if iMEMBER}
-			<a href='profile.php?lookup={$reportvars.output[idx].user_id}'>{$reportvars.output[idx].user_name}</a>
-		{else}
-			{$reportvars.output[idx].user_name}
-		{/if}
-		<font class='smallalt'>{$locale.436}</font> {$reportvars.output[idx].post_datestamp|date_format:"longdate"}</span>
-	{/section}
+	<br /><br />
+	{$output.relevance|string_format:"%u"}% - <a href='/forum/viewthread.php?forum_id={$output.forum_id}&amp;thread_id={$output.thread_id}&amp;pid={$output.post_id}#post_{$output.post_id}'>{$output.post_subject}</a>,
+	{$locale.src441} {$output.attach_realname}
+	<br />
+	<span class='small'><font class='smallalt'>{$locale.040}</font>
+	{if iMEMBER}
+		<a href='profile.php?lookup={$output.user_id}'>{$output.user_name}</a>
+	{else}
+		{$output.user_name}
+	{/if}
+	<font class='smallalt'>{$locale.436}</font> {$output.post_datestamp|date_format:"longdate"}</span>
 {else}
 	<input type='radio' name='search_id' value='{$searches[id].search_id}' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
 {/if}

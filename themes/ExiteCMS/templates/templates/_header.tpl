@@ -8,10 +8,10 @@
 {* License. For details refer to the included gpl.txt file or visit        *}
 {* http://gnu.org                                                          *}
 {***************************************************************************}
-{* $Id:: _header.tpl 1996 2008-11-10 11:30:08Z WanWizard                  $*}
+{* $Id::                                                                  $*}
 {*-------------------------------------------------------------------------*}
-{* Last modified by $Author:: WanWizard                                   $*}
-{* Revision number $Rev:: 1996                                            $*}
+{* Last modified by $Author::                                             $*}
+{* Revision number $Rev::                                                 $*}
 {***************************************************************************}
 {*                                                                         *}
 {* This template generates the ExiteCMS website header.                    *}

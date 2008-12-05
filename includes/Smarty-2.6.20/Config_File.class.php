@@ -25,7 +25,7 @@
  * @package Smarty
  */
 
-/* $Id: Config_File.class.php 1935 2008-10-29 23:42:42Z WanWizard $ */
+/* $Id$ */
 
 /**
  * Config file reading class

@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Sat Nov 29 2008, 23:41:57 CET
+// generated on : Thu Dec 4 2008, 15:56:55 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";

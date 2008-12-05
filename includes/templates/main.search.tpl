@@ -55,6 +55,9 @@
 				<td valign='top'>
 					{section name=id loop=$searches}
 						{include file=$searches[id].template}
+						{if $smarty.section.id.last}
+							<input type='radio' name='search_id' value='99999' onclick='javascript:show_filter("date,users,forums");'/> {$locale.src524} <span style='color:red;'>*</span><br />
+						{/if}
 					{sectionelse}
 						{$locale.src409}
 					{/section}
@@ -194,18 +197,12 @@
 				</form>
 			</td>
 		</tr>
-		{if $message|default:"" != ""}
-		<tr>
-			<td align='left'>
-				<span style='color:red;font-weight:bold;'>{$message}</span>
-			</td>
-		</tr>
-		{/if}
 	</table>
-	{if $message|default:"" == ""}
-		<hr />
-		{include file=$searches.0.template}
-	{/if}
+	{section name=id loop=$reportvars.output}
+		{include file=$reportvars.output[id]._template output=$reportvars.output[id]}
+	{sectionelse}
+		<div style='color:red;font-weight:bold;text-align:center;padding:10px;'>{$locale.src432}</div>
+	{/section}
 	{include file="_closetable.tpl"}
 	{if $rows > $items_per_page}
 		{makepagenav start=$rowstart count=$items_per_page total=$rows range=$settings.navbar_range link=$smarty.const.FUSION_SELF|cat:"?action=search&amp;search_id="|cat:$search_id|cat:"&amp;"}

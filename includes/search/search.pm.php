@@ -18,9 +18,6 @@
 +---------------------------------------------------------------------*/
 if (eregi("search.forumposts.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-// array to store variables we want to use in the search template
-$reportvars = array();
-
 // make sure we have an action variable
 if (isset($action)) {
 
@@ -132,75 +129,79 @@ if (isset($action)) {
 				break;
 		}
 
-		// check if we have a rowstart value
-		if (!isset($rowstart)) $rowstart = 0;
-
 		// check how many rows this would output
 		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
-		$variables['rows'] = dbrows($rptresult);
-		if ($variables['rows']) {
-			$variables['rowstart'] = $rowstart;
-			$variables['items_per_page'] = $settings['numofthreads'];
+		$rows = dbrows($rptresult);
 
-			// now add a query limit, make sure not to overshoot the limit requested
-			if ($variables['rows']-$rowstart > $settings['numofthreads']) {
-				$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
-			} else {
-				$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
-			}
-			$rptresult = dbquery($sql);
+		// are there any results?
+		if ($rows) {
 
-			// get the results if any
-			if ($variables['rows']) {
-				$pmfolders = array($locale['src519'], $locale['src520'], $locale['src521']);
-				$reportvars['output'] = array();
-				while ($rptdata = dbarray($rptresult)) {
-					$rptdata['folder'] = $pmfolders[$rptdata['pmindex_folder']];
-					// get the information for the recipient(s)
-					$rptdata['recipients'] = array();
-					if ($rptdata['pmindex_folder'] == 0 || ($rptdata['pmindex_folder'] == 2 && $rptdata['pmindex_user_id'] != $rptdata['pmindex_from_id'])) {
-						// incomming, get the sender info
-						$result2 = dbquery("SELECT 0 as is_group, user_name AS name FROM ".$db_prefix."users WHERE user_id = '".$rptdata['pmindex_from_id']."'");
-						if ($data2 = dbarray($result2)) {
-							$rptdata['recipients'][] = $data2;
-						}
-					} elseif ($rptdata['pmindex_folder'] == 1 || ($rptdata['pmindex_folder'] == 2 && $rptdata['pmindex_user_id'] == $rptdata['pmindex_from_id'])) {
-						// outgoing, get the recepient info
-						$recipients = explode(",", $rptdata['pm_recipients']);
-						foreach ($recipients as $recipient) {
-							if ($recipient < 0) {
-								// recipient is a user group
-								$result2 = dbquery("SELECT 1 as is_group, group_id AS id, group_name AS name, group_visible AS visible FROM ".$db_prefix."user_groups WHERE group_id = '".abs($recipient)."'");
-								if ($data2 = dbarray($result2)) {
-									$data2['visible'] = $data2['visible'] & pow(2, 0);
-									$rptdata['recipients'][] = $data2;
-								}
-							} else {
-								// recipient is a single member
-								$result2 = dbquery("SELECT 0 as is_group, user_id AS id, user_name AS name FROM ".$db_prefix."users WHERE user_id = '".$recipient."'");
-								if ($data2 = dbarray($result2)) {
-									$data2['visible'] = iMEMBER;
-									$rptdata['recipients'][] = $data2;
+			// are we interested in these results?
+			if ($lines < $settings['numofthreads'] && $rowstart < $variables['rows'] + $rows) {
+
+				// add a query limit, we might not need all records
+				$sql .= " LIMIT ".(max($rowstart-$variables['rows'],0)).",".min($rows,($settings['numofthreads']-$lines));
+
+				// launch the query
+				$rptresult = dbquery($sql);
+
+				// get the results if any
+				if ($rptresult) {
+					$pmfolders = array($locale['src519'], $locale['src520'], $locale['src521']);
+					while ($rptdata = dbarray($rptresult)) {
+						$rptdata['folder'] = $pmfolders[$rptdata['pmindex_folder']];
+						// get the information for the recipient(s)
+						$rptdata['recipients'] = array();
+						if ($rptdata['pmindex_folder'] == 0 || ($rptdata['pmindex_folder'] == 2 && $rptdata['pmindex_user_id'] != $rptdata['pmindex_from_id'])) {
+							// incomming, get the sender info
+							$result2 = dbquery("SELECT 0 as is_group, user_name AS name FROM ".$db_prefix."users WHERE user_id = '".$rptdata['pmindex_from_id']."'");
+							if ($data2 = dbarray($result2)) {
+								$rptdata['recipients'][] = $data2;
+							}
+						} elseif ($rptdata['pmindex_folder'] == 1 || ($rptdata['pmindex_folder'] == 2 && $rptdata['pmindex_user_id'] == $rptdata['pmindex_from_id'])) {
+							// outgoing, get the recepient info
+							$recipients = explode(",", $rptdata['pm_recipients']);
+							foreach ($recipients as $recipient) {
+								if ($recipient < 0) {
+									// recipient is a user group
+									$result2 = dbquery("SELECT 1 as is_group, group_id AS id, group_name AS name, group_visible AS visible FROM ".$db_prefix."user_groups WHERE group_id = '".abs($recipient)."'");
+									if ($data2 = dbarray($result2)) {
+										$data2['visible'] = $data2['visible'] & pow(2, 0);
+										$rptdata['recipients'][] = $data2;
+									}
+								} else {
+									// recipient is a single member
+									$result2 = dbquery("SELECT 0 as is_group, user_id AS id, user_name AS name FROM ".$db_prefix."users WHERE user_id = '".$recipient."'");
+									if ($data2 = dbarray($result2)) {
+										$data2['visible'] = iMEMBER;
+										$rptdata['recipients'][] = $data2;
+									}
 								}
 							}
 						}
+						$rptdata['_template'] = $data['template'];
+						$reportvars['output'][] = $rptdata;
 					}
-					$reportvars['output'][] = $rptdata;
+
+					// get the score divider for this result set
+					$divider = 0;
+					foreach($reportvars['output'] as $key => $value) {
+						$divider = max($divider, $value['score']);
+					}
+
+					// calculate the relevance for this result set
+					foreach($reportvars['output'] as $key => $value) {
+						$reportvars['output'][$key]['relevance'] = $value['score'] / $divider * 100;
+					}
 				}
 
-				// get the score divider for this result set
-				$divider = 0;
-				foreach($reportvars['output'] as $key => $value) {
-					$divider = max($divider, $value['score']);
-				}
-
-				// calculate the relevance for this result set
-				foreach($reportvars['output'] as $key => $value) {
-					$reportvars['output'][$key]['relevance'] = $value['score'] / $divider * 100;
-				}
 			}
-//			_debug($reportvars, true);
+
+			// add the amount of rows found to the total rows counter
+			$variables['rows'] += $rows;
+
 		}
+
 	}
 }
 ?>

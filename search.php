@@ -35,8 +35,7 @@ $select_filters = array("score", "author", "subject", "datestamp", "count");
 // storage for additional filter values
 $content_filters = array();
 
-if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
-$variables['rowstart'] = $rowstart;
+$variables['items_per_page'] = $settings['numofthreads'];
 
 if (!isset($action)) $action = "";
 $variables['action'] = $action;
@@ -71,7 +70,18 @@ if (!isset($search_id)) {
 // get the list of available searches
 $searches = array();
 $searchindex = array();
-$result = dbquery("SELECT s.*, m.mod_folder FROM ".$db_prefix."search s LEFT JOIN ".$db_prefix."modules m ON s.search_mod_id = m.mod_id WHERE s.search_active = 1".($search_id?" AND s.search_id = '$search_id'":""));
+
+// array to store variables we use in the search templates
+$reportvars = array();
+$reportvars['output'] = array();
+
+// variable initialisation
+if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 1;
+$variables['rowstart'] = $rowstart;
+
+$variables['rows'] = 0;
+$lines = 0;
+$result = dbquery("SELECT s.*, m.mod_folder FROM ".$db_prefix."search s LEFT JOIN ".$db_prefix."modules m ON s.search_mod_id = m.mod_id WHERE s.search_active = 1".(($search_id > 0 && $search_id < 99999)?" AND s.search_id = '$search_id'":""));
 while ($data = dbarray($result)) {
 	if (checkgroup($data['search_visibility'])) {
 		// get the title for this search
@@ -92,6 +102,7 @@ while ($data = dbarray($result)) {
 				$data['template'] = PATH_INCLUDES."search/templates/search.".strtolower($data['search_name']).".tpl";
 				// do any preprocessing
 				@include PATH_INCLUDES."search/search.".strtolower($data['search_name']).".php";
+				$lines = count($reportvars['output']);
 			} else {
 				$data['mod_folder'] = "-";
 				$data['custom'] = true;
@@ -129,10 +140,9 @@ if ($action == "") {
 	$variables['default_location'] = 9999999999;
 	$variables['default_filter'] = "";
 	foreach($variables['searches'] as $key => $search) {
-		if ($search['search_order'] < $variables['default_location']) {
+		if (isset($search['search_filters']) && $search['search_order'] < $variables['default_location']) {
 			$variables['default_location'] = $search['search_order'];
 			$variables['default_filter'] = $search['search_filters'];
-			if (!isset($search['search_filters'])) _debug($search, true);
 		}
 	}
 }
@@ -146,6 +156,11 @@ $variables['content_filters'] = $content_filters;
 // make sure the panel has a title
 if (!isset($title)) {
 	$title = $locale['src406'];
+}
+
+// update the search title in case of a global search
+if ($search_id == 99999) {
+	$variables['searches'][0]['search_title'] = $locale['src524'];
 }
 
 // define the search body panel variables

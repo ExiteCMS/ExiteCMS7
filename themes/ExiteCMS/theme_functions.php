@@ -11,10 +11,10 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id:: theme_functions.php 1935 2008-10-29 23:42:42Z WanWizard       $|
+| $Id::                                                               $|
 +----------------------------------------------------------------------+
-| Last modified by $Author:: WanWizard                                $|
-| Revision number $Rev:: 1935                                         $|
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 

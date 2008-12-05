@@ -3464,6 +3464,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src521'] = "Archief";
 		$localestrings['src522'] = "Aan";
 		$localestrings['src523'] = "Van";
+		$localestrings['src524'] = "De hele site";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
 
 		$localestrings = array();
@@ -3767,7 +3768,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1228396459");
+if (!defined('LP_DATE')) define('LP_DATE', "1228492315");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

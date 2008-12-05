@@ -18,20 +18,16 @@
 {*                                                                         *}
 {***************************************************************************}
 {if $action == "search"}
-	{section name=idx loop=$reportvars.output}
-		{if !$smarty.section.idx.first}
-			<br /><br />
-		{/if}
-		<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
-		{if iMEMBER}
-			<a href='profile.php?lookup={$reportvars.output[idx].user_id}'>{$reportvars.output[idx].user_name}</a>
-		{else}
-			{$reportvars.output[idx].user_name}
-		{/if}
-		<br />&nbsp;
-		<span class='small'><font class='smallalt'>{$locale.src438}</font> {$reportvars.output[idx].user_joined|date_format:"forumdate"},
-		<font class='smallalt'>{$locale.src439}</font> {if $reportvars.output[idx].user_lastvisit}{$reportvars.output[idx].user_lastvisit|date_format:"forumdate"}{else}{$locale.src440}{/if}</span>
-	{/section}
+	<br /><br />
+	<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+	{if iMEMBER}
+		<a href='profile.php?lookup={$output.user_id}'>{$output.user_name}</a>
+	{else}
+		{$output.user_name}
+	{/if}
+	<br />&nbsp;
+	<span class='small'><font class='smallalt'>{$locale.src438}</font> {$output.user_joined|date_format:"forumdate"},
+	<font class='smallalt'>{$locale.src439}</font> {if $output.user_lastvisit}{$output.user_lastvisit|date_format:"forumdate"}{else}{$locale.src440}{/if}</span>
 {else}
 	<input type='radio' name='search_id' value='{$searches[id].search_id}' {if $search_id == $searches[id].search_id || $searches[id].search_order == $default_location}checked='checked'{/if}  onclick='javascript:show_filter("{$searches[id].search_filters}");'/> {$searches[id].search_title} {if $searches[id].search_fulltext}<span style='color:red;'>*</span>{/if}<br />
 {/if}

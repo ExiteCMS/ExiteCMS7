@@ -18,9 +18,6 @@
 +---------------------------------------------------------------------*/
 if (eregi("search.members.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
-// array to store variables we want to use in the search template
-$reportvars = array();
-
 // make sure we have an action variable
 if (isset($action)) {
 
@@ -28,7 +25,6 @@ if (isset($action)) {
 		
 		// add the possible  search filters ($data is defined in the calling script!)
 		$data['search_filters' ] = "";
-
 
 	} else {
 
@@ -117,43 +113,49 @@ if (isset($action)) {
 				break;
 		}
 
-		// check if we have a rowstart value
-		if (!isset($rowstart)) $rowstart = 0;
-	
 		// check how many rows this would output
 		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
-		$variables['rows'] = dbrows($rptresult);
-		if ($variables['rows']) {
-			$variables['rowstart'] = $rowstart;
-			$variables['items_per_page'] = $settings['numofthreads'];
+		$rows = dbrows($rptresult);
 
-			// now add a query limit, make sure not to overshoot the limit requested
-			if ($variables['rows']-$rowstart > $settings['numofthreads']) {
-				$sql .= " LIMIT ".$rowstart.",".$settings['numofthreads'];
-			} else {
-				$sql .= " LIMIT ".$rowstart.",".($variables['rows']-$rowstart);
+		// are there any results?
+		if ($rows) {
+
+			// are we interested in these results?
+			if ($lines < $settings['numofthreads'] && $rowstart < $variables['rows'] + $rows) {
+
+				// add a query limit, we might not need all records
+				$sql .= " LIMIT ".(max($rowstart-$variables['rows'],0)).",".min($rows,($settings['numofthreads']-$lines));
+
+				// launch the query
+				$rptresult = dbquery($sql);
+
+				// get the results if any
+				if ($rptresult) {
+					while ($rptdata = dbarray($rptresult)) {
+						$rptdata['_template'] = $data['template'];
+						$rptdata['download_description'] = parsemessage(array(), $rptdata['download_description'], true, true);
+						$reportvars['output'][] = $rptdata;
+					}
+
+					// get the score divider for this result set
+					$divider = 0;
+					foreach($reportvars['output'] as $key => $value) {
+						$divider = max($divider, $value['score']);
+					}
+
+					// calculate the relevance for this result set
+					foreach($reportvars['output'] as $key => $value) {
+						$reportvars['output'][$key]['relevance'] = $value['score'] / $divider * 100;
+					}
+				}
+
 			}
-			$rptresult = dbquery($sql);
 
-			// get the results if any
-			if ($variables['rows']) {
-				$reportvars['output'] = array();
-				while ($rptdata = dbarray($rptresult)) {
-					$reportvars['output'][] = $rptdata;
-				}
+			// add the amount of rows found to the total rows counter
+			$variables['rows'] += $rows;
 
-				// get the score divider for this result set
-				$divider = 0;
-				foreach($reportvars['output'] as $key => $value) {
-					$divider = max($divider, $value['score']);
-				}
-
-				// calculate the relevance for this result set
-				foreach($reportvars['output'] as $key => $value) {
-					$reportvars['output'][$key]['relevance'] = $value['score'] / $divider * 100;
-				}
-			}
 		}
+
 	}
 }
 ?>

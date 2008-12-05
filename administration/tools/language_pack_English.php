@@ -3464,6 +3464,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src521'] = "Archive";
 		$localestrings['src522'] = "To";
 		$localestrings['src523'] = "From";
+		$localestrings['src524'] = "Entire site";
 		load_localestrings($localestrings, LP_LOCALE, "main.search", $step);
 
 		$localestrings = array();
@@ -3767,7 +3768,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1228396456");
+if (!defined('LP_DATE')) define('LP_DATE', "1228492311");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

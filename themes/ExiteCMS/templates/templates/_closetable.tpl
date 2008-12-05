@@ -8,10 +8,10 @@
 {* License. For details refer to the included gpl.txt file or visit        *}
 {* http://gnu.org                                                          *}
 {***************************************************************************}
-{* $Id:: _closetable.tpl 1982 2008-11-09 13:50:47Z WanWizard              $*}
+{* $Id::                                                                  $*}
 {*-------------------------------------------------------------------------*}
-{* Last modified by $Author:: WanWizard                                   $*}
-{* Revision number $Rev:: 1982                                            $*}
+{* Last modified by $Author::                                             $*}
+{* Revision number $Rev::                                                 $*}
 {***************************************************************************}
 {*                                                                         *}
 {* This template generates the standard closing of a center panel          *}
