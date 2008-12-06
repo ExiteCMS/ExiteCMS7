@@ -100,7 +100,7 @@ function dbquery($query, $display=false) {
 	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
 
 	// bail out if an error occurred and we're NOT in CLI mode!
-	if (!CMS_CLI && !$result) {
+	if ((defined('CMS_CLI') && !CMS_CLI) && !$result) {
 		if ($display || $settings['debug_querylog']) {
 			echo "<pre><br />Query: ".$query."<br />";
 			echo mysql_error();

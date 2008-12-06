@@ -55,6 +55,13 @@ if (ini_get('register_globals') != 1) {
 	if ((isset($_GET) == true) && (is_array($_GET) == true)) extract($_GET, EXTR_OVERWRITE);
 }
 
+// store the magic quotes setting
+define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
+
+// Browser window dimensions (assume 1024x768 if no cookies found)
+define("BROWSER_WIDTH", isset($_COOKIE['width']) ? $_COOKIE['width'] : 1024);
+define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
+
 // disable the standard PHP include path (empty's not accepted?)
 ini_set('include_path', '.');
 
@@ -108,6 +115,11 @@ $settings = array();
 $result = dbquery("SELECT * FROM ".$db_prefix."configuration");
 while ($data = dbarray($result)) {
 	$settings[$data['cfg_name']] = $data['cfg_value'];
+}
+
+// activate PHP error reporting
+if (isset($settings['debug_php_errors']) && $settings['debug_php_errors']) {
+	error_reporting(E_ALL);
 }
 
 // define the default sitebanner
@@ -172,23 +184,12 @@ if (isset($_SERVER['SERVER_SOFTWARE'])) {
 	define("CMS_CLI", true);
 	define("USER_IP", '0.0.0.0');
 }
-// store the magic quotes setting
-define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
-
-// Browser window dimensions (assume 1024x768 if no cookies found)
-define("BROWSER_WIDTH", isset($_COOKIE['width']) ? $_COOKIE['width'] : 1024);
-define("BROWSER_HEIGHT", isset($_COOKIE['height']) ? $_COOKIE['height'] : 768);
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
 
 // set the query log debugging switch, enable error reporting if needed
 $_db_log = checkgroup($settings['debug_querylog'], false);
-
-// activate PHP error reporting
-if (isset($settings['debug_php_errors']) && $settings['debug_php_errors']) {
-	error_reporting(E_ALL);
-}
 
 // load the locale functions
 require_once PATH_INCLUDES."locale_functions.php";
