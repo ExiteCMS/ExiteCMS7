@@ -26,7 +26,7 @@
 	</head>
 	<body class='body'>
 		<div class='splashscreen-h'>
-			<div class='splashscreen-v' style='height:250px;vertical-align:center;'>
+			<div class='splashscreen-v' style='height:325px;vertical-align:center;'>
 				<table align='center' cellpadding='0' cellspacing='1' width='500'>
 					<tr>
 						<td class='tbl1' align='center'>

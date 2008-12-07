@@ -1100,6 +1100,18 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['574'] = "Downloads:";
 		$localestrings['575'] = "Login vereist HTTPS:";
 		$localestrings['576'] = "Login verplicht voor site toegang:";
+		$localestrings['577'] = "Geinstalleerde authenticatie methoden";
+		$localestrings['578'] = "Methode";
+		$localestrings['579'] = "Class";
+		$localestrings['580'] = "Volgorde";
+		$localestrings['581'] = "Status";
+		$localestrings['582'] = "Opties";
+		$localestrings['583'] = "Naar omhoog";
+		$localestrings['584'] = "Naar beneden";
+		$localestrings['585'] = "Activeren";
+		$localestrings['586'] = "Geactiveerd";
+		$localestrings['587'] = "Uitschakelen";
+		$localestrings['588'] = "Uitgeschakeld";
 		$localestrings['600'] = "Albums";
 		$localestrings['601'] = "Breedte miniatuur:";
 		$localestrings['602'] = "Standaard foto formaat:";
@@ -3768,7 +3780,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1228492315");
+if (!defined('LP_DATE')) define('LP_DATE', "1228608898");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

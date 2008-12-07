@@ -19,117 +19,14 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_INCLUDES."theme_functions.php";
 
-// used by the auth functions to store the retrieved local user_id
-// this value is needed in some of the error handling code
-$user_id = 0;
-
-/*---------------------------------------------------+
-| User authentication functions                      |
-+----------------------------------------------------*/
-
-// authentication against the local user database
-function auth_local($userid, $password) {
-	global $db_prefix, $user_id;
-	
-	// check and validate the given userid and pasword
-	$user_pass = md5(md5($password));
-	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($userid));
-
-	// check if we have a user record for this userid and password
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='".$user_pass."'");
-	if (dbrows($result) == 0) {
-		// not found, display an error message
-		return 3;
-	} else {
-		// retrieve the record
-		$data = dbarray($result);
-		// store the global user_id for reference outside this function
-		$user_id = $data['user_id'];
-		// found, get the record and do some more validation
-		$ret = auth_user_validate($data);
-		return $ret;
-	}
-}
-
-// authentication against an LDAP server
-function auth_ldap($userid, $password) {
-	terminate('auth_ldap not defined yet!');
-}
-
-// authentication against an Active Directory server
-function auth_ad($userid, $password) {
-	terminate('auth_ad not defined yet!');
-}
-
-// authentication using an OpenID
-function auth_openid($openid_url) {
-	global $settings;
-
-	// check if the URL is valid
-	if (isURL($openid_url)) {
-		require_once(PATH_INCLUDES."class.openid.php");
-		$openid = new SimpleOpenID;
-		$openid->SetIdentity($openid_url);
-		$openid->SetApprovedURL($settings['siteurl']."setuser.php");
-		$openid->SetTrustRoot($settings['siteurl']);
-		$server_url = $openid->GetOpenIDServer();
-		if ($server_url) {
-			redirect($openid->GetRedirectURL() , "script");
-			exit;
-		}
-	} else {
-		// for now...
-		return 0;
-	}
-}
-
-// further validation on the userid found
-function auth_user_validate($userrecord) {
-	global $settings;
-
-	// if the account is suspended, check for an expiry date
-	if ($userrecord['user_status'] == 1 && $userrecord['user_ban_expire'] > 0 && $userrecord['user_ban_expire'] < time() ) {
-		// if this user's email address is marked as bad, reset the countdown counter
-		$userrecord['user_bad_email'] = $userrecord['user_bad_email'] == 0 ? 0 : time();
-		// reset the user status and the expiry date
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0', user_bad_email = '".$userrecord['user_bad_email']."' WHERE user_id='".$userrecord['user_id']."'");
-		$userrecord['user_status'] = 0;
-	}
-	if ($userrecord['user_status'] == 0) {	
-		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-		// set the 'remember me' status value 
-		$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
-		$_SESSION['userinfo'] = $userrecord['user_id'].".".$userrecord['user_password'];
-		// login expiry defined?
-		if ($settings['login_expire']) {
-			if (isset($_POST['remember_me']) && $_POST['remember_me'] == "yes") {
-				$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
-			} else {
-				$_SESSION['login_expire'] = time() + $settings['login_expire'];
-			}
-		} else {
-			$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
-		}
-		return 4;
-	} elseif ($userrecord['user_status'] == 1) {
-		return 1;
-	} elseif ($userrecord['user_status'] == 2) {
-		return 2;
-	} else {
-		return 0;
-	}
-}
-
-
-/*---------------------------------------------------+
-| Main code                                          |
-+----------------------------------------------------*/
-
 // temp storage for template variables
 $variables = array();
 
 // array to store the lines of the setuser message
 $message = array();
+
+// set the P3P header				
+header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 
 // make sure the error variable has a value
 if (!isset($error) || !isNum($error)) $error = 0;
@@ -147,76 +44,60 @@ if (isset($_SERVER['HTTP_REFERER']) && eregi("maintenance.php", $_SERVER['HTTP_R
 if (isset($_GET['logout']) && $_GET['logout'] == "yes") {
 
 	// process the logout request
+	$cms_authentication->logoff();
 
-	header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 	// make sure the user info is erased from the session
-	unset($_SESSION['user']);
-	unset($_SESSION['userinfo']);
-	unset($_SESSION['login_expire']);
-	$result = dbquery("DELETE FROM ".$db_prefix."online WHERE online_ip='".USER_IP."'");
 	if (isset($userdata['user_name'])) {
 		$message['line2'] =  "<b>".$locale['192'].$userdata['user_name']."</b>";
 	}
 
 } elseif (isset($_GET['login']) && $_GET['login'] == "yes") {
 
-	// process the login request
-	$auth_methods = isset($settings['auth_type']) ? explode(",",$settings['auth_type'].",") : array('local');
-	foreach($auth_methods as $auth_method) {
-		switch($auth_method) {
-			case "local":
-				// authentication against the local user database
-				if (!empty($_POST['user_name']) && !empty($_POST['user_pass'])) {
-					$error = auth_local($_POST['user_name'], $_POST['user_pass']);
-				}
-				break;
-			case "ldap":
-				break;
-			case "ad":
-				break;
-			case "openid":
-				// authentication against an openid provider
-				if (!empty($_POST['user_openid_url'])) {
-					$error = auth_openid($_POST['user_openid_url']);
-				}
-				break;
-			case "default":
-				// empty or unknown entry, ignore
-				break;
-		}
+	// store any login parameters to be passed
+	$params = array();
+	if (!empty($_POST['user_name'])) {
+		$params['username'] = stripinput($_POST['user_name']);
+	}
+	if (!empty($_POST['user_pass'])) {
+		$params['password'] = stripinput($_POST['user_pass']);
+	}
+	if (!empty($_POST['user_openid_url']) && isURL($_POST['user_openid_url'])) {
+		$params['openid_url'] = stripinput($_POST['user_openid_url']);
 	}
 
-} else {
+	// process the logon request
+	if ($cms_authentication->logon($params)) {
+		// get the logon status
+		$error = $cms_authentication->status;
+	} else {
+		$error = 3;	// // credentials not correct
+	}
 
-	if (isset($_GET['openid_mode'])) {
-		// handle openid login
-		require_once(PATH_INCLUDES."class.openid.php");
-		$openid = new SimpleOpenID;
-		$openid->SetIdentity(urldecode($_GET['openid_identity']));
-		if ($openid->ValidateWithServer()) {
-			$openid_url = strtolower($openid->OpenID_Standarize($_GET['openid_identity']));
-			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_openid_url='".$openid_url."'");
-			if (dbrows($result) != 0) {
-				// found, get the record and do some more validation
-				$error = auth_user_validate(dbarray($result));
-			} else {
-				$message['line2'] =  "<b>".$locale['196']."</b>";
-			}
-		} else {
-			trigger_error($openid->GetError());
-			exit;
-		}
+} elseif (isset($_GET['openid_mode'])) {
+
+	// store any login parameters to be passed
+	$params = array();
+
+	if (!empty($_GET['openid_mode'])) {
+		$params['openid_mode'] = stripinput($_GET['openid_mode']);
+	}
+
+	// process the openid logon request
+	if ($cms_authentication->logon($params)) {
+		$error = $cms_authentication->status;
+	} else {
+		$error = 3;	// credentials not correct
 	}
 
 }
 
 // check the result of the authentication attempt, and process it
 switch($error) {
-	case 0:
+	case 0:	// no errors
 		// 
 		$refresh = 1;
 		break;
-	case 1:
+	case 1: // account is suspended
 		$message['line1'] = "<b>".$locale['194']."</b>";
 		$data = dbarray(dbquery("SELECT user_ban_reason, user_ban_expire FROM ".$db_prefix."users WHERE user_id='".$user_id."'"));
 		if (is_array($data)) {
@@ -225,15 +106,15 @@ switch($error) {
 		}
 		$refresh = 10;
 		break;
-	case 2:
+	case 2:	// account not activated (yet)
 		$message['line2'] =  "<b>".$locale['195']."</b>";
 		$refresh = 10;
 		break;
-	case 3:
+	case 3:	// credentials not correct
 		$message['line2'] =  "<b>".$locale['196']."</b>";
 		$refresh = 10;
 		break;
-	case 4:
+	case 4:	// successful logon
 		if (isset($_SESSION['userinfo'])) {
 			// now that we have user info, finish the login validation
 			$userinfo_vars = explode(".", $_SESSION['userinfo']);
@@ -256,11 +137,11 @@ switch($error) {
 			$refresh = 99999;
 		}
 		break;
-	case 5:
+	case 5:	// logon requires https
 		$message['line2'] =  "<b>".$locale['https']."</b>";
 		$refresh = 99999;
 		break;
-	case 6:
+	case 6:	// user is banned
 		$message['line2'] =  "<font style='color:red;font-weight:bold'>".($locale['banned'])."</font>";
 		// get the reason for this ban
 		$sub_ip1 = substr(USER_IP,0,strlen(USER_IP)-strlen(strrchr(USER_IP,".")));

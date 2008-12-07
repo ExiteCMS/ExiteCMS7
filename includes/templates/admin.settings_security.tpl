@@ -90,23 +90,6 @@
 		</tr>
 		<tr>
 			<td width='50%' class='tbl'>
-				{$locale.537}
-			</td>
-			<td width='50%' class='tbl'>
-				<select name='auth_method' class='textbox'>
-					<option value='0'{if $auth_method == "0"} selected="selected"{/if}>{$locale.538}</option>
-					<option value='1'{if $auth_method == "1"} selected="selected"{/if}>{$locale.539}</option>
-					<option value='1+'{if $auth_method == "1+"} selected="selected"{/if}>{$locale.539}{$locale.541}{$locale.538}</option>
-					<option value='2'{if $auth_method == "2"} selected="selected"{/if}>{$locale.540}</option>
-					<option value='2+'{if $auth_method == "2+"} selected="selected"{/if}>{$locale.540}{$locale.541}{$locale.538}</option>
-					{if $has_curl}
-					<option value='3+'{if $auth_method == "3+"} selected="selected"{/if}>{$locale.538}{$locale.542}</option>
-					{/if}
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td width='50%' class='tbl'>
 				{$locale.575}
 			</td>
 			<td width='50%' class='tbl'>
@@ -124,27 +107,6 @@
 				<select name='auth_required' class='textbox'>
 					<option value='0'{if $settings2.auth_required == "0"} selected="selected"{/if}>{$locale.509}</option>
 					<option value='1'{if $settings2.auth_required == "1"} selected="selected"{/if}>{$locale.508}</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td align='center' colspan='2' class='tbl'>
-				<hr />
-			</td>
-		</tr>
-		<tr>
-			<td width='50%' class='tbl'>
-				{$locale.528}
-			</td>
-			<td width='50%' class='tbl'>
-				<select name='session_timeout' class='textbox'>
-				{section name=hours start=0 loop=24}
-				{assign var=days value=`$smarty.section.hours.index/24`}
-				<option value='{$days}' {if $days == $session_timeout|default:0}selected='selected'{/if}>{if $days == 0}{$locale.714}{else}{$smarty.section.hours.index} Hours{/if}</option>
-				{/section}
-				{section name=days start=1 loop=91}
-				<option value='{$smarty.section.days.index}' {if $smarty.section.days.index == $session_timeout|default:0}selected='selected'{/if}>{if $smarty.section.days.index == 1}1 {$locale.527}{else}{$smarty.section.days.index} {$locale.518}{/if}</option>
-				{/section}
 				</select>
 			</td>
 		</tr>
@@ -173,6 +135,22 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='50%' class='tbl'>
+				{$locale.528}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='session_timeout' class='textbox'>
+				{section name=hours start=0 loop=24}
+				{assign var=days value=`$smarty.section.hours.index/24`}
+				<option value='{$days}' {if $days == $session_timeout|default:0}selected='selected'{/if}>{if $days == 0}{$locale.714}{else}{$smarty.section.hours.index} Hours{/if}</option>
+				{/section}
+				{section name=days start=1 loop=91}
+				<option value='{$smarty.section.days.index}' {if $smarty.section.days.index == $session_timeout|default:0}selected='selected'{/if}>{if $smarty.section.days.index == 1}1 {$locale.527}{else}{$smarty.section.days.index} {$locale.518}{/if}</option>
+				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='submit' name='savesettings' value='{$locale.750}' class='button' />
@@ -180,6 +158,63 @@
 		</tr>
 	</table>
 </form>
+{include file="_closetable.tpl"}
+{include file="_opentable.tpl" name=$_name title=$locale.577 state=$_state style=$_style}
+<table align='center' cellpadding='0' cellspacing='1' width='80%' class='tbl-border'>
+	<tr>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.578}</b>
+		</td>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.579}</b>
+		</td>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.580}</b>
+		</td>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.581}</b>
+		</td>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.582}</b>
+		</td>
+	</tr>
+	<br />
+	{section name=id loop=$methods}
+		<tr>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+				{$methods[id].name}
+			</td>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+				{$methods[id].class}
+			</td>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+				{if $methods[id].status == 1}
+					{if !$smarty.section.id.first}
+						{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=up&amp;method_id="|cat:$smarty.section.id.index image="up.gif" alt=$locale.583 title=$locale.583}
+					{/if}
+					{if !$methods[id].last}
+						{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=down&amp;method_id="|cat:$smarty.section.id.index image="down.gif" alt=$locale.584 title=$locale.584}
+					{/if}
+				{/if}
+			</td>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+				{if $methods[id].status == 1}
+					{$locale.586}
+				{else}
+					{$locale.588}
+				{/if}
+			</td>
+			<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
+				{if $methods[id].status == 1}
+					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=setstatus&amp;status=0&amp;authmethod="|cat:$methods[id].name image="page_red.gif" alt=$locale.587 title=$locale.587}
+				{else}
+					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;action=setstatus&amp;status=1&amp;authmethod="|cat:$methods[id].name image="page_green.gif" alt=$locale.585 title=$locale.585}
+				{/if}
+			</td>
+		</tr>
+	{/section}
+</table>
+<br />
 {include file="_closetable.tpl"}
 {***************************************************************************}
 {* End of template                                                         *}

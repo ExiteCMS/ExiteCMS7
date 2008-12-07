@@ -18,6 +18,10 @@
 +---------------------------------------------------------------------*/
 if (eregi("user_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
+// load and instantiate the authentication class
+require_once "authentication/authentication.php";
+$cms_authentication =& new authentication();
+
 // need the GeoIP functions to determine the users country of origin
 require_once "geoip_include.php";
 
@@ -57,85 +61,60 @@ if (!CMS_IS_BOT) {
 		// replace the pre v7.1 cookie if needed
 		if ($_COOKIE['site_visited'] == "yes") {
 			$site_visited = md5(uniqid(rand(), true));
-			setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
 		} else {
+			// get the cookie value
 			$site_visited = $_COOKIE['site_visited'];
 		}
+		// refresh the cookie
+		setcookie("site_visited", $site_visited, time() + 31536000, "/", "", "0");
 	}
 }
 
 // if not in the process of posting a form, did the login session expire?
 if (count($_POST)==0 && !empty($_SESSION['login_expire']) && $_SESSION['login_expire'] < time()) {
-	// clear the login info from the session
-	unset($_SESSION['user']);
-	unset($_SESSION['userinfo']);
-	unset($_SESSION['login_expire']);
+	$cms_authentication->logoff();
 }
 
 // Are we logged in?
-if (isset($_SESSION['userinfo'])) {
-	$userinfo_vars = explode(".", $_SESSION['userinfo']);
-	$userinfo_1 = isNum($userinfo_vars['0']) ? $userinfo_vars['0'] : "0";
-	$userinfo_2 = (preg_match("/^[0-9a-z]{32}$/", $userinfo_vars['1']) ? $userinfo_vars['1'] : "");
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$userinfo_1' AND user_password='$userinfo_2'");
-	unset($userinfo_vars,$userinfo_1,$userinfo_2);
-	if (dbrows($result) != 0) {
-		$userdata = dbarray($result);
-		if ($userdata['user_status'] == 0) {
-			// set the user's theme
-			if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
-				$userdata['user_theme'] = $_SESSION['set_theme'];
-				unset($_SESSION['set_theme']);
-				$result2 = dbquery("UPDATE ".$db_prefix."users SET user_theme = '".$userdata['user_theme']."' WHERE user_id='$userinfo_1' AND user_password='$userinfo_2'");
-				define("PATH_THEME", PATH_THEMES.$userdata['user_theme']."/");
-				define("THEME", THEMES.$userdata['user_theme']."/");
-			} elseif ($userdata['user_theme'] != "Default" && file_exists(PATH_THEMES.$userdata['user_theme']."/theme.php")) {
-				define("PATH_THEME", PATH_THEMES.$userdata['user_theme']."/");
-				define("THEME", THEMES.$userdata['user_theme']."/");
-			} else {
-				define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
-				define("THEME", THEMES.$settings['theme']."/");
-				// make sure the default theme exists!
-				if (!file_exists(PATH_THEMES.$settings['theme']."/theme.php")) {
-					die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>FATAL ERROR: Unable to load the default theme</b></div>");
-				}
-			}
-			if ($userdata['user_offset'] <> 0) {
-				$settings['timeoffset'] = $settings['timeoffset'] + $userdata['user_offset'];
-			}
-			if (empty($_SESSION['lastvisit'])) {
-				$_SESSION['lastvisit'] = $userdata['user_lastvisit'];
-				$lastvisited = $userdata['user_lastvisit'];
-			} else {
-				$lastvisited = $_SESSION['lastvisit'];
-			}
-		} else {
-			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-			// make sure the user info is erased from the session
-			unset($_SESSION['user']);
-			unset($_SESSION['userinfo']);
-			unset($_SESSION['login_expire']);
-			redirect(BASEDIR."index.php", "script");
-			exit;
+if ($cms_authentication->logged_on()) {
+
+	$userdata = $cms_authentication->get_userinfo();
+	// set the user's theme
+	if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
+		$userdata['user_theme'] = $_SESSION['set_theme'];
+		unset($_SESSION['set_theme']);
+		$result2 = dbquery("UPDATE ".$db_prefix."users SET user_theme = '".$userdata['user_theme']."' WHERE user_id='$userinfo_1' AND user_password='$userinfo_2'");
+		define("PATH_THEME", PATH_THEMES.$userdata['user_theme']."/");
+		define("THEME", THEMES.$userdata['user_theme']."/");
+	} elseif ($userdata['user_theme'] != "Default" && file_exists(PATH_THEMES.$userdata['user_theme']."/theme.php")) {
+		define("PATH_THEME", PATH_THEMES.$userdata['user_theme']."/");
+		define("THEME", THEMES.$userdata['user_theme']."/");
+	} else {
+		define("PATH_THEME", PATH_THEMES.$settings['theme']."/");
+		define("THEME", THEMES.$settings['theme']."/");
+		// make sure the default theme exists!
+		if (!file_exists(PATH_THEMES.$settings['theme']."/theme.php")) {
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>FATAL ERROR: Unable to load the default theme</b></div>");
 		}
-		// update the login expiration timestamp
-		if ($settings['login_expire']) {
-			if (isset($_SESSION['remember_me']) && $_SESSION['remember_me'] == "yes") {
-				$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
-			} else {
-				$_SESSION['login_expire'] = time() + $settings['login_expire'];
-			}
+	}
+	if ($userdata['user_offset'] <> 0) {
+		$settings['timeoffset'] = $settings['timeoffset'] + $userdata['user_offset'];
+	}
+	if (empty($_SESSION['lastvisit'])) {
+		$_SESSION['lastvisit'] = $userdata['user_lastvisit'];
+		$lastvisited = $userdata['user_lastvisit'];
+	} else {
+		$lastvisited = $_SESSION['lastvisit'];
+	}
+	// update the login expiration timestamp
+	if ($settings['login_expire']) {
+		if (isset($_SESSION['remember_me']) && $_SESSION['remember_me'] == "yes") {
+			$_SESSION['login_expire'] = time() + $settings['login_extended_expire'];
 		} else {
-			$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
+			$_SESSION['login_expire'] = time() + $settings['login_expire'];
 		}
 	} else {
-		header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-		// make sure the user info is erased from the session
-		unset($_SESSION['user']);
-		unset($_SESSION['userinfo']);
-		unset($_SESSION['login_expire']);
-		redirect(BASEDIR."index.php", "script");
-		exit;
+		$_SESSION['login_expire'] = mktime(0,0,0,1,1,2038);	// do not expire
 	}
 } else {
 	// is login required?

@@ -30,7 +30,7 @@ require_once PATH_INCLUDES."dns_functions.php";
 
 // load the OpenID class (if cURL is present)
 if (function_exists('curl_exec')) {
-	require_once PATH_INCLUDES."class.openid.php";
+	require_once PATH_INCLUDES."authentication/class.openid.php";
 	$openid = new SimpleOpenID;
 }
 

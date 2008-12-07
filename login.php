@@ -39,7 +39,7 @@ $variables['remember_me'] = isset($_SESSION['remember_me']) ? $_SESSION['remembe
 $variables['login_expiry']  = (iADMIN && isset($_SESSION['login_expire'])) ? time_system2local($_SESSION['login_expire']) : "";
 
 // get which authentication to show
-$variables['auth_methods'] = explode(",",$settings['auth_type']);
+$variables['auth_methods'] = explode(",",$settings['authentication_selected']);
 $variables['method_count'] = count($variables['auth_methods']);
 $variables['auth_state'] = array();
 foreach($variables['auth_methods'] as $key => $method) {

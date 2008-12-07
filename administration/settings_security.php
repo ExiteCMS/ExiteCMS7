@@ -28,6 +28,8 @@ $variables = array();
 // store this modules name for the menu bar
 $variables['this_module'] = FUSION_SELF;
 
+if (!isset($action)) $action = "";
+
 // check for the proper admin access rights
 if (!checkrights("S4") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
@@ -43,37 +45,6 @@ if (isset($_POST['savesettings'])) {
 		$variables['errormessage'] = $locale['533'];
 	}
 	if ($variables['errormessage'] == "") {
-		// authentication method check
-		$auth_method = $_POST['auth_method']{0};
-		$auth_local = (isset($_POST['auth_method']{1}) && $_POST['auth_method']{1} == "+") ? "1" : "0";
-		switch ($auth_method) {
-			case "0": 	// Local only
-				$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'local' WHERE cfg_name = 'auth_type'");
-				break;
-			case "1": 	// LDAP
-				if ($auth_local) {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ldap,local' WHERE cfg_name = 'auth_type'");
-				} else {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ldap' WHERE cfg_name = 'auth_type'");
-				}
-				break;
-			case "2":	// AD
-				if ($auth_local) {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ad,local' WHERE cfg_name = 'auth_type'");
-				} else {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'ad' WHERE cfg_name = 'auth_type'");
-				}
-				break;
-			case "3":	// OpenID
-				if ($auth_local) {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'local,openid' WHERE cfg_name = 'auth_type'");
-				} else {
-					$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = 'openid' WHERE cfg_name = 'auth_type'");
-				}
-				break;
-			default:
-				$variables['errormessage'] = "Invalid authentication method. This may never happen!";
-		}
 		if ($variables['errormessage'] == "") {
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['enable_registration']) ? $_POST['enable_registration'] : "1")."' WHERE cfg_name = 'enable_registration'");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['email_verification']) ? $_POST['email_verification'] : "1")."' WHERE cfg_name = 'email_verification'");
@@ -113,36 +84,96 @@ if (isset($login_extended_expire)) {
 	$variables['login_extended_expire'] = $settings2['login_extended_expire'] / 86400;	// in days
 }
 
-// check if the PHP installation supports the OpenID class
-$variables['has_curl'] = function_exists('curl_exec');
+// load the defined authentication methods
+$methods = unserialize($settings2['authentication_methods']);
+$selected = explode(",", $settings2['authentication_selected']);
+foreach ($methods as $name => $method) {
+	$methods[$name]['status'] = 'old';
+}
 
-// determine the auth_method defined
-$auth_methods = explode(",",$settings2['auth_type']);
-$auth_method = 0;
-$auth_local = false;
-foreach($auth_methods as $this_method) {
-	switch($this_method) {
-		case "ldap":
-			$auth_method = 1;
-			break;
-		case "ad":
-			$auth_method = 2;
-			break;
-		case "openid":
-			// OpenID requires CURL to be installed
-			if ($variables['has_curl']) {
-				$auth_method = 3;
-			}
-		case "local":
-			$auth_local = true;
-			break;
-		default:
-			$auth_method = 0;
+// status update request?
+if ($action == "setstatus") {
+	if ($status == 1 && array_search($authmethod,$selected) == false) {
+		// add the method to the selected array and update the configuration
+		$selected[] = $authmethod;
+	} elseif ($status == 0 && array_search($authmethod,$selected) !== false) {
+		// remove the method from the selected array and update the configuration
+		unset($selected[array_search($authmethod,$selected)]);
+	}
+	// write the update back
+	$settings2['authentication_selected'] = "";
+	foreach($selected as $sel) {
+		$settings2['authentication_selected'] .= ($settings2['authentication_selected'] == "" ? "" : ",").$sel;
+	}
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings2['authentication_selected']."' WHERE cfg_name = 'authentication_selected'");
+}
+
+// move up requested?
+if ($action == "up") {
+	// swap the selected method with the previous in the list
+	$sel = $selected[$method_id-1];
+	$selected[$method_id-1] = $selected[$method_id];
+	$selected[$method_id] = $sel;
+	// write the update back
+	$settings2['authentication_selected'] = "";
+	foreach($selected as $sel) {
+		$settings2['authentication_selected'] .= ($settings2['authentication_selected'] == "" ? "" : ",").$sel;
+	}
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings2['authentication_selected']."' WHERE cfg_name = 'authentication_selected'");
+}
+
+// move down requested?
+if ($action == "down") {
+	// swap the selected method with the previous in the list
+	$sel = $selected[$method_id+1];
+	$selected[$method_id+1] = $selected[$method_id];
+	$selected[$method_id] = $sel;
+	// write the update back
+	$settings2['authentication_selected'] = "";
+	foreach($selected as $sel) {
+		$settings2['authentication_selected'] .= ($settings2['authentication_selected'] == "" ? "" : ",").$sel;
+	}
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings2['authentication_selected']."' WHERE cfg_name = 'authentication_selected'");
+}
+
+// check if new authentication methods have been installed
+$files = makefilelist(PATH_INCLUDES."authentication", ".|..", $sort=true, $type="files", $hidden=false);
+foreach($files as $file) {
+	if (substr($file,0,5) == "auth_" && strrchr($file,".") == ".php") {
+		$class = substr($file, 0, strrpos($file, "."));
+		$method = substr($class, strrpos($file, "_")+1);
+		if (!isset($methods[$method])) {
+			$methods[$method] = array('class' => $class, 'status' => "new");
+		} else {
+			$methods[$method]['status'] = "found";
+		}
 	}
 }
 
-// check if a local fallback is defined
-$variables['auth_method'] = $auth_method . ($auth_local ? "+" : " ");
+// delete old ones, add the others to the sortlist, and update the config
+$sortlist = array();
+foreach ($methods as $name => $method) {
+	if ($method['status'] == "old") {
+		unset($methods[$name]);
+	} else {
+		// add to the sortlist
+		if (in_array($name, $selected)) {
+			$sortlist[] = substr('000'.array_search($name, $selected),-3).".".$name;
+		} else {
+			$sortlist[] = "zzz.".$name;
+		}
+	}
+}
+$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".mysql_real_escape_string(serialize($methods))."' WHERE cfg_name = 'authentication_methods'");
+
+// create the list of available methods, in the correct order
+sort($sortlist);
+$variables['methods'] = array();
+$c = count($selected);$i=1;
+foreach($sortlist as $entry) {
+	$listentry = explode(".", $entry);
+	$variables['methods'][] = array('name' => $listentry[1], 'class' => $methods[$listentry[1]]['class'], 'status' => $listentry[0] == 'zzz' ? 0 :1, 'last' => ($i++ == $c ? 1 : 0));
+}
 
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.settings_security', 'template' => 'admin.settings_security.tpl', 'locale' => "admin.settings");
