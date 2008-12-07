@@ -94,6 +94,16 @@ class auth_openid {
 
 	}
 
+	// get the template for this authentication method
+	function get_template($type = "side") {
+
+		if ($type == "side") {
+			return PATH_INCLUDES."authentication/templates/auth.openid.side.tpl";
+		} else {
+			return PATH_INCLUDES."authentication/templates/auth.openid.body.tpl";
+		}
+	}
+
 	/*-----------------------------------------------+
 	| private class methods                          |
 	+-----------------------------------------------*/

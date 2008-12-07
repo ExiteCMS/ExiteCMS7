@@ -45,6 +45,9 @@ class authentication {
 	// used to store the logon status code
 	var $status = false;
 
+	// used to store the available logon templates
+	var $templates = array();
+
 	// class constructor
 	function authentication() {
 		global $db_prefix, $settings;
@@ -138,7 +141,9 @@ class authentication {
 		global $db_prefix;
 
 		// call the logoff function of the authentication method used
-		$this->classes[$this->method_used]->logoff();
+		if ($this->method_used) {
+			$this->classes[$this->method_used]->logoff();
+		}
 
 		// remove logon information from the session record
 		unset($_SESSION['user']);
@@ -154,6 +159,36 @@ class authentication {
 	function get_userinfo() {
 
 		return $this->userrecord;
+	}
+
+	// get the list of templates
+	function get_templates($type = "side") {
+
+		// do we have them cached?
+		if (!isset($this->templates[$type]) || !is_array($this->templates[$type])) {
+			// define the array to store the templates for this type
+			$this->templates[$type] = array();
+
+			// loop through the selected logon functions
+			foreach($this->selected as $method) {
+				// check if the class exists and is loaded
+				if (isset($this->methods[$method]) && is_object($this->classes[$method])) {
+					// call the get_template function of the class
+					$template = $this->classes[$method]->get_template($type);
+					// do we already have this template
+					if (!isset($this->templates[$type][$template])) {
+						if (isset($_SESSION['box_login_'.$method])) {
+							$state = $_SESSION['box_login_'.$method] == 0 ? 1 : 0;
+						} else {
+							$state = 1;
+						}
+						$this->templates[$type][$template] = array('method' => $method, 'state' => $state);
+					}
+				}
+			}
+		}
+		// return the templates
+		return $this->templates[$type];
 	}
 
 	// post logon checks

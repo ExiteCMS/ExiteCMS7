@@ -78,17 +78,8 @@ $variables['loginerror'] = isset($loginerror) ? $loginerror : "";
 $variables['remember_me'] = isset($_SESSION['remember_me']) ? $_SESSION['remember_me'] : "no";
 $variables['login_expiry']  = isset($_SESSION['login_expire']) ? time_system2local($_SESSION['login_expire']) : "";
 
-// get which authentication to show
-$variables['auth_methods'] = $GLOBALS['cms_authentication']->selected;
-$variables['method_count'] = count($variables['auth_methods']);
-$variables['auth_state'] = array();
-foreach($variables['auth_methods'] as $key => $method) {
-	if (isset($_SESSION['box_login'.$key])) {
-		$variables['auth_state'][] = $_SESSION['box_login'.$key] == 0 ? 1 : 0;
-	} else {
-		$variables['auth_state'][] = 1;
-	}
-}
+// get the login templates to allow authentication
+$variables['auth_templates'] = $GLOBALS['cms_authentication']->get_templates("side");
 
 // check if we need to display a registration link
 if ($settings['enable_registration']) {

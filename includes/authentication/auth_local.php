@@ -71,6 +71,16 @@ class auth_local {
 		$this->userrecord = false;
 	}
 
+	// get the template for this authentication method
+	function get_template($type = "side") {
+
+		if ($type == "side") {
+			return PATH_INCLUDES."authentication/templates/auth.username_password.side.tpl";
+		} else {
+			return PATH_INCLUDES."authentication/templates/auth.username_password.body.tpl";
+		}
+	}
+
 	/*-----------------------------------------------+
 	| private class methods                          |
 	+-----------------------------------------------*/
