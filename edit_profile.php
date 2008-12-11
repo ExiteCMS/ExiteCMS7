@@ -60,7 +60,6 @@ if (isset($_POST['update_profile'])) {
 
 	// store the selected locale 
 	$_SESSION['locale'] = stripinput($_POST['user_locale']);
-
 	$username = trim(eregi_replace(" +", " ", $_POST['user_name']));
 	if ($username == "" || $_POST['user_email'] == "" || $_POST['user_fullname'] == "" ) {
 		$error .= $locale['480']."<br>\n";
@@ -270,7 +269,7 @@ while ($data = dbarray($result)) {
 }
 
 // check which authentication to show
-$auth_methods = explode(",",$settings['auth_type'].",");
+$auth_methods = explode(",",$settings['authentication_selected'].",");
 $variables['auth_userpass'] = 0;
 $variables['auth_openid'] = 0;
 foreach($auth_methods as $auth_method) {
