@@ -139,14 +139,9 @@ $plugins_dir[] = 'smarty-plugins';
 
 $template->plugins_dir = $plugins_dir;
 
-// templates, where to find them?
-$template_dir = array();
-// first check if there's one defined in the current theme
-if (is_dir(PATH_THEME."templates/templates")) $template_dir[] = PATH_THEME."templates/templates";
-// next, check the CMS template directory
-$template_dir[] = PATH_INCLUDES.'templates';
-
-$template->template_dir = $template_dir;
+// default, only check the CMS template directory for templates
+// custom dirs will be added at runtime, based on the template type
+$template->template_dir = array(PATH_INCLUDES.'templates');;
 
 // Register the panel template resource
 $template->register_resource('panel', array('resource_panel_source', 'resource_panel_timestamp', 'resource_panel_secure', 'resource_panel_trusted'));
@@ -272,11 +267,14 @@ function load_templates($_type='', $_name='') {
 			if ($tpl_parts[0] == "admin" && $tpl_parts[1] == "tools") {
 				$template->template_dir = array_merge(array(PATH_ADMIN.'tools/templates'), $template->template_dir);
 			}
-		
+
+			// whatever template, look in the theme template directory first!
+			if (is_dir(PATH_THEME."templates/templates")) {
+				$template->template_dir = array_merge(array(PATH_THEME."templates/templates"), $template->template_dir);
+			}
+
 			// if a template is defined, get the last modified date, and load the template
 			if (isset($panel['template'])) {
-				// add the theme template directory as first template directory
-				$template->template_dir = array_merge(array(PATH_THEME.'templates/templates'), $template->template_dir);
 				// get the timestamp of the template, and update the last update timestamp if newer
 				$ts = $template->template_timestamp($panel['template']);
 				$_last_updated = isset($_last_updated) ? ($ts > $_last_updated ? $ts : $_last_updated ) : $ts;
