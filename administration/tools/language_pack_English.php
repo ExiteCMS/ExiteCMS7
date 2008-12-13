@@ -701,6 +701,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['470'] = "Article Date";
 		$localestrings['471'] = "Ascending";
 		$localestrings['472'] = "Descending";
+		$localestrings['473'] = "Category editors:";
 		$localestrings['500'] = "Edit Article";
 		$localestrings['501'] = "Article Updated";
 		$localestrings['502'] = "Return to Articles Admin";
@@ -3780,7 +3781,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1228608894");
+if (!defined('LP_DATE')) define('LP_DATE', "1229199056");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

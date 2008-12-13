@@ -701,6 +701,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['470'] = "Artikel datum";
 		$localestrings['471'] = "Oplopend";
 		$localestrings['472'] = "Aflopend";
+		$localestrings['473'] = "Categorie auteurs:";
 		$localestrings['500'] = "Wijzig artikel";
 		$localestrings['501'] = "Artikel aangepast";
 		$localestrings['502'] = "Terug naar artikelbeheer";
@@ -3780,7 +3781,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1228608898");
+if (!defined('LP_DATE')) define('LP_DATE', "1229199059");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

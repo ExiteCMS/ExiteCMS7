@@ -72,7 +72,12 @@ if (isset($readmore)) {
 				$data2 = dbarray($result2);
 				$data['news_cat_image'] = $data2['news_cat_image'];
 				$data['news_cat_id'] = $data2['news_cat_id'];
+				$data['news_cat_access'] = $data2['news_cat_access'];
+			} else {
+				$data['news_cat_access'] = 0;
 			}
+		} else {
+			$data['news_cat_access'] = 0;
 		}
 		// and store it for use in the template
 		$variables['news'][] = $data;
@@ -80,7 +85,7 @@ if (isset($readmore)) {
 		$result = dbquery("UPDATE ".$db_prefix."news SET news_reads = news_reads + 1 WHERE news_id = '$readmore'");
 	}
 	// check if the user is allowed to edit
-	$variables['allow_edit'] = checkrights("N");
+	$variables['allow_edit'] = (checkrights("N") && checkgroup($data['news_cat_access'])) ? 1 : 0;
 	// define the body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'news-readmore', 'template' => 'main.news.readmore.tpl');
 	$template_variables['news-readmore'] = $variables;
@@ -160,14 +165,14 @@ if (isset($readmore)) {
 			$data['news_news'] = $data['news_breaks'] == "y" ? nl2br(stripslashes($data['news_news'])) : stripslashes($data['news_news']);
 			$data['news_comments'] = dbcount("(comment_id)", "comments", "comment_type='N' AND comment_item_id='".$data['news_id']."'");
 			$data['allow_comments'] = $data['news_allow_comments'];
+			// check for edit rights
+			$data['allow_edit'] = (checkrights("N") && checkgroup($data['news_cat_access'])) ? 1 : 0;
 			// and store it for use in the template
 			$variables['news'][$i][] = $data;
 		}
 		// if not enough news items are available to fill all columns,
 		// adjust max columns 
 		if (!$mc && $i < $variables['_maxcols']) $variables['_maxcols'] = $i;
-		// check if the user is allowed to edit
-		$variables['allow_edit'] = checkrights("N");
 		// parameters needed for page navigation
 		$variables['rows'] = $rows;
 		$variables['items_per_page'] = $settings['news_items'];

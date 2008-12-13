@@ -46,7 +46,7 @@
 				</td>
 			</tr>
 		</table>
-		{if $allow_edit}<form name='editnews{$news[column][item].news_id}' method='post' action='{$smarty.const.BASEDIR}administration/news.php{$aidlink}&amp;news_id={$news[column][item].news_id}'>{/if}
+		{if $news[column][item].allow_edit}<form name='editnews{$news[column][item].news_id}' method='post' action='{$smarty.const.BASEDIR}administration/news.php{$aidlink}&amp;news_id={$news[column][item].news_id}'>{/if}
 			<table width='100%' cellspacing='0' cellpadding='0'>
 				<tr>
 					<td align='center' class='infobar'>
@@ -74,14 +74,14 @@
 						{/if}
 						 {$news[column][item].news_reads} {$locale.044} &middot;
 						 <a href='{$smarty.const.BASEDIR}print.php?type=N&amp;item_id={$news[column][item].news_id}'> <img src='{$smarty.const.THEME}images/printer.gif' alt='{$locale.045}' style='border:0px;vertical-align:middle;' /></a>
-					 	{if $allow_edit}
+					 	{if $news[column][item].allow_edit}
 					 	 &middot; <input type='hidden' name='edit' value='edit' /><a href='javascript:document.editnews{$news[column][item].news_id}.submit();'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.048}' title='{$locale.048}' style='vertical-align:middle;border:0px;' /></a>
 					 	{/if}
 						<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
 					</td>
 				</tr>
 			</table>
-		{if $allow_edit}</form>{/if}
+		{if $news[column][item].allow_edit}</form>{/if}
 		{if $smarty.section.column.first}
 			 {if !$smarty.section.column.last || !$smarty.section.item.last}<hr />{/if}
 		{else}
