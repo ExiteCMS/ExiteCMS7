@@ -49,12 +49,13 @@ if (isset($action) && $action == "delete") {
 
 if (isset($_POST['save_cat'])) {
 	$cat_name = stripinput($_POST['cat_name']);
+	$cat_access = isNum($_POST['cat_access']) ? $_POST['cat_access'] : "0";		
 	$cat_image = stripinput($_POST['cat_image']);
 	if ($cat_name != "" && $cat_image != "") {
 		if ($action == "edit") {
-			$result = dbquery("UPDATE ".$db_prefix."news_cats SET news_cat_name='$cat_name', news_cat_image='$cat_image' WHERE news_cat_id='$cat_id'");
+			$result = dbquery("UPDATE ".$db_prefix."news_cats SET news_cat_name='$cat_name', news_cat_image='$cat_image', news_cat_access='$cat_access' WHERE news_cat_id='$cat_id'");
 		} else {
-			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image) VALUES ('$cat_name', '$cat_image')");
+			$result = dbquery("INSERT INTO ".$db_prefix."news_cats (news_cat_name, news_cat_image, news_cat_access) VALUES ('$cat_name', '$cat_image', '$cat_access')");
 		}
 	}
 	redirect(FUSION_SELF.$aidlink);
@@ -64,13 +65,14 @@ if (isset($action) && $action == "edit") {
 	$result = dbquery("SELECT * FROM ".$db_prefix."news_cats WHERE news_cat_id='$cat_id'");
 	$data = dbarray($result);
 	$cat_name = $data['news_cat_name'];
+	$cat_access = $data['news_cat_access'];
 	$cat_image = $data['news_cat_image'];
 	$formaction = FUSION_SELF.$aidlink."&amp;action=edit&amp;cat_id=".$data['news_cat_id'];
 	$title = $locale['434'];
-
 } else {
 	$cat_name = "";
 	$cat_image = "";
+	$cat_access = 103;
 	$formaction = FUSION_SELF.$aidlink;
 	$title = $locale['435'];
 }
@@ -83,7 +85,17 @@ $result = dbquery("SELECT * FROM ".$db_prefix."news_cats ORDER BY news_cat_name"
 $variables['cats'] = array();
 while ($data = dbarray($result)) {
 	$data['image_exists'] = file_exists(PATH_IMAGES_NC.$data['news_cat_image']);
+	$data['access_group'] = getgroupname($data['news_cat_access']);
 	$variables['cats'][] = $data;
+}
+
+// get the list of available user groups
+$user_groups = getusergroups();
+$variables['user_groups'] = array();
+while(list($key, $user_group) = each($user_groups)){
+	// filter public and anonymous
+	if ($user_group['0'] == 0 || $user_group['0'] == 100) continue;
+	$variables['user_groups'][] = array('id' => $user_group['0'], 'name' => $user_group['1'], 'selected' => $cat_access == $user_group['0']);
 }
 
 // define the admin body panel

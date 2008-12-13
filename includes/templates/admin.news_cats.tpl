@@ -29,13 +29,25 @@
 			</td>
 		</tr>
 		<tr>
+			<td width='1%' class='tbl' style='white-space:nowrap'>
+				{$locale.473}
+			</td>
+			<td class='tbl'>
+				<select name='cat_access' class='textbox'>
+				{section name=id loop=$user_groups}
+					<option value='{$user_groups[id].id}'{if $user_groups[id].selected} selected='selected'{/if}>{$user_groups[id].name}</option>
+				{/section}
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td width='130' class='tbl'>
 				{$locale.437}
 			</td>
 			<td class='tbl'>
 				<select name='cat_image' class='textbox' style='width:200px;'>
 				{foreach from=$image_list item=image name=image_list}
-					<option value='{$image}'>{$image}</option>
+					<option value='{$image}' {if $cat_image == $image}selected='selected'{/if}>{$image}</option>
 				{/foreach}
 				</select>
 			</td>
@@ -52,46 +64,47 @@
 </form>
 {include file="_closetable.tpl"}
 {include file="_opentable.tpl" name=$_name title=$locale.440 state=$_state style=$_style}
-{assign var="columns" value="4"} 													{* number of columns *}
-{math equation="(100 - x) / x" x=$columns format="%u" assign="colwidth"}
-{section name=id loop=$cats}
-{cycle name=column values="1,2,3,4" assign="column" print=no} 						{* keep track of the current column *}
-	{if $smarty.section.id.first}
-	<table align='center' cellpadding='0' cellspacing='1' width='100%'>
-	{/if}
-	{if $column == 1}<tr>{/if}
-	<td align='center' width='{$colwidth}%' class='tbl'>
-		<b>{$cats[id].news_cat_name}</b>
-		<br />
-		{if $cats[id].image_exists}
-			<img src='{$smarty.const.IMAGES_NC}{$cats[id].news_cat_image}' alt='{$cats[id].news_cat_name}' style='padding:5px;' />
-		{else}
-			<img src='{$smarty.const.IMAGES}imagenotfound.jpg' alt='{$cats[id].news_cat_name}' style='padding:5px;' />
-		{/if}
-		<br />
-		<span class='small'>
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=edit&amp;cat_id={$cats[id].news_cat_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.441}' title='{$locale.441}' /></a>&nbsp;
-			<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;cat_id={$cats[id].news_cat_id}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.442}' title='{$locale.442}' /></a>
-		</span>
-	</td>
-	{if $column == $columns}</tr>{/if}
-	{if $smarty.section.id.last}
-		{if $column != $columns}
-		{section name=dummy start=$column loop=$columns}
-			<td width='{math equation='x+1' x=$colwidth}%' colspan='2' class='tbl1' style='vertical-align:top'>
+<br />
+<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
+	<tr>
+		<td colspan='2' class='tbl2'>
+			<b>{$locale.461}</b>
+		</td>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.466}</b>
+		</td>
+		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
+			<b>{$locale.462}</b>
+		</td>
+	</tr>
+	{section name=id loop=$cats}
+		<tr>
+			<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
+				{if $cats[id].image_exists}
+					<img src='{$smarty.const.IMAGES_NC}{$cats[id].news_cat_image}' alt='{$cats[id].news_cat_name}' style='padding:5px;' />
+				{else}
+					<img src='{$smarty.const.IMAGES}imagenotfound.jpg' alt='{$cats[id].news_cat_name}' style='padding:5px;' />
+				{/if}
 			</td>
-		{/section}
+			<td valign='top' class='{cycle values='tbl1,tbl2' advance=no}'>
+				<b>{$cats[id].news_cat_name}</b>
+			</td>
+			<td valign='top' align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
+				{$cats[id].access_group}
+			</td>
+			<td valign='top' align='center' width='1%' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=edit&amp;cat_id={$cats[id].news_cat_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.441}' title='{$locale.441}' /></a>&nbsp;
+				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;cat_id={$cats[id].news_cat_id}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.442}' title='{$locale.442}' /></a>
+			</td>
 		</tr>
-		{/if}
-	</table>
-	{/if}
-{sectionelse}
-	<center>
-	<br />
-	{$locale.443}
-	<br /><br />
-	</center>
-{/section}
+	{sectionelse}
+		<center>
+		<br />
+		{$locale.443}
+		<br /><br />
+		</center>
+	{/section}
+</table>
 <center>
 	<br />
 	{buttonlink name=$locale.439 link=$smarty.const.ADMIN|cat:"images.php"|cat:$aidlink|cat:"&amp;ifolder=news_cats"}

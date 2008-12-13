@@ -116,9 +116,9 @@
 	{assign var="cat_locale" value=""}
 {/if}
 <br />
-<table align='center' cellpadding='0' cellspacing='1' width='400' class='tbl-border'>
+<table align='center' cellpadding='0' cellspacing='1' width='600' class='tbl-border'>
 	<tr>
-		<td class='tbl2'>
+		<td colspan='2' class='tbl2'>
 			<b>{$locale.461}</b>
 		</td>
 		<td align='center' width='1%' class='tbl2' style='white-space:nowrap'>
@@ -130,15 +130,18 @@
 	</tr>
 	{section name=id loop=$articles}
 		<tr>
-			<td class='{cycle values='tbl1,tbl2' advance=no}'>
+			<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
+				<img src='{$smarty.const.IMAGES_NC}{$articles[id].article_cat_image}' alt='' title='' />
+			</td>
+			<td valign='top' class='{cycle values='tbl1,tbl2' advance=no}'>
 				<b>{$articles[id].article_cat_name}</b>
 				<br />
 				<span class='small'>{$articles[id].article_cat_description|truncate:45}</span>
 			</td>
-			<td align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
+			<td valign='top' align='center' width='1%' class='{cycle values='tbl1,tbl2' advance=no}' style='white-space:nowrap'>
 				{$articles[id].access_group}
 			</td>
-			<td align='center' width='1%' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
+			<td valign='top' align='center' width='1%' class='{cycle values='tbl1,tbl2'}' style='white-space:nowrap'>
 				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=edit&amp;cat_id={$articles[id].article_cat_id}'><img src='{$smarty.const.THEME}images/page_edit.gif' alt='{$locale.509}' title='{$locale.509}' /></a>&nbsp;
 				<a href='{$smarty.const.FUSION_SELF}{$aidlink}&amp;action=delete&amp;cat_id={$articles[id].article_cat_id}'><img src='{$smarty.const.THEME}images/page_delete.gif' alt='{$locale.510}' title='{$locale.510}' /></a>
 			</td>
