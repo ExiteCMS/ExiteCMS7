@@ -77,7 +77,7 @@ switch ($settings['news_localisation']) {
 }
 
 // fill the newsitems array for the newsitem selection dropdown
-$result = dbquery("SELECT * FROM ".$db_prefix."news ".($where==""?"":("WHERE ".$where))." ORDER BY news_datestamp DESC");
+$result = dbquery("SELECT * FROM ".$db_prefix."news LEFT JOIN ".$db_prefix."news_cats ON news_cat=news_cat_access WHERE ".groupaccess('news_cat_access').($where==""?"":(" AND ".$where))." ORDER BY news_datestamp DESC");
 $variables['newsitems'] = array();
 while ($data = dbarray($result)) {
 	$data['selected'] = (isset($news_id) && $news_id == $data['news_id']);
@@ -243,7 +243,7 @@ if (isset($_POST['save'])) {
 	$variables['news_date'] = isset($news_date) ? $news_date : "";
 
 	// create a list for the news categories dropdown
-	$result = dbquery("SELECT * FROM ".$db_prefix."news_cats ORDER BY news_cat_name");
+	$result = dbquery("SELECT * FROM ".$db_prefix."news_cats WHERE ".groupaccess('news_cat_access')." ORDER BY news_cat_name");
 	$variables['news_cats'] = array();
 	while ($data = dbarray($result)) {
 		$data['selected'] = (isset($news_cat) && $news_cat == $data['news_cat_id']);
