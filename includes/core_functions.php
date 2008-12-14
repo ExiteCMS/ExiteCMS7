@@ -945,6 +945,63 @@ function terminate($text) {
 	die("<div style='font-family:Verdana,Sans-serif;font-size:14px;font-weight:bold;text-align:center;'>$text</div>");
 }
 
+// convert an array to json notation
+function array2json($vars) {
+
+	// don't make it more difficult then needed
+	if(function_exists('json_encode')) {
+
+		return json_encode($vars); 	//Lastest versions of PHP already has this functionality.
+
+	} else {
+
+		// no recent PHP version. Let's do it the hard way
+		$parts = array();
+		$is_list = false;
+
+		//Find out if the given array is a numerical array
+		$keys = array_keys($vars);
+		$max_length = count($vars)-1;
+		if(isset($keys[0]) and ($keys[0] == 0) and ($keys[$max_length] == $max_length)) {//See if the first key is 0 and last key is length - 1
+			$is_list = true;
+			for($i=0; $i<count($keys); $i++) { //See if each key correspondes to its position
+				if($i != $keys[$i]) { //A key fails at position check.
+					$is_list = false; //It is an associative array.
+					break;
+				}
+			}
+		}
+
+		foreach($vars as $key=>$value) {
+			if(is_array($value)) { //Custom handling for arrays
+				if($is_list) $parts[] = array2json($value); /* :RECURSION: */
+				else $parts[] = '"' . $key . '":' . array2json($value); /* :RECURSION: */
+			} else {
+				$str = '';
+				if(!$is_list) $str = '"' . $key . '":';
+
+				//Custom handling for multiple data types
+				if(is_numeric($value)) $str .= $value; //Numbers
+				elseif($value === false) $str .= 'false'; //The booleans
+				elseif($value === true) $str .= 'true';
+				else $str .= '"' . addslashes($value) . '"'; //All other things
+				// :TODO: Is there any more datatype we should be in the lookout for? (Object?)
+
+				$parts[] = $str;
+			}
+		}
+		$json = implode(',',$parts);
+		
+		if($is_list) {
+			//Return numerical JSON
+			return  '[' . $json . ']';
+		} else {
+			//Return associative JSON
+			return  '{' . $json . '}';
+		}
+	}
+}
+
 /*---------------------------------------------------+
 | XSS prevention functions, borrowed from the v8 code|
 +---------------------------------------------------*/

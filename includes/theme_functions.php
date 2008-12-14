@@ -19,7 +19,7 @@
 if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // load the Smarty template engine
-require_once PATH_INCLUDES."Smarty-2.6.20/Smarty.class.php";
+require_once PATH_INCLUDES."Smarty-2.6.21/Smarty.class.php";
 
 // extend Smarty with the ExiteCMS custom bits
 class ExiteCMS_Smarty extends Smarty {
@@ -158,10 +158,14 @@ $template_variables = array();
 /*-----------------------------------------------------+
 | load_templates - process templates                   |
 +-----------------------------------------------------*/
-function load_templates($_type='', $_name='') {
+function load_templates($_type='', $_name='', $_output='html') {
 	global $settings, $locale, $userdata, $db_prefix, $aidlink,
 			$template, $template_panels, $template_variables, 
 			$_loadstats, $_headparms, $_bodyparms, $_last_updated;
+
+
+	// make sure the output type is valid, default to html
+	if ($_output != 'html' && $_output != 'json') $_output = 'html';
 
 	// store the current locales. We need to restore them later
 	$current_locale = $locale;
@@ -253,43 +257,68 @@ function load_templates($_type='', $_name='') {
 				$template->assign("_loadstats", $_loadstats);
 			}
 
-			// store the current template directories, we need to restore them later
-			$td = $template->template_dir;
+			// process the output type
+			switch ($_output) {
+				
+				case "html":
 
-			//if this is a module template...
-			$tpl_parts = explode(".", $panel['template']);
-			if ($tpl_parts[0] == "modules") {
-				$template->template_dir = array_merge(array(PATH_MODULES.$tpl_parts[1].'/templates'), $template->template_dir);
-			}
-		
-			//if this is a tools template...
-			$tpl_parts = explode(".", $panel['template']);
-			if ($tpl_parts[0] == "admin" && $tpl_parts[1] == "tools") {
-				$template->template_dir = array_merge(array(PATH_ADMIN.'tools/templates'), $template->template_dir);
-			}
+					// store the current template directories, we need to restore them later
+					$td = $template->template_dir;
 
-			// whatever template, look in the theme template directory first!
-			if (is_dir(PATH_THEME."templates/templates")) {
-				$template->template_dir = array_merge(array(PATH_THEME."templates/templates"), $template->template_dir);
-			}
+					//if this is a module template...
+					$tpl_parts = explode(".", $panel['template']);
+					if ($tpl_parts[0] == "modules") {
+						$template->template_dir = array_merge(array(PATH_MODULES.$tpl_parts[1].'/templates'), $template->template_dir);
+					}
+				
+					//if this is a tools template...
+					$tpl_parts = explode(".", $panel['template']);
+					if ($tpl_parts[0] == "admin" && $tpl_parts[1] == "tools") {
+						$template->template_dir = array_merge(array(PATH_ADMIN.'tools/templates'), $template->template_dir);
+					}
 
-			// if a template is defined, get the last modified date, and load the template
-			if (isset($panel['template'])) {
-				// get the timestamp of the template, and update the last update timestamp if newer
-				$ts = $template->template_timestamp($panel['template']);
-				$_last_updated = isset($_last_updated) ? ($ts > $_last_updated ? $ts : $_last_updated ) : $ts;
-				$template->assign("_last_updated", $_last_updated);
-				// and load the template
-				$template->display($panel['template']);
+					// whatever template, look in the theme template directory first!
+					if (is_dir(PATH_THEME."templates/templates")) {
+						$template->template_dir = array_merge(array(PATH_THEME."templates/templates"), $template->template_dir);
+					}
+
+					// if a template is defined, get the last modified date, and load the template
+					if (isset($panel['template'])) {
+						// get the timestamp of the template, and update the last update timestamp if newer
+						$ts = $template->template_timestamp($panel['template']);
+						$_last_updated = isset($_last_updated) ? ($ts > $_last_updated ? $ts : $_last_updated ) : $ts;
+						$template->assign("_last_updated", $_last_updated);
+						// and load the template
+						$template->display($panel['template']);
+					}
+					
+					// restore the template direcory
+					$template->template_dir = $td;
+
+					break;
+				
+				case "json":
+
+					// get all assigned template variables
+					$vars = $template->get_template_vars();
+
+					$retval = array2json($vars);
+
+					break;
+
+				default:
+					terminate("invalid output type: $_output");
+					break;
+
 			}
-			
-			// restore the template direcory
-			$template->template_dir = $td;
 		}
 	}
 
 	// restore the current locales.
 	$locale = $current_locale;
+	
+	// send the return value back if needed
+	if (isset($retval)) return $retval;
 }
 
 /*-----------------------------------------------------+
