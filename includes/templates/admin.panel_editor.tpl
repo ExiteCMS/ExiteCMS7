@@ -106,7 +106,8 @@
 					<option value='2'{if $panel_side == "2"} selected="selected"{/if}>{$locale.467}</option>
 					<option value='3'{if $panel_side == "3"} selected="selected"{/if}>{$locale.469}</option>
 					<option value='4'{if $panel_side == "4"} selected="selected"{/if}>{$locale.468}</option>
-					<option value='5'{if $panel_side == "5"} selected="selected"{/if}>{$locale.493}</option>
+					<option value='5'{if $panel_side == "5"} selected="selected"{/if}>{$locale.497}</option>
+					<option value='6'{if $panel_side == "6"} selected="selected"{/if}>{$locale.493}</option>
 				</select>
 			</td>
 		</tr>

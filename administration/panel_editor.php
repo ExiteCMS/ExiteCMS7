@@ -186,6 +186,8 @@ if (isset($_POST['save'])) {
 			} elseif ($panel_side == 4) {
 				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			} elseif ($panel_side == 5) {
+				$template_panels[] = array('type' => 'top', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
+			} elseif ($panel_side == 6) {
 				$template_panels[] = array('type' => 'footer', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => 'string:'.$panel_template);
 			}
 		} else {
@@ -202,6 +204,8 @@ if (isset($_POST['save'])) {
 			} elseif ($panel_side == 4) {
 				$template_panels[] = array('type' => 'right', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			} elseif ($panel_side == 5) {
+				$template_panels[] = array('type' => 'top', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
+			} elseif ($panel_side == 6) {
 				$template_panels[] = array('type' => 'footer', 'name' => 'admin.panel_editor.preview', 'title' => $panel_name, 'state' => ($panel_state == 2 ? 0 : $panel_state), 'template' => "modules.".basename($panel_filename,".php").".tpl");
 			}
 		}

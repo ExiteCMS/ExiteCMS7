@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 1935 2008-10-29 23:42:42Z WanWizard $
+ * $Id$
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.

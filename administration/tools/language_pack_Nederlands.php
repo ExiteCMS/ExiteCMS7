@@ -753,8 +753,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['423'] = "Bestand";
 		$localestrings['424'] = "Dynamisch";
 		$localestrings['425'] = "Midden kolom onderaan";
-		$localestrings['430'] = "Verplaatsen naar de linker kant";
-		$localestrings['431'] = "Verplaatsen naar de rechter kant";
+		$localestrings['429'] = "Verplaatsen naar de bovenkant";
+		$localestrings['430'] = "Verplaatsen naar de linkerkant";
+		$localestrings['431'] = "Verplaatsen naar de rechterkant";
 		$localestrings['432'] = "Naar boven";
 		$localestrings['433'] = "Naar beneden";
 		$localestrings['434'] = "Wijzig";
@@ -813,6 +814,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['493'] = "Voettekst";
 		$localestrings['494'] = "Verplaatsen naar onder de koptekst";
 		$localestrings['495'] = "Verplaatsen naar boven de voettekst";
+		$localestrings['496'] = "In de koptekst";
+		$localestrings['497'] = "In de kop";
 		load_localestrings($localestrings, LP_LOCALE, "admin.panels", $step);
 
 		$localestrings = array();
@@ -3781,7 +3784,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229199059");
+if (!defined('LP_DATE')) define('LP_DATE', "1229354423");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

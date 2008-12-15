@@ -753,6 +753,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['423'] = "File";
 		$localestrings['424'] = "Dynamic";
 		$localestrings['425'] = "Lower Body Panels";
+		$localestrings['429'] = "Move to the top panel";
 		$localestrings['430'] = "Move to the left-side panel";
 		$localestrings['431'] = "Move to the right-side panel";
 		$localestrings['432'] = "Move up";
@@ -813,6 +814,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['493'] = "Footer";
 		$localestrings['494'] = "Move to the header section";
 		$localestrings['495'] = "Move to the footer section";
+		$localestrings['496'] = "Top Panels";
+		$localestrings['497'] = "Top";
 		load_localestrings($localestrings, LP_LOCALE, "admin.panels", $step);
 
 		$localestrings = array();
@@ -3781,7 +3784,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229199056");
+if (!defined('LP_DATE')) define('LP_DATE', "1229354420");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

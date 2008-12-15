@@ -68,17 +68,22 @@
 		</td>
 		<td align='center' width='1%' class='tbl1' style='white-space:nowrap'>
 			{if $panels[id].panel_side == 0}
-				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mfooter&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:$link_locale image="down.gif" alt="$locale.444 title=$locale.494}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mfooter&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="down.gif" alt="$locale.444 title=$locale.495}
 			{elseif $panels[id].panel_side == 1}
-				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mright&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:$link_locale image="right.gif" alt="$locale.442 title=$locale.431}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mright&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="right.gif" alt="$locale.442 title=$locale.431}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mtop&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="up.gif" alt="$locale.443 title=$locale.429}
 			{elseif $panels[id].panel_side == 2}
-				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mlower&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:$link_locale image="down.gif" alt="$locale.444 title=$locale.446}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mlower&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="down.gif" alt="$locale.444 title=$locale.446}
 			{elseif $panels[id].panel_side == 3}
-				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mupper&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:$link_locale image="up.gif" alt="$locale.443 title=$locale.445}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mupper&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="up.gif" alt="$locale.443 title=$locale.445}
 			{elseif $panels[id].panel_side == 4}
-				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mleft&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:$link_locale image="left.gif" alt="$locale.441 title=$locale.430}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mleft&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="left.gif" alt="$locale.441 title=$locale.430}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mtop&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="up.gif" alt="$locale.443 title=$locale.429}
 			{elseif $panels[id].panel_side == 5}
-				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mheader&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:$link_locale image="up.gif" alt="$locale.443 title=$locale.495}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mleft&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="left.gif" alt="$locale.441 title=$locale.430}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mright&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="right.gif" alt="$locale.442 title=$locale.431}
+			{elseif $panels[id].panel_side == 6}
+				{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=mheader&amp;panel_id="|cat:$panels[id].panel_id|cat:"&amp;order="|cat:$panels[id].panel_order|cat:"&amp;panel_side="|cat:$panels[id].panel_side|cat:$link_locale image="up.gif" alt="$locale.443 title=$locale.494}
 			{/if}
 		</td>
 		<td align='right' width='1%' class='tbl1' style='white-space:nowrap'>

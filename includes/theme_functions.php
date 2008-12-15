@@ -158,14 +158,14 @@ $template_variables = array();
 /*-----------------------------------------------------+
 | load_templates - process templates                   |
 +-----------------------------------------------------*/
-function load_templates($_type='', $_name='', $_output='html') {
+function load_templates($_column='', $_name='', $_output='html') {
 	global $settings, $locale, $userdata, $db_prefix, $aidlink,
 			$template, $template_panels, $template_variables, 
 			$_loadstats, $_headparms, $_bodyparms, $_last_updated;
 
 
 	// make sure the output type is valid, default to html
-	if ($_output != 'html' && $_output != 'json') $_output = 'html';
+	if ($_output != 'html' && $_output != 'json' && $_output != 'var') $_output = 'html';
 
 	// store the current locales. We need to restore them later
 	$current_locale = $locale;
@@ -188,7 +188,7 @@ function load_templates($_type='', $_name='', $_output='html') {
 	// find the requested template and variable definitions
 	foreach($template_panels as $panel_name => $panel) {
 		// are we interested in this panel?
-		if (($_type == "" || $panel['type'] == $_type) && ($_name == "" || $panel['name'] == $_name)) {
+		if (($_column == "" || $panel['type'] == $_column) && ($_name == "" || $panel['name'] == $_name)) {
 			// panel preprocessing, if defined
 			$no_panel_displayed = false;
 			$template->assign('_style', '');
@@ -244,13 +244,13 @@ function load_templates($_type='', $_name='', $_output='html') {
 			$template->assign("aidlink", $aidlink);
 
 			// if defined, add header parameters
-			if ($_type == 'header') {
+			if ($_column == 'header') {
 				if (isset($_headparms)) $template->assign("headparms", $_headparms);
 				if (isset($_bodyparms)) $template->assign("bodyparms", $_bodyparms);
 			}
 
 			// update the loadtime counter
-			if ($_type == 'footer') {
+			if ($_column == 'footer') {
 				$_loadtime = explode(" ", microtime());
 				$_loadstats['time'] += $_loadtime[1] + $_loadtime[0];
 				// and assign it for use in the template
@@ -260,6 +260,13 @@ function load_templates($_type='', $_name='', $_output='html') {
 			// process the output type
 			switch ($_output) {
 				
+				case "var":
+
+					// variable to store template output in
+					if (!isset($retval)) $retval = "";
+										
+					// ** missing break on purpose! **
+
 				case "html":
 
 					// store the current template directories, we need to restore them later
@@ -289,7 +296,11 @@ function load_templates($_type='', $_name='', $_output='html') {
 						$_last_updated = isset($_last_updated) ? ($ts > $_last_updated ? $ts : $_last_updated ) : $ts;
 						$template->assign("_last_updated", $_last_updated);
 						// and load the template
-						$template->display($panel['template']);
+						if ($_output == "html") {
+							$template->display($panel['template']);
+						} else {
+							$retval .= $template->fetch($panel['template']);
+						}
 					}
 					
 					// restore the template direcory
@@ -332,6 +343,9 @@ function load_panels($column) {
 	// parameter validation and processing
 	$column = strtolower(trim($column));
 	switch ($column) {
+		case "":
+			// no where clause, return all panels
+			break;
 		case "header":
 			// get the header panels
 			$where = "panel_side='0'";
@@ -340,10 +354,6 @@ function load_panels($column) {
 			// get the left-side panels
 			$where = "panel_side='1'";
 			break;
-		case "right":
-			// get the right-side panels
-			$where = "panel_side='4'";
-			break;			
 		case "upper":
 			// get the upper-center panels
 			$where = "panel_side='2'";
@@ -358,9 +368,17 @@ function load_panels($column) {
 				$where .= " AND panel_display='1'";
 			}
 			break;
+		case "right":
+			// get the right-side panels
+			$where = "panel_side='4'";
+			break;			
+		case "top":
+			// get the top panels
+			$where = "panel_side='5'";
+			break;
 		case "footer":
 			// get the footer panels
-			$where = "panel_side='5'";
+			$where = "panel_side='6'";
 			break;
 		default:
 			// invalid parameter. Generate a notice
@@ -370,7 +388,7 @@ function load_panels($column) {
 	// 
 	switch ($settings['panels_localisation']) {
 		case "multiple":
-			$where .= " AND panel_locale = '".$settings['locale_code']."'";
+			$where .= ($where == "" ? "" : " AND ")."panel_locale = '".$settings['locale_code']."'";
 			break;
 		default:
 	}	
@@ -442,6 +460,7 @@ function count_panels($column) {
 		case "right":
 		case "upper":
 		case "lower":
+		case "top":
 		case "header":
 		case "footer":
 			foreach($template_panels as $panel_name => $panel) {
@@ -450,7 +469,7 @@ function count_panels($column) {
 			break;
 		case "body":
 			foreach($template_panels as $panel_name => $panel) {
-				if(!in_array($panel['type'], array('left', 'right', 'upper', 'lower', 'header', 'footer'))) $count++;
+				if(!in_array($panel['type'], array('left', 'right', 'top', 'upper', 'lower', 'header', 'footer'))) $count++;
 			}
 			break;
 		case "all":
