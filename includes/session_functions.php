@@ -71,10 +71,11 @@ if (isset($_SESSION['locale']) && is_array($_SESSION['locale'])) {
 }
 
 // mark all variables in flash as used, so they get deleted at the end of this page request
-foreach($_SESSION['_flash'] as $key => $value) {
-	$_SESSION['_flash'][$key]['used'] = true;
+if (isset($_SESSION['_flash'])) {
+	foreach($_SESSION['_flash'] as $key => $value) {
+		$_SESSION['_flash'][$key]['used'] = true;
+	}
 }
-
 
 /*---------------------------------------------------+
 | Session related global functions                   |
