@@ -607,7 +607,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 				$exclblock[0] = url_to_absolute($_SERVER['SCRIPT_URI'], $exclblock[0]);
 				if (isURL($exclblock[0])) {
 					// convert it into a link
-					$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$exclblock[0]."' alt='' target='_blank'>".$exclblock[1]."</a>", $rawmsg);
+					$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='".$exclblock[0]."' alt='' target='_blank'>".parseubb($exclblock[1])."</a>", $rawmsg);
 				} else {
 					// strip the URL
 					$rawmsg = str_replace("{@@*".$key."*@@}", $exclblock[1], $rawmsg);
@@ -688,7 +688,7 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[small\](.*?)\[/small\]#si', '<span class=\'small\'>\1</span>', $text);
 
 	$text = preg_replace('#\[color=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/color\]#si', '<span style=\'color:\1\'>\2</span>', $text);
-	$text = preg_replace('#\[highlight=(\#[0-9a-fA-F]{6}|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/highlight\]#si', '<span style=\'background-color:\1\'>\2</span>', $text);
+	$text = preg_replace('#\[highlight=(\#[0-9a-fA-F]{6}|transparent|black|blue|brown|cyan|grey|green|lime|maroon|navy|olive|orange|purple|red|silver|violet|white|yellow)\](.*?)\[/highlight\]#si', '<span style=\'background-color:\1\'>\2</span>', $text);
 
 	// fix some anomilies of the hoteditor
 	$text = preg_replace('#\[color=\#NaNNaNNaN\](.*?)\[/size\]#si', '\1', $text);
@@ -806,7 +806,7 @@ function _parseubb_exclblock($matches) {
 			break;
 		case "url":
 		default:
-			$exclblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), parseubb(shortenlink($matches[2],50)), "url");
+			$exclblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), $matches[2], "url");
 			break;
 	}
 	return "{@@*".(count($exclblocks)-1)."*@@}";
@@ -817,7 +817,7 @@ function _parseubb_texturls($matches) {
 
 	// validate the URL before converting it
 	if (isURL($matches[0])) {
-		$exclblocks[] = array($matches[0], parseubb(shortenlink($matches[0], 50)), "url");
+		$exclblocks[] = array($matches[0], $matches[0], "url");
 		return "{@@*".(count($exclblocks)-1)."*@@}";
 	} else {
 		return $matches[0];
