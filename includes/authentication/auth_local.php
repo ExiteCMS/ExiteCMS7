@@ -64,6 +64,12 @@ class auth_local {
 		}
 	}
 
+	// perform method specific post logon actions
+	function post_logon() {
+		
+		return true;
+	}
+
 	// logout function
 	function logoff() {
 

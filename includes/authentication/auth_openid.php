@@ -86,6 +86,12 @@ class auth_openid {
 		return false;		
 	}
 
+	// perform method specific post logon actions
+	function post_logon() {
+		
+		return true;
+	}
+
 	// logout function
 	function logoff() {
 

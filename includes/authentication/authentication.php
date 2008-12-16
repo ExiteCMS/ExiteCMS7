@@ -116,8 +116,15 @@ class authentication {
 				if ($result) {
 					// record the logon method used
 					$this->method_used = $method;
-					// execute post logon checks and validations
-					return $this->_post_logon();
+					// call the post logon function of the class
+					$result = $this->classes[$method]->post_logon();
+					if ($result) {
+						// execute post logon checks and validations
+						return $this->_post_logon();
+					} else {
+						// class post-logon failed, report the login as failed
+						return false;
+					}
 				}
 			} else {
 				_debug($this->methods);
