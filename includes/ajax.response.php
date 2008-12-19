@@ -23,7 +23,7 @@ header("Cache-Control: no-cache, no-store, must-revalidate");
 header("Pragma: no-cache");
 
 // get the request field, sanitize it, and check it's availability
-$request = isset($_GET['request']) ? stripinput($_GET['request']) : "";
+$request = isset($_GET['request']) ? strtolower(stripinput($_GET['request'])) : "";
 if ($request == "") {
 	echo "ERROR: Missing request name on ajax call!";
 	exit;
@@ -32,6 +32,9 @@ if ($request == "") {
 // get the parameters field and sanitize it
 $parms = isset($_GET['parms']) ? stripinput($_GET['parms']) : "";
 $parms = explode(",", $parms);
+
+// do we need a cleanup when we're finished?
+$cleanup = false;
 
 /*---------------------------------------------------+
 | Local functions                                    |
@@ -63,6 +66,44 @@ function get_smileys($folder) {
 
 // process the request
 switch ($request) {
+	case "saveconfig":
+		// get the config json structure
+		$config = isset($_POST['config']) && !empty($_POST['config']) ? stripinput($_POST['config']) : false;
+		if (!$config) {
+			header("HTTP/1.1 404 NOT FOUND");
+			header("Status: 404 NOT FOUND");
+			exit;
+		}
+		$cleanup = true;
+		// make sure we have json_encode and json_decode available
+		require_once "json.include.php";		
+		if (iMEMBER) {
+			// use the user record datastore
+			$userdata['user_datastore']['clientside'] = json_decode($config);
+		} else {
+			// store in the current session record
+			$_SESSION['clientside'] = json_decode($config);
+		}
+		break;
+	case "restoreconfig":
+		// make sure we have json_encode and json_decode available
+		require_once "json.include.php";
+		if (iMEMBER) {
+			// return the user record datastore
+			if (!empty($userdata['user_datastore']['clientside'])) {
+				echo json_encode($userdata['user_datastore']['clientside']);
+			} else {
+				echo json_encode(array());
+			}
+		} else {
+			// return the user record datastore
+			if (!empty($_SESSION['clientside'])) {
+				echo json_encode($_SESSION['clientside']);
+			} else {
+				echo json_encode(array());
+			}
+		}
+		break;
 	case "pm":
 		// get the number of unread PM messages for this user
 		if (!iMEMBER) {
@@ -145,5 +186,28 @@ switch ($request) {
 		break;	
 	default:
 		echo "ERROR: Unknown request type '$request' on ajax call!";
+}
+
+// cleanup needed?
+if ($cleanup) {
+
+	// update the user's datastore
+	if (iMEMBER) {
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysql_real_escape_string(serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
+	}
+
+	// delete all used flash info from the session
+	if (isset($_SESSION['_flash'])) {
+		foreach($_SESSION['_flash'] as $key => $value) {
+			if ($_SESSION['_flash'][$key]['used']) {
+				unset($_SESSION['_flash'][$key]);
+			}
+		}
+	}
+	// flush any session info
+	session_write_close();
+
+	// close the database connection
+	mysql_close();
 }
 ?>

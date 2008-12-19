@@ -122,7 +122,10 @@ if ($cms_authentication->logged_on()) {
 		redirect(BASEDIR."login.php", "script");
 		exit;
 	}
-	$userdata = array(); $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = "";
+	// create a dummy userdata array
+	$userdata = array(); 
+	$userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = ""; $userdata['user_datastore'] = array();
+	// check for a theme selection. If present, override the default theme
 	if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
 		define("PATH_THEME", PATH_THEMES.$_SESSION['set_theme']."/");
 		define("THEME", THEMES.$_SESSION['set_theme']."/");
@@ -136,6 +139,12 @@ if ($cms_authentication->logged_on()) {
 
 // if logged in, extract info from the userdata record
 if (isset($userdata) && is_array($userdata)) {
+	// extract the user datastore
+	if (!empty($userdata['user_datastore'])) {
+		$userdata['user_datastore'] = unserialize($userdata['user_datastore']);
+	} else {
+		$userdata['user_datastore'] = array();
+	}
 	// if group memberships are defined, get the users own group memberships into an array
 	if (!empty($userdata['user_groups'])) {
 		$groups = explode(".", substr($userdata['user_groups'], 1));
@@ -179,6 +188,20 @@ if (isset($userdata) && is_array($userdata)) {
 	define("iMEMBER", 0);
 	define("iADMIN", 0);
 	define("iSUPERADMIN", 0);
+}
+
+// if the user changed the state of a panel, a cookie has been created to record the new state
+// get these cookies, and store them in the users session record to be reused, and delete the cookie
+if (!isset($userdata['user_datastore']['panelstates'])) {
+	$userdata['user_datastore']['panelstates'] = array();
+}
+foreach($_COOKIE as $cookiename => $cookievalue) {
+	if (substr($cookiename,0,4) == "box_" && isNum($cookievalue) && ($cookievalue == 0 || $cookievalue == 1)) {
+		// store the value
+		$userdata['user_datastore']['panelstates'][$cookiename] = $cookievalue;
+		// and delete the cookie
+		setcookie ($cookiename, "", 1);
+	}
 }
 
 // get the country code for this user, override the country code for webmasters if needed

@@ -1234,7 +1234,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings = array();
 		$localestrings['400'] = "ExiteCMS Upgrade";
 		$localestrings['401'] = "There are no ExiteCMS upgrades waiting to be installed.";
-		$localestrings['402'] = "There are new upgrades available on the ExiteCMS website.<br />Click <a href='http://exitecms.exite.eu'>here</a> to download them.";
+		$localestrings['402'] = "There are new upgrades available on the ExiteCMS website.<br />Click <a href='http://www.exitecms.org'>here</a> to download them.";
 		$localestrings['403'] = "The following upgrades are waiting to be installed:";
 		$localestrings['404'] = "The following upgrades have failed:";
 		$localestrings['405'] = "ExiteCMS has been succesfully upgraded to revision %s.";
@@ -1248,7 +1248,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['420'] = "MySQL error";
 		$localestrings['421'] = "Upgrade function error";
 		$localestrings['422'] = "General error";
-		$localestrings['430'] = "For more detailed information on these upgrades, check the changelogs on <a href='http://exitecms.exite.eu' alt='' target='_blank'>http://exitecms.exite.eu</a>";
+		$localestrings['430'] = "For more detailed information on these upgrades, check the changelogs on <a href='http://www.exitecms.org' alt='' target='_blank'>http://www.exitecms.org</a>";
 		load_localestrings($localestrings, LP_LOCALE, "admin.upgrade", $step);
 
 		$localestrings = array();
@@ -3528,7 +3528,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['428'] = "Table prefix invalid. Please enter a valid prefix";
 		$localestrings['429'] = "Please check your database hostname, username and password";
 		$localestrings['430'] = "Unable to write to config<br>\nPlease check write permissions and restart setup.";
-		$localestrings['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+		$localestrings['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://www.exitecms.org' target='blank'>http://www.exitecms.org</a>";
 		$localestrings['432'] = "The config has been written successfully.<br><br>\n";
 		$localestrings['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
 		$localestrings['434'] = "The Database '%s' does not exist or the database user has no rights to access it.";
@@ -3784,7 +3784,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229354420");
+if (!defined('LP_DATE')) define('LP_DATE', "1229424339");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

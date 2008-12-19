@@ -18,7 +18,7 @@
 +---------------------------------------------------------------------*/
 
 // upgrade for revision
-$_revision = '2119';
+$_revision = '2123';
 
 if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
@@ -28,15 +28,15 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision, 
-					'date' => mktime(16,00,0,12,15,2008), 
+					'date' => mktime(12,00,0,12,16,2008), 
 					'title' => "Required updates for ExiteCMS v7.2 rev.".$_revision,
-					'description' => "Add new 'top' panel location so side panels can be added in the header (p.e. for dropdown menu's).");
+					'description' => "Added a client-side datastore to the user table, to allow ajax themes to save and retrieve client side information.");
 
 // array to store the commands of this update
 $commands = array();
 
 // database changes
 
-// move all defined footer panels to make room for the new top panel
-$commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##panels SET panel_side = '6' WHERE panel_side = '5'");
+// add the user_datastore field to the user table
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_datastore TEXT NOT NULL");
 ?>

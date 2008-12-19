@@ -428,10 +428,10 @@ function load_panels($column) {
 						break;
 				}
 				$_panel['state'] = $p_data['panel_state'];
-				// check if there's a session variable, if so, restore the previous panel state
+				// check if there's a panel state stored. If so, restore the previous panel state
 				$session_var = "box_".str_replace(".", "_", $_panel['name']);
-				if (isset($_SESSION[$session_var])) {
-					$_panel['state'] = $_SESSION[$session_var];
+				if (isset($userdata['user_datastore']['panelstates'][$session_var])) {
+					$_panel['state'] = $userdata['user_datastore']['panelstates'][$session_var];
 				}
 				// if this panel is not defined as hidden, add it to the template array
 				if ($_panel['state'] < 2) {
@@ -496,6 +496,11 @@ function theme_init() {
 function theme_cleanup() {
 
 	global $db_prefix, $userdata, $_db_log, $_db_logs, $template, $settings;
+
+	// update the user's datastore
+	if (iMEMBER) {
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysql_real_escape_string(serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
+	}
 
 	// remove any expired posts trackers
 	if (isset($_SESSION['posts']) && is_array($_SESSION['posts'])) {

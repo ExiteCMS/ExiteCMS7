@@ -11,10 +11,10 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id:: pm.php 2010 2008-11-12 16:19:46Z WanWizard                    $|
+| $Id::                                                               $|
 +----------------------------------------------------------------------+
-| Last modified by $Author:: WanWizard                                $|
-| Revision number $Rev:: 2010                                         $|
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 if (eregi("pm_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 

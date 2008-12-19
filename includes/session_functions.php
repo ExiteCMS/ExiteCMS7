@@ -49,17 +49,6 @@ session_start();
 // update the timestamp of the session cookie, we want expiry after the last page load, not after the session has started!
 setcookie(ini_get("session.name"), session_id(), time()+ini_get("session.gc_maxlifetime"));
 
-// if the user changed the state of a panel, a cookie has been created to record the new state
-// get these cookies, and store them in the users session record to be reused, and delete the cookie
-foreach($_COOKIE as $cookiename => $cookievalue) {
-	if (substr($cookiename,0,4) == "box_" && isNum($cookievalue) && ($cookievalue == 0 || $cookievalue == 1)) {
-		// store the value
-		$_SESSION[$cookiename] = $cookievalue;
-		// and delete the cookie
-		setcookie ($cookiename, "", 1);
-	}
-}
-
 // store the last_url cookie if found
 if (isset($_COOKIE['last_url']) && (isURL($_COOKIE['last_url']) || isURL($settings['siteurl'].$_COOKIE['last_url'])) && $_COOKIE['last_url'] != BASEDIR."setuser.php?login=yes") {
 	$_SESSION['last_url'] = stripinput($_COOKIE['last_url']);

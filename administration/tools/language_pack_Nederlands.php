@@ -1234,7 +1234,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings = array();
 		$localestrings['400'] = "ExiteCMS Opwaarderen";
 		$localestrings['401'] = "Er zijn geen nieuwe opwaarderingen die moeten worden geinstalleerd.";
-		$localestrings['402'] = "Er zijn nieuwe opwaarderingen beschikbaar op de website van ExiteCMS.<br />Click <a href='http://exitecms.exite.eu'>hier</a> om ze te downloaden.";
+		$localestrings['402'] = "Er zijn nieuwe opwaarderingen beschikbaar op de website van ExiteCMS.<br />Click <a href='http://www.exitecms.org'>hier</a> om ze te downloaden.";
 		$localestrings['403'] = "De volgende opwaarderingen wachten om geinstalleerd te worden:";
 		$localestrings['404'] = "De volgende opwaarderingen zijn mislukt:";
 		$localestrings['405'] = "ExiteCMS is succesvol opgewaardeerd naar revisie %s.";
@@ -1248,7 +1248,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['420'] = "MySQL fout";
 		$localestrings['421'] = "Opwaardeer functie fout";
 		$localestrings['422'] = "Algemene fout";
-		$localestrings['430'] = "Voor meer gedetailleerde informatie over deze opwaarderingen, controleer de changelogs (engels!) op <a href='http://exitecms.exite.eu' alt='' target='_blank'>http://exitecms.exite.eu</a>";
+		$localestrings['430'] = "Voor meer gedetailleerde informatie over deze opwaarderingen, controleer de changelogs (engels!) op <a href='http://www.exitecms.org' alt='' target='_blank'>http://www.exitecms.org</a>";
 		load_localestrings($localestrings, LP_LOCALE, "admin.upgrade", $step);
 
 		$localestrings = array();
@@ -3528,7 +3528,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['428'] = "Tabel voorvoegsel incorrect. Vul a.u.b. een correct voorvoegsel in.";
 		$localestrings['429'] = "Controleer de systeemnaam, gebruikersnaam en wachtwoord op juistheid.";
 		$localestrings['430'] = "Kan de configuratie niet wegschrijven<br \>\nControleer a.u.b. de schrijfpermissies en herstart daarna de installatie.";
-		$localestrings['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+		$localestrings['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://www.exitecms.org' target='blank'>http://www.exitecms.org</a>";
 		$localestrings['432'] = "De configuratie is succesvol weggeschreven.<br><br>\n";
 		$localestrings['433'] = "De database tabellen zijn aangemaakt.<br><br>\nVul a.u.b. het volgende formulier in, en klik daarna op 'Volgende Stap'.";
 		$localestrings['434'] = "De database '%s' bestaat niet of uw gebruiker heeft onvoldoende rechten op deze database.";
@@ -3784,7 +3784,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229354423");
+if (!defined('LP_DATE')) define('LP_DATE', "1229424343");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

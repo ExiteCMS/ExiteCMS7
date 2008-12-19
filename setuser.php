@@ -46,6 +46,11 @@ if (isset($_GET['logout']) && $_GET['logout'] == "yes") {
 	// process the logout request
 	$cms_authentication->logoff();
 
+	// copy the clientside datastore to the session
+	if (!empty($userdata['user_datastore']['clientside'])) {
+		$_SESSION['clientside'] = $userdata['user_datastore']['clientside'];
+	}
+
 	// make sure the user info is erased from the session
 	if (isset($userdata['user_name'])) {
 		$message['line2'] =  "<b>".$locale['192'].$userdata['user_name']."</b>";
