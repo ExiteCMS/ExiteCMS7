@@ -551,6 +551,9 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 	// strip MAIL bbcode
 	$rawmsg = preg_replace_callback('#\[mail(=?.*?)\](.*?)([\r\n]*)\[/mail\]#si', '_parseubb_exclblock', $rawmsg);
 
+	// strip FLASH bbcode
+	$rawmsg = preg_replace_callback('#\[flash(.*?)\](.*?)([\r\n]*)\[/flash\]#si', '_parseubb_exclblock', $rawmsg);
+
 	// strip URL bbcode
 	$rawmsg = preg_replace_callback('#\[url(=?.*?)\](.*?)([\r\n]*)\[/url\]#si', '_parseubb_exclblock', $rawmsg);
 
@@ -589,6 +592,18 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 	// convert any newlines to html <br>
 	$rawmsg = nl2br($rawmsg);
 
+	// re-insert the excluded flash blocks
+	foreach($exclblocks as $key => $exclblock) {
+		switch ($exclblock[2]) {
+			case "flash":
+				if (isURL($exclblock[1]) || file_exists(PATH_ROOT.$exclblock[1])) {
+					$rawmsg = str_replace("{@@*".$key."*@@}", "[flash ".$exclblock[0]."]".$exclblock[1]."[/flash]", $rawmsg);
+				}
+			default:
+				break;
+		}
+	}
+
 	// parse all ubbcode
 	$rawmsg = parseubb($rawmsg, $limit);
 	
@@ -619,6 +634,8 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 	}
 	foreach($exclblocks as $key => $exclblock) {
 		switch ($exclblock[2]) {
+			case "flash":
+				$rawmsg = str_replace("{@@*".$key."*@@}", "[flash ".$exclblock[0]."]".$exclblock[1]."[/flash]", $rawmsg);
 			case "img":
 				if ((isURL($exclblock[0]) && verify_image($exclblock[0])) || file_exists(PATH_ROOT.$exclblock[0])) {
 					$rawmsg = str_replace("{@@*".$key."*@@}", "<img src='".$exclblock[0]."' />", $rawmsg);
@@ -652,6 +669,7 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[list=1\](.*?)\[/list\]#si', '<ol>\1</ol>', $text);
 	$text = preg_replace('#\[list\](.*?)\[/list\]#si', '<ul>\1</ul>', $text);
 	$text = preg_replace('#\r\n\[\*\]#si', '<li>', $text);
+
 	// get rid of inserted breaks that ruin the layout
 	$text = preg_replace('#<br />\r\n<ol><br />#si', '<ol>', $text);
 	$text = preg_replace('#<br />\r\n<ul><br />#si', '<ul>', $text);
@@ -665,8 +683,8 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[\/tr\]#si', '</tr>', $text);
 
 	//get rid of line breaks after a list item, for better formatting
-	$text=str_replace("</li><br />","</li>",$text);
-	$text=str_replace("</ul><br />","</ul>",$text);
+	$text=str_replace('</li><br />','</li>',$text);
+	$text=str_replace('</ul><br />','</ul>',$text);
 
 	// text formatting
 	$text = preg_replace('#\[b\](.*?)\[/b\]#si', '<b>\1</b>', $text);
@@ -703,7 +721,7 @@ function parseubb($text, $limit = false) {
 	$text = preg_replace('#\[youtube\](.*?)\[/youtube\]#si', '<object type="application/x-shockwave-flash" width="425" height="350" data="http://www.youtube.com/v/\1"><param name="movie" value="http://www.youtube.com/v/\1"></param><param name="wmode" value="transparent"></param></object>', $text);
 
 	// flash movies
-	$text = preg_replace('#\[flash width=([0-9]*?) height=([0-9]*?)\]([^\s\'\";:\+]*?)(\.swf)\[/flash\]#si', '<object classid=\'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\' codebase=\'http://active.macromedia.com/flash6/cabs/swflash.cab#version=6,0,0,0\' id=\'\3\4\' width=\'\1\' height=\'\2\'><param name=movie value=\'\3\4\'><param name=\'quality\' value=\'high\'><param name=\'bgcolor\' value=\'#ffffff\'><embed src=\'\3\4\' quality=\'high\' bgcolor=\'#ffffff\' width=\'\1\' height=\'\2\' type=\'application/x-shockwave-flash\' pluginspage=\'http://www.macromedia.com/go/getflashplayer\'></embed></object>', $text);
+	$text = preg_replace('#\[flash width=([0-9]*?) height=([0-9]*?)\](.*?)(\.swf)\[/flash\]#si', '<object classid=\'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\' codebase=\'http://active.macromedia.com/flash6/cabs/swflash.cab#version=6,0,0,0\' id=\'\3\4\' width=\'\1\' height=\'\2\'><param name=movie value=\'\3\4\'><param name=\'quality\' value=\'high\'><param name=\'bgcolor\' value=\'#ffffff\'><embed src=\'\3\4\' quality=\'high\' bgcolor=\'#ffffff\' width=\'\1\' height=\'\2\' type=\'application/x-shockwave-flash\' pluginspage=\'http://www.macromedia.com/go/getflashplayer\'></embed></object>', $text);
 
 	// quote blocks
 	if (!$limit) {
@@ -797,9 +815,14 @@ function _parseubb_exclblock($matches) {
 	// determine the BBcode
 	$type = substr($matches[0],1, strpos($matches[0], "]")-1);
 	if (strpos($type, "=")) $type = substr($type,0,strpos($type, "="));
+	if (strpos($type, " ")) $type = substr($type,0,strpos($type, " "));
+
 	switch($type) {
 		case "img":
 			$exclblocks[] = array($matches[1],$matches[1],"img");
+			break;
+		case "flash":
+			$exclblocks[] = array(trim($matches[1]),$matches[2],"flash");
 			break;
 		case "mail":
 			$exclblocks[] = array($matches[1]=="="?$matches[2]:substr($matches[1],1), $matches[2], "mail");
