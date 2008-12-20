@@ -34,17 +34,20 @@ if (FUSION_SELF != "setuser.php" && dbcount("(*)", "blacklist", "blacklist_ip='"
 }
 
 // check for bot users
-$_bot_list = array("Teoma","alexa","froogle","Gigabot","inktomi","looksmart","URL_Spider_SQL","Firefly","NationalDirectory","Ask Jeeves","TECNOSEEK",
-					"InfoSeek","WebFindBot","girafabot","crawler","www.galaxy.com","Googlebot","Scooter","Slurp","msnbot","appie","FAST","WebBug",
-					"Spade","ZyBorg","rabaz","Baiduspider","Feedfetcher-Google","TechnoratiSnoop","Rankivabot","Mediapartners-Google","Sogou web spider",
-					"WebAlta Crawler","Twiceler","curl/"
-				);
-foreach($_bot_list as $bot) {
-	if(strpos($_SERVER['HTTP_USER_AGENT'], $bot) !== false) {
-		define("CMS_IS_BOT", true);
-		break;
+if (isset($_SERVER['HTTP_USER_AGENT'])) {
+	$_bot_list = array("Teoma","alexa","froogle","Gigabot","inktomi","looksmart","URL_Spider_SQL","Firefly","NationalDirectory","Ask Jeeves","TECNOSEEK",
+						"InfoSeek","WebFindBot","girafabot","crawler","www.galaxy.com","Googlebot","Scooter","Slurp","msnbot","appie","FAST","WebBug",
+						"Spade","ZyBorg","rabaz","Baiduspider","Feedfetcher-Google","TechnoratiSnoop","Rankivabot","Mediapartners-Google","Sogou web spider",
+						"WebAlta Crawler","Twiceler","curl/"
+					);
+	foreach($_bot_list as $bot) {
+		if(strpos($_SERVER['HTTP_USER_AGENT'], $bot) !== false) {
+			define("CMS_IS_BOT", true);
+			break;
+		}
 	}
 }
+// assume this visitor is not a bot...
 if (!defined("CMS_IS_BOT")) {
 	define("CMS_IS_BOT", false);
 }
