@@ -209,11 +209,16 @@ switch ($action) {
 	case "edit":
 	case "quickreply":
 		if ($errorcode == 0) {
-			$result = dbquery("SELECT p.*, u.user_name FROM ".$db_prefix."posts p, ".$db_prefix."users u WHERE p.post_id='".($post_id != 0 ? $post_id : $reply_id)."' AND p.thread_id='".$thread_id."' AND p.forum_id='".$forum_id."' AND p.post_author = u.user_id");
+			$result = dbquery("SELECT p.*, u.user_name FROM ".$db_prefix."posts p LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id WHERE p.post_id='".($post_id != 0 ? $post_id : $reply_id)."' AND p.thread_id='".$thread_id."' AND p.forum_id='".$forum_id."'");
 			if (dbrows($result)) { $pdata = dbarray($result); } else { fallback("index.php"); }
-			$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$pdata['post_author']."'");
-			if (dbrows($result)) { $puser = dbarray($result); } else { fallback("index.php"); }
-			$variables['orgauthor'] = $reply_id > 0 ? $puser['user_name'] : "";
+			if ($pdata['post_author']) {
+				$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='".$pdata['post_author']."'");
+				if (dbrows($result)) { $puser = dbarray($result); } else { fallback("index.php"); }
+				$variables['orgauthor'] = $reply_id > 0 ? $puser['user_name'] : "";
+			} else {
+				// automatic post. "fake" a user
+				$puser = array();
+			}
 		}
 
 	case "reply":
