@@ -200,7 +200,7 @@ if (iMEMBER) {
 				$cc_flag = "";
 				if (!$cc_name) $cc_name = $locale['408'];
 			} else {
-				if ($cc_flag == "" || empty($data['user_ip']) || $data['user_ip'] == "X" || $data['user_ip'] == "0.0.0.0") {
+				if ($cc_flag == "" || $cc_name == "" || empty($data['user_ip']) || $data['user_ip'] == "X" || $data['user_ip'] == "0.0.0.0") {
 					$cc_flag = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 					$cc_name = $locale['408'];
 				}
