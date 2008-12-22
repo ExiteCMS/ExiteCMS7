@@ -22,7 +22,7 @@
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.662}
 			</td>
 			<td width='50%' class='tbl'>
@@ -33,7 +33,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.673}
 			</td>
 			<td width='50%' class='tbl'>
@@ -44,7 +44,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.664}
 				<br />
 				<span class='small2'>{$locale.665}</span>
@@ -54,7 +54,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.666}
 				<br />
 				<span class='small2'>{$locale.663}</span>
@@ -66,7 +66,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.659}
 			</td>
 			<td width='50%' class='tbl'>
@@ -77,7 +77,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' width='50%' class='tbl'>
+			<td align='right' valign='top' width='50%' class='tbl'>
 				{$locale.651}
 				<br />
 				<span class='small2'>{$locale.652}<br />{$locale.653}</span>
@@ -87,7 +87,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.654}
 			</td>
 			<td width='50%' class='tbl'>
@@ -95,7 +95,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.655}
 			</td>
 			<td width='50%' class='tbl'>
@@ -106,7 +106,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.656}
 			</td>
 			<td width='50%' class='tbl'>
@@ -119,7 +119,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.660}
 			</td>
 			<td width='50%' class='tbl'>
@@ -127,7 +127,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.520}
 			</td>
 			<td width='50%' class='tbl'>
@@ -143,7 +143,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.657}
 			</td>
 			<td width='50%' class='tbl'>
@@ -154,7 +154,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.669}
 			</td>
 			<td width='50%' class='tbl'>
@@ -162,7 +162,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' width='50%' class='tbl'>
+			<td align='right' valign='top' width='50%' class='tbl'>
 				{$locale.658}
 			</td>
 			<td width='50%' class='tbl'>
@@ -175,7 +175,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.671}
 			</td>
 			<td class='tbl' width='50%'>
@@ -188,7 +188,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.668}
 			</td>
 			<td width='50%' class='tbl'>
@@ -199,7 +199,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.670}
 			</td>
 			<td width='50%' class='tbl'>

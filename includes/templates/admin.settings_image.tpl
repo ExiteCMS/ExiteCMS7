@@ -22,7 +22,7 @@
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.611}
 			</td>
 			<td class='tbl' width='50%'>
@@ -34,7 +34,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.612}
 			</td>
 			<td class='tbl' width='50%'>
@@ -46,7 +46,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.614}
 			</td>
 			<td class='tbl' width='50%'>
@@ -57,7 +57,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.613}
 			</td>
 			<td width='50%' class='tbl'>
@@ -69,7 +69,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.609}
 			</td>
 			<td width='50%' class='tbl'>
@@ -77,7 +77,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.610}
 			</td>
 			<td width='50%' class='tbl'>
@@ -85,10 +85,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.601}
-{*				<br />
-				<span class='small2'>{$locale.604}</span> *}
 			</td>
 			<td width='50%' class='tbl'>
 				<input type='text' name='thumb_w' value='{$settings2.thumb_w}' maxlength='3' class='textbox' style='width:40px;' /> {* x
@@ -98,7 +96,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.602}
 				<br />
 				<span class='small2'>{$locale.604}</span>
@@ -111,7 +109,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.603}
 				<br />
 				<span class='small2'>{$locale.604}</span>
@@ -122,7 +120,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.605}
 			</td>
 			<td width='50%' class='tbl'>
@@ -130,7 +128,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.606}
 			</td>
 			<td width='50%' class='tbl'>

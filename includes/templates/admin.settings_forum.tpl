@@ -22,10 +22,10 @@
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 <table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.507}
 			</td>
-			<td width='40%' class='tbl'>
+			<td class='tbl'>
 				<select name='attachments' class='textbox'>
 					<option value='1'{if $settings2.attachments == "1"} selected="selected"{/if}>{$locale.508}</option>
 					<option value='0'{if $settings2.attachments == "0"} selected="selected"{/if}>{$locale.509}</option>
@@ -33,7 +33,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.510}
 				<br />
 				<span class='small2'>{$locale.511}</span>
@@ -43,7 +43,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.512}
 				<br />
 				<span class='small2'>{$locale.513}</span>
@@ -53,7 +53,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.521}
 				<br />
 				<span class='small2'>{$locale.522}</span>
@@ -65,7 +65,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.519}
 			</td>
 			<td width='40%' class='tbl'>
@@ -76,7 +76,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.523}
 				<br />
 				<span class='small2'>{$locale.524}</span>
@@ -90,7 +90,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.525}
 			</td>
 			<td width='40%' class='tbl'>
@@ -102,7 +102,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.534}
 			</td>
 			<td width='40%' class='tbl'>
@@ -115,7 +115,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.543}
 			</td>
 			<td width='40%' class='tbl'>
@@ -128,7 +128,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.545}
 			</td>
 			<td width='40%' class='tbl'>
@@ -139,7 +139,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td valign='top' align='right' width='60%' class='tbl'>
 				{$locale.514}
 				<br />
 				<span class='small2'><font color='red'>{$locale.515}</font> {$locale.516}</span>

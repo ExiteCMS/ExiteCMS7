@@ -29,7 +29,7 @@
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.551}
 			</td>
 			<td width='50%' class='tbl'>
@@ -40,7 +40,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.552}
 			</td>
 			<td width='50%' class='tbl'>
@@ -51,7 +51,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.557}
 			</td>
 			<td width='50%' class='tbl'>
@@ -62,7 +62,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.553}
 			</td>
 			<td width='50%' class='tbl'>
@@ -73,7 +73,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.554}
 			</td>
 			<td width='50%' class='tbl'>
@@ -89,7 +89,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.575}
 			</td>
 			<td width='50%' class='tbl'>
@@ -100,7 +100,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.576}
 			</td>
 			<td width='50%' class='tbl'>
@@ -111,7 +111,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.529}
 			</td>
 			<td width='50%' class='tbl'>
@@ -123,7 +123,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.530}
 			</td>
 			<td width='50%' class='tbl'>
@@ -135,7 +135,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.528}
 			</td>
 			<td width='50%' class='tbl'>

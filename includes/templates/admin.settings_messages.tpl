@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.701}
 				<br/>
 				<span class='small2'>{$locale.704}</span>
@@ -37,7 +37,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.722}
 			</td>
 			<td class='tbl' width='50%'>
@@ -50,7 +50,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.702}
 				<br />
 				<span class='small2'>{$locale.704}</span>
@@ -60,7 +60,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.723}
 			</td>
 			<td class='tbl' width='50%'>
@@ -73,7 +73,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.703}
 				<br />
 				<span class='small2'>{$locale.704}</span>
@@ -83,7 +83,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.724}
 			</td>
 			<td class='tbl' width='50%'>
@@ -106,7 +106,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.721}
 			</td>
 			<td class='tbl' width='50%'>
@@ -117,7 +117,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.712}
 			</td>
 			<td class='tbl' width='50%'>
@@ -139,7 +139,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.720}
 			</td>
 			<td class='tbl' width='50%'>
@@ -161,7 +161,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.715}
 			</td>
 			<td class='tbl' width='50%'>
@@ -172,7 +172,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.709}
 			</td>
 			<td class='tbl' width='50%'>
@@ -183,7 +183,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.710}
 			</td>
 			<td class='tbl' width='50%'>
@@ -194,7 +194,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='tbl' width='50%'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.717}
 			</td>
 			<td class='tbl' width='50%'>

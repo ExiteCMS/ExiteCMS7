@@ -22,7 +22,7 @@
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.402}
 			</td>
 			<td width='50%' class='tbl'>
@@ -30,7 +30,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.403}
 				<br />
 				<span class='small2'>{$locale.425}</span>
@@ -40,7 +40,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.405}
 			</td>
 			<td width='50%' class='tbl'>
@@ -48,10 +48,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.526}
 			</td>
-			<td width='40%' class='tbl'>
+			<td width='50%' class='tbl'>
 				<select name='hide_webmaster' class='textbox'>
 					<option value='1'{if $settings2.hide_webmaster == "1"} selected="selected"{/if}>{$locale.508}</option>
 					<option value='0'{if $settings2.hide_webmaster == "0"} selected="selected"{/if}>{$locale.509}</option>
@@ -59,7 +59,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.419}
 			</td>
 			<td width='50%' class='tbl'>
@@ -67,7 +67,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.406}
 			</td>
 			<td width='50%' class='tbl'>
@@ -75,7 +75,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' width='50%' class='tbl'>
+			<td valign='top' align='right' width='50%' class='tbl'>
 				{$locale.407}
 				<br />
 				<span class='small2'>{$locale.408}</span>
@@ -85,7 +85,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' width='50%' class='tbl'>
+			<td valign='top' align='right' width='50%' class='tbl'>
 				{$locale.409}
 			</td>
 			<td width='50%' class='tbl'>
@@ -93,7 +93,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' width='50%' class='tbl'>
+			<td valign='top' align='right' width='50%' class='tbl'>
 				{$locale.410}
 				<br />
 				<span class='small2'>{$locale.411}</span>
@@ -103,7 +103,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' width='50%' class='tbl'>
+			<td valign='top' align='right' width='50%' class='tbl'>
 				{$locale.412}
 				<br />
 				<span class='small2'>{$locale.408}</span>
@@ -113,7 +113,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign='top' class='tbl'>
+			<td valign='top' align='right' width='50%' class='tbl'>
 				{$locale.413}
 			</td>
 			<td width='50%' class='tbl'>
@@ -121,7 +121,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.416}
 			</td>
 			<td width='50%' class='tbl'>
@@ -133,7 +133,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.421}
 			</td>
 			<td width='50%' class='tbl'>
@@ -146,7 +146,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.422}
 			</td>
 			<td width='50%' class='tbl'>
@@ -165,12 +165,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='60%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.505}
 				<br />
 				<span class='small2'>{$locale.506}</span>
 			</td>
-			<td width='40%' class='tbl'>
+			<td width='50%' class='tbl'>
 				<select name='numofthreads' class='textbox'>
 					{section name=lines start=5 loop=55 step=5}
 						<option{if $settings2.numofthreads == $smarty.section.lines.index} selected="selected"{/if}>{$smarty.section.lines.index}</option>
@@ -179,7 +179,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.426}
 			</td>
 			<td width='50%' class='tbl'>
@@ -191,7 +191,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.428}
 			</td>
 			<td width='50%' class='tbl'>
@@ -202,7 +202,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width='50%' class='tbl'>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.415}
 			</td>
 			<td width='50%' class='tbl'>
