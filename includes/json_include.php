@@ -1,5 +1,5 @@
 <?php
-if (eregi("json.include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (eregi("json_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // Future-friendly json_encode
 if( !function_exists('json_encode') ) {

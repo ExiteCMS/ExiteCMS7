@@ -76,7 +76,7 @@ switch ($request) {
 		}
 		$cleanup = true;
 		// make sure we have json_encode and json_decode available
-		require_once "json.include.php";		
+		require_once "json_include.php";		
 		if (iMEMBER) {
 			// use the user record datastore
 			$userdata['user_datastore']['clientside'] = json_decode($config);
@@ -87,7 +87,7 @@ switch ($request) {
 		break;
 	case "restoreconfig":
 		// make sure we have json_encode and json_decode available
-		require_once "json.include.php";
+		require_once "json_include.php";
 		if (iMEMBER) {
 			// return the user record datastore
 			if (!empty($userdata['user_datastore']['clientside'])) {
