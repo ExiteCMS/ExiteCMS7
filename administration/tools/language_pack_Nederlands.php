@@ -2798,6 +2798,18 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['522'] = "Beeld verwijderen";
 		$localestrings['523'] = "Beeld is nu de voorpagina van de gallerij";
 		$localestrings['524'] = "Beelden";
+		$localestrings['525'] = "Bestanden opladen";
+		$localestrings['526'] = "Selecteer uw op te laden foto.";
+		$localestrings['527'] = "Foto's opladen:";
+		$localestrings['528'] = "Algemene voortgang";
+		$localestrings['529'] = "Huidige bestand";
+		$localestrings['530'] = "Selecteer bestanden";
+		$localestrings['531'] = "Wachtrij wissen";
+		$localestrings['532'] = "Start opladen";
+		$localestrings['533'] = "Verwijder";
+		$localestrings['534'] = "Upload met";
+		$localestrings['535'] = "Resterend";
+		$localestrings['536'] = "Opladen geslaagd";
 		load_localestrings($localestrings, LP_LOCALE, "main.albums", $step);
 
 		$localestrings = array();
@@ -3784,7 +3796,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229424343");
+if (!defined('LP_DATE')) define('LP_DATE', "1229879956");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

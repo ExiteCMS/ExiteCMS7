@@ -2798,6 +2798,18 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['522'] = "Delete photo";
 		$localestrings['523'] = "Photo set as gallery highlight";
 		$localestrings['524'] = "Images";
+		$localestrings['525'] = "File Upload";
+		$localestrings['526'] = "Selected your photo to upload.";
+		$localestrings['527'] = "Upload Photos:";
+		$localestrings['528'] = "Overall progress";
+		$localestrings['529'] = "File Progress";
+		$localestrings['530'] = "Browse Files";
+		$localestrings['531'] = "Clear Queue";
+		$localestrings['532'] = "Start Upload";
+		$localestrings['533'] = "Remove";
+		$localestrings['534'] = "Upload with";
+		$localestrings['535'] = "Time left";
+		$localestrings['536'] = "Upload complete";
 		load_localestrings($localestrings, LP_LOCALE, "main.albums", $step);
 
 		$localestrings = array();
@@ -3784,7 +3796,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229424339");
+if (!defined('LP_DATE')) define('LP_DATE', "1229879766");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

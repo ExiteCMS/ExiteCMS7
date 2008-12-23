@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------
-// locale       : English
+// locale       : Nederlands
 // locale name  : main.setup
-// generated on : Mon Dec 15 2008, 16:20:23 CET
+// generated on : Sun Dec 21 2008, 18:19:16 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";
@@ -36,7 +36,7 @@ $locale['427'] = "Database naam incorrect. Vul a.u.b. een correcte naam in.";
 $locale['428'] = "Tabel voorvoegsel incorrect. Vul a.u.b. een correct voorvoegsel in.";
 $locale['429'] = "Controleer de systeemnaam, gebruikersnaam en wachtwoord op juistheid.";
 $locale['430'] = "Kan de configuratie niet wegschrijven<br \>\nControleer a.u.b. de schrijfpermissies en herstart daarna de installatie.";
-$locale['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+$locale['431'] = "De installatie kon één of meerdere database tabellen niet aanmaken:<br />%s<b /r><br />\nCorrigeer het probleem, en herstart de installatie.<br><br>\nIndien u het probleem niet zelf op kunt lossen, kunt u ondersteuning vragen op onze website<br>\n<a href='http://www.exitecms.org' target='blank'>http://www.exitecms.org</a>";
 $locale['432'] = "De configuratie is succesvol weggeschreven.<br><br>\n";
 $locale['433'] = "De database tabellen zijn aangemaakt.<br><br>\nVul a.u.b. het volgende formulier in, en klik daarna op 'Volgende Stap'.";
 $locale['434'] = "De database '%s' bestaat niet of uw gebruiker heeft onvoldoende rechten op deze database.";

@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Mon Dec 15 2008, 16:20:20 CET
+// generated on : Sun Dec 21 2008, 17:57:56 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";
@@ -36,7 +36,7 @@ $locale['427'] = "Database Name invalid. Please enter a valid name";
 $locale['428'] = "Table prefix invalid. Please enter a valid prefix";
 $locale['429'] = "Please check your database hostname, username and password";
 $locale['430'] = "Unable to write to config<br>\nPlease check write permissions and restart setup.";
-$locale['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://exitecms.exite.eu' target='blank'>http://exitecms.exite.eu</a>";
+$locale['431'] = "Setup was unable to create one or more database tables:<br>%s<br><br>\nPlease restart setup and try again.<br><br>\nIf you are unable to resolve this problem please visit our<br>\nlocal support site at <a href='http://www.exitecms.org' target='blank'>http://www.exitecms.org</a>";
 $locale['432'] = "The config has been written successfully.<br><br>\n";
 $locale['433'] = "The database tables have been created.<br><br>\nPlease complete the following form and click 'Next Step'.";
 $locale['434'] = "The Database '%s' does not exist or the database user has no rights to access it.";

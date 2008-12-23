@@ -53,12 +53,12 @@
 						<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> {$locale.040}
 						{if $smarty.const.iMEMBER}<a href='{$smarty.const.BASEDIR}profile.php?lookup={$news[column][item].user_id}'>{/if}
 						{$news[column][item].user_name}{if $smarty.const.iMEMBER}</a>{/if}
-						{if $_maxcols == 3}
+						{if $_maxcols > 1 && $_table_open}
 							<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' /><br />
 							<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
 						{/if}
 						{$locale.041} {$news[column][item].news_datestamp|date_format:"longdate"}
-						{if $_table_open}
+						{if ($news[column][item].news_extended && $news[column][item].allow_comments) || ($_maxcols > 1 && $_table_open)}
 							<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' /><br />
 							<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
 						{else}

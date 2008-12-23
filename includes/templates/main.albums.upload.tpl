@@ -18,7 +18,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {assign var=upload_limit value=25}
-{include file="_swfupload.tpl" upload_url=$smarty.const.BASEDIR|cat:$smarty.const.FUSION_SELF|cat:"?type=album&action=swfupload&album_id="|cat:$album.album_id session_id=$session_id file_size=$settings.photo_max_b|parsebytesize file_mask=$file_mask file_desc=$locale.524 upload_limit=$upload_limit queue_limit=0}
+{include file="_fancyupload.tpl" file_size=$settings.photo_max_b file_mask=$file_mask file_desc=$locale.524}
 <table width='100%' class='tbl-border' cellspacing='1' cellpadding='0'>
 	<tr>
 		<td width='33%' align='left' class='tbl1'>
@@ -37,43 +37,40 @@
 			{$locale.442} <b>{$album.album_title}</b>
 		</td>
 		<td class='tbl1'>
-			{$locale.443} <b><div id='divUploadCounter' style='display:inline;'>{$album.photo_count}</div></b>
-			<input type='hidden' name='UploadCounter' id='UploadCounter' value='{$album.photo_count}' />
+			{$locale.443} <b><div id='UploadCounter' style='display:inline;'>{$album.photo_count}</div></b>
 		</td>
 	</tr>
 </table>
 <br />
-<form id="form1" action="{$smarty.const.FUSION_SELF}" method="post" enctype="multipart/form-data">
-	<div id="divSWFUploadUI" style="visibility: hidden;">
-		<fieldset id="fsUploadProgress" class="swf_uploadprogress">
-			<legend class='swf_legend'>{$locale.444}</legend>
-		</fieldset>
-		<br />
-		<table cellpadding='1' cellspacing='1' width='100%' class='tbl-border'>
-			<tr>
-				<td class='tbl1'>
-					<p id="divStatus">{ssprintf format=$locale.445 var1=$upload_limit}</p>
-				</td>
-			</tr>
-		</table>
+<form action="{$smarty.const.BASEDIR|cat:$smarty.const.FUSION_SELF|cat:"?type=album&action=fancyupload&album_id="|cat:$album.album_id|cat:"&"|cat:$settings.session_name|cat:"="|cat:$session_name|cat:"&FUID="|cat:$session_id}" method="post" enctype="multipart/form-data" id="form-fancyupload">
+	<fieldset id="fancyupload-fallback">
+		<legend>{$locale.525}</legend>
 		<p>
-			<input id="btnBrowse" class="button" type="button" value="{ssprintf format=$locale.446 var1=$settings.photo_max_b|parsebytesize}" />
-			<input id="btnCancel" class="button" type="button" value="{$locale.447}" disabled="disabled" />
-			<br />
+			{$locale.526}<br />
+		</p>
+		<label for="fancyupload-upload">
+			{$locale.527}
+			<input type="file" name="upload" id="fancyupload-upload" />
+		</label>
+	</fieldset>
+	<div id="fancyupload-status" class="hide">
+		<div>
+			<div class="overall-title">{$locale.528}</div>
+			<img src="{$smarty.const.FANCYUPLOAD}images/bar.gif" class="progress overall-progress" />
+		</div>
+		<div>
+			<div class="current-title">{$locale.529}</div>
+			<img src="{$smarty.const.FANCYUPLOAD}images/bar.gif" class="progress current-progress" />
+		</div>
+		<div class="current-text"></div>
+		<p>
+			<a href="#" class="button" style="padding:2px;" id="fancyupload-browse">{$locale.530}</a> 
+			<a href="#" class="button" style="padding:2px;" id="fancyupload-clear">{$locale.531}</a> 
+			<a href="#" class="button" style="padding:2px;" id="fancyupload-start">{$locale.532}</a>
 		</p>
 	</div>
-	<noscript style="display: block; background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px;">
-		{$locale.448}
-	</noscript>
-	<div id="divLoadingContent" class="content" style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
-		{$locale.449}
-	</div>
-	<div id="divLongLoading" class="content" style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
-		{$locale.450}
-	</div>
-	<div id="divAlternateContent" class="content" style="background-color: #FFFF66; border-top: solid 4px #FF9966; border-bottom: solid 4px #FF9966; margin: 10px 25px; padding: 10px 15px; display: none;">
-		{$locale.451}
-	</div>
+	<hr />
+	<ul id="fancyupload-list"></ul>
 </form>
 {***************************************************************************}
 {* End of template                                                         *}

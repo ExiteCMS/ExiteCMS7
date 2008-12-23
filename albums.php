@@ -161,7 +161,7 @@ function delete_photo($album_id, $photo_id) {
 
 // make sure the parameters passed are valid
 if (!isset($type) || ($type != "album" && $type != "gallery" && $type != "photo")) $type = "";
-if (!isset($action) || (!in_array($action, array("add","edit","delete","view","upload","swfupload","slideshow","highlight")))) $action = "";
+if (!isset($action) || (!in_array($action, array("add","edit","delete","view","upload","fancyupload","slideshow","highlight")))) $action = "";
 if (!isset($photo_id) || !isNum($photo_id)) $photo_id = 0;
 if (!isset($album_id) || !isNum($album_id)) $album_id = 0;
 if (!isset($gallery_id) || !isNum($gallery_id)) $gallery_id = 0;
@@ -220,51 +220,53 @@ krsort($collection);
 // store the number of collections found
 $variables['rows'] = count($collection);
 
-// handle SWF uploads first
-if (isset($_POST['SWFSESSIONID'])) {
+// handle uploads first
+if ($action == "fancyupload") {
+
+	// load the fancyupload include
+	require PATH_INCLUDES."fancyupload_include.php";
+
 	// check if the user has upload rights to this album
-	if (empty($_POST['album_id']) || !isNum($_POST['album_id']) || !has_photo_access($_POST['album_id'], "album", 0, "write")) {
-		echo "error|".$locale['402'];
-		exit(0);
+	if (empty($album_id) || !isNum($album_id) || !has_photo_access($album_id, "album", 0, "write")) {
+		UploadResult("error", $locale['402']);
 	}
 	// generate a random filename
 	$filename = md5(time());
 	while (file_exists(PATH_IMAGES."albums/".$filename.".img")) {
 		$filename = md5(time());
 	}
-	$SWFconfig = array("filepath" => PATH_IMAGES."albums/", "filename" => $filename, "fileext" => "img", "verify_image" => true);
 	// validate and process the uploaded file
-	require PATH_INCLUDES."swfupload_include.php";
-	// upload succeeded
-	$SWFconfig['original'] = $SWFconfig['filename'].".".$SWFconfig['fileext'];
+	$IMGconfig = ProcessUpload($filename, "img", PATH_IMAGES."albums/", $settings['photo_max_b'], true);
+	// upload processed, process the image
+	$IMGconfig['original'] = $IMGconfig['filename'].".".$IMGconfig['fileext'];
 	// create the thumbnails
 	include PATH_INCLUDES."photo_functions_include.php";
 	// generate a normalized image if needed
-	$imagefile = @getimagesize($SWFconfig['file']);
+	$imagefile = @getimagesize($IMGconfig['file']);
 	if ($imagefile[0] > $settings['photo_w'] || $imagefile[1] > $settings['photo_h']) {
 		// image is bigger than the defined standardized size. Generate an intermediate image
-		$SWFconfig['sized'] = $SWFconfig['filename'].".sized.".$SWFconfig['fileext'];
-		createthumbnail($imagefile[2], $SWFconfig['file'], $SWFconfig['filepath'].$SWFconfig['sized'], $settings['photo_w'], $settings['photo_h']);
+		$IMGconfig['sized'] = $IMGconfig['filename'].".sized.".$IMGconfig['fileext'];
+		createthumbnail($imagefile[2], $IMGconfig['file'], $IMGconfig['filepath'].$IMGconfig['sized'], $settings['photo_w'], $settings['photo_h']);
 	} else {
 		// sized photo is the same as the original
-		$SWFconfig['sized'] = $SWFconfig['original'];
+		$IMGconfig['sized'] = $IMGconfig['original'];
 	}
 	// generate a thumbnail image if needed
 	if ($imagefile[0] > $settings['thumb_w'] || $imagefile[1] > $settings['thumb_h']) {
 		// image is bigger than the defined standardized size. Generate an intermediate image
-		$SWFconfig['thumb'] = $SWFconfig['filename'].".thumb.".$SWFconfig['fileext'];
-		createthumbnail($imagefile[2], $SWFconfig['file'], $SWFconfig['filepath'].$SWFconfig['thumb'], $settings['thumb_w'], $settings['thumb_h']);
+		$IMGconfig['thumb'] = $IMGconfig['filename'].".thumb.".$IMGconfig['fileext'];
+		createthumbnail($imagefile[2], $IMGconfig['file'], $IMGconfig['filepath'].$IMGconfig['thumb'], $settings['thumb_w'], $settings['thumb_h']);
 	} else {
 		// sized photo is the same as the original
-		$SWFconfig['thumb'] = $SWFconfig['original'];
+		$IMGconfig['thumb'] = $IMGconfig['original'];
 	}
 	// create the new photo record
-	$result = dbquery("INSERT INTO ".$db_prefix."photos (photo_name, photo_thumb, photo_sized, photo_original, photo_size, photo_uploaded_by, photo_datestamp) VALUES ('".mysql_escape_string($SWFconfig['Filedata']['name'])."', '".$SWFconfig['thumb']."', '".$SWFconfig['sized']."', '".$SWFconfig['original']."', ".$SWFconfig['Filedata']['size'].", ".(iMEMBER ? $userdata['user_id'] : 0).", ".time().")");
+	$result = dbquery("INSERT INTO ".$db_prefix."photos (photo_name, photo_thumb, photo_sized, photo_original, photo_size, photo_uploaded_by, photo_datestamp) VALUES ('".mysql_escape_string($IMGconfig['Filedata']['name'])."', '".$IMGconfig['thumb']."', '".$IMGconfig['sized']."', '".$IMGconfig['original']."', ".$IMGconfig['Filedata']['size'].", ".(iMEMBER ? $userdata['user_id'] : 0).", ".time().")");
 	$photo_id = mysql_insert_id();
 	// add the photo to the album
-	$result = dbquery("INSERT INTO ".$db_prefix."album_photos (album_id, photo_id, album_photo_title, album_photo_datestamp) VALUES (".$album_id.", ".$photo_id.", '".mysql_escape_string($SWFconfig['Filedata']['name'])."', ".time().")");
-	echo $locale['403'];
-	exit(0);
+	$result = dbquery("INSERT INTO ".$db_prefix."album_photos (album_id, photo_id, album_photo_title, album_photo_datestamp) VALUES (".$album_id.", ".$photo_id.", '".mysql_escape_string($IMGconfig['Filedata']['name'])."', ".time().")");
+	// return the result
+	UploadResult("success", $locale['403']);
 }
 
 // we're interactive, so load the theme functions
@@ -742,7 +744,7 @@ if ($type == "album") {
 				if (dbrows($result)) {
 					$variables['album'] = dbarray($result);
 					$variables['album']['photo_count'] = dbfunction("COUNT(*)", "album_photos", "album_id = ".$album_id);
-					// SWFUpload needs this, Flash doesn't maintain the session
+					// FancyUpload needs this, Flash doesn't maintain the session
 					$variables['session_id'] = _session_ua();
 					$variables['session_name'] = $_COOKIE[$settings['session_name']];
 					// to check security when uploading
@@ -755,6 +757,13 @@ if ($type == "album") {
 				} else {
 					$variables['errormessages'][] = sprintf($locale['423'], $album_id);
 					$type = ""; $action = "";
+				}
+				// add the fancyupload css to the header
+				if (empty($headerparms)) $headerparms = "";
+				if (file_exists(THEME."fancyupload.css")) {
+					$headerparms .= '<link href="'.THEME.'FancyUpload.css" rel="stylesheet" type="text/css" />';
+				} else {
+					$headerparms .= '<link href="'.FANCYUPLOAD.'FancyUpload.css" rel="stylesheet" type="text/css" />';
 				}
 			}
 			break;
@@ -1148,7 +1157,7 @@ $variables['type'] = $type;
 $variables['action'] = $action;
 
 // load the hoteditor if needed
-if ($settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
+if ($action != "upload" && $settings['hoteditor_enabled'] && (!iMEMBER || $userdata['user_hoteditor'])) {
 	if (!defined('LOAD_HOTEDITOR')) define('LOAD_HOTEDITOR', true);
 }
 

@@ -1,0 +1,93 @@
+#fancyupload-status
+{
+	padding:				0px 10px 0px 10px;
+	width:					550px;
+}
+
+#fancyupload-status .progress
+{
+	background:				white url(images/progress.gif) no-repeat;
+	background-position:	+50% 0;
+	margin-right:			0.5em;
+}
+
+#fancyupload-status .progress-text
+{
+	font-size:				0.9em;
+	font-weight:			bold;
+}
+
+#fancyupload-status .overall-title
+{
+	margin-top:				10px;
+	font-weight:			bold;
+}
+
+#fancyupload-status .current-title
+{
+	margin-top:				10px;
+	font-weight:			bold;
+}
+
+#fancyupload-list
+{
+	list-style:				none;
+	width:					550px;
+	margin:					0px 0px 0px 0px;
+	background:				white;
+}
+
+#fancyupload-list li.file
+{
+	border-bottom:			1px solid #eee;
+	background:				url(images/file.gif) no-repeat 4px 4px;
+	background-color:		white;
+}
+#fancyupload-list li.file.file-uploading
+{
+	background:				url(images/uploading.gif) no-repeat 4px 4px;
+	background-color:		white;
+}
+#fancyupload-list li.file.file-success
+{
+	background:				url(images/success.gif) no-repeat 4px 4px;
+	background-color:		white;
+}
+#fancyupload-list li.file.file-failed
+{
+	background:				url(images/failed.gif) no-repeat 4px 4px;
+	background-color:		white;
+}
+
+#fancyupload-list li.file .file-name
+{
+	margin-left:			40px;
+	display:				block;
+	clear:					left;
+	line-height:			40px;
+	height:					40px;
+	font-weight:			bold;
+}
+#fancyupload-list li.file .file-size
+{
+	font-size:				0.8em;
+	line-height:			18px;
+	float:					right;
+	margin-top:				2px;
+	margin-right:			6px;
+}
+#fancyupload-list li.file .file-info
+{
+	display:				block;
+	margin-left:			6px;
+	font-size:				0.8em;
+	line-height:			20px;
+	clear
+}
+#fancyupload-list li.file .file-remove
+{
+	clear:					right;
+	float:					right;
+	line-height:			18px;
+	margin-right:			6px;
+}

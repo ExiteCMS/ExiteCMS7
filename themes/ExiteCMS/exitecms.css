@@ -187,30 +187,6 @@ a.thumbnail				{ color: #ddd; }
 						/* horizontal pollbar definition */
 .poll 					{ height:12px; border:1px #000 solid; }
 
-/* --- SWF upload module ----------------------------------- */
-
-						/* IE6 fixes */
-html fieldset 			{ position: relative; margin-top:1em; }
-html legend 			{ position:absolute; top: -0.5em; left: .5em; }
-
-						/* upload progress block, border and title */
-.swf_uploadprogress		{ border:1px solid #ccc; margin:0px; padding:25px 10px; }
-.swf_legend 			{ font-size:120%; font-weight:bold; padding:0 5px; margin:0 10px; color:#333; }
-
-						/* div to contain the SWFupload flash module */
-.progressWrapper 		{ width:100%; overflow:hidden; }
-
-.progressContainer 		{ margin:2px; padding:5px; border:solid 1px #444; background-color:#eee; overflow:hidden; }
-.progressContainer_red	{ border:solid 2px red; }
-.progressContainer_green { border:solid 1px #444; }
-.progressContainer_blue	{ border:solid 2px green; }
-.progressName			{ font-weight:bold; color:#666; width:100%; text-align:left; white-space:nowrap; overflow:hidden; }
-.progressBarInProgress	{ font-size:0; width:0%; height: 4px; background-color: blue; margin-top: 2px; }
-.progressBarComplete	{ width:100%; background-color: green; visibility: hidden; }
-.progressBarError		{ width:100%; background-color: red; visibility: hidden; }
-.progressBarStatus		{ margin-top: 2px; width: 100%; font-size: 90%; text-align: left; white-space: nowrap; }
-a.progressCancel 		{ font-size:0; height:16px; width:16px; background-image: url(images/cancel.gif); background-repeat:no-repeat; background-position:0px 0px; float:right; }
-
 /* --- Mootools Lightbox, by Milkbox -------------------------------- */
 
 						/* set the Milkbox overlay color // opacity: see the js options */

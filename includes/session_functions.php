@@ -36,11 +36,11 @@ session_set_cookie_params($settings['session_gc_maxlifetime'], "/", "", false);
 // disable the default session caching. very annoying
 session_cache_limiter("none");
 
-// when called from SWFUpload, set the session cookies from the post variable
+// when called from FancyUpload, set the session cookies from the post variable
 // to stay in the same session when uploading file(s)
 // (session hijacking is mitigated by the session_ua function)
-if (isset($_POST[$settings['session_name']]) && !empty($_POST[$settings['session_name']])) {
-	session_id($_POST[$settings['session_name']]);
+if (isset($_GET['action']) && $_GET['action'] == "fancyupload" && isset($_GET[$settings['session_name']]) && !empty($_GET[$settings['session_name']])) {
+	session_id($_GET[$settings['session_name']]);
 }
 
 // start the session
@@ -148,8 +148,8 @@ function _read_session($session_id) {
 
 	global $db_prefix;
 
-	// check for the site_visited cookie. If not found, there can't be session data available
-	if (!isset($_COOKIE['site_visited'])) return false;
+	// check for the site_visited cookie or the FUID. If not found, there can't be session data available
+	if (!isset($_COOKIE['site_visited']) && !isset($_GET['FUID'])) return false;
 
 	// get the session 
 	$result = dbquery("SELECT * FROM ".$db_prefix."sessions 
@@ -226,16 +226,15 @@ function _gc_session() {
 
 // generate the session_ua. It provides sort of two-factor authentication, using
 // what you have (session cookie and site_visited cookie) and what you are (IP information)
-// can't include the user agent here, because SWFupload uses a different agent string!
+// can't include the user agent here, because FancyUpload uses a different agent string!
 function _session_ua() {
 
 	$session_ua = "";
 
-	// when called from SWFUpload, set the session cookies from the post variable
+	// when called from FancyUpload, set the session cookies from the post variable
 	// to stay in the same session when uploading file(s)
-	// (session hijacking is mitigated by the session_ua function)
-	if (isset($_POST['SWFSESSIONID']) && !empty($_POST['SWFSESSIONID']) && strlen($_POST['SWFSESSIONID'])==32) {
-		return $_POST['SWFSESSIONID'];
+	if (isset($_GET['FUID']) && !empty($_GET['FUID'])) {
+		return $_GET['FUID'];
 	}
 	$session_ua .= isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
 //	$session_ua .= isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "";

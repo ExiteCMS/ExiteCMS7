@@ -82,7 +82,7 @@ define("PATH_IMAGES_NC", PATH_IMAGES."news_cats/");
 define("PATH_IMAGES_DC", PATH_IMAGES."download_cats/");
 define("PATH_INCLUDES", PATH_ROOT."includes/");
 define("PATH_GESHI", PATH_INCLUDES."geshi-1.0.8/");
-define("PATH_SWFUPLOAD", PATH_INCLUDES."SWFUpload-2.1.0/");
+define("PATH_FANCYUPLOAD", PATH_INCLUDES."fancyupload-2.0/");
 define("PATH_MODULES", PATH_ROOT."modules/");
 define("PATH_ATTACHMENTS", PATH_ROOT."files/attachments/");
 define("PATH_PM_ATTACHMENTS", PATH_ROOT."files/pm_attachments/");
@@ -155,7 +155,7 @@ define("INCLUDES", BASEDIR."includes/");
 define("PHOTOS", IMAGES."albums/");
 define("THEMES", BASEDIR."themes/");
 define("GESHI", INCLUDES."geshi-1.0.8/");
-define("SWFUPLOAD", INCLUDES."SWFUpload-2.1.0/");
+define("FANCYUPLOAD", INCLUDES."fancyupload-2.0/");
 define("TINY_MCE", INCLUDES."jscripts/tiny_mce-3.2/");
 
 // extract server settings information
