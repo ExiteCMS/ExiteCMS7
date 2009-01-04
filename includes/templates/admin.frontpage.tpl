@@ -48,31 +48,33 @@
 	</table>
 	<hr />
 	<table align='center' cellpadding='0' cellspacing='0' width='90%'>
-		<tr>
-			<td align='center' class='tbl'>
-			{$locale.542}
-			</td>
-		</tr>
-		<tr>
-			<td align='center' class='tbl'>
-			{foreach from=$newsitems item=newsitem name=ni}
-				{$locale.543} {$smarty.foreach.ni.iteration}:
-				<select name='newsitems[{$smarty.foreach.ni.iteration}]' class='textbox' style='width: 400px'>
-				{section name=id loop=$newsitem}
-					{if $newsitem[id].news_new_cat}
-						{if !$smarty.section.id.first}</optgroup>{/if}
-						<optgroup label='{$newsitem[id].news_cat_name}'>
-						{assign var='hasvalues' value=false}
-					{/if}
-					<option value='{$newsitem[id].news_id}' {if $newsitem[id].selected}selected{/if}>{$newsitem[id].news_subject}</option>
-					{assign var='hasvalues' value=true}
-					{if $smarty.section.id.last && $hasvalues}</optgroup>{/if}
-				{/section}
-			</select>
-			<br /><br />
-			{/foreach}
-			</td>
-		</tr>
+		{if $newsitems|@count}
+			<tr>
+				<td align='center' class='tbl'>
+				{$locale.542}
+				</td>
+			</tr>
+			<tr>
+				<td align='center' class='tbl'>
+				{foreach from=$newsitems item=newsitem name=ni}
+					{$locale.543} {$smarty.foreach.ni.iteration}:
+					<select name='newsitems[{$smarty.foreach.ni.iteration}]' class='textbox' style='width: 400px'>
+					{section name=id loop=$newsitem}
+						{if $newsitem[id].news_new_cat}
+							{if !$smarty.section.id.first}</optgroup>{/if}
+							<optgroup label='{$newsitem[id].news_cat_name}'>
+							{assign var='hasvalues' value=false}
+						{/if}
+						<option value='{$newsitem[id].news_id}' {if $newsitem[id].selected}selected{/if}>{$newsitem[id].news_subject}</option>
+						{assign var='hasvalues' value=true}
+						{if $smarty.section.id.last && $hasvalues}</optgroup>{/if}
+					{/section}
+				</select>
+				<br /><br />
+				{/foreach}
+				</td>
+			</tr>
+		{/if}
 		<tr>
 			<td align='center' class='tbl'>
 				<span class='small'>{$locale.545}</span>

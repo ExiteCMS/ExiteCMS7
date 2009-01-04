@@ -83,7 +83,7 @@ if (isset($_POST['save_latest'])) {
 	if (!is_array($_POST['headlines'])) fallback(BASEDIR."index.php");
 	$headlines = $_POST['headlines'];
 	if (count($headlines) != $settings['news_headline']) fallback(BASEDIR."index.php");
-	
+
 	if (!is_array($_POST['newsitems'])) fallback(BASEDIR."index.php");
 	$newsitems = $_POST['newsitems'];
 
@@ -94,12 +94,12 @@ if (isset($_POST['save_latest'])) {
 	foreach($headlines as $key => $item) {
 		if ($item != 0) $result = dbquery("INSERT INTO ".$db_prefix."news_frontpage (frontpage_locale, frontpage_headline, frontpage_order, frontpage_news_id) VALUES ('".$news_locale."', 1, '".$key."', '".$item."')");
 	}
-	
+
 	// save the new latest news items
 	foreach($newsitems as $key => $item) {
 		if ($item != 0) $result = dbquery("INSERT INTO ".$db_prefix."news_frontpage (frontpage_locale, frontpage_headline, frontpage_order, frontpage_news_id) VALUES ('".$news_locale."', 0, '".$key."', '".$item."')");
 	}
-	
+
 	// update the news_latest configuration flag
 	$settings['news_latest'] = isset($_POST['news_latest']) ? "1" : "0";
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$settings['news_latest']."' WHERE cfg_name = 'news_latest'");
@@ -143,7 +143,7 @@ $variables['headlines'] = $headlines;
 
 // define the latest news items array
 $newsitems = array();
-for ($i = 1; $i <= $settings['news_items']; $i++) {
+for ($i = 1; $i <= $settings['news_items']-$settings['news_headline']; $i++) {
 	$result = dbquery("SELECT frontpage_news_id FROM ".$db_prefix."news_frontpage INNER JOIN ".$db_prefix."news ON frontpage_news_id WHERE frontpage_headline=0 AND frontpage_order=".$i);
 	if ($data = dbarray($result)) {
 		$news_id = $data['frontpage_news_id'];
