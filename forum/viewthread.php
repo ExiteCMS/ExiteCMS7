@@ -46,16 +46,16 @@ define('DOWNLOAD_IMAGES', false);		// download images or show them in the browse
 
 // poll initialisation code
 $fpm_result = dbquery("SELECT * FROM ".$db_prefix."forum_poll_settings WHERE forum_id='$forum_id'");
-if (dbrows($fpm_result) != 0) { 
-	$fpm_settings = dbarray($fpm_result); 
-	$fpm_settings['forum_exists'] = 1; 
-} else { 
-	$fpm_settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."forum_poll_settings WHERE forum_id='0'")); 
+if (dbrows($fpm_result) != 0) {
+	$fpm_settings = dbarray($fpm_result);
+	$fpm_settings['forum_exists'] = 1;
+} else {
+	$fpm_settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."forum_poll_settings WHERE forum_id='0'"));
 }
 if (!defined('FPM_ACCESS')) {
 	if (!iMEMBER) {
-		if ($fpm_settings['guest_permissions'] != 0) { 
-			define("FPM_ACCESS", true); 
+		if ($fpm_settings['guest_permissions'] != 0) {
+			define("FPM_ACCESS", true);
 		}
 	} elseif ($fpm_settings['enable_polls'] == 1 && $fpm_settings['vote_permissions'] != "") {
 		$temp_array = explode(".", $fpm_settings['vote_permissions']);
@@ -66,11 +66,11 @@ if (!defined('FPM_ACCESS')) {
 				if (checkgroup(substr($temp_array[$i], 1))) { define("FPM_ACCESS", true); }
 			}
 		}
-	} else { 
-		define("FPM_ACCESS", false); 
+	} else {
+		define("FPM_ACCESS", false);
 	}
-	if (!defined('FPM_ACCESS')) { 
-		define("FPM_ACCESS", false); 
+	if (!defined('FPM_ACCESS')) {
+		define("FPM_ACCESS", false);
 	}
 }
 if (FPM_ACCESS) {
@@ -84,7 +84,7 @@ if (FPM_ACCESS) {
 // store the parameters
 $variables['forum_id'] = $forum_id;
 $variables['thread_id'] = $thread_id;
-	
+
 // get information about this forum
 $result = dbquery(
 	"SELECT f.*, f2.forum_name AS forum_cat_name
@@ -112,10 +112,10 @@ $variables['user_can_post'] = $can_post;
 
 // check if the user is a moderator of this forum
 $forum_mods = explode(".", $fdata['forum_moderators']);
-if (iMEMBER && (in_array($userdata['user_id'], $forum_mods) || ($fdata['forum_modgroup'] && checkgroup($fdata['forum_modgroup'])))) { 
-	define("iMOD", true); 
-} else { 
-	define("iMOD", false); 
+if (iMEMBER && (in_array($userdata['user_id'], $forum_mods) || ($fdata['forum_modgroup'] && checkgroup($fdata['forum_modgroup'])))) {
+	define("iMOD", true);
+} else {
+	define("iMOD", false);
 }
 
 // check if this user is allowed to blacklist
@@ -126,7 +126,7 @@ $thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - 
 
 // get information about the current thread
 $result = dbquery(
-	"SELECT * FROM ".$db_prefix."threads 
+	"SELECT * FROM ".$db_prefix."threads
 	WHERE thread_id='".$thread_id."' AND forum_id='".$fdata['forum_id']."'".($thread_limit==0?"":" AND thread_lastpost > ".$thread_limit)
 );
 // bail out if the requested thread does not exist
@@ -229,9 +229,9 @@ if (iMEMBER) {
 			SELECT count(*) as unread, tr.thread_first_read, tr.thread_last_read
 				FROM ".$db_prefix."posts p
 				INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
-				WHERE tr.user_id = '".$userdata['user_id']."' 
-					AND tr.thread_id = '".$thread_id."' 
-					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
+				WHERE tr.user_id = '".$userdata['user_id']."'
+					AND tr.thread_id = '".$thread_id."'
+					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))
 				GROUP BY tr.thread_id
@@ -245,8 +245,8 @@ if (iMEMBER) {
 				WHERE tr.user_id = '".$userdata['user_id']."'
 					AND p.post_author != '".$userdata['user_id']."'
 					AND p.post_edituser != '".$userdata['user_id']."'
-					AND tr.thread_id = '".$thread_id."' 
-					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
+					AND tr.thread_id = '".$thread_id."'
+					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))
 				GROUP BY tr.thread_id
@@ -292,7 +292,7 @@ if ($rows != 0) {
 		"SELECT p.*, u.*, u2.user_name AS edit_name, u2.user_status AS edit_status, o.online_lastactive FROM ".$db_prefix."posts p
 		LEFT JOIN ".$db_prefix."users u ON p.post_author = u.user_id
 		LEFT JOIN ".$db_prefix."users u2 ON p.post_edituser = u2.user_id AND post_edituser > '0'
-		LEFT JOIN ".$db_prefix."online o ON p.post_author = o.online_user
+		LEFT JOIN ".$db_prefix."online o ON p.post_author = o.online_user AND post_author > '0'
 		WHERE p.thread_id='$thread_id' ORDER BY post_sticky DESC, post_datestamp ASC LIMIT $rowstart,".$settings['numofthreads']
 	);
 	$variables['posts'] = array();
@@ -363,7 +363,7 @@ if ($rows != 0) {
 		// if there's a reply id, get the user_name
 		if ($data['post_reply_id'] != 0) {
 			$reply_to = dbarray(dbquery("SELECT user_name FROM ".$db_prefix."users u, ".$db_prefix."posts p WHERE p.post_id = '".$data['post_reply_id']."' AND p.post_author = u.user_id"));
-			if (is_array($reply_to)) 
+			if (is_array($reply_to))
 				$data['post_reply_username'] = $reply_to['user_name'];
 			else
 				$data['post_reply_username'] = "";
@@ -421,7 +421,7 @@ if ($rows != 0) {
 
 		// check if we can show the poster's IP address
 		$data['show_ip'] = (iMOD || iSUPERADMIN && ($data['post_ip'] != "0.0.0.0" && file_exists(PATH_THEME."images/ip.gif")));
-	
+
 		// country flag
 		if ($settings['forum_flags']) {
 			// swap flags if we're hiding the webmasters true country of origin
@@ -435,8 +435,8 @@ if ($rows != 0) {
 		}
 
 		// correct the users website link if needed
-		if ($data['user_web'] != "" && !strstr($data['user_web'], "http://")) { 
-			$data['user_web'] = "http://".$data['user_web']; 
+		if ($data['user_web'] != "" && !strstr($data['user_web'], "http://")) {
+			$data['user_web'] = "http://".$data['user_web'];
 		}
 
 		// user & group memberships
@@ -495,7 +495,7 @@ if ($rows != 0) {
 					if (!in_array($adata['attach_ext'], $imagetypes)) {
 						$attach[] = $adata;
 					}
-				}		
+				}
 				unset ($attaches);
 				foreach ($attach as $key => $adata) {
 					// if we don't have a realname, use the filename
