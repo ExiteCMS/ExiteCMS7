@@ -41,7 +41,7 @@ function setmime($filename) {
 		return "application/octet-stream";
 	}
 
-	// set the mime type based on the file's extension (I know, it's a guess...)	
+	// set the mime type based on the file's extension (I know, it's a guess...)
 	switch ($fileparts['extension']) {
 		case "dwg":
 			return "application/acad";
@@ -435,7 +435,7 @@ switch (strtolower($type)) {
 					// define the required parameters for the download
 					$source = "file";
 					$filename = $cat['files'][$file_id]['name'];
-					$filepath = $cat['fd_path'].$cat['fd_this_dir'];
+					$filepath = $cat['path']."/";
 					$downloadname = $cat['files'][$file_id]['name'];
 					break;
 				}
@@ -448,7 +448,7 @@ switch (strtolower($type)) {
 		require_once PATH_ROOT."modules/download_statistics/download_include.php";
 		// add the download to the statistics tables
 		$on_map = empty($settings['dlstats_geomap_regex']) || preg_match($settings['dlstats_geomap_regex'], trim($filepath.$filename));
-		log_download($cat['fd_this_dir'].$filename, USER_IP, $on_map, 1, time());
+		log_download($filepath.$filename, USER_IP, $on_map, 1, time());
 		break;
 
 	case "pa":	// personal message attachments
@@ -482,7 +482,7 @@ switch (strtolower($type)) {
 		}
 		// check if the requested message exists, if so retrieve the information
 		$message = dbarray(dbquery(
-						"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+						"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 						WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_id = '".$pm_id."'"));
 		if (!is_array($message)) {
 			terminate("<b>Invalid or missing message ID.</b>");
