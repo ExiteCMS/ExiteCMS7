@@ -45,7 +45,7 @@
 		<td class='tbl_top_mid' style='text-align:right;'>
 			{if !$is_preview}
 				{buttonlink name=$locale.423 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=forward&amp;msg_id="|cat:$messages[id].pmindex_id}&nbsp;
-				{if $messages[id].user_status == 0 && folder == $locale.402 && $messages[id].pmindex_folder == 0}
+				{if $messages[id].user_status == 0 && $folder == $locale.402 && $messages[id].pmindex_folder == 0}
 					{buttonlink name=$locale.433 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=reply&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 					{buttonlink name=$locale.444 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=quote&amp;msg_id="|cat:$messages[id].pmindex_id|cat:"&amp;user_id="|cat:$messages[id].pmindex_from_id}&nbsp;
 				{/if}
@@ -61,7 +61,7 @@
 				{buttonlink name=$locale.416 link=$smarty.const.FUSION_SELF|cat:"?folder="|cat:$folder|cat:"&amp;action=delete&amp;msg_id="|cat:$messages[id].pmindex_id}
 			{/if}
 		</td>
-		<td align='center' width='10' class='tbl_top_right'>		
+		<td align='center' width='10' class='tbl_top_right'>
 			{if !$is_preview}
 			<input type='checkbox' name='check_mark[]' value='{$messages[id].pmindex_id}' />
 			{/if}
@@ -199,7 +199,7 @@
 							<a href='{$smarty.const.BASEDIR}profile.php?lookup={$messages[id].recipients[rid].user_id}'>{$messages[id].recipients[rid].user_name}</a>
 						{else}
 							<a href='{$smarty.const.BASEDIR}profile.php?group_id={$messages[id].recipients[rid].group_id}'>{$messages[id].recipients[rid].group_name}</a>
-						{/if} 
+						{/if}
 					{/section}
 				{/if}
 			{/if}
