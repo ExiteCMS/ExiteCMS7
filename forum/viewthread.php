@@ -189,12 +189,15 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 					if (dbrows($result)) {
 						require_once PATH_INCLUDES."sendmail_include.php";
 						$data2 = dbarray(dbquery("SELECT thread_subject FROM ".$db_prefix."threads WHERE thread_id='$thread_id'"));
-						$link = $settings['siteurl']."forum/viewthread.php?forum_id=$forum_id&thread_id=$thread_id&pid=$newpost_id#post_$newpost_id";
+						$link = $settings['siteurl']."forum/viewthread.php?forum_id=$forum_id&thread_id=$thread_id&pid=$post_id#post_$post_id";
 						while ($data = dbarray($result)) {
+							// get the message text in the users own locale
 							$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}", "{SITE_NAME}", "{SITE_WEBMASTER}");
 							$message_el2 = array($data['user_name'], $data2['thread_subject'], $link, html_entity_decode($settings['sitename']), html_entity_decode($settings['siteusername']));
-							$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $locale['550']);
-							$message_content = str_replace($message_el1, $message_el2, $locale['551']);
+							$message_subject = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '550'"));
+							$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $message_subject['locales_value']);
+							$message_content = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '551'"));
+							$message_content = str_replace($message_el1, $message_el2, $message_content['locales_value']);
 							$err = sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);
 						}
 						$result = dbquery("UPDATE ".$db_prefix."thread_notify SET notify_status='0' WHERE thread_id='$thread_id' AND notify_user != '".$userdata['user_id']."'");

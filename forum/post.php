@@ -64,7 +64,7 @@ function validatepost() {
 
 	global $locale;
 
-	// we need both a subject and a message body	
+	// we need both a subject and a message body
 	if ($_POST['subject'] == "" || $_POST['message'] == "")
 		return $locale['441'];
 
@@ -96,7 +96,7 @@ function storeupload() {
 		}
 		// verify the uploaded file
 		$attach = array(
-			'attach_name' => $_FILES['attach']['name'], 
+			'attach_name' => $_FILES['attach']['name'],
 			'type' => $_FILES['attach']['type'],
 			'attach_size' => $_FILES['attach']['size'],
 			'attach_count' => 0,
@@ -237,20 +237,20 @@ switch ($action) {
 		} else {
 			fallback("index.php");
 		}
-		if (!checkgroup($fdata['forum_posting'])) fallback("index.php");		
+		if (!checkgroup($fdata['forum_posting'])) fallback("index.php");
 		$forum_mods = explode(".", $fdata['forum_moderators']);
 		if (iMEMBER && (($fdata['forum_modgroup'] && checkgroup($fdata['forum_modgroup'])) || in_array($userdata['user_id'], $forum_mods))) { define("iMOD", true); } else { define("iMOD", false); }
 }
 
 // forum poll initialisation
-$fpm = array(); 
+$fpm = array();
 $fpm_data = array();
 
 $fpm_result = dbquery("SELECT * FROM ".$db_prefix."forum_poll_settings WHERE forum_id='$forum_id'");
-if (dbrows($fpm_result) != 0) { 
-	$fpm_settings = dbarray($fpm_result); $fpm_settings['forum_exists'] = true; 
-} else { 
-	$fpm_settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."forum_poll_settings WHERE forum_id='0'")); 
+if (dbrows($fpm_result) != 0) {
+	$fpm_settings = dbarray($fpm_result); $fpm_settings['forum_exists'] = true;
+} else {
+	$fpm_settings = dbarray(dbquery("SELECT * FROM ".$db_prefix."forum_poll_settings WHERE forum_id='0'"));
 }
 if ($action == "edit") {
 	$fpm_result = dbquery("SELECT * FROM ".$db_prefix."forum_polls WHERE thread_id='$thread_id'");
@@ -259,28 +259,28 @@ if ($action == "edit") {
 		$fpm['type'] = $fpm_data['poll_type'];
 		$fpm['poll_id'] = $fpm_data['poll_id'];
 		$total_votes = dbcount("(poll_id)", "forum_poll_votes", "poll_id='".$fpm_data['poll_id']."'");
-	} else { 
-		$total_votes = 0; 
+	} else {
+		$total_votes = 0;
 	}
 	$fpm['reset_start'] = isset($_POST['fpm']['reset_start']) ? " checked" : "";
 	$fpm['reset_votes'] = isset($_POST['fpm']['reset_votes']) ? " checked" : "";
-	if (!defined('FPM_ACCESS') && (iMOD || iSUPERADMIN)) { 
-		define("FPM_ACCESS", true); 
-	} elseif (!defined('FPM_ACCESS') && $total_votes != 0) { 
-		define("FPM_ACCESS", false); 
+	if (!defined('FPM_ACCESS') && (iMOD || iSUPERADMIN)) {
+		define("FPM_ACCESS", true);
+	} elseif (!defined('FPM_ACCESS') && $total_votes != 0) {
+		define("FPM_ACCESS", false);
 	}
 }
 if (!defined('FPM_ACCESS') && $fpm_settings['enable_polls'] == 1 && $fpm_settings['create_permissions'] != "") {
 	$temp_array = explode(".", $fpm_settings['create_permissions']);
 	for($i = 0; $i < count($temp_array); $i ++) {
 		if (isNum($temp_array[$i])) {
-			if ($userdata['user_id'] == $temp_array[$i]) { 
-				define("FPM_ACCESS", true); 
+			if ($userdata['user_id'] == $temp_array[$i]) {
+				define("FPM_ACCESS", true);
 				break;
 			}
 		} else {
-			if (checkgroup(substr($temp_array[$i], 1))) { 
-				define("FPM_ACCESS", true); 
+			if (checkgroup(substr($temp_array[$i], 1))) {
+				define("FPM_ACCESS", true);
 				break;
 			}
 		}
@@ -288,15 +288,15 @@ if (!defined('FPM_ACCESS') && $fpm_settings['enable_polls'] == 1 && $fpm_setting
 }
 
 // make sure this is set
-if (!defined('FPM_ACCESS')) { 
-	define("FPM_ACCESS", false); 
+if (!defined('FPM_ACCESS')) {
+	define("FPM_ACCESS", false);
 }
 
 if (FPM_ACCESS) {
-	if ($action == "reply") { 
-		$fpm['exists'] = dbcount("(poll_id)", "forum_polls", "thread_id='$thread_id'"); 
-	} else { 
-		$fpm['exists'] = 0; 
+	if ($action == "reply") {
+		$fpm['exists'] = dbcount("(poll_id)", "forum_polls", "thread_id='$thread_id'");
+	} else {
+		$fpm['exists'] = 0;
 	}
 	$fpm['type'] = isset($_POST['fpm']['type']) ? $_POST['fpm']['type'] : (isset($fpm['type']) ? $fpm['type'] : 0);
 	$fpm['user_name'] = isset($fpm_data['user_name']) ? $fpm_data['user_name'] : $userdata['user_name'];
@@ -307,23 +307,23 @@ if (FPM_ACCESS) {
 			$fpm_result = dbarray(dbquery("SELECT thread_subject FROM ".$db_prefix."threads WHERE thread_id='$thread_id'"));
 			$fpm['question'] = $fpm_result['thread_subject'];
 		} else { $fpm['question'] = trim(stripinput(censorwords($subject))); }
-	} elseif (isset($_POST['fpm']['question'])) { 
-		$fpm['question'] = trim(stripinput(censorwords($_POST['fpm']['question']))); 
-	} else { 
-		$fpm['question'] = isset($fpm_data['poll_question']) ? $fpm_data['poll_question'] : ""; 
+	} elseif (isset($_POST['fpm']['question'])) {
+		$fpm['question'] = trim(stripinput(censorwords($_POST['fpm']['question'])));
+	} else {
+		$fpm['question'] = isset($fpm_data['poll_question']) ? $fpm_data['poll_question'] : "";
 	}
 	$fpm['blank_options'] = 0;
 	$fpm['add_options'] = isset($_POST['fpm']['add_options']) ? 1 : 0;
-	if (isset($_POST['fpm']['option_show']) && isNum($_POST['fpm']['option_show'])) { 
-		$fpm['option_show'] = $_POST['fpm']['option_show']; 
-	} else { 
-		$fpm['option_show'] = $fpm_settings['option_show']; 
+	if (isset($_POST['fpm']['option_show']) && isNum($_POST['fpm']['option_show'])) {
+		$fpm['option_show'] = $_POST['fpm']['option_show'];
+	} else {
+		$fpm['option_show'] = $fpm_settings['option_show'];
 	}
 	if (isset($_POST['fpm']['add_options'])) {
 		if (($fpm['option_show'] + $fpm_settings['option_increment']) <= $fpm_settings['option_max']) {
 			$fpm['option_show'] = $fpm['option_show'] + $fpm_settings['option_increment'];
-		} else { 
-			$fpm['option_show'] = $fpm_settings['option_max']; 
+		} else {
+			$fpm['option_show'] = $fpm_settings['option_max'];
 		}
 		$variables['is_sticky'] = isset($_POST['sticky']);
 		$variables['is_sig_shown'] = isset($_POST['show_sig']);
@@ -336,29 +336,29 @@ if (FPM_ACCESS) {
 	if (isset($_POST['fpm'])) {
 		for($i = 1; $i <= $fpm['option_show']; $i ++) {
 			$fpm['option'][$i] = isset($_POST['fpm']['option'][$i]) ? trim(stripinput(censorwords($_POST['fpm']['option'][$i]))) : "";
-			if ($fpm['option'][$i] == "") { 
-				$fpm['blank_options'] ++; 
+			if ($fpm['option'][$i] == "") {
+				$fpm['blank_options'] ++;
 			}
 		}
 	} elseif (isset($fpm_data['poll_id'])) {
 		$fpm_result = dbquery("SELECT * FROM ".$db_prefix."forum_poll_options WHERE poll_id='".$fpm_data['poll_id']."' ORDER BY option_order");
 		$i = 1;
-		while($fpm_options = dbarray($fpm_result)) { 
-			$fpm['option'][$i] = $fpm_options['option_text']; $i ++; 
+		while($fpm_options = dbarray($fpm_result)) {
+			$fpm['option'][$i] = $fpm_options['option_text']; $i ++;
 		}
 		if ($i <= $fpm['option_show']) {
 			while ($i <= $fpm['option_show']) { $fpm['option'][$i] = ""; $i ++; }
-		} else { 
-			$fpm['option_show'] = $i - 1; 
+		} else {
+			$fpm['option_show'] = $i - 1;
 		}
 	} else {
-		for($i = 1; $i <= $fpm['option_show']; $i ++) { 
-			$fpm['option'][$i] = ""; $fpm['blank_options'] ++; 
+		for($i = 1; $i <= $fpm['option_show']; $i ++) {
+			$fpm['option'][$i] = ""; $fpm['blank_options'] ++;
 		}
 	}
 	if (isset($_POST['fpm']['duration']) && isNum($_POST['fpm']['duration'])) {
-		if ($_POST['fpm']['duration'] == 0 && $fpm_settings['duration_max'] == 0) { 
-			$fpm['duration'] = 0; 
+		if ($_POST['fpm']['duration'] == 0 && $fpm_settings['duration_max'] == 0) {
+			$fpm['duration'] = 0;
 		} elseif (($_POST['fpm']['duration'] * 86400) > $fpm_settings['duration_max'] && $fpm_settings['duration_max'] != 0) {
 			$fpm['duration'] = floor($fpm_settings['duration_max'] / 86400);
 		} elseif (($_POST['fpm']['duration'] * 86400) > $fpm_settings['duration_max'] && $fpm_settings['duration_max'] == 0) {
@@ -370,17 +370,17 @@ if (FPM_ACCESS) {
 		}
 	} elseif (isset($fpm_data['poll_end'])) {
 		$fpm['duration'] = floor(($fpm_data['poll_end'] - $fpm_data['poll_start']) / 86400);
-	} else { 
-		$fpm['duration'] = 0; 
+	} else {
+		$fpm['duration'] = 0;
 	}
-	if ($fpm['duration'] < 0) { 
-		$fpm['duration'] = 0; 
+	if ($fpm['duration'] < 0) {
+		$fpm['duration'] = 0;
 	}
-	if (isset($fpm_data['poll_start']) && $fpm['reset_start'] == "") { 
-		$fpm['start'] = $fpm_data['poll_start']; 
+	if (isset($fpm_data['poll_start']) && $fpm['reset_start'] == "") {
+		$fpm['start'] = $fpm_data['poll_start'];
 	}
-	else { 
-		$fpm['start'] = time(); 
+	else {
+		$fpm['start'] = time();
 	}
 	$fpm['end'] = $fpm['duration'] != 0 ? ($fpm['start'] + ($fpm['duration'] * 86400)) : 0;
 	$fpm_data = array();
@@ -392,16 +392,16 @@ if (isset($_POST['preview'])) {
 	switch ($action) {
 		case "newthread":
 			if (!isset($title)) $title = $locale['400'];
-	
+
 		case "postreply":
 			if (!isset($title)) $title = $locale['402'];
 
 		case "reply":
 			if (!isset($title)) $title = $locale['402'];
-	
+
 		case "edit":
 			if (!isset($title)) $title = $locale['405'];
-	
+
 		case "quote":
 			if (!isset($title)) $title = $locale['402'];
 
@@ -548,19 +548,19 @@ if (isset($_POST["cancel"])) {
 		case "newthread":
 			if (!isset($title)) $title = $locale['401'];
 			if (!isset($msg)) $msg = $locale['442'];
-	
+
 		case "postreply":
 			if (!isset($title)) $title = $locale['404'];
 			if (!isset($msg)) $msg = $locale['443'];
-	
+
 		case "reply":
 			if (!isset($title)) $title = $locale['404'];
 			if (!isset($msg)) $msg = $locale['443'];
-	
+
 		case "edit":
 			if (!isset($title)) $title = $locale['409'];
 			if (!isset($msg)) $msg = $locale['446'];
-	
+
 		case "quote":
 			if (!isset($title)) $title = $locale['404'];
 			if (!isset($msg)) $msg = $locale['443'];
@@ -654,11 +654,14 @@ if (isset($_POST["cancel"])) {
 							$data2 = dbarray(dbquery("SELECT thread_subject FROM ".$db_prefix."threads WHERE thread_id='$thread_id'"));
 							$link = $settings['siteurl']."forum/viewthread.php?forum_id=$forum_id&thread_id=$thread_id&pid=$post_id#post_$post_id";
 							while ($data = dbarray($result)) {
+								// get the message text in the users own locale
 								$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}", "{SITE_NAME}", "{SITE_WEBMASTER}");
 								$message_el2 = array($data['user_name'], $data2['thread_subject'], $link, html_entity_decode($settings['sitename']), html_entity_decode($settings['siteusername']));
-								$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $locale['550']);
-								$message_content = str_replace($message_el1, $message_el2, $locale['551']);
-								sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);
+								$message_subject = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '550'"));
+								$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $message_subject['locales_value']);
+								$message_content = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '551'"));
+								$message_content = str_replace($message_el1, $message_el2, $message_content['locales_value']);
+								$err = sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);
 							}
 							$result = dbquery("UPDATE ".$db_prefix."thread_notify SET notify_status='0' WHERE thread_id='$thread_id' AND notify_user != '".$userdata['user_id']."'");
 						}
@@ -674,7 +677,7 @@ if (isset($_POST["cancel"])) {
 						// check if it is a new upload
 						if ($value[0] == "-") {
 							$attachments[substr($value,1)]['attach_size'] = 0;
-						} else {					
+						} else {
 							// delete the attachment
 							$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE attach_id = '$value'");
 							if (dbrows($result) != 0) {
@@ -748,7 +751,7 @@ if (isset($_POST["cancel"])) {
 		$result = dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_id='$forum_id' AND forum_lastuser='".$pdata['post_author']."' AND forum_lastpost='".$pdata['post_datestamp']."'");
 		if (dbrows($result)) {
 			$result = dbquery("SELECT forum_id,post_author,post_datestamp FROM ".$db_prefix."posts WHERE forum_id='$forum_id' ORDER BY post_datestamp DESC LIMIT 1");
-			if (dbrows($result)) { 
+			if (dbrows($result)) {
 				$pdata2 = dbarray($result);
 				$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".$pdata2['post_datestamp']."', forum_lastuser='".$pdata2['post_author']."' WHERE forum_id='$forum_id'");
 			} else {
@@ -839,7 +842,7 @@ if (isset($_POST["cancel"])) {
 		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.2', 'template' => 'forum.post.move.tpl', 'locale' => array("forum.main", "forum.post"));
 		$template_variables['forum.movepost.2'] = $variables;
 
-	} else {				
+	} else {
 
 		$variables['forum_id'] = $forum_id;
 		$variables['thread_id'] = $thread_id;
@@ -874,7 +877,7 @@ if (isset($_POST["cancel"])) {
 		// define the panel
 		$template_panels[] = array('type' => 'body', 'name' => 'forum.movepost.1', 'template' => 'forum.post.move.tpl', 'locale' => array("forum.main", "forum.post"));
 		$template_variables['forum.movepost.1'] = $variables;
-	}	
+	}
 } elseif (isset($_POST["renew_post"])) {
 	$result = dbquery("UPDATE ".$db_prefix."posts SET post_datestamp='".time()."' WHERE forum_id='$forum_id' AND thread_id='$thread_id' AND post_id='$post_id'");
 	resultdialog($locale['416'], $locale['459'], $redirect=true);
@@ -942,7 +945,7 @@ if (isset($_POST["cancel"])) {
 				if (strtolower(substr($pdata['post_subject'],0,3)) == "re:") {
 					$variables['subject'] = $pdata['post_subject'];
 				} else {
-					if ($action != "edit") 
+					if ($action != "edit")
 						$variables['subject'] = 'Re: '.$pdata['post_subject'];
 					else
 						$variables['subject'] = $pdata['post_subject'];
@@ -1035,12 +1038,12 @@ if (isset($_POST["cancel"])) {
 			$template_panels[] = array('type' => 'body', 'name' => 'forum.post', 'title' => $title, 'template' => 'forum.post.tpl', 'locale' => array("forum.main", "forum.post", "admin.forum_polls"));
 			$template_variables['forum.post'] = $variables;
 			break;
-	
+
 		case "track_on":
 			$result	= dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
 			resultdialog($locale['451'], $locale['452'], true);
 			break;
-	
+
 		case "track_off":
 			$result	= dbquery("DELETE FROM ".$db_prefix."thread_notify WHERE thread_id='$thread_id'	AND notify_user='".$userdata['user_id']."'");
 			resultdialog($locale['451'], $locale['453'], true);
