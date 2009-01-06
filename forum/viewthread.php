@@ -182,7 +182,7 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 				// check if we need to notify people
 				if ($settings['thread_notify']) {
 					$result = dbquery(
-						"SELECT tn.*, tu.user_id,user_name,user_email FROM ".$db_prefix."thread_notify tn
+						"SELECT tn.*, tu.user_id,tu.user_name,tu.user_email,tu.user_locale FROM ".$db_prefix."thread_notify tn
 						LEFT JOIN ".$db_prefix."users tu ON tn.notify_user=tu.user_id
 						WHERE thread_id='$thread_id' AND notify_user!='".$userdata['user_id']."' AND notify_status='1'
 					");
