@@ -84,7 +84,7 @@ function gathermsginfo($msgrec, $preview = false) {
 			$msgrec['sender'] = $data2;
 		}
 	}
-	
+
 	// get the information this recipient (for received messages only)
 	$msgrec['recipient'] = array();
 	if ($msgrec['pmindex_to_id'] != 0) {
@@ -164,15 +164,15 @@ function gathermsginfo($msgrec, $preview = false) {
 
 	// parse the messsage body
 	$msgrec['pm_message'] = parsemessage(array('pm_id' => $msgrec['pmindex_id']), $msgrec['pm_message'], $msgrec['pm_smileys']==0, false);
-	
+
 	// check if the users avatar exists
 	if (!empty($msgrec['user_avatar']) && !file_exists(PATH_IMAGES."avatars/".$msgrec['user_avatar'])) $msgrec['user_avatar'] = "imagenotfound.jpg";
-		
+
 	// prepare the users signature
 	if (!empty($msgrec['user_sig'])) {
 		$msgrec['user_sig'] = parsemessage(array(), $msgrec['user_sig'], true, true);
 	}
-	
+
 	// check if there are attachments for this message
 	$msgrec['attachments'] = array();
 	// process attachments
@@ -249,7 +249,7 @@ function storeupload() {
 		}
 		// verify the uploaded file
 		$attach = array(
-			'attach_name' => $_FILES['attach']['name'], 
+			'attach_name' => $_FILES['attach']['name'],
 			'type' => $_FILES['attach']['type'],
 			'attach_size' => $_FILES['attach']['size'],
 			'attach_count' => 0,
@@ -392,10 +392,10 @@ if (isset($_POST['send_message'])) {
 	} else {
 		$pm_id = 0;
 	}
-	
+
 	// create the message record
 	$newmsg = array();
-	
+
 	// check if we have a subject and a message body
 	$subject = stripinput(trim($_POST['subject']));
 	$message = stripmessageinput(trim($_POST['message']));
@@ -414,13 +414,13 @@ if (isset($_POST['send_message'])) {
 	$newmsg['recipients'] = isset($_POST['recipients']) && is_array($_POST['recipients']) ? $_POST['recipients'] : array();
 	$user_ids = array();
 	$newmsg['user_ids'] = array();
-	
+
 	foreach($newmsg['recipients'] as $recipient) {
 
 		// process individual users
 		if ($recipient >= 0) {
 			$result = dbquery(
-				"SELECT u.user_id, u.user_name, u.user_email, mo.pmconfig_email_notify, COUNT(pmindex_id) as message_count FROM ".$db_prefix."users u
+				"SELECT u.user_id, u.user_name, u.user_email, u.user_locale, mo.pmconfig_email_notify, COUNT(pmindex_id) as message_count FROM ".$db_prefix."users u
 				LEFT JOIN ".$db_prefix."pm_config mo USING(user_id)
 				LEFT JOIN ".$db_prefix."pm_index pmi ON pmindex_to_id=u.user_id AND pmindex_folder='0'
 				LEFT JOIN ".$db_prefix."pm pm ON pm.pm_id=pmi.pm_id
@@ -434,7 +434,7 @@ if (isset($_POST['send_message'])) {
 			if ($group_id == "101" || $group_id == "102" || $group_id == "103") {
 				// message to a user_level based group
 				$result = dbquery(
-					"SELECT u.user_id, u.user_name, u.user_email, mo.pmconfig_email_notify FROM ".$db_prefix."users u
+					"SELECT u.user_id, u.user_name, u.user_email, u.user_locale, mo.pmconfig_email_notify FROM ".$db_prefix."users u
 					LEFT JOIN ".$db_prefix."pm_config mo USING(user_id)
 					WHERE user_status = '0' AND user_level >= '".$group_id."'"
 				);
@@ -443,7 +443,7 @@ if (isset($_POST['send_message'])) {
 				$groups = array();
 				// gather the group and it's sub-groups into an array
 				getgroupmembers($group_id);
-				$sql = "SELECT u.user_id, u.user_name, u.user_email, mo.pmconfig_email_notify FROM ".$db_prefix."users u 
+				$sql = "SELECT u.user_id, u.user_name, u.user_email, u.user_locale, mo.pmconfig_email_notify FROM ".$db_prefix."users u
 						LEFT JOIN ".$db_prefix."pm_config mo USING(user_id)
 						WHERE ";
 				$c = 0;
@@ -467,7 +467,7 @@ if (isset($_POST['send_message'])) {
 
 	// store the message
 	$variables['errormessage'] = storemessage($newmsg, $pm_id);
-	
+
 	// return to the outbox folder
 	$action = "";
 	$folder = $locale['403'];
@@ -485,7 +485,7 @@ if (isset($_POST['close'])) {
 		@unlink(PATH_PM_ATTACHMENTS.$attachment['attach_tmp']);
 	}
 	$action = "";
-	
+
 } elseif ($action == "" && isset($_POST['multi_archive'])) {
 
 	// move the selected messages to the arhive folder
@@ -498,7 +498,7 @@ if (isset($_POST['close'])) {
 	}
 
 } elseif ($action == "" && isset($_POST['multi_restore'])) {
-	
+
 	// move the selected messages back to the message folder
 	if ($msg_ids && $check_count > 0) {
 		$msg_ids = explode(",", $msg_ids);
@@ -609,7 +609,7 @@ if (isset($_POST['close'])) {
 		}
 	}
 
-} 
+}
 
 if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post" || $action == "forward" || $action == "reply" || $action == "quote") {
 
@@ -632,16 +632,16 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	} else {
 		$pm_id = 0;
 	}
-	
+
 	// prepare reloading commands
 	if (isset($_POST['send_preview'])) {
 
 		// mark this as a preview
 		$variables['is_preview'] = true;
-			
+
 		// create the preview message array
 		$variables['messages'] = array();
-		
+
 		// get the info from the users post
 		$data = array();
 		$data['pm_id'] = $pm_id;
@@ -663,13 +663,13 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 		$data['pmindex_read_requested'] = 0;
 		$data['pmindex_folder'] = 0;
 		$data['pmindex_locked'] = 0;
-		
+
 		// create the recipients list for this message
 		$data['pm_recipients'] = "";
 		foreach($_POST['recipients'] as $recipient) {
 			$data['pm_recipients'] .= ($data['pm_recipients'] == "" ? "" : "," ) . $recipient;
 		}
-		
+
 		// get all other info needed to preview this message
 		$data = gathermsginfo($data, true);
 
@@ -741,7 +741,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			// load from the database
 			if (isset($msg_id) && isNum($msg_id)) {
 				$result = dbquery(
-					"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 					WHERE m.pm_id = i.pm_id AND i.pmindex_id = '".$msg_id."' LIMIT 1"
 				);
 				// fallback if the record can not be found
@@ -891,7 +891,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	$variables['action'] = $action;
 	$variables['folder'] = $folder;
 	$variables['msg_id'] = $msg_id;
-	
+
 	// panel title
 	switch ($action) {
 		case "forward":
@@ -933,19 +933,19 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 	$totals['inbox'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$userdata['user_id']."' AND pmindex_folder = '0'");
 	$totals['outbox'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$userdata['user_id']."' AND pmindex_folder = '1'");
 	$totals['archive'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id = '".$userdata['user_id']."' AND pmindex_folder = '2'");
-	
+
 	// process the folder selection
 	if ($folder == $locale['425']) {
-	
+
 		// prepare to show the option screen
 		$variables['folder'] = $folder;
 		$variables['totals'] = $totals;
 		// define the panel and assign the template variables
 		$template_panels[] = array('type' => 'body', 'name' => 'pm.options', 'title' => $locale['400'].' - '.$locale['425'], 'template' => 'main.pm.options.tpl', 'locale' => "main.pm");
 		$template_variables['pm.options'] = $variables;
-	
+
 	} else {
-	
+
 		// prepare to show the selected mailbox folder
 		if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 		$title = $folder;
@@ -954,7 +954,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			// if msg_id has been given, but rowstart = 0, determine rowstart first
 			if ($variables['view_id'] != 0 && $rowstart == 0) {
 				$result = dbquery(
-					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '0'
 					ORDER BY m.pm_datestamp DESC"
 				);
@@ -968,7 +968,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$rowstart = intval($found / ITEMS_PER_PAGE) * ITEMS_PER_PAGE;
 			}
 			$result = dbquery(
-				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '0'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);
@@ -976,7 +976,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			// if msg_id has been given, but rowstart = 0, determine rowstart first
 			if ($variables['view_id'] != 0 && $rowstart == 0) {
 				$result = dbquery(
-					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
 					ORDER BY m.pm_datestamp DESC"
 				);
@@ -990,7 +990,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$rowstart = intval($found / ITEMS_PER_PAGE) * ITEMS_PER_PAGE;
 			}
 			$result = dbquery(
-				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);
@@ -998,7 +998,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 			// if msg_id has been given, but rowstart = 0, determine rowstart first
 			if ($variables['view_id'] != 0 && $rowstart == 0) {
 				$result = dbquery(
-					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					"SELECT i.pmindex_id FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '2'
 					ORDER BY m.pm_datestamp DESC"
 				);
@@ -1012,7 +1012,7 @@ if (isset($_POST['upload']) || isset($_POST['send_preview']) || $action == "post
 				$rowstart = intval($found / ITEMS_PER_PAGE) * ITEMS_PER_PAGE;
 			}
 			$result = dbquery(
-				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '2'
 				ORDER BY m.pm_datestamp DESC LIMIT $rowstart,".ITEMS_PER_PAGE
 			);

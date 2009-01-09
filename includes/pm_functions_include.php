@@ -92,7 +92,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 		if ($totals['outbox'] >= $global_options['pm_sentbox']) {
 			$limit = $totals['outbox'] - $global_options['pm_sentbox'] + 1;
 			$result = dbquery(
-				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+				"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 				WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."' AND i.pmindex_folder = '1'
 				ORDER BY m.pm_datestamp LIMIT ".$limit
 				);
@@ -109,7 +109,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 	}
 
 	// store the new message
-	$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_smileys, pm_size, pm_datestamp) 
+	$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_smileys, pm_size, pm_datestamp)
 		VALUES ('".$message['pm_subject']."', '".$message['pm_message']."', '".$recipients."', '".$message['pm_smileys']."', '".$message['pm_size']."', '".$message['pm_datestamp']."')");
 	$pm_id = mysql_insert_id();
 
@@ -142,7 +142,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 		chmod(PATH_PM_ATTACHMENTS.$attachname,0664);
 		$result = dbquery("INSERT INTO ".$db_prefix."pm_attachments (pm_id, pmattach_name, pmattach_realname, pmattach_comment, pmattach_ext, pmattach_size) VALUES ('$pm_id', '$attachname', '".$attachment['attach_name']."', '".$attachment['attach_comment']."', '$attachext', '".$attachment['attach_size']."')");
 	}
-	
+
 	// copy original (and not excluded) attachments when forwarding a message
 	if ($action == "forward" && $old_pm_id) {
 		$result = dbquery("SELECT * FROM ".$db_prefix."pm_attachments WHERE pm_id='$old_pm_id'");
@@ -168,7 +168,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 		$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_reply_id, pmindex_from_id, pmindex_from_email, pmindex_to_id, pmindex_to_email, pmindex_to_group, pmindex_folder, pmindex_read_datestamp)
 			 VALUES ('".$pm_id."', '".$userdata['user_id']."', '0', '".$userdata['user_id']."', '', '0', '', '0', '1', '".time()."')");
 	}
-	
+
 	// load the sendmail module, we might have to send notifications
 	require_once PATH_INCLUDES."sendmail_include.php";
 
@@ -181,7 +181,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 			if ($inbox_total >= $global_options['pm_inbox']) {
 				$limit = $inbox_total - $global_options['pm_inbox'] + 1;
 				$result = dbquery(
-					"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					"SELECT * FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$user['user_id']."' AND i.pmindex_folder = '0'
 					ORDER BY m.pm_datestamp LIMIT ".$limit
 					);
@@ -195,10 +195,21 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 			 VALUES ('".$pm_id."', '".$user['user_id']."', '0', '".($from_cms?0:$userdata['user_id'])."', '', '".$user['user_id']."', '', '0', '0', '1')");
 		// user notification if needed
 		if ($user['pmconfig_email_notify']) {
+			// make sure we have a user locale
+			if (empty($user['user_locale'])) {
+				$user['user_locale'] = $settings['locale_code'];
+			}
+			// get the message strings for this user using the users own locale. If not found, use the current users locale strings (might be wrong!)
+			$message_subject = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$user['user_locale']."' AND locales_name = 'main.pm' and locales_key = '625'"));
+			$message_subject = isset($message_subject['locales_value']) ? $message_subject['locales_value'] : $locale['625'];
+			$message_content = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$user['user_locale']."' AND locales_name = 'main.pm' and locales_key = '626'"));
+			$message_content = isset($message_content['locales_value']) ? $message_content['locales_value'] : $locale['626'];
+
+			// send the notification email out
 			$error = sendemail($user['user_name'], $user['user_email'], $settings['siteusername'],
 						($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),
-						sprintf($locale['625'],$settings['sitename']),
-						$user['user_name'].sprintf($locale['626'], ($from_cms?$locale['sysusr']:$userdata['user_name']), $settings['sitename'], $message['pm_subject'], $settings['siteurl']));
+						sprintf($message_subject,$settings['sitename']),
+						$user['user_name'].sprintf($message_content, ($from_cms?$locale['sysusr']:$userdata['user_name']), $settings['sitename'], $message['pm_subject'], $settings['siteurl']));
 		}
 	}
 	return $error == true ? "" : $error;

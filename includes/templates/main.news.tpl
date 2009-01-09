@@ -71,7 +71,7 @@
 								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' /><br />
 								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
 							{/if}
-						{/if}
+4						{/if}
 						 {$news[column][item].news_reads} {$locale.044} &middot;
 						 <a href='{$smarty.const.BASEDIR}print.php?type=N&amp;item_id={$news[column][item].news_id}'> <img src='{$smarty.const.THEME}images/printer.gif' alt='{$locale.045}' style='border:0px;vertical-align:middle;' /></a>
 					 	{if $news[column][item].allow_edit}
