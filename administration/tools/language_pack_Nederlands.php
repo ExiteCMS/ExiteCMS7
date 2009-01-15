@@ -81,11 +81,16 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['403'] = "Terug naar de beheerdersindex";
 		$localestrings['420'] = "Blokkeer dit lid";
 		$localestrings['421'] = "Wijzig geblokkeerde gebruiker";
+		$localestrings['430'] = "- <b>of</b> -";
 		$localestrings['440'] = "Voer een IP adres in. Gebruikers met dit IP adres kunnen de website niet langer meer bezoeken.\nJe kunt een volledig IP adres invoeren, b.v. <i>123.123.123.123</i>, or een gedeeltelijk IP adres, b.v.\n<i>123.123.123 or 123.123</i>.<br><br>\nDoor een email adres in te voeren kunt u voorkomen dat iemand met dat adres zich registreert. U kunt een volledig email adres invullen, b.v. <i>foo@bar.com</i>, of een email domein, b.v. <i>bar.com</i>";
-		$localestrings['441'] = "Te blokkeren IP adres: <b>or</b>";
+		$localestrings['441'] = "Te blokkeren IP adres:";
 		$localestrings['442'] = "Te blokkeren email adres:";
 		$localestrings['443'] = "Reden voor de blokkade";
-		$localestrings['444'] = "Geblokeerde gebruiker";
+		$localestrings['444'] = "Blokkeer";
+		$localestrings['445'] = "Te blokkeren gebruiker:";
+		$localestrings['446'] = "Gebruiker weer toegang geven na:";
+		$localestrings['447'] = "dagen (0 = permanent geblokkeerd)";
+		$localestrings['448'] = "Vervalt";
 		$localestrings['460'] = "Geblokkeerde gebruikers";
 		$localestrings['461'] = "Blokkage informatie";
 		$localestrings['462'] = "Opties";
@@ -93,6 +98,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['464'] = "Verwijder";
 		$localestrings['465'] = "De blokkage lijst is momenteel leeg.";
 		$localestrings['470'] = "Geblokkeerd wegens een aanstootgevende, beledigende of op andere wijze tegen de regel ingaande plaatsing van commentaar";
+		$localestrings['471'] = "Invoer is toegevoerd aan de blokkeringslijst";
 		load_localestrings($localestrings, LP_LOCALE, "admin.blacklist", $step);
 
 		$localestrings = array();
@@ -3149,6 +3155,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['489'] = "De email server voor het domein %s accepteert geen email berichten.";
 		$localestrings['490'] = "Het email adres %s bestaat niet<br>(volgens de mail server %s).";
 		$localestrings['491'] = "Wij hebben gedetecteerd dat uw email adres niet langer geldig is.<br />Uw gebruikersnaam zal over %s dagen worden gedeactiveerd.";
+		$localestrings['492'] = "Klik om dit lid te blokkeren";
 		$localestrings['499'] = "<br /><br />a.u.b. nu uw profiel aanpassen.";
 		load_localestrings($localestrings, LP_LOCALE, "main.members-profile", $step);
 
@@ -3796,7 +3803,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229879956");
+if (!defined('LP_DATE')) define('LP_DATE', "1232029742");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

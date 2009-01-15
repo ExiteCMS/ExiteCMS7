@@ -30,6 +30,7 @@ if (!checkrights("B") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."i
 
 // make sure the parameter is valid
 if (isset($blacklist_id) && !isNum($blacklist_id)) fallback(BASEDIR."index.php");
+if (isset($user_id) && !isNum($user_id)) fallback(BASEDIR."index.php");
 
 // make sure the step variable is initialised
 if (!isset($step)) $step = "";
@@ -39,6 +40,10 @@ if (isset($status)) {
 		$title = $locale['400'];
 		$message = $locale['401'];
 	}
+	if ($status == "ban") {
+		$title = $locale['400'];
+		$message = $locale['471'];
+	}
 	$variables['message'] = $message;
 	$variables['bold'] = true;
 	// define the admin body panel
@@ -47,47 +52,89 @@ if (isset($status)) {
 }
 
 if ($step == "delete") {
-	$result = dbquery("DELETE FROM ".$db_prefix."blacklist WHERE blacklist_id='$blacklist_id'");
-	redirect(FUSION_SELF.$aidlink."&status=del");
-} else {
-	if (isset($_POST['blacklist_user'])) {
-		$blacklist_ip = stripinput($_POST['blacklist_ip']);
-		$blacklist_email = stripinput($_POST['blacklist_email']);
-		$blacklist_reason = stripinput($_POST['blacklist_reason']);
-		if ($blacklist_ip || $blacklist_email) {
-			if ($step == "edit") {
-				$result = dbquery("UPDATE ".$db_prefix."blacklist SET blacklist_ip='$blacklist_ip', blacklist_email='$blacklist_email', blacklist_reason='$blacklist_reason' WHERE blacklist_id='$blacklist_id'");
-			} else {
-					$result = dbquery("INSERT INTO ".$db_prefix."blacklist (blacklist_ip, blacklist_email, blacklist_reason) VALUES ('$blacklist_ip', '$blacklist_email', '$blacklist_reason')");
-			}
-		}
+	if (isset($blacklist_id)) {
+		$result = dbquery("DELETE FROM ".$db_prefix."blacklist WHERE blacklist_id='$blacklist_id'");
+	} elseif (isset($user_id)) {
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_status = '0' WHERE user_id='$user_id'");
+	} else {
 		redirect(FUSION_SELF.$aidlink);
 	}
-	if ($step == "edit") {
+	redirect(FUSION_SELF.$aidlink."&status=del");
+}
+
+if (isset($_POST['blacklist'])) {
+	$blacklist_ip = stripinput($_POST['blacklist_ip']);
+	$blacklist_email = stripinput($_POST['blacklist_email']);
+	$blacklist_user = isNum($_POST['blacklist_user']) ? $_POST['blacklist_user'] : 0;
+	$blacklist_timeout = isNum($_POST['blacklist_timeout']) ? $_POST['blacklist_timeout'] : 0;
+	$blacklist_reason = stripinput($_POST['blacklist_reason']);
+	if ($blacklist_ip || $blacklist_email) {
+		if ($step == "edit") {
+			$result = dbquery("UPDATE ".$db_prefix."blacklist SET blacklist_ip='$blacklist_ip', blacklist_email='$blacklist_email', blacklist_reason='$blacklist_reason' WHERE blacklist_id='$blacklist_id'");
+		} else {
+				$result = dbquery("INSERT INTO ".$db_prefix."blacklist (blacklist_ip, blacklist_email, blacklist_reason) VALUES ('$blacklist_ip', '$blacklist_email', '$blacklist_reason')");
+		}
+	} elseif ($blacklist_user) {
+		$ban_expire = $blacklist_timeout == 0 ? $blacklist_timeout : (time() + $blacklist_timeout * 86400);
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_expire = '$ban_expire', user_ban_reason='".mysql_escape_string($blacklist_reason)."' WHERE user_id='$blacklist_user'");
+	}
+	redirect(FUSION_SELF.$aidlink."&status=ban");
+}
+
+if ($step == "edit") {
+	if (isset($blacklist_id)) {
 		$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."blacklist WHERE blacklist_id='$blacklist_id'"));
 		$blacklist_ip = $data['blacklist_ip'];
 		$blacklist_email = $data['blacklist_email'];
 		$blacklist_reason = $data['blacklist_reason'];
 		$form_title = $locale['421'];
 		$form_action = FUSION_SELF.$aidlink."&amp;step=edit&amp;blacklist_id=".$data['blacklist_id'];
-	} else {
-		$blacklist_ip = isset($_GET['ip']) ? $_GET['ip'] : "";
-		$blacklist_email = "";
-		$blacklist_reason = isset($_GET['reason']) ? (isset($locale[$_GET['reason']]) ? $locale[$_GET['reason']] : "") : "";
-		$form_title = $locale['420'];
-		$form_action = FUSION_SELF.$aidlink;
+	} elseif (isset($user_id)) {
+		$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id='$user_id'"));
+		$blacklist_user = $data['user_id'];
+		$blacklist_reason = $data['user_ban_reason'];
+		$blacklist_timeout = (int) (($data['user_ban_expire'] - time()) / 86400) + 1;
+		$form_title = $locale['421'];
+		$form_action = FUSION_SELF.$aidlink."&amp;step=edit&amp;user_id=".$data['user_id'];
 	}
-	$variables['blacklist_ip'] = $blacklist_ip;
-	$variables['blacklist_email'] = $blacklist_email;
-	$variables['blacklist_reason'] = $blacklist_reason;
-	$variables['form_title'] = $form_title;
-	$variables['form_action'] = $form_action;
+} else {
+	$blacklist_ip = isset($_GET['ip']) ? $_GET['ip'] : "";
+	$blacklist_user = isset($_GET['user_id']) ? $_GET['user_id'] : "";
+	$blacklist_email = "";
+	$blacklist_reason = isset($_GET['reason']) ? (isset($locale[$_GET['reason']]) ? $locale[$_GET['reason']] : "") : "";
+	$form_title = $locale['420'];
+	$form_action = FUSION_SELF.$aidlink;
+}
 
-	$variables['blacklist'] = array();
-	$result = dbquery("SELECT * FROM ".$db_prefix."blacklist");
-	while ($data = dbarray($result)) {
-		$variables['blacklist'][] = $data;
-	}
+$variables['blacklist_ip'] = isset($blacklist_ip) ? $blacklist_ip : "";
+$variables['blacklist_email'] = isset($blacklist_email) ? $blacklist_email : "";
+$variables['blacklist_reason'] = isset($blacklist_reason) ? $blacklist_reason : "";
+$variables['blacklist_user'] = isset($blacklist_user) ? $blacklist_user : "0";
+$variables['blacklist_timeout'] = isset($blacklist_timeout) ? $blacklist_timeout : "";
+$variables['form_title'] = $form_title;
+$variables['form_action'] = $form_action;
+
+$variables['blacklist'] = array();
+// get the list of blacklisted users
+$result = dbquery("SELECT user_id, user_name, user_status FROM ".$db_prefix."users WHERE user_status = '1'");
+while ($data = dbarray($result)) {
+	$variables['blacklist'][] = $data;
+}
+// get the list of blacklisted ip's and email addresses
+$result = dbquery("SELECT * FROM ".$db_prefix."blacklist");
+while ($data = dbarray($result)) {
+	$variables['blacklist'][] = $data;
+}
+
+// get the list of active members
+if (!empty($user_id)) {
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id = '$user_id'");
+} else {
+	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '0'");
+}
+$variables['users'] = array();
+while ($data = dbarray($result)) {
+	$variables['users'][] = $data;
 }
 
 // define the admin body panel

@@ -25,6 +25,11 @@
 				<tr>
 					<td class='tbl2'>
 						<b>{$data.user_name}</b>
+						{if $may_ban}
+							<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;user_id={$data.user_id}'>
+								<img src='{$smarty.const.THEME}images/user_delete.gif' alt='{$data.user_name}' title='{$locale.492}' style='border:0px;' />
+							</a>
+						{/if}
 					</td>
 					<td align='right' class='tbl2'>
 						{if $data.user_status == 0}
@@ -61,7 +66,7 @@
 			<b>{$locale.u025}</b>
 		</td>
 		<td class='tbl2'>
-		{if $smarty.const.iUSER >= 102 || $settings.forum_flags|default:false}
+		{if $show_country}
 			{$data.cc_flag}{if $data.user_cc_code|default:"" != ""}<a href='/members.php?country={$data.user_cc_code}'>{$data.cc_name}</a>{else}{$data.cc_name}{/if}
 		{else}
 			{$locale.u056}
@@ -120,7 +125,7 @@
 	</tr>
 	<tr>
 		<td align='center' class='tbl2'>
-			{if $smarty.const.iSUPERADMIN || $data.user_hide_email != "1"}
+			{if $show_email || $data.user_hide_email != "1"}
 				{buttonlink name=$locale.u051 link="mailto:"|cat:$data.user_email|strip encode='javascript_charcode'}&nbsp;
 			{/if}
 			{if $data.user_web|default:"" != ""}
@@ -161,7 +166,7 @@
 			{if $data.user_lastvisit != 0}{$data.user_lastvisit|date_format:"longdate"}{else}{$locale.u049}{/if}
 		</td>
 	</tr>
-	{if $smarty.const.iSUPERADMIN}
+	{if $show_ip}
 	<tr>
 		<td width='1%' class='{cycle values="tbl1,tbl2" advance=false}' style='white-space:nowrap'>
 			<b>{$locale.u050}</b>

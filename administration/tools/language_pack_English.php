@@ -81,11 +81,16 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['403'] = "Return to Admin Index";
 		$localestrings['420'] = "Blacklist User";
 		$localestrings['421'] = "Edit blacklisted user";
+		$localestrings['430'] = "<b>or</b>";
 		$localestrings['440'] = "Entering an IP address will prevent a user whose IP address matches the entry from\nvisiting this site. You can enter a full IP, e.g. <i>123.123.123.123</i>, or a partial IP, e.g.\n<i>123.123.123 or 123.123</i>.<br><br>\nEntering an email address will prevent members from registering using that address. You can enter\na full email address, e.g. <i>foo@bar.com</i>, or an email domain, e.g. <i>bar.com</i>";
-		$localestrings['441'] = "Blacklist IP address: <b>or</b>";
+		$localestrings['441'] = "Blacklist IP address:";
 		$localestrings['442'] = "Blacklist email address:";
 		$localestrings['443'] = "Blacklist reason";
-		$localestrings['444'] = "Blacklist user";
+		$localestrings['444'] = "Blacklist";
+		$localestrings['445'] = "Blacklist user:";
+		$localestrings['446'] = "User has access again after:";
+		$localestrings['447'] = "days (0 = blacklisted permanently)";
+		$localestrings['448'] = "Expires";
 		$localestrings['460'] = "Blacklisted users";
 		$localestrings['461'] = "Blacklisted info";
 		$localestrings['462'] = "Options";
@@ -93,6 +98,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['464'] = "Delete";
 		$localestrings['465'] = "The blacklist is currently empty.";
 		$localestrings['470'] = "Blacklisted because of an offensive, rude or inappropriate comments posting";
+		$localestrings['471'] = "Entry added to the blacklist";
 		load_localestrings($localestrings, LP_LOCALE, "admin.blacklist", $step);
 
 		$localestrings = array();
@@ -3149,6 +3155,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['489'] = "Mailserver for domain %s doesn't accept email messages.";
 		$localestrings['490'] = "Email address %s does not exist<br>(according to the mailserver %s).";
 		$localestrings['491'] = "We have detected that your email address is no longer valid.<br />Your accounts will be deactivated in %s days.";
+		$localestrings['492'] = "Click to blacklist this member";
 		$localestrings['499'] = "<br /><br />Please update your profile now.";
 		load_localestrings($localestrings, LP_LOCALE, "main.members-profile", $step);
 
@@ -3796,7 +3803,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1229879766");
+if (!defined('LP_DATE')) define('LP_DATE', "1232029745");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
