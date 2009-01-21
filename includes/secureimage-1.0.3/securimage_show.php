@@ -7,5 +7,5 @@ $img = new securimage();
 $img->show(); // alternate use:  $img->show('/path/to/background.jpg');
 
 // flush the session
-session_write_close();
+session_clean_close();
 ?>

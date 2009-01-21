@@ -71,7 +71,7 @@ if (isset($_POST['edit_rights']) || (isset($edit))) {
 		$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
 		$adminrights = "";
 		while ($data = dbarray($result)) {
-			$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights']; 
+			$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 		}
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_level='$user_level', user_rights='".$adminrights."' WHERE user_id='$user_id' AND user_level < '$user_level'");
 		redirect(FUSION_SELF.$aidlink);
@@ -80,7 +80,7 @@ if (isset($_POST['edit_rights']) || (isset($edit))) {
 }
 
 // get the list of members with administrator or webmaster level
-$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '0' ORDER BY user_level DESC, user_name");
+$result = dbquery("SELECT user_id, user_name, user_level, user_rights FROM ".$db_prefix."users WHERE user_status = '0' ORDER BY user_level DESC, user_name");
 $variables['admins'] = array();
 $variables['users'] = array();
 while ($data = dbarray($result)) {
@@ -88,15 +88,15 @@ while ($data = dbarray($result)) {
 		// it's a webmaster or administrator
 		$data['user_rights'] = $data['user_rights'] ? str_replace(".", " ", $data['user_rights']) : "".$locale['405'];
 		$data['user_level'] = getuserlevel($data['user_level']);
-		if ($data['user_id'] == "1" || $data['user_id'] == $userdata['user_id']) { 
+		if ($data['user_id'] == "1" || $data['user_id'] == $userdata['user_id']) {
 			// no editing of the webmaster or the members own rights
 			$data['can_edit'] = false;
 		} elseif ($data['user_level'] != "103") {
 			// admins can always be edited
 			$data['can_edit'] = true;
-		} else { 
+		} else {
 			// catch-all, no editing possible!
-			$data['can_edit'] = false; 
+			$data['can_edit'] = false;
 		}
 		$variables['admins'][] = $data;
 	} else {

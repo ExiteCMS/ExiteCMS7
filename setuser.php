@@ -25,7 +25,7 @@ $variables = array();
 // array to store the lines of the setuser message
 $message = array();
 
-// set the P3P header				
+// set the P3P header
 header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 
 // make sure the error variable has a value
@@ -99,7 +99,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == "yes") {
 // check the result of the authentication attempt, and process it
 switch($error) {
 	case 0:	// no errors
-		// 
+		//
 		$refresh = 1;
 		break;
 	case 1: // account is suspended
@@ -175,9 +175,6 @@ $variables['refresh'] = isset($refresh) ? $refresh : 10;
 // define the first body panel variables
 $template_panels[] = array('type' => 'body', 'name' => 'setuser', 'template' => 'main.setuser.tpl');
 $template_variables['setuser'] = $variables;
-
-// make sure updates to session variables are written
-session_write_close();
 
 load_templates('body', '');
 

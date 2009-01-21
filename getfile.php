@@ -332,8 +332,8 @@ switch ($type) {
 		}
 		break;
 	case "fd":	// file download
-		if (!isset($fd_id) || !isNum($fd_id) || !isset($file_id) || !isNum($file_id)) {
-			terminate("<b>Invalid or missing file download ID.</b>");
+		if (!isset($fd_id) || !isNum($fd_id)) {
+			terminate("<b>Invalid or missing file ID.</b>");
 		}
 		break;
 	case "a":	// attachments
@@ -425,21 +425,19 @@ switch (strtolower($type)) {
 		break;
 
 	case "fd":	// file download
+		// get the file download record to find the root path
+		$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."file_downloads WHERE fd_id = '$fd_id' LIMIT 1"));
+		if (!is_array($data)) {
+			terminate("<b>Invalid or missing file download ID.</b>");
+		}
 		// get the file download info from session flash
 		$cats = session_get_flash("file_downloads");
-		// retrieve the filename
-		foreach($cats as $cat) {
-			if ($cat['fd_id'] == $fd_id) {
-				// found the category, check if the file exists
-				if (isset($cat['files'][$file_id])) {
-					// define the required parameters for the download
-					$source = "file";
-					$filename = $cat['files'][$file_id]['name'];
-					$filepath = $cat['path']."/";
-					$downloadname = $cat['files'][$file_id]['name'];
-					break;
-				}
-			}
+		if (isset($cats) && is_array($cats)) {
+			// define the required parameters for the download
+			$source = "file";
+			$filepath = $data['fd_path'].$cats['dir']."/";
+			$filename = $cats['file'];
+			$downloadname = $cats['file'];
 		}
 		if (!isset($source)) {
 			terminate("<b>Invalid or missing file download ID.</b>");
@@ -449,6 +447,7 @@ switch (strtolower($type)) {
 		// add the download to the statistics tables
 		$on_map = empty($settings['dlstats_geomap_regex']) || preg_match($settings['dlstats_geomap_regex'], trim($filepath.$filename));
 		log_download($filepath.$filename, USER_IP, $on_map, 1, time());
+
 		break;
 
 	case "pa":	// personal message attachments
@@ -514,6 +513,14 @@ ob_end_clean();
 
 // make sure zlib compression is off
 ini_set('zlib.output_compression', 'Off');
+
+// close the session before starting the download
+session_clean_close();
+
+header("Pragma: public");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: private",false);
 
 // define the download parameters and start the download
 $object = new httpdownload;

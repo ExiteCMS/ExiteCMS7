@@ -65,9 +65,6 @@ $variables['show_passlink'] = 1;
 $template_panels[] = array('type' => 'body', 'name' => 'login', 'template' => 'main.login.tpl');
 $template_variables['login'] = $variables;
 
-// make sure updates to session variables are written
-session_write_close();
-
 load_templates('body', '');
 
 // and clean up

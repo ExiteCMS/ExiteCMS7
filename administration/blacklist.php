@@ -128,9 +128,9 @@ while ($data = dbarray($result)) {
 
 // get the list of active members
 if (!empty($user_id)) {
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_id = '$user_id'");
+	$result = dbquery("SELECT user_id, user_name FROM ".$db_prefix."users WHERE user_id = '$user_id'");
 } else {
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '0'");
+	$result = dbquery("SELECT user_id, user_name FROM ".$db_prefix."users WHERE user_status = '0'");
 }
 $variables['users'] = array();
 while ($data = dbarray($result)) {

@@ -41,33 +41,33 @@ class ExiteCMS_Smarty extends Smarty {
      */
 	function ExiteCMS_Smarty() {
 		global $settings, $userdata;
-		
+
 		$this->Smarty();
 
 		// debugging needed?
 		$this->debugging = false;
-		
+
 		// on-the-fly compilation needed?
 		$this->compile_check = true;
-		
+
 		// set the compile ID for this website/theme (themes can have different templates!)
 		if (isset($userdata['user_theme']) && $userdata['user_theme'] != "Default") {
 			$this->compile_id = $_SERVER['SERVER_NAME']."~".$userdata['user_theme'];
 		} else {
 			$this->compile_id = $_SERVER['SERVER_NAME']."~".$settings['theme'];
 		}
-		
+
 		// caching required?
 		$this->caching = 0;
-		
+
 		// path definitions
 		$this->config_dir = PATH_THEME.'templates/configs';
 		$this->compile_dir = PATH_ROOT.'files/tplcache';
 		$this->cache_dir = PATH_ROOT.'files/cache';
-	
+
 		// PHP in Templates? Don't think so!
 		$this->php_handling = SMARTY_PHP_REMOVE;
-		
+
 		// Template security settings: allow PHP functions
 		$this->security = false;
 	}
@@ -160,7 +160,7 @@ $template_variables = array();
 +-----------------------------------------------------*/
 function load_templates($_column='', $_name='', $_output='html') {
 	global $settings, $locale, $userdata, $db_prefix, $aidlink,
-			$template, $template_panels, $template_variables, 
+			$template, $template_panels, $template_variables,
 			$_loadstats, $_headparms, $_bodyparms, $_last_updated;
 
 
@@ -169,13 +169,13 @@ function load_templates($_column='', $_name='', $_output='html') {
 
 	// store the current locales. We need to restore them later
 	$current_locale = $locale;
-	
+
 	// reset all assigned template variables
 	$template->clear_all_assign();
 
 	// Initialise the $locale array
 	$locale = array();
-	
+
 	// Load the global language file
 	locale_load("main.global");
 
@@ -213,7 +213,7 @@ function load_templates($_column='', $_name='', $_output='html') {
 				}
 			}
 			if ($no_panel_displayed) continue;
-			
+
 			// assign the panel variables
 			$panel_name = isset($panel['name']) ? $panel['name'] : "";
 			if (isset($template_variables[$panel_name]) && is_array($template_variables[$panel_name])) {
@@ -239,7 +239,7 @@ function load_templates($_column='', $_name='', $_output='html') {
 			}
 			// then assign the locales to the template
 			$template->assign("locale", $locale);
-			
+
 			// assign CMS admin security aidlink
 			$template->assign("aidlink", $aidlink);
 
@@ -259,12 +259,12 @@ function load_templates($_column='', $_name='', $_output='html') {
 
 			// process the output type
 			switch ($_output) {
-				
+
 				case "var":
 
 					// variable to store template output in
 					if (!isset($retval)) $retval = "";
-										
+
 					// ** missing break on purpose! **
 
 				case "html":
@@ -277,7 +277,7 @@ function load_templates($_column='', $_name='', $_output='html') {
 					if ($tpl_parts[0] == "modules") {
 						$template->template_dir = array_merge(array(PATH_MODULES.$tpl_parts[1].'/templates'), $template->template_dir);
 					}
-				
+
 					//if this is a tools template...
 					$tpl_parts = explode(".", $panel['template']);
 					if ($tpl_parts[0] == "admin" && $tpl_parts[1] == "tools") {
@@ -302,12 +302,12 @@ function load_templates($_column='', $_name='', $_output='html') {
 							$retval .= $template->fetch($panel['template']);
 						}
 					}
-					
+
 					// restore the template direcory
 					$template->template_dir = $td;
 
 					break;
-				
+
 				case "json":
 
 					// get all assigned template variables
@@ -327,7 +327,7 @@ function load_templates($_column='', $_name='', $_output='html') {
 
 	// restore the current locales.
 	$locale = $current_locale;
-	
+
 	// send the return value back if needed
 	if (isset($retval)) return $retval;
 }
@@ -337,7 +337,7 @@ function load_templates($_column='', $_name='', $_output='html') {
 +-----------------------------------------------------*/
 function load_panels($column) {
 	global $db_prefix, $locale, $settings, $userdata, $template, $template_panels;
-	
+
 	$opening_page = substr($settings['opening_page'],0,1) != "/" ? (BASEDIR.$settings['opening_page']) : $settings['opening_page'];
 
 	// parameter validation and processing
@@ -371,7 +371,7 @@ function load_panels($column) {
 		case "right":
 			// get the right-side panels
 			$where = "panel_side='4'";
-			break;			
+			break;
 		case "top":
 			// get the top panels
 			$where = "panel_side='5'";
@@ -385,13 +385,13 @@ function load_panels($column) {
 			trigger_error("theme_functions: getpanels(): invalid 'column' parameter passed", E_USER_NOTICE);
 			return false;
 	}
-	// 
+	//
 	switch ($settings['panels_localisation']) {
 		case "multiple":
 			$where .= ($where == "" ? "" : " AND ")."panel_locale = '".$settings['locale_code']."'";
 			break;
 		default:
-	}	
+	}
 
 	$p_res = dbquery("SELECT * FROM ".$db_prefix."panels WHERE ".$where." AND panel_status='1' ORDER BY panel_order");
 	if (dbrows($p_res) != 0) {
@@ -452,7 +452,7 @@ function count_panels($column) {
 	if (!is_array($template_panels)) return false;
 
 	$count = 0;
-	
+
 	// parameter validation and processing
 	$column = strtolower(trim($column));
 	switch ($column) {
@@ -502,24 +502,9 @@ function theme_cleanup() {
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysql_real_escape_string(serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
 	}
 
-	// remove any expired posts trackers
-	if (isset($_SESSION['posts']) && is_array($_SESSION['posts'])) {
-		foreach($_SESSION['posts'] as $key => $value) {
-			if ($value < time()) unset($_SESSION['posts'][$key]);
-		}
-	}
-
-	// delete all used flash info from the session
-	if (isset($_SESSION['_flash'])) {
-		foreach($_SESSION['_flash'] as $key => $value) {
-			if ($_SESSION['_flash'][$key]['used']) {
-				unset($_SESSION['_flash'][$key]);
-			}
-		}
-	}
 	// flush any session info
-	session_write_close();
-		
+	session_clean_close();
+
 	// clean-up tasks, will be executed by all super-admins
 	// WANWIZARD - 20070716 - THIS NEEDS TO BE MOVED TO A CRON JOB !!!
 	$_db_logs[] = array("--- clean up code --- not included in the footer information --- needs to be moved to a cron process", 0);
@@ -564,12 +549,12 @@ function theme_cleanup() {
 
 	// close the database connection
 	mysql_close();
-	
+
 	echo "</body>\n</html>\n";
 
 	// store the current URL in a cookie. We might need to redirect to it later
 	setcookie('last_url', FUSION_REQUEST, 0, '/');
-	
+
 	// and flush any output remaining
 	ob_end_flush();
 }

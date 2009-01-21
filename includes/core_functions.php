@@ -228,7 +228,7 @@ function redirect($location, $type="header") {
 	$location = str_replace("&amp;", "&", $location);
 
 	// make sure the session is properly closed before redirecting
-	session_write_close();
+	session_clean_close();
 
 	if ($type == "header") {
 		header("Location: ".$location);
@@ -244,7 +244,7 @@ function fallback($location) {
 
 	// get rid of &amp; in the location
 	$location = str_replace("&amp;", "&", $location);
-		
+
 	redirect($location, "header");
 	exit;
 }
@@ -468,7 +468,7 @@ function makefilelist($folder, $filter, $sort=true, $type="files", $hidden=false
 	if(substr($folder,-1) != "/") $folder .= "/";
 	$res = array();
 	if (is_dir($folder)) {
-		$filter = explode("|", $filter); 
+		$filter = explode("|", $filter);
 		$temp = opendir($folder);
 		while ($file = readdir($temp)) {
 			if (!$hidden && $file{0} == ".") continue;
@@ -510,14 +510,14 @@ function showdate($format, $val=false) {
 			$format = preg_replace("/[^a-zA-z%]/", " ", str_replace("%m", "%B", nl_langinfo(D_FMT)))." ".nl_langinfo(T_FMT);
 			break;
 		default:
-	}	
+	}
 	return strftime($format, $val);
 }
 
 //convert system time to local time
 function time_system2local($val) {
 	global $settings;
-	
+
 	// calculate local time
 	if (strpos($settings['timeoffset'], ":") === false) {
 		$localtime = $settings['timeoffset'];
@@ -535,7 +535,7 @@ function time_system2local($val) {
 //convert local time to system time
 function time_local2system($val) {
 	global $settings;
-	
+
 	// calculate local time
 	if (strpos($settings['timeoffset'], ":") === false) {
 		$localtime = $settings['timeoffset'];
@@ -555,7 +555,7 @@ function time_local2system($val) {
 function datediff($datefrom,$dateto=-1)
 {
 	global $locale;
-	
+
 	// validate parameters
 	if ($datefrom == 0) { return ""; }
 	if ($dateto == -1) { $dateto = time(); }
@@ -672,7 +672,7 @@ function checkCMSversion($min=false, $max=false) {
 	global $locale;
 
 	$error	 = "";
-	
+
 	if ($min) {
 		if (str_replace(".", "", $settings['version']) < str_replace(".", "", $min)) {
 			$error .= sprintf($locale['mod001'], $min);
@@ -690,7 +690,7 @@ function checkCMSrevision($min=false, $max=false) {
 	global $locale;
 
 	$error	 = "";
-	
+
 	if ($min) {
 		if ($settings['revision'] < $min) {
 			$error .= sprintf($locale['mod003'], $min);
@@ -705,9 +705,9 @@ function checkCMSrevision($min=false, $max=false) {
 }
 
 function auth_BasicAuthentication() {
-	
+
 	global $settings;
-	
+
 	// ask the user for authentication
 	header('WWW-Authenticate: Basic realm="'.$settings['sitename'].'"');
 	header('HTTP/1.0 401 Unauthorized');
@@ -718,7 +718,7 @@ function auth_BasicAuthentication() {
 
 function auth_validate_BasicAuthentication() {
 
-	global $db_prefix; 
+	global $db_prefix;
 
 	$user_pass = md5($_SERVER['PHP_AUTH_PW']);
 	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_SERVER['PHP_AUTH_USER']));
@@ -733,12 +733,12 @@ function auth_validate_BasicAuthentication() {
 			$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0' WHERE user_id='".$data['user_id']."'");
 			$data['user_status'] = 0;
 		}
-		if ($data['user_status'] == 0) {	
+		if ($data['user_status'] == 0) {
 			$cookie_exp = time() + 60*30;
 			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 			setcookie("userinfo", $cookie_value, $cookie_exp, "/", "", "0");
 			return 0;
-		} 
+		}
 		return $data['user_status'];
 	} else {
 		return -1;	// user_status == -1: not_found
@@ -954,7 +954,7 @@ function terminate($text) {
 function xss_clean($str) {
 
 	static $never_allowed_str, $never_allowed_regex;
-	
+
 	// never allowed, string replacement
 	if (!isset($never_allowed_str)) {
 		$never_allowed_str = array(
@@ -969,7 +969,7 @@ function xss_clean($str) {
 			'<![CDATA['			=> '&lt;![CDATA['
 		);
 	}
-	
+
 	// never allowed, regex replacement
 	if (!isset($never_allowed_regex)) {
 		$never_allowed_regex = array(
@@ -978,7 +978,7 @@ function xss_clean($str) {
 			"Redirect\s+302"	=> '[--XSS--]'
 		);
 	}
-	
+
 	// is the argument passed an array?
 	if (is_array($str)) {
 		while (list($key) = each($str)) {
@@ -1007,8 +1007,8 @@ function xss_clean($str) {
 	// Just in case stuff like this is submitted:
 	// <a href="http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D">Google</a>
 	$str = rawurldecode($str);
-	
-	// Convert character entities to ASCII 
+
+	// Convert character entities to ASCII
 	// This permits our tests below to work reliably.
 	// We only convert entities that are within tags since
 	// these are the ones that will pose security problems.
@@ -1017,7 +1017,7 @@ function xss_clean($str) {
 
 	// Remove Invisible Characters Again!
 	$str = _remove_invisible_characters($str);
-		
+
 	// Convert all tabs to spaces
 	// This prevents strings like this: ja	vascript
 	// NOTE: we deal with spaces between characters later.
@@ -1026,16 +1026,16 @@ function xss_clean($str) {
 	if (strpos($str, "\t") !== false) {
 		$str = str_replace("\t", ' ', $str);
 	}
-		
+
 	// Capture converted string for later comparison
 	$converted_string = $str;
-		
+
 	// Not Allowed Under Any Conditions
 	foreach ($never_allowed_str as $key => $val) {
-		$str = str_replace($key, $val, $str);   
+		$str = str_replace($key, $val, $str);
 	}
 	foreach ($never_allowed_regex as $key => $val) {
-		$str = preg_replace("#".$key."#i", $val, $str);   
+		$str = preg_replace("#".$key."#i", $val, $str);
 	}
 
 	// Makes PHP tags safe
@@ -1043,7 +1043,7 @@ function xss_clean($str) {
 	// <?xml
 	// But it doesn't seem to pose a problem.
 	$str = str_replace(array('<?php', '<?PHP', '<?', '?'.'>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
-		
+
 	// Compact any exploded words
 	// This corrects words like:  j a v a s c r i p t
 	// These words are compacted back to their correct state.
@@ -1057,7 +1057,7 @@ function xss_clean($str) {
 		// That way valid stuff like "dealer to" does not become "dealerto"
 		$str = preg_replace_callback('#('.substr($temp, 0, -3).')(\W)#is', '_compact_exploded_words', $str);
 	}
-		
+
 	// Remove disallowed Javascript in links or img tags
 	// We used to do some version comparisons and use of stripos for PHP5, but it is dog slow compared
 	// to these simplified non-capturing preg_match(), especially if the pattern exists in the string
@@ -1083,7 +1083,7 @@ function xss_clean($str) {
 	// but it's unlikely to be a problem.
 	$event_handlers = array('on\w*','xmlns');
 	$str = preg_replace("#<([^><]+)(".implode('|', $event_handlers).")(\s*=\s*[^><]*)([><]*)#i", "<\\1\\4", $str);
-		
+
 	// Sanitize naughty HTML elements
 	// If a tag containing any of the words in the list
 	// below is found, the tag gets converted to entities.
@@ -1099,12 +1099,12 @@ function xss_clean($str) {
 	// rendering the code un-executable.
 	// For example:	eval('some code') Becomes: eval&#40;'some code'&#41;
 	$str = preg_replace('#(alert|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si', "\\1\\2&#40;\\3&#41;", $str);
-					
+
 	// Final clean up
 	// This adds a bit of extra precaution in case
 	// something got through the above filters
 	foreach ($never_allowed_str as $key => $val) {
-		$str = str_replace($key, $val, $str);   
+		$str = str_replace($key, $val, $str);
 	}
 	foreach ($never_allowed_regex as $key => $val) {
 		$str = preg_replace("#".$key."#i", $val, $str);
@@ -1118,7 +1118,7 @@ function xss_clean($str) {
 function xss_hash()	{
 
 	static $xss_hash;
-	
+
 	if (!isset($xss_hash)) {
 		if (phpversion() >= 4.2) {
 			mt_srand();
@@ -1135,7 +1135,7 @@ function xss_hash()	{
 function _remove_invisible_characters($str)	{
 
 	static $non_displayables;
-		
+
 	if (!isset($non_displayables)) {
 		// every control character except newline (10), carriage return (13), and horizontal tab (09),
 		// both as a URL encoded character (::shakes fist at IE and WebKit::), and the actual character
@@ -1191,7 +1191,7 @@ function _convert_attribute($match) {
 
 // HTML Entity Decode Callback
 function _html_entity_decode_callback($match) {
-	
+
 	global $settings;
 	return html_entity_decode($match[0], strtoupper($settings['charset']));
 }
@@ -1203,7 +1203,7 @@ function _filter_attributes($str) {
 	if (preg_match_all('#\s*[a-z\-]+\s*=\s*(\042|\047)([^\\1]*?)\\1#is', $str, $matches)) {
 		foreach ($matches[0] as $match) {
 			$out .= "{$match}";
-		}			
+		}
 	}
 	return $out;
 }

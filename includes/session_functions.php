@@ -70,18 +70,18 @@ if (isset($_SESSION['_flash'])) {
 | Session related global functions                   |
 +---------------------------------------------------*/
 
-// regenerates the session id. 
+// regenerates the session id.
 // Call this EVERY time the users privilege level changes!
 function regenerate_session() {
-	
+
 	// saves the old session's id
 	$oldSessionID = session_id();
-	
+
 	// regenerates the id
-	// this function will create a new session, with a new id and containing the data from 
+	// this function will create a new session, with a new id and containing the data from
 	// the old session but will not delete the old session
 	session_regenerate_id();
-	
+
 	// because the session_regenerate_id() function does not delete the old session,
 	// we have to delete it manually
 	destroy_session($oldSessionID);
@@ -96,14 +96,14 @@ function stop_session() {
 
 	// unset the session variables
 	session_unset();
-	
+
 	// and destroy the session
 	session_destroy();
 }
 
 // store a variable in the flash session store
 function session_set_flash($name, $var) {
-	
+
 	// check parameters
 	if (empty($name) || empty($var)) return;
 
@@ -111,18 +111,48 @@ function session_set_flash($name, $var) {
 	if (!isset($_SESSION['_flash'])) $_SESSION['_flash'] = array();
 
 	// add the variable to the session flash store
-	$_SESSION['_flash'][$name] = array('var' => $var, 'used' => false);	
+	$_SESSION['_flash'][$name] = array('var' => $var, 'used' => false);
 }
 
 // retrieve a variable from the flash session store
 function session_get_flash($name) {
-
 	// return the flash value
 	if (empty($name) || !isset($_SESSION['_flash'][$name])) {
 		return false;
 	} else {
+		$_SESSION['_flash'][$name]['used'] = true;
 		return $_SESSION['_flash'][$name]['var'];
 	}
+}
+
+// clean session close, cleanup the session variable before writing it
+function session_clean_close() {
+
+	// remove any expired posts trackers
+	if (isset($_SESSION['posts']) && is_array($_SESSION['posts'])) {
+		foreach($_SESSION['posts'] as $key => $value) {
+			if ($value < time()) unset($_SESSION['posts'][$key]);
+		}
+	}
+
+	// remove any expired pm trackers
+	if (isset($_SESSION['pm']) && is_array($_SESSION['pm'])) {
+		foreach($_SESSION['pm'] as $key => $value) {
+			if ($value < time()) unset($_SESSION['pm'][$key]);
+		}
+	}
+
+	// remove all used (or marked as used) flash variables
+	if (isset($_SESSION['_flash'])) {
+		foreach($_SESSION['_flash'] as $key => $value) {
+			if ($_SESSION['_flash'][$key]['used']) {
+				unset($_SESSION['_flash'][$key]);
+			}
+		}
+	}
+	// and write the session
+	session_write_close();
+
 }
 
 /*---------------------------------------------------+
@@ -151,9 +181,9 @@ function _read_session($session_id) {
 	// check for the site_visited cookie or the FUID. If not found, there can't be session data available
 	if (!isset($_COOKIE['site_visited']) && !isset($_GET['FUID'])) return false;
 
-	// get the session 
-	$result = dbquery("SELECT * FROM ".$db_prefix."sessions 
-						WHERE session_id='$session_id' 
+	// get the session
+	$result = dbquery("SELECT * FROM ".$db_prefix."sessions
+						WHERE session_id='$session_id'
 							AND session_ua='"._session_ua()."'
 							AND session_expire >= ".time()
 					);
@@ -194,7 +224,7 @@ function _write_session($session_id,$session_data) {
 			$session_user_id = $userdata['user_id'];
 		}
 		// insert or update the session information
-		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data) 
+		$result = dbquery("INSERT INTO ".$db_prefix."sessions (session_id, session_ua, session_started, session_expire, session_ip, session_user_id, session_data)
 						VALUES ('$session_id', '"._session_ua()."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '".mysql_escape_string($session_data)."')
 						ON DUPLICATE KEY UPDATE session_data = '".mysql_escape_string($session_data)."', session_ua = '"._session_ua()."', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
 					);
