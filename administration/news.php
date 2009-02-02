@@ -77,7 +77,7 @@ switch ($settings['news_localisation']) {
 }
 
 // fill the newsitems array for the newsitem selection dropdown
-$result = dbquery("SELECT * FROM ".$db_prefix."news LEFT JOIN ".$db_prefix."news_cats ON news_cat=news_cat_access WHERE ".groupaccess('news_cat_access').($where==""?"":(" AND ".$where))." ORDER BY news_datestamp DESC");
+$result = dbquery("SELECT * FROM ".$db_prefix."news LEFT JOIN ".$db_prefix."news_cats ON news_cat=news_cat_id WHERE ".groupaccess('news_cat_access').($where==""?"":(" AND ".$where))." ORDER BY news_datestamp DESC");
 $variables['newsitems'] = array();
 while ($data = dbarray($result)) {
 	$data['selected'] = (isset($news_id) && $news_id == $data['news_id']);
@@ -119,10 +119,10 @@ if (isset($_POST['save'])) {
 		$result = dbquery("INSERT INTO ".$db_prefix."news (news_subject, news_cat, news_news, news_extended, news_breaks, news_name, news_locale, news_datestamp, news_start, news_end, news_visibility, news_reads, news_allow_comments, news_allow_ratings) VALUES ('$news_subject', '$news_cat', '$body', '$body2', '$news_breaks', '".$userdata['user_id']."', '$news_locale', '$news_post_date', '$news_start_date', '$news_end_date', '$news_visibility', '0', '$news_comments', '$news_ratings')");
 		redirect(FUSION_SELF.$aidlink."&status=sn");
 	}
-	
+
 } else if (isset($_POST['delete'])) {
 
-	// delete the news item	
+	// delete the news item
 	$result = dbquery("DELETE FROM ".$db_prefix."news WHERE news_id='$news_id'");
 	$result = dbquery("DELETE FROM ".$db_prefix."comments WHERE comment_item_id='$news_id' and comment_type='N'");
 	$result = dbquery("DELETE FROM ".$db_prefix."ratings WHERE rating_item_id='$news_id' and rating_type='N'");
@@ -226,7 +226,7 @@ if (isset($_POST['save'])) {
 			$title = $locale['404'];
 		}
 	}
-	
+
 	// load the variables to display this news item
 	$variables['action'] = $action;
 	$variables['news_id'] = isset($news_id) ? $news_id : 0;

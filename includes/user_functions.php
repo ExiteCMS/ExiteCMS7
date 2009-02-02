@@ -126,7 +126,7 @@ if ($cms_authentication->logged_on()) {
 		exit;
 	}
 	// create a dummy userdata array
-	$userdata = array(); 
+	$userdata = array();
 	$userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = ""; $userdata['user_datastore'] = array();
 	// check for a theme selection. If present, override the default theme
 	if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
@@ -245,7 +245,7 @@ if (iMEMBER) {
 	// insert a new threads_read record for these threads, to indicate we haven't read them yet
 	while ($data = dbarray($result)) {
 		$result2 = dbquery("INSERT IGNORE INTO ".$db_prefix."threads_read (user_id, forum_id, thread_id, thread_last_read) VALUES ('".$userdata['user_id']."', '".$data['forum_id']."', '".$data['thread_id']."', '".$userdata['user_forum_datestamp']."')");
-	}	
+	}
 }
 
 // generate the security aidlink
@@ -319,7 +319,7 @@ function checkusergroup($user_id, $group_id) {
 	}
 
 	$check = false;
-	if ($group_id == "101") { 
+	if ($group_id == "101") {
 		// every user is a member
 		$check = true;
 	} else {
@@ -327,7 +327,7 @@ function checkusergroup($user_id, $group_id) {
 		$result = dbquery("SELECT user_groups, user_level FROM ".$db_prefix."users WHERE user_id = '".$user_id."'");
 		if ($data = dbarray($result)) {
 			// check if the requested group matches a user level
-			if ($group_id == $data['user_level']) { 
+			if ($group_id == $data['user_level']) {
 				$check = true;
 			} else {
 				// if group memberships are defined, get the users own group memberships into an array
@@ -339,7 +339,7 @@ function checkusergroup($user_id, $group_id) {
 					}
 					// now that we have all groups, check for a match
 					foreach ($groups as $group) {
-						if ($group == $group_id) { 
+						if ($group == $group_id) {
 							$check = true;
 							break;
 						}
@@ -356,38 +356,48 @@ function checkusergroup($user_id, $group_id) {
 }
 
 // Compile access levels & user group array
-function getusergroups($membersonly=false,$namedarray=false) {
+function getusergroups($only_members=false, $named_keys=false) {
 	global $locale, $db_prefix;
 
+	// array to store intermediate results
 	$groups_array= array();
-	if ($namedarray) {
-		if (!$membersonly) $groups_array[$locale['user0']] = array("id" => "0", "name" => $locale['user0']);
-		$gsql = dbquery("SELECT group_id,group_name FROM ".$db_prefix."user_groups ORDER BY group_id");
+
+	$gsql = dbquery("SELECT group_id,group_name FROM ".$db_prefix."user_groups ORDER BY group_id");
+	if ($named_keys) {
+		// add the fixed internal groups
+		if (!$only_members) {
+			$groups_array[$locale['user0']] = array("id" => "0", "name" => $locale['user0']);
+			$groups_array[$locale['usera']] = array("id" => "100", "name" => $locale['usera']);
+		}
 		while ($gdata = dbarray($gsql)) {
 			$groups_array[$gdata['group_name']] = array("id" => $gdata['group_id'], "name" => $gdata['group_name']);
 		}
-		if (!$membersonly) $groups_array[$locale['usera']] = array("id" => "100", "name" => $locale['usera']);
 		$groups_array[$locale['user1']] = array("id" => "101", "name" => $locale['user1']);
 		$groups_array[$locale['user2']] = array("id" => "102", "name" => $locale['user2']);
 		$groups_array[$locale['user3']] = array("id" => "103", "name" => $locale['user3']);
 	} else {
-		if (!$membersonly) $groups_array[0] = array("0", $locale['user0']);
-		$gsql = dbquery("SELECT group_id,group_name FROM ".$db_prefix."user_groups ORDER BY group_id");
-		while ($gdata = dbarray($gsql)) {
-			$groups_array[$gdata['group_id']] = array($gdata['group_id'], $gdata['group_name']);
+	// add the fixed internal groups
+		if (!$only_members) {
+			$groups_array[$locale['user0']] = array(0 => "0", 1 => $locale['user0']);
+			$groups_array[$locale['usera']] = array(0 => "100", 1 => $locale['usera']);
 		}
-		if (!$membersonly) $groups_array[100] = array("100", $locale['usera']);
-		$groups_array[101] = array("101", $locale['user1']);
-		$groups_array[102] = array("102", $locale['user2']);
-		$groups_array[103] = array("103", $locale['user3']);
+		while ($gdata = dbarray($gsql)) {
+			$groups_array[$gdata['group_name']] = array(0 => $gdata['group_id'], 1 => $gdata['group_name']);
+		}
+		$groups_array[$locale['user1']] = array(0 => "101", 1 => $locale['user1']);
+		$groups_array[$locale['user2']] = array(0 => "102", 1 => $locale['user2']);
+		$groups_array[$locale['user3']] = array(0 => "103", 1 => $locale['user3']);
 	}
-	// sort the array numerically
+
+	// sort the array on the keys (sorts groups alphabetically on group name)
 	ksort($groups_array);
+
 	// the array returned needs a numeric index
 	$groups = array();
 	foreach($groups_array as $group) {
 		$groups[] = $group;
 	}
+
 	return $groups;
 }
 
@@ -444,23 +454,23 @@ function getaccesslevel($group) {
 
 function groupaccess($field) {
 	global $userdata;
-	
+
 	// for now, this is fixed (could be used as a parameter to reveal '255' access records
 	$hidden = false;
 
 	// access value 255 means nobody has access to it. Used to hide things from view ;-)
 	$res = ($hidden == false?"$field !='255'":"");
 
-	if (iSUPERADMIN) { 
+	if (iSUPERADMIN) {
 		$res .= ($res != ""?" AND ":"")."$field != '100'";
 		return $res;
-	} elseif ($userdata['user_level'] >= 102) { 
+	} elseif ($userdata['user_level'] >= 102) {
 		$res .= ($hidden == false?" AND ":"")."($field='0' OR $field='101' OR $field='102'";
-	} elseif (iMEMBER) { 
+	} elseif (iMEMBER) {
 		$res .= ($hidden == false?" AND ":"")."($field='0' OR $field='101'";
-	} elseif (iGUEST) { 
+	} elseif (iGUEST) {
 		$res .= ($hidden == false?" AND ":"")."($field='0' OR $field='100'"; }
-	if (iUSER_GROUPS != "") 
+	if (iUSER_GROUPS != "")
 		$res .= " OR $field='".str_replace(".", "' OR $field='", iUSER_GROUPS)."'";
 	$res .= ")";
 	return $res;
@@ -513,7 +523,7 @@ function allusersingroup($group_id) {
 	if (isset($resultcache[$group_id])) {
 		return $resultcache[$group_id];
 	}
-	
+
 	// gather the group and it's sub-groups into an array
 	$groups = array();
 	getgroupmembers($group_id);
@@ -528,7 +538,7 @@ function allusersingroup($group_id) {
 	$sql .= "ORDER BY user_level DESC, user_name";
 	$result = dbquery($sql);
 
-	// gather member information 
+	// gather member information
 	$members = array();
 	while ($data = dbarray($result)) {
 		if ($settings['forum_flags'] == 0 || empty($data['user_ip']) || $data['user_ip'] == "X" || $data['user_ip'] == "0.0.0.0") {

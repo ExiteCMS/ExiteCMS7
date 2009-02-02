@@ -49,7 +49,7 @@ if (isset($action) && $action == "delete") {
 
 if (isset($_POST['save_cat'])) {
 	$cat_name = stripinput($_POST['cat_name']);
-	$cat_access = isNum($_POST['cat_access']) ? $_POST['cat_access'] : "0";		
+	$cat_access = isNum($_POST['cat_access']) ? $_POST['cat_access'] : "0";
 	$cat_image = stripinput($_POST['cat_image']);
 	if ($cat_name != "" && $cat_image != "") {
 		if ($action == "edit") {
@@ -85,7 +85,7 @@ $result = dbquery("SELECT * FROM ".$db_prefix."news_cats ORDER BY news_cat_name"
 $variables['cats'] = array();
 while ($data = dbarray($result)) {
 	$data['image_exists'] = file_exists(PATH_IMAGES_NC.$data['news_cat_image']);
-	$data['access_group'] = getgroupname($data['news_cat_access']);
+	$data['access_group'] = getgroupname($data['news_cat_access'], -1);
 	$variables['cats'][] = $data;
 }
 
