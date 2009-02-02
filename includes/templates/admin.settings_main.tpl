@@ -113,11 +113,28 @@
 			</td>
 		</tr>
 		<tr>
+			<td align='right' width='50%' class='tbl'>
+				{$locale.415}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='theme' class='textbox'>
+					{foreach from=$theme_files item=file}
+					<option value='{$file}'{if $settings2.theme == $file} selected="selected"{/if}>{$file}</option>
+					{/foreach}
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td valign='top' align='right' width='50%' class='tbl'>
 				{$locale.413}
 			</td>
 			<td width='50%' class='tbl'>
 				<input type='text' name='opening_page' value='{$settings2.opening_page}' maxlength='100' class='textbox' style='width:200px;' />
+			</td>
+		</tr>
+		<tr>
+			<td align='center' colspan='2' class='tbl'>
+				<hr />
 			</td>
 		</tr>
 		<tr>
@@ -180,6 +197,22 @@
 		</tr>
 		<tr>
 			<td align='right' width='50%' class='tbl'>
+				{$locale.429}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='news_last_modified' class='textbox'>
+					<option value='0'{if $settings2.news_last_modified == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.news_last_modified == "1"} selected="selected"{/if}>{$locale.508}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align='center' colspan='2' class='tbl'>
+				<hr />
+			</td>
+		</tr>
+		<tr>
+			<td align='right' width='50%' class='tbl'>
 				{$locale.426}
 			</td>
 			<td width='50%' class='tbl'>
@@ -202,25 +235,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td align='right' width='50%' class='tbl'>
-				{$locale.415}
-			</td>
-			<td width='50%' class='tbl'>
-				<select name='theme' class='textbox'>
-					{foreach from=$theme_files item=file}
-					<option value='{$file}'{if $settings2.theme == $file} selected="selected"{/if}>{$file}</option>
-					{/foreach}
-				</select>
-			</td>
-		</tr>
-		<tr>
 			<td align='center' colspan='2' class='tbl'>
 				<br />
 				<input type='submit' name='savesettings' value='{$locale.750}' class='button' />
 			</td>
 		</tr>
 	</table>
-</form>	
+</form>
 {include file="_closetable.tpl"}
 <script type='text/javascript'>
 {literal}

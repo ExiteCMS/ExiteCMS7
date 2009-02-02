@@ -113,7 +113,11 @@ if (isset($_POST['save'])) {
 	$news_comments = isset($_POST['news_comments']) ? "1" : "0";
 	$news_ratings = isset($_POST['news_ratings']) ? "1" : "0";
 	if (isset($news_id)) {
-		$result = dbquery("UPDATE ".$db_prefix."news SET news_subject='$news_subject', news_cat='$news_cat', news_news='$body', news_extended='$body2', news_breaks='$news_breaks', news_datestamp='$news_post_date', news_start='$news_start_date', news_end='$news_end_date', news_visibility='$news_visibility', news_allow_comments='$news_comments', news_allow_ratings='$news_ratings' WHERE news_id='$news_id'");
+		if ($settings['news_last_modified']) {
+			$result = dbquery("UPDATE ".$db_prefix."news SET news_subject='$news_subject', news_cat='$news_cat', news_news='$body', news_extended='$body2', news_breaks='$news_breaks', news_name='".$userdata['user_id']."', news_datestamp='$news_post_date', news_start='$news_start_date', news_end='$news_end_date', news_visibility='$news_visibility', news_allow_comments='$news_comments', news_allow_ratings='$news_ratings' WHERE news_id='$news_id'");
+		} else {
+			$result = dbquery("UPDATE ".$db_prefix."news SET news_subject='$news_subject', news_cat='$news_cat', news_news='$body', news_extended='$body2', news_breaks='$news_breaks', news_datestamp='$news_post_date', news_start='$news_start_date', news_end='$news_end_date', news_visibility='$news_visibility', news_allow_comments='$news_comments', news_allow_ratings='$news_ratings' WHERE news_id='$news_id'");
+		}
 		redirect(FUSION_SELF.$aidlink."&status=su");
 	} else {
 		$result = dbquery("INSERT INTO ".$db_prefix."news (news_subject, news_cat, news_news, news_extended, news_breaks, news_name, news_locale, news_datestamp, news_start, news_end, news_visibility, news_reads, news_allow_comments, news_allow_ratings) VALUES ('$news_subject', '$news_cat', '$body', '$body2', '$news_breaks', '".$userdata['user_id']."', '$news_locale', '$news_post_date', '$news_start_date', '$news_end_date', '$news_visibility', '0', '$news_comments', '$news_ratings')");
