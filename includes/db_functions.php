@@ -38,10 +38,10 @@ function ModUserTables(&$query) {
 	$isUserQuery = false;
 
 	// only do this if there's a prefix defined
-	if (!empty($db_prefix)) {		
+	if (!empty($db_prefix)) {
 		// tables with user information
 		$usertables = array("users", "new_users", "user_groups", "bad_login", "online", "blacklist");
-	
+
 		// check if this is a query on a user table
 		foreach($usertables as $usertable) {
 			if(strpos($query, " ".$db_prefix.$usertable)) {
@@ -101,12 +101,14 @@ function dbquery($query, $display=false) {
 
 	// bail out if an error occurred and we're NOT in CLI mode!
 	if ((defined('CMS_CLI') && !CMS_CLI) && !$result) {
-		if ($display || $settings['debug_querylog']) {
+		if ($display || $_db_log) {
 			echo "<pre><br />Query: ".$query."<br />";
 			echo mysql_error();
 			echo "</pre>";
 		}
 		if ($settings['debug_php_errors'] && function_exists('debug_backtrace')) _debug(debug_backtrace());
+		error_log("MSG: ".mysql_error());
+		error_log("QRY: ".$query);
 		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
 	}
 
@@ -233,12 +235,12 @@ function dbtable_exists($tbl, $db='') {
 		if (!$db_select) return false;
 	}
 	$result = @mysql_query("SHOW TABLES");
-	while ($data = @mysql_fetch_array($result)) { 
-		$tables[] = $data[0]; 
+	while ($data = @mysql_fetch_array($result)) {
+		$tables[] = $data[0];
 	}
 	@mysql_free_result($result);
 	$db_select = @mysql_select_db($db_name );
-	
+
 	$_loadstats['queries']++;
 	$_loadstats['others']++;
 	$_e_loadtime = explode(" ", microtime());
@@ -248,10 +250,10 @@ function dbtable_exists($tbl, $db='') {
 		$_db_logs[] = array("SHOW TABLES", ($_e_loadtime - $_s_loadtime)*1000);
 	}
 
-	if (in_array($tbl, $tables)) { 
-		return true; 
-	} else { 
-		return false; 
+	if (in_array($tbl, $tables)) {
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -284,5 +286,4 @@ function showMySQLdate($date, $empty="", $error="", $format="subheaderdate") {
 	$hour=substr($date,11,2); $minute=substr($date,14,2); $second=substr($date,17,2);
 	return ucwords(showdate((isset($settings[$format])?$settings[$format]:$settings['subheaderdate']), mktime($hour,$minute,$second,$month,$day,$year)));
 }
-
 ?>
