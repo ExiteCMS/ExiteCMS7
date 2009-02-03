@@ -53,6 +53,7 @@
 		theme_advanced_toolbar_align:'center',
 		theme_advanced_path_location:'none',
 		theme_advanced_toolbar_location:'top',
+		theme_advanced_font_sizes:'8px=8px, 9px=9px, 10px=10px, 11px=11px, 12px=12px, 14px=14px, 16px=16px, 18px=18px, 24px=24px, 36px=36px, 48px=48px, 56px=56px, 72px=72px',
 		content_css:'{/literal}{$smarty.const.THEME}{literal}editor_content.css',
 		external_image_list_url:'{/literal}{$smarty.const.IMAGES}{literal}imagelist.js',
 		plugin_insertdate_dateFormat:'%d-%m-%Y',
@@ -61,12 +62,12 @@
 		extended_valid_elements:'a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]'
 		});
 	}
-	
+
 	function showtiny(EditorID) {
 		tinyMCE.removeMCEControl(tinyMCE.getEditorId(EditorID));
 		tinyMCE.addMCEControl(document.getElementById(EditorID),EditorID);
 	}
-	
+
 	function hidetiny(EditorID) {
 		tinyMCE.removeMCEControl(tinyMCE.getEditorId(EditorID));
 	}

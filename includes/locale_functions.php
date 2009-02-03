@@ -105,7 +105,7 @@ ini_set('default_charset', $settings['charset']);
 setlocale(LC_TIME, explode("|", $settings['locales']));
 
 // set the locale for tinyMCE, default to 'en' if not found
-if (file_exists(PATH_INCLUDES."jscripts/tiny_mce/langs".$settings['locale_code'].".js")) {
+if (file_exists(PATH_INCLUDES."jscripts/tiny_mce/langs/".$settings['locale_code'].".js")) {
 	$settings['tinyMCE_locale'] = $settings['locale_code'];
 } else {
 	$settings['tinyMCE_locale'] = 'en';
@@ -144,13 +144,13 @@ function locale_load($locale_name, $locale_code="") {
 
 		// if found...
 		if ($data = dbarray($result)) {
-		
+
 			// and there is data in the database...
 			if (!is_null($data['last_update'])) {
 
 				// if the locales cache does not exist or is out of date...
 				if (!file_exists($locales_file) || filemtime($locales_file) < $data['last_update']) {
-	
+
 					// get the translator information for each of the locale found
 					if (dbtable_exists($db_prefix."translators")) {
 						$translators = "ExiteCMS team,";
@@ -254,9 +254,9 @@ function locale_load($locale_name, $locale_code="") {
 			default:
 				// unknown module type
 				trigger_error("ExiteCMS locales error: unknown or invalid module type specified in ".$locale_name."!", E_USER_ERROR);
-		}		
+		}
 	}
-	
+
 	// if a locales file could be assembled...
 	if (!empty($locales_file)) {
 		if (file_exists($locales_file)) {
