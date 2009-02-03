@@ -156,7 +156,7 @@ define("PHOTOS", IMAGES."albums/");
 define("THEMES", BASEDIR."themes/");
 define("GESHI", INCLUDES."geshi-1.0.8/");
 define("FANCYUPLOAD", INCLUDES."fancyupload-2.0/");
-define("TINY_MCE", INCLUDES."jscripts/tiny_mce-3.2/");
+define("TINY_MCE", INCLUDES."jscripts/tiny_mce/");
 
 // extract server settings information
 if (isset($_SERVER['SERVER_SOFTWARE'])) {
