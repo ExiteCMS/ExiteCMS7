@@ -58,21 +58,21 @@ if (isset($_POST['update_profile'])) {
 	$error = ""; $set_avatar = "";
 	$variables['update_profile'] = true;
 
-	// store the selected locale 
+	// store the selected locale
 	$_SESSION['locale'] = stripinput($_POST['user_locale']);
 	$username = trim(eregi_replace(" +", " ", $_POST['user_name']));
 	if ($username == "" || $_POST['user_email'] == "" || $_POST['user_fullname'] == "" ) {
 		$error .= $locale['480']."<br>\n";
 	} else {
 	//	if (!preg_match("/^[-0-9A-Z_@\s]+$/i", $username)) $error .= $locale['481']."<br>\n";
-		
+
 		if ($username != $this_userdata['user_name']) {
-			$result = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_name='$username'");
+			$result = dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_name='$username' AND user_id != '".$this_userdata['user_id']."'");
 			if (dbrows($result) != 0) $error = sprintf($locale['482'],(isset($_POST['user_name']) ? $_POST['user_name'] : ""))."<br>\n";
 		}
-		
+
 		if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $_POST['user_email'])) $error .= $locale['483']."<br>\n";
-		
+
 		if ($_POST['user_email'] != $this_userdata['user_email']) {
 			$result = dbquery("SELECT user_email FROM ".$db_prefix."users WHERE user_email='".$_POST['user_email']."'");
 			if (dbrows($result) != 0) {
@@ -92,7 +92,7 @@ if (isset($_POST['update_profile'])) {
 					// found the mailserver for this email address. Check if the address exists
 					require_once PATH_INCLUDES.'class.smtp.php';
 					$mail = new SMTP();
-					if (!$mail->Connect($mailhost_ip,0,60)) {	// default SMTP port, 60sec timeout
+					if (!$mail->Connect($mailhost_ip,0,30)) {	// default SMTP port, 30sec timeout
 						// mail server doesn't respond
 						$error .= sprintf($locale['489'], $email_domain)."<br><br>\n";
 					} else {
@@ -120,7 +120,7 @@ if (isset($_POST['update_profile'])) {
 			}
 		}
 	}
-	
+
 	if ($_POST['user_newpassword'] != "") {
 		if ($_POST['user_newpassword2'] != $_POST['user_newpassword']) {
 			$error .= $locale['485']."<br>";
@@ -129,12 +129,12 @@ if (isset($_POST['update_profile'])) {
 				if (!preg_match("/^[0-9A-Z@]{6,20}$/i", $_POST['user_newpassword'])) {
 					$error .= $locale['486']."<br>\n";
 				}
-			} else {			
+			} else {
 				$error .= $locale['487']."<br>\n";
 			}
 		}
 	}
-	
+
 	$user_fullname = stripinput($_POST['user_fullname']);
 	$user_openid_url = (isset($_POST['user_openid_url']) && isURL(stripinput($_POST['user_openid_url']))) ? strtolower($openid->OpenID_Standarize(stripinput($_POST['user_openid_url']))) : "";
 	$user_hoteditor = isNum($_POST['user_hoteditor']) ? $_POST['user_hoteditor'] : "1";
@@ -159,7 +159,7 @@ if (isset($_POST['update_profile'])) {
 	$user_theme = stripinput($_POST['user_theme']);
 	$user_offset = isset($_POST['user_offset']) ? $_POST['user_offset'] : "+0";
 	$user_sig = isset($_POST['user_sig']) ? stripinput(trim($_POST['user_sig'])) : "";
-	
+
 	if ($error == "") {
 		$newavatar = isset($_FILES['user_avatar']) ? $_FILES['user_avatar'] : array('name' => "");
 		if ($this_userdata['user_avatar'] == "" && !empty($newavatar['name']) && is_uploaded_file($newavatar['tmp_name'])) {
@@ -188,7 +188,7 @@ if (isset($_POST['update_profile'])) {
 				}
 			}
 		}
-		
+
 		if (isset($_POST['del_avatar'])) {
 			$set_avatar = "user_avatar='', ";
 			// check if it exists before removing it
