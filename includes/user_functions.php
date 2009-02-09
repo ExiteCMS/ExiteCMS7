@@ -143,18 +143,20 @@ if ($cms_authentication->logged_on()) {
 // if logged in, extract info from the userdata record
 if (isset($userdata) && is_array($userdata)) {
 	// validate the account status
-	switch($userdata['user_status']) {
-		case 0: // account active
-			break;
-		case 1: // account is suspended
-			redirect(BASEDIR."setuser.php?error=1");
-			exit;
-		case 2:	// account is awaiting activation
-			redirect(BASEDIR."setuser.php?error=2");
-			exit;
-		case 3:	// account logically deleted
-			redirect(BASEDIR."setuser.php?error=3");
-			exit;
+	if (FUSION_SELF != "setuser.php") {
+		switch($userdata['user_status']) {
+			case 0: // account active
+				break;
+			case 1: // account is suspended
+				redirect(BASEDIR."setuser.php?error=1");
+				exit;
+			case 2:	// account is awaiting activation
+				redirect(BASEDIR."setuser.php?error=2");
+				exit;
+			case 3:	// account logically deleted
+				redirect(BASEDIR."setuser.php?error=3");
+				exit;
+		}
 	}
 	// extract the user datastore
 	if (!empty($userdata['user_datastore'])) {
