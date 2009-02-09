@@ -127,7 +127,7 @@ if ($cms_authentication->logged_on()) {
 	}
 	// create a dummy userdata array
 	$userdata = array();
-	$userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = ""; $userdata['user_datastore'] = array();
+	$userdata['user_status'] = 0; $userdata['user_level'] = 0; $userdata['user_rights'] = ""; $userdata['user_groups'] = ""; $userdata['user_datastore'] = array();
 	// check for a theme selection. If present, override the default theme
 	if (isset($_SESSION['set_theme']) && file_exists(PATH_THEMES.$_SESSION['set_theme']."/theme.php")) {
 		define("PATH_THEME", PATH_THEMES.$_SESSION['set_theme']."/");
