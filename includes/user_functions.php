@@ -143,10 +143,11 @@ if ($cms_authentication->logged_on()) {
 // if logged in, extract info from the userdata record
 if (isset($userdata) && is_array($userdata)) {
 	// validate the account status
-	if (FUSION_SELF != "setuser.php") {
+	if (FUSION_SELF != "setuser.php" && $userdata['user_status'] != 0) {
+		// force a user logoff
+		$cms_authentication->logoff();
+		// and present the user with the appropriate message
 		switch($userdata['user_status']) {
-			case 0: // account active
-				break;
 			case 1: // account is suspended
 				redirect(BASEDIR."setuser.php?error=1");
 				exit;
