@@ -89,13 +89,13 @@ if (isset($readmore)) {
 	// define the body panel variables
 	$template_panels[] = array('type' => 'body', 'name' => 'news-readmore', 'template' => 'main.news.readmore.tpl');
 	$template_variables['news-readmore'] = $variables;
-	
+
 	// check if we need to display comments
 	if ($data['news_allow_comments']) {
 		include PATH_INCLUDES."comments_include.php";
 		showcomments("N","news","news_id",$readmore,FUSION_SELF."?readmore=$readmore");
 	}
-	
+
 	// check if we need to display ratings
 	if ($data['news_allow_ratings']) {
 		include PATH_INCLUDES."ratings_include.php";
@@ -125,7 +125,7 @@ if (isset($readmore)) {
 				WHERE ".groupaccess('news_visibility')." AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")
 					".($fwhere==""?"":(" AND ".$fwhere))."
 				ORDER BY frontpage_headline DESC, frontpage_order, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
-			);		
+			);
 		} else {
 			$result = dbquery(
 				"SELECT nf.*, tn.*, tc.*, user_id, user_name FROM ".$db_prefix."news tn
@@ -135,7 +135,7 @@ if (isset($readmore)) {
 				WHERE ".groupaccess('news_visibility')." AND (news_start='0' OR news_start<=".time().") AND (news_end='0' OR news_end>=".time().")
 					".($nwhere==""?"":(" AND ".$nwhere))."
 				ORDER BY frontpage_headline DESC, frontpage_order, news_datestamp DESC LIMIT $rowstart,".$settings['news_items']
-			);		
+			);
 		}
 		// array to track news_id's to prevent duplicate items (wrong definition in admin/frontpage)
 		$duplicates = array();
@@ -171,7 +171,7 @@ if (isset($readmore)) {
 			$variables['news'][$i][] = $data;
 		}
 		// if not enough news items are available to fill all columns,
-		// adjust max columns 
+		// adjust max columns
 		if (!$mc && $i < $variables['_maxcols']) $variables['_maxcols'] = $i;
 		// parameters needed for page navigation
 		$variables['rows'] = $rows;
