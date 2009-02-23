@@ -26,8 +26,9 @@
  *             dropdown to include given date unless explicitly set (Monte)
  *           - 1.3.4 fix behaviour of 0000-00-00 00:00:00 dates to match that
  *             of 0000-00-00 dates (cybot, boots)
- *           - ExiteCMS - WW - fieldorder default based on the current date locale 
+ *           - ExiteCMS - WW - fieldorder default based on the current date locale
  *           - ExiteCMS - WW - workaround for platforms without nl_langinfo support
+ *           - 1.3.5 new 'allow_zero' parameter, when true, don't default to today when the date passed is zero
  * @link http://smarty.php.net/manual/en/language.function.html.select.date.php {html_select_date}
  *      (Smarty online manual)
  * @version 1.3.4
@@ -37,7 +38,7 @@
  * @param Smarty
  * @return string
  */
- 
+
 function find_date_format() {
 
 	// for *nix platforms, and PHP > 4.0.7, use nl_langinfo information
@@ -46,7 +47,7 @@ function find_date_format() {
 	}
 
 	// *** if nl_langinfo is not available, do it the hard way ;-)
-	
+
 	// find the date separator (use YMD if not found)
 	$date_separator = preg_replace('/[a-zA-Z0-9]/i', '', strftime("%x"));
 
@@ -126,6 +127,8 @@ function smarty_function_html_select_date($params, &$smarty)
     $year_as_text    = false;
     /* Display years in reverse order? Ie. 2000,1999,.... */
     $reverse_years   = false;
+    /* Allow zero timestamp values? If not, default to now */
+    $allow_zero      = false;
     /* Should the select boxes be part of an array when returned from PHP?
        e.g. setting it to "birthday", would create "birthday[Day]",
        "birthday[Month]" & "birthday[Year]". Can be combined with prefix */
@@ -189,6 +192,7 @@ function smarty_function_html_select_date($params, &$smarty)
             case 'display_years':
             case 'year_as_text':
             case 'reverse_years':
+            case 'allow_zero':
                 $$_key = (bool)$_value;
                 break;
 
@@ -210,10 +214,15 @@ function smarty_function_html_select_date($params, &$smarty)
     if (preg_match('/^(\d{0,4}-\d{0,2}-\d{0,2})/', $time, $found)) {
         $time = $found[1];
     } else {
-        // use smarty_make_timestamp to get an unix timestamp and
-        // strftime to make yyyy-mm-dd
-        $time = strftime('%Y-%m-%d', smarty_make_timestamp($time));
+		if ($allow_zero && $time == 0) {
+			$time = "0-0-0";
+		} else {
+			// use smarty_make_timestamp to get an unix timestamp and
+			// strftime to make yyyy-mm-dd
+			$time = strftime('%Y-%m-%d', smarty_make_timestamp($time));
+		}
     }
+
     // Now split this in pieces, which later can be used to set the select
     $time = explode("-", $time);
 
