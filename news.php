@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-// new svnkit debug test - part 2
+// new svnkit debug test - part 3
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
