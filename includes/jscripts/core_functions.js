@@ -20,13 +20,13 @@
 function flipBox(who) {
 	var tmp;
 	var status;
-	if (document.images['b_' + who].src.indexOf('_on') == -1) { 
+	if (document.images['b_' + who].src.indexOf('_on') == -1) {
 		tmp = document.images['b_' + who].src.replace('_off', '_on');
 		document.getElementById('box_' + who).style.display = 'none';
 	    document.getElementById('box_' + who).style.visibility = 'hidden';
 		document.images['b_' + who].src = tmp;
 		status = '1';
-	} else { 
+	} else {
 		tmp = document.images['b_' + who].src.replace('_on', '_off');
 		document.getElementById('box_' + who).style.display = 'block';
 	    document.getElementById('box_' + who).style.visibility = 'visible';
@@ -121,7 +121,7 @@ function AjaxCall(url) {
 }
 
 function addText(elname, wrap1, wrap2) {
-	if (document.selection) { // for IE 
+	if (document.selection) { // for IE
 		var str = document.selection.createRange().text;
 		document.forms['inputform'].elements[elname].focus();
 		var sel = document.selection.createRange();
@@ -150,7 +150,7 @@ function addText(elname, wrap1, wrap2) {
 }
 
 function addURL(elname) {
-	if (document.selection) { // for IE 
+	if (document.selection) { // for IE
 		var str = document.selection.createRange().text;
 		document.forms['inputform'].elements[elname].focus();
 		var sel = document.selection.createRange();
@@ -237,6 +237,19 @@ function incrementalSelect(oSelect, oEvent) {
 	} else{
 		//Not a valid character;
 	}
+}
+
+function IsNumeric(sText) {
+	var ValidChars = "0123456789.";
+	var IsNumber=true;
+	var Char;
+	for (i = 0; i < sText.length && IsNumber == true; i++) {
+		Char = sText.charAt(i);
+		if (ValidChars.indexOf(Char) == -1) {
+			IsNumber = false;
+		}
+	}
+	return IsNumber;
 }
 
 // Cookie functions
