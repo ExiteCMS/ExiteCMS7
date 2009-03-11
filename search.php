@@ -76,7 +76,7 @@ $reportvars = array();
 $reportvars['output'] = array();
 
 // variable initialisation
-if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 1;
+if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
 $variables['rowstart'] = $rowstart;
 
 $variables['rows'] = 0;

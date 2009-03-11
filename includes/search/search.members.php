@@ -22,7 +22,7 @@ if (eregi("search.members.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')
 if (isset($action)) {
 
 	if ($action == "") {
-		
+
 		// add the possible  search filters ($data is defined in the calling script!)
 		$data['search_filters' ] = "";
 
@@ -133,7 +133,6 @@ if (isset($action)) {
 				if ($rptresult) {
 					while ($rptdata = dbarray($rptresult)) {
 						$rptdata['_template'] = $data['template'];
-						$rptdata['download_description'] = parsemessage(array(), $rptdata['download_description'], true, true);
 						$reportvars['output'][] = $rptdata;
 					}
 
