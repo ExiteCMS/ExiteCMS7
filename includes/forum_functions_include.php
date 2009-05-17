@@ -147,7 +147,7 @@ function fpm_view() {
 	global $db_prefix, $locale, $userdata, $forum_id, $thread_id, $fpm_settings,
 		$variables;
 
-	if (FPM_ACCESS) {	
+	if (FPM_ACCESS) {
 		$result = dbquery("SELECT t1.*, t2.post_author, t3.user_name FROM ".$db_prefix."forum_polls t1
 			LEFT JOIN ".$db_prefix."posts t2 ON t1.post_id=t2.post_id
 			LEFT JOIN ".$db_prefix."users t3 ON t2.post_author=t3.user_id WHERE t1.thread_id='$thread_id'"
@@ -163,20 +163,20 @@ function fpm_view() {
 				if (iMEMBER) {
 					$vote_count = dbcount("(poll_id)", "forum_poll_votes", "poll_id='".$data['poll_id']."' AND user_id='".$userdata['user_id']."'");
 					$voted = $vote_count == 0 ? 0 : 1;
-				} else { 
-					$voted = $fpm_settings['guest_permissions'] == 1 ? 0 : 1; 
+				} else {
+					$voted = $fpm_settings['guest_permissions'] == 1 ? 0 : 1;
 				}
-				if ($data['poll_end'] != 0 && $data['poll_end'] <= date("U")) { 
-					$voted = 1; 
+				if ($data['poll_end'] != 0 && $data['poll_end'] <= date("U")) {
+					$voted = 1;
 				}
 				$variables['voted'] = $voted;
 				$variables['poll'] = array();
 				while($data2 = dbarray($result)) {
 					$option_votes = dbcount("(poll_id)", "forum_poll_votes", "poll_id='".$data['poll_id']."' AND vote_selection='".$data2['option_id']."'");
-					if ($total_votes == 0) { 
-						$vote_results = 0; 
-					} else { 
-						$vote_results = round($option_votes / $total_votes * 100); 
+					if ($total_votes == 0) {
+						$vote_results = 0;
+					} else {
+						$vote_results = round($option_votes / $total_votes * 100);
 					}
 					$data2['option_votes'] = $option_votes;
 					$data2['vote_results'] = $vote_results;
@@ -194,7 +194,7 @@ function fpm_view() {
 							$data2['user_votes'] = $user_votes;
 							break;
 					}
-					$variables['poll'][] = $data2;				
+					$variables['poll'][] = $data2;
 				}
 				$variables['poll_ended'] = false;
 				if($data['poll_end'] != 0 && $data['poll_end'] <= date("U")) {
@@ -269,7 +269,7 @@ function resultdialog($title, $message="", $redirect=true, $backlink=false, $tim
 	$variables['post_id'] = (isset($post_id) && isNum($post_id)) ? $post_id : false;
 
 	// define the search body panel variables
-	$template_panels[] = array('type' => 'body', 'name' => 'forum.resultdialog', 'title' => $title, 'template' => 'forum.resultdialog.tpl', 
+	$template_panels[] = array('type' => 'body', 'name' => 'forum.resultdialog', 'title' => $title, 'template' => 'forum.resultdialog.tpl',
 									'locale' => array("forum.main", "forum.post", "admin.forum_polls"));
 	$template_variables['forum.resultdialog'] = $variables;
 }
@@ -310,7 +310,7 @@ function stripmessageinput($text) {
 
 	// now strip and convert to html entities
 	$message = stripinput(str_replace("&", "&amp;", $message));
-	
+
 	// re-insert the saved url blocks
 	foreach($urlblocks as $urlblock) {
 		// find the first placeholder
@@ -606,7 +606,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 
 	// parse all ubbcode
 	$rawmsg = parseubb($rawmsg, $limit);
-	
+
 	// parse the smileys in the message
 	if ($smileys) $rawmsg = parsesmileys($rawmsg);
 
@@ -644,7 +644,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 				}
 				break;
 			case "mail":
-				$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='mailto:".($exclblock[0]==""?$exclblock[1]:$exclblock[0])."'>".$exclblock[1]."</a>", $rawmsg);
+				$rawmsg = str_replace("{@@*".$key."*@@}", "<a href='mailto:".($exclblock[0]==""?$exclblock[1]:$exclblock[0])."'>".parseubb($exclblock[1], true)."</a>", $rawmsg);
 				break;
 			default:
 				break;
@@ -657,7 +657,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 // Parse bbcode into HTML code
 function parseubb($text, $limit = false) {
 	global $settings, $locale;
-	
+
 	// horizontal line
 	$text = preg_replace('#\[hr\]#si', '<hr />', $text);
 
@@ -714,7 +714,7 @@ function parseubb($text, $limit = false) {
 
 	// wiki links
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
-		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text); 
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text);
 	}
 
 	// youtube bbcode
