@@ -714,7 +714,7 @@ function parseubb($text, $limit = false) {
 
 	// wiki links
 	if (isset($settings['wiki_forum_links'])  && $settings['wiki_forum_links']) {
-		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.BASEDIR.'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text);
+		$text = preg_replace('#\[wiki\](.*?)\[/wiki\]#si', '<a href="'.$settings['siteurl'].'modules/wiki/index.php?wakka=\1" class="wiki_link" title="'.$settings['wiki_wakka_name'].'">\1</a>', $text);
 	}
 
 	// youtube bbcode
