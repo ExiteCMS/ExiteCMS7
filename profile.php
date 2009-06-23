@@ -36,7 +36,7 @@ $variables = array();
 $variables['may_ban'] = checkrights("B") ? 1 : 0;
 $variables['show_country'] = iADMIN || $settings['forum_flags'] ? 1 : 0;
 $variables['show_email'] = iSUPERADMIN ? 1 : 0;
-$variables['show_ip'] = iSUPERADMIN || $variabeles['may_ban'] ? 1 : 0;
+$variables['show_ip'] = iSUPERADMIN || $variables['may_ban'] ? 1 : 0;
 
 // name explicitly passed instead of an user_id
 if (isset($name) && !empty($name)) {
