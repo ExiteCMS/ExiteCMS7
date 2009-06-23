@@ -73,6 +73,22 @@ if (!CMS_IS_BOT) {
 	}
 }
 
+// if we're not logged on...
+if (! $cms_authentication->logged_on() ) {
+	// did the user use HTTP basic authentication to authenticate?
+	if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+		// is it allowed to do so?
+		if ($settings['auth_ssl'] == 0 || ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on")) {
+			// authenticate using basic authentication
+			$result = auth_validate_BasicAuthentication();
+			if ($result != 0) {
+				unset($_SERVER['PHP_AUTH_USER']);
+				unset($_SERVER['PHP_AUTH_PW']);
+			}
+		}
+	}
+}
+
 // if not in the process of posting a form, did the login session expire?
 if (count($_POST)==0 && !empty($_SESSION['login_expire']) && $_SESSION['login_expire'] < time()) {
 	$cms_authentication->logoff();

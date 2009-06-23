@@ -718,28 +718,13 @@ function auth_BasicAuthentication() {
 
 function auth_validate_BasicAuthentication() {
 
-	global $db_prefix;
+	global $cms_authentication;
 
-	$user_pass = md5($_SERVER['PHP_AUTH_PW']);
-	$user_name = preg_replace(array("/\=/","/\#/","/\sOR\s/"), "", stripinput($_SERVER['PHP_AUTH_USER']));
+	$cms_authentication->logon(array('username' => stripinput($_SERVER['PHP_AUTH_USER']), 'password' => $_SERVER['PHP_AUTH_PW']));
 
-	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$user_name' AND user_password='$user_pass'");
-	if (dbrows($result) != 0) {
-		$data = dbarray($result);
-		$cookie_value = $data['user_id'].".".$data['user_password'];
-		// if the account is suspended, check for an expiry date
-		if ($data['user_status'] == 1 && $data['user_ban_expire'] > 0 && $data['user_ban_expire'] < time() ) {
-			// reset the user status and the expiry date
-			$result = dbquery("UPDATE ".$db_prefix."users SET user_status='0', user_ban_expire='0' WHERE user_id='".$data['user_id']."'");
-			$data['user_status'] = 0;
-		}
-		if ($data['user_status'] == 0) {
-			$cookie_exp = time() + 60*30;
-			header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
-			setcookie("userinfo", $cookie_value, $cookie_exp, "/", "", "0");
-			return 0;
-		}
-		return $data['user_status'];
+	if ($cms_authentication->logged_on()) {
+		$userdata = $cms_authentication->get_userinfo();
+		return $userdata['user_status'];
 	} else {
 		return -1;	// user_status == -1: not_found
 	}

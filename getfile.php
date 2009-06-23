@@ -347,12 +347,6 @@ switch ($type) {
 			terminate("<b>Unknown getfile type.</b>");
 }
 
-// check if authentication is valid. If not, reset it
-if (isset($_SERVER['PHP_AUTH_USER'])) {
-	$result = auth_validate_BasicAuthentication();
-	if ($result != 0) unset($_SERVER['PHP_AUTH_USER']);
-}
-
 // process the requested file type
 switch (strtolower($type)) {
 	case "a":	// attachments
@@ -430,18 +424,16 @@ switch (strtolower($type)) {
 		if (!is_array($data)) {
 			terminate("<b>Invalid or missing file download ID.</b>");
 		}
-		// get the file download info from session flash
-		$cats = session_get_flash("file_downloads");
-		if (isset($cats) && is_array($cats)) {
-			// define the required parameters for the download
-			$source = "file";
-			$filepath = $data['fd_path'].$cats['dir']."/";
-			$filename = $cats['file'];
-			$downloadname = $cats['file'];
+		// check for access to the file
+		if (!checkgroup($data['fd_group'])) {
+			// no access, authentication is required
+			auth_BasicAuthentication();
 		}
-		if (!isset($source)) {
-			terminate("<b>Invalid or missing file download ID.</b>");
-		}
+		// define the required parameters for the download
+		$source = "file";
+		$filepath = $data['fd_path'].$dir."/";
+		$filename = $file;
+		$downloadname = $file;
 		// load the download log include
 		require_once PATH_ROOT."modules/download_statistics/download_include.php";
 		// add the download to the statistics tables
