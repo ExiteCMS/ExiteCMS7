@@ -237,6 +237,7 @@ switch ($action) {
 		} else {
 			fallback("index.php");
 		}
+		$variables['forum'] = $fdata;
 		if (!checkgroup($fdata['forum_posting'])) fallback("index.php");
 		$forum_mods = explode(".", $fdata['forum_moderators']);
 		if (iMEMBER && (($fdata['forum_modgroup'] && checkgroup($fdata['forum_modgroup'])) || in_array($userdata['user_id'], $forum_mods))) { define("iMOD", true); } else { define("iMOD", false); }

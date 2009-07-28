@@ -50,7 +50,7 @@
 			parent_left = findPosX(obj);
 			parent_width = obj.offsetWidth;
 	//		alert(parent_left + " : " + parent_width);
-			// calculate the new width of the block, leave plenty of space to handle browser subtleties 
+			// calculate the new width of the block, leave plenty of space to handle browser subtleties
 			block_width = parent_left + parent_width - findPosX(document.getElementById("codeblock"+i+"a")) - 30;
 			// adjust the width of the code blocks
 			document.getElementById("codeblock"+i+"a").style.width = block_width + "px";
@@ -105,11 +105,20 @@
 		<tr>
 			<td height='5'></td>
 		</tr>
-	</table>		
+	</table>
 	{include file="_closetable.tpl"}
 {/if}
 {include file="_opentable.tpl" name=$_name title=$_title state=$_state style=$_style}
 <form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}?action={$action}&amp;forum_id={$forum_id}&amp;thread_id={$thread_id}&amp;post_id={$post_id}&amp;reply_id={$reply_id}' enctype='multipart/form-data'>
+	<table cellpadding='0' cellspacing='0' width='100%'>
+		<tr>
+			<td class='tbl1'>
+				<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> »
+				<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> »
+				<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
+			</td>
+		</tr>
+	</table>
 	<table cellpadding='0' cellspacing='0' width='100%' class='tbl-border'>
 		<tr>
 			<td>
@@ -128,7 +137,7 @@
 							<input type='submit' class='button' name='toggle_msg' value='{$locale.474}' onclick='javascript:flipDiv("org_message");return false;' />
 						</td>
 						<td class='tbl1'>
-							<div id='org_message' class='textbox' style='display:none'>{$org_message|stripinput|nl2br}<br /></div>
+							<div id='org_message' class='textbox' style='display:block'>{$org_message|stripinput|nl2br}<br /></div>
 							<input type='hidden' name='org_message' value='{$org_message|stripinput}' />
 						</td>
 					</tr>
@@ -208,7 +217,7 @@
 							{if $smarty.section.id.first}
 							<td class='tbl1'>
 							{/if}
-							{if $attachments[id].new} 
+							{if $attachments[id].new}
 								<input type='hidden' name='attach[{$attachments[id].key}][attach_tmp]' value='{$attachments[id].attach_tmp}' />
 								<input type='hidden' name='attach[{$attachments[id].key}][type]' value='{$attachments[id].type}' />
 								<input type='hidden' name='attach[{$attachments[id].key}][attach_size]' value='{$attachments[id].attach_size}' />
@@ -256,7 +265,7 @@
 			<tr>
 				<td height='5'></td>
 			</tr>
-		</table>		
+		</table>
 		<table cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 			<tr>
 				<td colspan='2' class='tbl2'>
