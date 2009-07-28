@@ -10,9 +10,9 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id:: article_cats.php 1936 2008-10-30 00:09:50Z WanWizard          $|
+| $Id::                                                               $|
 +----------------------------------------------------------------------+
-| Last modified by $Author:: WanWizard                                $|
-| Revision number $Rev:: 1936                                         $|
+| Last modified by $Author::                                          $|
+| Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 this is a change
