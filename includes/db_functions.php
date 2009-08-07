@@ -268,6 +268,8 @@ function dbconnect($db_host, $db_user, $db_pass, $db_name) {
 			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
 		}
 	}
+	// switch the connection to utf8
+	@mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'", $db_connect);
 	return $db_connect;
 }
 
