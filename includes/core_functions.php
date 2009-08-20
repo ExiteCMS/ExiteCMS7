@@ -49,12 +49,10 @@ unset($_loadtime);
 $_GET = xss_clean($_GET);
 
 // if register_globals is turned off, extract super globals (php 4.2.0+)
-// TODO - WANWIZARD - 20070701 - NEED TO GET RID OF THIS !!!
+// WanWizard - 20090820 - use EXTR_SKIP, we do not want to overwrite existing variables!
 if (ini_get('register_globals') != 1) {
-	if ((isset($_POST) == true) && (is_array($_POST) == true)) extract($_POST, EXTR_OVERWRITE);
-	// check for _SERVER[] hack
-	if (isset($_GET['_SERVER'])) die('hacking attempt!');
-	if ((isset($_GET) == true) && (is_array($_GET) == true)) extract($_GET, EXTR_OVERWRITE);
+	if ((isset($_POST) == true) && (is_array($_POST) == true)) extract($_POST, EXTR_SKIP);
+	if ((isset($_GET) == true) && (is_array($_GET) == true)) extract($_GET, EXTR_SKIP);
 }
 
 // store the magic quotes setting
