@@ -52,6 +52,8 @@ $_GET = xss_clean($_GET);
 // TODO - WANWIZARD - 20070701 - NEED TO GET RID OF THIS !!!
 if (ini_get('register_globals') != 1) {
 	if ((isset($_POST) == true) && (is_array($_POST) == true)) extract($_POST, EXTR_OVERWRITE);
+	// check for _SERVER[] hack
+	if (isset($_GET['_SERVER'])) die('hacking attempt!');
 	if ((isset($_GET) == true) && (is_array($_GET) == true)) extract($_GET, EXTR_OVERWRITE);
 }
 
