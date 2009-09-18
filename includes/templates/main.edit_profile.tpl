@@ -18,7 +18,7 @@
 {*                                                                         *}
 {***************************************************************************}
 {include file="_opentable.tpl" name=$_name title=$locale.440 state=$_state style=$_style}
-<form name='inputform' method='post' action='{$smarty.const.FUSION_SELF}{if $is_admin}{$aidlink}&amp;user_id={$this_userdata.user_id}{/if}' enctype='multipart/form-data'>
+<form name='edit_profile_form' method='post' action='{$smarty.const.FUSION_SELF}{if $is_admin}{$aidlink}&amp;user_id={$this_userdata.user_id}{/if}' enctype='multipart/form-data'>
 	<table align='center' cellpadding='0' cellspacing='0'>
 		{if $update_profile}
 			{if $error|default:"" == ""}
@@ -339,7 +339,7 @@ function autotimezone() {
 			break;
 		}
 	}
-}	
+}
 function ValidateForm(frm) {
 	if (frm.username.value=="") {
 		alert("{/literal}{$locale.550}{literal}");
