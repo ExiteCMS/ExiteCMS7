@@ -26,10 +26,14 @@
 	<tr>
 		<td class='tbl2'>
 			<b>
-				{if $smarty.const.iMEMBER && $comments[item].user_name != ""}
-					<a href='{$smarty.const.BASEDIR}profile.php?lookup={$comments[item].comment_name}'>{$comments[item].user_name}</a>
-				{else}
+				{if $comments[item].user_name|is_null}
 					{$comments[item].comment_name}
+				{else}
+					{if $smarty.const.iMEMBER}
+						<a href='{$smarty.const.BASEDIR}profile.php?lookup={$comments[item].comment_name}'>{$comments[item].user_name}</a>
+					{else}
+						{$comments[item].user_name}
+					{/if}
 				{/if}
 			</b>
 			<span class='small'>{$locale.041}{$comments[item].comment_datestamp|date_format:"longdate"}</span>
@@ -51,9 +55,9 @@
 {if $smarty.section.item.last}
 </table>
 {/if}
-{sectionelse}	
+{sectionelse}
 	{$locale.c101}
-{/section}	
+{/section}
 {include file="_closetable.tpl"}
 {assign var=_name value=$_name|cat:"_post"}
 {include file="_opentable.tpl" name=$_name title=$locale.c102 state=$_state style=$_style}
