@@ -498,7 +498,7 @@ function theme_cleanup() {
 	global $db_prefix, $userdata, $_db_log, $_db_logs, $template, $settings;
 
 	// update the user's datastore
-	if (iMEMBER) {
+	if (iMEMBER	&& isset($userdata['user_datastore'])) {
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysql_real_escape_string(serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
 	}
 
