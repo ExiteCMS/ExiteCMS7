@@ -2,14 +2,14 @@
 // ----------------------------------------------------------
 // locale       : Nederlands
 // locale name  : main.global
-// generated on : Tue Feb 3 2009, 12:50:27 CET
+// generated on : Fri Oct 23 2009, 21:10:00 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";
 $locale['002'] = "Geen links gedefinieerd\n";
 $locale['003'] = "Alleen voor leden";
 $locale['004'] = "Er is voor dit paneel geen inhoud gedefinieerd";
-$locale['010'] = "Gebuikers online";
+$locale['010'] = "Gebruikers online";
 $locale['011'] = "Gasten online: ";
 $locale['012'] = "Leden online: ";
 $locale['013'] = "Geen leden online";

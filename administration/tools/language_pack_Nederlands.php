@@ -1098,6 +1098,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['562'] = "Migratie strategieen";
 		$localestrings['563'] = "Van:";
 		$localestrings['564'] = "Naar:";
+		$localestrings['565'] = "Verwittig de beheerder bij activatie:";
+		$localestrings['566'] = "Stuur een bericht";
+		$localestrings['567'] = "Stuur een email";
 		$localestrings['569a'] = "?";
 		$localestrings['569b'] = "De huidige tekst van het item zal worden gekopieerd naar alle andere actieve locales.";
 		$localestrings['569c'] = "?";
@@ -1799,9 +1802,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['Portugal'] = "pt";
 		$localestrings['Puerto Rico'] = "pr";
 		$localestrings['Qatar'] = "qa";
-		$localestrings['Réunion'] = "re";
 		$localestrings['Republic Of Korea'] = "kr";
 		$localestrings['Republic Of Moldova'] = "md";
+		$localestrings['Réunion'] = "re";
 		$localestrings['Romania'] = "ro";
 		$localestrings['russia'] = "ru";
 		$localestrings['Russian Federation'] = "ru";
@@ -3389,6 +3392,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['550'] = "Voer a.u.b. een gebruikersnaam in.";
 		$localestrings['551'] = "Voer a.u.b. een wachtwoord in.";
 		$localestrings['552'] = "Voer a.u.b. een email adres in.";
+		$localestrings['553'] = "Voorkeur taal:";
 		load_localestrings($localestrings, LP_LOCALE, "main.register", $step);
 
 		$localestrings = array();
@@ -3806,7 +3810,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1233593719");
+if (!defined('LP_DATE')) define('LP_DATE', "1256324989");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

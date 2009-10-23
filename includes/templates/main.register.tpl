@@ -79,6 +79,18 @@
 		{/if}
 		<tr>
 			<td class='tbl'>
+				{$locale.553}
+			</td>
+			<td class='tbl'>
+				<select name='user_locale' class='textbox'>
+					{foreach from=$locales item=file key=code}
+					<option value='{$code}'{if $settings.locale_code == $code} selected="selected"{/if}>{$file}</option>
+					{/foreach}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl'>
 				{$locale.u006}
 			</td>
 			<td class='tbl'>

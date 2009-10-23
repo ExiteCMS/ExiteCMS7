@@ -456,6 +456,10 @@ if (isset($_POST['send_message'])) {
 
 		// process the user information retrieved
 		while ($data = dbarray($result)) {
+			// if we don't have PM options for this user, use the global one
+			if ( is_null($data['pmconfig_email_notify']) ) {
+				$data['pmconfig_email_notify'] = $global_options['pmconfig_email_notify'];
+			}
 			// make sure we don't already have this user (due to group membership)
 			if (!in_array($data['user_id'], $user_ids)) {
 			// add it to the processed user_ids list

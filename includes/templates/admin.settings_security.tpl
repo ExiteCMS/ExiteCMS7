@@ -25,7 +25,7 @@
 		{$errormessage}
 		<br /><br />
 	</div>
-{/if} 
+{/if}
 <form name='settingsform' method='post' action='{$smarty.const.FUSION_SELF}{$aidlink}'>
 	<table align='center' cellpadding='0' cellspacing='0' width='100%'>
 		<tr>
@@ -58,6 +58,18 @@
 				<select name='admin_activation' class='textbox'>
 					<option value='1'{if $settings2.admin_activation == "1"} selected="selected"{/if}>{$locale.508}</option>
 					<option value='0'{if $settings2.admin_activation == "0"} selected="selected"{/if}>{$locale.509}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align='right' width='50%' class='tbl'>
+				{$locale.565}
+			</td>
+			<td width='50%' class='tbl'>
+				<select name='notify_on_activation' class='textbox'>
+					<option value='0'{if $settings2.notify_on_activation == "0"} selected="selected"{/if}>{$locale.509}</option>
+					<option value='1'{if $settings2.notify_on_activation == "1"} selected="selected"{/if}>{$locale.566}</option>
+					<option value='2'{if $settings2.notify_on_activation == "2"} selected="selected"{/if}>{$locale.567}</option>
 				</select>
 			</td>
 		</tr>

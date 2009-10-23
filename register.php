@@ -44,10 +44,43 @@ if ($settings['enable_registration'] == 1) {
 			$data = dbarray($result);
 			$user_info = unserialize($data['user_info']);
 			$activation = $settings['admin_activation'] == "1" ? "2" : "0";
-			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_locale, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status, user_newsletters) VALUES('".$user_info['user_name']."', '".$user_info['user_fullname']."', '".md5(md5($user_info['user_password']))."', '".$user_info['user_email']."', '".$user_info['user_hide_email']."', '', '0000-00-00', '', '', '', '', '', '".$settings['locale_code']."', 'Default', '".$user_info['user_offset']."', '', '', '0', '".time()."', '".time()."', '".USER_IP."', '', '', '101', '$activation', '1')");
-			$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code='$activate'");	
+			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_locale, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status, user_newsletters) VALUES('".$user_info['user_name']."', '".$user_info['user_fullname']."', '".md5(md5($user_info['user_password']))."', '".$user_info['user_email']."', '".$user_info['user_hide_email']."', '', '0000-00-00', '', '', '', '', '', '".$user_info['user_locale']."', 'Default', '".$user_info['user_offset']."', '', '', '0', '".time()."', '".time()."', '".USER_IP."', '', '', '101', '$activation', '1')");
+			$result = dbquery("DELETE FROM ".$db_prefix."new_users WHERE user_code='$activate'");
 			if ($settings['admin_activation'] == "1") {
 				$variables['message'] = $locale['453'];
+				// send notifications out if need be
+				if ($settings['notify_on_activation']) {
+					// get the list of all administrators with user activation access
+					$admins = array();
+					$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_rights LIKE '%UA%'");
+					while ($data = dbarray($result)) {
+						$admin_rights = explode(".", $data['user_rights']);
+						if (in_array('UA', $admin_rights)) {
+							$admins[] = $data;
+						}
+					}
+					// notify these administrators
+					if ($settings['notify_on_activation'] == "1") {
+						// via PM
+						foreach ($admins as $admin) {
+							$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
+							if ($result) {
+								$pm_id = mysql_insert_id();
+								$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '".$admin['user_id']."', '0', '".$admin['user_id']."', '0')");
+							}
+						}
+					} elseif ($settings['notify_on_activation'] == "2") {
+						// via Email
+						require_once PATH_INCLUDES."sendmail_include.php";
+						foreach ($admins as $admin) {
+							sendemail($admin['user_name'], $admin['user_email'], $settings['siteusername'],
+								($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),
+								$locale['509'],
+								sprintf($locale['510'], $username)
+							);
+						}
+					}
+				}
 			} else {
 				$variables['message'] = $locale['452'];
 			}
@@ -65,21 +98,21 @@ if ($settings['enable_registration'] == 1) {
 		$fullname = eregi_replace("\"|'", "", $_POST['fullname']);
 		$email = stripinput(trim(eregi_replace(" +", "", $_POST['email'])));
 		$password1 = stripinput(trim(eregi_replace(" +", "", $_POST['password1'])));
-		
+
 		if ($username == "" || $password1 == "" || $email == "" || $fullname == "") $error .= $locale['402']."<br /><br />\n";
-		
+
 	//	if (!preg_match("/^[-0-9A-Z_@\s]+$/i", $username)) $error .= $locale['403']."<br /><br />\n";
-		
+
 		if (preg_match("/^[0-9A-Z_@!\.\?]{6,20}$/i", $password1)) {
 			if ($password1 != $_POST['password2']) $error .= $locale['404']."<br /><br />\n";
 		} else {
 			$error .= $locale['405']."<br /><br />\n";
 		}
-	 
+
 		if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $email)) {
 			$error .= $locale['406']."<br /><br />\n";
 		}
-		
+
 		$email_domain = substr(strrchr($email, "@"), 1);
 		if (CHECK_EMAIL) {
 			if (CMS_getmxrr($email_domain, $mxhosts)) {
@@ -123,17 +156,17 @@ if ($settings['enable_registration'] == 1) {
 
 		$result = dbquery("SELECT * FROM ".$db_prefix."blacklist WHERE blacklist_email='".$email."' OR blacklist_email='$email_domain'");
 		if (dbrows($result) != 0) $error .= $locale['411']."<br /><br />\n";
-		
+
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$username'");
 		if (dbrows($result) != 0) $error .= sprintf($locale['407'],(isset($_POST['username']) ? $_POST['username'] : ""))."<br /><br />\n";
-		
+
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_email='".$email."'");
 		if (dbrows($result) != 0) $error .= sprintf($locale['408'],(isset($_POST['email']) ? $_POST['email'] : ""))."<br /><br />\n";
-		
+
 		if ($settings['email_verification'] == "1") {
 			$result = dbquery("SELECT * FROM ".$db_prefix."new_users");
 			while ($new_users = dbarray($result)) {
-				$user_info = unserialize($new_users['user_info']); 
+				$user_info = unserialize($new_users['user_info']);
 				if ($new_users['user_email'] == $email) { $error .= $locale['409']."<br /><br />\n"; }
 				if ($user_info['user_name'] == $username) { $error .= $locale['407']."<br /><br />\n"; break; }
 			}
@@ -148,10 +181,11 @@ if ($settings['enable_registration'] == 1) {
 				$error .= $locale['410']."<br />\n";
 			}
 		}
-		
+
 		$user_hide_email = isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1";
 		$user_offset = isset($_POST['user_offset']) && is_numeric($_POST['user_offset']) ? $_POST['user_offset'] : "0";
-		
+		$user_locale = stripinput($_POST['user_locale']);
+
 		if ($settings['email_verification'] == "0") {
 			$user_location = isset($_POST['user_location']) ? stripinput(trim($_POST['user_location'])) : "";
 			if ($_POST['user_Month'] != 0 && $_POST['user_Day'] != 0 && $_POST['user_Year'] != 0) {
@@ -179,7 +213,7 @@ if ($settings['enable_registration'] == 1) {
 				$msg_search = array("[USERNAME]", "[SITENAME]", "[FULLNAME]", "[PASSWORD]");
 				$msg_replace = array((isset($_POST['username']) ? $_POST['username'] : ""), $settings['sitename'], (isset($_POST['fullname']) ? $_POST['fullname'] : ""), (isset($_POST['password1']) ? $_POST['password1'] : ""));
 				$msg = str_replace($msg_search, $msg_replace, $locale['450']);
-				$msg .= $settings['siteurl']."register.php?activate=".$user_code;				
+				$msg .= $settings['siteurl']."register.php?activate=".$user_code;
 				if (sendemail($username,$email,$settings['siteusername'],$settings['siteemail'],sprintf($locale['449'],$settings['sitename']), $msg)) {
 					$user_info = serialize(array(
 						"user_name" => $username,
@@ -187,6 +221,7 @@ if ($settings['enable_registration'] == 1) {
 						"user_password" => $password1,
 						"user_email" => $email,
 						"user_offset" => $user_offset,
+						"user_locale" => $user_locale,
 						"user_ip" => USER_IP,
 						"user_hide_email" => isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1"
 					));
@@ -202,14 +237,41 @@ if ($settings['enable_registration'] == 1) {
 				$template_variables['register.verify'] = $variables;
 			} else {
 				$activation = $settings['admin_activation'] == "1" ? "2" : "0";
-				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES('$username', md5(md5('".$password1."')), '".$email."', '$user_hide_email', '$user_location', '$user_birthdate', '$user_aim', '$user_icq', '$user_msn', '$user_yahoo', '$user_web', '$user_theme', '".$settings['locale']."', '$user_offset', '', '$user_sig', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation')");
+				$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES('$username', md5(md5('".$password1."')), '".$email."', '$user_hide_email', '$user_location', '$user_birthdate', '$user_aim', '$user_icq', '$user_msn', '$user_yahoo', '$user_web', '$user_theme', '$user_locale', '$user_offset', '', '$user_sig', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '$activation')");
 				if ($settings['admin_activation'] == "1") {
 					$variables['message'] = $locale['453'];
-					// send the webmaster a PM that an account needs to be activated
-					$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
-					if ($result) {
-						$pm_id = mysql_insert_id();
-						$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '1', '1', '1', '0')");
+					// send notifications out if need be
+					if ($settings['notify_on_activation']) {
+						// get the list of all administrators with user activation access
+						$admins = array();
+						$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_rights LIKE '%UA%'");
+						while ($data = dbarray($result)) {
+							$admin_rights = explode(".", $data['user_rights']);
+							if (in_array('UA', $admin_rights)) {
+								$admins[] = $data;
+							}
+						}
+						// notify these administrators
+						if ($settings['notify_on_activation'] == "1") {
+							// via PM
+							foreach ($admins as $admin) {
+								$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
+								if ($result) {
+									$pm_id = mysql_insert_id();
+									$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '".$admin['user_id']."', '0', '".$admin['user_id']."', '0')");
+								}
+							}
+						} elseif ($settings['notify_on_activation'] == "2") {
+							require_once PATH_INCLUDES."sendmail_include.php";
+							// via Email
+							foreach ($admins as $admin) {
+								sendemail($admin['user_name'], $admin['user_email'], $settings['siteusername'],
+									($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),
+									$locale['509'],
+									sprintf($locale['510'], $username)
+								);
+							}
+						}
 					}
 				} else {
 					$variables['message'] = $locale['452'];
@@ -240,6 +302,11 @@ if ($settings['enable_registration'] == 1) {
 			$securimage = new Securimage();
 			$securimage->createCode();
 			$variables['validation_code'] = $_SESSION['securimage_code_value'];
+		}
+		$variables['locales'] = array();
+		$result = dbquery("SELECT locale_code, locale_name FROM ".$db_prefix."locale WHERE locale_active = '1' ORDER BY locale_name");
+		while ($data = dbarray($result)) {
+			$variables['locales'][$data['locale_code']] = $data['locale_name'];
 		}
 		$variables['theme_files'] = $theme_files;
 		// define the body panel variables

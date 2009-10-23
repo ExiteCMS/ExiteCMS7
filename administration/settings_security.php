@@ -56,6 +56,7 @@ if (isset($_POST['savesettings'])) {
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '$login_extended_expire' WHERE cfg_name = 'login_extended_expire'");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['auth_ssl']) ? $_POST['auth_ssl'] : "0")."' WHERE cfg_name = 'auth_ssl'");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['auth_required']) ? $_POST['auth_required'] : "0")."' WHERE cfg_name = 'auth_required'");
+			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['notify_on_activation']) ? $_POST['notify_on_activation'] : "0")."' WHERE cfg_name = 'notify_on_activation'");
 		}
 	}
 }
