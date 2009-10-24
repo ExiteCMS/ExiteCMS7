@@ -63,7 +63,7 @@ if ($settings['enable_registration'] == 1) {
 					if ($settings['notify_on_activation'] == "1") {
 						// via PM
 						foreach ($admins as $admin) {
-							$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
+							$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $user_info['user_name']))."', '1', '100', '".time()."')");
 							if ($result) {
 								$pm_id = mysql_insert_id();
 								$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '".$admin['user_id']."', '0', '".$admin['user_id']."', '0')");
@@ -76,7 +76,7 @@ if ($settings['enable_registration'] == 1) {
 							sendemail($admin['user_name'], $admin['user_email'], $settings['siteusername'],
 								($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),
 								$locale['509'],
-								sprintf($locale['510'], $username)
+								sprintf($locale['510'], $user_info['user_name'])
 							);
 						}
 					}
