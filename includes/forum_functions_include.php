@@ -540,7 +540,7 @@ function parsemessage($postinfo, $msgbody = "", $smileys = true, $limit = false)
 		return "";
 	}
 	$current_message = $postinfo;
-	$rawmsg = empty($msgbody) ? $current_message['post_message'] : $msgbody;
+	$rawmsg = censorwords(empty($msgbody) ? $current_message['post_message'] : $msgbody);
 	if (isset($current_message['post_smileys'])) $smileys = $current_message['post_smileys'];
 
 	// make sure these are empty!
