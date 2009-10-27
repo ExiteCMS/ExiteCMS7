@@ -87,10 +87,10 @@ if (dbrows($result) == 0) {
 		$subject = stripinput($_POST['subject']);
 		$body = addslash($_POST['body']);
 		$body2 = addslash($_POST['body2']);
-		if ($settings['tinymce_enabled'] != 1) { 
+		if ($settings['tinymce_enabled'] != 1) {
 			$breaks = isset($_POST['line_breaks']);
-		} else { 
-			$breaks = false; 
+		} else {
+			$breaks = false;
 		}
 		$comments = isset($_POST['article_comments']) ? "1" : "0";
 		$ratings = isset($_POST['article_ratings']) ? "1" : "0";
@@ -178,12 +178,14 @@ if (dbrows($result) == 0) {
 			$action = FUSION_SELF.$aidlink;
 			$title = $locale['504'];
 		}
+
 		$variables['catlist'] = array();
 		$result = dbquery("SELECT * FROM ".$db_prefix."article_cats ".($where_cat==""?"":("WHERE ".$where_cat))." ORDER BY article_cat_name DESC");
 		while ($data = dbarray($result)) {
-			$data['selected'] = (isset($article_cat) && $article_cat == $data['article_cat_id']);
+			$data['selected'] = (isset($article_cat) && $article_cat == $data['article_cat_id']) ? 1 : 0;
 			$variables['catlist'][] = $data;
 		}
+
 		$variables['image_files'] = makefilelist(PATH_IMAGES_A, ".|..|index.php", true);
 		// assign work variables to the template
 		$variables['title'] = $title;

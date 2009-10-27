@@ -56,7 +56,7 @@
 				{$locale.511}
 				<select name='article_cat' class='textbox' style='width: 200px'>
 					{section name=id loop=$catlist}
-						<option value='{$catlist[id].article_cat_id}{if $catlist[id].selected} selected{/if}'>{$catlist[id].article_cat_name}</option>
+						<option value='{$catlist[id].article_cat_id}' {if $catlist[id].selected} selected='selected'{/if}>{$catlist[id].article_cat_name}</option>
 					{/section}
 				</select>
 			</td>

@@ -36,7 +36,7 @@ $displaytypes = array(
 	array ('bit' => 1, 'type' => $locale['451']),
 	array ('bit' => 2, 'type' => $locale['452'])
 );
-	
+
 if (isset($status)) {
 	if ($status == "su") {
 		$title = $locale['400'];
@@ -209,15 +209,17 @@ if (isset($_POST['update_admin'])) {
 	$result = dbquery("SELECT group_ident FROM ".$db_prefix."user_groups WHERE group_id = '$group_id'");
 	if ($result) {
 		$data = dbarray($result);
-		if ($data['group_ident'] != "") {
+		if (!empty($data['group_ident'])) {
 			redirect(FUSION_SELF.$aidlink."&status=dels");
 		}
-	}
-	if (dbcount("(*)", "users", "user_groups REGEXP('^\\\.{$group_id}$|\\\.{$group_id}\\\.|\\\.{$group_id}$')") != 0) {
-		redirect(FUSION_SELF.$aidlink."&status=deln");
+		if (dbcount("(*)", "users", "user_groups REGEXP('^\\\.{$group_id}$|\\\.{$group_id}\\\.|\\\.{$group_id}$')") != 0) {
+			redirect(FUSION_SELF.$aidlink."&status=deln");
+		} else {
+			$result = dbquery("DELETE FROM ".$db_prefix."user_groups WHERE group_id='$group_id'");
+			redirect(FUSION_SELF.$aidlink."&status=dely");
+		}
 	} else {
-		$result = dbquery("DELETE FROM ".$db_prefix."user_groups WHERE group_id='$group_id'");
-		redirect(FUSION_SELF.$aidlink."&status=dely");
+		fallback(FUSION_SELF.$aidlink);
 	}
 
 } else {
@@ -252,7 +254,7 @@ if (isset($_POST['update_admin'])) {
 		$form_action = FUSION_SELF.$aidlink;
 		$title = $locale['431'];
 	}
-	
+
 	$variables['action'] = $action;
 	$variables['form_action'] = $form_action;
 	$variables['group_id'] = $group_id;
@@ -266,7 +268,7 @@ if (isset($_POST['update_admin'])) {
 		$displaytypes[$idx]['visible'] = (($group_visible & $displaytype['bit'])  != 0);
 	}
 	$variables['displaytypes'] = $displaytypes;
-	
+
 	if (isset($group_id)) {
 		$variables['group1_users'] = array();
 		$variables['group2_users'] = array();
