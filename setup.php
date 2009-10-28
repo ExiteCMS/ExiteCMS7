@@ -67,11 +67,11 @@ function dbcommands($cmdarray, $db_prefix) {
 
 		// we only support command type='db' here
 		if (!isset($cmd['type']) || $cmd['type'] != "db") continue;
-		
+
 		// put the correct prefix in place and execute the command
 		$result = dbquery(str_replace('##PREFIX##', $db_prefix, $cmd['value']));
 	}
-	
+
 }
 
 /*---------------------------------------------------+
@@ -92,7 +92,7 @@ function stripinput($text) {
 function makefilelist($folder, $filter, $sort=true, $type="files") {
 
 	$res = array();
-	$filter = explode("|", $filter); 
+	$filter = explode("|", $filter);
 	if (is_dir($folder)) {
 		$temp = opendir($folder);
 		while ($file = readdir($temp)) {
@@ -336,8 +336,8 @@ switch($step) {
 		if (!is_writable(PATH_IMAGES_N)) $permissions .= PATH_IMAGES_N . "<br />";
 		if (!is_writable(PATH_ATTACHMENTS)) $permissions .= PATH_ATTACHMENTS . "<br />";
 		if ($permissions == "") {
-			$variables['write_check'] = true; 
-		} else { 
+			$variables['write_check'] = true;
+		} else {
 			$variables['write_check'] = false;
 			$error = "<b>".$locale['412']."</b><br /><br /><span style='text-align:left'>".$permissions."</span><br /><b>".$locale['413']."</b>";
 		}
@@ -396,25 +396,31 @@ switch($step) {
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$username."' WHERE cfg_name = ''siteusername");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".$localeset."' WHERE cfg_name = 'locale'");
 			$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".LP_LOCALE."' WHERE cfg_name = 'default_locale'");
- 
+
 			// create the admin rights field for the webmaster, based on all admin modules available
 			$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
 			$adminrights = "";
 			while ($data = dbarray($result)) {
 				$adminrights .= ($adminrights == "" ? "" : ".") . $data['admin_rights'];
 			}
-					
+
 			// add the webmaster to the users table
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##users (user_name, user_password, user_webmaster, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_forum_fullscreen, user_theme, user_locale, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '$password', '1', '$email', '1', '', '0000-00-00', '', '', '', '', '', '0', 'Default', '".LP_LOCALE."', '0', '', '', '0', '".time()."', '0', '0.0.0.0', '".$adminrights."', '', '103', '0')");
 			$result = dbcommands($commands, $db_prefix);
-	
+
+			// create the user groups for the blogs module
+			$commands = array();
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##user_groups (group_ident, group_name, group_groups, group_rights, group_description, group_forumname, group_visible) VALUES ('BG01', 'Blog Editors', '', '', 'Blog Editors', 'Blog Editor', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##user_groups (group_ident, group_name, group_groups, group_rights, group_description, group_forumname, group_visible) VALUES ('BG02', 'Blog Moderators', '', '', 'Blog Moderators', 'Blog Moderator', '1')");
+			$result = dbcommands($commands, $db_prefix);
+
 			// add the default private messages configuration
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##pm_config (user_id, pmconfig_save_sent, pmconfig_read_notify, pmconfig_email_notify, pmconfig_auto_archive ) VALUES ('0', '0', '1', '0', '90')");
 			$result = dbcommands($commands, $db_prefix);
-		
-			// add the default news categories 
+
+			// add the default news categories
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['540'])."', 'bugs.gif')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['541'])."', 'downloads.gif')");
@@ -432,7 +438,7 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['554'])."', 'themes.gif')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['555'])."', 'windows.gif')");
 			$result = dbcommands($commands, $db_prefix);
-	
+
 			// activate the panels of core modules
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysql_escape_string($locale['520'])."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
@@ -440,7 +446,7 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysql_escape_string($locale['526'])."', 'user_info_panel', '4', 1, 'file', '0', '0', '1')");
 			$result = dbcommands($commands, $db_prefix);
 
-			// add the default menu links 
+			// add the default menu links
 			$commands = array();
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['500'])."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['501'])."', 'article_cats.php', '0', '1', '0', '2', 'main_menu_panel')");
@@ -465,7 +471,7 @@ switch($step) {
 			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##search (search_mod_id, search_mod_core, search_name, search_title, search_fulltext, search_version, search_active, search_visibility) VALUES(0, 1, 'members', 'src515', 0, '1.0.0', 1, 0)");
 
 			// add the ExiteCMS core report options
-			
+
 			/* NOT IMPLEMENTED YET */
 
 			// add the default forum poll settings
