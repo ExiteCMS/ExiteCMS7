@@ -77,8 +77,11 @@ if ($settings['email_verification'] == '1') {
 	while ($data = dbarray($result)) {
 		$variables['newusers'][] = array_merge($data, unserialize($data['user_info']));
 	}
-} else {
-	// otherwise they are in the users tabel with a user_status of 2
+}
+
+// when using admin_activation...
+if ($settings['admin_activation'] == '1') {
+	// get the users from the users tabel with a user_status of 2
 	$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_status = '2' ORDER BY user_joined");
 	while ($data = dbarray($result)) {
 		$variables['newusers'][] = $data;

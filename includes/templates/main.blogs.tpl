@@ -161,7 +161,8 @@
 								{if $blog_id|default:0 != 0}
 									{$bloglist[id].blog_text}
 								{else}
-									{$bloglist[id].blog_text|trimhtml:500:"<div class='small' style='float:right;'><a href='blogs.php?blog_id="|cat:$bloglist[id].blog_id|cat:"' alt='"|cat:$locale.422|cat:"' title='"|cat:$locale.422|cat:"'>"|cat:$locale.042|cat:"</a>...</div>"}
+									{assign var="readmore" value="<div class='small' style='float:right;'><a href='blogs.php?blog_id="|cat:$bloglist[id].blog_id|cat:"' alt='"|cat:$locale.422|cat:"' title='"|cat:$locale.422|cat:"'>"|cat:$locale.042|cat:"</a>...</div>"}
+									{$bloglist[id].blog_text|trimhtml:500:$readmore}
 								{/if}
 							</td>
 						</tr>
@@ -193,7 +194,7 @@
 								<img src='{$smarty.const.THEME}images/bullet.gif' alt='' /> {$locale.426}
 								{if $smarty.const.iMEMBER}<a href='profile.php?lookup={$bloglist[id].blog_editor}'>{/if}
 								{$bloglist[id].edit_name}{if $smarty.const.iMEMBER}</a>{/if}
-								{$locale.421} {$bloglist[id].blog_edittime|date_format:"longdate"}								
+								{$locale.421} {$bloglist[id].blog_edittime|date_format:"longdate"}
 								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
 							</td>
 						</tr>
@@ -238,7 +239,7 @@
 						<tr>
 							<td align='center' class='infobar'>
 								{$locale.427}
-	
+
 							</td>
 						</tr>
 					</table>

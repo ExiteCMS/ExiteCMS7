@@ -22,8 +22,6 @@
  */
 function smarty_modifier_trimhtml($string, $length, $addstring = "")
 {
-	$addstring = " " . $addstring;
-
 	if (strlen($string) > $length) {
 
 		if( !empty( $string ) && $length>0 ) {
@@ -55,9 +53,9 @@ function smarty_modifier_trimhtml($string, $length, $addstring = "")
 				if( $isText ) {
 
 					// Memorize last space position
-					if( $currentChar == " " ) { 
+					if( $currentChar == " " ) {
 						$lastSpacePosition = $j;
-					} else { 
+					} else {
 						$lastChar = $currentChar;
 					}
 
@@ -130,13 +128,13 @@ function smarty_modifier_trimhtml($string, $length, $addstring = "")
 		if ( strlen($string) > $length ) {
 			return( $ret.$addstring );
 		} else {
-			return ( $res );
+			return ( $ret );
 		}
-	
+
 	} else {
-	
+
 		return ( $string );
-	
+
 	}
 }
 ?>
