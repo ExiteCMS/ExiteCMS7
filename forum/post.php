@@ -591,8 +591,9 @@ if (isset($_POST["cancel"])) {
 						// flag the forum and the thread as updated
 						$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".time()."', forum_lastuser='".$userdata['user_id']."' WHERE forum_id='$forum_id'");
 						$result = dbquery("UPDATE ".$db_prefix."threads SET thread_lastpost='".time()."', thread_lastuser='".$userdata['user_id']."'".$update_notify." WHERE thread_id='$thread_id'");
-						if ($settings['thread_notify'] && isset($_POST['notify_me']))
+						if ($settings['thread_notify'] && ($userdata['user_posts_track'] || isset($_POST['notify_me']))) {
 							$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
+						}
 						fpm_save($post_id);
 					} else {
 						// insert a new post record
@@ -637,8 +638,10 @@ if (isset($_POST["cancel"])) {
 								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '".mysql_real_escape_string($subject)."', '".mysql_real_escape_string($message)."', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc_code']."', '0', '0')");
 								$post_id = mysql_insert_id();
 								$result = dbquery("UPDATE ".$db_prefix."users SET user_posts=user_posts+1 WHERE user_id='".$userdata['user_id']."'");
-								if ($settings['thread_notify'] && isset($_POST['notify_me']))
+								if ($settings['thread_notify'] && ($userdata['user_posts_track'] || isset($_POST['notify_me']))) {
 									$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
+								}
+								if ($settings['thread_notify'] && ($userdata['user_posts_track'] || isset($_POST['notify_me'])))
 								fpm_save($post_id);
 							}
 						}

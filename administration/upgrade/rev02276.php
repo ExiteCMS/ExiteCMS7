@@ -11,14 +11,14 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id:: rev02094.php 2095 2008-12-07 00:22:46Z WanWizard              $|
+| $Id:: rev02123.php 2128 2008-12-19 13:02:47Z WanWizard              $|
 +----------------------------------------------------------------------+
 | Last modified by $Author:: WanWizard                                $|
-| Revision number $Rev:: 2095                                         $|
+| Revision number $Rev:: 2128                                         $|
 +---------------------------------------------------------------------*/
 
 // upgrade for revision
-$_revision = '2266';
+$_revision = '2276';
 
 if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
@@ -28,15 +28,15 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision,
-					'date' => mktime(19,00,0,10,23,2009),
+					'date' => mktime(11,00,0,11,1,2009),
 					'title' => "Required updates for ExiteCMS v7.2 rev.".$_revision,
-					'description' => "Added the option to notify administrators of pending user activation requests.");
+					'description' => "Added a user profile option to allow users to automatically track threads they participate in.");
 
 // array to store the commands of this update
 $commands = array();
 
 // database changes
 
-// add the notify on activation field to the configuration
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##configuration (cfg_name, cfg_value) VALUES ('notify_on_activation', '0')");
+// add the user_datastore field to the user table
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users ADD user_posts_track TINYINT(1) NOT NULL DEFAULT 0 AFTER user_posts_unread");
 ?>

@@ -202,6 +202,9 @@ if (iMEMBER && $can_post && isset($_POST['postquickreply'])) {
 						}
 						$result = dbquery("UPDATE ".$db_prefix."thread_notify SET notify_status='0' WHERE thread_id='$thread_id' AND notify_user != '".$userdata['user_id']."'");
 					}
+					if ($userdata['user_posts_track']) {
+						$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
+					}
 				}
 				redirect("post.php?action=quickreply&forum_id=$forum_id&thread_id=$thread_id&post_id=$newpost_id&errorcode=0");
 			}

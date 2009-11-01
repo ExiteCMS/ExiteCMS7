@@ -1279,8 +1279,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['414'] = "Rechten van gebruikersgroepen wijzigen";
 		$localestrings['415'] = "Groepsrechten zijn aangepast";
 		$localestrings['416'] = "Lidmaatschap wijzigen";
-		$localestrings['417'] = "Ja";
-		$localestrings['418'] = "Nee";
+		$localestrings['417'] = "Nee";
+		$localestrings['418'] = "Ja";
 		$localestrings['419'] = "Deze groep is een door het systeem aangemaakte groep, en kan niet op deze manier worden verwijderd.";
 		$localestrings['420'] = "Gebruikersgroepen";
 		$localestrings['421'] = "Wijzig";
@@ -3152,7 +3152,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['480'] = "U moet een gebruikersnaam, volledige naam en email adres opgeven.";
 		$localestrings['481'] = "De gebruikersnaam bevat niet geldige tekens.";
 		$localestrings['482'] = "De gebruikersnaam %s is in gebruik.";
-		$localestrings['483'] = "Ongelig email adres.";
+		$localestrings['483'] = "Ongeldig email adres.";
 		$localestrings['484'] = "Het email adres %s is in gebruik.";
 		$localestrings['485'] = "Nieuwe wachtwoorden zijn niet gelijk.";
 		$localestrings['486'] = "Ongeldig wachtwoord. Gebruik alleen letters en cijfers.<br>\nWachtwoord moet minimaal 6 tekens lang zijn.";
@@ -3687,7 +3687,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u033'] = "Open";
 		$localestrings['u034'] = "Gesloten";
 		$localestrings['u035'] = "Toon eigen berichten als ongelezen:";
-		$localestrings['u036'] = "";
+		$localestrings['u036'] = "Volg alle topics waaraan in bijdraag:";
 		$localestrings['u037'] = "Html";
 		$localestrings['u038'] = "Tekst";
 		$localestrings['u039'] = "Geen mailings";
@@ -3810,7 +3810,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1256324989");
+if (!defined('LP_DATE')) define('LP_DATE', "1257070561");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
