@@ -47,7 +47,7 @@
 				{$newusers[id].user_datestamp|date_format:"forumdate"}
 			</td>
 			<td class='{cycle values='tbl1,tbl2'}' style='text-align:center;width:1%;white-space:nowrap;'>
-				{if $settings.email_verification == 1}
+				{if $newusers[id].user_code}
 					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=activate&amp;user_code="|cat:$newusers[id].user_code image="page_green.gif" alt="$locale.406 title=$locale.406}&nbsp;
 					{imagelink link=$smarty.const.FUSION_SELF|cat:$aidlink|cat:"&amp;step=delete&amp;user_code="|cat:$newusers[id].user_code image="page_delete.gif" alt="$locale.407 title=$locale.407}
 				{else}

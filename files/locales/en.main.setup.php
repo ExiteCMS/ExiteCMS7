@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : Nederlands
 // locale name  : main.setup
-// generated on : Sun Nov 1 2009, 11:15:57 CET
+// generated on : Tue Nov 3 2009, 14:13:03 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Select your default locale";

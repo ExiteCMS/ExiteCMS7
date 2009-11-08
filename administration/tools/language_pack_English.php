@@ -3810,7 +3810,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1257070557");
+if (!defined('LP_DATE')) define('LP_DATE', "1257253983");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
