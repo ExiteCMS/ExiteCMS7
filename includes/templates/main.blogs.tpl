@@ -157,7 +157,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td style='width:100%;vertical-align:top;'>
+							<td style='width:100%;vertical-align:top;text-align:left;'>
 								{if $blog_id|default:0 != 0}
 									{$bloglist[id].blog_text}
 								{else}
