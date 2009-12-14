@@ -2867,6 +2867,8 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['427'] = "Blog Authors";
 		$localestrings['428'] = "Update Blog";
 		$localestrings['429'] = "Blog index";
+		$localestrings['430'] = "Previous blog entry";
+		$localestrings['431'] = "Next blog entry";
 		$localestrings['493'] = "Are you sure you want to delete this blog entry?";
 		$localestrings['494'] = "The blog entry has been succesfully deleted";
 		$localestrings['495'] = "The blog update has been succesfully saved";
@@ -3810,7 +3812,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1257253983");
+if (!defined('LP_DATE')) define('LP_DATE', "1260829082");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

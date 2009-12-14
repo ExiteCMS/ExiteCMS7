@@ -151,9 +151,25 @@
 					<table width='100%'>
 						<tr>
 							<td align='left' class='infobar'>
-								<a href='blogs.php?blog_id={$bloglist[id].blog_id}'>
-									<b>{$bloglist[id].blog_subject}</b>
-								</a>
+								<div style='float:left;width:389px;margin-right:4px;white-space:nowrap;overflow:hidden;'>
+									<a href='blogs.php?blog_id={$bloglist[id].blog_id}'>
+										<b>{$bloglist[id].blog_subject}</b>
+									</a>
+								</div>
+								<div style="float:left;">
+									{if $bloglist[id].blog_previous}
+										<a href='blogs.php?blog_id={$bloglist[id].blog_previous}'>
+											<img src='{$smarty.const.THEME}images/control_rewind.gif' title='{$locale.430}' alt='' />
+										</a>
+									{else}
+											<img src='{$smarty.const.THEME}images/blank.gif' width=16 title='' alt='' />
+									{/if}
+									{if $bloglist[id].blog_next}
+										<a href='blogs.php?blog_id={$bloglist[id].blog_next}'>
+											<img src='{$smarty.const.THEME}images/control_fastforward.gif' title='{$locale.431}' alt='' />
+										</a>
+									{/if}
+								</div>
 							</td>
 						</tr>
 						<tr>
@@ -248,7 +264,7 @@
 					<table cellpadding='0' cellspacing='1' width='100%' class='{if $author_filter}infobar{else}tbl-border{/if}'>
 						<tr>
 							<td align='left' class='{if !$author_filter}tbl2{/if}'>
-								<div style='width:100px;margin-left:-1px;white-space:nowrap;overflow:hidden;'>
+								<div style='width:120px;margin-left:-1px;white-space:nowrap;overflow:hidden;'>
 									<a href='{$smarty.const.FUSION_SELF}?author_id={$list[id].blog_author}'>
 										{$list[id].user_name} ({$list[id].count})
 									</a>
@@ -270,10 +286,12 @@
 							{section name=id2 loop=$list[id].blogs}
 							<tr>
 								<td align='left' class='tbl1'>
-									<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
-									<a href='{$smarty.const.FUSION_SELF}?author_id={$author_id}&amp;blog_id={$list[id].blogs[id2].blog_id}' title='{$list[id].blogs[id2].blog_subject}'>
-										{$list[id].blogs[id2].blog_subject|truncate:20:"...":true}
-									</a>
+									<div style='width:140px;margin-left:-1px;white-space:nowrap;overflow:hidden;'>
+										<img src='{$smarty.const.THEME}images/bullet.gif' alt='' />
+										<a href='{$smarty.const.FUSION_SELF}?author_id={$author_id}&amp;blog_id={$list[id].blogs[id2].blog_id}' title='{$list[id].blogs[id2].blog_subject}'>
+											{$list[id].blogs[id2].blog_subject}
+										</a>
+									</div>
 								</td>
 							</tr>
 							{sectionelse}

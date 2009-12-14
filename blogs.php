@@ -104,7 +104,7 @@ if (isset($_POST['save'])) {
 // check the blog_id passed
 if (!isset($blog_id) || !isNum($blog_id)) $blog_id = 0;
 $variables['blog_id'] = $blog_id;
-		
+
 // check the author_id passed
 if (!isset($author_id) || !isNum($author_id)) $author_id = 0;
 $variables['author_id'] = $author_id;
@@ -181,7 +181,7 @@ switch ($step) {
 			// update the panel title to include the author name
 			$title = sprintf($locale['401'], $data['user_name']);
 		}
-		
+
 		$variables['bloglist'] = array();
 		// if a blog_id is passed, load it. If not valid, fallback to the blog index page
 		if ($blog_id != 0) {
@@ -206,6 +206,14 @@ switch ($step) {
 			$data['blog_text'] = stripslashes($data['blog_text']);
 			// count comments for this blog entry
 			$data['comments'] = $data['blog_comments'] ? dbcount("(comment_id)", "comments", "comment_type='B' AND comment_item_id='".$data['blog_id']."'") : 0;
+			// fetch the previous blog entry
+			$result = dbarray(dbquery("SELECT blog_id FROM ".$db_prefix."blogs b
+					WHERE blog_datestamp < '".$data['blog_datestamp']."' ORDER BY blog_datestamp DESC LIMIT 1"));
+			$data['blog_previous'] = is_array($result) ? $result['blog_id'] : 0;
+			// fetch the next blog entry
+			$result = dbarray(dbquery("SELECT blog_id FROM ".$db_prefix."blogs b
+					WHERE blog_datestamp > '".$data['blog_datestamp']."' ORDER BY blog_datestamp DESC LIMIT 1"));
+			$data['blog_next'] = is_array($result) ? $result['blog_id'] : 0;
 			$variables['bloglist'][] = $data;
 		}
 		// check if we need to display comments and/or ratings
@@ -214,7 +222,7 @@ switch ($step) {
 			$show_ratings = $variables['bloglist'][0]['blog_ratings'];
 			$variables['author_id'] = $variables['bloglist'][0]['blog_author'];
 		}
-		
+
 		// retrieve the full author list
 		if ($author_id != 0) {
 			// no limit
@@ -237,7 +245,7 @@ switch ($step) {
 			}
 			$variables['list'][] = $data;
 		}
-		break;		
+		break;
 }
 
 // colors for the color dropdown

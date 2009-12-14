@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : Nederlands
 // locale name  : main.global
-// generated on : Tue Nov 3 2009, 14:13:18 CET
+// generated on : Mon Dec 14 2009, 23:18:11 CET
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";
