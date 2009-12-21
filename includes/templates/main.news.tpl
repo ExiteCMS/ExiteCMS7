@@ -33,7 +33,7 @@
 		<table width='100%' cellspacing='0' cellpadding='0'>
 			<tr>
 				<td class='infobar'>
-					<b><a name='news_{$news[column][item].news_id}' id='news_{$news[column][item].news_id}'></a>{$news[column][item].news_subject|escape}</b>
+					<b><a name='news_{$news[column][item].news_id}' id='news_{$news[column][item].news_id}'></a>{$news[column][item].news_subject}</b>
 				</td>
 			</tr>
 		</table>
