@@ -41,7 +41,7 @@
 				&nbsp;{$locale.431}
 				<select name='page_access' class='textbox' style='width:150px;'>
 				{section name=id loop=$user_groups}
-					<option value='{$user_groups[id].id}{if $user_groups[id].selected} selected{/if}'>{$user_groups[id].name}</option>
+					<option value='{$user_groups[id].id}'{if $user_groups[id].selected} selected='selected'{/if}>{$user_groups[id].name}</option>
 				{/section}
 				</select>
 			</td>
