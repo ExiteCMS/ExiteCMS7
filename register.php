@@ -94,7 +94,7 @@ if ($settings['enable_registration'] == 1) {
 	// process the new registration
 	} else if (isset($_POST['register'])) {
 		$error = "";
-		$username = stripinput(trim(eregi_replace(" +", "", $_POST['username'])));
+		$username = stripinput($_POST['username']);
 		$fullname = eregi_replace("\"|'", "", $_POST['fullname']);
 		$email = stripinput(trim(eregi_replace(" +", "", $_POST['email'])));
 		$password1 = stripinput(trim(eregi_replace(" +", "", $_POST['password1'])));
@@ -102,6 +102,7 @@ if ($settings['enable_registration'] == 1) {
 		if ($username == "" || $password1 == "" || $email == "" || $fullname == "") $error .= $locale['402']."<br /><br />\n";
 
 	//	if (!preg_match("/^[-0-9A-Z_@\s]+$/i", $username)) $error .= $locale['403']."<br /><br />\n";
+		if (strpos($username, " ") !== FALSE) $error .= $locale['403']."<br /><br />\n";
 
 		if (preg_match("/^[0-9A-Z_@!\.\?]{6,20}$/i", $password1)) {
 			if ($password1 != $_POST['password2']) $error .= $locale['404']."<br /><br />\n";
