@@ -17,7 +17,11 @@
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 // disable error reporting, we don't want to give anything away
-error_reporting(E_USER_ERROR & ~E_DEPRECATED);
+if (phpversion() < 5) {
+	error_reporting(E_USER_ERROR);
+} else {
+	error_reporting(E_USER_ERROR & ~E_DEPRECATED);
+}
 
 if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
 
