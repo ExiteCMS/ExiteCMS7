@@ -150,26 +150,10 @@
 					{/if}
 					<table width='100%'>
 						<tr>
-							<td align='left' class='infobar'>
-								<div style='float:left;width:389px;margin-right:4px;white-space:nowrap;overflow:hidden;'>
-									<a href='blogs.php?blog_id={$bloglist[id].blog_id}'>
-										<b>{$bloglist[id].blog_subject}</b>
-									</a>
-								</div>
-								<div style="float:left;">
-									{if $bloglist[id].blog_previous}
-										<a href='blogs.php?blog_id={$bloglist[id].blog_previous}'>
-											<img src='{$smarty.const.THEME}images/control_rewind.gif' title='{$locale.430}' alt='' />
-										</a>
-									{else}
-											<img src='{$smarty.const.THEME}images/blank.gif' width=16 title='' alt='' />
-									{/if}
-									{if $bloglist[id].blog_next}
-										<a href='blogs.php?blog_id={$bloglist[id].blog_next}'>
-											<img src='{$smarty.const.THEME}images/control_fastforward.gif' title='{$locale.431}' alt='' />
-										</a>
-									{/if}
-								</div>
+							<td align='left' class='infobar' style="overflow:hidden;">
+								<a href='blogs.php?blog_id={$bloglist[id].blog_id}'>
+									<b>{$bloglist[id].blog_subject}</b>
+								</a>
 							</td>
 						</tr>
 						<tr>
@@ -303,6 +287,9 @@
 			</td>
 		</tr>
 	</table>
+	{if $rows > $settings.blogs_indexsize}
+		{makepagenav start=$rowstart count=$settings.blogs_indexsize total=$rows range=$settings.navbar_range link=$pagenav_url}
+	{/if}
 {/if}
 {include file="_closetable.tpl"}
 <script type='text/javascript'>

@@ -114,6 +114,8 @@ $variables['author_filter'] = $author_id != 0;
 if (!isset($step)) $step = "";
 $variables['step'] = $step;
 
+if (!isset($rowstart) || !isNum($rowstart)) $rowstart = 0;
+
 $show_comments = false;
 $show_ratings = false;
 
@@ -168,23 +170,26 @@ switch ($step) {
 
 	default:
 
+		$variables['bloglist'] = array();
 		// if an author_id is passed, get the blog_id of the most recent blog entry for that author
 		if ($author_id != 0 && $blog_id == 0) {
-			$result = dbquery("SELECT b.blog_id, u.user_name FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE blog_author = '$author_id' AND user_id = blog_author ORDER BY blog_datestamp DESC LIMIT 1");
-			if (dbrows($result) == 0) {
-				fallback(FUSION_SELF);
-			}
-			$data = dbarray($result);
-			// store the blog_id
-			$blog_id = $data['blog_id'];
-			$variables['blog_id'] = $blog_id;
 			// update the panel title to include the author name
-			$title = sprintf($locale['401'], $data['user_name']);
-		}
-
-		$variables['bloglist'] = array();
+			$result = dbarray(dbquery("SELECT user_name FROM ".$db_prefix."users WHERE user_id = ".$author_id));
+			$title = sprintf($locale['401'], $result['user_name']);
+			// prepare the list
+			$result = dbarray(dbquery("SELECT COUNT(*) as count FROM ".$db_prefix."blogs b
+					LEFT JOIN ".$db_prefix."users u ON u.user_id = b.blog_author
+					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor
+					WHERE blog_author = '".$author_id."'"));
+			$variables['rows'] = $result['count'];
+			$variables['rowstart'] = $rowstart;
+			$result = dbquery("SELECT b.*, u.user_name, u2.user_name AS edit_name FROM ".$db_prefix."blogs b
+					LEFT JOIN ".$db_prefix."users u ON u.user_id = b.blog_author
+					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor
+					WHERE blog_author = '".$author_id."'
+					ORDER BY blog_datestamp DESC LIMIT ".$rowstart.", ".$settings['blogs_indexsize']);
 		// if a blog_id is passed, load it. If not valid, fallback to the blog index page
-		if ($blog_id != 0) {
+		} elseif ($blog_id != 0) {
 			$result = dbquery("SELECT b.*, u.user_name, u2.user_name AS edit_name FROM ".$db_prefix."blogs b
 					LEFT JOIN ".$db_prefix."users u ON u.user_id = b.blog_author
 					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor
@@ -195,25 +200,22 @@ switch ($step) {
 			// update the read counter for this blog post
 			$result2 = dbquery("UPDATE ".$db_prefix."blogs SET blog_reads = blog_reads+1 WHERE blog_id='$blog_id'");
 		} else {
-			// not blog_id passed. List the most recent blog entries
+			// not blog_id passed. prepare the list
+			$result = dbarray(dbquery("SELECT COUNT(*) as count FROM ".$db_prefix."blogs b
+					LEFT JOIN ".$db_prefix."users u ON u.user_id = b.blog_author
+					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor"));
+			$variables['rows'] = $result['count'];
+			$variables['rowstart'] = $rowstart;
 			$result = dbquery("SELECT b.*, u.user_name, u2.user_name AS edit_name FROM ".$db_prefix."blogs b
 					LEFT JOIN ".$db_prefix."users u ON u.user_id = b.blog_author
 					LEFT JOIN ".$db_prefix."users u2 ON u2.user_id = b.blog_editor
-					ORDER BY blog_datestamp DESC LIMIT ".$settings['blogs_indexsize']);
+					ORDER BY blog_datestamp DESC LIMIT ".$rowstart.", ".$settings['blogs_indexsize']);
 		}
 		while ($data = dbarray($result)) {
 			// store the blog entry(s)
 			$data['blog_text'] = stripslashes($data['blog_text']);
 			// count comments for this blog entry
 			$data['comments'] = $data['blog_comments'] ? dbcount("(comment_id)", "comments", "comment_type='B' AND comment_item_id='".$data['blog_id']."'") : 0;
-			// fetch the previous blog entry
-			$result = dbarray(dbquery("SELECT blog_id FROM ".$db_prefix."blogs b
-					WHERE blog_datestamp < '".$data['blog_datestamp']."' ORDER BY blog_datestamp DESC LIMIT 1"));
-			$data['blog_previous'] = is_array($result) ? $result['blog_id'] : 0;
-			// fetch the next blog entry
-			$result = dbarray(dbquery("SELECT blog_id FROM ".$db_prefix."blogs b
-					WHERE blog_datestamp > '".$data['blog_datestamp']."' ORDER BY blog_datestamp DESC LIMIT 1"));
-			$data['blog_next'] = is_array($result) ? $result['blog_id'] : 0;
 			$variables['bloglist'][] = $data;
 		}
 		// check if we need to display comments and/or ratings
@@ -223,18 +225,10 @@ switch ($step) {
 			$variables['author_id'] = $variables['bloglist'][0]['blog_author'];
 		}
 
-		// retrieve the full author list
-		if ($author_id != 0) {
-			// no limit
-			$bloglimit = 0;
-			// only this author
-			$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = '".$author_id."' AND b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
-		} else {
-			// use the limit defined in the admin page
-			$bloglimit = time() - $settings['blogs_indexage'] * 86400;
-			// select all authors
-			$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
-		}
+		// retrieve the full author list, use the limit defined in the admin page
+		$bloglimit = time() - $settings['blogs_indexage'] * 86400;
+		// select all authors
+		$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
 		$variables['list'] = array();
 		while ($data = dbarray($result)) {
 			$data['blogs'] = array();
