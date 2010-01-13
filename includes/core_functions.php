@@ -16,10 +16,10 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
-
 // disable error reporting, we don't want to give anything away
-error_reporting(E_USER_ERROR);
+error_reporting(E_USER_ERROR & ~E_DEPRECATED);
+
+if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
 
 // make sure we have enough memory to work with (independent of the php.ini setting)
 ini_set('memory_limit', '32M');
