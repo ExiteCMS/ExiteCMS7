@@ -3,37 +3,35 @@
 |
 |	WARNING: REMOVING THIS COPYRIGHT HEADER IS EXPRESSLY FORBIDDEN
 |
-|   Rich Text Editor Version 4.2 (June 30, 2007) Working with Safari 1.3.2 or higher
+|   Rich Text Editor Version 4.2.1 (November 16, 2009) Working with Safari 1.3.2 or higher
 |   ========================================
-|   by Khoi Hong webmaster@cgi2k.com
-|   (c) 1999 - 2007 CGI2K.COM - All right reserved 
-|   http://www.cgi2k.com 
+|   (c) 1999 - 2009 Software for Website, Inc. - All right reserved
+|   http://www.eCardMax.com
 |   ========================================
-|   Web: http://www.ecardmax.com
-|   Email: webmaster@cgi2k.com
+|   Email: webmaster@ecardmax.com
 |   Purchase Info: http://www.ecardmax.com/index.php?step=Purchase
 |   Support: http://www.ecardmax.com/index.php?step=Support
 |
-|	HotEditor homepage: http://www.ecardmax.com/index.php?step=Hoteditor 
+|	HotEditor homepage: http://www.ecardmax.com/index.php?step=Hoteditor
 |
 |
 |   > Script file name: editor.js
-|   > Script written by Khoi Hong
-|	
+|
 |	WARNING //--------------------------
 |
-|	Selling the code for this program without prior written consent is expressly forbidden. 
-|	This computer program is protected by copyright law. 
+|	Selling the code for this program without prior written consent is expressly forbidden.
+|	This computer program is protected by copyright law.
 |	Unauthorized reproduction or distribution of this program, or any portion of if,
-|	may result in severe civil and criminal penalties and will be prosecuted to 
+|	may result in severe civil and criminal penalties and will be prosecuted to
 |	the maximum extent possible under the law.
-|	
++--------------------------------------------------------------------------
+|
 |	NOTE //--------------------------
-|	
+|
 |	The ExiteCMS team decoded the original obfusicated code in order to make changes to
 |	the way some BBcodes were parsed. We didn't tamper with the copyright en credit code
 |	in any way. We hope this doesn't violate the author's wishes, as the licencing
-|   conditions of the free version aren't exactly clear. 
+|   conditions of the free version aren't exactly clear.
 |
 |	NOTE //--------------------------
 |
@@ -63,7 +61,7 @@ var show_arrow_up_down = 1;
 var vk_main = "";
 
 // Text direction can be set by the template
-if (mydirection == null) var mydirection = "ltr"; 
+if (mydirection == null) var mydirection = "ltr";
 
 // Path definitions
 var styles_folder_path = hoteditor_theme_path;
@@ -109,7 +107,7 @@ var wordart_frame_width =370;		var wordart_frame_height =340;		if (pop_Select_Wo
 var clipart_frame_width =370;		var clipart_frame_height =340;		if (pop_Select_ClipArt == null) var pop_Select_ClipArt ="Insert ClipArt to document";
 var calendar_frame_width =330;		var calendar_frame_height =350;		if (pop_Select_Calendar == null) var pop_Select_Calendar ="View Calendar / World Clock";
 var upload_frame_width =385;		var upload_frame_height =250;		if (pop_Select_Upload == null) var pop_Select_Upload ="Upload your image files";
-var vk_frame_width =520;			var vk_frame_height =250;			if (pop_Insert_VK == null) var pop_Insert_VK ="Virtual Keyboard";		
+var vk_frame_width =520;			var vk_frame_height =250;			if (pop_Insert_VK == null) var pop_Insert_VK ="Virtual Keyboard";
 var moretags_frame_width =190;		var moretags_frame_height =150;		if (pop_Insert_Moretags == null) var pop_Insert_Moretags="Insert Forum Tags";
 var symbol_frame_width =382;		var symbol_frame_height =300;		if (pop_Insert_Symbol == null) var pop_Insert_Symbol ="Insert Symbol - Special characters";
 
@@ -1756,20 +1754,21 @@ function InsertSymbol(a) {
 	if (a == "&") {
 		a = "&amp;";
 	}
-	if (isIE) {
-		c = frames[b];
+	if(isIE)
+		{
+		c=frames[b];
 		c.focus();
+		var d=c.document.selection;
+		if(d!=null)rng=d.createRange();
 		rng.collapse(false);
 		rng.pasteHTML(a);
-		rng.select();
-		var d = c.document.selection;
-		if (d != null) {
-			rng = d.createRange();
-		}
-	} else {
-		c = document.getElementById(b).contentWindow;
+		rng.select()
+	}
+	else
+		{
+		c=document.getElementById(b).contentWindow;
 		c.focus();
-		c.document.execCommand("insertHTML", false, a);
+		c.document.execCommand('insertHTML',false,a)
 	}
 }
 
