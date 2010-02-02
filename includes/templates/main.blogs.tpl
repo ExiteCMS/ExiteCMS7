@@ -188,6 +188,28 @@
 								<img src='{$smarty.const.THEME}images/bulletb.gif' alt='' />
 							</td>
 						</tr>
+						{if $blog_id|default:0 != 0 && ($previous_blog || $next_blog)}
+						<tr>
+							<td style='width:100%;'>
+								<table class="table-border" align="center" style='text-align:center;font-style:italic;'>
+									<tr>
+										<td class="tbl2">
+										{if $previous_blog}
+											<a href='blogs.php?blog_id={$previous_blog}' title=''><img src='{$smarty.const.THEME}images/control_rewind.gif' alt='{$locale.430}' title='{$locale.430}'/></a>
+										{else}
+											<img src='{$smarty.const.THEME}images/blank.gif' width='16' alt='' />
+										{/if}
+										</td>
+										{if $next_blog}
+										<td class="tbl2">
+											<a href='blogs.php?blog_id={$next_blog}' title=''><img src='{$smarty.const.THEME}images/control_fastforward.gif' alt='{$locale.431}' title='{$locale.431}'/></a>
+										{/if}
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						{/if}
 						{if $bloglist[id].blog_editor}
 						<tr>
 							<td style='width:100%;vertical-align:bottom;text-align:center;font-style:italic;' class='smallalt'>

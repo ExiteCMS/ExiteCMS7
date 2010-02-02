@@ -218,15 +218,10 @@ switch ($step) {
 			$data['comments'] = $data['blog_comments'] ? dbcount("(comment_id)", "comments", "comment_type='B' AND comment_item_id='".$data['blog_id']."'") : 0;
 			$variables['bloglist'][] = $data;
 		}
-		// check if we need to display comments and/or ratings
-		if ($blog_id != 0) {
-			$show_comments = $variables['bloglist'][0]['blog_comments'];
-			$show_ratings = $variables['bloglist'][0]['blog_ratings'];
-			$variables['author_id'] = $variables['bloglist'][0]['blog_author'];
-		}
 
 		// retrieve the full author list, use the limit defined in the admin page
 		$bloglimit = time() - $settings['blogs_indexage'] * 86400;
+
 		// select all authors
 		$result = dbquery("SELECT DISTINCT b.blog_author, u.user_name, count(*) AS count FROM ".$db_prefix."blogs b, ".$db_prefix."users u WHERE b.blog_author = u.user_id GROUP BY blog_author ORDER BY count DESC, user_name ASC");
 		$variables['list'] = array();
@@ -238,6 +233,27 @@ switch ($step) {
 				$data['blogs'][] = $data2;
 			}
 			$variables['list'][] = $data;
+		}
+
+		if ($blog_id != 0) {
+			// check if we need to display comments and/or ratings
+			$show_comments = $variables['bloglist'][0]['blog_comments'];
+			$show_ratings = $variables['bloglist'][0]['blog_ratings'];
+			$variables['author_id'] = $variables['bloglist'][0]['blog_author'];
+			// determine the previous/next pointers
+			$variables['previous_blog'] = $variables['next_blog'] = $current = 0;
+			foreach ($variables['list'][0]['blogs'] as $blogs) {
+				if ( $current ) {
+					$variables['next_blog'] = $blogs['blog_id'];
+					break;
+				} else {
+					if ($blogs['blog_id'] == $blog_id) {
+						$current = true;
+					} else {
+						$variables['previous_blog'] = $blogs['blog_id'];
+					}
+				}
+			}
 		}
 		break;
 }
