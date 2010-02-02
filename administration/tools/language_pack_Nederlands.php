@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*---------------------------------------------------------------------+
 | ExiteCMS Content Management System                                   |
 +----------------------------------------------------------------------+
@@ -3118,7 +3118,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['404'] = "Het email adres dat u hebt opgegeven kan niet worden gevonden.";
 		$localestrings['405'] = "Het email adres dat u hebt opgegeven bestaat niet.";
 		$localestrings['406'] = "Probeer a.u.b. opnieuw.";
-		$localestrings['407'] = "Please enter the email address your account is registered with below.<br /><br />\nWe will first send you a verification email. Click on the link in that email to validate your request.<br />\nWe will then email you a new password. When logged in again, choose 'Edit Profile' to change your password.";
+		$localestrings['407'] = "Geef het email adres in dat u hebt gebruikt om uw gebruikersnaam te registeren.<br /><br /> Wij zullen u eerst een verificatie email sturen. Klik op de link in die email om uw verzoek tot wijziging te valideren. Wij zullen u daarna een nieuw willekeurig wachtwoord emailen.<br /><br />Zodra u daarmee bent aangemeld, kunt u voor 'Profiel wijzigen' kiezen om een nieuw wachtwoord van uw keuze in te geven.";
 		$localestrings['408'] = "Send me a new password";
 		$localestrings['409'] = "Nieuw wachtwoord voor ";
 		$localestrings['410'] = "Hallo [USERNAME],\n\nU of iemand anders heeft een nieuw wachtwoord aangevraagd voor toegang tot [SITENAME].\n\nOm het wachtwoord aan te passen, klik op deze link:\n\n[NEW_PASS_LINK]\n\nMet vriendelijke groeten,\n[SITEUSERNAME]";
@@ -3788,7 +3788,7 @@ if (!defined('CMS_SETUP')) require_once dirname(__FILE__)."/../../includes/core_
 if (!function_exists('load_localestrings')) {
 	function load_localestrings($localestrings, $locales_code, $locales_name, $step="") {
 		global $db_prefix, $_db_log;
-	
+
 		// if this is an upgrade, remove the old locale strings first
 		if ($step == "upgrade") {
 			$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_code = '$locales_code' AND locales_name = '$locales_name'");
@@ -3831,7 +3831,7 @@ if (!defined('LP_SKIP_MAIN')) {
 		// load the locale for this module
 		locale_load("admin.main");
 	}
-	
+
 	if (defined('CMS_SETUP') && !defined('CMS_SETUP_LOAD')) {
 		// skip if in setup and no load request was given
 		$step = "skip";
@@ -3842,16 +3842,16 @@ if (!defined('LP_SKIP_MAIN')) {
 		//else load the theme functions for interactive mode
 		require_once PATH_INCLUDES."theme_functions.php";
 	}
-	
+
 	// used to store template variables
 	$variables = array();
-	
+
 	// message variable
 	$variables['message'] = "";
-	
+
 	// make sure step has a value
 	if (!isset($step)) $step = "";
-	
+
 	// de-install the language pack
 	if ($step == "remove") {
 		// check if the locale exists
@@ -3871,7 +3871,7 @@ if (!defined('LP_SKIP_MAIN')) {
 			}
 		}
 	}
-	
+
 	// install the language pack
 	if ($step == "install" || $step == "upgrade") {
 		if ($step == "install" || defined('CMS_SETUP_LOAD')) {
@@ -3895,36 +3895,36 @@ if (!defined('LP_SKIP_MAIN')) {
 			}
 		}
 	}
-	
+
 	if (defined('CMS_SETUP')) {
-	
+
 		// no output at all in setup mode
-		
+
 	} elseif (CMS_CLI) {
-	
+
 		// output in CLI mode
 		echo "Language pack installed.\n";
-		
+
 	} else {
-	
+
 		// interactive mode
 		require_once PATH_INCLUDES."theme_functions.php";
-	
+
 		// countries for which this language pack applies
 		$variables['flags'] = explode("|", LP_COUNTRIES);
 
 		// check the last update of the locale
 		$variables['last_update'] = isset($settings['LanguagePack.'.LP_LANGUAGE]) ? $settings['LanguagePack.'.LP_LANGUAGE] : min(LP_DATE - 1, dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'"));
-		
+
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;
 		$variables['can_remove'] = LP_LOCALE != $settings['default_locale'] && $variables['can_install'] == false;
 		$variables['can_upgrade'] = $variables['can_install'] == false && $variables['last_update'] < LP_DATE;
-	
+
 		// define the body panel variables
 		$template_panels[] = array('type' => 'body', 'name' => 'admin.tools.languagepack', 'title' => "ExiteCMS Language Packs", 'template' => 'admin.tools.languagepack.tpl', 'locale' => "admin.main");
 		$template_variables['admin.tools.languagepack'] = $variables;
-		
+
 		// Call the theme code to generate the output for this webpage
 		require_once PATH_THEME."/theme.php";
 	}
