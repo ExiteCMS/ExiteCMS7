@@ -420,8 +420,12 @@ if ($rows != 0) {
 					if (!$tdata['thread_locked']) {
 						// check if this is the users own post
 						if ($userdata['user_id'] == $data['post_author']) {
-							// check if the edit time is not expired
-							if ($settings['forum_edit_timeout'] == 0 || ($data['post_datestamp'] + $settings['forum_edit_timeout'] * 3600) > time()) {
+							// check if an edit time expiry is defined
+							if ($settings['forum_edit_timeout'] == 0) {
+								$data['user_can_edit'] = true;
+							} elseif ($settings['forum_edit_timeout_on_post'] == 1 && ($data['post_datestamp'] + $settings['forum_edit_timeout'] * 3600) > time()) {
+								$data['user_can_edit'] = true;
+							} elseif ($settings['forum_edit_timeout_on_post'] == 0 && ($last_post_datestamp + $settings['forum_edit_timeout'] * 3600) > time()) {
 								$data['user_can_edit'] = true;
 							}
 						}

@@ -1101,6 +1101,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['565'] = "Notify admins of pending activation:";
 		$localestrings['566'] = "Send a message";
 		$localestrings['567'] = "Send an email";
+		$localestrings['568'] = "after:";
+		$localestrings['568a'] = "Last modification";
+		$localestrings['568b'] = "Initial post";
 		$localestrings['569a'] = "?";
 		$localestrings['569b'] = "The current text for the selected item will be copied to all active locales.";
 		$localestrings['569c'] = "?";
@@ -3812,7 +3815,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1260829082");
+if (!defined('LP_DATE')) define('LP_DATE', "1265129785");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

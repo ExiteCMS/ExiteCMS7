@@ -42,6 +42,7 @@ if (isset($_POST['savesettings'])) {
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['thread_notify']) ? $_POST['thread_notify'] : "0")."' WHERE cfg_name = 'thread_notify'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['unread_threshold']) ? $_POST['unread_threshold'] : "0")."' WHERE cfg_name = 'unread_threshold'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_edit_timeout']) ? $_POST['forum_edit_timeout'] : "0")."' WHERE cfg_name = 'forum_edit_timeout'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_edit_timeout_on_post']) ? $_POST['forum_edit_timeout_on_post'] : "1")."' WHERE cfg_name = 'forum_edit_timeout_on_post'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_guest_limit']) ? $_POST['forum_guest_limit'] : "0")."' WHERE cfg_name = 'forum_guest_limit'");
 	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".(isNum($_POST['forum_user_status']) ? $_POST['forum_user_status'] : "0")."' WHERE cfg_name = 'forum_user_status'");
 }

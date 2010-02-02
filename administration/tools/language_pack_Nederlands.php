@@ -1071,7 +1071,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['531'] = "Minuten";
 		$localestrings['532'] = "Fout: De sessie mag niet verlopen voor de verlengde login periode!";
 		$localestrings['533'] = "Fout: De verlengde login periode moet groter zijn dat de gewone login periode!";
-		$localestrings['534'] = "Berichten aanpassen onmogelijk na:";
+		$localestrings['534'] = "Berichten aanpassen onmogelijk:";
 		$localestrings['535'] = "Uur";
 		$localestrings['536'] = "Uren";
 		$localestrings['537'] = "Authenticatie methode:";
@@ -1101,6 +1101,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['565'] = "Verwittig de beheerder bij activatie:";
 		$localestrings['566'] = "Stuur een bericht";
 		$localestrings['567'] = "Stuur een email";
+		$localestrings['568'] = "na:";
+		$localestrings['568a'] = "Laatste wijziging";
+		$localestrings['568b'] = "Initiele post";
 		$localestrings['569a'] = "?";
 		$localestrings['569b'] = "De huidige tekst van het item zal worden gekopieerd naar alle andere actieve locales.";
 		$localestrings['569c'] = "?";
@@ -3812,7 +3815,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1260829087");
+if (!defined('LP_DATE')) define('LP_DATE', "1265129788");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
