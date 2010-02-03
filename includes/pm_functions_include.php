@@ -76,10 +76,11 @@ function deletemessage($msg_id, $user_id) {
 +----------------------------------------------------*/
 function storemessage($message, $old_pm_id, $from_cms = false) {
 
-	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $totals, $random_id;
+	global $db_prefix, $settings, $userdata, $locale, $action, $attachments, $global_options, $totals;
 
 	// check for double posting, generate an error if it is
-	if (isset($_SESSION['pm'][$random_id])) {
+	$random_id = isset($_POST['random_id']) ? $_POST['random_id'] : false;
+	if ($random_id === false || isset($_SESSION['pm'][$random_id])) {
 		return $locale['641'];
 	}
 
