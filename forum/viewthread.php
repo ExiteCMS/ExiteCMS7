@@ -425,7 +425,7 @@ if ($rows != 0) {
 								$data['user_can_edit'] = true;
 							} elseif ($settings['forum_edit_timeout_on_post'] == 1 && ($data['post_datestamp'] + $settings['forum_edit_timeout'] * 3600) > time()) {
 								$data['user_can_edit'] = true;
-							} elseif ($settings['forum_edit_timeout_on_post'] == 0 && ($last_post_datestamp + $settings['forum_edit_timeout'] * 3600) > time()) {
+							} elseif ($settings['forum_edit_timeout_on_post'] == 0 && ($data['post_edittime'] + $settings['forum_edit_timeout'] * 3600) > time()) {
 								$data['user_can_edit'] = true;
 							}
 						}
