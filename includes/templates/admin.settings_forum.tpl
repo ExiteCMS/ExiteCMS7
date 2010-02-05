@@ -124,8 +124,8 @@
 			</td>
 			<td width='40%' class='tbl'>
 				<select name='forum_edit_timeout_on_post' class='textbox'>
-					<option value='1' {if $settings2.forum_edit_timeout_on_post == 1}selected='selected'{/if}>{$locale.568a}</option>
-					<option value='0' {if $settings2.forum_edit_timeout_on_post == 0}selected='selected'{/if}>{$locale.568b}</option>
+					<option value='0' {if $settings2.forum_edit_timeout_on_post == 0}selected='selected'{/if}>{$locale.568a}</option>
+					<option value='1' {if $settings2.forum_edit_timeout_on_post == 1}selected='selected'{/if}>{$locale.568b}</option>
 				</select>
 			</td>
 		</tr>
