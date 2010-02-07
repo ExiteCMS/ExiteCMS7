@@ -57,38 +57,8 @@ function latestimage() {
 	}
 };
 
-/* for Mozilla/Opera9 */
-if (document.addEventListener) {
-	document.addEventListener("DOMContentLoaded", latestimage, false);
-}
-
-/* for Internet Explorer */
-/*@cc_on @*/
-/*@if (@_win32)
-	document.write("<script id=__ie_onload_latestimage defer src=javascript:void(0)><\/script>");
-	var script = document.getElementById("__ie_onload_latestimage");
-	script.onreadystatechange = function() {
-		if (this.readyState == "complete") {
-			latestimage(); // call the onload handler
-		}
-	};
-/*@end @*/
-
-/* for Safari and Konqueror */
-if (/KHTML|WebKit/i.test(navigator.userAgent)) { // sniff
-	var _timer = setInterval(function() {
-		if (/loaded|complete/.test(document.readyState)) {
-			latestimage(); // call the onload handler
-		}
-	}, 10);
-}
-
-/* other alternatives */
-if (window.attachEvent) {
-	window.attachEvent('onload', latestimage);
-} else if (window.addEventListener) {
-	window.addEventListener('load', latestimage, false);
-}
+// add an onload event
+addOnloadEvent( latestimage );
 {/literal}
 </script>
 {***************************************************************************}

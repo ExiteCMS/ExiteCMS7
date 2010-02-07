@@ -52,6 +52,23 @@
 {literal}
 <script type='text/javascript'></script>
 <script type='text/javascript'>
+	function fixbase64img(img) {
+		// check the image source
+		if (/^data:.*;base64/i.test(img.src)) {
+			// pass the data to the PHP routine
+			img.src = "{/literal}{$smarty.const.BASEDIR}{literal}/includes/base64img.php?" + img.src.slice(5);
+		}
+	};
+
+	// fix images on page load
+	addOnloadEvent( function() {
+			for (var i = 0; i < document.images.length; i++) {
+				fixbase64img(document.images[i]);
+			}
+		}
+	);
+</script>
+<script type='text/javascript'>
 /* <![CDATA[ */
 // assume standard window dimensions
 var myWidth = 1024, myHeight = 768;
@@ -90,13 +107,13 @@ function fontGroter(aantal) {
 	fontGrootte = Math.round(fontGrootte*100)/100;
 	document.body.style.fontSize = fontGrootte + 'em';
 	createCookie('pliFontSize',fontGrootte,365);
-}		
+}
 
 function fontReset(aantal) {
 	fontGrootte = Math.round(aantal*100)/100;
 	document.body.style.fontSize = fontGrootte + 'em';
 	createCookie('pliFontSize',fontGrootte,365);
-}		
+}
 
 fontReset(fontGrootte);
 

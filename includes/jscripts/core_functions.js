@@ -16,6 +16,32 @@
 | Revision number $Rev:: 1936                                         $|
 +---------------------------------------------------------------------*/
 
+// generic function loader
+
+function addOnloadEvent(fnc) {
+	if ( typeof window.addEventListener != "undefined" ) {
+		window.addEventListener( "load", fnc, false );
+	} else if ( typeof window.attachEvent != "undefined" ) {
+		window.attachEvent( "onload", fnc );
+	} else if (/KHTML|WebKit/i.test(navigator.userAgent)) {
+		var _timer = setInterval(function() {
+			if (/loaded|complete/.test(document.readyState)) {
+				fnc;
+			}
+		}, 10);
+	} else {
+		if ( window.onload != null ) {
+			var oldOnload = window.onload;
+			window.onload = function ( e ) {
+				oldOnload( e );
+				window[fnc]();
+			};
+		} else {
+			window.onload = fnc;
+		}
+	}
+}
+
 // Flipbox written by CrappoMan, simonpatterson@dsl.pipex.com
 function flipBox(who) {
 	var tmp;
