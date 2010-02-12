@@ -259,7 +259,7 @@ if (!CMS_IS_BOT) {
 		}
 	} else {
 		// update the last users online information for members
-		$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='".$userdata['user_id']."'");
+		$result = dbquery("SELECT * FROM ".$db_prefix."online WHERE online_user='".$userdata['user_id']."'AND online_ip='".USER_IP."'");
 		if (dbrows($result) != 0) {
 			$result = dbquery("UPDATE ".$db_prefix."online SET online_lastactive='".time()."' WHERE online_user='".$userdata['user_id']."' AND online_ip='".USER_IP."'");
 		} else {

@@ -30,14 +30,14 @@
 	<meta name='keywords' content='{$settings.keywords}' />
 	<meta name="verify-v1" content="Ek6JHBkP+IbfHNOB0DaMHmxpC9eAljv3JCcWmUpcF+U=" />
 	{if $headparms|default:false != false}{$headparms}{/if}
-	<link href="{$smarty.const.THEME}exitecms__0001.css" rel="stylesheet" type="text/css" />
+	<link href="{$smarty.const.THEME}exitecms.css?version=3" rel="stylesheet" type="text/css" />
 	{literal}
 	<style type="text/css">
 		.body-maint { margin: 5px 5px 5px 5px; color:#000; background-color:{/literal}{$settings.maintenance_color}{literal}; }
 	</style>
 	{/literal}
 	{if $favicon|default:false != false}<link rel='shortcut icon' href='{$favicon}' />{/if}
-	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions__0001.js'></script>
+	<script type='text/javascript' src='{$smarty.const.INCLUDES}jscripts/core_functions.js?version=3'></script>
 	{if $smarty.const.LOAD_TINYMCE}
 		{include file="_load_tinymce.tpl"}
 	{/if}
