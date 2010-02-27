@@ -243,6 +243,37 @@ switch ($action) {
 		if (iMEMBER && (($fdata['forum_modgroup'] && checkgroup($fdata['forum_modgroup'])) || in_array($userdata['user_id'], $forum_mods))) { define("iMOD", true); } else { define("iMOD", false); }
 }
 
+// check if the user can edit this post. Assume the user can't
+$user_can_edit = false;
+if (iMEMBER) {
+	// webmasters and forum moderators may always edit
+	if (iSUPERADMIN || iMOD) {
+		$user_can_edit = true;
+	} elseif ($action == "newthread") {
+		$user_can_edit = true;
+	} else {
+		// check if this is not a system post
+		if ($pdata['post_author'] != 0) {
+			// check if the thread is not locked
+			if (!$tdata['thread_locked']) {
+				// check if this is the users own post
+				if ($userdata['user_id'] == $pdata['post_author']) {
+					if ($settings['forum_edit_timeout'] == 0) {
+						// no edit timeout specified? User can edit the post
+						$user_can_edit = true;
+					} elseif ($settings['forum_edit_timeout_on_post'] == 0 && (max($pdata['post_datestamp'], $pdata['post_edittime']) + $settings['forum_edit_timeout'] * 3600) > time()) {
+						// timeout is within the last edit date (or post date)
+						$user_can_edit = true;
+					} elseif ($settings['forum_edit_timeout_on_post'] == 1 && ($pdata['post_datestamp'] + $settings['forum_edit_timeout'] * 3600) > time()) {
+						// timeout is within the post date
+						$user_can_edit = true;
+					}
+				}
+			}
+		}
+	}
+}
+
 // forum poll initialisation
 $fpm = array();
 $fpm_data = array();
@@ -539,8 +570,11 @@ if (isset($_POST['preview'])) {
 	if (isset($title)) unset($title);
 }
 
-// post cancelled?
-if (isset($_POST["cancel"])) {
+// bail out if no edit rights have been detected
+if (!$user_can_edit) {
+	resultdialog($locale['408'], $locale['502']);
+} elseif (isset($_POST["cancel"])) {
+	// post cancelled?
 	resultdialog($locale['418'], $locale['439']);
 } elseif (isset($_POST['save'])) {
 	// save the changes

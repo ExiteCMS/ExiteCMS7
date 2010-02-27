@@ -2587,6 +2587,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['488'] = " Remove uploaded attachment:";
 		$localestrings['500'] = "You cannot edit this post.";
 		$localestrings['501'] = "You cannot move a post that has a poll attached to it.";
+		$localestrings['502'] = "You cannot edit this post. The thread has been locked by a moderator";
 		$localestrings['530'] = "Search Forum";
 		$localestrings['531'] = "Search Keyword(s)";
 		$localestrings['532'] = "Search";
@@ -3815,7 +3816,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1265129785");
+if (!defined('LP_DATE')) define('LP_DATE', "1267279436");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

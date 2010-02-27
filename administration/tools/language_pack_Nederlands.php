@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*---------------------------------------------------------------------+
 | ExiteCMS Content Management System                                   |
 +----------------------------------------------------------------------+
@@ -2587,6 +2587,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['488'] = " Verwijder geuploade bijlage:";
 		$localestrings['500'] = "U kunt dit bericht niet wijzigen.";
 		$localestrings['501'] = "U kunt geen bericht verplaatsen waaraan een poll is gekoppeld.";
+		$localestrings['502'] = "U kunt dit bericht niet wijzigen. Deze topic is gesloten door een moderator.";
 		$localestrings['530'] = "Zoeken";
 		$localestrings['531'] = "Zoekwoord(en)";
 		$localestrings['532'] = "Zoeken";
@@ -3788,7 +3789,7 @@ if (!defined('CMS_SETUP')) require_once dirname(__FILE__)."/../../includes/core_
 if (!function_exists('load_localestrings')) {
 	function load_localestrings($localestrings, $locales_code, $locales_name, $step="") {
 		global $db_prefix, $_db_log;
-
+	
 		// if this is an upgrade, remove the old locale strings first
 		if ($step == "upgrade") {
 			$result = dbquery("DELETE FROM ".$db_prefix."locales WHERE locales_code = '$locales_code' AND locales_name = '$locales_name'");
@@ -3815,7 +3816,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1265129788");
+if (!defined('LP_DATE')) define('LP_DATE', "1267279439");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
@@ -3831,7 +3832,7 @@ if (!defined('LP_SKIP_MAIN')) {
 		// load the locale for this module
 		locale_load("admin.main");
 	}
-
+	
 	if (defined('CMS_SETUP') && !defined('CMS_SETUP_LOAD')) {
 		// skip if in setup and no load request was given
 		$step = "skip";
@@ -3842,16 +3843,16 @@ if (!defined('LP_SKIP_MAIN')) {
 		//else load the theme functions for interactive mode
 		require_once PATH_INCLUDES."theme_functions.php";
 	}
-
+	
 	// used to store template variables
 	$variables = array();
-
+	
 	// message variable
 	$variables['message'] = "";
-
+	
 	// make sure step has a value
 	if (!isset($step)) $step = "";
-
+	
 	// de-install the language pack
 	if ($step == "remove") {
 		// check if the locale exists
@@ -3871,7 +3872,7 @@ if (!defined('LP_SKIP_MAIN')) {
 			}
 		}
 	}
-
+	
 	// install the language pack
 	if ($step == "install" || $step == "upgrade") {
 		if ($step == "install" || defined('CMS_SETUP_LOAD')) {
@@ -3895,36 +3896,36 @@ if (!defined('LP_SKIP_MAIN')) {
 			}
 		}
 	}
-
+	
 	if (defined('CMS_SETUP')) {
-
+	
 		// no output at all in setup mode
-
+		
 	} elseif (CMS_CLI) {
-
+	
 		// output in CLI mode
 		echo "Language pack installed.\n";
-
+		
 	} else {
-
+	
 		// interactive mode
 		require_once PATH_INCLUDES."theme_functions.php";
-
+	
 		// countries for which this language pack applies
 		$variables['flags'] = explode("|", LP_COUNTRIES);
 
 		// check the last update of the locale
 		$variables['last_update'] = isset($settings['LanguagePack.'.LP_LANGUAGE]) ? $settings['LanguagePack.'.LP_LANGUAGE] : min(LP_DATE - 1, dbfunction("MAX(locales_datestamp)", "locales", "locales_code = '".LP_LOCALE."' AND locales_name NOT LIKE 'modules%'"));
-
+		
 		// check if this language pack has been installed
 		$variables['can_install'] = dbcount("(*)", "locale", "locale_code = '".LP_LOCALE."'") == 0;
 		$variables['can_remove'] = LP_LOCALE != $settings['default_locale'] && $variables['can_install'] == false;
 		$variables['can_upgrade'] = $variables['can_install'] == false && $variables['last_update'] < LP_DATE;
-
+	
 		// define the body panel variables
 		$template_panels[] = array('type' => 'body', 'name' => 'admin.tools.languagepack', 'title' => "ExiteCMS Language Packs", 'template' => 'admin.tools.languagepack.tpl', 'locale' => "admin.main");
 		$template_variables['admin.tools.languagepack'] = $variables;
-
+		
 		// Call the theme code to generate the output for this webpage
 		require_once PATH_THEME."/theme.php";
 	}
