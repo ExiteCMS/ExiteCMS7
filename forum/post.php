@@ -260,7 +260,10 @@ if ($action == "edit") {
 				if (!$tdata['thread_locked']) {
 					// check if this is the users own post
 					if ($userdata['user_id'] == $pdata['post_author']) {
-						if ($settings['forum_edit_timeout'] == 0) {
+						if ($data['post_sticky'] == 1) {
+							// no edit timeout for sticky posts
+							$user_can_edit = true;
+						} elseif ($settings['forum_edit_timeout'] == 0) {
 							// no edit timeout specified? User can edit the post
 							$user_can_edit = true;
 						} elseif ($settings['forum_edit_timeout_on_post'] == 0 && (max($pdata['post_datestamp'], $pdata['post_edittime']) + $settings['forum_edit_timeout'] * 3600) > time()) {
