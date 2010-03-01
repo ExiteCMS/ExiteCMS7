@@ -46,11 +46,10 @@
 				{/if}
 			{/if}
 			{if $may_ban}
-				<div style="float:right;">
-					<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;user_id={$data.user_id}'>
-						<img src='{$smarty.const.THEME}images/user_delete.gif' alt='{$data.user_name}' title='{$locale.492}' style='border:0px;' />
-					</a>
-				</div>
+				&raquo;
+				<a href='{$smarty.const.ADMIN}blacklist.php{$aidlink}&amp;user_id={$data.user_id}'>
+					<img src='{$smarty.const.THEME}images/user_delete.gif' alt='{$data.user_name}' title='{$locale.492}' style='border:0px;margin-top:-4px;' />
+				</a>
 			{/if}
 		</td>
 	</tr>
