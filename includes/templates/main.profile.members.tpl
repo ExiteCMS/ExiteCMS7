@@ -17,7 +17,6 @@
 {* Template for the main module 'profile', to show the member profile      *}
 {*                                                                         *}
 {***************************************************************************}
-{debug}
 {include file="_opentable.tpl" name=$_name title=$locale.420 state=$_state style=$_style}
 <table align='center' cellpadding='0' cellspacing='1' width='100%' class='tbl-border'>
 	<tr>
