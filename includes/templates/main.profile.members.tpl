@@ -23,18 +23,27 @@
 		<td colspan='3' class='tbl2'>
 			<b>{$data.user_name}</b>
 			{if $data.user_status == 0}
-				&raquo;
 				{if $data.user_level == ""}
-					{$locale.user1}
+					{assign var=status value=$locale.user1}
 				{else}
-					{$data.user_level}
+					{assign var=status value=$data.user_level}
 				{/if}
-			{else}
-			<div class='small' style='display:inline;color:red;font-weight:bold;'>
-				{if $data.user_status == 1}{$locale.425}{/if}
-				{if $data.user_status == 2}{$locale.426}{/if}
-				{if $data.user_status == 3}{$locale.428}{/if}
-			</div>
+			{elseif $data.user_status == 1}
+				{assign var=status value=$locale.425}
+			{elseif $data.user_status == 2}
+				{assign var=status value=$locale.426}
+			{elseif $data.user_status == 3}
+				{assign var=status value=$locale.428}
+			{/if}
+			{if $status != ""}
+				&raquo;
+				{if $data.user_status == 0}
+					{$status}
+				{else}
+					<div class='small' style='display:inline;color:red;font-weight:bold;'>
+						{$status}
+					</div>
+				{/if}
 			{/if}
 			{if $may_ban}
 				<div style="float:right;">
