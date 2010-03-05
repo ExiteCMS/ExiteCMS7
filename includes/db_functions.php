@@ -106,10 +106,10 @@ function dbquery($query, $display=false) {
 			echo mysql_error();
 			echo "</pre>";
 		}
-		if ($settings['debug_php_errors'] && function_exists('debug_backtrace')) _debug(debug_backtrace());
+		if ($settings['debug_php_errors'] == 1 && function_exists('debug_backtrace')) _debug(debug_backtrace());
 		error_log("MSG: ".mysql_error());
 		error_log("QRY: ".$query);
-		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
+		die("A database error has been detected that is not recoverable.<br />The error has been logged and an administrator has been notified.");
 	}
 
 	if ($_db_log) {
