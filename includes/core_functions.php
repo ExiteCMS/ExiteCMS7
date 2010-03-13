@@ -371,6 +371,11 @@ function isURL($value, $onlyhttp=false, $schemereq=false) {
 	return eregi($urlregex, $value);
 }
 
+// check if the call is an ajax request
+function is_ajax_call() {
+	return ( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == "XMLHttpRequest");
+}
+
 // This function sanitises news & article submissions
 function descript($text,$striptags=true) {
 	// Convert problematic ascii characters to their true values
