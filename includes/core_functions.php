@@ -17,7 +17,7 @@
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 // disable error reporting, we don't want to give anything away
-if (phpversion() < 5) {
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 	error_reporting(E_USER_ERROR);
 } else {
 	error_reporting(E_USER_ERROR & ~E_DEPRECATED);
