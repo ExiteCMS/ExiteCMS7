@@ -32,11 +32,11 @@
 					&nbsp;
 					<input type='submit' name='search' value='{$locale.src402}' class='button' disabled='disabled' />
 					<br />
-					<input type='checkbox' name='boolean' value='1' class='textbox' />{$locale.src447}
+					<input type='checkbox' name='boolean' value='1' class='textbox' checked='checked' />{$locale.src447}
 				</td>
 				<td>
-					<input type='radio' name='qtype' value='OR' checked='checked' /> {$locale.src407}
-					<input type='radio' name='qtype' value='AND' /> {$locale.src408}
+					<input type='radio' name='qtype' value='OR' /> {$locale.src407}
+					<input type='radio' name='qtype' value='AND' checked='checked' /> {$locale.src408}
 					<br />
 					&nbsp;<span class='smallalt'>{$locale.src427}</span>
 				</td>
