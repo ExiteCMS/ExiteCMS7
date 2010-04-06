@@ -3120,7 +3120,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['405'] = "Het email adres dat u hebt opgegeven bestaat niet.";
 		$localestrings['406'] = "Probeer a.u.b. opnieuw.";
 		$localestrings['407'] = "Geef het email adres in dat u hebt gebruikt om uw gebruikersnaam te registeren.<br /><br /> Wij zullen u eerst een verificatie email sturen. Klik op de link in die email om uw verzoek tot wijziging te valideren. Wij zullen u daarna een nieuw willekeurig wachtwoord emailen.<br /><br />Zodra u daarmee bent aangemeld, kunt u voor 'Profiel wijzigen' kiezen om een nieuw wachtwoord van uw keuze in te geven.";
-		$localestrings['408'] = "Send me a new password";
+		$localestrings['408'] = "Stuur me een nieuw wachtwoord";
 		$localestrings['409'] = "Nieuw wachtwoord voor ";
 		$localestrings['410'] = "Hallo [USERNAME],\n\nU of iemand anders heeft een nieuw wachtwoord aangevraagd voor toegang tot [SITENAME].\n\nOm het wachtwoord aan te passen, klik op deze link:\n\n[NEW_PASS_LINK]\n\nMet vriendelijke groeten,\n[SITEUSERNAME]";
 		$localestrings['411'] = "Hallo [USERNAME],\n\nUw nieuwe wachtwoord om aan te melden op [SITENAME] is:\n\n[NEW_PASS]\n\nMet vriendelijke groeten,\n[SITEUSERNAME]";
@@ -3815,8 +3815,8 @@ if (!defined('LP_LOCALES')) define('LP_LOCALES', "nl_NL|dutch|dut|nl_BE");
 if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
-if (!defined('LP_VERSION')) define('LP_VERSION', "7.20");
-if (!defined('LP_DATE')) define('LP_DATE', "1267279439");
+if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
+if (!defined('LP_DATE')) define('LP_DATE', "1270584989");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
