@@ -2,7 +2,7 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.global
-// generated on : Sat Feb 27 2010, 15:06:13 CET
+// generated on : Tue Apr 6 2010, 22:17:43 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigation";

@@ -631,7 +631,7 @@ if ($action == "edit" && !$user_can_edit) {
 						// flag the forum and the thread as updated
 						$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".time()."', forum_lastuser='".$userdata['user_id']."' WHERE forum_id='$forum_id'");
 						$result = dbquery("UPDATE ".$db_prefix."threads SET thread_lastpost='".time()."', thread_lastuser='".$userdata['user_id']."'".$update_notify." WHERE thread_id='$thread_id'");
-						if ($settings['thread_notify'] && ($userdata['user_posts_track'] || isset($_POST['notify_me']))) {
+						if ($settings['thread_notify'] && isset($_POST['notify_me'])) {
 							$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
 						}
 						fpm_save($post_id);
@@ -678,10 +678,9 @@ if ($action == "edit" && !$user_can_edit) {
 								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '".mysql_real_escape_string($subject)."', '".mysql_real_escape_string($message)."', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc_code']."', '0', '0')");
 								$post_id = mysql_insert_id();
 								$result = dbquery("UPDATE ".$db_prefix."users SET user_posts=user_posts+1 WHERE user_id='".$userdata['user_id']."'");
-								if ($settings['thread_notify'] && ($userdata['user_posts_track'] || isset($_POST['notify_me']))) {
+								if ($settings['thread_notify'] && isset($_POST['notify_me'])) {
 									$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
 								}
-								if ($settings['thread_notify'] && ($userdata['user_posts_track'] || isset($_POST['notify_me'])))
 								fpm_save($post_id);
 							}
 						}
@@ -691,21 +690,32 @@ if ($action == "edit" && !$user_can_edit) {
 						$result = dbquery(
 							"SELECT tn.*, tu.user_id,tu.user_name,tu.user_email,tu.user_locale FROM ".$db_prefix."thread_notify tn
 							LEFT JOIN ".$db_prefix."users tu ON tn.notify_user=tu.user_id
-							WHERE thread_id='$thread_id' AND notify_user!='".$userdata['user_id']."' AND notify_status='1'
+							WHERE thread_id='$thread_id' AND notify_status='1'
 						");
+						$notify_self = false;
 						if (dbrows($result)) {
 							require_once PATH_INCLUDES."sendmail_include.php";
 							$data2 = dbarray(dbquery("SELECT thread_subject FROM ".$db_prefix."threads WHERE thread_id='$thread_id'"));
 							$link = $settings['siteurl']."forum/viewthread.php?forum_id=$forum_id&thread_id=$thread_id&pid=$post_id#post_$post_id";
 							while ($data = dbarray($result)) {
-								// get the message text in the users own locale
-								$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}", "{SITE_NAME}", "{SITE_WEBMASTER}");
-								$message_el2 = array($data['user_name'], $data2['thread_subject'], $link, html_entity_decode($settings['sitename']), html_entity_decode($settings['siteusername']));
-								$message_subject = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '550'"));
-								$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $message_subject['locales_value']);
-								$message_content = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '551'"));
-								$message_content = str_replace($message_el1, $message_el2, $message_content['locales_value']);
-								$err = sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);
+								// this this the user himself?
+								if ($data['notify_user'] == $userdata['user_id']) {
+									// mark that we're already tracking this thread, and don't send a message to ourselfs...
+									$notify_self = true;
+								} else {
+									// get the message text in the users own locale
+									$message_el1 = array("{USERNAME}", "{THREAD_SUBJECT}", "{THREAD_URL}", "{SITE_NAME}", "{SITE_WEBMASTER}");
+									$message_el2 = array($data['user_name'], $data2['thread_subject'], $link, html_entity_decode($settings['sitename']), html_entity_decode($settings['siteusername']));
+									$message_subject = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '550'"));
+									$message_subject = str_replace("{THREAD_SUBJECT}", $data2['thread_subject'], $message_subject['locales_value']);
+									$message_content = dbarray(dbquery("SELECT locales_value FROM ".$db_prefix."locales WHERE locales_code = '".$data['user_locale']."' AND locales_name = 'forum.post' and locales_key = '551'"));
+									$message_content = str_replace($message_el1, $message_el2, $message_content['locales_value']);
+									$err = sendemail($data['user_name'],$data['user_email'],$settings['siteusername'],($settings['newsletter_email'] != "" ? $settings['newsletter_email'] : $settings['siteemail']),$message_subject,$message_content);
+								}
+							}
+							// if we're not tracking, but we want to, insert a notify record
+							if (!$notify_self && $userdata['user_posts_track']) {
+								$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
 							}
 							$result = dbquery("UPDATE ".$db_prefix."thread_notify SET notify_status='0' WHERE thread_id='$thread_id' AND notify_user != '".$userdata['user_id']."'");
 						}

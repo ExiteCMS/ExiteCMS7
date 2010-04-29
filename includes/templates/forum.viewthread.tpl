@@ -26,9 +26,9 @@ function jumpForum(forumid) {ldelim}
 <table cellspacing='0' cellpadding='0' width='100%'>
 	<tr>
 		<td class='smallalt'>
-			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
-			<a href='index.php'>{$locale.400}</a> » 
-			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
+			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> »
+			<a href='index.php'>{$locale.400}</a> »
+			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> »
 			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
 			<br /><hr />
 		</td>
@@ -39,7 +39,7 @@ function jumpForum(forumid) {ldelim}
 	<tr>
 		<td align='left' class='tbl'>
 		{if $smarty.const.iMEMBER}
-			{if $settings.thread_notify}
+			{if $settings.thread_notify && $userdata.user_posts_track == 0}
 				{if $has_thread_notify}
 					{buttonlink name=$locale.515 link="post.php?action=track_off&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{else}
@@ -106,7 +106,7 @@ function jumpForum(forumid) {ldelim}
 	<tr>
 		<td align='left' class='tbl'>
 		{if $smarty.const.iMEMBER}
-			{if $settings.thread_notify}
+			{if $settings.thread_notify && $userdata.user_posts_track == 0}
 				{if $has_thread_notify}
 					{buttonlink name=$locale.515 link="post.php?action=track_off&amp;forum_id="|cat:$forum_id|cat:"&amp;thread_id="|cat:$thread_id}
 				{else}
@@ -127,9 +127,9 @@ function jumpForum(forumid) {ldelim}
 	</tr>
 	<tr>
 		<td class='smallalt' colspan='2'>
-			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> » 
-			<a href='index.php'>{$locale.400}</a> » 
-			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> » 
+			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> »
+			<a href='index.php'>{$locale.400}</a> »
+			<a href='index.php#cat_{$forum.forum_cat}'>{$forum.forum_cat_name}</a> »
 			<a href='viewforum.php?forum_id={$forum_id}'>{$forum.forum_name}</a>
 		</td>
 	</tr>
@@ -216,7 +216,7 @@ function init() {
 		parent_left = findPosX(obj);
 		parent_width = obj.offsetWidth;
 //		alert(parent_left + " : " + parent_width);
-		// calculate the new width of the block, leave plenty of space to handle browser subtleties 
+		// calculate the new width of the block, leave plenty of space to handle browser subtleties
 		block_width = parent_left + parent_width - findPosX(document.getElementById("codeblock"+i+"a")) - 30;
 		// adjust the width of the code blocks
 		document.getElementById("codeblock"+i+"a").style.width = block_width + "px";
