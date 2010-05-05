@@ -19,6 +19,13 @@
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
 
+// bots have no business downloading!
+if (CMS_IS_BOT) {
+	// tell them the requested page does not exist
+	include PATH_ROOT."/404handler.php";
+	exit;
+}
+
 // make sure the parameter passed is valid
 if (isset($download_id) && !isNum($download_id)) fallback("index.php");
 if (isset($cat_id) && !isNum($cat_id)) fallback("index.php");
@@ -77,7 +84,7 @@ if (isset($download_id)) {
 		$cdata = dbarray(dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id='".$data['download_cat']."'"));
 		// and the user has access to it...
 		if (checkgroup($cdata['download_cat_access'])) {
-			// update download counter 
+			// update download counter
 			if ($data['download_external']) {
 				// do nothing, an external module will update the counters
 			} else {
@@ -124,7 +131,7 @@ if (!isset($cat_id)) {
 	$root_downloads = dbcount("(*)", "downloads", "download_cat=0");
 	if ($root_downloads) {
 		// any downloads in the 'root' are public, and ordered by download_id DESC, by default!
-		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');	
+		$variables['parent'] = array('download_cat_access' => 0, 'download_cat_sorting' => 'download_id DESC');
 		$cat_id = 0;
 	}
 	// get all root categories
