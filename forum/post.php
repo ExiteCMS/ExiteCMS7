@@ -266,10 +266,10 @@ if ($action == "edit") {
 						} elseif ($settings['forum_edit_timeout'] == 0) {
 							// no edit timeout specified? User can edit the post
 							$user_can_edit = true;
-						} elseif ($settings['forum_edit_timeout_on_post'] == 0 && (max($pdata['post_datestamp'], $pdata['post_edittime']) + $settings['forum_edit_timeout'] * 3600) > time()) {
+						} elseif ($settings['forum_edit_timeout_on_post'] == 0 && (max($pdata['post_datestamp'], $pdata['post_edittime']) + $settings['forum_edit_timeout']) > time()) {
 							// timeout is within the last edit date (or post date)
 							$user_can_edit = true;
-						} elseif ($settings['forum_edit_timeout_on_post'] == 1 && ($pdata['post_datestamp'] + $settings['forum_edit_timeout'] * 3600) > time()) {
+						} elseif ($settings['forum_edit_timeout_on_post'] == 1 && ($pdata['post_datestamp'] + $settings['forum_edit_timeout']) > time()) {
 							// timeout is within the post date
 							$user_can_edit = true;
 						}

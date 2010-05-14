@@ -108,12 +108,16 @@
 			<td width='40%' class='tbl'>
 				<select name='forum_edit_timeout' class='textbox'>
 					<option value='0' {if $settings2.forum_edit_timeout}selected='selected'{/if}>{$locale.714}</option>
+				{section name=minutes start=5 loop=60 step=5}
+					<option value='{$smarty.section.minutes.index}' {if $settings2.forum_edit_timeout == $smarty.section.minutes.index}selected='selected'{/if}>{$smarty.section.minutes.index} {$locale.531}</option>
+				{/section}
 				{section name=hours start=1 loop=24}
-					<option value='{$smarty.section.hours.index}' {if $settings2.forum_edit_timeout == $smarty.section.hours.index}selected='selected'{/if}>{$smarty.section.hours.index} {if $smarty.section.hours.index == 1}{$locale.535}{else}{$locale.536}{/if}</option>
+					{assign var="hours" value=$smarty.section.hours.index*60}
+					<option value='{$hours}' {if $settings2.forum_edit_timeout == $hours}selected='selected'{/if}>{$hours/60} {if $hours == 60}{$locale.535}{else}{$locale.536}{/if}</option>
 				{/section}
 				{section name=days start=1 loop=32}
-					{assign var="hours" value=$smarty.section.days.index*24}
-					<option value='{$hours}' {if $settings2.forum_edit_timeout == $hours}selected='selected'{/if}>{$smarty.section.days.index} {if $smarty.section.days.index == 1}{$locale.074|ucfirst}{else}{$locale.075|ucfirst}{/if}</option>
+					{assign var="days" value=$smarty.section.days.index*60*24}
+					<option value='{$days}' {if $settings2.forum_edit_timeout == $days}selected='selected'{/if}>{$days/24/60} {if $days == 1440}{$locale.074|ucfirst}{else}{$locale.075|ucfirst}{/if}</option>
 				{/section}
 				</select>
 			</td>
