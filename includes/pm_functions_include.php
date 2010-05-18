@@ -111,7 +111,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 
 	// store the new message
 	$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_smileys, pm_size, pm_datestamp)
-		VALUES ('".$message['pm_subject']."', '".$message['pm_message']."', '".$recipients."', '".$message['pm_smileys']."', '".$message['pm_size']."', '".$message['pm_datestamp']."')");
+		VALUES ('".mysql_real_escape_string($message['pm_subject'])."', '".mysql_real_escape_string($message['pm_message'])."', '".$recipients."', '".$message['pm_smileys']."', '".$message['pm_size']."', '".$message['pm_datestamp']."')");
 	$pm_id = mysql_insert_id();
 
 	// process the attachments, handle deletes first
@@ -141,7 +141,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 		}
 		rename(PATH_PM_ATTACHMENTS.$attachment['attach_tmp'], PATH_PM_ATTACHMENTS.$attachname);
 		chmod(PATH_PM_ATTACHMENTS.$attachname,0664);
-		$result = dbquery("INSERT INTO ".$db_prefix."pm_attachments (pm_id, pmattach_name, pmattach_realname, pmattach_comment, pmattach_ext, pmattach_size) VALUES ('$pm_id', '$attachname', '".$attachment['attach_name']."', '".$attachment['attach_comment']."', '$attachext', '".$attachment['attach_size']."')");
+		$result = dbquery("INSERT INTO ".$db_prefix."pm_attachments (pm_id, pmattach_name, pmattach_realname, pmattach_comment, pmattach_ext, pmattach_size) VALUES ('$pm_id', '$attachname', '".$attachment['attach_name']."', '".mysql_real_escape_string($attachment['attach_comment'])."', '$attachext', '".$attachment['attach_size']."')");
 	}
 
 	// copy original (and not excluded) attachments when forwarding a message
@@ -159,7 +159,7 @@ function storemessage($message, $old_pm_id, $from_cms = false) {
 				copy(PATH_PM_ATTACHMENTS.$data['pmattach_name'], PATH_PM_ATTACHMENTS.$attachname);
 				chmod(PATH_PM_ATTACHMENTS.$attachname,0664);
 				// and create a new attachment record
-				$result2 = dbquery("INSERT INTO ".$db_prefix."pm_attachments (pm_id, pmattach_name, pmattach_realname, pmattach_comment, pmattach_ext, pmattach_size) VALUES ('$pm_id', '$attachname', '".$data['pmattach_realname']."', '".$data['pmattach_comment']."', '".$data['pmattach_ext']."', '".$data['pmattach_size']."')");
+				$result2 = dbquery("INSERT INTO ".$db_prefix."pm_attachments (pm_id, pmattach_name, pmattach_realname, pmattach_comment, pmattach_ext, pmattach_size) VALUES ('$pm_id', '$attachname', '".$data['pmattach_realname']."', '".mysql_real_escape_string($data['pmattach_comment'])."', '".$data['pmattach_ext']."', '".$data['pmattach_size']."')");
 			}
 		}
 	}

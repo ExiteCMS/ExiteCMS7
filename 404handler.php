@@ -27,7 +27,7 @@ if (strpos($_SERVER["SERVER_SOFTWARE"], "IIS")) {
 $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'];
 
 // check if we have a redirect for this URL
-$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".((isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "") ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'])."'");
+$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".mysql_real_escape_string(((isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "") ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'])."'"));
 
 // if we had a URL, and found a redirect, compose the URL to redirect to
 if (!empty($url) && dbrows($result)) {
@@ -68,7 +68,7 @@ if (!empty($url) && dbrows($result)) {
 					eval("\$$parm[0] = \"$parm[1]\";");
 				}
 			}
-				
+
 		} else {
 			// it's a redirect. Use the URL as-is
 			$redirect = true;
