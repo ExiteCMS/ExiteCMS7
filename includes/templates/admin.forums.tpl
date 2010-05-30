@@ -63,6 +63,13 @@
 				</td>
 			</tr>
 			<tr>
+				<td colspan='2' class='tbl'>
+					{$locale.494}
+					<br />
+					<textarea name='forum_prefixes' rows='2' cols='80' class='textbox' style='width:285px;'>{$forum_prefixes}</textarea>
+				</td>
+			</tr>
+			<tr>
 				<td class='tbl'>
 					{$locale.462}
 					<br />
@@ -171,7 +178,7 @@ function togglefields() {
 		document.getElementById('attachtypes').style.display = 'none';
 	}
 }
-</script>{/literal}	
+</script>{/literal}
 	{include file="_closetable.tpl"}
 	{if $edit_forum_panel}
 	{include file="_opentable.tpl" name=$_name title=$locale.FPM_023 state=$_state style=$_style}

@@ -125,6 +125,21 @@
 				<table width='100%' border='0' cellspacing='1' cellpadding='0'>
 					<tr>
 						<td align='right' width='145' valign='top' class='tbl2'>
+							{$locale.533}:
+						</td>
+						<td class='tbl1'>
+							<select name="prefix" class="textbox" style="width:125px;" onChange="javascript:update_prefix(this);">
+								<option value="">{$locale.534}</option>
+							{foreach from=$prefixes item=prefix}
+								<option value="{$prefix}">{$prefix}</option>
+							{/foreach}
+								<option value="?">{$locale.535}</option>
+							</select>
+							<input type='text' id="new_prefix" name='new_prefix' value='' class='textbox' maxlength='255' style='width: 250px' disabled="disabled" />
+						</td>
+					</tr>
+					<tr>
+						<td align='right' width='145' valign='top' class='tbl2'>
 							{$locale.460}:
 						</td>
 						<td class='tbl1'>
@@ -171,7 +186,7 @@
 									{/section}
 								</select>
 							{else}
-								{include file="_bbcode_editor.tpl" name="message" id="message" author=$orgauthor message=$message width="100%" height="250px"}
+								{include file="_bbcode_editor.tpl" name="message" id="message" author=$orgauthor message=$message prefix="" width="100%" height="250px"}
 							{/if}
 						</td>
 					</tr>
@@ -364,8 +379,8 @@
 					<input type='submit' name='preview' value='{$button_preview}' class='button' />
 					<input type='submit' name='save' value='{$button_save}' class='button' />
 				{else}
-					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:get_hoteditor_data("message");' />
-					<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:get_hoteditor_data("message");' />
+					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
+					<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
 				{/if}
 				<input type='hidden' name='post_author' value='{$post_author}' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
@@ -392,6 +407,20 @@ function fpm_toggle_poll() {
 		}
 		document.getElementById('fpm_duration').value = 0;
 		document.inputform.message.focus()
+	}
+}
+function update_prefix(el) {
+	if ( el.value == "?") {
+		document.getElementById('new_prefix').value = "[?]";
+		document.getElementById('new_prefix').disabled = false;
+		document.getElementById('new_prefix').focus = true;
+	} 	else {
+		document.getElementById('new_prefix').disabled = true;
+		if ( el.value == "") {
+			document.getElementById('new_prefix').value = "";
+		} else {
+			document.getElementById('new_prefix').value = "[" + el.value + "]";
+		}
 	}
 }
 </script>{/literal}

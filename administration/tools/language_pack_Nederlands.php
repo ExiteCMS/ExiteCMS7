@@ -366,6 +366,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['491'] = "Omhoog";
 		$localestrings['492'] = "Naar beneden";
 		$localestrings['493'] = "Volgorde herrekenen";
+		$localestrings['494'] = "Topic prefix lijst:";
 		load_localestrings($localestrings, LP_LOCALE, "admin.forums", $step);
 
 		$localestrings = array();
@@ -2591,6 +2592,9 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['530'] = "Zoeken";
 		$localestrings['531'] = "Zoekwoord(en)";
 		$localestrings['532'] = "Zoeken";
+		$localestrings['533'] = "Prefix";
+		$localestrings['534'] = "Geen prefix";
+		$localestrings['535'] = "Nieuwe prefix";
 		$localestrings['550'] = "Notificatie van anwoord op topic - {THREAD_SUBJECT}";
 		$localestrings['551'] = "Hallo {USERNAME},\n\nEr is een antwoord geplaatst in de forum topic '{THREAD_SUBJECT}' welke u volgt op {SITE_NAME}. U kunt de volgende link gebruiken om het antwoord te lezen:\n\n{THREAD_URL}\n\nAls u dit topic niet langer wil volgen, klik dan op de 'Stop het volgen van dit topic' knop die u onderaan het topic scherm kunt vinden.\n\nMet vriendelijke groeten,\n{SITE_WEBMASTER}.";
 		load_localestrings($localestrings, LP_LOCALE, "forum.post", $step);
@@ -3816,7 +3820,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
-if (!defined('LP_DATE')) define('LP_DATE', "1270584989");
+if (!defined('LP_DATE')) define('LP_DATE', "1275233078");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

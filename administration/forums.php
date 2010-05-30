@@ -122,7 +122,7 @@ if (isset($status)) {
 	$template_panels[] = array('type' => 'body', 'name' => 'admin.forums.status', 'title' => $title, 'template' => '_message_table_panel.tpl', 'locale' => "admin.forums");
 	$template_variables['admin.forums.status'] = $variables;
 	$variables = array();
-}	
+}
 
 // save forum settings?
 if (isset($_POST['save_settings']) && !isset($_POST['reset'])) {
@@ -198,7 +198,7 @@ if (isset($_POST['save_cat'])) {
 		if ($cat_name != "") {
 			$cat_order = isNum($_POST['cat_order']) ? $_POST['cat_order'] : "";
 			if(!$cat_order) $cat_order=dbfunction("MAX(forum_order)", "forums", "forum_cat='0'")+1;
-			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='0' AND forum_order>='$cat_order'");	
+			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='0' AND forum_order>='$cat_order'");
 			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_lastpost, forum_lastuser) VALUES ('0', '$cat_name', '$cat_order', '', '', '0', '0', '0', '0')");
 		}
 		redirect(FUSION_SELF.$aidlink."&status=savecu");
@@ -214,6 +214,7 @@ if (isset($_POST['save_cat'])) {
 	$forum_banners = $_POST['forum_banners'];
 	$forum_attach = isset($_POST['forum_attach'])?"1":"0";
 	$forum_attachtypes = stripinput($_POST['forum_attachtypes']);
+	$forum_prefixes = stripinput($_POST['forum_prefixes']);
 	if ($action == "edit" && $t == "forum") {
 		// check if the forum access group has changed.
 		$result = dbquery("SELECT forum_access FROM ".$db_prefix."forums WHERE forum_id = '".$forum_id."'");
@@ -223,7 +224,7 @@ if (isset($_POST['save_cat'])) {
 		if ($group_id <> $forum_access && $forum_access != 0) {
 			// remove users from threads_read that don't have read access to the forum anymore!
 			$result = dbquery("
-				SELECT DISTINCT u.user_id, u.user_level, u.user_groups 
+				SELECT DISTINCT u.user_id, u.user_level, u.user_groups
 				FROM ".$db_prefix."threads_read tr
 				INNER JOIN ".$db_prefix."users u ON u.user_id = tr.user_id
 				WHERE tr.thread_id = '".$thread_id."'
@@ -238,15 +239,15 @@ if (isset($_POST['save_cat'])) {
 			}
 		}
 		// update the forum record
-		$result = dbquery("UPDATE ".$db_prefix."forums SET forum_name='$forum_name', forum_cat='$forum_cat', forum_description='$forum_description', forum_access='$forum_access', forum_posting='$forum_posting', forum_modgroup='$forum_modgroup', forum_attach='$forum_attach', forum_attachtypes='$forum_attachtypes', forum_rulespage='$forum_rulespage', forum_banners='$forum_banners' WHERE forum_id='$forum_id'");
+		$result = dbquery("UPDATE ".$db_prefix."forums SET forum_name='".mysql_real_escape_string($forum_name)."', forum_cat='$forum_cat', forum_description='".mysql_real_escape_string($forum_description)."', forum_access='$forum_access', forum_posting='$forum_posting', forum_modgroup='$forum_modgroup', forum_attach='$forum_attach', forum_attachtypes='$forum_attachtypes', forum_prefixes='".mysql_real_escape_string($forum_prefixes)."', forum_rulespage='$forum_rulespage', forum_banners='$forum_banners' WHERE forum_id='$forum_id'");
 		redirect(FUSION_SELF.$aidlink."&status=savefe");
 	} else {
 		if ($forum_name != "") {
 			$forum_mods = "";
 			$forum_order = isNum($_POST['forum_order']) ? $_POST['forum_order'] : "";
 			if(!$forum_order) $forum_order=dbfunction("MAX(forum_order)", "forums", "forum_cat='$forum_cat'")+1;
-			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='$forum_cat' AND forum_order>='$forum_order'");	
-			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '$forum_rulespage', '$forum_banners', '0', '0')");
+			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='$forum_cat' AND forum_order>='$forum_order'");
+			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_prefixes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '".mysql_real_escape_string($forum_prefixes)."', '$forum_rulespage', '$forum_banners', '0', '0')");
 			redirect(FUSION_SELF.$aidlink."&status=savefu");
 		}
 		redirect(FUSION_SELF.$aidlink."&status=saveer");
@@ -319,6 +320,7 @@ if (isset($_POST['save_cat'])) {
 			$forum_banners = $data['forum_banners'];
 			$forum_attach = $data['forum_attach']?true:false;
 			$forum_attachtypes = $data['forum_attachtypes'];
+			$forum_prefixes = $data['forum_prefixes'];
 			$forum_title = $locale['422'];
 			$forum_action = FUSION_SELF.$aidlink."&amp;action=edit&amp;forum_id=".$data['forum_id']."&amp;t=forum";
 			$forum_order = "";
@@ -343,6 +345,7 @@ if (isset($_POST['save_cat'])) {
 		$forum_banners = 1;
 		$forum_attach = ($settings['attachments'] == 1);
 		$forum_attachtypes = $settings['attachtypes'];
+		$forum_prefixes = "";
 		$forum_title = $locale['421'];
 		$forum_action = FUSION_SELF.$aidlink;
 	}
@@ -416,6 +419,7 @@ if (isset($_POST['save_cat'])) {
 		$variables['forum_order'] = $forum_order;
 		$variables['forum_attach'] = $forum_attach;
 		$variables['forum_attachtypes'] = $forum_attachtypes;
+		$variables['forum_prefixes'] = $forum_prefixes;
 		$variables['forum_rulespage'] = $forum_rulespage;
 		$variables['forum_banners'] = $forum_banners;
 
@@ -500,7 +504,7 @@ if (isset($forum_id)) {
 			$fp_group_array[] = array($fp_group_data['group_id'], $fp_group_data['group_name']);
 		}
 	}
-	$variables['create_group_1'] = array(); 
+	$variables['create_group_1'] = array();
 	$variables['create_group_2'] = array();
 	while(list($key, $fp_group) = each($fp_group_array)){
 		$group_id = $fp_group['0'];

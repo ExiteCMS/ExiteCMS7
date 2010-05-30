@@ -61,12 +61,21 @@ require_once PATH_INCLUDES."photo_functions_include.php";
 
 // function to validate the contents of the $_POST array
 function validatepost() {
-
 	global $locale;
 
 	// we need both a subject and a message body
 	if ($_POST['subject'] == "" || $_POST['message'] == "")
 		return $locale['441'];
+
+	// make sure we have a valid prefix
+	if ($_POST['new_prefix'] == '[?]') $_POST['new_prefix'] = '';
+
+	// post validated, add the selected prefix to the post subject
+	if ( !empty($_POST['new_prefix']) )
+	{
+		$_POST['new_prefix'] = rtrim(ltrim(trim(stripinput($_POST['new_prefix'])),'['),']');
+		$_POST['subject'] = '[' . $_POST['new_prefix'] . '] ' . $_POST['subject'];
+	}
 
 	return "";
 }
@@ -980,6 +989,11 @@ if ($action == "edit" && !$user_can_edit) {
 			if (!isset($variables['button_save'])) $variables['button_save'] = $locale['409'];
 
 		case "quote":
+			$prefixes = explode(',', trim($fdata['forum_prefixes']));
+			$variables['prefixes'] = array();
+			foreach ($prefixes as $prefix) {
+				$variables['prefixes'][] = trim($prefix);
+			}
 			if (!isset($title)) $title = $locale['415']." #".$reply_id;
 			if (!isset($variables['button_save'])) $variables['button_preview'] = $locale['402'];
 			if (!isset($variables['button_save'])) $variables['button_save'] = $locale['404'];
