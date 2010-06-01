@@ -70,14 +70,38 @@ function validatepost() {
 	// make sure we have a valid prefix
 	if ($_POST['new_prefix'] == '[?]') $_POST['new_prefix'] = '';
 
-	// post validated, add the selected prefix to the post subject
-	if ( !empty($_POST['new_prefix']) )
-	{
-		$_POST['new_prefix'] = rtrim(ltrim(trim(stripinput($_POST['new_prefix'])),'['),']');
-		$_POST['subject'] = '[' . $_POST['new_prefix'] . '] ' . $_POST['subject'];
+	return "";
+}
+
+// function to add or replace the prefix in the subject
+function subject_prefix($subject, $prefix) {
+
+	// was a prefix defined
+	if (!empty($prefix)) {
+		// make sure we have a clean prefix
+		$prefix = rtrim(ltrim(trim($prefix),'['),']');
+
+		// split the subject to check for a prefix
+		if (!preg_match('~(.*)\[(.*)\](.*)~', $subject, $matches))
+		{
+			// was this a reply?
+			if (strtolower(substr($subject,0,3)) == 're:') {
+				$subject = 'Re: [' . $prefix . '] ' . substr($subject,4);
+			} else {
+				$subject = '[' . $prefix . '] ' . $subject;
+			}
+		} else {
+			// remove spaces from the matches
+			foreach($matches as $key => $value) {
+				$matches[$key] = trim($value);
+			}
+			unset($matches[0]);
+			$matches[2] = '[' . trim($prefix) . ']';
+			$subject = trim(implode(' ', $matches));
+		}
 	}
 
-	return "";
+	return $subject;
 }
 
 // function to check and store the attachment upload in a temp location
@@ -625,6 +649,7 @@ if ($action == "edit" && !$user_can_edit) {
 					if ($subject == "") {
 						$subject = "Re: ".$tdata['thread_subject'];
 					}
+					$subject = subject_prefix($subject, stripinput($_POST['new_prefix']));
 					$message = trim(stripmessageinput(censorwords($_POST['message'])));
 					if ($action == 'edit') {
 						// update the post record
@@ -992,7 +1017,7 @@ if ($action == "edit" && !$user_can_edit) {
 			$prefixes = explode(',', trim($fdata['forum_prefixes']));
 			$variables['prefixes'] = array();
 			foreach ($prefixes as $prefix) {
-				$variables['prefixes'][] = trim($prefix);
+				if (!empty($prefix)) $variables['prefixes'][] = trim($prefix);
 			}
 			if (!isset($title)) $title = $locale['415']." #".$reply_id;
 			if (!isset($variables['button_save'])) $variables['button_preview'] = $locale['402'];

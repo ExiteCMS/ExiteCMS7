@@ -18,78 +18,82 @@
 +---------------------------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 
-// Check if we use IIS. If so, some $_SERVER variables are not available
-if (strpos($_SERVER["SERVER_SOFTWARE"], "IIS")) {
+// Check if we use IIS. If so, the $_SERVER['REDIRECT_URL'] variable is not available
+if (strpos($_SERVER["SERVER_SOFTWARE"], "IIS") !== FALSE) {
 	$_SERVER['REDIRECT_URL'] = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/'), strlen($_SERVER['REQUEST_URI']));
 }
 
 // requested url
 $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'];
 
-// check if we have a redirect for this URL
-$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".mysql_real_escape_string(((isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != "") ? $_SERVER['REDIRECT_URL'] : $_SERVER['SCRIPT_URL'])."'"));
+// do we have a url?
+if (!empty($url) {
 
-// if we had a URL, and found a redirect, compose the URL to redirect to
-if (!empty($url) && dbrows($result)) {
+	// check if we have a redirect for this URL
+	$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".mysql_real_escape_string($url)."'");
 
-	// found
-	header("HTTP/1.1 200 OK");
-	header("Status: 200 OK");
-	$data = dbarray($result);
-	// check if the url_to has is an external URL
-	if ($data['url_to']{0} != "/") {
-		$url = $data['url_to'];
-		$redirect = true;
-	} else {
-		// if not a redirection, check for parameters
-		if ($data['url_redirect'] == 0) {
-			$redirect = false;
-			// preserve URL parameters (if any)
-			if ($data['url_parms'] && isset($_SERVER['REDIRECT_QUERY_STRING'])) {
-				if (strpos($data['url_to'], '?') === false) {
-					$data['url_to'] .= "?" . $_SERVER['REDIRECT_QUERY_STRING'];
-				} else {
-					$data['url_to'] .= "&" . $_SERVER['REDIRECT_QUERY_STRING'];
-				}
-			}
-			// strip the parameters from the URL, and convert them into variables
-			$temp = explode("?", $data['url_to']);
-			// get the base URL
-			$url = substr($temp[0],1);
-			if (count($temp) > 1) {
-				// parameter(s) found, strip the anchor if present
-				$temp = explode("#", $temp[1]);
-				// now split the parameters
-				$temp = explode("&", $temp[0]);
-				// process every parameter found
-				foreach($temp as $parm) {
-					$parm = explode("=", $parm);
-					// define the variable
-					eval("\$$parm[0] = \"$parm[1]\";");
-				}
-			}
+	// found one?
+	if (dbrows($result)) {
 
-		} else {
-			// it's a redirect. Use the URL as-is
-			$redirect = true;
+		// found
+		header("HTTP/1.1 200 OK");
+		header("Status: 200 OK");
+		$data = dbarray($result);
+		// check if the url_to has is an external URL
+		if ($data['url_to']{0} != "/") {
 			$url = $data['url_to'];
-		}
-	}
-	// redirect to or load the new URL
-	if ($redirect) {
-		redirect($url);
-	} else {
-		// check for post variables
-		$rawpostvars = file_get_contents("php://input");
-		if (!empty($rawpostvars)) {
-			$rawpostvars = explode("&", $rawpostvars);
-			foreach($rawpostvars as $postvar) {
-				$postvar = explode("=", $postvar);
-				// define the variable
-				eval("\$$postvar[0] = \"$postvar[1]\";");
+			$redirect = true;
+		} else {
+			// if not a redirection, check for parameters
+			if ($data['url_redirect'] == 0) {
+				$redirect = false;
+				// preserve URL parameters (if any)
+				if ($data['url_parms'] && isset($_SERVER['REDIRECT_QUERY_STRING'])) {
+					if (strpos($data['url_to'], '?') === false) {
+						$data['url_to'] .= "?" . $_SERVER['REDIRECT_QUERY_STRING'];
+					} else {
+						$data['url_to'] .= "&" . $_SERVER['REDIRECT_QUERY_STRING'];
+					}
+				}
+				// strip the parameters from the URL, and convert them into variables
+				$temp = explode("?", $data['url_to']);
+				// get the base URL
+				$url = substr($temp[0],1);
+				if (count($temp) > 1) {
+					// parameter(s) found, strip the anchor if present
+					$temp = explode("#", $temp[1]);
+					// now split the parameters
+					$temp = explode("&", $temp[0]);
+					// process every parameter found
+					foreach($temp as $parm) {
+						$parm = explode("=", $parm);
+						// define the variable
+						eval("\$$parm[0] = \"$parm[1]\";");
+					}
+				}
+
+			} else {
+				// it's a redirect. Use the URL as-is
+				$redirect = true;
+				$url = $data['url_to'];
 			}
 		}
-		include PATH_ROOT.$url;
+		// redirect to or load the new URL
+		if ($redirect) {
+			redirect($url);
+		} else {
+			// check for post variables
+			$rawpostvars = file_get_contents("php://input");
+			if (!empty($rawpostvars)) {
+				$rawpostvars = explode("&", $rawpostvars);
+				foreach($rawpostvars as $postvar) {
+					$postvar = explode("=", $postvar);
+					// define the variable
+					eval("\$$postvar[0] = \"$postvar[1]\";");
+				}
+			}
+			include PATH_ROOT.$url;
+		}
 	}
 	exit;
 
