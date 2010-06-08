@@ -113,10 +113,10 @@ if (iMEMBER && $can_post && isset($action) && $action == "markallread") {
 if (iMEMBER) {
 	if ($userdata['user_posts_unread']) {
 		$result = dbquery("
-			SELECT count(*) as unread 
-				FROM ".$db_prefix."posts p 
-					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-				WHERE tr.user_id = '".$userdata['user_id']."' 
+			SELECT count(*) as unread
+				FROM ".$db_prefix."posts p
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+				WHERE tr.user_id = '".$userdata['user_id']."'
 					AND tr.forum_id = '".$forum_id."'
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
@@ -124,10 +124,10 @@ if (iMEMBER) {
 			);
 	} else {
 		$result = dbquery("
-			SELECT count(*) as unread 
-				FROM ".$db_prefix."posts p 
-					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-				WHERE tr.user_id = '".$userdata['user_id']."' 
+			SELECT count(*) as unread
+				FROM ".$db_prefix."posts p
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+				WHERE tr.user_id = '".$userdata['user_id']."'
 					AND tr.forum_id = '".$forum_id."'
 					AND p.post_author != '".$userdata['user_id']."'
 					AND p.post_edituser != '".$userdata['user_id']."'
@@ -135,7 +135,7 @@ if (iMEMBER) {
 					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 			);
-	} 
+	}
 	$variables['unread_posts'] = ($result ? mysql_result($result, 0) : 0);
 } else {
 	$variables['unread_posts'] = 0;
@@ -152,9 +152,12 @@ $variables['rowstart'] = $rowstart;
 // is a thread time limit defined for guest users?
 $thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
 
+// determine the number of threads to show
+$variables['number_of_threads'] = (iMEMBER && isset($userdata['user_numofthreads'])) ? $userdata['user_numofthreads'] : $settings['numofthreads'];
+
 // get the threads to fill this page
 $result = dbquery(
-	"SELECT t.*, MAX(p.post_id) AS last_post, COUNT(p.post_id) AS thread_replies, tu1.user_name AS user_author, tu1.user_ip AS user_ip, 
+	"SELECT t.*, MAX(p.post_id) AS last_post, COUNT(p.post_id) AS thread_replies, tu1.user_name AS user_author, tu1.user_ip AS user_ip,
 			tu2.user_name AS user_lastuser, tu1.user_cc_code AS user_cc_code FROM ".$db_prefix."threads t
 		INNER JOIN ".$db_prefix."posts p ON t.thread_id = p.thread_id
 		LEFT JOIN ".$db_prefix."users tu1 ON t.thread_author = tu1.user_id
@@ -162,7 +165,7 @@ $result = dbquery(
 		WHERE t.forum_id = '".$forum_id."'".($thread_limit==0?"":" AND t.thread_lastpost > ".$thread_limit)."
 		GROUP BY thread_id
 		ORDER BY thread_sticky DESC, thread_lastpost DESC
-		LIMIT ".$rowstart.", ".$settings['numofthreads']
+		LIMIT ".$rowstart.", ".$variables['number_of_threads']
 );
 $variables['threads'] = array();
 while ($data = dbarray($result)) {
@@ -180,11 +183,11 @@ while ($data = dbarray($result)) {
 	if (isset($userdata['user_id']) && $variables['unread_posts']) {
 		$result2 = dbquery("
 			SELECT count(*) as unread, MIN(p.post_id) as post_id
-				FROM ".$db_prefix."posts p 
-				INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-				WHERE tr.user_id = '".$userdata['user_id']."' 
+				FROM ".$db_prefix."posts p
+				INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+				WHERE tr.user_id = '".$userdata['user_id']."'
 					AND tr.thread_id = '".$data['thread_id']."'
-					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].") 
+					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 					AND (p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 				GROUP BY tr.thread_id
 			", false);

@@ -146,6 +146,19 @@
 			<td class='tbl'>
 				<input type='radio' name='user_posts_track' value='1' {if $this_userdata.user_posts_track == "1"}checked="checked"{/if} />{$locale.u007}
 				<input type='radio' name='user_posts_track' value='0' {if $this_userdata.user_posts_track == "0"}checked="checked"{/if} />{$locale.u008}
+				{buttonlink name=$locale.u068 link=$smarty.const.BASEDIR|cat:"forum/tracking.php"}
+			</td>
+		</tr>
+		<tr>
+			<td class='tbl'>
+				{$locale.u069}
+			</td>
+			<td class='tbl'>
+				<select name='user_numofthreads' class='textbox'>
+				{section name=num start=5 loop=101 step=5}
+				<option value='{$smarty.section.num.index}' {if $smarty.section.num.index == $this_userdata.user_numofthreads}selected='selected'{/if}>{$smarty.section.num.index}</option>
+				{/section}
+				</select>
 			</td>
 		</tr>
 		<tr>

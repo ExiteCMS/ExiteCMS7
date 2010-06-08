@@ -123,7 +123,11 @@ while ($data = dbarray($result)) {
 
 // activate PHP error reporting
 if (isset($settings['debug_php_errors']) && $settings['debug_php_errors']) {
-	error_reporting(E_ALL);
+	if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+		error_reporting(E_ALL);
+	} else {
+		error_reporting(E_ALL & ~E_DEPRECATED);
+	}
 }
 
 // define the default sitebanner

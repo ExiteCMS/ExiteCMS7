@@ -147,11 +147,10 @@
 			<br />
 			<img src='{$smarty.const.THEME}images/folder.gif' alt='{$locale.561}' style='vertical-align:middle;' /> - {$locale.410}
 		</td>
-		<td class='forum' style='vertical-align:bottom;'>
-			{buttonlink name=$locale.414 link="viewposts.php"}
-		</td>
 		<td align='right' valign='bottom' class='forum'>
-			<form name='searchform' method='post' action='{$smarty.const.BASEDIR}search.php?stype=f'>
+			{buttonlink name=$locale.415 link="tracking.php"}
+			{buttonlink name=$locale.414 link="viewposts.php"}<br />
+			<form name='searchform' method='post' style="margin-top:2px;" action='{$smarty.const.BASEDIR}search.php?stype=f'>
 				<input type='text' name='stext' class='textbox' style='width:150px' />
 				<input type='submit' name='search' value='{$locale.550}' class='button' />
 			</form>

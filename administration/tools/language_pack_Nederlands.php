@@ -2370,10 +2370,11 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['408'] = "Er zijn geen forum categorieen gedefinieerd.";
 		$localestrings['409'] = "Forum met nieuwe berichten.";
 		$localestrings['410'] = "Forum zonder nieuwe berichten.";
-		$localestrings['411'] = "Opgevolgd door ";
+		$localestrings['411'] = "Gemodereerd door ";
 		$localestrings['412'] = "Pagina: ";
 		$localestrings['413'] = "RSS Feed";
 		$localestrings['414'] = "Bekijk alle berichten";
+		$localestrings['415'] = "Gevolgde topics";
 		$localestrings['430'] = "download(s)";
 		$localestrings['450'] = "Bekijk forum";
 		$localestrings['451'] = "Onderwerp";
@@ -2598,6 +2599,21 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['550'] = "Notificatie van anwoord op topic - {THREAD_SUBJECT}";
 		$localestrings['551'] = "Hallo {USERNAME},\n\nEr is een antwoord geplaatst in de forum topic '{THREAD_SUBJECT}' welke u volgt op {SITE_NAME}. U kunt de volgende link gebruiken om het antwoord te lezen:\n\n{THREAD_URL}\n\nAls u dit topic niet langer wil volgen, klik dan op de 'Stop het volgen van dit topic' knop die u onderaan het topic scherm kunt vinden.\n\nMet vriendelijke groeten,\n{SITE_WEBMASTER}.";
 		load_localestrings($localestrings, LP_LOCALE, "forum.post", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Gevolgde topics";
+		$localestrings['401'] = "Er worden op dit moment geen topics gevolgd.";
+		$localestrings['402'] = "Forum index";
+		$localestrings['403'] = "Ja";
+		$localestrings['404'] = "Nee";
+		$localestrings['405'] = "Forum naam";
+		$localestrings['406'] = "Topic onderwerp";
+		$localestrings['407'] = "Gedefinieerd op";
+		$localestrings['408'] = "Actief?";
+		$localestrings['409'] = "Opties";
+		$localestrings['410'] = "Stop het volgen van deze topic";
+		$localestrings['411'] = "Allemaal verwijderen";
+		load_localestrings($localestrings, LP_LOCALE, "forum.tracking", $step);
 
 		$localestrings = array();
 		$localestrings['hot001'] = "Rich Text Editor";
@@ -3726,8 +3742,16 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u065'] = "Geen opgave";
 		$localestrings['u066'] = "OpenID URL:";
 		$localestrings['u067'] = "BBcode WYSIWYG editor gebruiken:";
+		$localestrings['u068'] = "Bekijk gevolgde topics";
+		$localestrings['u069'] = "Aantal topics per pagina:";
 		$localestrings['u901'] = "Volledige naam";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Webwinkel";
+		$localestrings['410'] = "Selecteer uw winkel. De nu geselecteerde winkel is vetgedrukt";
+		$localestrings['411'] = "<b>Opmerking:</b><br />\n                <img src='/themes/PLiTheme/images/bullet.gif' /> Indien u niet in een van deze wereldgebieden woont, controleer dan alle winkels om te zien welke de beste leveringscondities bied<br />\n                <img src='/themes/PLiTheme/images/bullet.gif' /> voor het land waarin u woont. Mochten er sessie problemen zijn, druk dan op de 'Shop' knop om de pagina te herladen<br />\n                <img src='/themes/PLiTheme/images/bullet.gif' /> Elke winkel heeft zijn eigen toeleveranciers. Niet alle producten zijn leverbaar in alle winkels";
+		load_localestrings($localestrings, LP_LOCALE, "main.webshop", $step);
 
 		$localestrings = array();
 		$localestrings['mon001'] = "Januari";
@@ -3820,7 +3844,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
-if (!defined('LP_DATE')) define('LP_DATE', "1275233078");
+if (!defined('LP_DATE')) define('LP_DATE', "1276029425");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

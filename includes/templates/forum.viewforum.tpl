@@ -22,8 +22,8 @@
 	<tr>
 		<td class='smallalt'>
 			<a href='{$smarty.const.BASEDIR}'>{$settings.sitename}</a> »
-			<a href='index.php'>{$locale.400}</a> » 
-			<a href='index.php#cat_{$forum_cat_id}'>{$forum_cat_name}</a> » 
+			<a href='index.php'>{$locale.400}</a> »
+			<a href='index.php#cat_{$forum_cat_id}'>{$forum_cat_name}</a> »
 			{$forum_name}
 		</td>
 		{if $smarty.const.iMEMBER && $user_can_post}
@@ -36,9 +36,9 @@
 		{/if}
 	</tr>
 </table>
-{if $rows > $settings.numofthreads}
+{if $rows > $number_of_threads}
 	<div align='center' style='margin-top:5px;margin-bottom:5px;'>
-		{makepagenav start=$rowstart count=$settings.numofthreads total=$rows range=$settings.navbar_range link=$pagenav_url}
+		{makepagenav start=$rowstart count=$number_of_threads total=$rows range=$settings.navbar_range link=$pagenav_url}
 	</div>
 {else}
 	<br />
@@ -84,7 +84,7 @@
 						<b>{$locale.404}</b>
 					</td>
 				</tr>
-			{section name=id loop=$threads}				
+			{section name=id loop=$threads}
 				<tr>
 					<td align='center' width='20' class='{cycle values='tbl1,tbl2' advance=no}'>
 						{if $threads[id].thread_locked && $threads[id].unread_posts == 0}
@@ -117,7 +117,7 @@
 							{$locale.412}
 							(
 							{section name=rs start=1 loop=$threads[id].thread_pages step=1}
-								<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;rowstart={math equation='(x-1)*y' x=$smarty.section.rs.index y=$settings.numofthreads}'>{$smarty.section.rs.index}</a>
+								<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;rowstart={math equation='(x-1)*y' x=$smarty.section.rs.index y=$number_of_threads}'>{$smarty.section.rs.index}</a>
 							{/section}
 							)
 							{if $threads[id].is_poll}
@@ -204,9 +204,9 @@
 			</select>
 		</td>
 		<td align='center' class='tbl'>
-			{if $rows > $settings.numofthreads}
+			{if $rows > $number_of_threads}
 			<div align='center' style='margin-top:5px;margin-bottom:5px;'>
-				{makepagenav start=$rowstart count=$settings.numofthreads total=$rows range=$settings.navbar_range link=$pagenav_url}
+				{makepagenav start=$rowstart count=$number_of_threads total=$rows range=$settings.navbar_range link=$pagenav_url}
 			</div>
 			{/if}
 		</td>

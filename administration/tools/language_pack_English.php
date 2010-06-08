@@ -2374,6 +2374,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['412'] = "Page: ";
 		$localestrings['413'] = "RSS Feed";
 		$localestrings['414'] = "View all posts";
+		$localestrings['415'] = "Thread tracking";
 		$localestrings['430'] = "download(s)";
 		$localestrings['450'] = "View Forum";
 		$localestrings['451'] = "Subject";
@@ -2598,6 +2599,21 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['550'] = "Thread Reply Notification - {THREAD_SUBJECT}";
 		$localestrings['551'] = "Hello {USERNAME},\n\nA reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:\n\n{THREAD_URL}\n\nIf you no longer wish to watch this thread you can click the 'Tracking Off' button located at the bottom of the thread.\n\nRegards,\n{SITE_WEBMASTER}.";
 		load_localestrings($localestrings, LP_LOCALE, "forum.post", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Thread being tracked";
+		$localestrings['401'] = "No threads are tracked by you at the moment.";
+		$localestrings['402'] = "Forum index";
+		$localestrings['403'] = "Yes";
+		$localestrings['404'] = "No";
+		$localestrings['405'] = "Forum name";
+		$localestrings['406'] = "Thread subject";
+		$localestrings['407'] = "Tracker defined";
+		$localestrings['408'] = "Active?";
+		$localestrings['409'] = "Options";
+		$localestrings['410'] = "Stop tracking this thread";
+		$localestrings['411'] = "Stop all tracking";
+		load_localestrings($localestrings, LP_LOCALE, "forum.tracking", $step);
 
 		$localestrings = array();
 		$localestrings['hot001'] = "Rich Text Editor";
@@ -3726,8 +3742,16 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['u065'] = "Undisclosed";
 		$localestrings['u066'] = "OpenID URL:";
 		$localestrings['u067'] = "use the BBcode WYSIWYG editor:";
+		$localestrings['u068'] = "See tracked threads";
+		$localestrings['u069'] = "Number of threads per page:";
 		$localestrings['u901'] = "Full Name";
 		load_localestrings($localestrings, LP_LOCALE, "main.user_fields", $step);
+
+		$localestrings = array();
+		$localestrings['400'] = "Webshop";
+		$localestrings['410'] = "Select your shop. The shop currently selected is highlighted";
+		$localestrings['411'] = "<b>Note:</b><br />\n                <img src='/themes/PLiTheme/images/bullet.gif' /> If you don't live in these area's of the world, check out all shops to see which one has the best delivery fees for your country <br />\n                <img src='/themes/PLiTheme/images/bullet.gif' /> Sometimes the shop has session issues. If the shop doesn't display as expected, click on the 'Shop' button to reload the shop<br />\n                <img src='/themes/PLiTheme/images/bullet.gif' /> Every shop uses different suppliers. Not all products are available in all shops\n        ";
+		load_localestrings($localestrings, LP_LOCALE, "main.webshop", $step);
 
 		$localestrings = array();
 		$localestrings['mon001'] = "January";
@@ -3820,7 +3844,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
-if (!defined('LP_DATE')) define('LP_DATE', "1275233074");
+if (!defined('LP_DATE')) define('LP_DATE', "1276029421");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
