@@ -1024,7 +1024,8 @@ if ($action == "edit" && !$user_can_edit) {
 			$prefixes = explode(',', trim(str_replace("\n", ",", $fdata['forum_prefixes'])));
 			$variables['prefixes'] = array();
 			foreach ($prefixes as $prefix) {
-				if (!empty($prefix)) $variables['prefixes'][] = trim($prefix);
+				$prefix = trim($prefix);
+				if (!empty($prefix)) $variables['prefixes'][] = $prefix;
 			}
 			if (!isset($title)) $title = $locale['415']." #".$reply_id;
 			if (!isset($variables['button_save'])) $variables['button_preview'] = $locale['402'];
