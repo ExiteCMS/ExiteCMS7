@@ -152,9 +152,6 @@ $variables['rowstart'] = $rowstart;
 // is a thread time limit defined for guest users?
 $thread_limit = ($settings['forum_guest_limit']== 0 || iMEMBER) ? 0 : (time() - $settings['forum_guest_limit'] * 86400);
 
-// determine the number of threads to show
-$variables['number_of_threads'] = (iMEMBER && isset($userdata['user_numofthreads'])) ? $userdata['user_numofthreads'] : $settings['numofthreads'];
-
 // get the threads to fill this page
 $result = dbquery(
 	"SELECT t.*, MAX(p.post_id) AS last_post, COUNT(p.post_id) AS thread_replies, tu1.user_name AS user_author, tu1.user_ip AS user_ip,
@@ -165,7 +162,7 @@ $result = dbquery(
 		WHERE t.forum_id = '".$forum_id."'".($thread_limit==0?"":" AND t.thread_lastpost > ".$thread_limit)."
 		GROUP BY thread_id
 		ORDER BY thread_sticky DESC, thread_lastpost DESC
-		LIMIT ".$rowstart.", ".$variables['number_of_threads']
+		LIMIT ".$rowstart.", ".$settings['numofthreads']
 );
 $variables['threads'] = array();
 while ($data = dbarray($result)) {

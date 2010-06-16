@@ -26,7 +26,12 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
 
 // make sure we have enough memory to work with (independent of the php.ini setting)
-ini_set('memory_limit', '32M');
+$mem = (int) ini_get('memory_limit');
+if ( $mem < 32 )
+{
+	ini_set('memory_limit', '32M');
+}
+unset($mem);
 
 // check the environment to see if we can run
 if (!extension_loaded('gd') || !function_exists('gd_info')) {
@@ -195,6 +200,11 @@ if (isset($_SERVER['SERVER_SOFTWARE'])) {
 
 // load the user functions
 require_once PATH_INCLUDES."user_functions.php";
+
+// need to override the number of threads (ie entries in lists)?
+if (iMEMBER && ! empty($userdata['user_numofthreads'])) {
+	$settings['numofthreads'] = $userdata['user_numofthreads'];
+}
 
 // set the query log debugging switch, enable error reporting if needed
 $_db_log = checkgroup($settings['debug_querylog'], false);

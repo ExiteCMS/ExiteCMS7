@@ -544,6 +544,7 @@ function theme_cleanup() {
 			}
 		}
 		$template->assign('queries', $_db_logs);
+		$template->template_dir = array(PATH_INCLUDES.'templates', PATH_THEMES.$settings['theme'].'/templates/templates');
 		$template->display('_query_debug.tpl');
 	}
 

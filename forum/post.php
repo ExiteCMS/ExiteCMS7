@@ -490,6 +490,8 @@ if (isset($_POST['preview'])) {
 			$preview['post_subject'] = trim(stripinput(censorwords($_POST['subject'])));;
 			if ($preview['post_subject'] == "" && isset($tdata) && is_array($tdata)) {
 				$preview['post_subject'] = "Re: ".$tdata['thread_subject'];
+			} else {
+				$preview['post_subject'] = subject_prefix($preview['post_subject'], trim(stripinput($_POST['new_prefix'])));
 			}
 			$preview['post_message'] = trim(stripmessageinput(censorwords($_POST['message'])));
 			if ($preview['post_message'] == "") {
@@ -1014,7 +1016,7 @@ if ($action == "edit" && !$user_can_edit) {
 			if (!isset($variables['button_save'])) $variables['button_save'] = $locale['409'];
 
 		case "quote":
-			$prefixes = explode(',', trim($fdata['forum_prefixes']));
+			$prefixes = explode(',', trim(str_replace("\n", ",", $fdata['forum_prefixes'])));
 			$variables['prefixes'] = array();
 			foreach ($prefixes as $prefix) {
 				if (!empty($prefix)) $variables['prefixes'][] = trim($prefix);
@@ -1030,6 +1032,8 @@ if ($action == "edit" && !$user_can_edit) {
 			if (isset($_POST['message'])) {
 				$variables['subject'] = trim(stripinput(censorwords($_POST['subject'])));;
 				$variables['message'] = trim(stripmessageinput(censorwords($_POST['message'])));
+				$variables['prefix'] = trim(stripinput($_POST['prefix']));
+				$variables['new_prefix'] = trim(stripinput($_POST['new_prefix']));
 				$variables['post_author'] = $_POST['post_author'];
 				$variables['is_sticky'] = isset($_POST['sticky']);
 				$variables['is_smiley_disabled'] = isset($_POST['disable_smileys']);
@@ -1038,13 +1042,19 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['comments'] = isset($_POST['attach_comment']) ? $_POST['attach_comment']:"";
 				$variables['org_message'] = isset($_POST['org_message']) ? $_POST['org_message'] : "";
 			} elseif ($post_id > 0 || $reply_id > 0) {
-				if (strtolower(substr($pdata['post_subject'],0,3)) == "re:") {
-					$variables['subject'] = $pdata['post_subject'];
+				$subject = $pdata['post_subject'];
+				// split the subject to check for a prefix
+				if (preg_match('~(.*)\[(.*)\](.*)~', $subject, $matches))
+				{
+					// update the subject, set the prefixes
+					$subject = trim($matches[3]);
+					$variables['prefix'] = $matches[2];
+					$variables['new_prefix'] = '['.$matches[2].']';
+				}
+				if ($action != "newthread" && strtolower(substr($subject,0,3)) != "re:") {
+					$variables['subject'] = 'Re: '.$subject;
 				} else {
-					if ($action != "edit")
-						$variables['subject'] = 'Re: '.$pdata['post_subject'];
-					else
-						$variables['subject'] = $pdata['post_subject'];
+					$variables['subject'] = $subject;
 				}
 				switch ($action) {
 					case "edit":

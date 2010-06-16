@@ -155,6 +155,7 @@
 			</td>
 			<td class='tbl'>
 				<select name='user_numofthreads' class='textbox'>
+				<option value='0' {if $this_userdata.user_numofthreads == 0}selected='selected'{/if}>{$locale.u070}</option>
 				{section name=num start=5 loop=101 step=5}
 				<option value='{$smarty.section.num.index}' {if $smarty.section.num.index == $this_userdata.user_numofthreads}selected='selected'{/if}>{$smarty.section.num.index}</option>
 				{/section}

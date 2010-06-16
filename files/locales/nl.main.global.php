@@ -1,9 +1,9 @@
 <?php
 // ----------------------------------------------------------
-// locale       : English
+// locale       : Nederlands
 // locale name  : main.global
-// generated on : Tue Jun 8 2010, 22:36:03 CEST
-// translators  : ExiteCMS team
+// generated on : Wed Jun 9 2010, 17:37:56 CEST
+// translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";
 $locale['002'] = "Geen links gedefinieerd\n";

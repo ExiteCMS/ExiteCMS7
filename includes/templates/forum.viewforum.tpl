@@ -36,9 +36,9 @@
 		{/if}
 	</tr>
 </table>
-{if $rows > $number_of_threads}
+{if $rows > $settings.numofthreads}
 	<div align='center' style='margin-top:5px;margin-bottom:5px;'>
-		{makepagenav start=$rowstart count=$number_of_threads total=$rows range=$settings.navbar_range link=$pagenav_url}
+		{makepagenav start=$rowstart count=$settings.numofthreads total=$rows range=$settings.navbar_range link=$pagenav_url}
 	</div>
 {else}
 	<br />
@@ -117,7 +117,7 @@
 							{$locale.412}
 							(
 							{section name=rs start=1 loop=$threads[id].thread_pages step=1}
-								<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;rowstart={math equation='(x-1)*y' x=$smarty.section.rs.index y=$number_of_threads}'>{$smarty.section.rs.index}</a>
+								<a href='viewthread.php?forum_id={$forum_id}&amp;thread_id={$threads[id].thread_id}&amp;rowstart={math equation='(x-1)*y' x=$smarty.section.rs.index y=$settings.numofthreads}'>{$smarty.section.rs.index}</a>
 							{/section}
 							)
 							{if $threads[id].is_poll}
@@ -204,9 +204,9 @@
 			</select>
 		</td>
 		<td align='center' class='tbl'>
-			{if $rows > $number_of_threads}
+			{if $rows > $settings.numofthreads}
 			<div align='center' style='margin-top:5px;margin-bottom:5px;'>
-				{makepagenav start=$rowstart count=$number_of_threads total=$rows range=$settings.navbar_range link=$pagenav_url}
+				{makepagenav start=$rowstart count=$settings.numofthreads total=$rows range=$settings.navbar_range link=$pagenav_url}
 			</div>
 			{/if}
 		</td>
