@@ -128,14 +128,15 @@
 							{$locale.533}:
 						</td>
 						<td class='tbl1'>
+							{assign var=show_prefix value=0}
 							<select name="prefix" class="textbox" style="width:125px;" onChange="update_prefix(this);">
 								<option value="" {if $prefix == ""}selected="selected"{/if}>{$locale.534}</option>
 							{foreach from=$prefixes item=post_prefix}
 								<option value="{$post_prefix}" {if $prefix == $post_prefix}selected="selected"{/if}>{$post_prefix}</option>
 							{/foreach}
-								<option value="?" {if $prefix == "?"}selected="selected"{/if}>{$locale.535}</option>
+								<option value="?" {if $prefix == "?"}selected="selected"{assign var=show_prefix value=1}{/if}>{$locale.535}</option>
 							</select>
-							<input type='text' id="new_prefix" name='new_prefix' value='{$new_prefix}' class='textbox' maxlength='255' style='width: 250px' disabled="disabled" />
+							<input type='text' id="new_prefix" name='new_prefix' value='{$new_prefix}' class='textbox' maxlength='255' style='width: 250px;{if $show_prefix ==0}display:none;{/if}' />
 						</td>
 					</tr>
 					<tr>
@@ -265,7 +266,7 @@
 							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 								<input type='submit' name='upload' value='{$locale.471}' class='button' />
 							{else}
-								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
+								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='get_hoteditor_data("message");' />
 							{/if}
 						</td>
 					</tr>
@@ -379,8 +380,8 @@
 					<input type='submit' name='preview' value='{$button_preview}' class='button' />
 					<input type='submit' name='save' value='{$button_save}' class='button' />
 				{else}
-					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
-					<input type='submit' name='save' value='{$button_save}' class='button' onclick='document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
+					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='get_hoteditor_data("message");' />
+					<input type='submit' name='save' value='{$button_save}' class='button' onclick='get_hoteditor_data("message");' />
 				{/if}
 				<input type='hidden' name='post_author' value='{$post_author}' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
@@ -412,10 +413,10 @@ function fpm_toggle_poll() {
 function update_prefix(el) {
 	if ( el.value == "?") {
 		document.getElementById('new_prefix').value = "[?]";
-		document.getElementById('new_prefix').disabled = false;
+		document.getElementById('new_prefix').style.display = 'inline';
 		document.getElementById('new_prefix').focus = true;
 	} 	else {
-		document.getElementById('new_prefix').disabled = true;
+		document.getElementById('new_prefix').style.display = 'none';
 		if ( el.value == "") {
 			document.getElementById('new_prefix').value = "";
 		} else {
