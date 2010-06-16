@@ -129,11 +129,11 @@
 						</td>
 						<td class='tbl1'>
 							<select name="prefix" class="textbox" style="width:125px;" onChange="javascript:update_prefix(this);">
-								<option value="">{$locale.534}</option>
+								<option value="" {if $prefix == ""}selected="selected"{/if}>{$locale.534}</option>
 							{foreach from=$prefixes item=post_prefix}
 								<option value="{$post_prefix}" {if $prefix == $post_prefix}selected="selected"{/if}>{$post_prefix}</option>
 							{/foreach}
-								<option value="?">{$locale.535}</option>
+								<option value="?" {if $prefix == "?"}selected="selected"{/if}>{$locale.535}</option>
 							</select>
 							<input type='text' id="new_prefix" name='new_prefix' value='{$new_prefix}' class='textbox' maxlength='255' style='width: 250px' disabled="disabled" />
 						</td>

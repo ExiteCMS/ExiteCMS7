@@ -1048,7 +1048,11 @@ if ($action == "edit" && !$user_can_edit) {
 				{
 					// update the subject, set the prefixes
 					$subject = trim($matches[3]);
-					$variables['prefix'] = $matches[2];
+					if (in_array($matches[2], $variables['prefixes'])) {
+						$variables['prefix'] = $matches[2];
+					} else {
+						$variables['prefix'] = '?';
+					}
 					$variables['new_prefix'] = '['.$matches[2].']';
 				}
 				if ($action != "newthread" && strtolower(substr($subject,0,3)) != "re:") {
