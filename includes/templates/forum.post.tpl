@@ -128,7 +128,7 @@
 							{$locale.533}:
 						</td>
 						<td class='tbl1'>
-							<select name="prefix" class="textbox" style="width:125px;" onChange="javascript:update_prefix(this);">
+							<select name="prefix" class="textbox" style="width:125px;" onChange="update_prefix(this);">
 								<option value="" {if $prefix == ""}selected="selected"{/if}>{$locale.534}</option>
 							{foreach from=$prefixes item=post_prefix}
 								<option value="{$post_prefix}" {if $prefix == $post_prefix}selected="selected"{/if}>{$post_prefix}</option>
@@ -149,7 +149,7 @@
 					{if $org_message|default:"" != ""}
 					<tr>
 						<td align='right' width='145' class='tbl2' valign='top' style='white-space:nowrap'>
-							<input type='submit' class='button' name='toggle_msg' value='{$locale.474}' onclick='javascript:flipDiv("org_message");return false;' />
+							<input type='submit' class='button' name='toggle_msg' value='{$locale.474}' onclick='flipDiv("org_message");return false;' />
 						</td>
 						<td class='tbl1'>
 							<div id='org_message' class='textbox' style='display:none'>{$org_message|stripinput|nl2br}<br /></div>
@@ -193,7 +193,7 @@
 					{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 					<tr>
 						<td align='right' width='145' valign='top' class='tbl2'>
-							<input type='button' name='toggle' class='button' value='{$locale.467}' onclick='javascript:loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
+							<input type='button' name='toggle' class='button' value='{$locale.467}' onclick='loadSmileys("smileys", "smileys_loaded", "{$smarty.const.BASEDIR}includes/ajax.response.php?request=smileys&parms=message");return false;' />
 						</td>
 						<td class='tbl1'>
 							<div id='smileys' style='display:none'><img src='{$smarty.const.THEME}images/ajax-loader.gif' title='' alt='' /></div>
@@ -265,7 +265,7 @@
 							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 								<input type='submit' name='upload' value='{$locale.471}' class='button' />
 							{else}
-								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='javascript:get_hoteditor_data("message");' />
+								<input type='submit' name='upload' value='{$locale.471}' class='button' onclick='document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
 							{/if}
 						</td>
 					</tr>
@@ -308,7 +308,7 @@
 							{if $settings.hoteditor_enabled == 0 || $userdata.user_hoteditor == 0}
 								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' />
 							{else}
-								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' onclick='javascript:get_hoteditor_data("message");' />
+								<input type='submit' name='fpm[add_options]' class='button' value='{$locale.FPM_104}' onclick='get_hoteditor_data("message");' />
 							{/if}
 						{/if}
 					</td>
@@ -379,8 +379,8 @@
 					<input type='submit' name='preview' value='{$button_preview}' class='button' />
 					<input type='submit' name='save' value='{$button_save}' class='button' />
 				{else}
-					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='javascript:document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
-					<input type='submit' name='save' value='{$button_save}' class='button' onclick='javascript:document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
+					<input type='submit' name='preview' value='{$button_preview}' class='button' onclick='document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
+					<input type='submit' name='save' value='{$button_save}' class='button' onclick='document.getElementById("new_prefix").disabled = false;get_hoteditor_data("message");' />
 				{/if}
 				<input type='hidden' name='post_author' value='{$post_author}' />
 				<input type='hidden' name='random_id' value='{$random_id}' />
