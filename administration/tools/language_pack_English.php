@@ -2590,7 +2590,6 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['488'] = " Remove uploaded attachment:";
 		$localestrings['500'] = "You cannot edit this post.";
 		$localestrings['501'] = "You cannot move a post that has a poll attached to it.";
-		$localestrings['502'] = "You cannot edit this post. The thread has been locked by a moderator";
 		$localestrings['530'] = "Search Forum";
 		$localestrings['531'] = "Search Keyword(s)";
 		$localestrings['532'] = "Search";
@@ -2599,6 +2598,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['535'] = "Other prefix";
 		$localestrings['550'] = "Thread Reply Notification - {THREAD_SUBJECT}";
 		$localestrings['551'] = "Hello {USERNAME},\n\nA reply has been posted in the forum thread '{THREAD_SUBJECT}' which you are tracking at {SITE_NAME}. You can use the following link to view the reply:\n\n{THREAD_URL}\n\nIf you no longer wish to watch this thread you can click the 'Tracking Off' button located at the bottom of the thread.\n\nRegards,\n{SITE_WEBMASTER}.";
+		$localestrings['552'] = "You cannot edit this post. The thread has been locked by a moderator";
 		load_localestrings($localestrings, LP_LOCALE, "forum.post", $step);
 
 		$localestrings = array();
@@ -3846,7 +3846,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "us|gb|ca|au|nz|in|za|ir|mt|hk|pr");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
-if (!defined('LP_DATE')) define('LP_DATE', "1276679652");
+if (!defined('LP_DATE')) define('LP_DATE', "1276710487");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

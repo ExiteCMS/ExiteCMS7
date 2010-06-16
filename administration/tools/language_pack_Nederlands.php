@@ -2590,7 +2590,6 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['488'] = " Verwijder geuploade bijlage:";
 		$localestrings['500'] = "U kunt dit bericht niet wijzigen.";
 		$localestrings['501'] = "U kunt geen bericht verplaatsen waaraan een poll is gekoppeld.";
-		$localestrings['502'] = "U kunt dit bericht niet wijzigen. Deze topic is gesloten door een moderator.";
 		$localestrings['530'] = "Zoeken";
 		$localestrings['531'] = "Zoekwoord(en)";
 		$localestrings['532'] = "Zoeken";
@@ -2599,6 +2598,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['535'] = "Nieuwe prefix";
 		$localestrings['550'] = "Notificatie van anwoord op topic - {THREAD_SUBJECT}";
 		$localestrings['551'] = "Hallo {USERNAME},\n\nEr is een antwoord geplaatst in de forum topic '{THREAD_SUBJECT}' welke u volgt op {SITE_NAME}. U kunt de volgende link gebruiken om het antwoord te lezen:\n\n{THREAD_URL}\n\nAls u dit topic niet langer wil volgen, klik dan op de 'Stop het volgen van dit topic' knop die u onderaan het topic scherm kunt vinden.\n\nMet vriendelijke groeten,\n{SITE_WEBMASTER}.";
+		$localestrings['552'] = "U kunt dit bericht niet wijzigen. Deze topic is gesloten door een moderator.";
 		load_localestrings($localestrings, LP_LOCALE, "forum.post", $step);
 
 		$localestrings = array();
@@ -3846,7 +3846,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
-if (!defined('LP_DATE')) define('LP_DATE', "1276679659");
+if (!defined('LP_DATE')) define('LP_DATE', "1276710492");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+

@@ -618,7 +618,7 @@ if (isset($_POST['preview'])) {
 
 // bail out if an edit is requested, but no edit rights have been detected
 if ($action == "edit" && !$user_can_edit) {
-	resultdialog($locale['408'], $locale['502']);
+	resultdialog($locale['408'], $locale['552']);
 } elseif (isset($_POST["cancel"])) {
 	// post cancelled?
 	resultdialog($locale['418'], $locale['439']);
