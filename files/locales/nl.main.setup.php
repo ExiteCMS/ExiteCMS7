@@ -2,8 +2,8 @@
 // ----------------------------------------------------------
 // locale       : English
 // locale name  : main.setup
-// generated on : Tue Jun 8 2010, 22:36:03 CEST
-// translators  : ExiteCMS team
+// generated on : Wed Jun 16 2010, 11:14:19 CEST
+// translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['400'] = "Selecteer de standaard taal voor uw site";
 $locale['401'] = "Kan geen verbinding maken met de database.";

@@ -61,7 +61,7 @@ require_once PATH_INCLUDES."photo_functions_include.php";
 
 // function to validate the contents of the $_POST array
 function validatepost() {
-	global $locale;
+	global $locale, $fdata;
 
 	// we need both a subject and a message body
 	if ($_POST['subject'] == "" || $_POST['message'] == "")
@@ -69,6 +69,11 @@ function validatepost() {
 
 	// make sure we have a valid prefix
 	if ($_POST['new_prefix'] == '[?]') $_POST['new_prefix'] = '';
+
+	// is a prefix required?
+	if (!empty($fdata['forum_prefixes']) && empty($_POST['new_prefix'])) {
+		return $locale['475'];
+	}
 
 	return "";
 }
