@@ -79,7 +79,7 @@ function validatepost() {
 }
 
 // function to add or replace the prefix in the subject
-function subject_prefix($subject, $prefix) {
+function add_prefix($subject, $prefix) {
 
 	// was a prefix defined
 	if (!empty($prefix)) {
@@ -496,7 +496,7 @@ if (isset($_POST['preview'])) {
 			if ($preview['post_subject'] == "" && isset($tdata) && is_array($tdata)) {
 				$preview['post_subject'] = "Re: ".$tdata['thread_subject'];
 			} else {
-				$preview['post_subject'] = subject_prefix($preview['post_subject'], trim(stripinput($_POST['new_prefix'])));
+				$preview['post_subject'] = add_prefix($preview['post_subject'], trim(stripinput($_POST['new_prefix'])));
 			}
 			$preview['post_message'] = trim(stripmessageinput(censorwords($_POST['message'])));
 			if ($preview['post_message'] == "") {
@@ -653,10 +653,14 @@ if ($action == "edit" && !$user_can_edit) {
 					$update_notify = isset($update_notify) ? $update_notify : " ";
 					$smileys = isset($_POST['disable_smileys']) ? "0" : "1";
 					$subject = trim(stripinput(censorwords($_POST['subject'])));
-					if ($subject == "") {
-						$subject = "Re: ".$tdata['thread_subject'];
+					if (isset($tdata) && strtolower(substr($subject,0,3)) != "re:") {
+						if ($subject == "") {
+							$subject = "Re: ".$tdata['thread_subject'];
+						} else {
+							$subject = "Re: ".$subject;
+						}
 					}
-					$subject = subject_prefix($subject, stripinput($_POST['new_prefix']));
+					$subject = add_prefix($subject, stripinput($_POST['new_prefix']));
 					$message = trim(stripmessageinput(censorwords($_POST['message'])));
 					if ($action == 'edit') {
 						// update the post record
@@ -1049,18 +1053,6 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['org_message'] = isset($_POST['org_message']) ? $_POST['org_message'] : "";
 			} elseif ($post_id > 0 || $reply_id > 0) {
 				$subject = $pdata['post_subject'];
-				// split the subject to check for a prefix
-				if (preg_match('~(.*)\[(.*)\](.*)~', $subject, $matches))
-				{
-					// update the subject, set the prefixes
-					$subject = trim($matches[3]);
-					if (in_array($matches[2], $variables['prefixes'])) {
-						$variables['prefix'] = $matches[2];
-					} else {
-						$variables['prefix'] = '?';
-					}
-					$variables['new_prefix'] = '['.$matches[2].']';
-				}
 				if ($action != "newthread" && strtolower(substr($subject,0,3)) != "re:") {
 					$variables['subject'] = 'Re: '.$subject;
 				} else {
@@ -1097,6 +1089,20 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['is_notified'] = false;
 				$bbcolor = "";
 			}
+			// deal with a subject prefix
+			if (preg_match('~(.*)\[(.*)\](.*)~', $variables['subject'], $matches))
+			{
+				// update the subject, set the prefixes
+				$variables['subject'] = trim($matches[3]);
+				if (in_array($matches[2], $variables['prefixes'])) {
+					$variables['prefix'] = $matches[2];
+				} else {
+					$variables['prefix'] = '?';
+				}
+				$variables['new_prefix'] = '['.$matches[2].']';
+			}
+
+_debug($variables['subject']);
 			// process attachments
 			if ($settings['attachments'] == "1" && $fdata['forum_attach'] == "1") {
 				$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE post_id='$post_id' ORDER BY attach_id");
