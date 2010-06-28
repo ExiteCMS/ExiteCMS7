@@ -657,7 +657,9 @@ if ($action == "edit" && !$user_can_edit) {
 						if ($subject == "") {
 							$subject = "Re: ".$tdata['thread_subject'];
 						} else {
-							$subject = "Re: ".$subject;
+							if ($action != "edit") {
+								$subject = "Re: ".$subject;
+							}
 						}
 					}
 					$subject = add_prefix($subject, stripinput($_POST['new_prefix']));
@@ -1102,7 +1104,6 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['new_prefix'] = '['.$matches[2].']';
 			}
 
-_debug($variables['subject']);
 			// process attachments
 			if ($settings['attachments'] == "1" && $fdata['forum_attach'] == "1") {
 				$result = dbquery("SELECT * FROM ".$db_prefix."forum_attachments WHERE post_id='$post_id' ORDER BY attach_id");
