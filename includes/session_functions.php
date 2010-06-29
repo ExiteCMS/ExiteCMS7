@@ -47,7 +47,7 @@ if (isset($_GET['action']) && $_GET['action'] == "fancyupload" && isset($_GET[$s
 session_start();
 
 // update the timestamp of the session cookie, we want expiry after the last page load, not after the session has started!
-setcookie(ini_get("session.name"), session_id(), time()+ini_get("session.gc_maxlifetime"), "/");
+setcookie(ini_get("session.name"), session_id(), time()+$settings['session_gc_maxlifetime'], "/");
 
 // store the last_url cookie if found
 if (isset($_COOKIE['last_url']) && (isURL($_COOKIE['last_url']) || isURL($settings['siteurl'].$_COOKIE['last_url'])) && $_COOKIE['last_url'] != BASEDIR."setuser.php?login=yes") {

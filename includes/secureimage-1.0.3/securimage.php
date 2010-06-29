@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA<br /><br />
- * 
- * Any modifications to the library should be indicated clearly in the source code 
+ *
+ * Any modifications to the library should be indicated clearly in the source code
  * to inform users that the changes are not a part of the original software.<br /><br />
  *
  * If you found this script useful, please take a quick moment to rate it.<br />
@@ -120,14 +120,14 @@ class Securimage {
    */
   var $charset = 'ABCDEFGHKLMNPRSTUVWYZ23456789';
   //var $charset = '0123456789';
-  
+
   /**
    * Create codes using this word list
    *
    * @var string  The path to the word list to use for creating CAPTCHA codes
    */
   var $wordlist_file = '';
-  
+
   /**
    * True to use a word list file instead of a random code
    *
@@ -362,6 +362,15 @@ class Securimage {
    */
   var $audio_path = './audio/';
 
+  /**
+   * Captcha expiry timeout in seconds.
+   *
+   * @since 1.0.3
+   * @var string
+   */
+  var $timeout = 300;
+
+
 
   //END USER CONFIGURATION
   //There should be no need to edit below unless you really know what you are doing.
@@ -422,7 +431,7 @@ class Securimage {
     if ( session_id() == '' ) { // no session has been started yet, which is needed for validation
 	  die('no session available!');
     }
-    
+
 	// we use random colors to make it even more difficult
 	$this->image_bg_color = $this->getHexColor();
     $this->line_color = $this->getHexColor();
@@ -444,7 +453,7 @@ class Securimage {
 	}
 	return $clr;
   }
-   
+
   /**
    * Generate a code and output the image to the browser.
    *
@@ -692,15 +701,15 @@ class Securimage {
   function createCode()
   {
     $this->code = false;
-    
+
     if ($this->use_wordlist && is_readable($this->wordlist_file)) {
       $this->code = $this->readCodeFromFile();
     }
-    
+
     if ($this->code == false) {
       $this->code = $this->generateCode($this->code_length);
     }
-    
+
     $this->saveData();
   }
 
@@ -720,7 +729,7 @@ class Securimage {
     }
     return $code;
   }
-  
+
   /**
    * Reads a word list file to get a code
    *
@@ -732,23 +741,23 @@ class Securimage {
   {
     $fp = @fopen($this->wordlist_file, 'r');
     if (!$fp) return false;
-    
+
     $fsize = filesize($this->wordlist_file);
     if ($fsize < 32) return false; // too small of a list to be effective
-    
+
     if ($fsize < 128) {
       $max = $fsize; // still pretty small but changes the range of seeking
     } else {
       $max = 128;
     }
-    
+
     fseek($fp, rand(0, $fsize - $max), SEEK_SET);
     $data = fread($fp, 128); // read a random 128 bytes from file
     fclose($fp);
-    
+
     $start = strpos($data, "\n", rand(0, 100)) + 1; // random start position
     $end   = strpos($data, "\n", $start) - 1; // find end of word
-    
+
     return strtolower(substr($data, $start, $end - $start)); // return substring in 128 bytes
   }
 
@@ -821,6 +830,7 @@ class Securimage {
   function saveData()
   {
     $_SESSION['securimage_code_value'] = strtolower($this->code);
+    $_SESSION['securimage_code_timestamp'] = time();
   }
 
   /**
@@ -833,8 +843,12 @@ class Securimage {
   {
     if ( isset($_SESSION['securimage_code_value']) && !empty($_SESSION['securimage_code_value']) ) {
       if ( $_SESSION['securimage_code_value'] == strtolower(trim($this->code_entered)) ) {
-        $this->correct_code = true;
-        $_SESSION['securimage_code_value'] = '';
+        if (isset($_SESSION['securimage_code_timestamp']) && (time() - $_SESSION['securimage_code_timestamp']) < $this->timeout) {
+          $this->correct_code = true;
+          $_SESSION['securimage_code_value'] = '';
+        } else {
+          $this->correct_code = false;
+        }
       } else {
         $this->correct_code = false;
       }
@@ -905,7 +919,7 @@ class Securimage {
       $file['sample_rate']     = $data['SampleRate'];
       $file['size']            = $data['ChunkSize'] + 8;
       $file['data']            = $body;
-      
+
       if ( ($p = strpos($file['data'], 'LIST')) !== false) {
         // If the LIST data is not at the end of the file, this will probably break your sound file
         $info         = substr($file['data'], $p + 4, 8);
@@ -913,7 +927,7 @@ class Securimage {
         $file['data'] = substr($file['data'], 0, $p);
         $file['size'] = $file['size'] - (strlen($file['data']) - $p);
       }
-      
+
       $files[] = $file;
       $data    = null;
       $header  = null;

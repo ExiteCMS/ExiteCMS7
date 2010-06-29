@@ -150,8 +150,17 @@
 		<td align='right' valign='bottom' class='forum'>
 			{buttonlink name=$locale.415 link="tracking.php"}
 			{buttonlink name=$locale.414 link="viewposts.php"}<br />
-			<form name='searchform' method='post' style="margin-top:2px;" action='{$smarty.const.BASEDIR}search.php?stype=f'>
+			<form name='searchform' method='post' style="margin-top:2px;" action='{$smarty.const.BASEDIR}search.php?action=search'>
 				<input type='text' name='stext' class='textbox' style='width:150px' />
+				<input type='hidden' name='boolean' value='1' />
+				<input type='hidden' name='qtype' value='AND' />
+				<input type='hidden' name='search_id' value='3.2' />
+				<input type='hidden' name='sortby' value='datestamp' />
+				<input type='hidden' name='order' value='0' />
+				<input type='hidden' name='limit' value='0' />
+				<input type='hidden' name='datelimit' value='0' />
+				<input type='hidden' name='contentfilter_users' value='0' />
+				<input type='hidden' name='contentfilter_forums' value='0' />
 				<input type='submit' name='search' value='{$locale.550}' class='button' />
 			</form>
 		</td>

@@ -79,6 +79,33 @@ function validatepost() {
 }
 
 // function to add or replace the prefix in the subject
+function strip_prefix($subject) {
+
+	$result = array('subject' => '', 'prefix' => '');
+
+	// check for a reply, and strip the reply prefix
+	if (strtolower(substr($subject,0,3))=="re:") {
+		$result['subject'] = "Re: ";
+		$subject = trim(substr($subject,3));
+	}
+
+	// split the subject to check for a prefix
+	if (preg_match('~(.*?)\[(.*?)\](.*)~i', $subject, $matches)) {
+		// a match must be at the beginning
+		if (empty($matches[1])) {
+			$result['prefix'] .= $matches[2];
+			$result['subject'] .= trim($matches[3]);
+		} else {
+			$result['subject'] .= $matches[0];
+		}
+	} else {
+		$result['subject'] .= $subject;
+	}
+
+	return $result;
+}
+
+// function to add or replace the prefix in the subject
 function add_prefix($subject, $prefix) {
 
 	// was a prefix defined
@@ -87,22 +114,23 @@ function add_prefix($subject, $prefix) {
 		$prefix = rtrim(ltrim(trim($prefix),'['),']');
 
 		// split the subject to check for a prefix
-		if (!preg_match('~(.*)\[(.*)\](.*)~', $subject, $matches))
-		{
-			// was this a reply?
-			if (strtolower(substr($subject,0,3)) == 're:') {
-				$subject = 'Re: [' . $prefix . '] ' . substr($subject,4);
+		if (!preg_match('~(re:)(.*?)\[(.*?)\](.*)~i', $subject, $matches)) {
+
+			if (preg_match('~(.*?)\[(.*?)\](.*)~i', $subject, $matches)) {
+				if (empty($matches[1])) {
+					$subject = '[' . $prefix . '] ' . trim($matches[3]);
+				} else {
+					$subject = '[' . $prefix . '] ' . $subject;
+				}
 			} else {
-				$subject = '[' . $prefix . '] ' . $subject;
+				if (preg_match('~(re:)(.*)~i', $subject, $matches)) {
+					$subject = 'Re: [' . $prefix . '] ' . trim($matches[2]);
+				} else {
+					$subject = '[' . $prefix . '] ' . $subject;
+				}
 			}
 		} else {
-			// remove spaces from the matches
-			foreach($matches as $key => $value) {
-				$matches[$key] = trim($value);
-			}
-			unset($matches[0]);
-			$matches[2] = '[' . trim($prefix) . ']';
-			$subject = trim(implode(' ', $matches));
+			$subject = 'Re: [' . $prefix . '] ' . trim($matches[4]);
 		}
 	}
 
@@ -494,7 +522,7 @@ if (isset($_POST['preview'])) {
 			$preview['post_showsig'] = isset($_POST['show_sig']) ? "1" : "0";
 			$preview['post_subject'] = trim(stripinput(censorwords($_POST['subject'])));;
 			if ($preview['post_subject'] == "" && isset($tdata) && is_array($tdata)) {
-				$preview['post_subject'] = "Re: ".$tdata['thread_subject'];
+				$preview['post_subject'] = add_prefix("Re: ".$tdata['thread_subject'], trim(stripinput($_POST['new_prefix'])));
 			} else {
 				$preview['post_subject'] = add_prefix($preview['post_subject'], trim(stripinput($_POST['new_prefix'])));
 			}
@@ -667,13 +695,13 @@ if ($action == "edit" && !$user_can_edit) {
 					if ($action == 'edit') {
 						// update the post record
 						if ($_POST['message'] == $_POST['org_message'])
-							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='$subject', post_smileys='$smileys' WHERE post_id='$post_id'");
+							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".mysql_real_escape_string($subject)."', post_smileys='$smileys' WHERE post_id='$post_id'");
 						else {
-							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='$subject', post_message='$message', post_smileys='$smileys', post_edituser='".$userdata['user_id']."', post_edittime='".time()."' WHERE post_id='$post_id'");
+							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".mysql_real_escape_string($subject)."', post_message='".mysql_real_escape_string($message)."', post_smileys='$smileys', post_edituser='".$userdata['user_id']."', post_edittime='".time()."' WHERE post_id='$post_id'");
 						}
 						$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."posts WHERE thread_id='$thread_id' ORDER BY post_datestamp ASC LIMIT 1"));
 						if ($data['post_id'] == $post_id) {
-							$result = dbquery("UPDATE ".$db_prefix."threads SET thread_subject='$subject' WHERE thread_id='$thread_id'");
+							$result = dbquery("UPDATE ".$db_prefix."threads SET thread_subject='".mysql_real_escape_string($subject)."' WHERE thread_id='$thread_id'");
 						}
 						// flag the forum and the thread as updated
 						$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".time()."', forum_lastuser='".$userdata['user_id']."' WHERE forum_id='$forum_id'");
@@ -818,7 +846,7 @@ if ($action == "edit" && !$user_can_edit) {
 						}
 						rename(PATH_ATTACHMENTS.$attachment['attach_tmp'], PATH_ATTACHMENTS.$attachname);
 						chmod(PATH_ATTACHMENTS.$attachname,0664);
-						$result = dbquery("INSERT INTO ".$db_prefix."forum_attachments (thread_id, post_id, attach_name, attach_realname, attach_comment, attach_ext, attach_size) VALUES ('$thread_id', '$post_id', '$attachname', '".$attachment['attach_name']."', '".$attachment['attach_comment']."', '$attachext', '".$attachment['attach_size']."')");
+						$result = dbquery("INSERT INTO ".$db_prefix."forum_attachments (thread_id, post_id, attach_name, attach_realname, attach_comment, attach_ext, attach_size) VALUES ('$thread_id', '$post_id', '".mysql_real_escape_string($attachname)."', '".mysql_real_escape_string($attachment['attach_name'])."', '".mysql_real_escape_string($attachment['attach_comment'])."', '$attachext', '".$attachment['attach_size']."')");
 					}
 				}
 			}
@@ -1055,7 +1083,7 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['org_message'] = isset($_POST['org_message']) ? $_POST['org_message'] : "";
 			} elseif ($post_id > 0 || $reply_id > 0) {
 				$subject = $pdata['post_subject'];
-				if ($action != "newthread" && strtolower(substr($subject,0,3)) != "re:") {
+				if (!in_array($action, array("edit","newthread")) && strtolower(substr($subject,0,3)) != "re:") {
 					$variables['subject'] = 'Re: '.$subject;
 				} else {
 					$variables['subject'] = $subject;
@@ -1092,16 +1120,21 @@ if ($action == "edit" && !$user_can_edit) {
 				$bbcolor = "";
 			}
 			// deal with a subject prefix
-			if (preg_match('~(.*)\[(.*)\](.*)~', $variables['subject'], $matches))
-			{
-				// update the subject, set the prefixes
-				$variables['subject'] = trim($matches[3]);
-				if (in_array($matches[2], $variables['prefixes'])) {
-					$variables['prefix'] = $matches[2];
+			$sparray = strip_prefix($variables['subject']);
+
+			$variables['subject'] = $sparray['subject'];
+			// check if it's a custom prefix
+			if (in_array($sparray['prefix'],$variables['prefixes'])) {
+				$variables['prefix'] = $sparray['prefix'];
+				$variables['new_prefix'] = '['.$sparray['prefix'].']';
+			} else {
+				if (empty($sparray['prefix'])) {
+					$variables['prefix'] = '';
+					$variables['new_prefix'] = '[?]';
 				} else {
 					$variables['prefix'] = '?';
+					$variables['new_prefix'] = '['.$sparray['prefix'].']';
 				}
-				$variables['new_prefix'] = '['.$matches[2].']';
 			}
 
 			// process attachments
