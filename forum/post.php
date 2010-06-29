@@ -1119,21 +1119,23 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['is_notified'] = false;
 				$bbcolor = "";
 			}
-			// deal with a subject prefix
-			$sparray = strip_prefix($variables['subject']);
+			// do we need to deal with a subject prefix
+			if (!isset($variables['prefix'])) {
+				$sparray = strip_prefix($variables['subject']);
 
-			$variables['subject'] = $sparray['subject'];
-			// check if it's a custom prefix
-			if (in_array($sparray['prefix'],$variables['prefixes'])) {
-				$variables['prefix'] = $sparray['prefix'];
-				$variables['new_prefix'] = '['.$sparray['prefix'].']';
-			} else {
-				if (empty($sparray['prefix'])) {
-					$variables['prefix'] = '';
-					$variables['new_prefix'] = '[?]';
-				} else {
-					$variables['prefix'] = '?';
+				$variables['subject'] = $sparray['subject'];
+				// check if it's a custom prefix
+				if (in_array($sparray['prefix'],$variables['prefixes'])) {
+					$variables['prefix'] = $sparray['prefix'];
 					$variables['new_prefix'] = '['.$sparray['prefix'].']';
+				} else {
+					if (empty($sparray['prefix'])) {
+						$variables['prefix'] = '';
+						$variables['new_prefix'] = '[?]';
+					} else {
+						$variables['prefix'] = '?';
+						$variables['new_prefix'] = '['.$sparray['prefix'].']';
+					}
 				}
 			}
 
