@@ -214,6 +214,7 @@ if (isset($_POST['save_cat'])) {
 	$forum_banners = $_POST['forum_banners'];
 	$forum_attach = isset($_POST['forum_attach'])?"1":"0";
 	$forum_attachtypes = stripinput($_POST['forum_attachtypes']);
+	$forum_prefix = isset($_POST['forum_prefix'])?"1":"0";
 	$forum_prefixes = stripinput($_POST['forum_prefixes']);
 	if ($action == "edit" && $t == "forum") {
 		// check if the forum access group has changed.
@@ -239,7 +240,7 @@ if (isset($_POST['save_cat'])) {
 			}
 		}
 		// update the forum record
-		$result = dbquery("UPDATE ".$db_prefix."forums SET forum_name='".mysql_real_escape_string($forum_name)."', forum_cat='$forum_cat', forum_description='".mysql_real_escape_string($forum_description)."', forum_access='$forum_access', forum_posting='$forum_posting', forum_modgroup='$forum_modgroup', forum_attach='$forum_attach', forum_attachtypes='$forum_attachtypes', forum_prefixes='".mysql_real_escape_string($forum_prefixes)."', forum_rulespage='$forum_rulespage', forum_banners='$forum_banners' WHERE forum_id='$forum_id'");
+		$result = dbquery("UPDATE ".$db_prefix."forums SET forum_name='".mysql_real_escape_string($forum_name)."', forum_cat='$forum_cat', forum_description='".mysql_real_escape_string($forum_description)."', forum_access='$forum_access', forum_posting='$forum_posting', forum_modgroup='$forum_modgroup', forum_attach='$forum_attach', forum_attachtypes='$forum_attachtypes', forum_prefix='$forum_prefix', forum_prefixes='".mysql_real_escape_string($forum_prefixes)."', forum_rulespage='$forum_rulespage', forum_banners='$forum_banners' WHERE forum_id='$forum_id'");
 		redirect(FUSION_SELF.$aidlink."&status=savefe");
 	} else {
 		if ($forum_name != "") {
@@ -247,7 +248,7 @@ if (isset($_POST['save_cat'])) {
 			$forum_order = isNum($_POST['forum_order']) ? $_POST['forum_order'] : "";
 			if(!$forum_order) $forum_order=dbfunction("MAX(forum_order)", "forums", "forum_cat='$forum_cat'")+1;
 			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='$forum_cat' AND forum_order>='$forum_order'");
-			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_prefixes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '".mysql_real_escape_string($forum_prefixes)."', '$forum_rulespage', '$forum_banners', '0', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_prefix, forum_prefixes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '$forum_prefix', '".mysql_real_escape_string($forum_prefixes)."', '$forum_rulespage', '$forum_banners', '0', '0')");
 			redirect(FUSION_SELF.$aidlink."&status=savefu");
 		}
 		redirect(FUSION_SELF.$aidlink."&status=saveer");
@@ -320,6 +321,7 @@ if (isset($_POST['save_cat'])) {
 			$forum_banners = $data['forum_banners'];
 			$forum_attach = $data['forum_attach']?true:false;
 			$forum_attachtypes = $data['forum_attachtypes'];
+			$forum_prefix = $data['forum_prefix'];
 			$forum_prefixes = $data['forum_prefixes'];
 			$forum_title = $locale['422'];
 			$forum_action = FUSION_SELF.$aidlink."&amp;action=edit&amp;forum_id=".$data['forum_id']."&amp;t=forum";
@@ -345,6 +347,7 @@ if (isset($_POST['save_cat'])) {
 		$forum_banners = 1;
 		$forum_attach = ($settings['attachments'] == 1);
 		$forum_attachtypes = $settings['attachtypes'];
+		$forum_prefix = 0;
 		$forum_prefixes = "";
 		$forum_title = $locale['421'];
 		$forum_action = FUSION_SELF.$aidlink;
@@ -419,6 +422,7 @@ if (isset($_POST['save_cat'])) {
 		$variables['forum_order'] = $forum_order;
 		$variables['forum_attach'] = $forum_attach;
 		$variables['forum_attachtypes'] = $forum_attachtypes;
+		$variables['forum_prefix'] = $forum_prefix;
 		$variables['forum_prefixes'] = $forum_prefixes;
 		$variables['forum_rulespage'] = $forum_rulespage;
 		$variables['forum_banners'] = $forum_banners;

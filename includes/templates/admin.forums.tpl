@@ -64,6 +64,11 @@
 			</tr>
 			<tr>
 				<td colspan='2' class='tbl'>
+					<input type='checkbox' name='forum_prefix' value='1' onchange='togglefields("prefixes");'{if $forum_prefix} checked="checked"{/if} /> {$locale.495}
+				</td>
+			</tr>
+			<tr id='prefixes'{if !$forum_prefix} style='display:none'{/if}>
+				<td colspan='2' class='tbl'>
 					{$locale.494}
 					<br />
 					<textarea name='forum_prefixes' rows='2' cols='80' class='textbox' style='width:285px;'>{$forum_prefixes}</textarea>
@@ -144,7 +149,7 @@
 			{if $settings.attachments}
 			<tr>
 				<td colspan='2' class='tbl'>
-					<input type='checkbox' name='forum_attach' value='1' onchange='togglefields();'{if $forum_attach} checked="checked"{/if} /> {$locale.469}
+					<input type='checkbox' name='forum_attach' value='1' onchange='togglefields("attachtypes");'{if $forum_attach} checked="checked"{/if} /> {$locale.469}
 				</td>
 			</tr>
 			{/if}
@@ -166,16 +171,16 @@
 		</table>
 	</form>
 {literal}<script type='text/javascript'>
-function togglefields() {
+function togglefields(name) {
 	if(navigator.appName.indexOf('Microsoft') > -1) {
 		state = 'block';
 	} else {
 		state = 'table-row';
 	}
-    if (document.getElementById('attachtypes').style.display == 'none') {
-		document.getElementById('attachtypes').style.display = state;
+    if (document.getElementById(name).style.display == 'none') {
+		document.getElementById(name).style.display = state;
 	} else {
-		document.getElementById('attachtypes').style.display = 'none';
+		document.getElementById(name).style.display = 'none';
 	}
 }
 </script>{/literal}

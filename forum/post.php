@@ -71,7 +71,7 @@ function validatepost() {
 	if ($_POST['new_prefix'] == '[?]') $_POST['new_prefix'] = '';
 
 	// is a prefix required?
-	if (!empty($fdata['forum_prefixes']) && empty($_POST['new_prefix'])) {
+	if ($fdata['forum_prefix'] && !empty($fdata['forum_prefixes']) && empty($_POST['new_prefix'])) {
 		return $locale['475'];
 	}
 
@@ -690,7 +690,9 @@ if ($action == "edit" && !$user_can_edit) {
 							}
 						}
 					}
-					$subject = add_prefix($subject, stripinput($_POST['new_prefix']));
+					if ($fdata['forum_prefix']) {
+						$subject = add_prefix($subject, stripinput($_POST['new_prefix']));
+					}
 					$message = trim(stripmessageinput(censorwords($_POST['message'])));
 					if ($action == 'edit') {
 						// update the post record

@@ -123,7 +123,7 @@
 		<tr>
 			<td>
 				<table width='100%' border='0' cellspacing='1' cellpadding='0'>
-					<tr>
+					<tr {if $forum.forum_prefix == 0}style="display:none;"{/if}>
 						<td align='right' width='145' valign='top' class='tbl2'>
 							{$locale.533}:
 						</td>
