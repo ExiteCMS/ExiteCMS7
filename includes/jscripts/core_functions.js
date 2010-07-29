@@ -106,7 +106,7 @@ function clientSideInclude(id, url, error) {
 }
 
 // return a new AJAX object
-function AjaxObj() {
+function asyncajaxcall() {
 	var result = false;
 	if (window.XMLHttpRequest) {
 		// For Safari, Firefox, and other non-MS browsers
