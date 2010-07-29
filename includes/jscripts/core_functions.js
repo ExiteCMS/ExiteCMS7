@@ -105,6 +105,31 @@ function clientSideInclude(id, url, error) {
 	}
 }
 
+// return a new AJAX object
+function AjaxObj() {
+	var result = false;
+	if (window.XMLHttpRequest) {
+		// For Safari, Firefox, and other non-MS browsers
+		try {
+			result = new XMLHttpRequest();
+		} catch (e) {
+			result = false;
+		}
+	} else if (window.ActiveXObject) {
+		// For Internet Explorer on Windows
+		try {
+			result = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try {
+				result = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+				result = false;
+			}
+		}
+	}
+	return result;
+}
+
 // simple synchronous AJAX call, return null when it fails
 function AjaxCall(url) {
 

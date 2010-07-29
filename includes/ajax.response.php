@@ -88,6 +88,7 @@ switch ($request) {
 	case "restoreconfig":
 		// make sure we have json_encode and json_decode available
 		require_once "json_include.php";
+		header("Content-Type:application/json; charset=utf-8");
 		if (iMEMBER) {
 			// return the user record datastore
 			if (!empty($userdata['user_datastore']['clientside'])) {
@@ -103,6 +104,57 @@ switch ($request) {
 				echo json_encode(array());
 			}
 		}
+		break;
+	case "counters":
+		if (!iMEMBER) {
+			$pms = $posts = 0;
+			$pmtext = $posttext = "";
+		} else {
+			$pms = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id='".$userdata['user_id']."' AND pmindex_to_id='".$userdata['user_id']."' AND pmindex_read_datestamp = '0'");
+			if ($pms == 1) {
+				$pmtext = sprintf($locale['085'], $pms);
+			} else {
+				$pmtext = sprintf($locale['086'], $pms);
+			}
+			if ($userdata['user_posts_unread']) {
+				$result = dbquery("
+					SELECT count(*) as unread
+						FROM ".$db_prefix."posts p
+							INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id
+							INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+						WHERE ".groupaccess('f.forum_access')."
+							AND tr.user_id = '".$userdata['user_id']."'
+							AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
+							AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+								OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
+					);
+			} else {
+				$result = dbquery("
+					SELECT count(*) as unread
+						FROM ".$db_prefix."posts p
+							INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id
+							INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+						WHERE ".groupaccess('f.forum_access')."
+							AND tr.user_id = '".$userdata['user_id']."'
+							AND p.post_author != '".$userdata['user_id']."'
+							AND p.post_edituser != '".$userdata['user_id']."'
+							AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
+							AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
+								OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
+					);
+			}
+			$posts = ($result ? mysql_result($result, 0) : 0);
+			if ($posts == 1) {
+				$posttext = sprintf($locale['088'], $posts);
+			} else {
+				$posttext = sprintf($locale['089'], $posts);
+			}
+		}
+		// make sure we have json_encode and json_decode available
+		require_once "json_include.php";
+		// send the results back
+		header("Content-Type:application/json; charset=utf-8");
+		echo json_encode(array('pmcount' => $pms, 'pmtext' => $pmtext, 'postcount' => $posts, 'posttext' => $posttext));
 		break;
 	case "pm":
 		// get the number of unread PM messages for this user
@@ -210,4 +262,3 @@ if ($cleanup) {
 	// close the database connection
 	mysql_close();
 }
-?>
