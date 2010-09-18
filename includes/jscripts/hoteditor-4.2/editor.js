@@ -1924,7 +1924,7 @@ function trim(a) {
 
 var ns4 = document.layers;
 var ie4 = document.all;
-var ns6 = document.getElementById && !document.all;
+var ns6 = document.getElementById; // && !document.all;
 var steditor = 0;
 var nsx;
 var nsy;
@@ -2430,6 +2430,7 @@ function HTMLToBBCode(a) {
 			if (f.match(/<(div|span|font|strong|b|u|i|em|var|address|h1|h2|h3|h4|h5|h6|blockquote|img|ol|ul|li|a|strike|s|sub|sup|hr|table|tr|td)( ([^>]{1,}.*?)){0,1}( {0,1}){0,1}>/i)) {
 				var g = RegExp.$1;
 				var h = RegExp.$3;
+				if (!h) h = '';
 				if (h.toLowerCase().indexOf("style=") != -1 &&
 					h.toLowerCase().indexOf("font-family:") != -1 &&
 					h.toLowerCase().indexOf("face=") != -1) {

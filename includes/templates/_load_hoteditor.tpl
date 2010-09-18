@@ -136,7 +136,7 @@
 	{rdelim}
 </script>
 <style type='text/css'>@import url({$smarty.const.THEME}hoteditor/style.css);</style>
-<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2.1"></script>
+<script language="javascript" type="text/javascript" src="{$smarty.const.INCLUDES}jscripts/hoteditor-4.2/editor__0001.js?version=4.2.1.1"></script>
 {***************************************************************************}
 {* End of template                                                         *}
 {***************************************************************************}

@@ -28,6 +28,9 @@ locale_load("main.feeds");
 // define how many items we want per RSS feed
 define('ITEMS_PER_FEED', $settings['numofthreads']*2);
 
+// define the maximum length of the description field
+define('MAX_DESC_LENGTH', 10240);
+
 // check if authentication is valid. If not, reset it
 if (isset($_SERVER['PHP_AUTH_USER'])) {
 	$result = auth_validate_BasicAuthentication();
@@ -44,7 +47,7 @@ switch (strtolower($type)) {
 		if (!isset($id) || !isNum($id)) fallback(FORUM."index.php");
 		// check if the forum exists
 		$result = dbquery("SELECT * FROM ".$db_prefix."forums WHERE forum_id = '$id'");
-		if (!$result) 
+		if (!$result)
 			fallback("index.php");
 		else
 			$data = dbarray($result);
@@ -73,10 +76,13 @@ switch (strtolower($type)) {
 			WHERE p.forum_id='$id' ORDER BY post_datestamp DESC LIMIT ".ITEMS_PER_FEED
 		);
 		while ($data = dbarray($result)) {
+			// filter control characters from the message
+			$data['post_message'] = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', "", $data['post_message']);
+			// create the RSS item
 			$item = array();
 			$item['title'] = "<![CDATA[ ".$data['post_subject']." ]]>";
 			$item['link'] = $settings['siteurl']."forum/viewthread.php?forum_id=".$data['forum_id']."&amp;thread_id=".$data['thread_id']."&amp;pid=".$data['post_id']."#post_".$data['post_id'];
-			$item['description'] = "<![CDATA[ <b>".$data['user_name']." ".$locale['401']."</b> ".(strlen($data['post_message']) > 500 ? (substr($data['post_message'],0,496)." ...") : $data['post_message'])." ]]>";
+			$item['description'] = "<![CDATA[ <b>".$data['user_name']." ".$locale['401']."</b><br />".(strlen($data['post_message']) > MAX_DESC_LENGTH ? (substr($data['post_message'],0,MAX_DESC_LENGTH-4)." ...") : $data['post_message'])." ]]>";
 			// locale must be english for this to work!
 			$loc = setlocale(LC_TIME, "en_US");
 			$item['pubDate'] = strftime("%a, %d %b %G %T %z", $data['post_datestamp']);
@@ -90,13 +96,13 @@ switch (strtolower($type)) {
 	default:
 		fallback(FORUM."index.php");
 }
-
+die();
 // validate the feed selection, bail out if not correct
 if (!isset($channels) || !is_array($channels) || !isset($channel_count) || $channel_count == 0) fallback(FORUM."index.php");
 if (!isset($feeds) || !is_array($feeds) || !isset($feed_count) || $feed_count == 0) fallback(FORUM."index.php");
 
 // start building the XML file
-header("Content-type: text/xml; charset=".$settings['charset']);
+//header("Content-type: text/xml; charset=".$settings['charset']);
 echo "<?xml version=\"1.0\" encoding=\"".$settings['charset']."\"?>\n";
 echo "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 

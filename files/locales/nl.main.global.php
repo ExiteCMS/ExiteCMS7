@@ -1,8 +1,8 @@
 <?php
 // ----------------------------------------------------------
-// locale       : English
+// locale       : Nederlands
 // locale name  : main.global
-// generated on : Wed Jun 16 2010, 19:48:12 CEST
+// generated on : Thu Jul 29 2010, 17:22:57 CEST
 // translators  : ExiteCMS team,WanWizard
 // ----------------------------------------------------------
 $locale['001'] = "Navigatie";

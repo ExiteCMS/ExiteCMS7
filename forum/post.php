@@ -1105,7 +1105,7 @@ if ($action == "edit" && !$user_can_edit) {
 				$variables['post_author'] = $pdata['post_author'];
 				$variables['is_smiley_disabled'] = ($pdata['post_smileys'] == "0");
 				$variables['is_sticky'] = ($pdata['post_sticky'] == "1");
-				$variables['is_sig_shown'] = ($pdata['post_showsig'] == "1");
+				$variables['is_sig_shown'] = ! empty($userdata['user_sig']);
 				$variables['comments'] = "";
 				$variables['del_check'] = false;
 				$variables['del_attach_check'] = false;
