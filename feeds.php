@@ -96,7 +96,7 @@ switch (strtolower($type)) {
 	default:
 		fallback(FORUM."index.php");
 }
-die();
+
 // validate the feed selection, bail out if not correct
 if (!isset($channels) || !is_array($channels) || !isset($channel_count) || $channel_count == 0) fallback(FORUM."index.php");
 if (!isset($feeds) || !is_array($feeds) || !isset($feed_count) || $feed_count == 0) fallback(FORUM."index.php");
