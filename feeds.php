@@ -18,6 +18,7 @@
 +---------------------------------------------------------------------*/
 require_once dirname(__FILE__)."/includes/core_functions.php";
 require_once PATH_ROOT."/includes/theme_functions.php";
+require_once PATH_ROOT."/includes/forum_functions_include.php";
 
 // validate the parameters
 if (!FUSION_QUERY || !isset($type)) fallback("index.php");
@@ -77,7 +78,7 @@ switch (strtolower($type)) {
 		);
 		while ($data = dbarray($result)) {
 			// filter control characters from the message
-			$data['post_message'] = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', "", $data['post_message']);
+			$data['post_message'] = parsemessage(array(), preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', "", $data['post_message']), true, true);
 			// create the RSS item
 			$item = array();
 			$item['title'] = "<![CDATA[ ".$data['post_subject']." ]]>";
