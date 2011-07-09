@@ -104,7 +104,7 @@ switch($error) {
 		break;
 	case 1: // account is suspended
 		$message['line1'] = "<b>".$locale['194']."</b>";
-		$data = dbarray(dbquery("SELECT user_ban_reason, user_ban_expire FROM ".$db_prefix."users WHERE user_id='".$user_id."'"));
+		$data = dbarray(dbquery("SELECT user_ban_reason, user_ban_expire FROM ".$db_prefix."users WHERE user_id='".$cms_authentication->userrecord['user_id']."'"));
 		if (is_array($data)) {
 			if ($data['user_ban_reason'] != "") $message['line2'] = "<b>".$locale['180']." : ".$data['user_ban_reason']."</b>";
 			if ($data['user_ban_expire'] > 0) $message['line4']  = "<b>".$locale['181']." ".showdate('forumdate', $data['user_ban_expire'])."</b>";
