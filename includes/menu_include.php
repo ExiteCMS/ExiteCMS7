@@ -73,7 +73,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 	if ((!isNum($parent) && !is_bool($parent)) || !isNum($depth) || !is_string($panel) || !is_array($position) || !is_bool($no_sec)) return false;
 
 	$where = "";
-	
+
 	// build the menu panel selection
 	$where .= ($panel != "" ? ($where == "" ? "" : " AND ")."panel_name = '".$panel."' " : "");
 	if (!$no_loc && $settings['sitelinks_localisation'] == "multiple") {
@@ -82,7 +82,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 
 	// build the parent link selection
 	$where .= ($parent !== false ? ($where == "" ? "" : " AND ")."link_parent = '".$parent."' " : "");
-		
+
 	// build the position selection
 	$pos_where = "";
 	foreach ($position as $pos) {
@@ -95,17 +95,17 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 
 	// create the WHERE clause
 	$where = ($where == "" ? "" : "WHERE ".$where);
-		
+
 	// get all menu records for this panel and this parent
 	$result = dbquery("SELECT * FROM ".$db_prefix."site_links ".$where." ORDER BY link_order");
 	// process the results
 	$total = dbrows($result);
-	$current = 1;
+	$current = 0;
 	while($data = dbarray($result)) {
 		// only include records that the user is allowed to see (unless showall is specified)
 		if ($no_sec || checkgroup($data['link_visibility'])) {
 			// true if this is the first menu item
-			$data['menu_first'] = $current == 1 ? 1 : 0;
+			$data['menu_first'] = $current == 0 ? 1 : 0;
 			// for the first menu item, check if there's a menu_state cookie stored for this menu
 			$data['div_state'] = -1;
 			if ($data['menu_first'] && isset($_COOKIE['box_menu'.$parent])) {
@@ -116,8 +116,8 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 				$data['menu_state'] = $_COOKIE['box_menu'.$data['link_id']];
 			}
 			// also check it for the menu entry itself
-			// true if this is the last menu item
-			$data['menu_last'] = $current == $total ? 1 : 0;
+			// assume this is not last menu item
+			$data['menu_last'] = 0;
 			// depth of this item in the menu (0 = main menu, > 0 = submenu)
 			$data['menu_depth'] = $depth;
 			// true if the link points to an absolute URL
@@ -133,8 +133,8 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 			// get the name of the user group attached to this link
 			$data['link_visibility_name'] = getgroupname($data['link_visibility'], '-1');
 			$data['has_submenu'] = 0;
+			$linkinfo[$current] = $data;
 			$current++;
-			$linkinfo[] = $data;
 			// if this is a potential sub menu link, recurse
 			$submenu = ($data['link_name'] != '---' && $data['link_url'] == '---');
 			if ($submenu) {
@@ -143,6 +143,10 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 			}
 		}
 	}
+
+	// set the flag of the last menu entry
+	isset($linkinfo[$current-1]) && $linkinfo[$current-1]['menu_last'] = 1;
+
 	return ($total == 0 ? 0 : 1);
 }
 ?>
