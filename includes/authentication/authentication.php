@@ -29,7 +29,7 @@ class authentication {
 
 	// array to store the available methods
 	var $methods = array();
-	
+
 	// array to store the selected authentication methods
 	var $selected = array();
 
@@ -51,7 +51,7 @@ class authentication {
 	// class constructor
 	function authentication() {
 		global $db_prefix, $settings;
-		
+
 		// load the available methods
 		if (!empty($settings['authentication_methods'])) {
 			// load the methods array
@@ -62,7 +62,7 @@ class authentication {
 			$this->methods['local'] = array('class' => "auth_local");
 			$this->selected = array("local");
 		}
-		
+
 		// load and instantiate the selected authentication classes
 		foreach($this->methods as $name => $method) {
 			$class = PATH_INCLUDES."authentication/".$method['class'].".php";
@@ -129,7 +129,7 @@ class authentication {
 			} else {
 				_debug($this->methods);
 				_debug($this->classes);
-				_debug($this->selected);				
+				_debug($this->selected);
 				die("can't find the class!");
 			}
 		}
@@ -139,7 +139,7 @@ class authentication {
 
 	// check if a user is logged on
 	function logged_on() {
-		
+
 			return isset($_SESSION['userinfo']);
 	}
 
@@ -200,7 +200,7 @@ class authentication {
 
 	// post logon checks
 	function _post_logon() {
-		global $settings;
+		global $settings, $db_prefix;
 
 		// get the user record of the logged-in user
 		$this->userrecord = $this->classes[$this->method_used]->userrecord;
@@ -210,7 +210,7 @@ class authentication {
 			// no logged-in user info present
 			return false;
 		}
-		
+
 		// if the account is suspended, check for an expiry date
 		if ($this->userrecord['user_status'] == 1 && $this->userrecord['user_ban_expire'] > 0 && $this->userrecord['user_ban_expire'] < time() ) {
 			// if this user's email address is marked as bad, reset the countdown counter
@@ -231,7 +231,7 @@ class authentication {
 
 		// update session info
 
-		// set the 'remember me' status value 
+		// set the 'remember me' status value
 		$_SESSION['remember_me'] = isset($_POST['remember_me']) ? "yes" : "no";
 		$_SESSION['userinfo'] = $this->userrecord['user_id'].".".$this->userrecord['user_password'];
 		// login expiry defined?
