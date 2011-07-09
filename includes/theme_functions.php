@@ -357,14 +357,14 @@ function load_panels($column) {
 		case "upper":
 			// get the upper-center panels
 			$where = "panel_side='2'";
-			if (FUSION_URL != BASEDIR."index.php" && FUSION_URL != $opening_page) {
+			if (FUSION_URL != BASEDIR."index.php" && strpos($opening_page, FUSION_URL) !== 0) {
 				$where .= " AND panel_display='1'";
 			}
 			break;
 		case "lower":
 			// get the lower-center panels
 			$where = "panel_side='3'";
-			if (FUSION_URL != BASEDIR."index.php" && FUSION_URL != $opening_page) {
+			if (FUSION_URL != BASEDIR."index.php" && strpos($opening_page, FUSION_URL) !== 0) {
 				$where .= " AND panel_display='1'";
 			}
 			break;
@@ -424,6 +424,7 @@ function load_panels($column) {
 						if (dbrows($result)==0) unset($_panel['locale']);
 						break;
 					case "dynamic":
+						$_panel['name'] = 'dynamic_panel_'.$_panel['id'];
 						$_panel['panel_code'] = $p_data['panel_code'];
 						break;
 				}
