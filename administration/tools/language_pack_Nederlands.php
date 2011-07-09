@@ -3455,7 +3455,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['src405'] = array();
 		$localestrings['src405']['0'] = array();
 		$localestrings['src405']['0']['0'] = "";
-		$localestrings['src405']['0']['1'] = "De zoekmachine ondersteund complexe en booleaanse zoekoperaties. U kunt het volgende gebruiken:";
+		$localestrings['src405']['0']['1'] = "De zoekmachine ondersteunt complexe en booleaanse zoekoperaties. U kunt het volgende gebruiken:";
 		$localestrings['src405']['1'] = array();
 		$localestrings['src405']['1']['0'] = "+";
 		$localestrings['src405']['1']['1'] = "Een plus voor het argument geeft aan dat dit woord aanwezig MOET zijn in elk resultaat.";
