@@ -97,15 +97,14 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 	$where = ($where == "" ? "" : "WHERE ".$where);
 
 	// get all menu records for this panel and this parent
-	$result = dbquery("SELECT * FROM ".$db_prefix."site_links ".$where." ORDER BY link_order");
+	$result = dbquery("SELECT * FROM ".$db_prefix."site_links ".$where." ORDER BY link_parent ASC, link_order ASC");
 	// process the results
-	$total = dbrows($result);
-	$current = 0;
+	$current = $start = count($linkinfo);
 	while($data = dbarray($result)) {
 		// only include records that the user is allowed to see (unless showall is specified)
 		if ($no_sec || checkgroup($data['link_visibility'])) {
 			// true if this is the first menu item
-			$data['menu_first'] = $current == 0 ? 1 : 0;
+			$data['menu_first'] = $current == $start ? 1 : 0;
 			// for the first menu item, check if there's a menu_state cookie stored for this menu
 			$data['div_state'] = -1;
 			if ($data['menu_first'] && isset($_COOKIE['box_menu'.$parent])) {
@@ -132,7 +131,7 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 			}
 			// get the name of the user group attached to this link
 			$data['link_visibility_name'] = getgroupname($data['link_visibility'], '-1');
-			$data['has_submenu'] = 0;
+			$data['has_submenu'] = false;
 			$linkinfo[$current] = $data;
 			$current++;
 			// if this is a potential sub menu link, recurse
@@ -144,9 +143,13 @@ function menu_generate_tree($panel='main_menu_panel', $position=array(1,2), $par
 		}
 	}
 
-	// set the flag of the last menu entry
-	isset($linkinfo[$current-1]) && $linkinfo[$current-1]['menu_last'] = 1;
-
-	return ($total == 0 ? 0 : 1);
+	// any entries found?
+	if ($current != $start) {
+		// set the flag of the last menu entry
+		$linkinfo[$current-1]['menu_last'] = 1;
+		return true;
+	} else {
+		return false;
+	}
 }
 ?>
