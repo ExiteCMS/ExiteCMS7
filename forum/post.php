@@ -909,6 +909,20 @@ if ($action == "edit" && !$user_can_edit) {
 		if ($is_poll) {
 			resultdialog($locale['412'], $locale['501'], $redirect=true);
 		} else {
+			if ($_POST['new_thread_id'] == 0) {
+				// get the post
+				$result = dbquery("SELECT * FROM ".$db_prefix."posts WHERE post_id='$post_id'");
+				if (dbrows($result) == 0) fallback("index.php");
+				$data = dbarray($result);
+				// strip any re:'s of the subject
+				$data['post_subject'] = str_ireplace('re:', '', str_ireplace('fw:', '', $data['post_subject']));
+				// and update the subject on the post
+				$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".$data['post_subject']."' WHERE post_id='$post_id'");
+				// create a new thread
+				$result = dbquery("INSERT INTO ".$db_prefix."threads (forum_id, thread_subject, thread_author, thread_views, thread_lastpost, thread_lastuser, thread_sticky, thread_locked) VALUES('".$data['forum_id']."', '".$data['post_subject']."', '".$data['post_author']."', '0', '".$data['post_datestamp']."', '".$data['post_author']."', '0', '0')");
+				$_POST['new_thread_id'] = mysql_insert_id();
+			} else {
+			}
 			// move the post to the new thread
 			$result = dbquery("UPDATE ".$db_prefix."posts SET thread_id='".$_POST['new_thread_id']."', forum_id='".$_POST['new_forum_id']."' WHERE post_id='$post_id'");
 			// move attachments as well
@@ -963,7 +977,7 @@ if ($action == "edit" && !$user_can_edit) {
 
 		// get the data for the threads dropdown
 		$result = dbquery("SELECT * FROM ".$db_prefix."threads WHERE forum_id='".$_POST['new_forum_id']."' AND thread_id != '$thread_id' ORDER BY thread_lastpost DESC");
-		$variables['threads'] = array();
+		$variables['threads'] = array(0 => array('thread_id' => 0, 'thread_ident' => '     0  » '.$locale['489']));
 		while ($data = dbarray($result)) {
 			$data['thread_ident'] = substr('     '.$data['thread_id'], -5).' » '.$data['thread_subject'];
 			$variables['threads'][] = $data;
