@@ -380,7 +380,7 @@ function isURL($value, $onlyhttp=false, $schemereq=false) {
 	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
 	$urlregex .= "(\/([a-z0-9+\$_%-~]\.?)+)*\/?";								// PATH (optional)
 	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
-	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";								// ANCHOR (optional)
+	$urlregex .= "(#[a-z_.-][a-z0-9+\:\$_.-]*)?\$";								// ANCHOR (optional)
 	// validate the URL
 	return eregi($urlregex, $value);
 }
