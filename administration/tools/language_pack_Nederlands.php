@@ -2589,6 +2589,7 @@ if (!function_exists('install_language_pack')) {
 		$localestrings['486'] = " Verplaats bericht naar forum";
 		$localestrings['487'] = " Verplaats bericht naar topic";
 		$localestrings['488'] = " Verwijder geuploade bijlage:";
+		$localestrings['489'] = "Nieuw topic";
 		$localestrings['500'] = "U kunt dit bericht niet wijzigen.";
 		$localestrings['501'] = "U kunt geen bericht verplaatsen waaraan een poll is gekoppeld.";
 		$localestrings['530'] = "Zoeken";
@@ -3847,7 +3848,7 @@ if (!defined('LP_CHARSET')) define('LP_CHARSET', "utf-8");
 if (!defined('LP_DIRECTION')) define('LP_DIRECTION', "LTR");
 if (!defined('LP_COUNTRIES')) define('LP_COUNTRIES', "nl|be|sr|aw|an");
 if (!defined('LP_VERSION')) define('LP_VERSION', "7.30");
-if (!defined('LP_DATE')) define('LP_DATE', "1280139245");
+if (!defined('LP_DATE')) define('LP_DATE', "1313084740");
 $lp_date = LP_DATE;
 
 /*---------------------------------------------------+
