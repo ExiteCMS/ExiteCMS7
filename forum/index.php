@@ -80,39 +80,40 @@ while ($data = dbarray($result)) {
 		}
 	}
 	$data['moderators'] = $moderators;
-	
+
 	// get the unread posts count for this forum
 	if (iMEMBER) {
 		if ($userdata['user_posts_unread']) {
 			$result2 = dbquery("
-				SELECT count(*) as unread 
-					FROM ".$db_prefix."posts p 
-						INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-					WHERE tr.user_id = '".$userdata['user_id']."' 
-						AND tr.forum_id = '".$data['forum_id']."' 
+				SELECT count(*) as unread
+					FROM ".$db_prefix."posts p
+						INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+					WHERE tr.user_id = '".$userdata['user_id']."'
+						AND tr.forum_id = '".$data['forum_id']."'
 						AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 						AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 							OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 				);
 		} else {
 			$result2 = dbquery("
-				SELECT count(*) as unread 
-					FROM ".$db_prefix."posts p 
-						INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
-					WHERE tr.user_id = '".$userdata['user_id']."' 
-						AND tr.forum_id = '".$data['forum_id']."' 
+				SELECT count(*) as unread
+					FROM ".$db_prefix."posts p
+						INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
+					WHERE tr.user_id = '".$userdata['user_id']."'
+						AND tr.forum_id = '".$data['forum_id']."'
 						AND p.post_author != '".$userdata['user_id']."'
 						AND p.post_edituser != '".$userdata['user_id']."'
 						AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 						AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 							OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 				);
-		} 
-		$data['unread_posts'] = ($result2 ? mysql_result($result2, 0) : 0);
+		}
+		$rows = mysqli_fetch_array($result);
+		$data['unread_posts'] = $rows[0];
 	} else {
 		$data['unread_posts'] = 0;
 	}
-	
+
 	// get the total post count for this forum
 	$data['total_posts'] = dbcount("(post_id)", "posts", "forum_id='".$data['forum_id']."'");
 

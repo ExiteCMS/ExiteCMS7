@@ -74,25 +74,26 @@ function is_utf8_string($str) {
     return true;
 }
 
-// connect to the database using the installation default characterset
-function dbconnect_1($db_host, $db_user, $db_pass, $db_name) {
-	$db_connect = @mysql_connect($db_host, $db_user, $db_pass, true);
+// connect to the database engine and select the database
+function dbconnect($db_host, $db_user, $db_pass, $db_name) {
+	$db_connect = @mysqli_connect($db_host, $db_user, $db_pass);
 	if (!$db_connect) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysqli_connect_errno()." : ".mysqli_connect_error()."</div>");
 	} else {
-		$db_select = @mysql_select_db($db_name);
+		$db_select = mysqli_select_db($db_connect, $db_name);
 		if (!$db_select) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysqli_errno($db_connect)." : ".mysqli_error($db_connect)."</div>");
 		}
 	}
 	// switch the connection to utf8
-	@mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'", $db_connect);
+	mysqli_query($db_connect, "SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
 	return $db_connect;
 }
 
+// MySQL database functions
 function dbquery_1($query, $display=false) {
 
-	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_db_link_1, $_loadstats, $settings;
+	global $_db_link_1, $_user_db_link, $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats, $settings;
 
 	if ($_db_debug) {
 		echo "<pre><br />Query: ".$query."<br /></pre>";
@@ -120,7 +121,7 @@ function dbquery_1($query, $display=false) {
 	$_s_loadtime = explode(" ", microtime());
 	$_s_loadtime = (float)$_s_loadtime[1] + (float)$_s_loadtime[0];
 
-	$result = mysql_query(iconv("ISO-8859-1", "UTF-8", $query), $_db_link_1);
+	$result = mysqli_real_query($_db_link_1, iconv("ISO-8859-1", "UTF-8", $query));
 
 	$_e_loadtime = explode(" ", microtime());
 	$_e_loadtime = (float)$_e_loadtime[1] + (float)$_e_loadtime[0];
@@ -128,16 +129,16 @@ function dbquery_1($query, $display=false) {
 	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
 
 	// bail out if an error occurred and we're NOT in CLI mode!
-	if ((defined('CMS_CLI') && !CMS_CLI) && !$result) {
+	if ((defined('CMS_CLI') && !CMS_CLI) && $result === false) {
 		if ($display || $_db_log) {
 			echo "<pre><br />Query: ".$query."<br />";
-			echo mysql_error($_db_link_2);
+			echo mysqli_error($_db_link_1);
 			echo "</pre>";
 		}
-		if ($settings['debug_php_errors'] && function_exists('debug_backtrace')) _debug(debug_backtrace());
-		error_log("MSG: ".mysql_error($_db_link_2));
+		if ($settings['debug_php_errors'] == 1 && function_exists('debug_backtrace')) _debug(debug_backtrace());
+		error_log("MSG: ".mysqli_error($_db_link_1));
 		error_log("QRY: ".$query);
-		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
+		die("A database error has been detected that is not recoverable.<br />The error has been logged and an administrator has been notified.");
 	}
 
 	if ($_db_log) {
@@ -147,23 +148,26 @@ function dbquery_1($query, $display=false) {
 	return $result;
 }
 
-// connect to the database using the installation default characterset
+// connect to the database engine and select the database
 function dbconnect_2($db_host, $db_user, $db_pass, $db_name) {
-	$db_connect = @mysql_connect($db_host, $db_user, $db_pass, true);
+	$db_connect = @mysqli_connect($db_host, $db_user, $db_pass);
 	if (!$db_connect) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysqli_connect_errno()." : ".mysqli_connect_error()."</div>");
 	} else {
-		$db_select = @mysql_select_db($db_name);
+		$db_select = mysqli_select_db($db_connect, $db_name);
 		if (!$db_select) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysqli_errno($db_connect)." : ".mysqli_error($db_connect)."</div>");
 		}
 	}
+	// switch the connection to utf8
+	mysqli_query($db_connect, "SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
 	return $db_connect;
 }
 
+// MySQL database functions
 function dbquery_2($query, $display=false) {
 
-	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_db_link_2, $_loadstats, $settings;
+	global $_db_link_2, $_user_db_link, $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats, $settings;
 
 	if ($_db_debug) {
 		echo "<pre><br />Query: ".$query."<br /></pre>";
@@ -191,7 +195,7 @@ function dbquery_2($query, $display=false) {
 	$_s_loadtime = explode(" ", microtime());
 	$_s_loadtime = (float)$_s_loadtime[1] + (float)$_s_loadtime[0];
 
-	$result = mysql_query($query, $_db_link_2);
+	$result = mysqli_real_query($_db_link_2, $query);
 
 	$_e_loadtime = explode(" ", microtime());
 	$_e_loadtime = (float)$_e_loadtime[1] + (float)$_e_loadtime[0];
@@ -199,16 +203,16 @@ function dbquery_2($query, $display=false) {
 	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
 
 	// bail out if an error occurred and we're NOT in CLI mode!
-	if ((defined('CMS_CLI') && !CMS_CLI) && !$result) {
+	if ((defined('CMS_CLI') && !CMS_CLI) && $result === false) {
 		if ($display || $_db_log) {
 			echo "<pre><br />Query: ".$query."<br />";
-			echo mysql_error($_db_link_2);
+			echo mysqli_error($_db_link_2);
 			echo "</pre>";
 		}
-		if ($settings['debug_php_errors'] && function_exists('debug_backtrace')) _debug(debug_backtrace());
-		error_log("MSG: ".mysql_error($_db_link_2));
+		if ($settings['debug_php_errors'] == 1 && function_exists('debug_backtrace')) _debug(debug_backtrace());
+		error_log("MSG: ".mysqli_error($_db_link_2));
 		error_log("QRY: ".$query);
-		trigger_error("A MySQL error has been detected that is not recoverable:", E_USER_ERROR);
+		die("A database error has been detected that is not recoverable.<br />The error has been logged and an administrator has been notified.");
 	}
 
 	if ($_db_log) {
@@ -224,8 +228,8 @@ function getPrimaryKeyOf($table) {
 	$pk = Array();
 
 	$sql = 'SHOW KEYS FROM `'.$table.'`';
-	$res = mysql_query($sql, $_db_link_1) or die(mysql_error());
-	while ($row = mysql_fetch_assoc($res)) {
+	$res = mysqli_query($_db_link_1, $sql) or die(mysqli_error($_db_link_1));
+	while ($row = mysqli_fetch_assoc($res)) {
 	if ($row['Key_name']=='PRIMARY')
 	  $pk[] = $row['Column_name'];
 	}
@@ -262,7 +266,7 @@ function convert_table($tablename) {
 			foreach ($data as $field => $value) {
 				// no need to update primary keys
 				if (! in_array($field, $primary_keys) ) {
-					$sql .= $sep . "`" . $field . "` = '" . mysql_real_escape_string($value). "'";
+					$sql .= $sep . "`" . $field . "` = '" . mysqli_real_escape_string($_db_link_1, $value). "'";
 					$sep = ", ";
 				}
 			}
@@ -271,12 +275,12 @@ function convert_table($tablename) {
 			// add all key fields
 			$sep = " ";
 			foreach ($primary_keys as $field) {
-				$sql .= $sep . "`" . $field . "` = '" . mysql_real_escape_string($data[$field]). "'";
+				$sql .= $sep . "`" . $field . "` = '" . mysqli_real_escape_string($_db_link_1, $data[$field]). "'";
 				$sep = " AND ";
 			}
 
 			// run the update query
-			mysql_unbuffered_query($sql, $_db_link_1);
+			mysqli_real_query($_db_link_1, $sql);
 		}
 
 	} else {
@@ -294,12 +298,12 @@ function convert_table($tablename) {
 			// add all fields
 			$sep = " ";
 			foreach ($data as $field => $value) {
-				$sql .= $sep . "`" . $field . "` = '" . mysql_real_escape_string($value). "'";
+				$sql .= $sep . "`" . $field . "` = '" . mysqli_real_escape_string($_db_link_1, $value). "'";
 				$sep = " AND ";
 			}
 
 			// delete the record
-			mysql_unbuffered_query($sql, $_db_link_2);
+			mysqli_real_query($_db_link_2, $sql);
 
 			// create the new insert query
 			$sql = "INSERT INTO ".$tablename." (";
@@ -313,14 +317,13 @@ function convert_table($tablename) {
 			// add all values
 			$sep = " ";
 			foreach ($data as $field => $value) {
-				$sql .= $sep . "'" . mysql_real_escape_string($value). "'";
+				$sql .= $sep . "'" . mysqli_real_escape_string($_db_link_1, $value). "'";
 				$sep = ", ";
 			}
 			$sql .= ")";
 
 			// run the update query
-			mysql_unbuffered_query($sql, $_db_link_1);
-
+			mysqli_real_query($_db_link_1, $sql);
 		}
 	}
 

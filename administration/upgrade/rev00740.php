@@ -27,8 +27,8 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,7,17,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(18,00,0,7,17,2007),
 					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
 					'description' => "This revision introduces the new PM system, and drops support for the Photo Albums, Weblinks and Submissions modules."
 				);
@@ -114,7 +114,7 @@ $commands[] = array('type' => 'db', 'value' => "DROP TABLE ##PREFIX##messages_op
 | functions required for part of the upgrade process |
 +----------------------------------------------------*/
 function migrate_messages() {
-	global $db_prefix;
+	global $db_prefix, $_db_link;
 
 	// convert messages_options to pm_config
 	$result = dbquery("SELECT * FROM ".$db_prefix."messages_options");
@@ -130,9 +130,9 @@ function migrate_messages() {
 			case '0': // inbox
 				// add the message record
 				$result2 = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_smileys, pm_size, pm_datestamp)
-					VALUES ('".mysql_escape_string($data['message_subject'])."', '".mysql_escape_string($data['message_message'])."', '".$data['message_to']."', '".($data['message_smileys']=='0'?'1':'0')."', '".strlen($data['message_message'])."', '".$data['message_datestamp']."')");
+					VALUES ('".mysqli_real_escape_string($_db_link, $data['message_subject'])."', '".mysqli_real_escape_string($_db_link, $data['message_message'])."', '".$data['message_to']."', '".($data['message_smileys']=='0'?'1':'0')."', '".strlen($data['message_message'])."', '".$data['message_datestamp']."')");
 				// get the key of the inserted message record
-				$pm_id = mysql_insert_id();
+				$pm_id = mysqli_insert_id($_db_link);
 				// insert the inbox index record
 				$result2 = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_read_datestamp, pmindex_folder)
 						VALUES ('".$pm_id."', '".$data['message_to']."', '".$data['message_from']."', '".$data['message_to']."', '".$data['message_datestamp']."', '".$data['message_folder']."')");
@@ -140,9 +140,9 @@ function migrate_messages() {
 			case '1': // outbox
 				// add the message record
 				$result2 = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_smileys, pm_size, pm_datestamp)
-					VALUES ('".mysql_escape_string($data['message_subject'])."', '".mysql_escape_string($data['message_message'])."', '".$data['message_from']."', '".($data['message_smileys']=='0'?'1':'0')."', '".strlen($data['message_message'])."', '".$data['message_datestamp']."')");
+					VALUES ('".mysqli_real_escape_string($_db_link, $data['message_subject'])."', '".mysqli_real_escape_string($_db_link, $data['message_message'])."', '".$data['message_from']."', '".($data['message_smileys']=='0'?'1':'0')."', '".strlen($data['message_message'])."', '".$data['message_datestamp']."')");
 				// get the key of the inserted message record
-				$pm_id = mysql_insert_id();
+				$pm_id = mysqli_insert_id($_db_link);
 				// add the outbox index record
 				$result2 = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_read_datestamp, pmindex_folder)
 						VALUES ('".$pm_id."', '".$data['message_to']."', '".$data['message_to']."', '0', '".$data['message_datestamp']."', '".$data['message_folder']."')");
@@ -150,14 +150,14 @@ function migrate_messages() {
 			case '2': // archive
 				// add the message record
 				$result2 = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_smileys, pm_size, pm_datestamp)
-					VALUES ('".mysql_escape_string($data['message_subject'])."', '".mysql_escape_string($data['message_message'])."', '".$data['message_to']."', '".($data['message_smileys']=='0'?'1':'0')."', '".strlen($data['message_message'])."', '".$data['message_datestamp']."')");
+					VALUES ('".mysqli_real_escape_string($_db_link, $data['message_subject'])."', '".mysqli_real_escape_string($_db_link, $data['message_message'])."', '".$data['message_to']."', '".($data['message_smileys']=='0'?'1':'0')."', '".strlen($data['message_message'])."', '".$data['message_datestamp']."')");
 				// get the key of the inserted message record
-				$pm_id = mysql_insert_id();
+				$pm_id = mysqli_insert_id($_db_link);
 				// insert the archive index record
 				$result2 = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_read_datestamp, pmindex_folder)
 						VALUES ('".$pm_id."', '".$data['message_to']."', '".$data['message_from']."', '".$data['message_to']."', '".$data['message_datestamp']."', '".$data['message_folder']."')");
 				break;
 		}
-	} 
+	}
 }
 ?>

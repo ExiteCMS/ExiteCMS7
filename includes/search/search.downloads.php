@@ -25,7 +25,7 @@ require_once PATH_INCLUDES."forum_functions_include.php";
 if (isset($action)) {
 
 	if ($action == "") {
-		
+
 		// add the possible  search filters ($data is defined in the calling script!)
 		$data['search_filters' ] = "date";
 
@@ -87,7 +87,7 @@ if (isset($action)) {
 
 		// basis of the query for this search
 		if ($boolean) {
-			$sql = "SELECT td.*,tdc.*, 
+			$sql = "SELECT td.*,tdc.*,
 					MATCH (download_title, download_description) AGAINST ('$stext' IN BOOLEAN MODE) AS score
 					FROM ".$db_prefix."downloads td
 					INNER JOIN ".$db_prefix."download_cats tdc ON td.download_cat=tdc.download_cat_id
@@ -135,7 +135,7 @@ if (isset($action)) {
 		}
 
 		// check how many rows this would output
-		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
+		$rptresult = dbquery($sql.($limit?" LIMIT $limit":""));
 		$rows = dbrows($rptresult);
 
 		// are there any results?

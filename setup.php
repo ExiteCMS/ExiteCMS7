@@ -23,18 +23,25 @@
 function dbconnect($db_host, $db_user, $db_pass, $db_name) {
 	global $locale;
 
-	$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
-	$db_select = @mysql_select_db($db_name);
+	$db_connect = @mysqli_connect($db_host, $db_user, $db_pass);
 	if (!$db_connect) {
-		terminate($locale['401'], mysql_errno()." : ".mysql_error());
-	} elseif (!$db_select) {
-		terminate($locale['402'], mysql_errno()." : ".mysql_error());
+		terminate($locale['401'], mysqli_connect_errno()." : ".mysqli_connect_error());
+	} else {
+		$db_select = mysqli_select_db($db_connect, $db_name);
+		if (!$db_select) {
+			terminate($locale['402'], mysqli_errno($db_connect)." : ".mysqli_error($db_connect));
+		}
 	}
+	// switch the connection to utf8
+	mysqli_query($db_connect, "SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
+
+	return $db_connect;
 }
 
 function dbquery($query) {
+	global $link;
 
-	$result = @mysql_query($query);
+	$result = mysqli_query($link, $query);
 	if (!$result) {
 		return false;
 	} else {
@@ -43,10 +50,11 @@ function dbquery($query) {
 }
 
 function dbarray($resource) {
+	global $link;
 
-	$result = @mysql_fetch_assoc($resource);
+	$result = mysqli_fetch_assoc($resource);
 	if (!$result) {
-		echo mysql_error();
+		echo mysqli_error($link);
 		return false;
 	} else {
 		return $result;
@@ -171,6 +179,9 @@ define('CMS_SETUP', true);
 // temp storage for template variables
 $variables = array();
 
+// database connection
+$link = null;
+
 // used for error tracking
 $error = "";
 
@@ -265,14 +276,14 @@ if ($step == "1") {
 	}
 	// verify a connection to the database server can be made
 	if (empty($error)) {
-		$db_connect = @mysql_connect($db_host, $db_user, $db_pass);
-		if (!$db_connect) {
+		$link = dbconnect($db_host, $db_user, $db_pass);
+		if (!$link) {
 			$error .= $locale['401']."<br />".$locale['429']."<br /><br />\n";
 		}
 	}
 	// verify if the database exists on the server
 	if (empty($error)) {
-		$db_select = @mysql_select_db($db_name);
+		$db_select = @mysqli_select_db($db_name);
 		if (!$db_select) {
 			$error .= sprintf($locale['434'],$db_name)."<br /><br />\n";
 		}
@@ -422,44 +433,44 @@ switch($step) {
 
 			// add the default news categories
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['540'])."', 'bugs.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['541'])."', 'downloads.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['542'])."', 'games.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['543'])."', 'graphics.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['544'])."', 'hardware.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['545'])."', 'journal.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['546'])."', 'members.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['547'])."', 'mods.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['548'])."', 'movies.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['549'])."', 'network.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['550'])."', 'news.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['552'])."', 'security.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['553'])."', 'software.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['554'])."', 'themes.gif')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysql_escape_string($locale['555'])."', 'windows.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['540'])."', 'bugs.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['541'])."', 'downloads.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['542'])."', 'games.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['543'])."', 'graphics.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['544'])."', 'hardware.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['545'])."', 'journal.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['546'])."', 'members.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['547'])."', 'mods.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['548'])."', 'movies.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['549'])."', 'network.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['550'])."', 'news.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['552'])."', 'security.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['553'])."', 'software.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['554'])."', 'themes.gif')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##news_cats (news_cat_name, news_cat_image) VALUES ('".mysqli_real_escape_string($db_connect, $locale['555'])."', 'windows.gif')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// activate the panels of core modules
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysql_escape_string($locale['520'])."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysql_escape_string($locale['524'])."', 'welcome_message_panel', '2', '1', 'file', '0', '0', '1')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysql_escape_string($locale['526'])."', 'user_info_panel', '4', 1, 'file', '0', '0', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysqli_real_escape_string($db_connect, $locale['520'])."', 'main_menu_panel', '1', '1', 'file', '0', '0', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysqli_real_escape_string($db_connect, $locale['524'])."', 'welcome_message_panel', '2', '1', 'file', '0', '0', '1')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##panels (panel_name, panel_filename, panel_side, panel_order, panel_type, panel_access, panel_display, panel_status) VALUES ('".mysqli_real_escape_string($db_connect, $locale['526'])."', 'user_info_panel', '4', 1, 'file', '0', '0', '1')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the default menu links
 			$commands = array();
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['500'])."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['501'])."', 'article_cats.php', '0', '1', '0', '2', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['502'])."', 'downloads.php', '0', '1', '0', '3', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['503'])."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['504'])."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['505'])."', 'news_cats.php', '0', '1', '0', '6', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['473'])."', 'blogs.php', '0', '1', '0', '7', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['482'])."', 'albums.php', '0', '1', '0', '8', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['506'])."', 'contact.php', '0', '1', '0', '9', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['507'])."', 'search.php', '0', '1', '0', '10', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['509'])."', 'reports.php', '0', '1', '0', '11', 'main_menu_panel')");
-			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysql_escape_string($locale['508'])."', 'register.php', '100', '2', '0', '12', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['500'])."', 'index.php', '0', '1', '0', '1', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['501'])."', 'article_cats.php', '0', '1', '0', '2', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['502'])."', 'downloads.php', '0', '1', '0', '3', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['503'])."', 'faq.php', '0', '1', '0', '4', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['504'])."', 'forum/index.php', '0', '1', '0', '5', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['505'])."', 'news_cats.php', '0', '1', '0', '6', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['473'])."', 'blogs.php', '0', '1', '0', '7', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['482'])."', 'albums.php', '0', '1', '0', '8', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['506'])."', 'contact.php', '0', '1', '0', '9', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['507'])."', 'search.php', '0', '1', '0', '10', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['509'])."', 'reports.php', '0', '1', '0', '11', 'main_menu_panel')");
+			$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) VALUES ('".mysqli_real_escape_string($db_connect, $locale['508'])."', 'register.php', '100', '2', '0', '12', 'main_menu_panel')");
 			$result = dbcommands($commands, $db_prefix);
 
 			// add the ExiteCMS core search options
@@ -500,5 +511,5 @@ $template_variables['setup'] = $variables;
 load_templates('body', '');
 
 // close the database connection
-@mysql_close();
+isset($link) and mysqli_close($link);
 ?>

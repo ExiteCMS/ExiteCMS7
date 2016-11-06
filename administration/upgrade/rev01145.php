@@ -27,8 +27,8 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(16,00,0,12,2,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(16,00,0,12,2,2007),
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
 					'description' => "Added localisation dropdowns for several CMS functions in the language settings admin panel.");
 
@@ -81,13 +81,13 @@ $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##download_cats S
 | functions required for part of the upgrade process |
 +----------------------------------------------------*/
 function move_404_page() {
-	
-	global $db_prefix;
-	
+
+	global $db_prefix, $_db_link;
+
 	$result = dbquery("SELECT * FROM ".$db_prefix."custom_pages WHERE page_id = '0'");
 	if (dbrows($result)) {
 		$data = dbarray($result);
-		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', '404page', '404page', '".mysql_escape_string($data['page_content'])."', '".time()."')");
+		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('en', '404page', '404page', '".mysqli_real_escape_string($_db_link, $data['page_content'])."', '".time()."')");
 		$result = dbquery("DELETE FROM ".$db_prefix."custom_pages WHERE page_id = '0'");
 	}
 }

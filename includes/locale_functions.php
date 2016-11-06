@@ -284,7 +284,7 @@ function locale_load($locale_name, $locale_code="") {
 }
 
 function load_localestrings($localestrings, $locales_code, $locales_name, $step="upgrade") {
-	global $db_prefix;
+	global $db_prefix, $_db_link;
 
 	// remove the old locale strings for this locale name ($step to be compatible with the language pack function!)
 	if ($step == "upgrade") {
@@ -299,7 +299,7 @@ function load_localestrings($localestrings, $locales_code, $locales_name, $step=
 		if (is_array($value)) {
 			$value = "#ARRAY#\n".serialize($value);
 		}
-		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysql_escape_string($key)."', '".mysql_escape_string($value)."', '".$timestamp."')");
+		$result = dbquery("INSERT INTO ".$db_prefix."locales (locales_code, locales_name, locales_key, locales_value, locales_datestamp) VALUES ('$locales_code', '$locales_name', '".mysqli_real_escape_string($_db_link, $key)."', '".mysqli_real_escape_string($_db_link, $value)."', '".$timestamp."')");
 	}
 	return true;
 }

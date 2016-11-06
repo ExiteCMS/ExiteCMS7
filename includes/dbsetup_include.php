@@ -29,7 +29,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "GeoIP : ".mysql_error();
+	$failed[] = "GeoIP : ".mysqli_error($link);
 }
 
 //
@@ -43,7 +43,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."GeoIP_exceptions (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "GeoIP_exceptions : ".mysql_error();
+	$failed[] = "GeoIP_exceptions : ".mysqli_error($link);
 }
 
 //
@@ -61,7 +61,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."admin (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "admin : ".mysql_error();
+	$failed[] = "admin : ".mysqli_error($link);
 } else {
 	$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES('NF', '404pages.gif', '227', '404pages.php', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES('A', 'articles.gif', '203', 'articles.php', '1')");
@@ -119,7 +119,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."album_photos (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "album_photos : ".mysql_error();
+	$failed[] = "album_photos : ".mysqli_error($link);
 }
 
 //
@@ -142,7 +142,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."albums (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "albums : ".mysql_error();
+	$failed[] = "albums : ".mysqli_error($link);
 }
 
 //
@@ -161,7 +161,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."article_cats (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "article_cats : ".mysql_error();
+	$failed[] = "article_cats : ".mysqli_error($link);
 }
 
 //
@@ -188,7 +188,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."articles (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "articles : ".mysql_error();
+	$failed[] = "articles : ".mysqli_error($link);
 }
 
 //
@@ -204,7 +204,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."bad_login (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "bad_login : ".mysql_error();
+	$failed[] = "bad_login : ".mysqli_error($link);
 }
 
 //
@@ -220,7 +220,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."blacklist (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "blacklist : ".mysql_error();
+	$failed[] = "blacklist : ".mysqli_error($link);
 }
 
 //
@@ -243,7 +243,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."blogs (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "blogs : ".mysql_error();
+	$failed[] = "blogs : ".mysqli_error($link);
 }
 
 //
@@ -263,7 +263,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."comments (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "comments : ".mysql_error();
+	$failed[] = "comments : ".mysqli_error($link);
 }
 
 //
@@ -279,7 +279,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."configuration (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "configuration : ".mysql_error();
+	$failed[] = "configuration : ".mysqli_error($link);
 } else {
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('admin_activation', '0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES('albums_anonymous', '0')");
@@ -410,7 +410,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."custom_pages (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "custom_pages : ".mysql_error();
+	$failed[] = "custom_pages : ".mysqli_error($link);
 }
 
 //
@@ -432,7 +432,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."download_cats (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "download_cats : ".mysql_error();
+	$failed[] = "download_cats : ".mysqli_error($link);
 }
 
 //
@@ -458,7 +458,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."downloads (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "downloads : ".mysql_error();
+	$failed[] = "downloads : ".mysqli_error($link);
 }
 
 //
@@ -473,7 +473,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."faq_cats (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "faq_cats : ".mysql_error();
+	$failed[] = "faq_cats : ".mysqli_error($link);
 }
 
 //
@@ -489,7 +489,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."faqs (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "faqs : ".mysql_error();
+	$failed[] = "faqs : ".mysqli_error($link);
 }
 
 //
@@ -502,7 +502,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."flood_control (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "flood_control : ".mysql_error();
+	$failed[] = "flood_control : ".mysqli_error($link);
 }
 
 //
@@ -526,7 +526,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_attachments (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forum_attachments : ".mysql_error();
+	$failed[] = "forum_attachments : ".mysqli_error($link);
 }
 
 //
@@ -543,7 +543,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_options (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forum_poll_options : ".mysql_error();
+	$failed[] = "forum_poll_options : ".mysqli_error($link);
 }
 
 //
@@ -568,7 +568,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_settings 
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forum_poll_settings : ".mysql_error();
+	$failed[] = "forum_poll_settings : ".mysqli_error($link);
 }
 
 //
@@ -583,7 +583,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_poll_votes (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forum_poll_votes : ".mysql_error();
+	$failed[] = "forum_poll_votes : ".mysqli_error($link);
 }
 
 //
@@ -604,7 +604,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_polls (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forum_polls : ".mysql_error();
+	$failed[] = "forum_polls : ".mysqli_error($link);
 }
 
 //
@@ -627,7 +627,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forum_ranking (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forum_ranking : ".mysql_error();
+	$failed[] = "forum_ranking : ".mysqli_error($link);
 }
 
 //
@@ -654,7 +654,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."forums (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "forums : ".mysql_error();
+	$failed[] = "forums : ".mysqli_error($link);
 }
 
 //
@@ -677,7 +677,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."galleries (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "galleries : ".mysql_error();
+	$failed[] = "galleries : ".mysqli_error($link);
 }
 
 //
@@ -697,7 +697,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locale (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "locale : ".mysql_error();
+	$failed[] = "locale : ".mysqli_error($link);
 }
 
 //
@@ -718,7 +718,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."locales (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "locales : ".mysql_error();
+	$failed[] = "locales : ".mysqli_error($link);
 }
 
 //
@@ -734,7 +734,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."modules (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "modules : ".mysql_error();
+	$failed[] = "modules : ".mysqli_error($link);
 } else {
 	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES('Main menu panel', 'main_menu_panel', '1.1.0')");
 	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES('Advanced login panel', 'user_info_panel', '1.1.0')");
@@ -753,7 +753,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."new_users (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "new_users : ".mysql_error();
+	$failed[] = "new_users : ".mysqli_error($link);
 }
 
 //
@@ -783,7 +783,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "news : ".mysql_error();
+	$failed[] = "news : ".mysqli_error($link);
 }
 
 //
@@ -798,7 +798,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news_cats (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "news_cats : ".mysql_error();
+	$failed[] = "news_cats : ".mysqli_error($link);
 }
 
 //
@@ -815,7 +815,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."news_frontpage (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "news_frontpage : ".mysql_error();
+	$failed[] = "news_frontpage : ".mysqli_error($link);
 }
 
 //
@@ -829,7 +829,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."online (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "online : ".mysql_error();
+	$failed[] = "online : ".mysqli_error($link);
 }
 
 //
@@ -856,7 +856,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."panels (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "panels : ".mysql_error();
+	$failed[] = "panels : ".mysqli_error($link);
 }
 
 //
@@ -880,7 +880,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."photos (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "photos : ".mysql_error();
+	$failed[] = "photos : ".mysqli_error($link);
 }
 
 //
@@ -901,7 +901,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "pm : ".mysql_error();
+	$failed[] = "pm : ".mysqli_error($link);
 }
 
 //
@@ -920,7 +920,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_attachments (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "pm_attachments : ".mysql_error();
+	$failed[] = "pm_attachments : ".mysqli_error($link);
 }
 
 //
@@ -939,7 +939,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_config (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "pm_config : ".mysql_error();
+	$failed[] = "pm_config : ".mysqli_error($link);
 }
 
 //
@@ -964,7 +964,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."pm_index (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "pm_index : ".mysql_error();
+	$failed[] = "pm_index : ".mysqli_error($link);
 }
 
 //
@@ -995,7 +995,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."posts (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "posts : ".mysql_error();
+	$failed[] = "posts : ".mysqli_error($link);
 }
 
 //
@@ -1012,7 +1012,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."posts_unread (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "posts_unread : ".mysql_error();
+	$failed[] = "posts_unread : ".mysqli_error($link);
 }
 
 //
@@ -1031,7 +1031,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."ratings (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "ratings : ".mysql_error();
+	$failed[] = "ratings : ".mysqli_error($link);
 }
 
 //
@@ -1048,7 +1048,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."redirects (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "redirects : ".mysql_error();
+	$failed[] = "redirects : ".mysqli_error($link);
 }
 
 //
@@ -1068,7 +1068,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."reports (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "reports : ".mysql_error();
+	$failed[] = "reports : ".mysqli_error($link);
 } else {
 	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_core, report_name, report_title, report_version, report_active, report_visibility) VALUES(1, 'usercountries', 'rpt500', '1.0.0', 1, 102)");
 	$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_core, report_name, report_title, report_version, report_active, report_visibility) VALUES(1, 'usersjoined', 'rpt509', '1.0.0', 1, 102)");
@@ -1093,7 +1093,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."search (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "search : ".mysql_error();
+	$failed[] = "search : ".mysqli_error($link);
 } else {
 	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'forumposts', 'src512', '1.0.0', 1, '0', '1', '1')");
 	$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_core, search_name, search_title, search_version, search_active, search_visibility, search_fulltext, search_order) VALUES(1, 'news', 'src511', '1.0.0', 1, '0', '1', '2')");
@@ -1120,7 +1120,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."sessions (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "sessions : ".mysql_error();
+	$failed[] = "sessions : ".mysqli_error($link);
 }
 
 //
@@ -1143,7 +1143,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."site_links (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "site_links : ".mysql_error();
+	$failed[] = "site_links : ".mysqli_error($link);
 }
 
 //
@@ -1158,7 +1158,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."thread_notify (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "thread_notify : ".mysql_error();
+	$failed[] = "thread_notify : ".mysqli_error($link);
 }
 
 //
@@ -1179,7 +1179,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "threads : ".mysql_error();
+	$failed[] = "threads : ".mysqli_error($link);
 }
 
 //
@@ -1196,7 +1196,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."threads_read (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "threads_read : ".mysql_error();
+	$failed[] = "threads_read : ".mysqli_error($link);
 }
 
 //
@@ -1217,7 +1217,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."user_groups (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "user_groups : ".mysql_error();
+	$failed[] = "user_groups : ".mysqli_error($link);
 }
 
 //
@@ -1269,7 +1269,7 @@ $result = dbquery("CREATE TABLE IF NOT EXISTS ".$db_prefix."users (
 ) ENGINE=MYISAM CHARACTER SET ".MYSQL_CHARSET." COLLATE ".MYSQL_COLLATE.";");
 if (!$result) {
 	$fail = "1";
-	$failed[] = "users : ".mysql_error();
+	$failed[] = "users : ".mysqli_error($link);
 }
 
 }

@@ -165,7 +165,7 @@ foreach ($methods as $name => $method) {
 		}
 	}
 }
-$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".mysql_real_escape_string(serialize($methods))."' WHERE cfg_name = 'authentication_methods'");
+$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".mysqli_real_escape_string($_db_link, serialize($methods))."' WHERE cfg_name = 'authentication_methods'");
 
 // create the list of available methods, in the correct order
 sort($sortlist);

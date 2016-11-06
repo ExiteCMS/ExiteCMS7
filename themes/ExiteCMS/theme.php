@@ -85,32 +85,33 @@ if (isset($headerparms)) $variables['headparms'] = $headerparms;
 if (iMEMBER) {
 	if ($userdata['user_posts_unread']) {
 		$result = dbquery("
-			SELECT count(*) as unread 
-				FROM ".$db_prefix."posts p 
-					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id 
-					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+			SELECT count(*) as unread
+				FROM ".$db_prefix."posts p
+					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE ".groupaccess('f.forum_access')."
-					AND tr.user_id = '".$userdata['user_id']."' 
+					AND tr.user_id = '".$userdata['user_id']."'
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 			);
 	} else {
 		$result = dbquery("
-			SELECT count(*) as unread 
-				FROM ".$db_prefix."posts p 
-					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id 
-					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id 
+			SELECT count(*) as unread
+				FROM ".$db_prefix."posts p
+					INNER JOIN ".$db_prefix."forums f ON p.forum_id = f.forum_id
+					INNER JOIN ".$db_prefix."threads_read tr ON p.thread_id = tr.thread_id
 				WHERE ".groupaccess('f.forum_access')."
-					AND tr.user_id = '".$userdata['user_id']."' 
+					AND tr.user_id = '".$userdata['user_id']."'
 					AND p.post_author != '".$userdata['user_id']."'
 					AND p.post_edituser != '".$userdata['user_id']."'
 					AND (p.post_datestamp > ".$settings['unread_threshold']." OR p.post_edittime > ".$settings['unread_threshold'].")
 					AND ((p.post_datestamp > tr.thread_last_read OR p.post_edittime > tr.thread_last_read)
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 			);
-	} 
-	$variables['new_posts'] = ($result ? mysql_result($result, 0) : 0);
+	}
+	$rows = mysqli_fetch_array($result);
+	$variables['new_posts'] = $rows[0];
 	$variables['new_pm'] = dbcount("(pmindex_id)", "pm_index", "pmindex_user_id='".$userdata['user_id']."' AND pmindex_to_id='".$userdata['user_id']."' AND pmindex_read_datestamp = '0'");
 } else {
 	$variables['new_pm'] = 0;
@@ -132,7 +133,7 @@ load_templates('header', '');
 +----------------------------------------------------*/
 echo "<table class='content' align='center' width='".THEME_WIDTH."' cellspacing='0' cellpadding='0'>
 	<tr>\n";
-	
+
 /*-----------------------------------------------------+
 | Left column (only if not in full-screen mode)        |
 +-----------------------------------------------------*/
@@ -206,7 +207,7 @@ $variables = array();
 load_panels('footer');
 
 // get MySQL host info
-$variables['MySQLinfo'] = mysql_get_server_info();
+$variables['MySQLinfo'] = mysqli_get_server_info($_db_link);
 
 // define the footer template
 $template_panels[] = array('type' => 'footer', 'name' => '_footer', 'template' => '_footer.tpl');

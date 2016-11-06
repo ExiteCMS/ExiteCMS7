@@ -30,7 +30,7 @@ $url = isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['SC
 if (!empty($url)) {
 
 	// check if we have a redirect for this URL
-	$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".mysql_real_escape_string($url)."'");
+	$result = dbquery("SELECT * from ".$db_prefix."redirects WHERE url_from = '".mysqli_real_escape_string($_db_link, $url)."'");
 
 	// found one?
 	if (dbrows($result)) {

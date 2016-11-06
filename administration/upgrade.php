@@ -71,7 +71,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 		}
 		$variables['revisions_installed'] = $revisions;
 	}
-	
+
 	// check if there are upgrades available
 	if (UPGRADES) {
 		if (isset($_POST['stage']) && $_POST['stage'] == 2) {
@@ -102,7 +102,7 @@ if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
 							if (!$result) {
 								// record the error
 								$errtype = $locale['420'];
-								$errors[] = "Query: ".$dbcmd."<br /><font color='red'>".mysql_error()."</font>";
+								$errors[] = "Query: ".$dbcmd."<br /><font color='red'>".mysqli_error($_db_link)."</font>";
 							}
 							break;
 						case "function":

@@ -136,7 +136,8 @@ if (iMEMBER) {
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 			);
 	}
-	$variables['unread_posts'] = ($result ? mysql_result($result, 0) : 0);
+	$rows = mysqli_fetch_array($result);
+	$variables['unread_posts'] = $rows[0];
 } else {
 	$variables['unread_posts'] = 0;
 }

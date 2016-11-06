@@ -114,7 +114,7 @@ if (isset($_POST['btn_do_restore'])) {
 						display("* DROP TABLE ".$tbl);
 						if (in_array($tbl, $list_tbl)) {
 							$sql = preg_replace("/^DROP TABLE IF EXISTS `$inf_tblpre(.*?)`/im","DROP TABLE IF EXISTS `$restore_tblpre\\1`",$line);
-							mysql_unbuffered_query($sql);
+							mysqli_real_query($_db_link, $sql);
 						}
 					}
 					if (preg_match("/^CREATE TABLE `(.*?)`/im",$line,$tmp) <> 0) {
@@ -126,7 +126,7 @@ if (isset($_POST['btn_do_restore'])) {
 							$sql = preg_replace("/(.*?)collate\s(.*?)(\s|,|;)/im", "\\1\\3", $sql);
 							$sql = preg_replace("/(.*?)default charset=(.*?);(.*?)/im", "\\1\\3", $sql);
 							$sql .= "DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
-							mysql_unbuffered_query($sql);
+							mysqli_real_query($_db_link, $sql);
 						}
 					}
 				}
@@ -136,9 +136,9 @@ if (isset($_POST['btn_do_restore'])) {
 						if (in_array($ins, $list_ins)) {
 							$sql = preg_replace("/INSERT INTO `$inf_tblpre(.*?)`/i","INSERT INTO `$restore_tblpre\\1`",$line);
 							if (is_utf8_string($sql)) {
-								mysql_unbuffered_query($sql);
+								mysqli_real_query($_db_link, $sql);
 							} else {
-								mysql_unbuffered_query(iconv("ISO-8859-1", "UTF-8", $sql));
+								mysqli_real_query($_db_link, iconv("ISO-8859-1", "UTF-8", $sql));
 							}
 						}
 					}
@@ -234,7 +234,7 @@ if (isset($_POST['btn_do_restore'])) {
 		$info_inserts[] = array('id' => $info_insert, 'name' => $info_insert." (".(isset($insert_ins_cnt[$info_insert])?$insert_ins_cnt[$info_insert]:0).")", 'selected' => true);
 	}
 	$maxrows=max(count($info_tbls),count($info_inserts));
-	
+
 	// tamplate variables
 	$variables['backup_name'] = $backup_name;
 	$variables['info_dbname'] = isset($info_dbname) ? $info_dbname : "";
@@ -247,7 +247,7 @@ if (isset($_POST['btn_do_restore'])) {
 
 }
 
-if (!CMS_CLI) {	
+if (!CMS_CLI) {
 
 	// get a list of all backups on the server
 	$variables['backup_files'] = makefilelist(PATH_ADMIN."db_backups/", ".|..|index.php", true);

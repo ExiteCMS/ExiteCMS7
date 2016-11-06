@@ -53,10 +53,10 @@ if (isset($_POST['btn_create_backup'])) {
 		if(count($db_tables) > 0) {
 			$filename = PATH_ADMIN."db_backups/".stripinput($_POST['backup_filename']).".sql";
 			if ($backup_compress) {
-				$filename .= ".gz"; 
-				$fp = gzopen ($filename, 'w9'); 
+				$filename .= ".gz";
+				$fp = gzopen ($filename, 'w9');
 			} else {
-				$fp = fopen ($filename, 'w9'); 
+				$fp = fopen ($filename, 'w9');
 			}
 			if (!$fp) {
 				$variables['error'] = 1;
@@ -101,9 +101,9 @@ if (isset($_POST['btn_create_backup'])) {
 							fwrite($fp, $crlf."#".$crlf."# Table Data for `".$table."`".$crlf."#".$crlf);
 						}
 						$column_list="";
-						$num_fields=mysql_num_fields($result);
+						$num_fields=mysqli_num_fields($result);
 						for($i=0;$i<$num_fields;$i++){
-							$column_list.=(($column_list!="")?", ":"")."`".mysql_field_name($result,$i)."`";
+							$column_list.=(($column_list!="")?", ":"")."`".mysqli_field_name($result,$i)."`";
 						}
 					}
 					while($row=dbarraynum($result)){
@@ -113,7 +113,7 @@ if (isset($_POST['btn_create_backup'])) {
 							if(!isset($row[$i])){
 								$dump.="NULL";
 							}elseif($row[$i]=="0"||$row[$i]!=""){
-								$type=mysql_field_type($result,$i);
+								$type=mysqli_field_type($result,$i);
 								if($type=="tinyint"||$type=="smallint"||$type=="mediumint"||$type=="int"||$type=="bigint"){
 									$dump.=$row[$i];
 								}else{
@@ -133,7 +133,7 @@ if (isset($_POST['btn_create_backup'])) {
 							fwrite($fp, $dump.$crlf);
 						}
 					}
-		
+
 				}
 				if ($backup_compress) {
 					gzclose($fp);
@@ -214,14 +214,14 @@ if (isset($_POST['btn_do_restore'])) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
 							$sql = preg_replace("/^DROP TABLE IF EXISTS `$inf_tblpre(.*?)`/im","DROP TABLE IF EXISTS `$restore_tblpre\\1`",$line);
-							mysql_unbuffered_query($sql);
+							mysqli_real_query($_db_link, $sql);
 						}
 					}
 					if (preg_match("/^CREATE TABLE `(.*?)`/im",$line,$tmp) <> 0) {
 						$tbl = $tmp[1];
 						if (in_array($tbl, $list_tbl)) {
 							$sql = preg_replace("/^CREATE TABLE `$inf_tblpre(.*?)`/im","CREATE TABLE `$restore_tblpre\\1`",$line);
-							mysql_unbuffered_query($sql);
+							mysqli_real_query($_db_link, $sql);
 						}
 					}
 				}
@@ -230,7 +230,7 @@ if (isset($_POST['btn_do_restore'])) {
 						$ins = $tmp[1];
 						if (in_array($ins, $list_ins)) {
 							$sql = preg_replace("/INSERT INTO `$inf_tblpre(.*?)`/i","INSERT INTO `$restore_tblpre\\1`",$line);
-							mysql_unbuffered_query($sql);
+							mysqli_real_query($_db_link, $sql);
 						}
 					}
 				}
@@ -325,7 +325,7 @@ if (isset($_POST['btn_do_restore'])) {
 		$info_inserts[] = array('id' => $info_insert, 'name' => $info_insert." (".(isset($insert_ins_cnt[$info_insert])?$insert_ins_cnt[$info_insert]:0).")", 'selected' => true);
 	}
 	$maxrows=max(count($info_tbls),count($info_inserts));
-	
+
 	// tamplate variables
 	$variables['backup_name'] = $backup_name;
 	$variables['info_dbname'] = isset($info_dbname) ? $info_dbname : "";
@@ -337,7 +337,7 @@ if (isset($_POST['btn_do_restore'])) {
 	$variables['file'] = $backup_name;
 
 }
-	
+
 // make a list of tables in the current database
 $table_list=array();
 $result=dbquery("SHOW tables");

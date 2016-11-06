@@ -76,13 +76,13 @@ function has_photo_access($id=0, $type="", $photo_id=0, $mode='read') {
 				break;
 		}
 	}
-	
+
 	// add the result to the resultcache
 	if (!isset($resultcache)) $resultcache = array();
 	if (!isset($resultcache[$type])) $resultcache[$type] = array();
 	if (!isset($resultcache[$type][$id])) $resultcache[$type][$id] = array();
 	$resultcache[$type][$id][$mode] = $match;
-	
+
 	// return the result
 	return $match;
 }
@@ -122,7 +122,7 @@ function delete_gallery($gallery_id) {
 // delete a photo from an album
 function delete_photo($album_id, $photo_id) {
 	global $db_prefix;
-			
+
 	// get the album_photo_id
 	$result = dbquery("SELECT album_photo_id FROM ".$db_prefix."album_photos WHERE album_id = $album_id AND photo_id = $photo_id");
 	if (dbrows($result)) {
@@ -261,10 +261,10 @@ if ($action == "fancyupload") {
 		$IMGconfig['thumb'] = $IMGconfig['original'];
 	}
 	// create the new photo record
-	$result = dbquery("INSERT INTO ".$db_prefix."photos (photo_name, photo_thumb, photo_sized, photo_original, photo_size, photo_uploaded_by, photo_datestamp) VALUES ('".mysql_escape_string($IMGconfig['Filedata']['name'])."', '".$IMGconfig['thumb']."', '".$IMGconfig['sized']."', '".$IMGconfig['original']."', ".$IMGconfig['Filedata']['size'].", ".(iMEMBER ? $userdata['user_id'] : 0).", ".time().")");
-	$photo_id = mysql_insert_id();
+	$result = dbquery("INSERT INTO ".$db_prefix."photos (photo_name, photo_thumb, photo_sized, photo_original, photo_size, photo_uploaded_by, photo_datestamp) VALUES ('".mysqli_real_escape_string($_db_link, $IMGconfig['Filedata']['name'])."', '".$IMGconfig['thumb']."', '".$IMGconfig['sized']."', '".$IMGconfig['original']."', ".$IMGconfig['Filedata']['size'].", ".(iMEMBER ? $userdata['user_id'] : 0).", ".time().")");
+	$photo_id = mysqli_insert_id($_db_link);
 	// add the photo to the album
-	$result = dbquery("INSERT INTO ".$db_prefix."album_photos (album_id, photo_id, album_photo_title, album_photo_datestamp) VALUES (".$album_id.", ".$photo_id.", '".mysql_escape_string($IMGconfig['Filedata']['name'])."', ".time().")");
+	$result = dbquery("INSERT INTO ".$db_prefix."album_photos (album_id, photo_id, album_photo_title, album_photo_datestamp) VALUES (".$album_id.", ".$photo_id.", '".mysqli_real_escape_string($_db_link, $IMGconfig['Filedata']['name'])."', ".time().")");
 	// return the result
 	UploadResult("success", $locale['403']);
 }
@@ -292,18 +292,18 @@ if ($type == "photo") {
 
 	if ($action == "edit" && isset($_POST['save'])) {
 		if (!empty($album_id) && has_photo_access($album_id, "album", $photo_id, "write")) {
-			$result = dbquery("UPDATE ".$db_prefix."album_photos SET 
-				album_photo_title = '".mysql_escape_string(stripinput($_POST['album_photo_title']))."',
-				album_photo_description = '".mysql_escape_string(stripinput($_POST['hoteditor_bbcode_ouput_photo_editor']))."' 
+			$result = dbquery("UPDATE ".$db_prefix."album_photos SET
+				album_photo_title = '".mysqli_real_escape_string($_db_link, stripinput($_POST['album_photo_title']))."',
+				album_photo_description = '".mysqli_real_escape_string($_db_link, stripinput($_POST['hoteditor_bbcode_ouput_photo_editor']))."'
 				WHERE album_photo_id = $album_photo_id");
 			$variables['errormessages'][] = $locale['404'];
 			// return to the photo view
 			$action = "view";
 		} else {
 			if (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id, "write")) {
-				$result = dbquery("UPDATE ".$db_prefix."gallery_photos SET 
-					gallery_photo_title = '".mysql_escape_string(stripinput($_POST['gallery_photo_title']))."',
-					gallery_photo_description = '".mysql_escape_string(stripinput($_POST['hoteditor_bbcode_ouput_photo_editor']))."'
+				$result = dbquery("UPDATE ".$db_prefix."gallery_photos SET
+					gallery_photo_title = '".mysqli_real_escape_string($_db_link, stripinput($_POST['gallery_photo_title']))."',
+					gallery_photo_description = '".mysqli_real_escape_string($_db_link, stripinput($_POST['hoteditor_bbcode_ouput_photo_editor']))."'
 					WHERE gallery_photo_id = $gallery_photo_id");
 				$variables['errormessages'][] = $locale['404'];
 				// return to the photo view
@@ -375,7 +375,7 @@ if ($type == "photo") {
 				$type = "album"; $action = "view";
 			}
 		} elseif (!empty($gallery_id) && has_photo_access($gallery_id, "gallery", $photo_id)) {
-			$result = dbquery("SELECT gp.*, g.gallery_title, g.gallery_owner, g.gallery_allow_comments, g.gallery_allow_ratings, p.* 
+			$result = dbquery("SELECT gp.*, g.gallery_title, g.gallery_owner, g.gallery_allow_comments, g.gallery_allow_ratings, p.*
 				FROM ".$db_prefix."gallery_photos gp
 				INNER JOIN ".$db_prefix."galleries g ON gp.gallery_id = g.gallery_id
 				INNER JOIN ".$db_prefix."photos p ON gp.photo_id = p.photo_id
@@ -519,7 +519,7 @@ if ($type == "album") {
 			if (dbupdate("albums", "album_id", $variables['album'])) {
 				// if this was an add, add the new album to the collection
 				if ($action == "add") {
-					$collection[$variables['album']['album_datestamp']] = array("type" => 'album', "id" => mysql_insert_id(), "title" => $variables['album']['album_title']);
+					$collection[$variables['album']['album_datestamp']] = array("type" => 'album', "id" => mysqli_insert_id($_db_link), "title" => $variables['album']['album_title']);
 					$variables['rows']++;
 				} elseif ($action == "edit") {
 					unset($collection[$_POST['album_datestamp']]);
@@ -541,7 +541,7 @@ if ($type == "album") {
 		$gallery_id = isset($_POST['gallery_id']) && isNum($_POST['gallery_id']) ? $_POST['gallery_id'] : 0;
 		$photo_title = stripinput($_POST['photo_title']);
 		if ($photo_id && has_photo_access($album_id, "album", $photo_id) && has_photo_access($gallery_id, "gallery", 0, "write")) {
-			$result = dbquery("INSERT IGNORE INTO ".$db_prefix."gallery_photos (gallery_id, photo_id, gallery_photo_title, gallery_photo_datestamp) VALUES ($gallery_id, $photo_id, '".mysql_escape_string($photo_title)."', '".time()."')");
+			$result = dbquery("INSERT IGNORE INTO ".$db_prefix."gallery_photos (gallery_id, photo_id, gallery_photo_title, gallery_photo_datestamp) VALUES ($gallery_id, $photo_id, '".mysqli_real_escape_string($_db_link, $photo_title)."', '".time()."')");
 		}
 	}
 
@@ -596,7 +596,7 @@ if ($type == "album") {
 				// load the album record
 				$result = dbquery("SELECT a.*, p.photo_thumb FROM ".$db_prefix."albums a
 					LEFT JOIN ".$db_prefix."photos p ON a.album_highlight = p.photo_id
-					WHERE album_id = $album_id 
+					WHERE album_id = $album_id
 				");
 				if (dbrows($result)) {
 					$variables['album'] = dbarray($result);
@@ -623,7 +623,7 @@ if ($type == "album") {
 					// load the album record
 					$result = dbquery("SELECT a.*, p.photo_thumb FROM ".$db_prefix."albums a
 						LEFT JOIN ".$db_prefix."photos p ON a.album_highlight = p.photo_id
-						WHERE album_id = $album_id 
+						WHERE album_id = $album_id
 					");
 					if (dbrows($result)) {
 						$variables['album'] = dbarray($result);
@@ -661,7 +661,7 @@ if ($type == "album") {
 				// load the album record
 				$result = dbquery("SELECT a.*, p.photo_thumb FROM ".$db_prefix."albums a
 					LEFT JOIN ".$db_prefix."photos p ON a.album_highlight = p.photo_id
-					WHERE album_id = $album_id 
+					WHERE album_id = $album_id
 				");
 				if (dbrows($result)) {
 					$variables['album'] = dbarray($result);
@@ -739,7 +739,7 @@ if ($type == "album") {
 				// load the album record
 				$result = dbquery("SELECT a.*, p.photo_thumb FROM ".$db_prefix."albums a
 					LEFT JOIN ".$db_prefix."photos p ON a.album_highlight = p.photo_id
-					WHERE album_id = $album_id 
+					WHERE album_id = $album_id
 				");
 				if (dbrows($result)) {
 					$variables['album'] = dbarray($result);
@@ -838,7 +838,7 @@ if ($type == "gallery") {
 			if (dbupdate("galleries", "gallery_id", $variables['gallery'])) {
 				// if this was an add, add the new gallery to the collection
 				if ($action == "add") {
-					$collection[$variables['gallery']['gallery_datestamp']] = array("type" => 'gallery', "id" => mysql_insert_id(), "title" => $variables['gallery']['gallery_title']);
+					$collection[$variables['gallery']['gallery_datestamp']] = array("type" => 'gallery', "id" => mysqli_insert_id($_db_link), "title" => $variables['gallery']['gallery_title']);
 					$variables['rows']++;
 				} elseif ($action == "edit") {
 					unset($collection[$_POST['gallery_datestamp']]);
@@ -906,7 +906,7 @@ if ($type == "gallery") {
 				// load the gallery record
 				$result = dbquery("SELECT g.*, p.photo_thumb FROM ".$db_prefix."galleries g
 					LEFT JOIN ".$db_prefix."photos p ON g.gallery_highlight = p.photo_id
-					WHERE g.gallery_id = $gallery_id 
+					WHERE g.gallery_id = $gallery_id
 				");
 				if (dbrows($result)) {
 					$variables['gallery'] = dbarray($result);
@@ -933,7 +933,7 @@ if ($type == "gallery") {
 					// load the gallery record
 					$result = dbquery("SELECT g.*, p.photo_thumb FROM ".$db_prefix."galleries g
 						LEFT JOIN ".$db_prefix."photos p ON g.gallery_highlight = p.photo_id
-						WHERE g.gallery_id = $gallery_id 
+						WHERE g.gallery_id = $gallery_id
 					");
 					if (dbrows($result)) {
 						$variables['gallery'] = dbarray($result);
@@ -971,7 +971,7 @@ if ($type == "gallery") {
 				// load the gallery record
 				$result = dbquery("SELECT g.*, p.photo_thumb FROM ".$db_prefix."galleries g
 					LEFT JOIN ".$db_prefix."photos p ON g.gallery_highlight = p.photo_id
-					WHERE g.gallery_id = $gallery_id 
+					WHERE g.gallery_id = $gallery_id
 				");
 				if (dbrows($result)) {
 					$variables['gallery'] = dbarray($result);

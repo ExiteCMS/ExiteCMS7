@@ -66,7 +66,7 @@ if (isset($_POST['save'])) {
 		redirect(FUSION_SELF.$aidlink."&status=su&pid=$page_id");
 	} else {
 		$result = dbquery("INSERT INTO ".$db_prefix."custom_pages (page_title, page_access, page_content, page_allow_comments, page_allow_ratings) VALUES ('$page_title', '$page_access', '$page_content', '$comments', '$ratings')");
-		$page_id = mysql_insert_id();
+		$page_id = mysqli_insert_id($_db_link);
 		if (isset($_POST['add_link'])) {
 			$result = dbquery("SELECT * FROM ".$db_prefix."site_links ORDER BY link_order DESC LIMIT 1");
 			$data = dbarray($result);
@@ -104,7 +104,7 @@ if (isset($_POST['save'])) {
 	while ($data = dbarray($result)) {
 		$data['selected'] = (isset($page_id) && $page_id == $data['page_id']);
 		$variables['pages'][] = $data;
-	}	
+	}
 	if (isset($_POST['edit'])) {
 		$result = dbquery("SELECT * FROM ".$db_prefix."custom_pages WHERE page_id='$page_id'");
 		if (dbrows($result) != 0) {

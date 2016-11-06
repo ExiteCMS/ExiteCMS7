@@ -128,7 +128,8 @@ if (isset($lookup)) {
 						OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 			, false);
 	}
-	$data['unread_count'] = ($result ? mysql_result($result, 0) : 0);
+	$rows = mysqli_fetch_array($result);
+	$data['unread_count'] = $rows[0];
 	$data['user_email'] = str_replace("@","&#64;",$data['user_email']);
 
 	if ($data['user_groups']) {

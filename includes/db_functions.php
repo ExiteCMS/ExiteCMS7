@@ -23,6 +23,8 @@ $_db_link = dbconnect($db_host, $db_user, $db_pass, $db_name);
 if ($db_host != $user_db_host && $db_name != $user_db_name) {
 	// if not, create a new database connection
 	$_user_db_link = dbconnect($user_db_host, $user_db_user, $user_db_pass, $user_db_name);
+} else {
+	$_user_db_link = $_db_link;
 }
 
 // database global variables
@@ -61,10 +63,10 @@ function ModUserTables(&$query) {
 // MySQL database functions
 function dbquery($query, $display=false) {
 
-	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats, $settings;
+	global $_db_link, $_user_db_link, $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats, $settings;
 
 	// update the query for relocated user tables
-	ModUserTables($query);
+	$isUserQuery = ModUserTables($query);
 
 	if ($_db_debug) {
 		echo "<pre><br />Query: ".$query."<br /></pre>";
@@ -92,7 +94,11 @@ function dbquery($query, $display=false) {
 	$_s_loadtime = explode(" ", microtime());
 	$_s_loadtime = (float)$_s_loadtime[1] + (float)$_s_loadtime[0];
 
-	$result = mysql_query($query);
+	if ($isUserQuery) {
+		$result = mysqli_query($_user_db_link, $query);
+	} else {
+		$result = mysqli_query($_db_link, $query);
+	}
 
 	$_e_loadtime = explode(" ", microtime());
 	$_e_loadtime = (float)$_e_loadtime[1] + (float)$_e_loadtime[0];
@@ -100,14 +106,14 @@ function dbquery($query, $display=false) {
 	$_loadstats['querytime'] = $_loadstats['querytime'] + $_e_loadtime - $_s_loadtime;
 
 	// bail out if an error occurred and we're NOT in CLI mode!
-	if ((defined('CMS_CLI') && !CMS_CLI) && !$result) {
+	if ((defined('CMS_CLI') && !CMS_CLI) && $result === false) {
 		if ($display || $_db_log) {
 			echo "<pre><br />Query: ".$query."<br />";
-			echo mysql_error();
+			echo $isUserQuery ? mysqli_error($_user_db_link) : mysqli_error($_db_link);
 			echo "</pre>";
 		}
 		if ($settings['debug_php_errors'] == 1 && function_exists('debug_backtrace')) _debug(debug_backtrace());
-		error_log("MSG: ".mysql_error());
+		error_log("MSG: ".($isUserQuery ? mysqli_error($_user_db_link) : mysqli_error($_db_link)));
 		error_log("QRY: ".$query);
 		die("A database error has been detected that is not recoverable.<br />The error has been logged and an administrator has been notified.");
 	}
@@ -121,7 +127,7 @@ function dbquery($query, $display=false) {
 
 // generate an insert or update query from an array with field data
 function dbupdate($table, $index, $record) {
-	global $db_prefix;
+	global $db_prefix, $_db_link;
 
 	// is this an insert or an update?
 	$fields = "";
@@ -132,7 +138,7 @@ function dbupdate($table, $index, $record) {
 			if ($name == $index) continue;
 			$fields .= ($fields == "" ? "" : ", ") . $name;
 			if (is_string($value)) {
-				$values .= ($values == "" ? "'" : ", '").mysql_escape_string($value)."'";
+				$values .= ($values == "" ? "'" : ", '").mysqli_real_escape_string($_db_link, $value)."'";
 			} else {
 				$values .= ($values == "" ? "" : ", ").$value;
 			}
@@ -144,18 +150,19 @@ function dbupdate($table, $index, $record) {
 			if ($name == $index) continue;
 			$fields .= ($fields == "" ? "" : ", ") . $name . " = ";
 			if (is_string($value)) {
-				$fields .= "'".mysql_escape_string($value)."' ";
+				$fields .= "'".mysqli_escape_string($_db_link, $value)."' ";
 			} else {
 				$fields .= $value . " ";
 			}
 		}
 		$sql .= $fields . "WHERE " . $index . " = ";
 		if (is_string($record[$index])) {
-			$sql .= "'".mysql_escape_string($record[$index])."'";
+			$sql .= "'".mysqli_real_escape_string($_db_link, $record[$index])."'";
 		} else {
 			$sql .= $record[$index];
 		}
 	}
+
 	return dbquery($sql);
 }
 
@@ -173,8 +180,8 @@ function dbfunction($field,$table,$conditions="") {
 	$sql = "SELECT ".$field." FROM ".(strpos($table, ".") ? $table : $db_prefix.$table).$cond;
 
 	$result = dbquery($sql, false);
-	$rows = mysql_result($result, 0);
-	return $rows;
+	$rows = mysqli_fetch_array($result);
+	return $rows[0];
 }
 
 // DEPRECIATED. Function definition left here to capture code that needs to be modified
@@ -190,10 +197,10 @@ function dbrows($resource) {
 		case "INSERT":
 		case "UPDATE":
 		case "DELETE":
-			$result = @mysql_affected_rows($resource);
+			$result = mysqli_affected_rows($resource);
 			break;
 		default:
-			$result = @mysql_num_rows($resource);
+			$result = mysqli_num_rows($resource);
 			break;
 	}
 
@@ -207,7 +214,7 @@ function dbrows($resource) {
 function dbarray($resource) {
 	global $settings;
 
-	$result = @mysql_fetch_assoc($resource);
+	$result = mysqli_fetch_assoc($resource);
 	return $result;
 }
 
@@ -215,14 +222,14 @@ function dbarray($resource) {
 function dbarraynum($resource) {
 	global $settings;
 
-	$result = @mysql_fetch_row($resource);
+	$result = mysqli_fetch_row($resource);
 	return $result;
 }
 
 // check if a table exists, optionally passing the name of a database (if empty, use the currently selected database)
 function dbtable_exists($tbl, $db='') {
 	global $db_name;
-	global $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats;
+	global $_db_link, $_db_last_function, $_db_debug, $_db_log, $_db_logs, $_loadstats;
 
 	$tables = array();
 
@@ -231,15 +238,15 @@ function dbtable_exists($tbl, $db='') {
 	$_loadstats['querytime'] -= $_s_loadtime;
 
 	if (!empty($db) && $db != $db_name) {
-		$db_select = @mysql_select_db($db);
+		$db_select = @mysqli_select_db($_db_link, $db);
 		if (!$db_select) return false;
 	}
-	$result = @mysql_query("SHOW TABLES");
-	while ($data = @mysql_fetch_array($result)) {
+	$result = mysqli_query($_db_link, "SHOW TABLES");
+	while ($data = mysqli_fetch_array($result)) {
 		$tables[] = $data[0];
 	}
-	@mysql_free_result($result);
-	$db_select = @mysql_select_db($db_name );
+	mysqli_free_result($result);
+	$db_select = mysqli_select_db($_db_link, $db_name );
 
 	$_loadstats['queries']++;
 	$_loadstats['others']++;
@@ -259,17 +266,17 @@ function dbtable_exists($tbl, $db='') {
 
 // connect to the database engine and select the database
 function dbconnect($db_host, $db_user, $db_pass, $db_name) {
-	$db_connect = @mysql_connect($db_host, $db_user, $db_pass, true);
+	$db_connect = @mysqli_connect($db_host, $db_user, $db_pass);
 	if (!$db_connect) {
-		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+		die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to establish connection to MySQL</b><br />".mysqli_connect_errno()." : ".mysqli_connect_error()."</div>");
 	} else {
-		$db_select = @mysql_select_db($db_name);
+		$db_select = mysqli_select_db($db_connect, $db_name);
 		if (!$db_select) {
-			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysql_errno()." : ".mysql_error()."</div>");
+			die("<div style='font-family:Verdana;font-size:11px;text-align:center;'><b>Unable to select MySQL database</b><br />".mysqli_errno($db_connect)." : ".mysqli_error($db_connect)."</div>");
 		}
 	}
 	// switch the connection to utf8
-	@mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'", $db_connect);
+	mysqli_query($db_connect, "SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
 	return $db_connect;
 }
 
@@ -287,5 +294,17 @@ function showMySQLdate($date, $empty="", $error="", $format="subheaderdate") {
 	$year=substr($date,0,4); $month=substr($date,5,2); $day=substr($date,8,2);
 	$hour=substr($date,11,2); $minute=substr($date,14,2); $second=substr($date,17,2);
 	return ucwords(showdate((isset($settings[$format])?$settings[$format]:$settings['subheaderdate']), mktime($hour,$minute,$second,$month,$day,$year)));
+}
+
+function mysqli_field_name($result, $field_offset)
+{
+    $properties = mysqli_fetch_field_direct($result, $field_offset);
+    return is_object($properties) ? $properties->name : null;
+}
+
+function mysqli_field_type($result, $field_offset)
+{
+    $properties = mysqli_fetch_field_direct($result, $field_offset);
+    return is_object($properties) ? $properties->type : null;
 }
 ?>

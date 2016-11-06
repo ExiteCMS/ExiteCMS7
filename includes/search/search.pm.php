@@ -85,7 +85,7 @@ if (isset($action)) {
 		// basis of the query for this search
 		if ($boolean) {
 			$sql = "SELECT m.*, i.*, MATCH(m.pm_subject, m.pm_message) AGAINST ('$stext' IN BOOLEAN MODE) AS score
-					FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i 
+					FROM ".$db_prefix."pm m, ".$db_prefix."pm_index i
 					WHERE m.pm_id = i.pm_id AND i.pmindex_user_id = '".$userdata['user_id']."'
 						AND MATCH(m.pm_subject, m.pm_message) AGAINST ('$stext' IN BOOLEAN MODE)";
 		} else {
@@ -130,7 +130,7 @@ if (isset($action)) {
 		}
 
 		// check how many rows this would output
-		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
+		$rptresult = dbquery($sql.($limit?" LIMIT $limit":""));
 		$rows = dbrows($rptresult);
 
 		// are there any results?

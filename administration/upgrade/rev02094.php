@@ -27,8 +27,8 @@ if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,12,6,2008), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(18,00,0,12,6,2008),
 					'title' => "Required updates for ExiteCMS v7.2 rev.".$_revision,
 					'description' => "Introduction of pluggable authentication methods.");
 
@@ -52,7 +52,7 @@ $commands[] = array('type' => 'db', 'value' => "DELETE FROM ##PREFIX##configurat
 $commands[] = array('type' => 'db', 'value' => "DELETE FROM ##PREFIX##configuration WHERE cfg_name = 'auth_type'");
 
 function rev2094_auth_settings() {
-	global $db_prefix, $settings;
+	global $db_prefix, $_db_link, $settings;
 
 	// add the authentication selected field to the configuration
 	$result = dbquery("INSERT INTO ".$db_prefix."configuration (cfg_name, cfg_value) VALUES ('authentication_selected', '".$settings['auth_type']."')");
@@ -60,9 +60,9 @@ function rev2094_auth_settings() {
 	// add the methods based on the old auth_type
 	$types = explode(",", $settings['auth_type']);
 	$methods = array();
-	
+
 	foreach($types as $type) {
-		
+
 		// supported logins before rev.2094
 		switch ($type) {
 			case "local":
@@ -75,6 +75,6 @@ function rev2094_auth_settings() {
 				break;
 		}
 	}
-	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".mysql_real_escape_string(serialize($methods))."' WHERE cfg_name = 'authentication_methods'");
+	$result = dbquery("UPDATE ".$db_prefix."configuration SET cfg_value = '".mysqli_real_escape_string($_db_link, serialize($methods))."' WHERE cfg_name = 'authentication_methods'");
 }
 ?>

@@ -697,13 +697,13 @@ if ($action == "edit" && !$user_can_edit) {
 					if ($action == 'edit') {
 						// update the post record
 						if ($_POST['message'] == $_POST['org_message'])
-							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".mysql_real_escape_string($subject)."', post_smileys='$smileys' WHERE post_id='$post_id'");
+							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".mysqli_real_escape_string($_db_link, $subject)."', post_smileys='$smileys' WHERE post_id='$post_id'");
 						else {
-							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".mysql_real_escape_string($subject)."', post_message='".mysql_real_escape_string($message)."', post_smileys='$smileys', post_edituser='".$userdata['user_id']."', post_edittime='".time()."' WHERE post_id='$post_id'");
+							$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".mysqli_real_escape_string($_db_link, $subject)."', post_message='".mysqli_real_escape_string($_db_link, $message)."', post_smileys='$smileys', post_edituser='".$userdata['user_id']."', post_edittime='".time()."' WHERE post_id='$post_id'");
 						}
 						$data = dbarray(dbquery("SELECT * FROM ".$db_prefix."posts WHERE thread_id='$thread_id' ORDER BY post_datestamp ASC LIMIT 1"));
 						if ($data['post_id'] == $post_id) {
-							$result = dbquery("UPDATE ".$db_prefix."threads SET thread_subject='".mysql_real_escape_string($subject)."' WHERE thread_id='$thread_id'");
+							$result = dbquery("UPDATE ".$db_prefix."threads SET thread_subject='".mysqli_real_escape_string($_db_link, $subject)."' WHERE thread_id='$thread_id'");
 						}
 						// flag the forum and the thread as updated
 						$result = dbquery("UPDATE ".$db_prefix."forums SET forum_lastpost='".time()."', forum_lastuser='".$userdata['user_id']."' WHERE forum_id='$forum_id'");
@@ -749,11 +749,11 @@ if ($action == "edit" && !$user_can_edit) {
 										break;
 									case 'newthread':
 										$result = dbquery("INSERT INTO ".$db_prefix."threads (forum_id, thread_subject, thread_author, thread_views, thread_lastpost, thread_lastuser, thread_sticky, thread_locked) VALUES('$forum_id', '$subject', '".$userdata['user_id']."', '0', '".time()."', '".$userdata['user_id']."', '$sticky', '0')");
-										$thread_id = mysql_insert_id();
+										$thread_id = mysqli_insert_id($_db_link);
 										break;
 								}
-								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '".mysql_real_escape_string($subject)."', '".mysql_real_escape_string($message)."', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc_code']."', '0', '0')");
-								$post_id = mysql_insert_id();
+								$result = dbquery("INSERT INTO ".$db_prefix."posts (forum_id, thread_id, post_reply_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_cc, post_edituser, post_edittime) VALUES ('$forum_id', '$thread_id', '$reply_id', '".mysqli_real_escape_string($_db_link, $subject)."', '".mysqli_real_escape_string($_db_link, $message)."', '$sig', '$smileys', '".$userdata['user_id']."', '".time()."', '".USER_IP."', '".$userdata['user_cc_code']."', '0', '0')");
+								$post_id = mysqli_insert_id($_db_link);
 								$result = dbquery("UPDATE ".$db_prefix."users SET user_posts=user_posts+1 WHERE user_id='".$userdata['user_id']."'");
 								if ($settings['thread_notify'] && isset($_POST['notify_me'])) {
 									$result = dbquery("INSERT INTO ".$db_prefix."thread_notify (thread_id, notify_datestamp, notify_user, notify_status) VALUES('$thread_id', '".time()."', '".$userdata['user_id']."', '1')");
@@ -848,7 +848,7 @@ if ($action == "edit" && !$user_can_edit) {
 						}
 						rename(PATH_ATTACHMENTS.$attachment['attach_tmp'], PATH_ATTACHMENTS.$attachname);
 						chmod(PATH_ATTACHMENTS.$attachname,0664);
-						$result = dbquery("INSERT INTO ".$db_prefix."forum_attachments (thread_id, post_id, attach_name, attach_realname, attach_comment, attach_ext, attach_size) VALUES ('$thread_id', '$post_id', '".mysql_real_escape_string($attachname)."', '".mysql_real_escape_string($attachment['attach_name'])."', '".mysql_real_escape_string($attachment['attach_comment'])."', '$attachext', '".$attachment['attach_size']."')");
+						$result = dbquery("INSERT INTO ".$db_prefix."forum_attachments (thread_id, post_id, attach_name, attach_realname, attach_comment, attach_ext, attach_size) VALUES ('$thread_id', '$post_id', '".mysqli_real_escape_string($_db_link, $attachname)."', '".mysqli_real_escape_string($_db_link, $attachment['attach_name'])."', '".mysqli_real_escape_string($_db_link, $attachment['attach_comment'])."', '$attachext', '".$attachment['attach_size']."')");
 					}
 				}
 			}
@@ -920,7 +920,7 @@ if ($action == "edit" && !$user_can_edit) {
 				$result = dbquery("UPDATE ".$db_prefix."posts SET post_subject='".$data['post_subject']."' WHERE post_id='$post_id'");
 				// create a new thread
 				$result = dbquery("INSERT INTO ".$db_prefix."threads (forum_id, thread_subject, thread_author, thread_views, thread_lastpost, thread_lastuser, thread_sticky, thread_locked) VALUES('".$data['forum_id']."', '".$data['post_subject']."', '".$data['post_author']."', '0', '".$data['post_datestamp']."', '".$data['post_author']."', '0', '0')");
-				$_POST['new_thread_id'] = mysql_insert_id();
+				$_POST['new_thread_id'] = mysqli_insert_id($_db_link);
 			} else {
 			}
 			// move the post to the new thread

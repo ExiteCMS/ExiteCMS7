@@ -114,7 +114,7 @@ if (isset($action)) {
 		}
 
 		// check how many rows this would output
-		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
+		$rptresult = dbquery($sql.($limit?" LIMIT $limit":""));
 		$rows = dbrows($rptresult);
 
 		// are there any results?

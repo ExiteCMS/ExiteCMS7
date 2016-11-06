@@ -496,11 +496,11 @@ function theme_init() {
 +-----------------------------------------------------*/
 function theme_cleanup() {
 
-	global $db_prefix, $userdata, $_db_log, $_db_logs, $template, $settings;
+	global $db_prefix, $userdata, $_db_log, $_db_logs, $_db_link, $template, $settings;
 
 	// update the user's datastore
 	if (iMEMBER	&& isset($userdata['user_datastore'])) {
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysql_real_escape_string(serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysqli_real_escape_string($_db_link, serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
 	}
 
 	// flush any session info
@@ -548,9 +548,6 @@ function theme_cleanup() {
 		$template->template_dir = array(PATH_INCLUDES.'templates', PATH_THEMES.$settings['theme'].'/templates/templates');
 		$template->display('_query_debug.tpl');
 	}
-
-	// close the database connection
-	mysql_close();
 
 	echo "</body>\n</html>\n";
 

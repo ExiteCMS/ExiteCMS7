@@ -240,7 +240,7 @@ if (isset($_POST['save_cat'])) {
 			}
 		}
 		// update the forum record
-		$result = dbquery("UPDATE ".$db_prefix."forums SET forum_name='".mysql_real_escape_string($forum_name)."', forum_cat='$forum_cat', forum_description='".mysql_real_escape_string($forum_description)."', forum_access='$forum_access', forum_posting='$forum_posting', forum_modgroup='$forum_modgroup', forum_attach='$forum_attach', forum_attachtypes='$forum_attachtypes', forum_prefix='$forum_prefix', forum_prefixes='".mysql_real_escape_string($forum_prefixes)."', forum_rulespage='$forum_rulespage', forum_banners='$forum_banners' WHERE forum_id='$forum_id'");
+		$result = dbquery("UPDATE ".$db_prefix."forums SET forum_name='".mysqli_real_escape_string($_db_link, $forum_name)."', forum_cat='$forum_cat', forum_description='".mysqli_real_escape_string($_db_link, $forum_description)."', forum_access='$forum_access', forum_posting='$forum_posting', forum_modgroup='$forum_modgroup', forum_attach='$forum_attach', forum_attachtypes='$forum_attachtypes', forum_prefix='$forum_prefix', forum_prefixes='".mysqli_real_escape_string($_db_link, $forum_prefixes)."', forum_rulespage='$forum_rulespage', forum_banners='$forum_banners' WHERE forum_id='$forum_id'");
 		redirect(FUSION_SELF.$aidlink."&status=savefe");
 	} else {
 		if ($forum_name != "") {
@@ -248,7 +248,7 @@ if (isset($_POST['save_cat'])) {
 			$forum_order = isNum($_POST['forum_order']) ? $_POST['forum_order'] : "";
 			if(!$forum_order) $forum_order=dbfunction("MAX(forum_order)", "forums", "forum_cat='$forum_cat'")+1;
 			$result = dbquery("UPDATE ".$db_prefix."forums SET forum_order=forum_order+1 WHERE forum_cat='$forum_cat' AND forum_order>='$forum_order'");
-			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_prefix, forum_prefixes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '$forum_prefix', '".mysql_real_escape_string($forum_prefixes)."', '$forum_rulespage', '$forum_banners', '0', '0')");
+			$result = dbquery("INSERT INTO ".$db_prefix."forums (forum_cat, forum_name, forum_order, forum_description, forum_moderators, forum_access, forum_posting, forum_modgroup, forum_attach, forum_attachtypes, forum_prefix, forum_prefixes, forum_rulespage, forum_banners, forum_lastpost, forum_lastuser) VALUES ('$forum_cat', '$forum_name', '$forum_order', '$forum_description', '$forum_mods', '$forum_access', '$forum_posting', '$forum_modgroup', '$forum_attach', '$forum_attachtypes', '$forum_prefix', '".mysqli_real_escape_string($_db_link, $forum_prefixes)."', '$forum_rulespage', '$forum_banners', '0', '0')");
 			redirect(FUSION_SELF.$aidlink."&status=savefu");
 		}
 		redirect(FUSION_SELF.$aidlink."&status=saveer");

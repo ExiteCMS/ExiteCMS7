@@ -63,9 +63,9 @@ if ($settings['enable_registration'] == 1) {
 					if ($settings['notify_on_activation'] == "1") {
 						// via PM
 						foreach ($admins as $admin) {
-							$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $user_info['user_name']))."', '1', '100', '".time()."')");
+							$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysqli_real_escape_string($_db_link, sprintf($locale['510'], $user_info['user_name']))."', '1', '100', '".time()."')");
 							if ($result) {
-								$pm_id = mysql_insert_id();
+								$pm_id = mysqli_insert_id($db_link);
 								$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '".$admin['user_id']."', '0', '".$admin['user_id']."', '0')");
 							}
 						}
@@ -226,7 +226,7 @@ if ($settings['enable_registration'] == 1) {
 						"user_ip" => USER_IP,
 						"user_hide_email" => isNum($_POST['user_hide_email']) ? $_POST['user_hide_email'] : "1"
 					));
-					$result = dbquery("INSERT INTO ".$db_prefix."new_users (user_code, user_email, user_datestamp, user_info) VALUES('$user_code', '".$email."', '".time()."', '".mysql_real_escape_string($user_info)."')");
+					$result = dbquery("INSERT INTO ".$db_prefix."new_users (user_code, user_email, user_datestamp, user_info) VALUES('$user_code', '".$email."', '".time()."', '".mysqli_real_escape_string($_db_link, $user_info)."')");
 					$variables['message'] = $locale['454'];
 					$title = $locale['400'];
 				} else {
@@ -256,9 +256,9 @@ if ($settings['enable_registration'] == 1) {
 						if ($settings['notify_on_activation'] == "1") {
 							// via PM
 							foreach ($admins as $admin) {
-								$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysql_real_escape_string(sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
+								$result = dbquery("INSERT INTO ".$db_prefix."pm (pm_subject, pm_message, pm_recipients, pm_size, pm_datestamp) VALUES ('".$locale['509']."', '".mysqli_real_escape_string($_db_link, sprintf($locale['510'], $username))."', '1', '100', '".time()."')");
 								if ($result) {
-									$pm_id = mysql_insert_id();
+									$pm_id = mysqli_insert_id($_db_link);
 									$result = dbquery("INSERT INTO ".$db_prefix."pm_index (pm_id, pmindex_user_id, pmindex_from_id, pmindex_to_id, pmindex_folder) VALUES ('".$pm_id."', '".$admin['user_id']."', '0', '".$admin['user_id']."', '0')");
 								}
 							}

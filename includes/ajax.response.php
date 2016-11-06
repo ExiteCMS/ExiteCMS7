@@ -143,7 +143,8 @@ switch ($request) {
 								OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 					);
 			}
-			$posts = ($result ? mysql_result($result, 0) : 0);
+			$rows = mysqli_fetch_array($result);
+			$posts = $rows[0];
 			if ($posts == 1) {
 				$posttext = sprintf($locale['088'], $posts);
 			} else {
@@ -207,7 +208,8 @@ switch ($request) {
 								OR (p.post_datestamp < tr.thread_first_read OR (p.post_edittime != 0 AND p.post_edittime < tr.thread_first_read)))"
 					);
 			}
-			$msg = ($result ? mysql_result($result, 0) : 0);
+			$rows = mysqli_fetch_array($result);
+			$msg = $rows[0];
 		}
 		if (empty($parms[0])) {
 			// just output the number
@@ -245,7 +247,7 @@ if ($cleanup) {
 
 	// update the user's datastore
 	if (iMEMBER) {
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysql_real_escape_string(serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysqli_real_escape_string($_db_link, serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
 	}
 
 	// delete all used flash info from the session
@@ -259,6 +261,7 @@ if ($cleanup) {
 	// flush any session info
 	session_clean_close();
 
-	// close the database connection
-	mysql_close();
+	// close the database connections
+	isset($_db_link) and mysqli_close($_db_link);
+	isset($_user_db_link) and mysqli_close($_user_db_link);
 }

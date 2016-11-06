@@ -35,7 +35,7 @@ if (!checkrights("S8") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."
 | Local functions                                    |
 +----------------------------------------------------*/
 function migrate($tablename, $fieldname, $from_setting, $to_setting) {
-	global $db_prefix, $settings;
+	global $db_prefix, $_db_link, $settings;
 
 	if ($from_setting == "none" && $to_setting == "single") {
 		// not implemented yet
@@ -57,13 +57,13 @@ function migrate($tablename, $fieldname, $from_setting, $to_setting) {
 					if ($name == $fieldname) {
 						$values .= ($values == "" ? "" : ", ") . "'".$data['locale_code']."'";
 					} else {
-						$values .= ($values == "" ? "" : ", ") . "'".mysql_escape_string($value)."'";
+						$values .= ($values == "" ? "" : ", ") . "'".mysqli_real_escape_string($_db_link, $value)."'";
 					}
 				}
 				// insert the duplicated record with the new locale code
 				$result3 = dbquery("INSERT INTO ".$db_prefix.$tablename." (".$fields.") VALUES (".$values.")");
 			}
-		}	
+		}
 	} elseif ($from_setting == "single" && $to_setting == "none") {
 		// not implemented yet
 	} elseif ($from_setting == "single" && $to_setting == "multiple") {

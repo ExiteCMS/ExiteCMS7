@@ -25,7 +25,7 @@ $reportvars = array();
 if (isset($action)) {
 
 	if ($action == "") {
-		
+
 			// pre-processing
 
 	} else {
@@ -40,7 +40,7 @@ if (isset($action)) {
 		if (!isset($top)) {
 			$top = isset($_POST['top']) ? $_POST['top'] : 0;
 		}
-		
+
 		// add the group by clause for the count()
 		$sql .= " GROUP BY year, month";
 
@@ -60,7 +60,7 @@ if (isset($action)) {
 
 			// check if we have a rowstart value
 			if (!isset($rowstart)) $rowstart = 0;
-		
+
 			// check how many rows this would output
 			$rptresult = dbquery($sql.($top?" LIMIT $top":""));
 			$variables['rows'] = dbrows($rptresult);
@@ -90,7 +90,7 @@ if (isset($action)) {
 						$reportvars['output'][] = $rptdata;
 					}
 				} else {
-					$variables['message'] = $locale['rpt950']." ".mysql_error();
+					$variables['message'] = $locale['rpt950']." ".mysqli_error($_db_link);
 				}
 			}
 		}

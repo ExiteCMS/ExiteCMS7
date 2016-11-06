@@ -29,7 +29,7 @@ $variables = array();
 if (!checkrights("I") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");
 
 // variable initialisation
-$mod_title = ""; $mod_description = ""; $mod_version = ""; $mod_developer = ""; $mod_email = ""; $mod_weburl = ""; 
+$mod_title = ""; $mod_description = ""; $mod_version = ""; $mod_developer = ""; $mod_email = ""; $mod_weburl = "";
 $mod_folder = ""; $mod_admin_image = ""; $mod_admin_panel = ""; $mod_link_name = ""; $mod_link_url = ""; $mod_link_visibility = "";
 $mod_newtables = 0; $mod_insertdbrows = 0; $mod_altertables = 0; $mod_deldbrows = 0;
 
@@ -67,7 +67,7 @@ if ($action == 'install' && isset($module)) {
 
 		// add the admin panel of this module
 		$result = dbquery("INSERT INTO ".$db_prefix."admin (admin_rights, admin_image, admin_title, admin_link, admin_page) VALUES ('".$mod_admin_rights."', '$mod_admin_image', '$mod_title', '".MODULES."$mod_folder/$mod_admin_panel', '".$mod_admin_page."')");
-		
+
 		// make sure superadmins have rights to all defined admin modules
 		$result = dbquery("SELECT admin_rights FROM ".$db_prefix."admin");
 		$adminrights = "";
@@ -79,7 +79,7 @@ if ($action == 'install' && isset($module)) {
 
 	// if defined, install the menu links for this module
 	if (isset($mod_site_links) && is_array($mod_site_links) && count($mod_site_links)) {
-		
+
 		// loop through the defined links
 		foreach ($mod_site_links as $mod_link) {
 
@@ -120,12 +120,12 @@ if ($action == 'install' && isset($module)) {
 				case "multiple":
 					$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
 					while ($data = dbarray($result)) {
-						$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+						$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name)
 							VALUES ('".$mod_link['name']."', '".$data['locale_code']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
 					}
 					break;
 				default:
-					$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+					$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name)
 						VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
 			}
 		}
@@ -152,7 +152,7 @@ if ($action == 'install' && isset($module)) {
 					$result = dbquery($dbcmd, false);
 					if (!$result) {
 						// record the error
-						$mod_errors[] = $locale['413'].$dbcmd."<br /><font color='red'>".mysql_error()."</font>";
+						$mod_errors[] = $locale['413'].$dbcmd."<br /><font color='red'>".mysqli_error($_db_link)."</font>";
 					}
 					break;
 				case "function":
@@ -171,11 +171,11 @@ if ($action == 'install' && isset($module)) {
 	}
 	$variables['mod_errors'] = $mod_errors;
 	$variables['is_error'] = count($mod_errors);
-	
+
 	// register the installation of this module
 	$result = dbquery("INSERT INTO ".$db_prefix."modules (mod_title, mod_folder, mod_version) VALUES ('$mod_title', '$mod_folder', '$mod_version')");
 	// save the key, we might need it later
-	$mod_id = mysql_insert_id();
+	$mod_id = mysqli_insert_id($_db_link);
 
 	// if a module is installed, and if reports are defined, install the report links for this module
 	if ($mod_id && isset($mod_report_links) && is_array($mod_report_links) && count($mod_report_links)) {
@@ -192,7 +192,7 @@ if ($action == 'install' && isset($module)) {
 					$mod_report['title'] = isset($mod_report['title']) ? $mod_report['title'] : ("Report: ".$mod_report['name']);
 					$mod_report['version'] = isset($mod_report['version']) ? $mod_report['version'] : $mod_version;
 					// add it to the report table
-					$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_id, report_name, report_title, report_version, report_visibility) 
+					$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_id, report_name, report_title, report_version, report_visibility)
 						VALUES ('".$mod_id."', '".$mod_report['name']."', '".$mod_report['title']."', '".$mod_report['version']."', '".$mod_report['visibility']."')");
 				}
 			}
@@ -223,7 +223,7 @@ if ($action == 'install' && isset($module)) {
 						$max = 1;
 					}
 					// add it to the search table
-					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order) 
+					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order)
 						VALUES ('".$mod_id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."', ".$max.")");
 				}
 			}
@@ -240,10 +240,10 @@ if ($action == 'install' && isset($module)) {
 }
 
 if ($action == 'uninstall' && isset($id)) {
-	
+
 	// make sure the ID passed is numeric
 	if (!isNum($id)) fallback(FUSION_SELF.$aidlink);
-	
+
 	// get the module data
 	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_id='$id'");
 	$data = dbarray($result);
@@ -254,7 +254,7 @@ if ($action == 'uninstall' && isset($id)) {
 	// set some defaults if not defined in the installer
 	if (!isset($mod_admin_rights) or $mod_admin_rights == "" or strlen($mod_admin_rights) !=2) $mod_admin_rights = "IP";
 	if (!isset($mod_admin_page) or $mod_admin_page == "" or !isNum($mod_admin_page)) $mod_admin_page = 4;
-	
+
 	// if an admin panel is defined, remove it
 	if ($mod_admin_panel != "") {
 		$result = dbquery("DELETE FROM ".$db_prefix."admin WHERE admin_rights='".$mod_admin_rights."' AND admin_link='".MODULES."$mod_folder/$mod_admin_panel' AND admin_page='".$mod_admin_page."'");
@@ -272,7 +272,7 @@ if ($action == 'uninstall' && isset($id)) {
 
 	// if defined, remove the menu links for this module
 	if (isset($mod_site_links) && is_array($mod_site_links) && count($mod_site_links)) {
-		
+
 		// loop through the defined links
 		foreach ($mod_site_links as $mod_link) {
 
@@ -339,7 +339,7 @@ if ($action == 'uninstall' && isset($id)) {
 					$result = dbquery($dbcmd, false);
 					if (!$result) {
 						// record the error
-						$mod_errors[] = $locale['413'].$dbcmd."<br /><font color='red'>".mysql_error()."</font>";
+						$mod_errors[] = $locale['413'].$dbcmd."<br /><font color='red'>".mysqli_error($_db_link)."</font>";
 					}
 					break;
 				case "function":
@@ -373,7 +373,7 @@ if ($action == 'locales' && isset($id)) {
 
 	// make sure the ID passed is numeric
 	if (!isNum($id)) fallback(FUSION_SELF.$aidlink);
-	
+
 	// check if it exists
 	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_id='$id'");
 	if (!$result)  fallback(FUSION_SELF.$aidlink);
@@ -397,7 +397,7 @@ if ($action == 'upgrade' && isset($id)) {
 
 	// make sure the ID passed is numeric
 	if (!isNum($id)) fallback(FUSION_SELF.$aidlink);
-	
+
 	// check if it exists
 	$result = dbquery("SELECT * FROM ".$db_prefix."modules WHERE mod_id='$id'");
 	if (!$result)  fallback(FUSION_SELF.$aidlink);
@@ -440,7 +440,7 @@ if ($action == 'upgrade' && isset($id)) {
 
 	// if defined, install the menu links for this module
 	if (isset($mod_site_links) && is_array($mod_site_links) && count($mod_site_links)) {
-		
+
 		// loop through the defined links
 		foreach ($mod_site_links as $mod_link) {
 
@@ -488,12 +488,12 @@ if ($action == 'upgrade' && isset($id)) {
 					case "multiple":
 						$result = dbquery("SELECT * FROM ".$db_prefix."locale WHERE locale_active = '1'");
 						while ($data2 = dbarray($result)) {
-							$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+							$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, link_visibility, link_position, link_window, link_order, panel_name)
 								VALUES ('".$mod_link['name']."', '".$data2['locale_code']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
 						}
 						break;
 					default:
-						$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name) 
+						$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_url, link_visibility, link_position, link_window, link_order, panel_name)
 							VALUES ('".$mod_link['name']."', '$link_url', '".$mod_link['visibility']."', '1', '0', '$link_order', '$link_panel')");
 				}
 
@@ -528,7 +528,7 @@ if ($action == 'upgrade' && isset($id)) {
 					$mod_report['title'] = isset($mod_report['title']) ? $mod_report['title'] : ("Report: ".$mod_report['name']);
 					$mod_report['version'] = isset($mod_report['version']) ? $mod_report['version'] : $mod_version;
 					// add it to the report table
-					$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_id, report_name, report_title, report_version, report_visibility) 
+					$result = dbquery("INSERT INTO ".$db_prefix."reports (report_mod_id, report_name, report_title, report_version, report_visibility)
 						VALUES ('".$id."', '".$mod_report['name']."', '".$mod_report['title']."', '".$mod_report['version']."', '".$mod_report['visibility']."')");
 				}
 			}
@@ -563,7 +563,7 @@ if ($action == 'upgrade' && isset($id)) {
 						$max = 1;
 					}
 					// add it to the search table
-					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order) 
+					$result = dbquery("INSERT INTO ".$db_prefix."search (search_mod_id, search_name, search_title, search_version, search_fulltext, search_visibility, search_order)
 						VALUES ('".$id."', '".$mod_search['name']."', '".$mod_search['title']."', '".$mod_search['version']."',  '".$mod_search['fulltext']."', '".$mod_search['visibility']."', ".$max.")");
 				}
 			}
@@ -577,7 +577,7 @@ if ($action == 'upgrade' && isset($id)) {
 	if (function_exists('module_upgrade')) {
 		$variables['mod_errors'] = module_upgrade($data['mod_version']);
 	}
-	
+
 	// upgrade the modules version number if the upgrade was successful
 	if ($variables['is_error'] == 0) $result2 = dbquery("UPDATE ".$db_prefix."modules SET mod_version='$mod_version' WHERE mod_id='".$data['mod_id']."'");
 }
@@ -629,10 +629,10 @@ while ($folder = readdir($temp)) {
 					// convert the versions to a number
 					$new = explode(".", $mod_version);
 					while (count($new) < 4) { array_unshift($new, 0); }
-					$new = 1 * $new[3] + 100 * $new[2] + 10000 * $new[1] + 1000000 * $new[0]; 
+					$new = 1 * $new[3] + 100 * $new[2] + 10000 * $new[1] + 1000000 * $new[0];
 					$cur = explode(".", $data['mod_version']);
 					while (count($cur) < 4) { array_unshift($cur, 0); }
-					$cur = 1 * $cur[3] + 100 * $cur[2] + 10000 * $cur[1] + 1000000 * $cur[0]; 
+					$cur = 1 * $cur[3] + 100 * $cur[2] + 10000 * $cur[1] + 1000000 * $cur[0];
 					// now compare the numeric version numbers
 					if ($new > $cur) {
 						if ($filter && $filter != 2) continue;
@@ -651,7 +651,7 @@ while ($folder = readdir($temp)) {
 			}
 			$modules[] = $this_module;
 			$moduleindex[] = $this_module['type'].'-'.$this_module['status'].'-'.$this_module['title'];
-			$mod_title = ""; $mod_description = ""; $mod_version = ""; $mod_developer = ""; $mod_email = ""; $mod_weburl = ""; 
+			$mod_title = ""; $mod_description = ""; $mod_version = ""; $mod_developer = ""; $mod_email = ""; $mod_weburl = "";
 			$mod_folder = ""; $mod_admin_image = ""; $mod_admin_panel = ""; $mod_link_name = ""; $mod_link_url = ""; $mod_link_visibility = "";
 			$mod_newtables = 0; $mod_insertdbrows = 0; $mod_altertables = 0; $mod_deldbrows = 0;
 		}
@@ -672,7 +672,7 @@ foreach($moduleindex as $index => $module) {
 if (!isset($variables['is_error'])) {
 	$variables['is_error'] = 0;
 }
- 
+
 // define the admin body panel
 $template_panels[] = array('type' => 'body', 'name' => 'admin.modules', 'template' => 'admin.modules.tpl', 'locale' => "admin.modules");
 $template_variables['admin.modules'] = $variables;

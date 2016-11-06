@@ -53,7 +53,7 @@ function fpm_delete() {
 }
 
 function fpm_save($post_id) {
-	global $db_prefix, $thread_id, $fpm;
+	global $db_prefix, $_db_link, $thread_id, $fpm;
 
 	if (FPM_ACCESS) {
 		if (isset($fpm['reset_votes']) && $fpm['reset_votes'] != "" && isset($fpm['poll_id']) && isNum($fpm['poll_id'])) {
@@ -103,7 +103,8 @@ function fpm_save($post_id) {
 					poll_question, poll_start, poll_end, poll_type, poll_status) VALUES (NULL, '$thread_id',
 					'$post_id', '".$fpm['question']."', '".$fpm['start']."', '".$fpm['end']."', '".$fpm['type']."', '1')"
 				);
-				$fpm['poll_id'] = mysql_insert_id(); $x = 1;
+				$fpm['poll_id'] = mysqli_insert_id($_db_link);
+				$x = 1;
 				for($i = 1; $i <= $fpm['option_show']; $i ++) {
 					if ($fpm['option'][$i] != "") {
 						$result = dbquery("INSERT INTO ".$db_prefix."forum_poll_options (option_id, poll_id,

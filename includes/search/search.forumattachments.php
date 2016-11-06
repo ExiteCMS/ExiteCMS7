@@ -22,7 +22,7 @@ if (eregi("search.forumattachments.php", $_SERVER['PHP_SELF']) || !defined('INIT
 if (isset($action)) {
 
 	if ($action == "") {
-	
+
 		// add the possible  search filters ($data is defined in the calling script!)
 		$data['search_filters' ] = "date,users,forums";
 
@@ -173,7 +173,7 @@ if (isset($action)) {
 		}
 
 		// check how many rows this would output
-		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
+		$rptresult = dbquery($sql.($limit?" LIMIT $limit":""));
 		$rows = dbrows($rptresult);
 
 		// are there any results?

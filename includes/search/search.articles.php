@@ -22,7 +22,7 @@ if (eregi("search.articles.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK'
 if (isset($action)) {
 
 	if ($action == "") {
-		
+
 		// add the possible  search filters ($data is defined in the calling script!)
 		$data['search_filters'] = "date,users";
 
@@ -96,14 +96,14 @@ if (isset($action)) {
 
 		// basis of the query for this search
 		if ($boolean) {
-			$sql = "SELECT ta.*,tac.*, tu.user_id,user_name, 
-				MATCH(article_subject, article_snippet, article_article) AGAINST ('$stext' IN BOOLEAN MODE) AS score 
+			$sql = "SELECT ta.*,tac.*, tu.user_id,user_name,
+				MATCH(article_subject, article_snippet, article_article) AGAINST ('$stext' IN BOOLEAN MODE) AS score
 				FROM ".$db_prefix."articles ta
 				INNER JOIN ".$db_prefix."article_cats tac ON ta.article_cat=tac.article_cat_id
 				LEFT JOIN ".$db_prefix."users tu ON ta.article_name=tu.user_id
 				WHERE ".groupaccess('article_cat_access')." AND MATCH(article_subject, article_snippet, article_article) AGAINST ('$stext' IN BOOLEAN MODE)";
 		} else {
-			$sql = "SELECT ta.*,tac.*, tu.user_id,user_name, 1 AS score 
+			$sql = "SELECT ta.*,tac.*, tu.user_id,user_name, 1 AS score
 				FROM ".$db_prefix."articles ta
 				INNER JOIN ".$db_prefix."article_cats tac ON ta.article_cat=tac.article_cat_id
 				LEFT JOIN ".$db_prefix."users tu ON ta.article_name=tu.user_id
@@ -151,7 +151,7 @@ if (isset($action)) {
 		}
 
 		// check how many rows this would output
-		$rptresult = mysql_query($sql.($limit?" LIMIT $limit":""));
+		$rptresult = dbquery($sql.($limit?" LIMIT $limit":""));
 		$rows = dbrows($rptresult);
 
 		// are there any results?

@@ -32,7 +32,7 @@ if (!isset($step)) $step = "";
 // function to check if sub-categories are not assigned recusivly
 function cat_not_recursive($this_id, $new_id) {
 	global $db_prefix;
-	
+
 	$result = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id = '".$new_id."'");
 	if (!$result) return true;
 	$data = dbarray($result);
@@ -103,7 +103,7 @@ if (isset($_POST['save_cat'])) {
 		} else {
 			// insert
 			$result = dbquery("INSERT INTO ".$db_prefix."download_cats (download_cat_name, download_cat_locale, download_cat_description, download_cat_sorting, download_cat_cat_sorting, download_cat_access, download_cat_image, download_parent, download_datestamp) VALUES('$cat_name', '$cat_locale', '$cat_description', '$cat_sorting', '$cat_cat_sorting', '$cat_access', '$cat_image', '$cat_sub', '".time()."')");
-			$download_cat = mysql_insert_id();
+			$download_cat = mysqli_insert_id($_db_link);
 		}
 		// was this a copy? if so, copy the contents of this category as well
 		if ($step == "copy") {
@@ -156,7 +156,7 @@ if (isset($step) && ($step == "edit" || $step == "copy")) {
 	} else {
 		$title = $locale['422'];
 	}
-} else { 
+} else {
 	$cat_id = 0;
 	$cat_name = "";
 	if (!isset($cat_locale)) $cat_locale = $settings['locale_code'];
@@ -176,7 +176,7 @@ if (isset($step) && ($step == "edit" || $step == "copy")) {
 $variables['groups'] = getusergroups(false, true);
 $variables['images'] = makefilelist(PATH_IMAGES_DC, ".|..|index.php", true);
 $variables['editlist'] = array();
-$result_sub = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ORDER BY download_cat_name");	
+$result_sub = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id > 0 ORDER BY download_cat_name");
 while ($data2 = dbarray($result_sub)) {
 	$variables['editlist'][] = $data2;
 }
@@ -207,7 +207,7 @@ while ($data = dbarray($result)) {
 	if ($data['download_parent']) {
 		$result_sub = dbquery("SELECT * FROM ".$db_prefix."download_cats WHERE download_cat_id = '" .$data['download_parent']. "' LIMIT 1");
 		while ($data_sub = dbarray($result_sub)) {
-			$data['parent_cat_name'] = $data_sub['download_cat_name']; 
+			$data['parent_cat_name'] = $data_sub['download_cat_name'];
 		}
 	}
 	$data['group_name'] = getgroupname($data['download_cat_access'], -1);

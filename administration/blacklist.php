@@ -76,7 +76,7 @@ if (isset($_POST['blacklist'])) {
 		}
 	} elseif ($blacklist_user) {
 		$ban_expire = $blacklist_timeout == 0 ? $blacklist_timeout : (time() + $blacklist_timeout * 86400);
-		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_expire = '$ban_expire', user_ban_reason='".mysql_escape_string($blacklist_reason)."' WHERE user_id='$blacklist_user'");
+		$result = dbquery("UPDATE ".$db_prefix."users SET user_status='1', user_ban_expire = '$ban_expire', user_ban_reason='".mysqli_real_escape_string($_db_link, $blacklist_reason)."' WHERE user_id='$blacklist_user'");
 	}
 	redirect(FUSION_SELF.$aidlink."&status=ban");
 }
