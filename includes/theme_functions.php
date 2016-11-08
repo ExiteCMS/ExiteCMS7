@@ -503,9 +503,6 @@ function theme_cleanup() {
 		$result = dbquery("UPDATE ".$db_prefix."users SET user_datastore = '".mysqli_real_escape_string($_db_link, serialize($userdata['user_datastore']))."' WHERE user_id = '".$userdata['user_id']."'");
 	}
 
-	// flush any session info
-	session_clean_close();
-
 	// clean-up tasks, will be executed by all super-admins
 	// WANWIZARD - 20070716 - THIS NEEDS TO BE MOVED TO A CRON JOB !!!
 	$_db_logs[] = array("--- clean up code --- not included in the footer information --- needs to be moved to a cron process", 0);
@@ -526,6 +523,9 @@ function theme_cleanup() {
 			$result = dbquery("DELETE LOW_PRIORITY FROM ".$db_prefix."threads_read WHERE thread_last_read < '".$settings['unread_threshold']."'", false);
 		}
 	}
+
+	// flush any session info
+	session_clean_close();
 
 	// check if we have had query debugging active. If so, display the result just before the footer panel(s)
 	if ($_db_log && is_array($_db_logs) && count($_db_logs)) {
