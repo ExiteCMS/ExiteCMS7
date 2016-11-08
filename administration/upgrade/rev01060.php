@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '1060';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(23,00,0,11,04,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(23,00,0,11,04,2007),
 					'title' => "Required updates for ExiteCMS v7.0 rev.".$_revision,
 					'description' => "Fix a version issue in the modules registration.<br />Added member email address validation feature.");
 

@@ -377,7 +377,7 @@ function get_database_size($prefix=""){
 	while($row=dbarray($result)){
 		if (!isset($row['Type'])) $row['Type'] = "";
 		if (!isset($row['Engine'])) $row['Engine'] = "";
-		if((eregi('^(MyISAM|ISAM|HEAP|InnoDB)$',$row['Type'])) || (eregi('^(MyISAM|ISAM|HEAP|InnoDB)$',$row['Engine'])) && (preg_match("/^".$prefix."/",$row['Name']))){
+		if((preg_match('~^(MyISAM|ISAM|HEAP|InnoDB)$~i',$row['Type'])) || (preg_match('~^(MyISAM|ISAM|HEAP|InnoDB)$~i',$row['Engine'])) && (preg_match("/^".$prefix."/",$row['Name']))){
 			$db_size+=$row['Data_length']+$row['Index_length'];
 		}
 	}
@@ -391,7 +391,7 @@ function get_table_count($prefix=""){
 	while($row=dbarray($result)){
 		if (!isset($row['Type'])) $row['Type'] = "";
 		if (!isset($row['Engine'])) $row['Engine'] = "";
-		if((eregi('^(MyISAM|ISAM|HEAP|InnoDB)$',$row['Type'])) || (eregi('^(MyISAM|ISAM|HEAP|InnoDB)$',$row['Engine'])) && (preg_match("/^".$prefix."/",$row['Name']))){
+		if((preg_match('~^(MyISAM|ISAM|HEAP|InnoDB)$~i',$row['Type'])) || (preg_match('~^(MyISAM|ISAM|HEAP|InnoDB)$~i',$row['Engine'])) && (preg_match("/^".$prefix."/",$row['Name']))){
 			$tbl_count++;
 		}
 	}

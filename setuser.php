@@ -30,10 +30,11 @@ header("P3P: CP='NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM'");
 
 // make sure the error variable has a value
 if (!isset($error) || !isNum($error)) $error = 0;
+
 // set the redirect url (set in theme_cleanup), but not when in maintenance!
-if (isset($_SERVER['HTTP_REFERER']) && eregi("maintenance.php", $_SERVER['HTTP_REFERER'])) {
+if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], "maintenance.php") !== false) {
 	$variables['url'] = BASEDIR."index.php";
-} elseif (isset($_SESSION['last_url']) &&  !eregi("setuser.php", $_SESSION['last_url'])) {
+} elseif (isset($_SESSION['last_url']) &&  strpos($_SESSION['last_url'], "setuser.php") === false) {
 	$variables['url'] = $_SESSION['last_url'];
 } elseif (empty($_SERVER['HTTP_REFERER'])) {
 	$variables['url'] = BASEDIR."index.php";

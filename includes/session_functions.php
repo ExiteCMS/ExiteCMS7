@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("session_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // update the PHP session settings with the info from the CMS configuration table
 ini_set('session.name', $settings['session_name']);
@@ -201,7 +201,13 @@ function _read_session($session_id) {
 // custom write() function
 function _write_session($session_id,$session_data) {
 
-	global $db_prefix, $_db_link, $settings, $userdata;
+	global $db_prefix, $db_host, $db_user, $db_pass, $db_name, $_db_link, $settings, $userdata;
+
+	// reconnect if needed, some php versions close the db on exit or die!
+	if ( ! $_db_link)
+	{
+		$_db_link = dbconnect($db_host, $db_user, $db_pass, $db_name);
+	}
 
 	// only if any session data is passed
 	if (!$session_data) {
@@ -229,6 +235,9 @@ function _write_session($session_id,$session_data) {
 						VALUES ('$session_id', '"._session_ua()."', '".time()."', '$session_expire', '".USER_IP."', '".$session_user_id."', '".mysqli_real_escape_string($_db_link, $session_data)."')
 						ON DUPLICATE KEY UPDATE session_data = '".mysqli_real_escape_string($_db_link, $session_data)."', session_ua = '"._session_ua()."', session_expire = '$session_expire', session_ip = '".USER_IP."', session_user_id = '".$session_user_id."'"
 					);
+
+		mysqli_close($_db_link);
+
 		return true;
 	}
 }

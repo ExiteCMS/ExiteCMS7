@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '1711';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(17,00,0,8,28,2008), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(17,00,0,8,28,2008),
 					'title' => "Required updates for ExiteCMS v7.1 rev.".$_revision,
 					'description' => "Added an order to seaches, to determine the default search location");
 
@@ -41,7 +40,7 @@ $commands[] = array('type' => 'function', 'value' => "add_search_order");
 
 function add_search_order() {
 	global $db_prefix;
-	
+
 	$result = dbquery("SELECT * FROM ".$db_prefix."search ORDER BY search_id");
 	$i = 1;
 	while ($data = dbarray($result)) {

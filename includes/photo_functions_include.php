@@ -16,10 +16,10 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("photo_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
-	
+
 	global $settings;
 
 	// give this process plenty of memory to handle large images
@@ -45,11 +45,11 @@ function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
 		default:
 			//unsupported type
 			return false;
-	}		
+	}
 
 	$old_x = imagesx($origimage);
 	$old_y = imagesy($origimage);
-	
+
 	if ($old_x > $new_w || $old_y > $new_h) {
 		if ($old_x < $old_y) {
 			$thumb_w = round(($old_x * $new_h) / $old_y);
@@ -65,7 +65,7 @@ function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
 		$thumb_w = $old_x;
 		$thumb_h = $old_y;
 	}
-	
+
 	if ($settings['thumb_compression'] == "gd1") {
 		$thumbimage = imagecreate($thumb_w,$thumb_h);
 		$result = imagecopyresized($thumbimage, $origimage, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y);
@@ -73,7 +73,7 @@ function createthumbnail($filetype, $origfile, $thumbfile, $new_w, $new_h) {
 		$thumbimage = imagecreatetruecolor($thumb_w,$thumb_h);
 		$result = imagecopyresampled($thumbimage, $origimage, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y);
 	}
-	
+
 	touch($thumbfile);
 
 	if ($filetype == 1) { imagegif($thumbimage, $thumbfile); }
@@ -121,13 +121,13 @@ function imagecreatefrombmp($filename) {
 				$COLOR = unpack("V",substr($IMG,$P,3).$VIDE);
 			} elseif ($BMP['bits_per_pixel'] == 24) {
 				$COLOR = unpack("V",substr($IMG,$P,3).$VIDE);
-			} elseif ($BMP['bits_per_pixel'] == 16) { 
+			} elseif ($BMP['bits_per_pixel'] == 16) {
 			   $COLOR = unpack("v",substr($IMG,$P,2));
 			   $blue  = ($COLOR[1] & 0x001f) << 3;
 			   $green = ($COLOR[1] & 0x07e0) >> 3;
 			   $red   = ($COLOR[1] & 0xf800) >> 8;
 			   $COLOR[1] = $red * 65536 + $green * 256 + $blue;
-			} elseif ($BMP['bits_per_pixel'] == 8) { 
+			} elseif ($BMP['bits_per_pixel'] == 8) {
 				$COLOR = unpack("n",$VIDE.substr($IMG,$P,1));
 				$COLOR[1] = $PALETTE[$COLOR[1]+1];
 			} elseif ($BMP['bits_per_pixel'] == 4) {

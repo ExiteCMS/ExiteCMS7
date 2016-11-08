@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '1782';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,9,19,2008), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(18,00,0,9,19,2008),
 					'title' => "Required updates for ExiteCMS v7.1 rev.".$_revision,
 					'description' => "Database modifications for the new Photo Albums module.");
 
@@ -136,7 +135,7 @@ function rev1782_add_to_menu() {
 	// determine the next menu order number
 	$order = dbfunction("MAX(link_order)", "site_links") + 1;
 
-	$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, panel_name, link_visibility, link_position, link_window, link_order) 
+	$result = dbquery("INSERT INTO ".$db_prefix."site_links (link_name, link_locale, link_url, panel_name, link_visibility, link_position, link_window, link_order)
 						VALUES('Photo Albums', '".$settings['locale_code']."', 'albums.php', 'main_menu_panel', 103, 1, 0, ".$order.")");
 }
 ?>

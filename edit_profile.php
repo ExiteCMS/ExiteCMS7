@@ -60,7 +60,7 @@ if (isset($_POST['update_profile'])) {
 
 	// store the selected locale
 	$_SESSION['locale'] = stripinput($_POST['user_locale']);
-	$username = trim(eregi_replace(" +", " ", $_POST['user_name']));
+	$username = trim($_POST['user_name']);
 	if ($username == "" || $_POST['user_email'] == "" || $_POST['user_fullname'] == "" ) {
 		$error .= $locale['480']."<br>\n";
 	} else {

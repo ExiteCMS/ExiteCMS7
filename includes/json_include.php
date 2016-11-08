@@ -1,5 +1,5 @@
 <?php
-if (eregi("json_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // Future-friendly json_encode
 if( !function_exists('json_encode') ) {
@@ -684,7 +684,7 @@ class Services_JSON
                                 // element in an associative array,
                                 // for now
                                 $parts = array();
-                                
+
                                 if (preg_match('/^\s*(["\'].*[^\\\]["\'])\s*:\s*(\S.*),?$/Uis', $slice, $parts)) {
                                     // "name":value pair
                                     $key = $this->decode($parts[1]);
@@ -820,5 +820,5 @@ if (class_exists('PEAR_Error')) {
     }
 
 }
-    
+
 ?>

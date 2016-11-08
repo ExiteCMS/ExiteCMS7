@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("geoip_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // initialize the result cache
 if (!isset($_GeoIP_result)) $_GeoIP_result = array();
@@ -46,7 +46,7 @@ function GeoIP_IP2Code($ip_addr) {
 		} else {
 			// convert the IP address to a number
 			$ipnum = GeoIP_IP2Num($ip_addr);
-			if (!$ipnum) return false;			
+			if (!$ipnum) return false;
 			// look this IP address up
 			$result = dbquery("SELECT * FROM ".$db_prefix."GeoIP WHERE '".sprintf("%u", $ipnum)."' BETWEEN ip_start_num AND ip_end_num LIMIT 1");
 			if ($data = dbarray($result)) {

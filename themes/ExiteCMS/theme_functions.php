@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // include the menu functions to create the header menu bar
 require_once PATH_INCLUDES."menu_include.php";
@@ -36,21 +36,21 @@ function add_fullscreen_menu() {
 
 		// load the menu include
 		require_once PATH_INCLUDES."menu_include.php";
-		
+
 		// array's to store the variables for this panel
 		$variables = array();
-		
+
 		// define linkinfo as global, as this script is called from within a function!
-		global $linkinfo; $linkinfo = array(); 
-		
+		global $linkinfo; $linkinfo = array();
+
 		// build the menu tree for this panel
 		menu_generate_tree('main_menu_panel');
 
 		$variables['linkinfo'] = $linkinfo;
-		
+
 		// we want to auto-close submenu's that are open
 		$variables['close_open_submenus'] = true;
-		
+
 		$template_panels[] = array('type' => 'upper', 'name' => 'modules.main_menu_panel', 'template' => '_fullscreen_navigation.tpl');
 		$template_variables['modules.main_menu_panel'] = $variables;
 	}

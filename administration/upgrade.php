@@ -48,7 +48,7 @@ define('UPGRADES', count($upgrades));
 define('UPGRADED', count($upgraded));
 
 // if it was called from the admin panel, continue interactively
-if (eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) {
 
 	// bail out if the user has no rights here
 	if (!checkrights("U") || !defined("iAUTH") || $aid != iAUTH) fallback(BASEDIR."index.php");

@@ -16,11 +16,10 @@
 | Last modified by $Author:: webmaster                                $|
 | Revision number $Rev:: 2033                                         $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '2345';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();

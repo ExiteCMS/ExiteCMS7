@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '858';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(21,00,0,9,29,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(21,00,0,9,29,2007),
 					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
 					'description' => "Added the new locales tables.");
 

@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("main_menu_panel.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // load the menu include
 require_once PATH_INCLUDES."menu_include.php";
@@ -25,7 +25,7 @@ require_once PATH_INCLUDES."menu_include.php";
 $variables = array();
 
 // define linkinfo as global, as this script is called from within a function!
-global $linkinfo; $linkinfo = array(); 
+global $linkinfo; $linkinfo = array();
 
 // build the menu tree for this panel
 menu_generate_tree('main_menu_panel');

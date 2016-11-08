@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = 800;
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(14,00,0,9,10,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(14,00,0,9,10,2007),
 					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
 					'description' => "This revision introduces sub menu's to the menu panels, with a choose of using indentation or foldable menu's."
 				);
@@ -47,7 +46,7 @@ $commands[] = array('type' => 'db', 'value' => "UPDATE ##PREFIX##admin SET admin
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links ADD link_aid TINYINT(1) UNSIGNED DEFAULT 0 AFTER link_window");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links ADD link_parent TINYINT(3) UNSIGNED DEFAULT 0 AFTER link_aid");
 
-// add the news_latest switch to the settings table 
+// add the news_latest switch to the settings table
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##settings ADD news_latest TINYINT(1) UNSIGNED DEFAULT 0 AFTER news_items");
 
 // drop the panel_state table. Not needed anymore, replaced by cookies

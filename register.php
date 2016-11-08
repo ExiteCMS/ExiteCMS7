@@ -95,9 +95,9 @@ if ($settings['enable_registration'] == 1) {
 	} else if (isset($_POST['register'])) {
 		$error = "";
 		$username = stripinput($_POST['username']);
-		$fullname = eregi_replace("\"|'", "", $_POST['fullname']);
-		$email = stripinput(trim(eregi_replace(" +", "", $_POST['email'])));
-		$password1 = stripinput(trim(eregi_replace(" +", "", $_POST['password1'])));
+		$fullname = preg_replace("~\"|'~i", "", $_POST['fullname']);
+		$email = stripinput(trim(preg_replace("~ +~i", "", $_POST['email'])));
+		$password1 = stripinput(trim(preg_replace("~ +~i", "", $_POST['password1'])));
 
 		if ($username == "" || $password1 == "" || $email == "" || $fullname == "") $error .= $locale['402']."<br /><br />\n";
 

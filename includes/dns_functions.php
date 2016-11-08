@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("dns_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // internal replacement for checkdnsrr, which works cross-platform
 function CMS_checkdnsrr($host, $type = '' ) {
@@ -32,12 +32,12 @@ function CMS_checkdnsrr($host, $type = '' ) {
 	}
 
 	if (!empty($host)) {
-		
+
 		@exec("nslookup -type=$type $host", $output );
 
 		while ( list( $k, $line ) = each( $output ) ) {
 			# Valid records begin with host name:
-			if ( eregi( "^$host", $line ) ) {
+			if ( preg_match( "~^$host~", $line ) ) {
 				# record found:
 				return true;
 			}
@@ -82,7 +82,7 @@ function CMS_getmxrr($hostname, &$mxhosts) {
 		while ( list( $k, $line ) = each( $output ) ) {
 
 			# Valid records begin with hostname:
-			if (ereg( "^$hostname\tMX preference = ([0-9]+), mail exchanger = (.*)$", $line, $parts ) ) {
+			if (preg_match( "~^$hostname\tMX preference = ([0-9]+), mail exchanger = (.*)$~", $line, $parts ) ) {
 				$mxhosts[ $parts[1] ] = $parts[2];
 			}
 		}

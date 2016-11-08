@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '1426';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(12,00,0,5,31,2008), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(12,00,0,5,31,2008),
 					'title' => "Required updates for ExiteCMS v7.1 rev.".$_revision,
 					'description' => "Database adjustments to make it compatible with MySQL v5.x STRICT MODE");
 
@@ -36,8 +35,8 @@ $revisions[] = array('revision' => $_revision,
 $commands = array();
 
 // database changes
-$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##admin CHANGE admin_rights admin_rights CHAR(2) NOT NULL DEFAULT '', 
-	CHANGE admin_image admin_image VARCHAR(50) NOT NULL DEFAULT '', 
+$commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##admin CHANGE admin_rights admin_rights CHAR(2) NOT NULL DEFAULT '',
+	CHANGE admin_image admin_image VARCHAR(50) NOT NULL DEFAULT '',
 	CHANGE admin_title admin_title VARCHAR(50) NOT NULL DEFAULT ''");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##articles CHANGE article_subject article_subject VARCHAR(200) NOT NULL DEFAULT '',
 	CHANGE article_breaks article_breaks CHAR(1) NOT NULL DEFAULT '',
@@ -126,22 +125,22 @@ $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##sessions C
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##site_links CHANGE link_name link_name VARCHAR(100) NOT NULL DEFAULT '',
 	CHANGE link_locale link_locale VARCHAR(8) NOT NULL DEFAULT '',
 	CHANGE link_url link_url VARCHAR(200) NOT NULL DEFAULT '',
-	CHANGE panel_name panel_name VARCHAR(200) NOT NULL DEFAULT '';"); 
+	CHANGE panel_name panel_name VARCHAR(200) NOT NULL DEFAULT '';");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##threads CHANGE thread_subject thread_subject VARCHAR(100) NOT NULL DEFAULT '';");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##users CHANGE user_md5id user_md5id VARCHAR(32) NOT NULL DEFAULT '',
-	CHANGE user_name user_name VARCHAR(30) NOT NULL DEFAULT '', 
-	CHANGE user_fullname user_fullname VARCHAR(50) NOT NULL DEFAULT '', 
-	CHANGE user_password user_password VARCHAR(32) NOT NULL DEFAULT '', 
-	CHANGE user_email user_email VARCHAR(100) NOT NULL DEFAULT '', 
-	CHANGE user_location user_location VARCHAR(50) NOT NULL DEFAULT '', 
-	CHANGE user_aim user_aim VARCHAR(16) NOT NULL DEFAULT '', 
-	CHANGE user_icq user_icq VARCHAR(15) NOT NULL DEFAULT '', 
-	CHANGE user_msn user_msn VARCHAR(100) NOT NULL DEFAULT '', 
-	CHANGE user_yahoo user_yahoo VARCHAR(100) NOT NULL DEFAULT '', 
-	CHANGE user_web user_web VARCHAR(200) NOT NULL DEFAULT '', 
-	CHANGE user_offset user_offset VARCHAR(6) NOT NULL DEFAULT '0', 
-	CHANGE user_avatar user_avatar VARCHAR(100) NOT NULL DEFAULT '', 
-	CHANGE user_ban_reason user_ban_reason VARCHAR(100) NOT NULL DEFAULT '', 
+	CHANGE user_name user_name VARCHAR(30) NOT NULL DEFAULT '',
+	CHANGE user_fullname user_fullname VARCHAR(50) NOT NULL DEFAULT '',
+	CHANGE user_password user_password VARCHAR(32) NOT NULL DEFAULT '',
+	CHANGE user_email user_email VARCHAR(100) NOT NULL DEFAULT '',
+	CHANGE user_location user_location VARCHAR(50) NOT NULL DEFAULT '',
+	CHANGE user_aim user_aim VARCHAR(16) NOT NULL DEFAULT '',
+	CHANGE user_icq user_icq VARCHAR(15) NOT NULL DEFAULT '',
+	CHANGE user_msn user_msn VARCHAR(100) NOT NULL DEFAULT '',
+	CHANGE user_yahoo user_yahoo VARCHAR(100) NOT NULL DEFAULT '',
+	CHANGE user_web user_web VARCHAR(200) NOT NULL DEFAULT '',
+	CHANGE user_offset user_offset VARCHAR(6) NOT NULL DEFAULT '0',
+	CHANGE user_avatar user_avatar VARCHAR(100) NOT NULL DEFAULT '',
+	CHANGE user_ban_reason user_ban_reason VARCHAR(100) NOT NULL DEFAULT '',
 	CHANGE user_cc_code user_cc_code CHAR(2) NOT NULL DEFAULT '';");
 $commands[] = array('type' => 'db', 'value' => "ALTER TABLE ##PREFIX##user_groups CHANGE group_ident group_ident VARCHAR(4) NOT NULL DEFAULT '',
 	CHANGE group_name group_name VARCHAR(100) NOT NULL DEFAULT '',

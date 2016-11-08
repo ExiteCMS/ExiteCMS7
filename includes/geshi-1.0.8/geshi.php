@@ -3382,7 +3382,7 @@ class GeSHi {
         // the first array is in the output set in every case
         $ret = $arrays[0];
 
-        // merege $ret with the remaining arrays
+        // merge $ret with the remaining arrays
         for ($i = 1; $i < $narrays; $i ++) {
             foreach ($arrays[$i] as $key => $value) {
                 if (is_array($value) && isset($ret[$key])) {

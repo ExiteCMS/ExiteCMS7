@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = 700;
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(18,00,0,6,14,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(18,00,0,6,14,2007),
 					'title' => "Migration from PLi-Fusion v6.1.10 to ExiteCMS v6.2",
 					'class' => 'rev_major',
 					'description' => "<u>This is a major operation!</u><br />It replaces the old PHP-Fusion code with the new ExiteCMS templated CMS engine, and converts the PHP-Fusion database to the ExiteCMS format.",

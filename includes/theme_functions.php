@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("theme_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // load the Smarty template engine
 require_once PATH_INCLUDES."Smarty-2.6.22/Smarty.class.php";
@@ -126,7 +126,7 @@ class ExiteCMS_Smarty extends Smarty {
 // Smarty template engine definitions and initialisation
 
 // initialize the template engine
-$template = & new ExiteCMS_Smarty();
+$template = new ExiteCMS_Smarty();
 
 // plugin's, where to find them?
 $plugins_dir = array();

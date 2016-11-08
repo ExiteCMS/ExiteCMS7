@@ -11,15 +11,15 @@
 | License. For details refer to the included gpl.txt file or visit     |
 | http://gnu.org                                                       |
 +----------------------------------------------------------------------+
-| $Id::                                                               $|
+| $Id:: rev01818.php 2033 2008-11-15 19:51:44Z webmaster              $|
 +----------------------------------------------------------------------+
-| Last modified by $Author::                                          $|
-| Revision number $Rev::                                              $|
+| Last modified by $Author:: webmaster                                $|
+| Revision number $Rev:: 2033                                         $|
 +---------------------------------------------------------------------*/
 if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
-$_revision = '2012';
+$_revision = '2400';
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
@@ -27,15 +27,12 @@ if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
 $revisions[] = array('revision' => $_revision,
-					'date' => mktime(18,00,0,11,12,2008),
-					'title' => "Required updates for ExiteCMS v7.2 rev.".$_revision,
-					'description' => "Allow upload of files in the download admin module.");
+					'date' => mktime(11,15,0,11,07,2016),
+					'title' => "Required updates for ExiteCMS v7.3 rev.".$_revision,
+					'description' => "Code updates for PHP 5.5+ compatibility.");
 
 // array to store the commands of this update
 $commands = array();
 
 // database changes
-
-// add the download type flag to the configuration
-$commands[] = array('type' => 'db', 'value' => "INSERT INTO ##PREFIX##configuration (cfg_name, cfg_value) VALUES ('download_via_http', '1')");
 ?>

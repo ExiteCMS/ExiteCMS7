@@ -45,10 +45,10 @@ if (isset($_POST['cancel_delete'])) fallback(FUSION_SELF.$aidlink."&order=$order
 if ($step == "add") {
 	if (isset($_POST['add_user'])) {
 		$error = "";
-		
-		$username = trim(eregi_replace(" +", " ", $_POST['username']));
+
+		$username = trim(preg_replace('/\s+/mu', ' ', $_POST['username']));
 		$fullname = $_POST['fullname'];
-	
+
 		if ($username == "" || $_POST['password1'] == "" || $_POST['email'] == "") $error .= $locale['451']."<br>\n";
 
 //		if (!preg_match("/^[-0-9A-Z_@\s]+$/i", $username)) $error .= $locale['452']."<br>\n";
@@ -60,13 +60,13 @@ if ($step == "add") {
 		}
 		if (!preg_match("/^[-0-9A-Z_\.]{1,50}@([-0-9A-Z_\.]+\.){1,50}([0-9A-Z]){2,4}$/i", $_POST['email'])) {
 			$error .= $locale['454']."<br>\n";
-		}	
+		}
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_name='$username'");
 		if (dbrows($result) != 0) $error = sprintf($locale['453'],(isset($_POST['user_name']) ? $_POST['user_name'] : ""))."<br>\n";
-		
+
 		$result = dbquery("SELECT * FROM ".$db_prefix."users WHERE user_email='".$_POST['email']."'");
 		if (dbrows($result) != 0) $error = sprintf($locale['455'],(isset($_POST['user_email']) ? $_POST['user_email'] : ""))."<br>\n";
-		
+
 		if ($error == "") {
 			$result = dbquery("INSERT INTO ".$db_prefix."users (user_name, user_md5id, user_fullname, user_password, user_email, user_hide_email, user_location, user_birthdate, user_aim, user_icq, user_msn, user_yahoo, user_web, user_theme, user_offset, user_avatar, user_sig, user_posts, user_joined, user_lastvisit, user_ip, user_rights, user_groups, user_level, user_status) VALUES ('$username', '".md5(strtolower($username.$password1))."', '$fullname', '".md5(md5('$password1'))."', '$email', '$hide_email', '', '0000-00-00', '', '', '', '', '', 'Default', '0', '', '', '0', '".time()."', '0', '".USER_IP."', '', '', '101', '0')");
 		}
@@ -78,7 +78,7 @@ if ($step == "add") {
 } elseif ($step == "ban") {
 	if (isset($_POST['ban'])) {
 		$user_ban_reason = stripinput(trim($_POST['user_ban_reason']));
-		if ($user_ban_reason == "") 
+		if ($user_ban_reason == "")
 			$message = $locale['463'];
 		else {
 			$user_ban_expire = stripinput(trim($_POST['user_ban_expire']));

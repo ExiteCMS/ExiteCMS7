@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("ratings_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // load the locale for this include
 locale_load("main.ratings");
@@ -28,7 +28,7 @@ function showratings($rating_type,$rating_item_id,$rating_link) {
 		$template_panels, $template_variables;
 
 	$variables = array();
-	
+
 	if (iMEMBER) {
 		$d_rating = dbarray(dbquery("SELECT rating_vote,rating_datestamp FROM ".$db_prefix."ratings WHERE rating_item_id='".$rating_item_id."' AND rating_type='".$rating_type."' AND rating_user='".$userdata['user_id']."'"));
 		$rating_exists = isset($d_rating['rating_vote']);
@@ -65,7 +65,7 @@ function showratings($rating_type,$rating_item_id,$rating_link) {
 		$temp['pct_rating'] = $total_votes == 0 ? 0 : number_format(100 / $total_votes * $num_votes);
 		$ratings[] = $temp;
 	}
-	
+
 	$variables['rating_link'] = $rating_link;
 	$variables['rating_exists'] = $rating_exists;
 	if ($rating_exists) {

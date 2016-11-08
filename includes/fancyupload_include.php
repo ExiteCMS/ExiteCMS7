@@ -16,7 +16,7 @@
 | Last modified by $Author:: WanWizard                                $|
 | Revision number $Rev:: 1935                                         $|
 +---------------------------------------------------------------------*/
-if (eregi("fancyupload_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // load this module's locales
 //locale_load("fancyupload");
@@ -30,7 +30,7 @@ function UploadResult($result="success", $message="") {
 	}
 
 	// need json to send the upload result back
-	require_once "json_include.php";		
+	require_once "json_include.php";
 
 	// send the response
 	if ($result == "success") {
@@ -48,7 +48,7 @@ function ProcessUpload($FileName, $FileExt, $FilePath, $MaxSize = 2147483647, $I
 	if (empty($FileName) || empty($FileExt) || empty($FilePath)) {
 		UploadResult("error", "Application error: Invalid configuration information passed to ProcessUpload!");
 	}
-	
+
 	// create the uploadinfo array
 	$UploadInfo = array('filename' => $FileName, 'fileext' => $FileExt, 'filepath' => $FilePath, 'verify_image' => $ImgCheck);
 

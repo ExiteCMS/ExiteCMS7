@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("forum_functions_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // show code block with line wrapping (true) or scrollbar (false)
 define('WRAP_CODE_IN_CODEBLOCK', false);
@@ -764,7 +764,7 @@ function _parseubb_codeblock($matches) {
 	// colorize the code if requested
 	if ($raw_color_blocks == false) {
 		require_once PATH_GESHI."/geshi.php";
-		$geshi =& new GeSHi("", "");
+		$geshi = new GeSHi("", "");
 		$geshi->set_language($matches[1]);
 		$geshi->set_header_type(GESHI_HEADER_DIV);
 		$geshi->set_tab_width(4);

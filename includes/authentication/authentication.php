@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("authentication.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 /*---------------------------------------------------+
 | ExiteCMS authentication class                      |
@@ -68,7 +68,7 @@ class authentication {
 			$class = PATH_INCLUDES."authentication/".$method['class'].".php";
 			if (file_exists($class)) {
 				@include $class;
-				$this->classes[$name] =& new $method['class']();
+				$this->classes[$name] = new $method['class']();
 			} else {
 				// defined class removed? User needs to run the security admin module to update!
 			}

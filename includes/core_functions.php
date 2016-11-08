@@ -17,13 +17,9 @@
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
 // disable error reporting, we don't want to give anything away
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-	error_reporting(E_USER_ERROR);
-} else {
-	error_reporting(E_USER_ERROR & ~E_DEPRECATED);
-}
+error_reporting(E_ALL);
 
-if (eregi("core_functions.php", $_SERVER['PHP_SELF'])) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false) die();
 
 // make sure we have enough memory to work with (independent of the php.ini setting)
 $mem = (int) ini_get('memory_limit');
@@ -378,11 +374,11 @@ function isURL($value, $onlyhttp=false, $schemereq=false) {
 	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";	// USERID + PASSWORD (optional)
 	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*";							// HOSTNAME or IP
 	$urlregex .= "(\:[0-9]{2,5})?";												// PORT (optional)
-	$urlregex .= "(\/([a-z0-9+\$_%-~]\.?)+)*\/?";								// PATH (optional)
-	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";						// GET querystring (optional)
-	$urlregex .= "(#[a-z_.-][a-z0-9+\:\$_.-]*)?\$";								// ANCHOR (optional)
+	$urlregex .= "(\/([a-z0-9+\$_%-\~]\.?)+)*\/?";								// PATH (optional)
+	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@\/&%=+\$_.-]*)?";					// GET querystring (optional)
+	$urlregex .= "(#[a-z_.-][a-z0-9+\:\$_.-]*)?";								// ANCHOR (optional)
 	// validate the URL
-	return eregi($urlregex, $value);
+	return preg_match("~^$urlregex$~i", $value) ? true : false;
 }
 
 // check if the call is an ajax request

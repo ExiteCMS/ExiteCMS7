@@ -18,16 +18,17 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 /*
 	usage: $image_resource = font2image($f2i_array);
-	
+
 	$f2i_array = array();
 	$f2i_array['image'] = "png";	                   // Type of image to generate. If not specified, defaults to PNG
 	$f2i_array['font_text'] = "Text to convert";       // Text to convert to an image. Required.
 	$f2i_array['font_file'] = "font2use.ttf";          // FQN of the TTF font file to use. Required.
 	$f2i_array['font_size'] = 10;                      // Font size. Optional. Valid values are 4 to 96. Default = 10.
 	$f2i_array['font_color'] = "#000000";              // Font color (html style). Default = black.
-	$f2i_array['font_spacing'] = false;                // Use the standard font spacing. Default = false. 
+	$f2i_array['font_spacing'] = false;                // Use the standard font spacing. Default = false.
 	                                                   // Disables kerning, outline and shadows!!
 	$f2i_array['font_kerning'] = 0;                    // Additional space between characters in pixels. Default = 0, Max = 20.
 	$f2i_array['background_color'] = "#FFFFFF";        // Image background color (html style). Default = white.
@@ -38,22 +39,21 @@
 	$f2i_array['shadow_color'] = "";                   // Shadow color (html style). If not specified, width is set to 0.
 	$f2i_array['shadow_width'] = 0;                    // Width of the shadow of the character in pixels. Default = 0, Max = 10.
 	$f2i_array['background_transparent'] = false;      // Should the background color be marked transparent? Boolean, default = false;
-	$f2i_array['background_transparent_color'] = "";   // Optional. If defined, this color will be used for transparancy instead of 
+	$f2i_array['background_transparent_color'] = "";   // Optional. If defined, this color will be used for transparancy instead of
 	                                                   // the specified background color. Required if a background shadow is defined
 	$f2i_array['cache_images'] = false;                // Cache the image after generation? Boolean, default = false.
 	$f2i_array['cache_folder'] = "";                   // Directory to store the cached images in.
 	                                                   // If not defined or not valid, cache_images will be set to false.
-	$f2i_array['cache_prefix'] = false;                // If defined, this will be prepended to the filename of the cached file    
-	$f2i_array['cache_hash'] = false;                  // Boolean. If false, the text will be used as filename, otherwise a hash is calculated    
+	$f2i_array['cache_prefix'] = false;                // If defined, this will be prepended to the filename of the cached file
+	$f2i_array['cache_hash'] = false;                  // Boolean. If false, the text will be used as filename, otherwise a hash is calculated
 	$f2i_array['return_link'] = false;                 // If true, the function returns a relative link to the cached image instead of the
 	                                                   // image itself. If true, cache_images MUST be set to true as well!!!
-	
+
 	Notes:
 	* if the background has a shadow, background transparency is used to create the 3D effect. The text background
 	  itself can therefore not be transparent.
 
 */
-if (eregi("font2image.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 function font2image($font2image) {
 
@@ -64,7 +64,7 @@ function font2image($font2image) {
 
 	// validate parameters : required fields
 	if (empty($font2image['image']) || !in_array($font2image['image'], array('png', 'gif', 'jpg'))) $font2image['image'] = "png";
-	if (empty($font2image['font_text'])) fatal_error('No text specified.'); 
+	if (empty($font2image['font_text'])) fatal_error('No text specified.');
 	if(get_magic_quotes_gpc()) {
 		$font2image['font_text'] = stripslashes($font2image['font_text']) ;
 	}
@@ -149,7 +149,7 @@ function font2image($font2image) {
 		$hash = str_replace(' ', '_', $font2image['font_text']);
 	}
 	$cache_filename = $font2image['cache_folder'] . '/' . $font2image['cache_prefix'] . $hash . '.' . $font2image['image'] ;
-	
+
 	// Do we have caching enabled for this image?
 	if ($font2image['cache_images']) {
 		// look for cached copy, if it exists, convert it to a resource and return it
@@ -259,7 +259,7 @@ function font2image($font2image) {
 			$offset = 0;
 			for ($text_xo = $text_x-$font2image['outline_width'];$text_xo<=$text_x+1+2*$font2image['outline_width'];$text_xo++) {
 				for ($text_yo = $text_y-$font2image['outline_width'];$text_yo<=$text_y+2*$font2image['outline_width'];$text_yo++) {
-					$bbox = ImageTTFText($image,$font2image['font_size'], 0, $text_xo, $text_yo, $font2image['outline_color'], $font2image['font_file'], $text[$c]) ;					
+					$bbox = ImageTTFText($image,$font2image['font_size'], 0, $text_xo, $text_yo, $font2image['outline_color'], $font2image['font_file'], $text[$c]) ;
 					if ($offset == 0) $offset = $bbox[2];
 				}
 			}
@@ -319,14 +319,14 @@ function get_dip($font,$size)
 	$test_chars = 'abcdefghijklmnopqrstuvwxyz' .
 			'ABCDEFGHIJKLMNOPQRSTUVWXYZ' .
 			'1234567890' .
-			"!@#$%^&*()'" . 
+			"!@#$%^&*()'" .
 			'"\\/;.,`~<>[]{}-+_-=' ;
 	$box = @ImageTTFBBox($size,0,$font,$test_chars) ;
 	return $box[3] ;
 }
 
 /*
-    attempt to create an image containing the error message given. 
+    attempt to create an image containing the error message given.
     if this works, the image is sent to the browser. if not, an error
     is logged, and passed back to the browser as a 500 code instead.
 */
@@ -341,7 +341,7 @@ function fatal_error($message)
         {
             $background = ImageColorAllocate($image,255,255,255) ;
             $text_color = ImageColorAllocate($image,0,0,0) ;
-            ImageString($image,5,5,5,$message,$text_color) ;    
+            ImageString($image,5,5,5,$message,$text_color) ;
             header('Content-type: image/png') ;
             ImagePNG($image) ;
             ImageDestroy($image) ;
@@ -355,10 +355,10 @@ function fatal_error($message)
     exit ;
 }
 
-/* 
+/*
     decode an HTML hex-code into an array of R,G, and B values.
-    accepts these formats: (case insensitive) #ffffff, ffffff, #fff, fff 
-*/    
+    accepts these formats: (case insensitive) #ffffff, ffffff, #fff, fff
+*/
 function hex_to_rgb($hex)
 {
     // remove '#'

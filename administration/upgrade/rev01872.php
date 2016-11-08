@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = '1872';
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(15,00,0,10,19,2008), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(15,00,0,10,19,2008),
 					'title' => "Required updates for ExiteCMS v7.2 rev.".$_revision,
 					'description' => "Store the setup default language in the configuration.");
 
@@ -42,7 +41,7 @@ $commands[] = array('type' => 'function', 'value' => "rev1972_setup_locale");
 
 function rev1972_setup_locale() {
 	global $db_prefix;
-	
+
 	// assume the first locale record is the one the site is installed with
 	$result = dbquery("SELECT * FROM ".$db_prefix."locale ORDER BY locale_id ASC LIMIT 1");
 	if (dbrows($result)) {

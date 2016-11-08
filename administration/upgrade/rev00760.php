@@ -16,19 +16,18 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // upgrade for revision
 $_revision = 760;
-
-if (eregi("rev".substr("00000".$_revision,-5).".php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
 
 // make sure the required array's exist
 if (!isset($revisions) || !is_array($revisions)) $revisions = array();
 if (!isset($commands) || !is_array($commands)) $commands = array();
 
 // register this revision update
-$revisions[] = array('revision' => $_revision, 
-					'date' => mktime(12,00,0,7,28,2007), 
+$revisions[] = array('revision' => $_revision,
+					'date' => mktime(12,00,0,7,28,2007),
 					'title' => "Required updates for ExiteCMS v6.2 rev.".$_revision,
 					'description' => "Now banners can be activated on a per-forum basis, and support for 'broken' timezones (like +10.5) has been added. GeoIP information can now be added manually (to correct mistakes, or add non-public IP's)"
 				);

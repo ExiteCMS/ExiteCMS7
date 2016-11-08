@@ -16,11 +16,11 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("user_functions.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // load and instantiate the authentication class
 require_once "authentication/authentication.php";
-$cms_authentication =& new authentication();
+$cms_authentication = new authentication();
 
 // need the GeoIP functions to determine the users country of origin
 require_once "geoip_include.php";
@@ -289,7 +289,7 @@ if (iMEMBER) {
 
 // check for upgrades in progress.
 // NOTE: when in CLI mode,  skip this. Also, when a form has been posted, skip this and finish the POST!
-if (!CMS_CLI && count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF'])) {
+if (!CMS_CLI && count($_POST)==0 && strpos($_SERVER['PHP_SELF'], "upgrade.php") === false) {
 
 	include PATH_ADMIN."upgrade.php";
 	//  If so, force a switch to maintenance mode
@@ -297,7 +297,7 @@ if (!CMS_CLI && count($_POST)==0 && !eregi("upgrade.php", $_SERVER['PHP_SELF']))
 
 	// if not called from the maintenance mode module! (to prevent a loop, endless ;-)
 	// check if we need to redirect to maintenance mode (for users) or upgrade (for webmasters)
-	if (!iSUPERADMIN && $settings['maintenance'] && !eregi("maintenance.php", $_SERVER['PHP_SELF'])) {
+	if (!iSUPERADMIN && $settings['maintenance'] && strpos($_SERVER['PHP_SELF'], "maintenance.php") === false) {
 		// deny all non-webmasters access to the site
 		redirect(BASEDIR.'maintenance.php?reason='.$settings['maintenance']);
 	}

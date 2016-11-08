@@ -16,7 +16,7 @@
 | Last modified by $Author::                                          $|
 | Revision number $Rev::                                              $|
 +---------------------------------------------------------------------*/
-if (eregi("comments_include.php", $_SERVER['PHP_SELF']) || !defined('INIT_CMS_OK')) die();
+if (strpos($_SERVER['PHP_SELF'], basename(__FILE__)) !== false || !defined('INIT_CMS_OK')) die();
 
 // load message parsing functions
 require_once PATH_INCLUDES."forum_functions_include.php";
@@ -45,7 +45,7 @@ function showcomments($comment_type,$cdb,$ccol,$comment_id,$clink, $admin=false)
 			$comment_name = preg_replace("(^[0-9]*)", "", $comment_name);
 			if (isNum($comment_name)) $comment_name="";
 		}
-		
+
 		// captcha check for guest posts
 		$cic = "";
 		if (iGUEST) {
